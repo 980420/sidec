@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+<head>
+<link rel="shortcut icon"
+	href="#{facesContext.externalContext.requestContextPath}/img/gehos.ico" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="pragma" content="no-cache" />
+<title>#{messages.lbl_inicio_com}</title>
+<link href="style/loginStyle.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+	<div style="text-align: center;">
+
+		<rich:messages styleClass="message" ajaxRendered="true"
+			style="color:#ffffff !important" />
+	</div>
+	<table id="content">
+		<tr>
+			<td id="effect">
+
+				<div id="login">
+
+					<div id="contentData">
+						<h:form id="loginn">
+							<table style="position: relative; top: -30px;">
+								<tr>
+									<td style="text-align: right; padding-right: 5px;">#{messages.lbl_usuario_com}</td>
+									<td class="fieldContent2"><h:inputText id="username"
+											tabindex="0" value="#{credentials.username}"
+											styleClass="fieldContent" autocomplete="off" validator="#{userValidator.validate}">	
+											<f:validateLength minimum="1" maximum="60"></f:validateLength>										
+											</h:inputText>
+											</td>
+								</tr>
+								<tr>
+									<td colspan="2" style="height: 2px;"></td>
+								</tr>
+								<tr>
+									<td style="text-align: right; padding-right: 5px;">#{messages.lbl_contrasenha_com}</td>
+									<td class="fieldContent2"><h:inputSecret
+											styleClass="fieldContent" id="password"
+											value="#{credentials.password}" autocomplete="off" /></td>
+								</tr>
+								<tr>
+									<td colspan="2" style="height: 2px;"></td>
+								</tr>
+								<tr>
+									<td style="text-align: right; padding-right: 5px;">#{messages.lbl_dominio_com}</td>
+									<td><span class="select"> <span id="select6"
+											style="position: absolute; top: 4px;">
+												#{authenticator.domain} </span>
+									</span> <h:selectOneMenu styleClass="styled"
+											onchange="document.getElementById('select6').innerHTML=this.value;"
+											style=" width : 193px; border:0px; position:relative; top:0px; left:-1px; background-color: #fff;"
+											value="#{authenticator.domain}">
+											<f:selectItems value="#{authenticator.dominios}" />
+										</h:selectOneMenu></td>
+
+								</tr>
+								<tr>
+									<td colspan="2" style="height: 2px;"></td>
+								</tr>
+								<tr>
+									<td colspan="2" style="text-align: right; position: relative;">
+										<div id="loading" style="display: none">
+											<img alt="" src="images/Loader3.gif" />
+										</div>
+										<div id="button2">
+
+											<h:commandButton action="#{identity.login}"
+												value="#{messages.aceptar}" styleClass="button"
+												onmouseup="document.getElementById('loading').style.display=''" />
+
+
+										</div>
+									</td>
+								</tr>
+							</table>
+
+						</h:form>
+					</div>
+
+
+					<div id="copyray">
+						<p style="font-size: 10px; color: #FFFFFF" align="center">
+							#{messages.msg_uci_com} #{messages.msg_derecho_com}<br />
+							#{messages.msg_registro_com}<br />  <strong>#{messages.msg_sidec_com} #{messages.msg_version_com} #{messages.msg_licencia_com} 2018</strong>
+						</p>
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table>
+
+	<script type="text/javascript">
+    document.getElementById("loginn:username").focus();
+    </script>
+
+</body>
+</html>

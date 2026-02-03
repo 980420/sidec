@@ -1,0 +1,96 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core">
+	<style>
+		.rule-action{
+			  padding-left: 8px;
+			  margin-bottom: 2px;
+		}
+		
+		.rule-action > div
+		{		
+			display: inline-flex;
+	  		vertical-align: super;
+	  		margin-left: 3px;
+  		}  		
+  		.condition-type
+  		{	  		
+	  		color: white;
+	  		border-radius: 9px; 
+	  		padding: 5px;	  
+	  		margin-bottom: 4px;		
+  		}
+  		.rule-var{
+  			color: black;
+  			font-weight: bold;
+  		}
+  		.rule-val{
+  			font-weight: bold;
+  		}
+  		.rule-operator
+  		{
+  			  background: rgb(245, 245, 149);
+			  border: 1px solid rgb(76, 71, 34);
+			  padding: 1px 2px;
+			  border-radius: 5px;
+			  color: rgb(76, 71, 34);
+  		}
+  		span.rule-val-type-st 
+  		{
+		  color: rgb(81, 11, 24);
+		}
+		span.rule-val-type-int,span.rule-val-type-file 
+  		{
+		  color: rgb(15, 95, 49);
+		}
+		span.rule-exp{
+		  background: #eee;
+		  padding: 3px 5px;
+		  border: 1px solid rgb(134, 134, 134);
+		  display: inline-block;
+		  margin: 1px;
+		}
+		span.rule-grouper
+		{
+		  background: rgb(39, 198, 236);
+		  display: inline;
+		  padding: 6px 3px;
+		  border-radius: 6px;
+		}
+		span.rule-grouper-sign
+		{
+			color: rgb(9, 70, 84);
+  			font-size: 12px;
+		}
+		span.rule-operation{
+			font-style: italic;
+		}
+	</style>
+	<s:div >		
+					<s:div style="margin: 5px 0;" rendered="#{not empty if}">
+						<div class="condition-type" style="background: rgb(21, 137, 142);;">SI</div>
+						<div style="margin-left: 8px;">
+							<h:outputText escape="false" value="#{if}" />	
+						</div>
+					</s:div>	
+					
+					<s:div style="margin: 5px 0;" rendered="#{not empty then}">
+						<div class="condition-type" style="background: rgb(21, 142, 114);">ENTONCES</div> 
+						<div>							
+							<h:outputText escape="false" value="#{then}" />												
+						</div>
+					</s:div>
+					
+					<s:div style="margin: 5px 0;" rendered="#{not empty else}">
+						<div class="condition-type" style="background: rgb(142, 21, 39);">SI NO</div>
+						<div>
+							<h:outputText escape="false" value="#{else}" />	
+						</div>
+					</s:div>
+				</s:div>
+</s:div>

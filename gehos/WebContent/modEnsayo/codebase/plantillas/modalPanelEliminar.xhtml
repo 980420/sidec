@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+<ui:composition>
+	<!-- Modal Panel para la confirmacion de eliminar, se le pasa como parametro el id
+	y la clase controladora donde esta el metodo eliminar-->
+	<rich:modalPanel id="#{id}" width="350" height="85"
+		resizeable="false">
+		<f:facet name="header">
+			<h:outputLabel value="#{messages.modalInfo}" />
+		</f:facet>
+
+		<f:facet name="controls">
+			<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+				style="cursor:pointer;">
+				<rich:componentControl operation="hide" event="onclick"
+					for="#{id}" />
+			</h:graphicImage>
+		</f:facet>
+		<h:form>
+			<table cellpadding="0" cellspacing="0" border="0" align="center">
+				<tr>
+					<td rowspan="2"><h:graphicImage
+						value="/resources/icons/default/acciones/advertencia.png" /> <rich:spacer
+						width="8px" /></td>
+				</tr>
+				<tr align="center">
+					<td><h:outputLabel value="#{messages.eliminarInfo}" /> <br />
+					<h:outputLabel value="#{messages.eliminarInfo2}" /></td>
+				</tr>
+
+				<tr>
+					<td colspan="2"><rich:spacer height="8px" /></td>
+				</tr>
+
+				<tr>
+					<td colspan="2" align="center"><h:commandButton
+						style="margin:0px" action="#{controlador.eliminar()}"
+						value="#{messages.siEliminar}" /> <rich:spacer width="8px" /> <a4j:commandButton
+						style="margin:0px" value="#{messages.noEliminar}">
+						<rich:componentControl operation="hide" event="onclick"
+							for="#{id}" />
+					</a4j:commandButton></td>
+				</tr>
+			</table>
+		</h:form>
+	</rich:modalPanel>
+	<!-- Modal Panel para la confirmacion de eliminar -->
+</ui:composition>
+
+</html>

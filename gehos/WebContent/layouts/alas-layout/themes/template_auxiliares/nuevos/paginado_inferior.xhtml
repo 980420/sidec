@@ -1,0 +1,96 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <div id="pagingcontrols" style="width: 100%; text-align:center;  vertical-align: top;" align="center">
+					<rich:panel id="paginadoInferior" rendered="#{vzPaginado}" >				
+					<h:graphicImage 
+						value="/resources/icons/default/paginado/iniciod.png"
+						rendered="#{!nomControladorList.previousExists}"  />
+
+					<s:link id="firstPageI" rendered="#{nomControladorList.firstResult >= 10}">
+						<h:graphicImage title="Primera p&#225;gina" style="border: 0px; "
+							value="/resources/icons/default/paginado/#{theme.color}/inicio.png" />
+						<f:param name="paginado" value="0" />
+						<f:param name="ordenapor" value="#{nomControladorList.orden}"/>	
+						<f:param name="pos" value="#{nomControladorList.pos}"/>	
+					</s:link>
+
+					<h:graphicImage
+						value="/resources/icons/default/paginado/anteriord.png"
+						rendered="#{!nomControladorList.previousExists}"  />
+
+
+					<s:link
+						id="previousPageI" rendered="#{nomControladorList.firstResult >= 10}">
+						<h:graphicImage title="Anterior" style="border: 0px;"
+							value="/resources/icons/default/paginado/#{theme.color}/anterior.png" />
+						<f:param name="paginado" value="#{nomControladorList.previousFirstResult}" />
+						<f:param name="ordenapor" value="#{nomControladorList.orden}"/>
+						<f:param name="pos" value="#{nomControladorList.pos}"/>		
+					</s:link>
+					
+					                
+                  
+                  
+					<h:graphicImage
+						value="/resources/icons/default/paginado/siguiented.png"
+						rendered="#{!nomControladorList.nextExists}"  />
+
+
+					<s:link
+						id="nextPageI" rendered="#{nomControladorList.resultCount > nomControladorList.firstResult+10}">
+						<h:graphicImage title="Siguiente" style="border: 0px;" 
+							value="/resources/icons/default/paginado/#{theme.color}/siguiente.png" />
+
+						<f:param name="paginado" value="#{nomControladorList.nextFirstResult}"/>
+									<f:param name="ordenapor" value="#{nomControladorList.orden}"/>
+									<f:param name="pos" value="#{nomControladorList.pos}"/>	
+									
+							
+					</s:link>
+
+					<h:graphicImage value="/resources/icons/default/paginado/find.png"
+						rendered="#{!nomControladorList.nextExists}"  />
+
+
+					<s:link
+						id="ultimaPaginaI" rendered="#{nomControladorList.resultCount > nomControladorList.firstResult+10}">
+						<h:graphicImage title="&#218;ltima p&#225;gina" style="border: 0px;"
+							value="/resources/icons/default/paginado/#{theme.color}/fin.png" />
+
+						<f:param name="paginado" value="#{nomControladorList.lastFirstResult}" />
+									<f:param name="ordenapor" value="#{nomControladorList.orden}"/>
+									<f:param name="pos" value="#{nomControladorList.pos}"/>	
+													
+					</s:link>
+					
+					<div  align="right" style="float: right;">
+				<table width="100%" cellpadding="0px" cellspacing="0px" border="0px" >
+    <tr>
+        
+        <td height="16px" align="right" width="100%">
+         <h:outputLabel style="cursor: pointer" styleClass="linksBar" value="#{(not nomControladorList.previousExists) ? '1' : nomControladorList.firstResult+1}" />
+         <h:outputLabel style="cursor: pointer" styleClass="linksBar" value=" - " />
+         <h:outputLabel style="cursor: pointer" styleClass="linksBar" value="#{(nomControladorList.resultCount>10) ? nomControladorList.firstResult + nomControladorList.resultList.size() : nomControladorList.resultList.size()}">
+         <f:convertNumber integerOnly="true"/>
+         </h:outputLabel>
+         <h:outputLabel style="cursor: pointer" styleClass="linksBar" value="#{(nomControladorList.resultCount>10) ? '/' : ' /'}" />
+         <h:outputLabel style="cursor: pointer" styleClass="linksBar" value="#{nomControladorList.resultCount}" />
+        </td>
+        
+       </tr>
+    </table>
+</div>
+					
+				</rich:panel>	
+				
+                
+				</div>
+   
+</s:div>
+

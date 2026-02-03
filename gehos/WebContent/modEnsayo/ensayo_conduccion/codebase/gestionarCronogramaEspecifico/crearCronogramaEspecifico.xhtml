@@ -1,0 +1,167 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle('#{titulo}')</script>
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css"
+		rel="stylesheet" type="text/css" />
+	
+	<rich:messages globalOnly="true" styleClass="message"
+		id="globalMessage" ajaxRendered="true" />
+		<rich:panel style="height:120px" >
+		<f:facet name="header">
+			<h:panelGroup>
+				<div>
+					<div align="left">
+						#{messages.detallesSujeto}
+					</div>
+				</div>
+			</h:panelGroup>
+		</f:facet>
+		<table class="Tabla" cellspacing="0" cellpadding="0" width="100%">
+			<tr>
+				<td class="margenSupIzq">
+					<table cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td>
+								<table cellpadding="0" cellspacing="0">
+									<tr>
+										<td class="">
+											<table cellpadding="0" cellspacing="0">
+												<tr class="filSepGranRA">
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.iniciales}:" style="margin:0px; padding:0px;" />
+													</td>
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText"
+														value="#{(not empty crearCronogramaEspecifico.sujeto.inicialesPaciente) ? crearCronogramaEspecifico.sujeto.inicialesPaciente : messages.vacio}"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.numinclusion}:" style="margin:0px; padding:0px;" />
+													</td>
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText"
+														value="#{(not empty crearCronogramaEspecifico.sujeto.numeroInclucion) ? crearCronogramaEspecifico.sujeto.numeroInclucion : messages.vacio}"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.estadoInclusion}:" style="margin:0px; padding:0px;" />
+													</td>
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText" value="#{(not empty crearCronogramaEspecifico.sujeto.estadoInclusion.nombre) ? crearCronogramaEspecifico.sujeto.estadoInclusion.nombre : messages.vacio}"
+														style="margin:0px; padding:0px;" /></td>
+												</tr>
+												<tr class="filSepGranRA">
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.inicialesCentro}:"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText"
+														value="#{(not empty crearCronogramaEspecifico.sujeto.inicialesCentro) ? crearCronogramaEspecifico.sujeto.inicialesCentro : messages.vacio}"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.codigoSuj}:" style="margin:0px; padding:0px;" /></td>
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText"
+														value="#{(not empty crearCronogramaEspecifico.sujeto.codigoPaciente) ? crearCronogramaEspecifico.sujeto.codigoPaciente : messages.vacio}"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.fechaNacimiento}:"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText"
+														value="#{(not empty crearCronogramaEspecifico.sujeto.fechaNacimiento) ? crearCronogramaEspecifico.sujeto.fechaNacimiento : messages.vacio}"
+														style="margin:0px; padding:0px;">
+														<s:convertDateTime pattern="#{messages.patronFecha}">
+														</s:convertDateTime>
+													</h:outputText></td>
+													
+												</tr>
+												<tr>
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.sexo}:"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText"
+														value="#{(not empty crearCronogramaEspecifico.sujeto.sexo.valor) ? crearCronogramaEspecifico.sujeto.sexo.valor : messages.vacio}"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.grupodelSujeto}:" style="margin:0px; padding:0px;" /></td>
+					
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText"
+														value="#{(not empty crearCronogramaEspecifico.sujeto.grupoSujetos.nombreGrupo) ? crearCronogramaEspecifico.sujeto.grupoSujetos.nombreGrupo : messages.vacio}"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.fechaInclusion}:"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText"
+														value="#{(not empty crearCronogramaEspecifico.sujeto.fechaInclucion) ? crearCronogramaEspecifico.sujeto.fechaInclucion : messages.vacio}"
+														style="margin:0px; padding:0px;">
+														<s:convertDateTime pattern="#{messages.patronFecha}">
+														</s:convertDateTime>
+													</h:outputText></td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</rich:panel>
+	
+	<rich:panel style="height:120px" >
+	 <f:facet name="header">
+			<h:panelGroup>
+				<div>
+					<div align="left">
+						#{messages.crearCronogramaEspecifico}
+					</div>
+				</div>
+			</h:panelGroup>
+			</f:facet>
+		<div align="left">
+			<h:form id="form2">
+				<rich:calendar datePattern="dd/MM/yyyy" id="fechainicio" value="#{crearCronogramaEspecifico.fechainicio}"
+				 enableManualInput="false" required="#{!empty param['form2:generar']}" requiredMessage="Este campo es obligatorio"> 
+				</rich:calendar>				
+				 <rich:message for="fechainicio" showDetail="false" tooltip="true"
+								style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('fechainicio').get(0).getDetail()}" />
+								</f:facet>
+	  </rich:message>
+	  			     	
+				 <h:commandButton id="generar" action="#{crearCronogramaEspecifico.Cronograma_Especifico()}" value="Generar"/> 
+				 
+				</h:form>
+			</div>
+	
+	
+	</rich:panel>
+	
+	<div align="right">
+	<h:form>
+		<br></br>		
+		<h:commandButton
+			value="#{messages.salir}" style="margin:0px;"
+			action="#{crearCronogramaEspecifico.salir()}"  immediate="true"/>
+	</h:form>
+	</div>
+	
+	
+	
+	
+	
+	
+</ui:composition>

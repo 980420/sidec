@@ -1,0 +1,22 @@
+package clasificacionSegunEdad
+
+#list any import classes here.
+import gehos.emergencias.entity.auto.HojaEmergencia_emergencias;
+import gehos.reglasdelnegocio.test.RuleResult;
+#declare any global variables here
+
+rule "Si no tiene diagnostico final"
+	when
+		HojaEmergencia_emergencias(diagnosticoMedico == null)		
+		$result : RuleResult()
+	then 
+        $result.setValue("no");
+end
+
+rule "Si tiene diagnostico final"
+	when
+		HojaEmergencia_emergencias(diagnosticoMedico != null)		
+		$result : RuleResult()
+	then 
+        $result.setValue("si");
+end

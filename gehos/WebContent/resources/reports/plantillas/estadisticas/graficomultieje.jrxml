@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+
+<jasperReport name="template" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="ISO-8859-1"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="java.text.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="P_TITULO" class="java.lang.String"/>
+	<parameter name="P_SUBTITULO" class="java.lang.String"/>
+	<parameter name="LOGO_URL" class="java.lang.String"/>
+	<parameter name="PAGINA" class="java.lang.String"/>
+	<parameter name="SEPARADOR" class="java.lang.String"/>
+	<parameter name="INF_TIPO_INSTITUCION" class="java.lang.String"/>
+	<parameter name="INF_NOMBRE_INSTITUCION" class="java.lang.String"/>
+	<parameter name="INF_SERVICIO" class="java.lang.String"/>
+	<parameter name="DATE_TODAY" class="java.lang.String"/>
+	<field name="mes" class="java.lang.String"/>
+	<field name="diasIntervaloSustitucion" class="java.lang.Double"/>
+	<field name="diasIndiceRendimiento" class="java.lang.Double"/>
+	
+	<group name="mes">
+		<groupExpression><![CDATA["GRAFICO"]]></groupExpression>
+		<groupHeader>
+			<band height="1">
+				
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="400">
+				
+				<multiAxisChart>
+					<chart evaluationTime="Group" evaluationGroup="mes" hyperlinkType="None">
+						<reportElement key="element-4" positionType="Float" stretchType="RelativeToBandHeight" x="1" y="5" width="547" height="311"/>
+						<chartTitle/>
+						<chartSubtitle/>
+						<chartLegend/>
+					</chart>
+					<multiAxisPlot>
+						<plot labelRotation="25.0"/>
+						<axis position="rightOrBottom">
+							<lineChart>
+								<chart evaluationTime="Group" evaluationGroup="mes" hyperlinkType="None">
+									<reportElement positionType="Float" x="0" y="25" width="270" height="175" backcolor="#FFFFFF"/>
+									<chartTitle color="#000000"/>
+									<chartSubtitle color="#000000"/>
+									<chartLegend textColor="#000000" backgroundColor="#FFFFFF"/>
+								</chart>
+								<categoryDataset>
+									<categorySeries>
+										<seriesExpression><![CDATA["Intervalo de Sustitucion"]]></seriesExpression>
+										<categoryExpression><![CDATA[$F{mes}]]></categoryExpression>
+										<valueExpression><![CDATA[$F{diasIntervaloSustitucion}]]></valueExpression>
+										<labelExpression><![CDATA[]]></labelExpression>
+									</categorySeries>
+								</categoryDataset>
+								<linePlot isShowLines="true">
+									<plot>
+										<seriesColor seriesOrder="0" color="#336600"/>
+									</plot>
+									<valueAxisLabelExpression><![CDATA["# DIAS"]]></valueAxisLabelExpression>
+									<valueAxisFormat>
+										<axisFormat labelColor="#336600" tickLabelColor="#336600" axisLineColor="#336600"/>
+									</valueAxisFormat>
+								</linePlot>
+							</lineChart>
+						</axis>
+						<axis>
+							<lineChart>
+								<chart evaluationTime="Group" evaluationGroup="mes" hyperlinkType="None">
+									<reportElement positionType="Float" x="0" y="25" width="270" height="175" backcolor="#FFFFFF"/>
+									<chartTitle color="#000000"/>
+									<chartSubtitle color="#000000"/>
+									<chartLegend textColor="#000000" backgroundColor="#FFFFFF"/>
+								</chart>
+								<categoryDataset>
+									<categorySeries>
+										<seriesExpression><![CDATA["Indice de Rendimiento"]]></seriesExpression>
+										<categoryExpression><![CDATA[$F{mes}]]></categoryExpression>
+										<valueExpression><![CDATA[$F{diasIndiceRendimiento}]]></valueExpression>
+										<labelExpression><![CDATA["2"]]></labelExpression>
+									</categorySeries>
+								</categoryDataset>
+								<linePlot>
+									<plot>
+										<seriesColor seriesOrder="0" color="#0000CC"/>
+									</plot>
+									<valueAxisLabelExpression><![CDATA["Indice de Rendimiento"]]></valueAxisLabelExpression>
+									<valueAxisFormat>
+										<axisFormat labelColor="#0000CC" tickLabelColor="#0000CC" axisLineColor="#0000CC"/>
+									</valueAxisFormat>
+								</linePlot>
+							</lineChart>
+						</axis>
+					</multiAxisPlot>
+				</multiAxisChart>
+			</band>
+		</groupFooter>
+	</group>
+	
+	<background>
+		<band height="1"/>
+	</background>
+	<title>
+		<band height="150">
+			<image isUsingCache="true" hyperlinkType="None">
+				<reportElement stretchType="RelativeToTallestObject" x="464" y="1" width="89" height="59"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO_URL}]]></imageExpression>
+			</image>
+			<textField hyperlinkType="None">
+				<reportElement x="11" y="0" width="447" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{INF_TIPO_INSTITUCION}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement x="11" y="21" width="447" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{INF_NOMBRE_INSTITUCION}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement x="11" y="42" width="447" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{INF_SERVICIO}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement x="0" y="67" width="430" height="30"/>
+				<textElement>
+					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_TITULO}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line" x="5" y="137" width="550" height="1"/>
+			</line>
+			<textField hyperlinkType="None">
+				<reportElement key="textField" x="0" y="97" width="377" height="20"/>
+				<textElement>
+					<font size="10" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_SUBTITULO}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement key="textField" x="402" y="117" width="153" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="10" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{DATE_TODAY}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="1"/>
+	</columnHeader>
+	<detail>
+		<band height="1"/>
+		
+	</detail>
+	<pageFooter>
+		<band height="30">
+			<rectangle>
+				<reportElement key="rectangle" mode="Transparent" x="0" y="5" width="555" height="25"/>
+			</rectangle>
+			<textField isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField" x="245" y="10" width="20" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField" x="287" y="10" width="43" height="20"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement x="178" y="10" width="67" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{PAGINA}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement x="265" y="10" width="22" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{SEPARADOR}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

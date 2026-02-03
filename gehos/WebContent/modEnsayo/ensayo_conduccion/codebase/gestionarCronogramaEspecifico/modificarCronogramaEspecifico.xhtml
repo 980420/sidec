@@ -1,0 +1,271 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" xmlns:a4j="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle('#{messages.modificarCronograma}')</script>
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css"
+		rel="stylesheet" type="text/css" />
+
+	<rich:messages globalOnly="true" styleClass="message"
+		id="globalMessage" ajaxRendered="true" />
+	<rich:panel>
+		<f:facet name="header">
+			<h:panelGroup>
+				<div>
+					<div align="left">#{messages.datosSujeto}</div>
+				</div>
+			</h:panelGroup>
+		</f:facet>
+		<table class="Tabla" cellspacing="0" cellpadding="0" width="100%">
+			<tr>
+				<td>
+					<table cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td>
+								<table cellpadding="0" cellspacing="0">
+									<tr>
+										<td class="">
+											<table cellpadding="0" cellspacing="0">
+												<tr class="filSepGranRA">
+													<td class="colSepPeq"><h:outputText
+															value="#{messages.iniciales}:"
+															style="margin:0px; padding:0px;" /></td>
+													<td class="colSepGran"><h:outputText
+															styleClass="dataText"
+															value="#{(not empty modificarCronogramaEspecifico.sujeto.inicialesPaciente) ? modificarCronogramaEspecifico.sujeto.inicialesPaciente : messages.vacio}"
+															style="margin:0px; padding:0px;" /></td>
+													<td class="colSepPeq"><h:outputText
+															value="#{messages.numinclusion}:"
+															style="margin:0px; padding:0px;" /></td>
+													<td class="colSepGran"><h:outputText
+															styleClass="dataText"
+															value="#{(not empty modificarCronogramaEspecifico.sujeto.numeroInclucion) ? modificarCronogramaEspecifico.sujeto.numeroInclucion : messages.vacio}"
+															style="margin:0px; padding:0px;" /></td>
+													<td class="colSepPeq"><h:outputText
+															value="#{messages.estadoInclusion}:"
+															style="margin:0px; padding:0px;" /></td>
+													<td class="colSepGran"><h:outputText
+															styleClass="dataText"
+															value="#{(not empty modificarCronogramaEspecifico.sujeto.estadoInclusion.nombre) ? modificarCronogramaEspecifico.sujeto.estadoInclusion.nombre : messages.vacio}"
+															style="margin:0px; padding:0px;" /></td>
+												</tr>
+												<tr class="filSepGranRA">
+													<td class="colSepPeq"><h:outputText
+															value="#{messages.inicialesCentro}:"
+															style="margin:0px; padding:0px;" /></td>
+													<td class="colSepGran"><h:outputText
+															styleClass="dataText"
+															value="#{(not empty modificarCronogramaEspecifico.sujeto.inicialesCentro) ? modificarCronogramaEspecifico.sujeto.inicialesCentro : messages.vacio}"
+															style="margin:0px; padding:0px;" /></td>
+													<td class="colSepPeq"><h:outputText
+															value="#{messages.codigoSuj}:"
+															style="margin:0px; padding:0px;" /></td>
+													<td class="colSepGran"><h:outputText
+															styleClass="dataText"
+															value="#{(not empty modificarCronogramaEspecifico.sujeto.codigoPaciente) ? modificarCronogramaEspecifico.sujeto.codigoPaciente : messages.vacio}"
+															style="margin:0px; padding:0px;" /></td>
+													<td class="colSepPeq"><h:outputText
+															value="#{messages.grupodelSujeto}:"
+															style="margin:0px; padding:0px;" /></td>
+
+													<td class="colSepGran"><h:outputText
+															styleClass="dataText"
+															value="#{(not empty modificarCronogramaEspecifico.sujeto.grupoSujetos.nombreGrupo) ? modificarCronogramaEspecifico.sujeto.grupoSujetos.nombreGrupo : messages.vacio}"
+															style="margin:0px; padding:0px;" /></td>
+
+												</tr>
+												<tr>
+													<td class="colSepPeq"><h:outputText
+															value="#{messages.fechaInclusion}:"
+															style="margin:0px; padding:0px;" /></td>
+													<td class="colSepGran"><h:outputText
+															styleClass="dataText"
+															value="#{(not empty modificarCronogramaEspecifico.sujeto.fechaInclucion) ? modificarCronogramaEspecifico.sujeto.fechaInclucion : messages.vacio}"
+															style="margin:0px; padding:0px;">
+														</h:outputText></td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</rich:panel>
+
+
+
+
+	<h:form>
+		<rich:simpleTogglePanel label="#{messages.cronograma}"
+			switchType="client" style=" width : 1050px;">
+
+			<rich:dataTable id="idCronogramaEspecifico"
+				value="#{modificarCronogramaEspecifico.nombresMomentos()}"
+				var="nombremomento">
+				<f:facet name="header">
+					<rich:columnGroup>
+						<rich:column rowspan="2">
+
+						</rich:column>
+
+						<rich:column
+							style="broder:1px;border-style :solid; text-align: center;"
+							colspan="#{modificarCronogramaEspecifico.momentos.size()}">
+							<h:outputText value="#{messages.etapas}" />
+						</rich:column>
+
+						<rich:column breakBefore="true" colspan="#{modificarCronogramaEspecifico.tamannoEtapas.get(0)}"
+							style="broder:1px;border-style :solid; text-align: center;">
+							<h:outputText value="#{messages.evaluacion}" />
+						</rich:column>
+						<rich:column rendered="#{modificarCronogramaEspecifico.tamannoEtapas.get(1) != 0}"
+							colspan="#{modificarCronogramaEspecifico.tamannoEtapas.get(1)}"
+							style="broder:1px;border-style :solid; text-align: center;">
+							<h:outputText value="#{messages.tratamiento}" />
+						</rich:column>
+						<rich:column rendered="#{modificarCronogramaEspecifico.tamannoEtapas.get(2) != 0}"
+							colspan="#{modificarCronogramaEspecifico.tamannoEtapas.get(2)}"
+							style="broder:1px;border-style :solid; text-align: center;">
+							<h:outputText value="#{messages.seguimiento}" />
+						</rich:column>
+
+					</rich:columnGroup>
+				</f:facet>
+
+				<rich:column style="border-right-width: 1px;">
+					<f:facet name="header">
+						<h:outputText value="#{messages.momentosdias}" />
+					</f:facet>
+
+					<h:outputText value="#{nombremomento}">
+					</h:outputText>
+				</rich:column>
+
+
+				<rich:columns width="16px"
+					style="border-right-width: 1px; text-align: center;"
+					value="#{modificarCronogramaEspecifico.momentos}"
+					var="momento">
+					<f:facet name="header">
+						<h:outputText value="#{momento.fechaInicio}">
+							<s:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+
+					</f:facet>
+
+
+
+
+					<h:commandLink
+						action="#{modificarCronogramaEspecifico.modificarCronogramaEspecifico(momento.fechaInicio)}"
+						title="#{messages.modificar}" style="border: 0px; cursor:pointer;"
+						rendered="#{modificarCronogramaEspecifico.PerteneceMomento(momento,nombremomento,momento.fechaInicio)}">
+						<h:graphicImage height="16"
+							style="position: relative;  margin:2px 2px 2px 2px ;"
+							value="/resources/icons/default/acciones/modificar.png" />
+						<f:param name="idMomento" value="#{momento.id}" />
+						<f:param name="fecha" value="#{momento.fechaInicio}" />
+					</h:commandLink>
+					<h:graphicImage height="16" rendered="#{modificarCronogramaEspecifico.PerteneceMomentoIna(momento,nombremomento,momento.fechaInicio)}"
+							style="position: relative;  margin:2px 2px 2px 2px ; border:0px; opacity: 0.4; "
+							value="/resources/icons/default/acciones/modificar.png" />
+
+
+				</rich:columns>
+
+			</rich:dataTable>
+
+
+
+
+		</rich:simpleTogglePanel>
+
+
+	</h:form>
+	<div align="right" style="padding-top: 8px">
+		<h:form>
+			<br></br>
+			<h:commandButton value="#{messages.salir}" style="margin:0px;"
+				action="#{modificarCronogramaEspecifico.salir()}" immediate="true" />
+		</h:form>
+	</div>
+
+
+
+
+	<rich:modalPanel resizeable="false" id="modificarCronogramaEspecifico"
+		width="320" autosized="true">
+
+		<f:facet name="header">
+			<h:outputText value="#{messages.modificarCronogramaEspecifico}"></h:outputText>
+		</f:facet>
+		<f:facet name="controls">
+			<h:form>
+				<a4j:commandButton id="btnCerrar"
+					image="/resources/icons/default/acciones/cerrar.gif"
+					reRender="idCronogramaEspecifico">
+					<rich:componentControl for="modificarCronogramaEspecifico"
+						event="onclick" operation="hide" attachTo="btnCerrar">
+					</rich:componentControl>
+				</a4j:commandButton>
+			</h:form>
+		</f:facet>
+		<a4j:region>
+			<a4j:outputPanel>
+				<h:form id="form3">
+					<table cellpadding="0px" cellspacing="0px">
+						<tr>
+							<td style="height: 9px;" colspan="6"></td>
+						</tr>
+
+						<tr>
+							<td style="height: 7px;" colspan="6"></td>
+						</tr>
+						<tr>
+							<td colspan="3"><s:div style="text-align:center">
+
+									<rich:calendar id="fecha"
+										value="#{modificarCronogramaEspecifico.fecha}"
+										datePattern="dd/MM/yyyy" enableManualInput="false">
+
+									</rich:calendar>
+
+									<a4j:commandButton
+										action="#{modificarCronogramaEspecifico.actualizarCronograma()}"
+										value="#{messages.aceptar}"
+										oncomplete="javascript:Richfaces.hideModalPanel('modificarCronogramaEspecifico');"
+										ajaxSingle="false" immediate="false"
+										reRender="idCronogramaEspecifico">
+
+									</a4j:commandButton>
+
+
+
+
+									<a4j:commandButton id="btnNo" value="#{messages.cancelar}"
+										reRender="idCronogramaEspecifico">
+										<rich:componentControl for="modificarCronogramaEspecifico"
+											event="onclick" operation="hide" attachTo="btnNo">
+										</rich:componentControl>
+									</a4j:commandButton>
+
+								</s:div></td>
+						</tr>
+					</table>
+				</h:form>
+			</a4j:outputPanel>
+		</a4j:region>
+	</rich:modalPanel>
+
+
+
+</ui:composition>

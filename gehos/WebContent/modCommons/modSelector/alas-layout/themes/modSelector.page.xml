@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+    
+
+      
+	<param name="idFuncionalidad" value="#{viewSelectorBuilder.idFuncionalidad}" />
+	<param name="idEntidad" value="#{viewSelectorBuilder.idEnt}" /> 
+    <action execute="#{viewSelectorBuilder.parametersValidate()}" />
+    	
+    
+     <navigation from-action="gotomodhome">
+		<redirect view-id="/modCommons/modHome/home.xhtml"></redirect>
+	</navigation>
+	<navigation from-action="redirect">
+	  <redirect view-id="/modCommons/mosSelector2/#{theme.name}/modSelector.xhtml"></redirect>
+	</navigation>
+	<navigation from-action="gotomodhomeConf">
+		<redirect view-id="/modCommons/modHome/home.xhtml">
+		
+		 <param name="moduleName"  value="#{configuracion.nombre}" />
+		 <param name="idFuncionalidad" value="#{configuracion.id}" />
+		 <param name="idancestors" value="#{configuracion.id}a" />
+		
+		</redirect>
+	</navigation>
+	    
+</page>

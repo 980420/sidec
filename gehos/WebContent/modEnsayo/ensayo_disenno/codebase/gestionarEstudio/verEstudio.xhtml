@@ -1,0 +1,1160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+<s:div>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/modEnsayo/styles/stylesheet.css"
+		rel="stylesheet" type="text/css" />
+	<script type="text/javascript">setContentTitle('#{verEstudioControlador.devolverTitulo()}')</script>
+
+	<h:form id="forma">
+		<rich:panel>
+			<a4j:region id="hacorg1">
+				<rich:tabPanel width="100%" switchType="client"
+					style=" height : 181px;">
+					<rich:tab label="#{messages.lbl_seccionA_ens}">
+						<rich:simpleTogglePanel
+							label="#{messages.lbl_descripcionEstudio_ens}"
+							switchType="client" opened="true">
+
+							<table cellpadding="0px" cellspacing="0px" border="0px">
+								<tr>
+									<td rowspan="4" valign="top"></td>
+									<td><h:outputText
+											value="#{messages.lbl_identificador_ens}"
+											styleClass="normalText" /></td>
+									<td><rich:spacer width="25px" style="display: block" /></td>
+									<td><h:outputText
+											value="#{messages.lbl_tituloAbreviado_ens}"
+											styleClass="normalText" /></td>
+
+									<td><rich:spacer width="25px" style="display: block" /></td>
+									<td><h:outputText
+											value="#{messages.lbl_investigadorPrincipal_ens}"
+											styleClass="normalText" /></td>
+
+
+								</tr>
+								<tr>
+									<td><h:inputText
+											value="#{verEstudioControlador.estudio.identificador}"
+											styleClass="dataText" required="true"
+											validator="#{validations_ensayo.textnumber}" disabled="true" /></td>
+									<td><rich:spacer width="25px" style="display: block" /></td>
+									<td><h:inputText disabled="true"
+											value="#{verEstudioControlador.estudio.nombre}"
+											styleClass="dataText" id="nombre" required="true"
+											validator="#{validations_ensayo.textnumber}" /></td>
+									<td><rich:spacer width="25px" style="display: block" /></td>
+									<td><h:inputText disabled="true"
+											value="#{verEstudioControlador.estudio.investigadorPrincipal}"
+											styleClass="dataText" id="investigadorPrincipal"
+											required="true" validator="#{validations_ensayo.textnumber}" /></td>
+
+								</tr>
+								<tr>
+									<td colspan="8"><rich:spacer height="5px"
+											style="display: block" /></td>
+								</tr>
+
+							</table>
+
+							<table width="100%" cellpadding="0px" cellspacing="0px">
+								<tr>
+									<td class="colSepGran" style="vertical-align: top; width: 50%">
+										<h:outputText value="#{messages.lbl_titulOficial_ens}"
+											styleClass="normalText" /><br /> <h:inputTextarea
+											value="#{verEstudioControlador.estudio.tituloOficial}"
+											id="tituloOficial" style="width:100%;resize: vertical"
+											disabled="true"></h:inputTextarea>
+
+									</td>
+									<td><rich:spacer width="25px" style="display: block" /></td>
+									<td class="colSepGran" style="vertical-align: top; width: 50%">
+										<h:outputText value="#{messages.lbl_colaboradores_ens}"
+											styleClass="normalText" /><br /> <h:inputTextarea
+											value="#{verEstudioControlador.estudio.colaboradores}"
+											style="width:100%;resize: vertical" disabled="true"></h:inputTextarea>
+									</td>
+								</tr>
+								<tr>
+									<td><h:outputText value="#{messages.lbl_patrocinador_ens}"
+											styleClass="normalText" /></td>
+									<td><rich:spacer width="25px" style="display: block" /></td>
+									<td><h:outputText value="#{messages.lbl_sumarioBreve_ens}"
+											styleClass="normalText" /></td>
+								</tr>
+								<tr>
+									<td class="colSepGran" style="vertical-align: top; width: 50%">
+
+										<h:inputTextarea
+											value="#{verEstudioControlador.estudio.patrocinador}"
+											id="patrocinador" style="width:100%;resize: vertical"
+											disabled="true"></h:inputTextarea>
+									</td>
+									<td><rich:spacer width="25px" style="display: block" /></td>
+									<td class="colSepGran" style="vertical-align: top; width: 50%">
+										<h:inputTextarea
+											value="#{verEstudioControlador.estudio.sumarioBreve}"
+											style="width:100%;resize: vertical" disabled="true"></h:inputTextarea>
+
+									</td>
+								</tr>
+							</table>
+						</rich:simpleTogglePanel>
+					</rich:tab>
+					<rich:tab label="#{messages.lbl_seccionB_ens}">
+						<rich:simpleTogglePanel
+							label="#{messages.lbl_estadoDisennoEstado_ens}"
+							switchType="client" opened="true">
+							<a4j:outputPanel id="combosfase">
+								<table cellpadding="0px" cellspacing="0px" border="0px">
+									<tr>
+
+										<td><h:selectOneRadio id="fas"
+												value="#{verEstudioControlador.combofasedef}"
+												disabled="true">
+												<f:selectItem itemLabel="#{messages.lbl_fase_ens}"
+													itemValue="fase" id="fase" escape="true" />
+												<f:selectItem itemLabel="#{messages.lbl_otrosFase_ens}"
+													itemValue="otrafase" id="otrafases" />
+												<a4j:support event="onclick"
+													reRender="combosfase,Listafase,otrafase" ajaxSingle="true"
+													action="#{verEstudioControlador.showComboFase()}" />
+											</h:selectOneRadio></td>
+
+									</tr>
+									<tr>
+
+
+										<td><h:outputText value="#{messages.lbl_fase_ens}"
+												styleClass="normalText"
+												rendered="#{verEstudioControlador.combofase}" /></td>
+									</tr>
+									<tr>
+										<td><h:outputText
+												value="#{verEstudioControlador.estudio.EFaseEstudio.nombre}"
+												styleClass="dataText" required="true"
+												rendered="#{verEstudioControlador.combofase}" /></td>
+
+									</tr>
+									<tr>
+
+										<td><h:outputText value="#{messages.lbl_otrosFase_ens}"
+												styleClass="normalText"
+												rendered="#{verEstudioControlador.combootrafase}" /><br />
+											<h:inputTextarea
+												value="#{verEstudioControlador.estudio.otrosFase}"
+												style="width:100%;resize: vertical"
+												rendered="#{verEstudioControlador.combootrafase}"
+												disabled="true"></h:inputTextarea></td>
+									</tr>
+									<tr>
+										<td colspan="8"><rich:spacer height="5px"
+												style="display: block" /></td>
+									</tr>
+								</table>
+							</a4j:outputPanel>
+							<table cellpadding="0px" cellspacing="0px" border="0px">
+								<tr>
+									<td rowspan="4" valign="top"></td>
+
+
+
+								</tr>
+								<tr style="FONT-FAMILY: 'Abyssinica SIL';">
+
+									<td><h:outputText
+											value="#{messages.lbl_tipoProtocolo_ens}"
+											styleClass="normalText" /></td>
+								</tr>
+
+								<tr>
+									<td><h:selectOneRadio id="mat"
+											value="#{verEstudioControlador.combo}" disabled="true">
+											<f:selectItem
+												itemLabel="#{messages.lbl_intervencionista_ens}"
+												itemValue="inter" id="inter" escape="true" />
+											<f:selectItem itemLabel="#{messages.lbl_observacional_ens}"
+												itemValue="obser" id="obser" />
+											<a4j:support event="onclick"
+												reRender="combos,intervencionista,observacional"
+												ajaxSingle="true"
+												action="#{verEstudioControlador.showCombo()}" />
+										</h:selectOneRadio></td>
+								</tr>
+
+							</table>
+							<table width="100%" cellpadding="0px" cellspacing="0px">
+
+								<tr>
+									<td colspan="8"><rich:spacer height="5px"
+											style="display: block" /></td>
+								</tr>
+								<tr>
+
+								</tr>
+							</table>
+							<table cellpadding="0px" cellspacing="0px" border="0px">
+
+								<tr>
+									<td><h:outputText
+											value="#{messages.lbl_fechaAprobacionCecmec_ens}"
+											styleClass="normalText" /><br /> <rich:calendar
+											id="fechaAprobacionCecmec" width="200" disabled="true"
+											datePattern="dd/MM/yyyy"
+											value="#{verEstudioControlador.estudio.fechaAprobacionCecmec}">
+
+										</rich:calendar></td>
+									<td><rich:spacer width="25px" style="display: block" /></td>
+
+									<td><h:outputText value="#{messages.lbl_fechaInicio_ens}"
+											styleClass="normalText" /><br /> <rich:calendar
+											id="fechaInicio" width="200" disabled="true"
+											datePattern="dd/MM/yyyy"
+											value="#{verEstudioControlador.estudio.fechaInicio}">
+
+										</rich:calendar></td>
+									<td><rich:spacer width="25px" style="display: block" /></td>
+									<td><h:outputText value="#{messages.lbl_fechadeFin_ens}"
+											styleClass="normalText" /><br /> <rich:calendar
+											id="fechaFin" width="200" disabled="true"
+											datePattern="dd/MM/yyyy"
+											value="#{verEstudioControlador.estudio.fechaFin}">
+
+										</rich:calendar></td>
+
+								</tr>
+								<tr>
+									<td valign="middle"><h:outputText
+											value="#{messages.lbl_aceptaVoluntarioSano_ens}"
+											styleClass="normalText" /> <br /> <h:selectBooleanCheckbox
+											style="margin: 0px;" tabindex="5"
+											value="#{verEstudioControlador.estudio.voluntariosSanos}"
+											disabled="true">
+											<a4j:support event="onclick" ajaxSingle="true"
+												reRender="changepass" />
+										</h:selectBooleanCheckbox></td>
+								</tr>
+
+							</table>
+						</rich:simpleTogglePanel>
+						<a4j:outputPanel id="combos">
+							<rich:simpleTogglePanel
+								label="#{messages.lbl_estadoDisennoDetallesDisnnoInterv_ens}"
+								switchType="client" opened="true" id="intervencionista"
+								rendered="#{verEstudioControlador.combointer}">
+
+								<table cellpadding="0px" cellspacing="0px" border="0px">
+									<tr>
+										<td rowspan="4" valign="top"></td>
+										<td><h:outputText
+												value="#{messages.lbl_locacionAleatorizacion_ens}"
+												styleClass="normalText" /></td>
+
+										<td><rich:spacer width="25px" style="display: block" /></td>
+										<td><h:outputText value="#{messages.lbl_mascara_ens}"
+												styleClass="normalText" /></td>
+										<td><rich:spacer width="25px" style="display: block" /></td>
+										<td><h:outputText value="#{messages.lbl_control_ens}"
+												styleClass="normalText" /></td>
+
+									</tr>
+									<tr>
+
+										<td><h:inputText disabled="true"
+												value="#{verEstudioControlador.estudio.EAleatorizacion.nombre}"
+												styleClass="dataText" required="true"
+												validator="#{validations_ensayo.textnumber}" /></td>
+
+										<td><rich:spacer width="25px" style="display: block" /></td>
+
+										<td><h:inputText disabled="true"
+												value="#{verEstudioControlador.estudio.EEnmascaramiento.nombre}"
+												styleClass="dataText" required="true"
+												validator="#{validations_ensayo.textnumber}" /></td>
+
+										<td><rich:spacer width="25px" style="display: block" /></td>
+
+										<td><h:inputText disabled="true"
+												value="#{verEstudioControlador.estudio.EControl.nombre}"
+												styleClass="dataText" required="true"
+												validator="#{validations_ensayo.textnumber}" /></td>
+
+										<td><rich:spacer width="25px" style="display: block" /></td>
+
+									</tr>
+									<tr>
+										<td colspan="8"><rich:spacer height="5px"
+												style="display: block" /></td>
+									</tr>
+
+								</table>
+								<table cellpadding="0px" cellspacing="0px" border="0px">
+									<tr>
+										<td rowspan="4" valign="top"></td>
+										<td><h:outputText value="#{messages.lbl_asignacion_ens}"
+												styleClass="normalText" /></td>
+										<td><rich:spacer width="25px" style="display: block" /></td>
+										<td><h:outputText value="#{messages.lbl_objetivo_ens}"
+												styleClass="normalText" /></td>
+										<td><rich:spacer width="25px" style="display: block" /></td>
+
+									</tr>
+									<tr>
+
+										<td><h:inputText disabled="true"
+												value="#{verEstudioControlador.estudio.EAsignacion.nombre}"
+												styleClass="dataText" required="true"
+												validator="#{validations_ensayo.textnumber}" /></td>
+
+										<td><rich:spacer width="25px" style="display: block" /></td>
+
+										<td><h:inputText disabled="true"
+												value="#{verEstudioControlador.estudio.EPuntoFinal.nombre}"
+												styleClass="dataText" required="true"
+												validator="#{validations_ensayo.textnumber}" /></td>
+
+										<td><rich:spacer width="25px" style="display: block" /></td>
+
+
+
+										<td><rich:spacer width="25px" style="display: block" /></td>
+									</tr>
+									<tr>
+										<td colspan="8"><rich:spacer height="5px"
+												style="display: block" /></td>
+									</tr>
+
+								</table>
+								<a4j:outputPanel id="combosproposito">
+									<table cellpadding="0px" cellspacing="0px" border="0px">
+										<tr>
+
+											<td><h:selectOneRadio id="proposit"
+													value="#{verEstudioControlador.combopropositodef}"
+													disabled="true">
+													<f:selectItem itemLabel="#{messages.lbl_proposito_ens}"
+														itemValue="propositos" id="propositos" escape="true" />
+													<f:selectItem
+														itemLabel="#{messages.lbl_otrosProposito_ens}"
+														itemValue="otropropositos" id="otropropositos" />
+													<a4j:support event="onclick"
+														reRender="combosproposito,Listaproposito,otroproposito"
+														ajaxSingle="true"
+														action="#{verEstudioControlador.showComboProposito()}" />
+												</h:selectOneRadio></td>
+
+										</tr>
+										<tr>
+
+
+											<td><h:outputText value="#{messages.lbl_proposito_ens}"
+													styleClass="normalText"
+													rendered="#{verEstudioControlador.comboproposito}" /></td>
+
+										</tr>
+										<tr>
+
+											<td><h:inputText disabled="true"
+													value="#{verEstudioControlador.estudio.EProposito.nombre}"
+													styleClass="dataText" required="true"
+													rendered="#{verEstudioControlador.comboproposito}" /></td>
+
+										</tr>
+										<tr>
+
+											<td><h:outputText
+													value="#{messages.lbl_otrosProposito_ens}"
+													styleClass="normalText"
+													rendered="#{verEstudioControlador.combootrtroproposito}" /><br />
+												<h:inputTextarea id="otroproposito"
+													value="#{verEstudioControlador.otroproposito}"
+													style="width:100%;resize: vertical"
+													rendered="#{verEstudioControlador.combootrtroproposito}"
+													disabled="true"></h:inputTextarea></td>
+										</tr>
+										<tr>
+											<td colspan="8"><rich:spacer height="5px"
+													style="display: block" /></td>
+										</tr>
+									</table>
+								</a4j:outputPanel>
+								<rich:simpleTogglePanel
+									label="#{messages.lbl_intervenciones_ens}" switchType="client"
+									opened="true">
+
+
+
+									<a4j:outputPanel id="esteprimos">
+										<rich:panel
+											rendered="#{empty verEstudioControlador.ListaIntervencionSinEliminar()}">
+											<f:facet name="header">
+												<h:outputText
+													value="#{messages.lbl_listadoIntervencion_ens}" />
+											</f:facet>
+											<h:outputText value="#{messages.msg_noInformacion_ens}" />
+										</rich:panel>
+										<a4j:region id="interv2">
+											<rich:dataTable
+												rendered="#{not empty verEstudioControlador.ListaIntervencionSinEliminar()}"
+												width="100%" id="lista"
+												value="#{verEstudioControlador.ListaIntervencionSinEliminar()}"
+												var="result" columnsWidth="50%,50%,0*" rowKeyVar="row">
+												<f:facet name="header">
+													<h:outputText
+														value="#{messages.lbl_listadoIntervencion_ens}" />
+												</f:facet>
+												<h:column whidt="50%">
+													<f:facet name="header">
+														<s:div>
+															<s:div style="float: left; valign: bottom;">
+																<h:outputText value="#{messages.lbl_nombre_ens}" />
+															</s:div>
+															<s:div style="float: right;">
+
+
+
+															</s:div>
+														</s:div>
+													</f:facet>
+													<h:outputText value="#{result.nombre}">
+
+													</h:outputText>
+												</h:column>
+												<h:column whidt="50%">
+													<f:facet name="header">
+														<s:div>
+															<s:div style="float: left; valign: bottom;">
+																<h:outputText value="Tipo" />
+															</s:div>
+															<s:div style="float: right;">
+
+
+
+															</s:div>
+														</s:div>
+													</f:facet>
+													<h:outputText value="#{result.ETipoIntervencion.nombre}">
+
+													</h:outputText>
+												</h:column>
+
+
+
+											</rich:dataTable>
+											<br />
+
+										</a4j:region>
+										<rich:modalPanel id="eliminarPanel" width="290" height="125">
+											<f:facet name="header" id="panelEliminarHeader">
+												<h:outputText value="#{messages.eliminarheader}" />
+											</f:facet>
+											<f:facet name="controls">
+												<h:panelGroup>
+													<h:graphicImage
+														value="/resources/icons/default/acciones/cerrar.gif"
+														style="cursor:pointer" id="cerrar" />
+													<rich:componentControl for="eliminarPanel"
+														attachTo="cerrar" operation="hide" event="onclick" />
+												</h:panelGroup>
+											</f:facet>
+											<s:div id="dell">
+												<div align="left">
+													<h:graphicImage
+														value="/resources/icons/default/acciones/advertencia.png" />
+													<rich:spacer width="4px" />
+													<h:outputText value="#{messages.eliminar}" />
+													<br />
+													<h:outputText value="#{messages.continuar}" />
+												</div>
+												<br />
+												<div align="center">
+													<h:commandButton
+														action="#{verEstudioControlador.eliminarInterv()}"
+														value="#{messages.si}"
+														onclick="Richfaces.hideModalPanel('eliminarPanel')">
+													</h:commandButton>
+
+													<input type="button" value="#{messages.no}"
+														style="margin-left: 3px;"
+														onclick="Richfaces.hideModalPanel('eliminarPanel')" />
+												</div>
+											</s:div>
+
+										</rich:modalPanel>
+
+										<br />
+
+									</a4j:outputPanel>
+
+								</rich:simpleTogglePanel>
+							</rich:simpleTogglePanel>
+							<rich:simpleTogglePanel
+								label="#{messages.lbl_detallesObservacional_ens}"
+								switchType="client" opened="true" id="observacional"
+								rendered="#{verEstudioControlador.comboobser}">
+
+								<table cellpadding="0px" cellspacing="0px" border="0px">
+									<tr>
+
+
+
+										<td><h:outputText value="#{messages.lbl_duracion_ens}"
+												styleClass="normalText" /></td>
+										<td><rich:spacer width="25px" style="display: block" /></td>
+										<td><h:outputText value="#{messages.lbl_seleccion_ens}"
+												styleClass="normalText" /></td>
+										<td><rich:spacer width="25px" style="display: block" /></td>
+										<td><h:outputText
+												value="#{messages.lbl_ajusteTemporal_ens}"
+												styleClass="normalText" /></td>
+
+									</tr>
+									<tr>
+										<td><h:selectOneRadio id="duracion" disabled="true"
+												value="#{verEstudioControlador.comboduracion}">
+												<f:selectItem itemLabel="#{messages.lbl_longitudinal_ens}"
+													itemValue="longitudinal" id="longitudinal" escape="true" />
+												<f:selectItem itemLabel="#{messages.lbl_transversal_ens}"
+													itemValue="transversal" id="transversal" />
+
+											</h:selectOneRadio></td>
+										<td><rich:spacer width="25px" style="display: block" /></td>
+										<td><h:inputText
+												value="#{verEstudioControlador.seleccion}" disabled="true" />
+
+										</td>
+										<td><rich:spacer width="25px" style="display: block" /></td>
+										<td><h:inputText disabled="true"
+												value="#{verEstudioControlador.ajustetemporal}" /></td>
+									</tr>
+									<tr>
+										<td colspan="8"><rich:spacer height="5px"
+												style="display: block" /></td>
+									</tr>
+
+								</table>
+								<a4j:outputPanel id="combospropositoObservacional">
+									<table cellpadding="0px" cellspacing="0px" border="0px">
+										<tr>
+
+											<td><h:selectOneRadio id="propositO"
+													value="#{verEstudioControlador.combopropositodef}"
+													disabled="true">
+													<f:selectItem itemLabel="#{messages.lbl_proposito_ens}"
+														itemValue="propositos" id="propositosO" escape="true" />
+													<f:selectItem
+														itemLabel="#{messages.lbl_otrosProposito_ens}"
+														itemValue="otropropositos" id="otropropositosO" />
+													<a4j:support event="onclick"
+														reRender="combospropositoObservacional,ListapropositoO,otropropositoO"
+														ajaxSingle="true"
+														action="#{verEstudioControlador.showComboProposito()}" />
+												</h:selectOneRadio></td>
+
+										</tr>
+										<tr>
+
+
+											<td><h:outputText value="#{messages.lbl_proposito_ens}"
+													styleClass="normalText"
+													rendered="#{verEstudioControlador.comboproposito}" /></td>
+
+										</tr>
+										<tr>
+
+											<td><h:inputText disabled="true"
+													value="#{verEstudioControlador.estudio.EProposito.nombre}"
+													styleClass="dataText" required="true"
+													rendered="#{verEstudioControlador.comboproposito}" /></td>
+										</tr>
+										<tr>
+											<td><h:outputText
+													value="#{messages.lbl_otrosProposito_ens}"
+													styleClass="normalText"
+													rendered="#{verEstudioControlador.combootrtroproposito}" /><br />
+												<h:inputTextarea id="otropropositoO"
+													value="#{verEstudioControlador.otroproposito}"
+													style="width:100%;resize: vertical"
+													rendered="#{verEstudioControlador.combootrtroproposito}"
+													disabled="true"></h:inputTextarea></td>
+										</tr>
+										<tr>
+											<td colspan="8"><rich:spacer height="5px"
+													style="display: block" /></td>
+										</tr>
+									</table>
+								</a4j:outputPanel>
+							</rich:simpleTogglePanel>
+							<rich:simpleTogglePanel label="#{messages.lbl_productos_ens}"
+								switchType="client" opened="true">
+
+
+
+
+								<rich:spacer height="5px" style="display: block" />
+								<a4j:outputPanel id="tablas_productos">
+									<a4j:region>
+										<rich:panel
+											rendered="#{empty verEstudioControlador.listaProductos}">
+											<f:facet name="header">
+												<h:outputText value="#{messages.lbl_listadoProductos_ens}" />
+											</f:facet>
+											<h:outputText value="#{messages.msg_noInformacion_ens}" />
+										</rich:panel>
+										<s:div style="margin-left:1px;margin-top:1px"
+											rendered="#{verEstudioControlador.listaProductos.size() > 0}">
+											<rich:dataTable id="tabla_listado_productos"
+												style="width: 100%;" var="producto"
+												value="#{verEstudioControlador.listaProductos}"
+												columnsWidth="50%, 50%">
+												<f:facet name="header">
+													<div>#{messages.lbl_listadoProductos_ens}</div>
+												</f:facet>
+												<h:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.lbl_nombreProducto_ens}</s:div>
+															<s:div style="text-align: right; padding-left:3px;"></s:div>
+														</h:panelGrid>
+													</f:facet>
+	            			#{producto.nombre}
+	        			</h:column>
+												<h:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.lbl_tituloAbreviado_ens}</s:div>
+															<s:div style="text-align: right; padding-left:3px;"></s:div>
+														</h:panelGrid>
+													</f:facet>
+	            			#{producto.titulo}
+	        			</h:column>
+
+
+
+
+
+
+
+											</rich:dataTable>
+										</s:div>
+
+
+
+									</a4j:region>
+								</a4j:outputPanel>
+							</rich:simpleTogglePanel>
+						</a4j:outputPanel>
+					</rich:tab>
+					<rich:tab label="#{messages.lbl_seccionC_ens}">
+						<rich:simpleTogglePanel
+							label="#{messages.lbl_condicionesElegibilidad_ens}"
+							switchType="client" opened="true">
+							<!-- Inicio para el listado de enfermedades -->
+							<ui:include
+								src="/modEnsayo/codebase/plantillas/diagnosticoVerHoja.xhtml">
+								<ui:param name="verControlador" value="#{verEstudioControlador}" />
+							</ui:include>
+							<br />
+							<!-- Fin para el listado de enfermedades -->
+							<table width="100%" cellpadding="0px" cellspacing="0px">
+								<tr>
+									<td class="colSepGran" style="vertical-align: top; width: 50%">
+										<h:outputText value="#{messages.lbl_palabrasClaves_ens}"
+											styleClass="normalText" /><br /> <h:inputTextarea
+											value="#{verEstudioControlador.estudio.palabrasClaves}"
+											style="width:100%;resize: vertical" disabled="true"></h:inputTextarea>
+
+									</td>
+
+								</tr>
+							</table>
+						</rich:simpleTogglePanel>
+						<rich:simpleTogglePanel label="#{messages.lbl_elegibilidad_ens}"
+							switchType="client" opened="true">
+							<table cellpadding="0px" cellspacing="0px" border="0px">
+
+								<tr>
+
+									<td><h:outputText value="#{messages.lbl_genero_ens}"
+											styleClass="normalText" /><br />
+									<h:inputText disabled="true"
+											value="#{verEstudioControlador.estudio.ESexo.valor}"
+											styleClass="dataText" required="true"
+											validator="#{validations_ensayo.textnumber}" /></td>
+									<td><rich:spacer width="25px" style="display: block" /></td>
+									<td><h:outputText value="#{messages.lbl_edadMinima_ens}"
+											styleClass="normalText" /><br /> <h:inputText
+											disabled="true"
+											value="#{verEstudioControlador.estudio.edadMinima}"
+											styleClass="dataText" id="edadMinima"
+											validator="#{validations_ensayo.number}" /></td>
+									<td style="vertical-align: bottom"><h:selectOneRadio
+											styleClass="dataText" style="margin: 0px 0px 0px 0px;"
+											id="edadMin"
+											value="${verEstudioControlador.estudio.tipoEdadMin}">
+											<f:selectItem id="diasMin"
+												itemLabel="#{messages.lbl_dias_ens}" itemValue="dias" />
+											<f:selectItem id="mesesMin"
+												itemLabel="#{messages.lbl_meses_ens}" itemValue="meses" />
+											<f:selectItem id="annosMin"
+												itemLabel="#{messages.lbl_annos_ens}" itemValue="annos" />
+
+										</h:selectOneRadio></td>
+
+									<td><rich:spacer width="25px" style="display: block" /></td>
+									<td><h:outputText value="#{messages.lbl_edadMaxima_ens}"
+											styleClass="normalText" /><br />
+									<h:inputText disabled="true"
+											value="#{verEstudioControlador.estudio.edadMaxima}"
+											styleClass="dataText" id="edadMaxima"
+											validator="#{validations_ensayo.number}" /></td>
+									<td style="vertical-align: bottom"><h:selectOneRadio
+											styleClass="dataText" style="margin: 0px 0px 0px 0px;"
+											id="edadMax"
+											value="${verEstudioControlador.estudio.tipoEdadMax}">
+											<f:selectItem id="diasMax"
+												itemLabel="#{messages.lbl_dias_ens}" itemValue="dias" />
+											<f:selectItem id="mesesMax"
+												itemLabel="#{messages.lbl_meses_ens}" itemValue="meses" />
+											<f:selectItem id="annosMax"
+												itemLabel="#{messages.lbl_annos_ens}" itemValue="annos" />
+
+										</h:selectOneRadio></td>
+								</tr>
+								<tr>
+									<td colspan="8"><rich:spacer height="5px"
+											style="display: block" /></td>
+								</tr>
+
+							</table>
+							<table cellpadding="0px" cellspacing="0px" border="0px">
+								<tr>
+
+									<td><h:outputText
+											value="#{messages.lbl_cantidadSujetosEsperado_ens}"
+											styleClass="normalText" /></td>
+									<td><rich:spacer width="25px" style="display: block" /></td>
+
+
+
+								</tr>
+								<tr>
+
+
+									<td><h:inputText disabled="true"
+											value="#{verEstudioControlador.estudio.cantidadSujetosEsperado}"
+											styleClass="dataText" id="cantidadSujetosEsperado"
+											required="true" validator="#{validations_ensayo.number}" /></td>
+
+								</tr>
+								<tr>
+									<td colspan="8"><rich:spacer height="5px"
+											style="display: block" /></td>
+								</tr>
+
+							</table>
+						</rich:simpleTogglePanel>
+					</rich:tab>
+					<rich:tab label="#{messages.lbl_seccionD_ens}">
+						<rich:simpleTogglePanel
+							label="#{messages.lbl_informacionSobreCentro_ens}"
+							switchType="client" opened="true">
+							<table cellpadding="0px" cellspacing="0px" border="0px">
+								<tr>
+
+
+									<td><h:outputText value="#{messages.lbl_rolContacto_ens}"
+											styleClass="normalText" /></td>
+									<td><rich:spacer width="25px" style="display: block" /></td>
+									<td><h:outputText
+											value="#{messages.lbl_emailContacto_ens}"
+											styleClass="normalText" /></td>
+								</tr>
+								<tr>
+
+									<td><h:inputText disabled="true"
+											value="#{verEstudioControlador.estudio.nombrePromotor}"
+											styleClass="dataText" id="rolContacto"
+											validator="#{validations_ensayo.textnumber}" /></td>
+									<td><rich:spacer width="25px" style="display: block" /></td>
+									<td><h:inputText disabled="true"
+											value="#{verEstudioControlador.estudio.emailContacto}"
+											styleClass="dataText" id="emailContacto"
+											validator="#{validations_ensayo.textnumber}" /></td>
+								</tr>
+								<tr>
+									<td colspan="8"><rich:spacer height="5px"
+											style="display: block" /></td>
+								</tr>
+
+							</table>
+
+
+
+						</rich:simpleTogglePanel>
+
+					</rich:tab>
+
+					<!--Nueva Ventana para selecionar Diccionarios -->
+
+					<rich:tab>
+						<f:facet name="label">
+							<s:div>
+								<h:outputText value="#{messages.lbl_seccionE_ens}" />
+								<a4j:outputPanel ajaxRendered="true">
+									<h:outputText value="*" style="color:red;"
+										styleClass="errorLabel"
+										rendered="#{not empty facesMessages.getCurrentMessagesForControl('identificador') or not empty facesMessages.getCurrentMessagesForControl('nombre') or not empty facesMessages.getCurrentMessagesForControl('investigadorPrincipal') or not empty facesMessages.getCurrentMessagesForControl('patrocinador')}" />
+								</a4j:outputPanel>
+							</s:div>
+						</f:facet>
+						<rich:simpleTogglePanel label="#{messages.lbl_seleccionDiccionario_ens}"
+							switchType="client" opened="true">
+							<table cellpadding="0px" cellspacing="0px" border="0px">
+								<tr>
+									<td rowspan="4" valign="top"></td>
+									<td><h:outputText styleClass="normalText" /></td>
+									<td><rich:spacer width="25px" style="display: block" /></td>
+
+								</tr>
+								<tr>
+									<td  valign="top" width="150px">
+										
+										 <!-- <h:inputText disabled="true"
+											value="#{verEstudioControlador.estudio.diccionario.nombre}"
+											styleClass="dataText" required="true"
+											enableManualInput="false"
+											directInputSuggestions="true"/> --> 
+											<rich:dataTable
+											width="100%"
+											value="#{verEstudioControlador.estudio.diccionario}"
+											var="enf" style=" width : 959px;">
+											<f:facet name="header">
+												<h:outputText value="#{messages.lbl_seleccionDiccionario_ens}" />
+											</f:facet>
+											<rich:column width="150">
+												<f:facet name="header">
+													<h:outputText value="#{messages.nombre}" />
+												</f:facet>
+												<h:outputText value="#{enf.nombre}" />
+											</rich:column>
+											<rich:column>
+												<f:facet name="header">
+													<h:outputText value="#{messages.descripcion}" />
+												</f:facet>
+												<h:outputText value="#{enf.descripcion}" />
+											</rich:column>
+										</rich:dataTable>
+
+									</td>
+									<td><rich:spacer width="25px" style="display: block" /></td>
+
+
+
+								</tr>
+
+							</table>
+						</rich:simpleTogglePanel>
+					</rich:tab>
+
+					<rich:tab label="#{messages.lbl_seccionF_ens}">
+						<rich:simpleTogglePanel label="#{messages.lbl_centros_ens}"
+							switchType="client" opened="true">
+
+
+
+							<a4j:outputPanel id="centros">
+								<rich:panel
+									rendered="#{empty verEstudioControlador.ListaEntidadesEstudio()}">
+									<f:facet name="header">
+										<h:outputText value="#{messages.lbl_listadodeCentros_ens}" />
+									</f:facet>
+									<h:outputText value="#{messages.msg_noInformacion_ens}" />
+								</rich:panel>
+								<a4j:region id="centros2">
+									<rich:dataTable
+										rendered="#{not empty verEstudioControlador.ListaEntidadesEstudio()}"
+										width="100%" id="listacentro"
+										value="#{verEstudioControlador.ListaEntidadesEstudio()}"
+										var="result" columnsWidth="100%,0*" rowKeyVar="row">
+										<f:facet name="header">
+											<h:outputText value="#{messages.lbl_listadodeCentros_ens}" />
+										</f:facet>
+										<h:column whidt="100%">
+											<f:facet name="header">
+												<s:div>
+													<s:div style="float: left; valign: bottom;">
+														<h:outputText value="#{messages.lbl_name_ens}" />
+													</s:div>
+													<s:div style="float: right;">
+
+
+
+													</s:div>
+												</s:div>
+											</f:facet>
+											<h:outputText value="#{result.entidad.nombre}">
+
+											</h:outputText>
+										</h:column>
+
+
+
+
+									</rich:dataTable>
+									<br />
+
+								</a4j:region>
+
+
+								<br />
+
+							</a4j:outputPanel>
+
+						</rich:simpleTogglePanel>
+					</rich:tab>
+					<rich:tab label="#{messages.lbl_seccionG_ens}">
+						<rich:simpleTogglePanel label="#{messages.lbl_usuarios_ens}"
+							switchType="client" opened="true">
+							<a4j:outputPanel id="usuarios">
+								<rich:panel
+									rendered="#{empty verEstudioControlador.ListaUsuarioEstudio()}">
+									<f:facet name="header">
+										<h:outputText value="#{messages.lbl_listadodeUsuario_ens}" />
+									</f:facet>
+									<h:outputText value="#{messages.msg_noInformacion_ens}" />
+								</rich:panel>
+								<a4j:region id="usuario2">
+									<rich:dataTable
+										rendered="#{not empty verEstudioControlador.ListaUsuarioEstudio()}"
+										width="100%" id="listausuarios"
+										value="#{verEstudioControlador.ListaUsuarioEstudio()}"
+										var="result" columnsWidth="15%,15%,15%,15%,15%,25%,0*"
+										rowKeyVar="row">
+										<f:facet name="header">
+											<h:outputText value="#{messages.lbl_listadodeUsuario_ens}" />
+										</f:facet>
+										<h:column whidt="50%">
+											<f:facet name="header">
+												<s:div>
+													<s:div style="float: left; valign: bottom;">
+														<h:outputText value="#{messages.lbl_usuarios_ens}" />
+													</s:div>
+													<s:div style="float: right;">
+
+													</s:div>
+												</s:div>
+											</f:facet>
+											<h:outputText value="#{result.usuario.username}">
+
+											</h:outputText>
+										</h:column>
+										<h:column whidt="50%">
+											<f:facet name="header">
+												<s:div>
+													<s:div style="float: left; valign: bottom;">
+														<h:outputText value="#{messages.lbl_name_ens}" />
+													</s:div>
+													<s:div style="float: right;">
+													</s:div>
+												</s:div>
+											</f:facet>
+											<h:outputText value="#{result.usuario.nombre}">
+
+											</h:outputText>
+										</h:column>
+										<h:column whidt="50%">
+											<f:facet name="header">
+												<s:div>
+													<s:div style="float: left; valign: bottom;">
+														<h:outputText value="#{messages.lbl_primerApellido_ens}" />
+													</s:div>
+													<s:div style="float: right;">
+
+
+
+													</s:div>
+												</s:div>
+											</f:facet>
+											<h:outputText value="#{result.usuario.primerApellido}">
+
+											</h:outputText>
+										</h:column>
+										<h:column whidt="50%">
+											<f:facet name="header">
+												<s:div>
+													<s:div style="float: left; valign: bottom;">
+														<h:outputText value="#{messages.lbl_segundoApellido_ens}" />
+													</s:div>
+													<s:div style="float: right;">
+
+
+
+													</s:div>
+												</s:div>
+											</f:facet>
+											<h:outputText value="#{result.usuario.segundoApellido}">
+
+											</h:outputText>
+										</h:column>
+										<h:column whidt="50%">
+											<f:facet name="header">
+												<s:div>
+													<s:div style="float: left; valign: bottom;">
+														<h:outputText value="#{messages.lbl_rol_ens}" />
+													</s:div>
+													<s:div style="float: right;">
+
+
+
+													</s:div>
+												</s:div>
+											</f:facet>
+											<h:outputText value="#{result.role.name}">
+
+											</h:outputText>
+										</h:column>
+										<h:column whidt="50%">
+											<f:facet name="header">
+												<s:div>
+													<s:div style="float: left; valign: bottom;">
+														<h:outputText value="#{messages.lbn_entidad_ens}" />
+													</s:div>
+													<s:div style="float: right;">
+
+
+
+													</s:div>
+												</s:div>
+											</f:facet>
+											<h:outputText value="#{result.estudioEntidad.entidad.nombre}">
+
+											</h:outputText>
+										</h:column>
+
+									</rich:dataTable>
+
+
+								</a4j:region>
+
+
+							</a4j:outputPanel>
+
+						</rich:simpleTogglePanel>
+					</rich:tab>
+
+
+				</rich:tabPanel>
+
+				<s:div>
+					<div align="right">
+						<rich:spacer width="100%" height="8px" />
+					</div>
+				</s:div>
+				<div align="right">
+
+					<a4j:commandButton
+						rendered="#{!verEstudioControlador.desde.equals('listado')}"
+						style="margin:0px" value="#{messages.btn_modificar_ens}"
+						tabindex="2" action="modificar">
+					</a4j:commandButton>
+
+					<rich:spacer width="10" />
+
+					<a4j:commandButton
+						rendered="#{!verEstudioControlador.desde.equals('listado')}"
+						style="margin:0px" value="#{messages.eliminar}" tabindex="2"
+						onclick="Richfaces.showModalPanel('mpAdvertenciaEliminarEstudio')">
+					</a4j:commandButton>
+
+
+					<rich:spacer width="10" />
+					<s:button
+						view="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarEstudio/buscarEstudio.xhtml"
+						value="#{messages.lbl_Salirver_ens}" style="margin-right:0px"></s:button>
+				</div>
+			</a4j:region>
+			<rich:spacer height="5px" style="display: block" />
+		</rich:panel>
+		<!-- Modal Panel Eliminar Estudio -->
+		<rich:modalPanel id="mpAdvertenciaEliminarEstudio" width="320"
+			height="120">
+			<f:facet name="header" id="eliminar">
+				<h:outputText value="#{messages.bitEliminar}" />
+			</f:facet>
+			<f:facet name="controls">
+				<h:panelGroup>
+					<h:graphicImage
+						value="/resources/icons/default/acciones/cerrar.gif"
+						style="cursor:pointer" id="hidelink" />
+					<rich:componentControl for="eliminarPanel" attachTo="hidelink"
+						operation="hide" event="onclick" />
+				</h:panelGroup>
+			</f:facet>
+			<h:form id="panelEliminarBody">
+
+				<table cellpadding="0px" cellspacing="0px" border="0px"
+					id="container" title="">
+					<tr>
+						<td style="height: 12px;" colspan="6"></td>
+					</tr>
+					<tr style="vertical-align: top;">
+						<td><rich:spacer width="16px" /></td>
+						<td valign="top">
+							<table cellpadding="0px" cellspacing="0px" border="0">
+								<tr valign="top">
+									<td>
+										<!-- Imagen de advertencia --> <h:graphicImage
+											value="/resources/icons/default/acciones/advertencia.png" />
+									</td>
+									<td><rich:spacer width="6px" /></td>
+									<td>
+										<!-- Aqui va el texto para eliminar --> <h:outputText
+											value="#{messages.msg_eliminarEstudio_ens}" />
+									</td>
+								</tr>
+							</table>
+						</td>
+						<td><rich:spacer width="6px" /></td>
+					</tr>
+					<tr>
+						<td style="height: 7px;" colspan="6"></td>
+					</tr>
+					<tr>
+						<td colspan="3">
+							<div align="center">
+								<h:commandButton
+									action="#{verEstudioControlador.eliminarEstudio()}"
+									value="#{messages.btn_si_ens}"
+									onclick="Richfaces.hideModalPanel('mpAdvertenciaEliminarEstudio')">
+								</h:commandButton>
+
+								<input type="button" value="#{messages.btn_no_ens}"
+									style="margin-left: 3px;"
+									onclick="Richfaces.hideModalPanel('mpAdvertenciaEliminarEstudio')" />
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td style="height: 6px;" colspan="6"></td>
+					</tr>
+				</table>
+
+			</h:form>
+		</rich:modalPanel>
+		<!-- Fin modal panel Eliminar estudio -->
+	</h:form>
+</s:div>
+</html>

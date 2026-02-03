@@ -1,0 +1,77 @@
+Autor: Yoandry González Castro
+Objetivo: Hacer un modal panel de tipo "Si o No" super sencillo [menos de 5 minutos] y finalmente no repetir código.
+Descripción: cuando se tiene más de un modal con el mismo controlador, es necesario que se identifique a que modal
+se le esta dando "Yes", esto se hace con el parámetro que se recibe (idModal)
+Precondiciones:
+1. Asegurarse que aparezca: xmlns:c="http://java.sun.com/jstl/core"
+
+Uso:
+1. Copiar uno de los ejemplos de abajo y cambiar los parámetros.
+2. La controladora que tiene el método que responde al click del botón "Yes" tiene que heredar de la clase
+GenericYesNoModalPanel (gehos.ensayo.codebase.genericComponents.yesNoModal.GenericYesNoModalPanel) y sobreescribir el 
+método[public abstract void ExecuteYes(String modalId)]
+3. En el <a4j:commandLink> el onclick="#{nombreDelModal}('#{id_del_objeto}')"
+
+Ejemplo de implementación del método:
+public void ExecuteYes(String modalId)
+{
+	if(modalId.endsWith("modal_eliminar_regla"))
+	{
+		Object o = super.GetObjectIdForModalId(modalId).getValue();
+		if(o!=null)
+		{
+			Long ruleId = Long.parseLong(o.toString());
+			Regla_ensayo r = entityManager.find(Regla_ensayo.class, ruleId);
+			entityManager.remove(r);
+			entityManager.flush();
+			RefreshRuleList();
+		}
+	}
+	else if(modalId.endsWith("modal_completar_regla"))
+	{
+		CompleteRules();
+	}
+			
+}
+	
+Ejemplos de la vista:
+Ejemplo 1 con comentarios
+<!-- BEGIN delete rule modal panel-->			
+		<c:set var="modalDeleteRuleId" value="${'modal_eliminar_regla'}" /> <!-- ID DEL MODAL -->
+		<c:set var="modalDeleteRuleJsFuncName" value="${'selectItemForDeletion'}" /> <!-- UN NOMBRE PARA LA FUNCION JS QUE ESCOGE EL ID DEL OBJETO -->
+		<ui:include src="/modEnsayo/codebase/generic_components/yesNoModal/genericYesNoModal.xhtml">
+			<ui:param name="modalId" value="#{modalDeleteRuleId}" /> <!-- ID DEL MODAL -->
+			<ui:param name="modalHeader" value="#{messages.eliminar_regla_titulo}" /> <!-- TEXTO PARA EL ENCABEZADO DEL MODAL -->
+			<ui:param name="modalBody" value="#{messages.eliminar_regla_cuerpo}" /> <!-- TEXTO PARA EL CUERPO DEL MODAL -->
+			<ui:param name="onYesRerender" value="selectedVariableContainer" /> <!-- ID o IDs a refrescar luego de seleccionar el "YES" -->
+			<ui:param name="controller" value="#{ReglasControlador}" /> <!-- El controlador que contiene el metodo que responde al "YES" -->
+			<ui:param name="jsFuncName" value="#{modalDeleteRuleJsFuncName}" />	<!-- UN NOMBRE PARA LA FUNCION JS QUE ESCOGE EL ID DEL OBJETO -->		
+		</ui:include>			
+<!--END -->	
+
+Ejemplo 1 sin comentarios, listo para copiar y pegar
+<!--BEGIN delete rule modal panel-->			
+		<c:set var="modalDeleteRuleId" value="${'modal_eliminar_regla'}" />
+		<c:set var="modalDeleteRuleJsFuncName" value="${'selectItemForDeletion'}" />
+		<ui:include src="/modEnsayo/codebase/generic_components/yesNoModal/genericYesNoModal.xhtml">
+			<ui:param name="modalId" value="#{modalDeleteRuleId}" />
+			<ui:param name="modalHeader" value="#{messages.eliminar_regla_titulo}" />
+			<ui:param name="modalBody" value="#{messages.eliminar_regla_cuerpo}" />
+			<ui:param name="onYesRerender" value="selectedVariableContainer" />
+			<ui:param name="controller" value="#{ReglasControlador}" />
+			<ui:param name="jsFuncName" value="#{modalDeleteRuleJsFuncName}" />			
+		</ui:include>			
+<!--END -->	
+	
+<!--BEGIN complete rule modal panel-->			
+		<c:set var="modalCompleteRuleId" value="${'modal_completar_regla'}" />
+		<c:set var="modalCompleteRuleJsFuncName" value="${'selectRuleComplete'}" />
+		<ui:include src="/modEnsayo/codebase/generic_components/yesNoModal/genericYesNoModal.xhtml">
+			<ui:param name="modalId" value="#{modalCompleteRuleId}" />
+			<ui:param name="modalHeader" value="#{messages.completar_regla_titulo}" />
+			<ui:param name="modalBody" value="#{messages.completar_regla_cuerpo}" />
+			<ui:param name="onYesRerender" value="selectedVariableContainer" />
+			<ui:param name="controller" value="#{ReglasControlador}" />
+			<ui:param name="jsFuncName" value="#{modalCompleteRuleJsFuncName}" />			
+		</ui:include>			
+<!--END -->

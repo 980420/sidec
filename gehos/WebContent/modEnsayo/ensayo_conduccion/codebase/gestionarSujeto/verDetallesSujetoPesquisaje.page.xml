@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<page    xmlns               ="http://jboss.com/products/seam/pages"  
+         xmlns:xsi           ="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation  ="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">  
+         
+	<begin-conversation join="true" flush-mode="manual"/>
+	<param name="idSujeto" value="#{verDetallesSujeto.idSujeto}"/>
+	<action execute="#{verDetallesSujeto.loadData()}"/>
+	<param name="from"/>
+	
+	
+	<navigation from-action="#{verDetallesSujeto.salir()}">
+	  <rule if="#{not empty verDetallesSujeto.sujeto}">
+		<end-conversation before-redirect="true"/>
+           <redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarSujeto/buscarSujetoPesquisaje.xhtml" >	           		
+           </redirect>
+       </rule>
+	</navigation>
+	<navigation from-action="Modificar">
+	  <rule if="#{not empty verDetallesSujeto.sujeto}">
+		<end-conversation before-redirect="true"/>
+           <redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarSujeto/modificarSujetoPesquisaje.xhtml" >
+           		<param name="idSujeto" value="#{verDetallesSujeto.idSujeto}"/>	           		
+           </redirect>
+       </rule>
+	</navigation>
+	<navigation from-action="#{control.EliminarInstanciaSuj()}">
+	  <rule if="#{not empty verDetallesSujeto.sujeto}">
+		<end-conversation before-redirect="true"/>
+           <redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarSujeto/buscarSujetoPesquisaje.xhtml" >
+           		<param name="idSujeto" value="#{verDetallesSujeto.idSujeto}"/>	           		
+           </redirect>
+       </rule>
+	</navigation>
+ </page>

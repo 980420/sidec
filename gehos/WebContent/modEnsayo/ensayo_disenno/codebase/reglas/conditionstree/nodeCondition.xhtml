@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core">
+	
+	
+	<table cellpadding="0" cellspacing="1">
+	<tr>
+	<td>
+	<rich:spacer width="#{node.level*12}px"></rich:spacer>
+	</td>
+		<td><rich:comboBox value="#{node.ruleNodeTypeString}" suggestionValues="#{node.ruleNodeTypes.keySet()}" enableManualInput="false">
+			<a4j:support event="onselect" ajaxSingle="true"></a4j:support>
+		</rich:comboBox></td>
+		<td><a4j:commandButton value="Adicionar condición" action="#{RuleConditionsManager.addExpression(node)}" style="width:140px" reRender="ruleform,opValues" ajaxSingle="true"></a4j:commandButton></td>
+		<td><a4j:commandButton value="Anidar condición" action="#{RuleConditionsManager.addSubCondition(node)}" style="width:140px" reRender="ruleform" ajaxSingle="true"></a4j:commandButton></td>
+		<td><a4j:commandButton title="#{messages.eliminar}"
+											action="#{RuleConditionsManager.removeNode(node)}" reRender="ruleform" ajaxSingle="true"
+											image="/resources/icons/default/acciones/eliminar.png" rendered="#{node.id>0}">											
+										</a4j:commandButton></td>
+										<td>
+										<s:div styleClass="eval-sign eval-#{node.boolValue == true ? 'ok':(node.boolValue == false ? 'fail':'')}"></s:div>											
+										</td>
+	</tr>
+	</table>
+</s:div>

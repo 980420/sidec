@@ -1,0 +1,129 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+<rich:panel label="#{messages.datosPadre}" >
+		<f:facet name="header">#{header}</f:facet>
+    	<table class="Tabla" cellspacing="0" cellpadding="0">
+			<tr>
+				<td class="margenSupIzq">
+					<table cellpadding="0" cellspacing="0">
+						<tr> 
+							<td class="colSepImg2"><h:graphicImage
+								value="/resources/modCommon/patientphotos/#{persona.foto}"
+								width="74" height="74" style="border:0px;" />
+							</td>
+							<td class="">
+								<table cellpadding="0" cellspacing="0">
+									<tr class="filSepGranRA">
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.nombre}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText"
+											value="#{(not empty persona.nombres) ? persona.nombres : messages.vacio}"
+											style="margin:0px; padding:0px;" /></td>
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.papellido}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText"
+											value="#{(not empty persona.apellido1) ? persona.apellido1 : messages.vacio}"
+											style="margin:0px; padding:0px;" /></td>
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.sapellido}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText" value="#{(not empty persona.apellido2) ? persona.apellido2 : messages.vacio}"
+											style="margin:0px; padding:0px;" /></td>
+									</tr>
+									<tr class="filSepGranRA">
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.cedula_admision}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText"
+											value="#{(not empty persona.cedula) ? persona.cedula : messages.vacio}"
+											style="margin:0px; padding:0px;" /></td>
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.fechaNacimiento}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText styleClass="dataText"
+											value="#{(not empty persona.fechaNacimiento) ? persona.fechaNacimiento : messages.vacio}"
+											style="margin:0px; padding:0px;">
+												<s:convertDateTime pattern="#{messages.patronFecha}"/>											
+											</h:outputText>
+										</td>
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.raza}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText" value="#{(not empty persona.raza.valor) ? persona.raza.valor : messages.vacio}"
+											style="margin:0px; padding:0px;" /></td>
+									</tr>
+									<tr class="filSepGranRA">
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.etnia}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText"
+											value="#{(not empty persona.etnia.valor) ? persona.etnia.valor : messages.vacio}"
+											style="margin:0px; padding:0px;" /></td>
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.estadoCivil}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText"
+											value="#{(not empty persona.estadoCivil.valor) ? persona.estadoCivil.valor : messages.vacio}"
+											style="margin:0px; padding:0px;" /></td>
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.nacionalidad}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText" value="#{(not empty persona.nacion.valor) ? persona.nacion.valor : messages.vacio}"
+											style="margin:0px; padding:0px;" /></td>
+									</tr>
+									<tr class="filSepGranRA">
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.telefonoFijo}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText"
+											value="#{(not empty persona.telfFijo) ? persona.telfFijo : messages.vacio}"
+											style="margin:0px; padding:0px;" /></td>
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.telefonoCelular}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText"
+											value="#{(not empty persona.telfCelular) ? persona.telfCelular : messages.vacio}"
+											style="margin:0px; padding:0px;" /></td>
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.correoElectronico}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText" value="#{(not empty persona.correoElectronico) ? persona.correoElectronico : messages.vacio}"
+											style="margin:0px; padding:0px;" /></td>
+									</tr>
+									<tr class="filSepGranRA">
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.sexo}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText"
+											value="#{(not empty persona.sexo.valor) ? persona.sexo.valor : messages.vacio}"
+											style="margin:0px; padding:0px;" />
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>								
+    </rich:panel>
+    </s:div>

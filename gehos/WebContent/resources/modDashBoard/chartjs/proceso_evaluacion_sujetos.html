@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="UTF-8">
+     <script type="text/javascript" language="javascript" src="./assets/chart.js"></script>
+     <script type="text/javascript" language="javascript" src="./assets/chartjs-plugin-datalabels.js"></script>
+</head>
+<body>
+   
+      <canvas id="procesoEvaluacionSujetoChart"></canvas>
+   
+     <script type="text/javascript">
+
+     var iframe = parent.document.getElementById('procesoEvaluacionSujetoChartIframe');
+     var width = iframe.offsetWidth;
+     var height = iframe.offsetHeight;
+
+     var canvas = document.getElementById('procesoEvaluacionSujetoChart');
+
+     canvas.width = width;
+     canvas.height = height;
+
+    
+    function procesoEvaluacionSujetoChart() {
+        
+        let sujetosEnEvaluacionProcesoEvaluacion = parent.document.getElementById('sujetosEnEvaluacionProcesoEvaluacion').value;
+        let sujetosEnTratamientoEvaluacionProcesoEvaluacion = parent.document.getElementById('sujetosEnTratamientoEvaluacionProcesoEvaluacion').value;
+        let sujetosEnSeguimientoEvaluacionProcesoEvaluacion = parent.document.getElementById('sujetosEnSeguimientoEvaluacionProcesoEvaluacion').value;
+        let sujetosTerminadosEvaluacionProcesoEvaluacion = parent.document.getElementById('sujetosTerminadosEvaluacionProcesoEvaluacion').value;
+        let sujetosInterrumpidosEvaluacionProcesoEvaluacion = parent.document.getElementById('sujetosInterrumpidosEvaluacionProcesoEvaluacion').value;
+           
+        var ctxProcesoEvaluacionSujetoChart = document.getElementById('procesoEvaluacionSujetoChart').getContext('2d');
+        var procesoEvaluacionSujetoChart = new Chart(ctxProcesoEvaluacionSujetoChart, {
+        	 type: 'doughnut',
+             data: {
+                 labels: ['Sujetos en evaluaci\u00F3n', 'En tratamiento', 'En seguimiento', 'Terminados', 'Interrumpidos'],
+                 datasets: [{
+                 	label: 'Proceso de evaluaci\u00F3n de sujeto',
+                     data: [sujetosEnEvaluacionProcesoEvaluacion, sujetosEnTratamientoEvaluacionProcesoEvaluacion, sujetosEnSeguimientoEvaluacionProcesoEvaluacion,
+                            sujetosTerminadosEvaluacionProcesoEvaluacion, sujetosInterrumpidosEvaluacionProcesoEvaluacion],
+                     backgroundColor: [
+		                 		'rgba(52, 64, 58, 0.75)', // black-olive
+								'rgba(40, 82, 56, 0.75)', // cal-poly-green
+								'rgba(19, 138, 54, 0.75)', // forest-green
+								'rgba(129, 193, 75, 0.75)', // mantis
+								'rgba(255, 0, 0, 0.75)', 
+                     ],
+                     /*borderColor: [
+							'rgba(52, 64, 58, 1)', // black-olive
+							'rgba(40, 82, 56, 1)', // cal-poly-green
+							'rgba(19, 138, 54, 1)', // forest-green
+							'rgba(4, 232, 36, 1)', // sgbus-green'
+							'rgba(255, 0, 0, 1)',
+                     ],
+                     borderWidth: 1,*/
+                     datalabels: {
+ 						color: 'white'
+                     }
+                 }]
+             },
+             plugins: [ChartDataLabels],
+             options: {
+            	plugins: {
+                	//Cambio de cursor al pasar por la leyenda
+                	legend: {
+                		onHover: (event, chartElement) => {
+     						event.native.target.style.cursor = 'pointer';
+     					},
+     					onLeave: (event, chartElement) => {
+     						event.native.target.style.cursor = 'default';
+     					}
+                    },
+                    //ocultar valores iguales a 0
+                    datalabels: {
+					    color: '#616161',
+					    formatter: (value) => {
+					      return value > 0 ? value : '';
+					    }
+					}				
+                }
+            }
+         });
+      
+    }
+    
+    window.onload = procesoEvaluacionSujetoChart;
+        
+    </script>
+ 
+</body>
+</html>

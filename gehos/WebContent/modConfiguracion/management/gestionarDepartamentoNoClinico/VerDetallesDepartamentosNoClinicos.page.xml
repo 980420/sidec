@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<param name="departamentoId" value="#{departamentoNoClinicoVerDetallesControlador.departamentoId}" />
+	<param name="from" value="#{departamentoNoClinicoVerDetallesControlador.from}" />
+	<param name="state" />
+	<param name="order" />
+	<param name="firstResult" />
+	<param name="critB1" />
+	
+	<!-- validation -->	
+	<navigation>
+		<rule if="#{departamentoNoClinicoVerDetallesControlador.departamentoId == null or departamentoNoClinicoVerDetallesControlador.departamentoId == '' or departamentoNoClinicoVerDetallesControlador.errorLoadData == true}">
+			<redirect view-id="/modConfiguracion/management/gestionarDepartamentoNoClinico/BuscarDepartamentosNoClinicos.xhtml">
+				<param name="state" value="#{state}" />
+				<param name="firstResult" value="#{firstResult}" />
+				<param name="order" value="#{order}" />
+				<param name="critB1" value="#{critB1}" />		
+			</redirect>			
+		</rule>					
+	</navigation>
+
+	<!-- go to modify -->
+	<navigation from-action="#{departamentoNoClinicoModificarControlador.setDepartamentoId(departamentoNoClinicoVerDetallesControlador.departamento.id)}">
+			<redirect view-id="/modConfiguracion/management/gestionarDepartamentoNoClinico/ModificarDepartamentosNoClinicos.xhtml">				
+				<param name="state" value="#{state}" />
+				<param name="firstResult" value="#{firstResult}" />
+				<param name="order" value="#{order}" />
+				<param name="critB1" value="#{critB1}" />
+			</redirect>
+	</navigation>
+
+	<!-- go to view list -->
+	<navigation from-action="salir">
+		<redirect view-id="/modConfiguracion/management/gestionarDepartamentoNoClinico/BuscarDepartamentosNoClinicos.xhtml">
+				<param name="state" value="#{state}" />
+				<param name="firstResult" value="#{firstResult}" />
+				<param name="order" value="#{order}" />
+				<param name="critB1" value="#{critB1}" />
+			</redirect>
+			<end-conversation before-redirect="true" />
+	</navigation>
+
+	<!-- remove and go to view list -->
+	<navigation from-action="#{departamentoNoClinicoVerDetallesControlador.eliminar()}" evaluate="#{departamentoNoClinicoVerDetallesControlador.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarDepartamentoNoClinico/BuscarDepartamentosNoClinicos.xhtml">
+				<param name="state" value="#{state}" />
+				<param name="firstResult" value="#{firstResult}" />
+				<param name="order" value="#{order}" />
+				<param name="critB1" value="#{critB1}" />
+			</redirect>
+			<end-conversation before-redirect="true" />
+		</rule>
+	</navigation>
+</page>

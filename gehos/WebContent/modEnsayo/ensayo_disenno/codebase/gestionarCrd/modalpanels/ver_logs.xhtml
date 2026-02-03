@@ -1,0 +1,61 @@
+<rich:modalPanel id="ver_logs_panel" keepVisualState="false" width="675" height="260" resizeable="false"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+	<f:facet name="header">
+		<h:panelGroup>
+			<h:outputText value="Registro de eventos"></h:outputText>
+		</h:panelGroup>
+	</f:facet>
+	<f:facet name="controls">
+		<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+			style="cursor:pointer; position:relative; top:1px;"
+			onclick="Richfaces.hideModalPanel('ver_logs_panel')" />
+	</f:facet>
+
+	<h:form id="ver_logs_panel_form">
+
+		<table cellpadding="0px" cellspacing="0px" border="0px" id="container"
+			title="">
+			<tr>
+				<td style="height: 9px;" colspan="6"></td>
+			</tr>
+			<tr style="vertical-align: top;">
+				<td style="width: 6px;"></td>
+				<td valign="top">
+					<table cellpadding="0px" cellspacing="0px">
+						<tr valign="top">
+							<td><h:panelGroup layout="block" style="width:663px;height:200px;overflow:auto;">
+									<rich:dataList var="log" value="#{transfManager.logs}" rows="0">
+										<h:outputText value="#{log}" />
+									</rich:dataList>
+								</h:panelGroup></td>
+						</tr>
+					</table>
+				</td>
+				<td style="width: 4px;"></td>
+			</tr>
+			<tr>
+				<td style="height: 7px;" colspan="6"></td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					<div align="center">
+						<input type="button"
+							onclick="javascript:Richfaces.hideModalPanel('ver_logs_panel');"
+							value="Cerrar"
+							style="margin-bottom: 0px; margin-top: 0px; margin-left: 0px; margin-right: 0px;" />
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td style="height: 6px;" colspan="6"></td>
+			</tr>
+		</table>
+
+	</h:form>
+</rich:modalPanel>

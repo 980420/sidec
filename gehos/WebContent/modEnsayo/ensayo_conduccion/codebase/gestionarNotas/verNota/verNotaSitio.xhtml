@@ -1,0 +1,114 @@
+<!-- CU 32 Visualizar detalles de nota de sitio-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" xmlns:a4j="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle('#{messages.verDetallesSitio}')</script>
+	<link href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css" rel="stylesheet" type="text/css" />
+	<rich:messages globalOnly="true" styleClass="message" id="globalMessage" ajaxRendered="true" />
+	<h:form id="idForm">
+		<rich:panel switchType="client">
+			<f:facet name="header">
+				<s:div>
+					<h:outputText value="#{messages.datosGenerales}" />
+				</s:div>
+			</f:facet>
+			<table border="0" cellpadding="0" cellspacing="0">
+				<tr class="filSepGranRA">
+					<td class="colSepPeq">
+						<h:outputText value="#{messages.nombreVariable}:" />
+					</td>
+					<td class="colSepGran">
+						<h:outputText styleClass="dataText" value="#{(not empty verNotaSitio.notaSitio.variable.nombreVariable) ? verNotaSitio.notaSitio.variable.nombreVariable : messages.vacio}" />
+					</td>
+					<td class="colSepPeq">
+						<h:outputText value="#{messages.valorVariable}:" />
+					</td>
+					<td class="colSepGran">
+						<h:outputText styleClass="dataText" rendered="#{!verNotaSitio.fromManagedCrd()}" value="#{verNotaSitio.notaSitio.variableDato == null ? (verNotaSitio.obtenerValorVariable() != null ? verNotaSitio.obtenerValorVariable().valor : messages.vacio) : (verNotaSitio.notaSitio.variableDato.valor)}" />
+						<h:outputText styleClass="dataText" rendered="#{verNotaSitio.fromManagedCrd()}" value="#{verNotaSitio.variableData != null ? verNotaSitio.variableData : messages.vacio}" />
+					</td>
+					<td class="colSepPeq">
+						<h:outputText value="#{messages.idSujetEstudio}:" />
+					</td>
+					<td class="colSepGran">
+						<h:outputText styleClass="dataText" value="#{(not empty verNotaSitio.notaSitio.crdEspecifico.momentoSeguimientoEspecifico.sujeto.codigoPaciente) ? verNotaSitio.notaSitio.crdEspecifico.momentoSeguimientoEspecifico.sujeto.codigoPaciente : messages.vacio}" />
+					</td>
+				</tr>
+				<tr>
+					<td class="colSepPeq">
+						<h:outputText value="#{messages.crd}:" />
+					</td>
+					<td class="colSepGran">
+						<h:outputText styleClass="dataText" value="#{(not empty verNotaSitio.notaSitio.crdEspecifico.hojaCrd.nombreHoja) ? verNotaSitio.notaSitio.crdEspecifico.hojaCrd.nombreHoja : messages.vacio}" />
+					</td>
+					<td class="colSepPeq">
+						<h:outputText value="#{messages.mometo}:" />
+					</td>
+					<td class="colSepGran">
+						<h:outputText styleClass="dataText" value="#{(not empty verNotaSitio.notaSitio.crdEspecifico.momentoSeguimientoEspecifico.momentoSeguimientoGeneral.nombre) ? verNotaSitio.notaSitio.crdEspecifico.momentoSeguimientoEspecifico.momentoSeguimientoGeneral.nombre : messages.vacio}" />
+					</td>
+					<td class="colSepPeq">
+						<h:outputText value="#{messages.fechaMomento}:" />
+					</td>
+					<td class="colSepGran">
+						<h:outputText styleClass="dataText" value="#{(not empty verNotaSitio.notaSitio.crdEspecifico.momentoSeguimientoEspecifico.fechaInicio) ? verNotaSitio.notaSitio.crdEspecifico.momentoSeguimientoEspecifico.fechaInicio : messages.vacio}">
+							<s:convertDateTime pattern="#{messages.patronFecha}" />
+						</h:outputText>
+					</td>
+				</tr>
+			</table>
+		</rich:panel>
+		<br />
+		<rich:panel style="margin-top: 8px">
+			<f:facet name="header">
+				<h:panelGroup>
+					<div>
+						<div align="left">#{messages.verDetallesSitio}</div>
+					</div>
+				</h:panelGroup>
+			</f:facet>
+			<table border="0" cellpadding="0" cellspacing="0">
+				<tr class="filSepGranRA">
+					<td class="colSepPeq">
+						<h:outputText value="#{messages.nombreUsuario}:" />
+					</td>
+					<td class="colSepGran">
+						<h:outputText styleClass="dataText" value="#{(not empty verNotaSitio.notaSitio.usuario) ? verNotaSitio.notaSitio.usuario.nombre : messages.vacio}" />
+					</td>
+					<td class="colSepPeq">
+						<h:outputText value="#{messages.ultimaActualizacion}:" />
+					</td>
+					<td class="colSepGran">
+						<h:outputText styleClass="dataText" value="#{(not empty verNotaSitio.notaSitio.fechaActualizacion) ? verNotaSitio.notaSitio.fechaActualizacion : verNotaSitio.notaSitio.fechaCreacion}">
+							<s:convertDateTime pattern="#{messages.patronFecha}" />
+						</h:outputText>
+					</td>
+					<td class="colSepPeq">
+						<h:outputText value="#{messages.descripcion}:" />
+					</td>
+					<td class="colSepGran">
+						<h:outputText styleClass="dataText" value="#{(not empty verNotaSitio.notaSitio.descripcion) ? verNotaSitio.notaSitio.descripcion : messages.vacio}" />
+					</td>
+				</tr>
+				<tr>
+					<td class="colSepPeq">
+						<h:outputText value="#{messages.detalles}:" />
+					</td>
+					<td class="colSepGran">
+						<h:outputText styleClass="dataText" value="#{(not empty verNotaSitio.notaSitio.detallesNota) ? verNotaSitio.notaSitio.detallesNota : messages.vacio}" />
+					</td>
+				</tr>
+			</table>
+		</rich:panel>
+		<rich:spacer height="8px" width="100%" />
+		<div align="right" style="width: 100%">
+			<!-- Incluir boton salir -->
+			<h:commandButton value="#{messages.salir}" style="margin-top:0px; margin-bottom:0px; margin-right:0px;" action="#{verNotaSitio.cancelar()}" />
+		</div>
+	</h:form>
+</ui:composition>

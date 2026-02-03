@@ -1,0 +1,277 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	template="#{theme.template}">
+
+
+<s:div> 
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+			<style type="text/css">
+			.dr-dscr-button, .dr-dscr-sepctrl {
+    			background-color: rgba(177, 177, 177, 0) !important;
+    			border-color: rgba(199, 199, 199, 0) !important;
+    			font-family: Verdana,Arial,sans-serif !important;
+    			font-size: 10px !important;
+    			width: 15px;
+			}
+			.dr-dscr-t {
+   			 	border-color: rgba(199, 199, 199, 0) !important;
+    			background-color: #FFF !important;
+			}
+			</style>
+
+		<script type="text/javascript">setContentTitle('Administrar transformaciones')</script>
+		<s:div id="pagBtns" style="text-align: center;" rendered="true">
+			<h:form id="formBuscar">
+				<rich:simpleTogglePanel switchType="client"
+					label="Criterio de busqueda" style="border-color: #C7C7C7;margin: 5px 0px;">
+					<table width="100%" cellpadding="0" cellspacing="0">
+						<tr>
+							<td class="margenSupIzq" style="padding: 10px 7px;">
+								<table class="Tabla" id="buscarTransf"
+									cellspacing="0" cellpadding="0">
+									<tr id="A" class="filSepPeq">
+										<td id="A1" class="colSepGran"><h:outputText
+												value="Nombre de la transformación:"
+												style="margin:0px; padding:0px; spacing:0px" /></td>
+									</tr>
+									<tr>
+										<td class="colSepGran"><h:inputText
+												styleClass="inputText" id="nombreTransf"
+												value="#{buscarTransformacion.nombreTr}" style="margin-right: 25px;width: 152px !important;">
+											</h:inputText></td>
+										<td><a4j:commandButton value="Buscar"
+												action="#{buscarTransformacion.buscar()}"
+												style="margin:0px;">
+												<s:defaultAction />	
+												<a4j:support event="oncomplete" reRender="divListaT" />
+											</a4j:commandButton> <rich:spacer width="10" /> <h:commandButton
+												value="Cancelar" action="#{buscarTransformacion.cancelar()}"
+												style="margin:0px;" /></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</rich:simpleTogglePanel>
+				<h:panelGroup id="panelGListaT">
+					<table width="100%" cellpadding="0" cellspacing="0"
+						style="margin: 0px; padding: 0px;">
+						<tr>
+							<td width="100%"><s:div style="float: right;"
+									rendered="true">
+									<h:commandLink action="addTr"
+										style="border: 0px; cursor:pointer;">
+										<h:panelGrid columns="2">
+											<h:graphicImage
+												value="/resources/icons/default/acciones/adicionar.png"
+												style="border:0;" />
+											<h:outputText value="Adicionar transformación" />
+										</h:panelGrid>
+									</h:commandLink>
+								</s:div></td>
+						</tr>
+					</table>
+					<s:div id="divListaT">
+						<h:outputText value="No se ha encontrado ninguna transformación"
+							rendered="#{buscarTransformacion.getCantidadTransf()==0}" />
+						<rich:dataTable width="100%" id="transfList" rows="10"
+							rowKeyVar="row" value="#{buscarTransformacion.listaTransf}" var="transf"
+							rendered="#{buscarTransformacion.getCantidadTransf()!=0}" columnsWidth="79%,7%,7%,7%">
+							<f:facet name="header">
+								<h:outputText value="Listado de transformaciones" />
+							</f:facet>
+							<rich:column style="text-align: left;">
+								<f:facet name="header">
+									<h:panelGrid columns="2" style="padding: 0px;margin: -3px -3px;">
+										<h:outputText styleClass="headerText"
+											style="text-align: left;" value="Nombre de la transformación" />
+										<s:div id="divordenar">
+											<rich:contextMenu attached="false" id="menuordenar">
+												<rich:menuItem value="Ordenar de menor a mayor"
+													ajaxSingle="true"
+													icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+													action="#{buscarTransformacion.ordenar('asc')}"
+													reRender="transfList">
+												</rich:menuItem>
+												<rich:menuItem value="Ordenar de mayor a menor"
+													ajaxSingle="true"
+													icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+													action="#{buscarTransformacion.ordenar('desc')}"
+													reRender="transfList">
+												</rich:menuItem>
+												<rich:menuItem value="Ordenar por orden de ejecución"
+													ajaxSingle="true"
+													icon="/resources/icons/default/filtro/menu_exe_sort.png"
+													action="#{buscarTransformacion.ordenar('no')}"
+													reRender="transfList">
+												</rich:menuItem>
+											</rich:contextMenu>
+											<h:graphicImage
+												rendered="#{buscarTransformacion.ordenado=='no'}"
+												value="/resources/icons/default/filtro/default.png">
+												<rich:componentControl event="onclick" for="menuordenar"
+													operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+											<h:graphicImage
+												rendered="#{buscarTransformacion.ordenado=='asc'}"
+												value="/resources/icons/default/filtro/asc_sort.png"
+												width="17" height="17">
+												<rich:componentControl event="onclick" for="menuordenar"
+													operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+											<h:graphicImage 
+												rendered="#{buscarTransformacion.ordenado=='desc'}"
+												value="/resources/icons/default/filtro/des_sort.png"
+												width="17" height="17">
+												<rich:componentControl event="onclick" for="menuordenar"
+													operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+										</s:div>										
+									</h:panelGrid>
+								</f:facet>
+								<h:outputText value="#{transf.nombre}" style="text-align: left;" />
+							</rich:column>
+							<rich:column>
+								<a4j:commandLink rendered="true" title="Eliminar"
+								  				action="#{buscarTransformacion.setSeleccionada(transf)}"
+								  				oncomplete="Richfaces.showModalPanel('eliminar_transformacion_panel')" 
+								  				view="/cargaDatos/buscarTransformacion.xhtml">
+								  		<h:graphicImage style="border:0px; cursor: pointer" title="Eliminar" 
+											url="/resources/icons/default/acciones/eliminar.png" >
+										</h:graphicImage>
+								  	</a4j:commandLink>
+							</rich:column>
+							<rich:column>
+								<h:commandLink action="#{editTransf.setTransfSel(transf)}"
+									title="Modificar">
+									<h:graphicImage style="border:0px; cursor: pointer" 
+										value="/resources/icons/default/acciones/modificar.png" />
+								</h:commandLink>
+							</rich:column>
+							<rich:column>
+								<a4j:commandLink rendered="true" title="Ejecutar"
+								  				action="#{ejecutarTransformacion.setSeleccionada(transf)}"
+								  				oncomplete="Richfaces.showModalPanel('ejecutar_transformacion_panel')" 
+								  				view="/cargaDatos/buscarTransformacion.xhtml">
+									<h:graphicImage style="border:0px; cursor: pointer" 
+										value="/resources/icons/default/acciones/ejecutar.png"
+										width="16" />
+								</a4j:commandLink>
+							</rich:column>
+						</rich:dataTable>
+						<rich:spacer height="10" />
+
+						<rich:datascroller id="transfListDS" for="transfList" style="background-color: rgba(177, 177, 177, 0);"
+							renderIfSinglePage="false" fastControls="hide"
+							styleClass="paginado" tableStyleClass="paginado"
+							selectedStyleClass="paginado" inactiveStyleClass="paginado" page="#{buscarTransformacion.pagina}">
+							<f:facet name="first">
+								<h:graphicImage
+									value="/resources/icons/default/paginado/green/inicio.png"
+									style="border:0;" />
+							</f:facet>
+							<f:facet name="first_disabled">
+								<h:graphicImage
+									value="/resources/icons/default/paginado/iniciod.png"
+									style="border:0;" />
+							</f:facet>
+							<f:facet name="last">
+								<h:graphicImage
+									value="/resources/icons/default/paginado/green/fin.png"
+									style="border:0;" />
+							</f:facet>
+							<f:facet name="last_disabled">
+								<h:graphicImage
+									value="/resources/icons/default/paginado/find.png"
+									style="border:0;" />
+							</f:facet>
+							<f:facet name="previous">
+								<h:graphicImage
+									value="/resources/icons/default/paginado/green/anterior.png"
+									style="border:0;" />
+							</f:facet>
+							<f:facet name="previous_disabled">
+								<h:graphicImage
+									value="/resources/icons/default/paginado/anteriord.png"
+									style="border:0;" />
+							</f:facet>
+							<f:facet name="next">
+								<h:graphicImage
+									value="/resources/icons/default/paginado/green/siguiente.png"
+									style="border:0;" />
+							</f:facet>
+							<f:facet name="next_disabled">
+								<h:graphicImage
+									value="/resources/icons/default/paginado/siguiented.png"
+									style="border:0;" />
+							</f:facet>
+<!-- 							<f:attribute name="pageIndexVar" value="pageIndexVar" /> -->
+<!-- 							<f:attribute name="pagesVar" value="pagesVar" /> -->
+							<f:facet name="pages">
+<!-- 								<h:panelGroup> -->
+<!-- 										<h:outputText value="Page #{pageIndexVar} / #{pagesVar}" /> -->
+<!-- 								</h:panelGroup> -->
+							</f:facet>
+							<f:facet name="fastforward">
+							</f:facet>
+							<f:facet name="fastforward_disabled">
+							</f:facet>
+							<f:facet name="fastrewind">
+							</f:facet>
+							<f:facet name="fastrewind_disabled">
+							</f:facet>
+						</rich:datascroller>
+
+						<s:div id="divbtnactions" style="text-align:right;width:100%;">
+							
+							<a4j:commandButton style= "width: 76px;" id="btnverlogs"
+								action="verlog" oncomplete="Richfaces.showModalPanel('ver_logs_panel')"
+								rendered="#{not empty transfManager.logs}" value="Ver registro"/>
+
+						</s:div>
+					</s:div>
+
+				</h:panelGroup>
+
+				
+			</h:form>
+			<a4j:support event="onshow" reRender="divListaT"/>
+		</s:div>
+		
+		<br />
+		<s:div style="text-align: center;margin: 0px 40%;">
+			<a4j:status>
+				<f:facet name="start">
+					<h:panelGrid columns="2">
+						<h:graphicImage
+							value="/resources/icons/default/acciones/loading.gif" width="20" />
+						<h:outputLabel value="Cargando..." />
+					</h:panelGrid>
+				</f:facet>
+			</a4j:status>
+		</s:div>
+		
+	<s:div id = "modalpanelsdiv">
+	<ui:include src="/modConfiguracion/cargaDatos/modalpanels/confirmar_eliminar_transformacion.xhtml" />
+	<ui:include src="/modConfiguracion/cargaDatos/modalpanels/confirmar_ejecutar_transformacion.xhtml" />
+	<ui:include src="/modConfiguracion/cargaDatos/modalpanels/transf_ejecutada.xhtml" />
+	<ui:include src="/modConfiguracion/cargaDatos/modalpanels/ver_logs.xhtml" />
+	</s:div>
+	
+</s:div>		
+    </html>

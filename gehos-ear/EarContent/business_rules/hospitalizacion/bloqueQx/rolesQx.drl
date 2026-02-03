@@ -1,0 +1,20 @@
+#created on: 20-may-2009
+package rolesQuirofano
+
+#list any import classes here.
+
+import java.util.List;
+import gehos.hospitalizacion.entity.auto.Role_hospitalizacion;
+import gehos.hospitalizacion.session.utilidades.reglasNegocio.RuleResult_hospitalizacion;
+#declare any global variables here
+
+global gehos.hospitalizacion.session.utilidades.reglasNegocio.RuleResult_hospitalizacion ruleResult;
+
+rule "verificar_role_quirofano"
+	
+	when
+		$r : List()
+		exists($rol : Role_hospitalizacion(name == "Cirujano") from $r)
+	then 
+		ruleResult.setPuede(true);
+end

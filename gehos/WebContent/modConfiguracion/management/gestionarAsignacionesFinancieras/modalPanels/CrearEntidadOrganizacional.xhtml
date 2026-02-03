@@ -1,0 +1,176 @@
+<rich:modalPanel resizeable="false" id="gestionarEntidadOrganizacional" onhide="" styleClass="whitespace"
+	autosized="true" 
+	rendered="#{asignacionFinancieraCrearControlador.crearEntidadOrganizacional || asignacionFinancieraModificarControlador.crearEntidadOrganizacional}"
+	onshow="#{entidadOrganizacionalCrearControler.limpiarCampos()}"
+	 xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
+	<f:facet name="header" id="panelEliminarHeader">
+		<a4j:outputPanel id="gestionarTitleEntidadOrganizacional">
+			<h:outputText value="#{messages.titulo22}"
+				rendered="#{entidadOrganizacionalCrearControler.estadoFuncionalidad.equals('crear')}" />
+			<h:outputText value="#{messages.titulo33}"
+				rendered="#{entidadOrganizacionalCrearControler.estadoFuncionalidad.equals('modificar')}" />
+			<h:outputText value="#{messages.titulo44}"
+				rendered="#{entidadOrganizacionalCrearControler.estadoFuncionalidad.equals('ver')}" />
+		</a4j:outputPanel>
+
+	</f:facet>
+
+
+
+	<f:facet name="controls">
+		<h:form>
+			<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+				style="cursor:pointer; position:relative; top:2px; right:2px"
+				onclick="cerrarCrearEntidadOrganizacional()">
+			</h:graphicImage>
+		</h:form>
+	</f:facet>
+
+	<a4j:outputPanel id="aGestionarEntidadOrganizacional">
+		<h:form id="formGestionarEntidadOrganizacional">
+
+			<s:div id="crear"
+				rendered="#{entidadOrganizacionalCrearControler.estadoFuncionalidad.equals('crear')}">
+				<table cellpadding="0px" cellspacing="0px" border="0px">
+					<tr>
+						<td style="height: 10px;" colspan="6"></td>
+					</tr>
+					<tr style="vertical-align: top;">
+						<td><rich:spacer width="6px" /></td>
+						<td>#{messages.entidadOrganizacional} <rich:message
+							for="inputTextValorCrear" showDetail="false" showSummary="false"
+							tooltip="true">
+							<f:facet name="errorMarker">
+								<h:outputText
+									title="#{facesMessages.getCurrentMessagesForControl('inputTextValorCrear').get(0).getDetail()}"
+									style="color : red" value="*" styleClass="nombre" />
+							</f:facet>
+						</rich:message> <br />
+						<h:inputText id="inputTextValorCrear" required="true"
+							style=" width : 148px;"
+							validator="#{entidadOrganizacionalCrearControler.validarEntidadOrganizacionalCrear}"
+							value="#{entidadOrganizacionalCrearControler.entidadOrganizacional.valor}" /></td>
+						<td><rich:spacer width="6px" /></td>
+					</tr>
+					<tr>
+						<td><rich:spacer height="8px" /></td>
+					</tr>
+					<tr style="vertical-align: top;">
+						<td><rich:spacer width="6px" /></td>
+						<td>
+						<div align="left"><a4j:commandButton
+							value="#{messages.aceptar}" id="buttonCrearEntidadOrganizacional"
+							action="#{entidadOrganizacionalCrearControler.crear()}"
+							style="margin-bottom: 0px; margin-right: 6px; margin-left: 0px;margin-top: 0px;"
+							reRender="aGestionarEntidadOrganizacional,gestionarTitleEntidadOrganizacional">
+						</a4j:commandButton> <input type="button" value="#{messages.cancelar}"
+							style="margin-left: 1px; margin-right: 0px; margin-bottom: 0px; margin-top: 0px;"
+							onclick="Richfaces.hideModalPanel('gestionarEntidadOrganizacional')" />
+						<rich:spacer height="6px" style="display: block"></rich:spacer></div>
+						</td>
+						<td><rich:spacer width="6px" /></td>
+					</tr>
+				</table>
+			</s:div>
+
+			<s:div id="ver"
+				rendered="#{entidadOrganizacionalCrearControler.estadoFuncionalidad.equals('ver')}">
+				<table cellpadding="0px" cellspacing="0px" border="0px">
+					<tr>
+						<td style="height: 10px;" colspan="6"></td>
+					</tr>
+					<tr style="vertical-align: top;">
+						<td style="width: 6px;"></td>
+						<td>#{messages.entidadOrganizacional}</td>
+						<td style="width: 6px;"></td>
+						<td><h:outputText
+							value="#{entidadOrganizacionalCrearControler.entidadOrganizacional.valor}" /></td>
+					</tr>
+				</table>
+
+				<div align="left">
+				<table cellpadding="0" cellspacing="0" border="0">
+				<tr>
+				<td><rich:spacer width="6px"/></td>
+				<td>
+				<a4j:commandButton
+					value="#{messages.eliminar}"
+					action="#{entidadOrganizacionalCrearControler.eliminar()}"
+					oncomplete="javascript:Richfaces.hideModalPanel('gestionarEntidadOrganizacional');"
+					style="margin-bottom: 0px; margin-right: 5px; margin-top: 7px; margin-left: 0px">
+				</a4j:commandButton> </td><td><a4j:commandButton value="#{messages.modificar}"
+					action="#{entidadOrganizacionalCrearControler.setEstadoFuncionalidad('modificar')}"
+					style="margin-bottom: 0px; margin-right: 5px;margin-left: 5px; margin-top: 7px"
+					reRender="aGestionarEntidadOrganizacional,gestionarTitleEntidadOrganizacional" /></td><td>
+				<a4j:commandButton value="#{messages.salir}" ajaxSingle="true"
+					action="#{entidadOrganizacionalCrearControler.limpiarCampos()}"
+					oncomplete="javascript:Richfaces.hideModalPanel('gestionarEntidadOrganizacional');"
+					style="margin-right: 0px; margin-left: 5px; margin-bottom: 0px; margin-top: 7px"
+					reRender="entidadOrganizacional" /> </td>
+					<td><rich:spacer width="6px"/></td></tr></table>
+					<rich:spacer height="6px"
+					style="display: block"></rich:spacer></div>
+			</s:div>
+
+			<s:div id="modificar"
+				rendered="#{entidadOrganizacionalCrearControler.estadoFuncionalidad.equals('modificar')}">
+				<table cellpadding="0px" cellspacing="0px" border="0px">
+					<tr>
+						<td style="height: 10px;" colspan="6"></td>
+					</tr>
+					<tr style="vertical-align: top;">
+						<td style="width: 6px;"></td>
+						<td>#{messages.entidadOrganizacional} <rich:message
+							for="inputTextValorModificar" showDetail="false"
+							showSummary="false" tooltip="true">
+							<f:facet name="errorMarker">
+								<h:outputText
+									title="#{facesMessages.getCurrentMessagesForControl('inputTextValorModificar').get(0).getDetail()}"
+									style="color : red" value="*" styleClass="nombre" />
+							</f:facet>
+						</rich:message> <br />
+						<h:inputText id="inputTextValorModificar"
+							validator="#{entidadOrganizacionalCrearControler.validarEntidadOrganizacionalModificar}"
+							required="true" style=" width : 148px;"
+							value="#{entidadOrganizacionalCrearControler.entidadOrganizacional.valor}" /></td>
+						<td style="width: 6px;"></td>
+					</tr>
+					<tr>
+					<td><rich:spacer height="8px" /></td>
+					</tr>
+					<tr>
+					<td><rich:spacer width="6px"/></td>
+					<td>
+					<div align="left"><a4j:commandButton
+					value="#{messages.aceptar}"
+					id="buttonModificarEntidadOrganizacional"
+					action="#{entidadOrganizacionalCrearControler.modificar()}"
+					style="margin-bottom: 0px; margin-right: 5px;margin-top: 0px;margin-left: 0px"
+					reRender="aGestionarEntidadOrganizacional,gestionarTitleEntidadOrganizacional">
+				</a4j:commandButton> <a4j:commandButton value="#{messages.cancelar}"
+					style="margin-left: 5px; margin-right: 0px; margin-bottom: 0px; margin-top: 0px;"
+					onclick="Richfaces.hideModalPanel('gestionarEntidadOrganizacional')"
+					reRender="entidadOrganizacional" /> <rich:spacer height="6px"
+					style="display: block"></rich:spacer></div>
+					</td>
+					<td><rich:spacer width="6px"/></td>
+					</tr>
+				</table>
+				
+				
+			</s:div>
+		</h:form>
+	</a4j:outputPanel>
+
+	</rich:modalPanel>

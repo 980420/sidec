@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jboss PUBLIC "-//JBoss//DTD JBOSS 4.2//EN" "http://www.jboss.org/j2ee/dtd/jboss_4_2.dtd" >
+<jboss>
+
+	<enterprise-beans>
+		<message-driven>
+			<ejb-name>newHCECreatedMessageDrivenBean</ejb-name>
+			<resource-adapter-name>activemq-rar-5.2.0_rhio.rar</resource-adapter-name>
+		</message-driven>
+
+	</enterprise-beans>
+
+	<assembly-descriptor>
+
+	</assembly-descriptor>
+
+	<resource-managers>
+
+	</resource-managers>
+
+</jboss>

@@ -1,0 +1,101 @@
+<rich:modalPanel resizeable="false" id="crearEstablecimientoAreaInfluenciaHospital"
+	styleClass="whitespace" style="white-space:nowrap" autosized="true"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	onshow="#{establecimientoAreaInfluenciaHospitalBuscarControlador.onShow()}">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<f:facet name="header" id="panelEliminarHeader">
+		<a4j:outputPanel id="gestionarTitleEstablecimiento">
+			<h:outputText value="#{messages.titulo2}"
+				rendered="#{establecimientoAreaInfluenciaHospitalBuscarControlador.estadoFuncionalidad.equals('crear')}" />
+			<h:outputText value="#{messages.titulo3}"
+				rendered="#{establecimientoAreaInfluenciaHospitalBuscarControlador.estadoFuncionalidad.equals('modificar')}" />
+		</a4j:outputPanel>
+	</f:facet>
+
+	<f:facet name="controls">
+		<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+			style="cursor:pointer; position:relative; top:1px; right:1px"
+			onclick="cerrarCrearEstablecimiento()">
+		</h:graphicImage>
+	</f:facet>
+
+	<h:form id="form">
+		<a4j:outputPanel id="gestionarEstablecimiento">
+
+			<table cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td><rich:spacer width="6px" /></td>
+					<td><s:div id="crear">
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+							<tr>
+								<td style="height: 12px;" colspan="6"></td>
+							</tr>
+							<tr style="vertical-align: top;">
+								<td style="width: 6px;"></td>
+								<td>#{messages.crit1} <rich:message for="nombreCrear"
+									showDetail="false" tooltip="true" style="color:red;cursor:pointer;">
+									<f:facet name="errorMarker">
+										<h:outputText value="*"
+											title="#{facesMessages.getCurrentMessagesForControl('nombreCrear').get(0).getDetail()}" />
+									</f:facet>
+								</rich:message> <br />
+								<h:inputText id="nombreCrear" validator="#{validations_configuracion.text}"
+									required="true" requiredMessage="#{messages.valorRequerido}"
+									style=" width : 148px;"
+									value="#{establecimientoAreaInfluenciaHospitalBuscarControlador.nombre}" />
+
+								</td>
+								<td><rich:spacer width="25px" /></td>
+								<td>#{messages.crit2} <rich:message
+									for="tipoEstablecimientoCrear" showDetail="false"
+									tooltip="true" style="color:red;cursor:pointer;">
+									<f:facet name="errorMarker">
+										<h:outputText value="*"
+											title="#{facesMessages.getCurrentMessagesForControl('tipoEstablecimientoCrear').get(0).getDetail()}" />
+									</f:facet>
+								</rich:message> <a4j:outputPanel id="idATipoEstablecimientoCrear">
+									<rich:comboBox id="tipoEstablecimientoCrear"
+										defaultLabel="#{messages.seleccione}" required="true"
+										requiredMessage="#{messages.valorRequerido}"
+										enableManualInput="false"
+										suggestionValues="#{establecimientoAreaInfluenciaHospitalBuscarControlador.tiposEstablecimientos()}"
+										value="#{establecimientoAreaInfluenciaHospitalBuscarControlador.tipoEstablecimiento}" />
+
+
+								</a4j:outputPanel></td>
+								<td><rich:spacer width="2px" /></td>
+							</tr>
+						</table>
+
+						<div align="right">
+						<table cellpadding="0" cellspacing="0" border="0">
+							<tr>
+								<td><a4j:commandButton value="#{messages.aceptar}"
+									id="buttonAceptar"
+									action="#{establecimientoAreaInfluenciaHospitalBuscarControlador.crear()}"
+									oncomplete="#{establecimientoAreaInfluenciaHospitalBuscarControlador.onAdicionarCatComplete('crearEstablecimientoAreaInfluenciaHospital')}"
+									reRender="establecimientoList_custom_datatable,buttonAceptar,listEstablecimientosSeleccionados"
+									style="margin-bottom: 0px; margin-right: 10px; margin-top: 8px" /></td>
+								<td><h:commandButton value="#{messages.cancelar}"
+									immediate="true"
+									action="#{establecimientoAreaInfluenciaHospitalBuscarControlador.limpiarCampos()}"
+									style="margin-right: 0px; margin-left: 0px; margin-bottom: 0px; margin-top: 7px">
+								</h:commandButton></td>
+							</tr>
+						</table>
+						<rich:spacer height="6px" style="display: block"></rich:spacer></div>
+					</s:div></td>
+					<td><rich:spacer width="6px" /></td>
+				</tr>
+			</table>
+		</a4j:outputPanel>
+	</h:form>
+	</rich:modalPanel>

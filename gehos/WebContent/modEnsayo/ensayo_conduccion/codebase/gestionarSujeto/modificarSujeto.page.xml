@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+ 
+	<action if="#{modificarSujeto.inicializado == false}" execute="#{modificarSujeto.initConversation()}"/>
+	
+	<param name="idSujeto" value="#{modificarSujeto.idSujeto}"/>
+	<param name="from"/>
+	
+	
+	<!--	actionn="#{modificarSujeto}"-->
+	<navigation from-action="#{modificarSujeto.persistir()}">
+		<rule if="#{not modificarSujeto.error}">
+	  		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarSujeto/verDetallesSujeto.xhtml">
+				 <param name="idSujeto" value="#{modificarSujeto.idSujeto}"/>
+			</redirect>
+	  	</rule>
+	</navigation>
+	
+	<navigation from-action="#{modificarSujeto.salir()}">
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarSujeto/buscarSujeto.xhtml" >	           		
+           </redirect>
+	</navigation>
+	
+</page>

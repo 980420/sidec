@@ -1,0 +1,92 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- CSS -->
+				<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/style/stylesheet_configuracion.css"
+			rel="stylesheet" type="text/css" />
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+		<h:form id="form">
+			<rich:messages id="message" styleClass="custom-error" ajaxRendered="true"
+				for="message" />
+			<s:validateAll>
+				<rich:panel >
+					<f:facet name="header">#{messages.datos}</f:facet>
+					<table cellpadding="0px" cellspacing="0px" border="0px" class="tabla fil-mt-sint col-mc-izq fil-mc-botton col-mc-der">
+						
+						<tr>
+							<td>#{messages.nombre} <rich:message for="nombre"
+								showDetail="false" showSummary="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputText
+										title="#{facesMessages.getCurrentMessagesForControl('nombre').get(0).getDetail()}"
+										 value="*"
+										styleClass="errorMarker" />
+								</f:facet>
+							</rich:message>
+							<br />
+							<h:inputText id="nombre"
+								validator="#{validations_configuracion.textExtNombre}" required="true"
+								requiredMessage="#{messages.valorRequerido}"
+								value="#{rolCrearControlador.name}" styleClass="inputText"/>
+							</td>
+								
+							<td><rich:spacer width="25px" /></td>
+							<td>#{messages.codigo} 
+							
+							<rich:message for="codigo"
+								showDetail="false" showSummary="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputText
+										title="#{facesMessages.getCurrentMessagesForControl('codigo').get(0).getDetail()}"
+										 value="*"
+										styleClass="errorLabel" />
+								</f:facet>
+							</rich:message>
+							<br/>
+							<h:inputText id="codigo"
+								validator="#{validations_configuracion.textExtNombre}" required="true"
+								requiredMessage="#{messages.valorRequerido}"
+								value="#{rolCrearControlador.codigo}" styleClass="inputText"/>
+							</td>
+							<td><rich:spacer width="8px" /></td>	
+								
+						</tr>
+					</table>
+					<rich:spacer width="8px" />
+				</rich:panel>
+				
+				<div align="right">
+				<table cellpadding="0" cellspacing="0" class="table fil-c">
+					<tr>
+						<td class="col-botton"><h:commandButton id="buttonAceptar"
+							value="#{messages.aceptar}" styleClass="botton"
+							action="#{rolCrearControlador.crear()}" tabindex="2"/></td>
+						<td><h:commandButton value="#{messages.cancelar}"
+							immediate="true" tabindex="3" action="cancelar"
+							styleClass="botton" /></td>
+					</tr>
+				</table>
+				</div>
+			</s:validateAll>
+		</h:form>
+		<br />
+	</ui:define>
+</ui:composition>
+

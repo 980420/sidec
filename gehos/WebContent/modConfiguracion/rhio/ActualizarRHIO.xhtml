@@ -1,0 +1,38 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" 
+	xmlns:c="http://java.sun.com/jstl/core" 
+	template="#{theme.template}"
+	>
+
+	<ui:define name="body" >
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript">setContentTitle('Administrar Rhio')</script>
+		<h:form id="form">
+			<rich:panel>
+				<f:facet name="header">Id de instancia</f:facet>				
+				#{messages.Id}:
+				<rich:message for="idrhio" showDetail="false" tooltip="true" style="color:red;">
+					<f:facet name="errorMarker">
+						<h:outputLabel value="*" title="#{facesMessages.getCurrentMessagesForControl('idrhio').get(0).detail}" />
+					</f:facet>
+				</rich:message>
+				<rich:spacer height="0px" style="display: block"></rich:spacer>
+				<h:inputText value="#{updateRhioID.id}" required="true" id="idrhio">
+					<f:validateLongRange maximum="9999" minimum="1000"></f:validateLongRange>
+				</h:inputText>
+			</rich:panel>
+			<rich:spacer height="13px" style="display: block"></rich:spacer>
+			<div align="right">
+				<h:commandButton action="#{updateRhioID.actualizar()}" value="#{messages.aceptar}" />
+				<h:commandButton action="cancelar" value="#{messages.cancelar}" />
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

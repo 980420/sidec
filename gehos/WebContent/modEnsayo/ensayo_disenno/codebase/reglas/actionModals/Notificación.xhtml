@@ -1,0 +1,402 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core" template="#{theme.template}">
+	<s:div style="height:400px;overflow:auto;margin-left:8px; ">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css"
+			rel="stylesheet" type="text/css" />
+		<link rel='stylesheet'
+			href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+			type='text/css' />
+		<rich:spacer height="13"></rich:spacer>		
+		<table>
+			<tr>
+				<td><h:outputText value="#{messages.lbl_n_tituloEstudio}"
+						styleClass="normalText" /><br /> <h:inputTextarea
+						value="#{notificacion.titEst}" required="true" id="tEstu"
+						style="width:218px;  height:40px; resize: vertical"
+						disabled="true"
+						validator="#{validations_ensayo.textnumber250Nuevo}"></h:inputTextarea>
+				</td>
+				<td><rich:spacer width="25px"></rich:spacer></td>
+				<td><h:outputText value="#{messages.lbl_n_codEstudio}"
+						styleClass="normalText" /><br /> <h:inputTextarea
+						value="#{notificacion.codEst}" required="true" id="cEstu"
+						style="width:218px;  height:40px; resize: vertical"
+						disabled="true"
+						validator="#{validations_ensayo.textnumber250Nuevo}"></h:inputTextarea>
+
+				</td>
+			</tr>
+		</table>
+		<rich:spacer height="13"></rich:spacer>
+		<table>
+			<tr>
+				<td><h:outputText value="#{messages.lbl_n_datosGSuj}"
+						styleClass="normalText" /><br /></td>
+
+			</tr>
+			<tr>
+				<td><h:outputText value="#{messages.lbl_n_ini}"
+						styleClass="normalText" /><br /> <h:inputText
+						value="#{notificacion.idSujeto}" styleClass="dataText"
+						id="identificador" required="true" disabled="true"
+						validator="#{validations_ensayo.ValIdentEstIdent}" /></td>
+				<td><rich:spacer width="25px"></rich:spacer></td>
+				<td><h:outputText value="#{messages.lbl_n_edad}"
+						styleClass="normalText" /> 
+						<span style="color:red;">*</span>
+						<rich:message for="edad"
+						showDetail="false" tooltip="true" style="color:red;">
+						<f:facet name="errorMarker">
+							<h:outputText value="*"
+								title="#{facesMessages.getCurrentMessagesForControl('edad').get(0).getDetail()}" />
+						</f:facet>
+					</rich:message><br />
+				<h:inputText value="#{notificacion.edad}" styleClass="dataText"
+						id="edad" required="#{!empty param['ssaa:aceptarr']}"
+						validator="#{validations_ensayo.number3cifras}" /></td>
+				<td>
+				<span style="color:red;">*</span>
+				<rich:message for="tipoE" showDetail="false" tooltip="true"
+						style="color:red;">
+						<f:facet name="errorMarker">
+							<h:outputText value="*"
+								title="#{facesMessages.getCurrentMessagesForControl('tipoE').get(0).getDetail()}" />
+						</f:facet>
+					</rich:message> <h:selectOneRadio required="#{!empty param['ssaa:aceptarr']}"
+						layout="lineDirection" id="tipoE" value="#{notificacion.tipoEdad}">
+						<f:selectItem itemValue="#{messages.lbl_n_anno}"
+							itemLabel="#{messages.lbl_n_anno}" />
+						<f:selectItem itemValue="#{messages.lbl_n_mes}"
+							itemLabel="#{messages.lbl_n_mes}" />
+						<f:selectItem itemValue="#{messages.lbl_n_dias}"
+							itemLabel="#{messages.lbl_n_dias}" />
+
+					</h:selectOneRadio></td>
+
+			</tr>
+		</table>
+		<rich:spacer height="13"></rich:spacer>
+		<table>
+			<tr>
+				<td><h:outputText value="#{messages.lbl_n_sitio}"
+						styleClass="normalText" /> 
+						
+						<rich:message for="sitio"
+						showDetail="false" tooltip="true" style="color:red;">
+						<f:facet name="errorMarker">
+							<h:outputText value="*"
+								title="#{facesMessages.getCurrentMessagesForControl('sitio').get(0).getDetail()}" />
+						</f:facet>
+					</rich:message><br /> <h:inputText value="#{notificacion.sitioInv}"
+						styleClass="dataText" id="sitio"
+						required="#{!empty param['ssaa:aceptarr']}" disabled="true"
+						validator="#{validations_ensayo.ValIdentEstIdent}" /></td>
+				<td><rich:spacer width="25px"></rich:spacer></td>
+				<td><h:outputText value="#{messages.lbl_n_investigador}"
+						styleClass="normalText" /> 
+						<span style="color:red;">*</span>
+						<rich:message for="investigador"
+						showDetail="false" tooltip="true" style="color:red;">
+						<f:facet name="errorMarker">
+							<h:outputText value="*"
+								title="#{facesMessages.getCurrentMessagesForControl('investigador').get(0).getDetail()}" />
+						</f:facet>
+					</rich:message><br /> <h:inputText value="#{notificacion.invest}"
+						styleClass="dataText" id="investigador"
+						required="#{!empty param['ssaa:aceptarr']}"
+						validator="#{validations_ensayo.ValIdentEstIdent}" /></td>
+
+				<td><rich:spacer width="25px"></rich:spacer></td>
+
+				<td><h:outputText value="#{messages.lbl_n_promotor}"
+						styleClass="normalText" /> 
+						<span style="color:red;">*</span>
+						<rich:message for="promotor"
+						showDetail="false" tooltip="true" style="color:red;">
+						<f:facet name="errorMarker">
+							<h:outputText value="*"
+								title="#{facesMessages.getCurrentMessagesForControl('promotor').get(0).getDetail()}" />
+						</f:facet>
+					</rich:message><br /> <h:inputText value="#{notificacion.promo}"
+						styleClass="dataText" id="promotor"
+						required="#{!empty param['ssaa:aceptarr']}"
+						validator="#{validations_ensayo.ValIdentEstIdent}" /></td>
+
+
+			</tr>
+		</table>
+		<table>
+			<tr>
+				<td><h:outputText value="#{messages.lbl_n_producto}"
+						styleClass="normalText" /> 
+						<span style="color:red;">*</span>
+						<rich:message for="producto"
+						showDetail="false" tooltip="true" style="color:red;">
+						<f:facet name="errorMarker">
+							<h:outputText value="*"
+								title="#{facesMessages.getCurrentMessagesForControl('producto').get(0).getDetail()}" />
+						</f:facet>
+					</rich:message><br /> <h:inputTextarea value="#{notificacion.prodcInv}"
+						required="true" id="producto"
+						style="width:470px;  height:40px; resize: vertical"
+						disabled="false"
+						validator="#{validations_ensayo.textnumber250Nuevo}"></h:inputTextarea>
+
+				</td>
+			</tr>
+
+		</table>
+		<rich:spacer height="13"></rich:spacer>
+		<table>
+			<tr>
+				<td><h:outputText value="#{messages.lbl_n_evento}"
+						styleClass="normalText" /><br /></td>
+			</tr>
+			<tr>
+				<td><h:outputText value="#{messages.lbl_n_fechaO}"
+						styleClass="normalText" /> 
+						<span style="color:red;">*</span>
+						<rich:message for="fechaOc"
+						showDetail="false" tooltip="true" style="color:red;">
+						<f:facet name="errorMarker">
+							<h:outputText value="*"
+								title="#{facesMessages.getCurrentMessagesForControl('fechaOc').get(0).getDetail()}" />
+						</f:facet>
+					</rich:message><br /> <h:inputText id="fechaOc" value="#{notificacion.fechaOcu}"
+						required="#{!empty param['ssaa:aceptarr']}" styleClass="likedate"
+						style="FONT-FAMILY: 'Bitstream Charter';">
+					</h:inputText> <script>
+									applyDateMask();
+									</script></td>
+				<td><rich:spacer width="25px"></rich:spacer></td>
+				<td><h:outputText value="#{messages.lbl_n_fechaU}"
+						styleClass="normalText" /> 
+						<span style="color:red;">*</span>
+						<rich:message for="fechaUA"
+						showDetail="false" tooltip="true" style="color:red;">
+						<f:facet name="errorMarker">
+							<h:outputText value="*"
+								title="#{facesMessages.getCurrentMessagesForControl('fechaUA').get(0).getDetail()}" />
+						</f:facet>
+					</rich:message><br /> <h:inputText id="fechaUA" value="#{notificacion.fechaUAdm}"
+						required="#{!empty param['ssaa:aceptarr']}" styleClass="likedate"
+						style="FONT-FAMILY: 'Bitstream Charter';">
+
+					</h:inputText> <script>
+									applyDateMask();
+									</script></td>
+				<td><rich:spacer width="25px"></rich:spacer></td>
+
+				<td><h:outputText value="#{messages.lbl_n_notifico}"
+						styleClass="normalText" /> 
+						<span style="color:red;">*</span>
+						<rich:message for="notifico"
+						showDetail="false" tooltip="true" style="color:red;">
+						<f:facet name="errorMarker">
+							<h:outputText value="*"
+								title="#{facesMessages.getCurrentMessagesForControl('notifico').get(0).getDetail()}" />
+						</f:facet>
+					</rich:message><br />
+				<h:selectOneRadio required="#{!empty param['ssaa:aceptarr']}"
+						layout="lineDirection" id="notifico"
+						value="#{notificacion.notifico}">
+						<f:selectItem itemValue="#{messages.lbl_n_sii}"
+							itemLabel="#{messages.lbl_n_sii}" />
+						<f:selectItem itemValue="#{messages.lbl_n_no}"
+							itemLabel="#{messages.lbl_n_no}" />
+
+						<a4j:support ajaxSingle="true" event="onclick"
+							action="#{notificacion.activar()}"
+							reRender="fechaNotifico,viaNotifico," limitToList="true" />
+
+					</h:selectOneRadio></td>
+			</tr>
+			<tr>
+				<td><h:outputText value="#{messages.lbl_n_fechaN}"
+						styleClass="normalText" /> <rich:message for="fechNoti"
+						showDetail="false" tooltip="true" style="color:red;">
+						<f:facet name="errorMarker">
+							<h:outputText value="*"
+								title="#{facesMessages.getCurrentMessagesForControl('fechNoti').get(0).getDetail()}" />
+						</f:facet>
+					</rich:message><br />
+				<a4j:outputPanel id="fechaNotifico">
+						<h:inputText id="fechNoti"
+							disabled="#{!notificacion.activarNotiFecha() ? true : false}"
+							required="#{notificacion.activarNotiFecha() and !empty param['ssaa:aceptarr']}"
+							value="#{notificacion.fechaNoti}" styleClass="likedate"
+							style="FONT-FAMILY: 'Bitstream Charter';">
+
+						</h:inputText>
+						<script>
+									applyDateMask();
+									</script>
+					</a4j:outputPanel></td>
+				<td><rich:spacer width="25px"></rich:spacer></td>
+				<td><h:outputText value="#{messages.lbl_n_viaN}"
+						styleClass="normalText" /> <rich:message for="viaNoti"
+						showDetail="false" tooltip="true" style="color:red;">
+						<f:facet name="errorMarker">
+							<h:outputText value="*"
+								title="#{facesMessages.getCurrentMessagesForControl('viaNoti').get(0).getDetail()}" />
+						</f:facet>
+					</rich:message><br />
+				<a4j:outputPanel id="viaNotifico">
+						<h:inputText id="viaNoti"
+							disabled="#{!notificacion.activarNotiFecha() ? true : false}"
+							required="#{notificacion.activarNotiFecha() and !empty param['ssaa:aceptarr']}"
+							value="#{notificacion.viaNoti}" styleClass="dataText">
+
+						</h:inputText>
+					</a4j:outputPanel></td>
+			</tr>
+		</table>
+		<table>
+			<tr>
+				<td><h:outputText value="#{messages.lbl_n_descripE}"
+						styleClass="normalText" /> 
+						<span style="color:red;">*</span>
+						<rich:message for="descrE"
+						showDetail="false" tooltip="true" style="color:red;">
+						<f:facet name="errorMarker">
+							<h:outputText value="*"
+								title="#{facesMessages.getCurrentMessagesForControl('descrE').get(0).getDetail()}" />
+						</f:facet>
+					</rich:message><br /> <h:inputTextarea value="#{notificacion.descrEvent}"
+						required="#{!empty param['ssaa:aceptarr']}" id="descrE"
+						style="width:218px;  height:40px;resize: vertical"
+						validator="#{validations_ensayo.textnumber1000}"></h:inputTextarea>
+
+				</td>
+				<td><rich:spacer width="25px"></rich:spacer></td>
+				<td><h:outputText value="#{messages.lbl_n_accion}"
+						styleClass="normalText" /> 
+						<span style="color:red;">*</span>
+						<rich:message for="accion"
+						showDetail="false" tooltip="true" style="color:red;">
+						<f:facet name="errorMarker">
+							<h:outputText value="*"
+								title="#{facesMessages.getCurrentMessagesForControl('accion').get(0).getDetail()}" />
+						</f:facet>
+					</rich:message><br /> <h:inputTextarea value="#{notificacion.accTomada}"
+						required="#{!empty param['ssaa:aceptarr']}" id="accion"
+						style="width:218px;  height:40px;resize: vertical"
+						validator="#{validations_ensayo.textnumber1000}"></h:inputTextarea>
+
+				</td>
+			</tr>
+		</table>
+
+		<rich:spacer height="13"></rich:spacer>
+
+		<table>
+			<tr>
+				<td><h:outputText value="#{messages.lbl_n_datosNotifica}"
+						styleClass="normalText" /><br /></td>
+
+			</tr>
+			<tr>
+				<td><h:outputText value="#{messages.lbl_n_nombre}"
+						styleClass="normalText" /> <rich:message for="nombre"
+						showDetail="false" tooltip="true" style="color:red;">
+						<f:facet name="errorMarker">
+							<h:outputText value="*"
+								title="#{facesMessages.getCurrentMessagesForControl('nombre').get(0).getDetail()}" />
+						</f:facet>
+					</rich:message><br /> <h:inputText value="#{notificacion.nombN}" disabled="true"
+						styleClass="dataText" id="nombre"
+						required="#{!empty param['ssaa:aceptarr']}"
+						validator="#{validations_ensayo.ValIdentEstIdent}" /></td>
+
+				<td><rich:spacer width="25px"></rich:spacer></td>
+				<td><h:outputText value="#{messages.lbl_n_ape}"
+						styleClass="normalText" /> <rich:message for="ape"
+						showDetail="false" tooltip="true" style="color:red;">
+						<f:facet name="errorMarker">
+							<h:outputText value="*"
+								title="#{facesMessages.getCurrentMessagesForControl('ape').get(0).getDetail()}" />
+						</f:facet>
+					</rich:message><br /> <h:inputText value="#{notificacion.apeN}" disabled="true"
+						styleClass="dataText" id="ape"
+						required="#{!empty param['ssaa:aceptarr']}"
+						validator="#{validations_ensayo.ValIdentEstIdent}" /></td>
+
+			</tr>			
+			<tr>
+				<td><h:outputText value="#{messages.lbl_n_cargo}"
+						styleClass="normalText" /> 
+						<span style="color:red;">*</span>
+						<rich:message for="cargo"
+						showDetail="false" tooltip="true" style="color:red;">
+						<f:facet name="errorMarker">
+							<h:outputText value="*"
+								title="#{facesMessages.getCurrentMessagesForControl('cargo').get(0).getDetail()}" />
+						</f:facet>
+					</rich:message><br /> <h:inputText value="#{notificacion.cargoN}"
+						styleClass="dataText" id="cargo"
+						required="#{!empty param['ssaa:aceptarr']}"
+						validator="#{validations_ensayo.ValIdentEstIdent}" /></td>
+				<td><rich:spacer width="25px"></rich:spacer></td>
+				<td><h:outputText value="#{messages.lbl_n_telefono}"
+						styleClass="normalText" /> 
+						<span style="color:red;">*</span>
+						<rich:message for="telefono"
+						showDetail="false" tooltip="true" style="color:red;">
+						<f:facet name="errorMarker">
+							<h:outputText value="*"
+								title="#{facesMessages.getCurrentMessagesForControl('telefono').get(0).getDetail()}" />
+						</f:facet>
+					</rich:message><br /> <h:inputText value="#{notificacion.telefN}"
+						styleClass="dataText" id="telefono"
+						required="#{!empty param['ssaa:aceptarr']}"
+						validator="#{validations_ensayo.numeroTelefono}" /></td>
+
+			</tr>
+		</table>
+
+		<table>
+			<tr>
+				<td><h:outputText value="#{messages.lbl_n_direccion}"
+						styleClass="normalText" /> 
+						<span style="color:red;">*</span>
+						<rich:message for="direccion"
+						showDetail="false" tooltip="true" style="color:red;">
+						<f:facet name="errorMarker">
+							<h:outputText value="*"
+								title="#{facesMessages.getCurrentMessagesForControl('direccion').get(0).getDetail()}" />
+						</f:facet>
+					</rich:message><br /> <h:inputTextarea value="#{notificacion.direccN}"
+						required="#{!empty param['ssaa:aceptarr']}" id="direccion"
+						style="width:218px;  height:40px; resize: vertical"
+						validator="#{validations_ensayo.textnumber250Nuevo}"></h:inputTextarea>
+
+				</td>
+				<td><rich:spacer width="25px"></rich:spacer></td>
+
+				<td><h:outputText value="#{messages.lbl_n_opinion}"
+						styleClass="normalText" /> 
+						<span style="color:red;">*</span>
+						<rich:message for="opinion"
+						showDetail="false" tooltip="true" style="color:red;">
+						<f:facet name="errorMarker">
+							<h:outputText value="*"
+								title="#{facesMessages.getCurrentMessagesForControl('opinion').get(0).getDetail()}" />
+						</f:facet>
+					</rich:message><br /> <h:inputTextarea value="#{notificacion.opinInv}"
+						required="#{!empty param['ssaa:aceptarr']}" id="opinion"
+						style="width:218px;  height:40px; resize: vertical"
+						validator="#{validations_ensayo.textnumber1000}"></h:inputTextarea>
+				</td>
+			</tr>
+		</table>
+	</s:div>
+</s:div>

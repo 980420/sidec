@@ -1,0 +1,98 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css">
+.rich-stglpanel-body {
+	padding: 0px
+}
+</style>
+		<style type="text/css">
+.rich-panel-body {
+	padding: 0px
+}
+</style>
+		<script type="text/javascript">setContentTitle('#{messages.crearMedicos}')</script>
+
+		<h:form id="medico_create" styleClass="edit">
+			<rich:panel>
+				<f:facet name="header">#{messages.crearMedicoPartirUsuario}</f:facet>
+				<table cellpadding="0px" cellspacing="0px" border="0px">
+					<tr style="height: 7px">						
+					</tr>
+					<tr>						
+						<td style="width: 7px;"></td>
+						<td>
+						 	<h:outputText value="#{messages.deseaCrearMedico}" />						 	
+						</td>
+						
+					</tr>
+					<tr>
+						<td style="width: 7px;"></td>
+						<td style="vertical-align: top">
+							<h:selectOneRadio id="subscriptions" value="#{crearMedico_Controlador.selectOption}" styleClass="aliCh" >					
+						<f:selectItem  id="item1" itemLabel="#{messages.si}" itemValue="1">	 		 </f:selectItem>						
+						<f:selectItem id="item2" itemLabel="#{messages.no}" itemValue="2">		</f:selectItem>																	
+						</h:selectOneRadio>
+						</td>
+						<td style="width: 7px;"></td>
+					</tr>
+				</table>
+			</rich:panel>	
+			
+			<a4j:outputPanel id="usuario_list_id" >	
+			<rich:spacer height="3px"/>
+			<s:div styleClass="actionButtons" style="text-align: right">
+				<div align="right"> 
+				<h:commandButton value="#{messages.aceptar}" action="#{crearMedico_Controlador.goTo()}">
+				</h:commandButton>
+				<s:button value="#{messages.cancelar}" style="margin-right:0px;"
+					view="/modConfiguracion/management/gestionar_medicos/medicoList.gehos"
+					propagation="end" /></div>
+			</s:div>
+			
+			</a4j:outputPanel>			
+		</h:form>
+		
+		<h:form>
+			<rich:contextMenu attached="false" id="nombrecontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.ordMayorMenor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{usuarioMedicoList_configuracionCustom.setOrder('nombre desc')}"
+					reRender="usuario_list">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.ordMenorMayor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{usuarioMedicoList_configuracionCustom.setOrder('nombre asc')}"
+					reRender="usuario_list">
+				</rich:menuItem>
+			</rich:contextMenu>
+			<rich:contextMenu attached="false" id="usercontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.ordMayorMenor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{usuarioMedicoList_configuracionCustom.setOrder('username desc')}"
+					reRender="usuario_list">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.ordMenorMayor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{usuarioMedicoList_configuracionCustom.setOrder('username asc')}"
+					reRender="usuario_list">
+				</rich:menuItem>
+			</rich:contextMenu>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+

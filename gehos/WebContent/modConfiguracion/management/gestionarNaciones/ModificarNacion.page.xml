@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<!-- validation -->	
+	<navigation>		
+		<rule if="#{nacionModificarControlador.nacionId == null}">
+			<redirect view-id="/modConfiguracion/management/gestionarNaciones/BuscarNacion.xhtml" />	
+		</rule>				
+	</navigation>	
+
+	<!-- go to view details-->
+	<navigation from-action="#{nacionModificarControlador.modificar()}" evaluate="#{nacionModificarControlador.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarNaciones/VerDetallesNacion.xhtml">
+				<param name="nacionId" value="#{nacionModificarControlador.nacion.id}" />
+				<param name="from" value="modificar" />
+			</redirect>
+			<end-conversation before-redirect="true" />
+		</rule>
+	</navigation>
+
+	<!-- cancel and go to view list -->
+	<navigation from-action="cancelar">		
+			<redirect view-id="/modConfiguracion/management/gestionarNaciones/BuscarNacion.xhtml" />
+			<end-conversation before-redirect="true" />		
+	</navigation>
+</page>

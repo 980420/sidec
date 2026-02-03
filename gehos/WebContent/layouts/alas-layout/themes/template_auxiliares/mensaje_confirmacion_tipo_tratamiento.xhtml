@@ -1,0 +1,81 @@
+<rich:modalPanel id="panelTipoTratamiento" width="330" height="120"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+	<f:facet name="header">
+		<h:panelGroup>
+			<h:outputText value="#{nomEncabezado}"></h:outputText>
+		</h:panelGroup>
+	</f:facet>
+	<f:facet name="controls">
+		<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+			style="cursor:pointer; position:relative; top:1px;"
+			onclick="Richfaces.hideModalPanel('eliminar_usuario_panel')" />
+	</f:facet>
+
+	<h:form id="panel_mensaje_confirmacion_form7">
+
+		
+
+		<table cellpadding="0px" cellspacing="0px" border="0px" id="container7"
+			title="">
+			<tr>
+				<td style="height: 10px;" colspan="6"></td>
+			</tr>
+			<tr style="vertical-align: top;">
+				<td style="width: 6px;"></td>
+				<td valign="top">
+				<table cellpadding="0px" cellspacing="0px">
+					<tr valign="top">
+						<td><h:graphicImage
+							value="#{nomIcono}" /></td>
+						<td style="width: 7px;"></td>
+						<td><h:outputText
+							value="#{nomLlave}"></h:outputText>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td style="width: 4px;"></td>
+			</tr>
+			<tr>
+				<td style="height: 7px;" colspan="6"></td>
+			</tr>
+			<tr>
+				<td colspan="3">
+				<div align="center">
+				<h:selectOneRadio id="radcaptar2"  styleClass="letrainput"  value="#{ccTratamiento.tipoTratamientoActivo}"> 
+                                                    <f:selectItem itemLabel="Farmacos" itemValue="1" id="p1" /> 
+                                                    <f:selectItem itemLabel="No Farmacos" itemValue="2" id="p2"/> 
+                                                    <a:support event="onclick" ajaxSingle="true" reRender="bus_med,tb_indi,panel_observaciones"  />
+                                            </h:selectOneRadio>
+			
+				</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3">
+				<div align="center">
+				<a:outputPanel>
+				<a:commandButton   value="Sí" style="margin-right: 4px;" ajaxSingle="true"
+                  onclick="Richfaces.hideModalPanel('panelTipoTratamiento')"  styleClass="boton" /> 
+                
+                <a:commandButton type="button" oncomplete="#{ccTrConsultaPacProblema.cancelarSeleccionPS()}" styleClass="boton"  value="No" style="margin-left: 3px;" ajaxSingle="true"
+                  onclick="Richfaces.hideModalPanel('panelTipoTratamiento')" reRender="bus_med" />
+				</a:outputPanel>
+			
+				</div>
+				</td>
+			</tr>
+			<tr>
+				<td style="height: 6px;" colspan="6"></td>
+			</tr>
+		</table>
+
+	</h:form>
+</rich:modalPanel>
+

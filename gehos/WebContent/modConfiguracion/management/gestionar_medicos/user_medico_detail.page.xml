@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+    
+    <begin-conversation flush-mode="manual" join="true"/>
+      
+   <param name="userId" value="#{userMedicoDetalles_Controlador.id}"/> 
+   
+   <navigation from-action="modificar">
+		<rule>
+			<redirect view-id="/modConfiguracion/management/gestionar_medicos/modificar_medico.xhtml">	
+				<param name="userId" value="#{userMedicoDetalles_Controlador.id}"/>
+			</redirect>
+			<end-conversation before-redirect="true"/>
+		</rule>			
+	</navigation>
+   
+   <navigation from-action="salir">
+		<rule>
+			<redirect view-id="/modConfiguracion/management/gestionar_medicos/medico_select_user_create.xhtml">	
+			</redirect>
+			<end-conversation before-redirect="true"/>
+		</rule>			
+	</navigation>
+
+</page>

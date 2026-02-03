@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<ui:include src="/modEnsayo/codebase/plantillas/exportModalPanel.xhtml">
+
+		<ui:param name="controlador" value="#{cMSxSujeto}" />
+	</ui:include>
+
+	<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+		type='text/css' />
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css'
+		type='text/css' />
+
+
+	<h:form>
+		<a4j:outputPanel ajaxRendered="true">
+			<s:div
+				rendered="#{facesMessages.getCurrentMessagesForControl('listOfGruposujetos').size() > 0 }"
+				styleClass="custom-error">
+				<div>
+					<rich:message for="listOfGruposujetos" />
+				</div>
+			</s:div>
+			<rich:modalPanel id="bloqueo" width="0" height="0" top="0" left="0" style="opacity: -10000" shadowOpacity="-10000" />
+			
+		</a4j:outputPanel>
+
+		<rich:simpleTogglePanel switchType="client" 
+			bodyClass="simpleTogPanel">
+			<f:facet name="header">
+				<h:outputLabel value="#{messages.reporte}" style="cursor:pointer;" />
+			</f:facet>
+
+			<table cellpadding="0px" cellspacing="0px" border="0px"
+				id="simplesearch">
+				<tr>
+					<td>#{messages.gruposujeto}:<br /> <rich:comboBox
+							suggestionValues="#{cMSxSujeto.llenarGSujetos()}"
+							value="#{cMSxSujeto.gruSujetos}"
+							defaultLabel="#{messages.cbxSeleccionPorDefecto}" id="anno">
+						</rich:comboBox></td>
+
+					<td><rich:spacer width="25px" /></td>
+
+					<td style="vertical-align: bottom;"><br /> <a4j:commandButton
+							value="#{messages.generar}" tabindex="3"
+							action="#{cMSxSujeto.Generar()}"
+							reRender="wrapperPanel1,wrapperPanel,wrapperPanel2" style="margin: 0 0 0 0;">
+						</a4j:commandButton> <rich:spacer width="4">
+						</rich:spacer> <s:button view="/modCommons/modHome/home.gehos"
+							value="#{messages.cancelar}" 
+							rendered="#{not identificadorManager.editing}" style="margin-top: 0; margin-bottom: 0; margin-right: -5px">
+							<f:param name="idFuncionalidad"
+								value="#{activeModule.activeModule.id}" />
+							<f:param name="idancestors"
+								value="#{activeModule.activeModule.id}a" />
+							<f:param name="moduleName"
+								value="#{activeModule.activeModuleName}" />
+						</s:button></td>
+
+				</tr>
+			</table>
+		</rich:simpleTogglePanel>
+		<rich:spacer height="11px" />
+
+		<div align="right"><a4j:status id="status" onstart="#{rich:component('bloqueo')}.show()" onstop="#{rich:component('bloqueo')}.hide()">
+                        <f:facet name="start">
+                                <s:div>
+                                        <table>
+                                                <tr>
+                                                        <td><h:graphicImage width="12" height="12"
+                                                                value="/resources/icons/default/acciones/loading_big.gif" /></td>
+                                                        <td><h:outputText value="#{messages.lblProcesando_ap}" /></td>
+                                                </tr>
+                                        </table>
+                                </s:div>
+                        </f:facet>
+                </a4j:status></div>
+
+		<s:div>
+			<h:panelGroup id="wrapperPanel1">
+				<h:panelGroup id="noResultRenderPanel" rendered="true">
+
+					<rich:panel rendered="#{cMSxSujeto.flag2}">
+						<f:facet name="header">#{messages.titulo}</f:facet>
+						<table class="Tabla" width="100%" cellpadding="0" cellspacing="0">
+							<tr>
+								<td><h:outputText
+										value="#{cMSxSujeto.noResult}" /></td>
+							</tr>
+						</table>
+					</rich:panel>
+
+				</h:panelGroup>
+			</h:panelGroup>
+		</s:div>
+
+
+		<s:div>
+			<h:panelGroup id="wrapperPanel">
+				<h:panelGroup id="reportRenderPanel" rendered="true">
+					<rich:panel rendered="#{cMSxSujeto.flag}">
+						<f:facet name="header">#{messages.titulo}</f:facet>
+						<iframe width="100%" height="800px"
+							src="#{facesContext.externalContext.requestContextPath}#{cMSxSujeto.pathToReport}"></iframe>
+						<div align="right">
+						
+							<rich:spacer height="8px" style="display: block" />
+							<input type="button" value="#{messages.exportar}"
+								onclick="javascript:Richfaces.showModalPanel('exportPanel');"
+								title="#{messages.exportar}"
+								style="text-align: center; margin-right: 10px;"
+								id="exportButton" action="export" />
+							<s:button view="/modCommons/funSelector/selector.gehos"
+								value="#{messages.salir}" style="margin-right:0px"
+								rendered="#{not identificadorManager.editing}">
+								<f:param name="idFuncionalidad"
+									value="#{activeModule.activeModule.id}" />
+								<f:param name="idancestors"
+									value="#{activeModule.activeModule.id}a" />
+								<f:param name="moduleName"
+									value="#{activeModule.activeModuleName}" />
+							</s:button>
+						</div>
+					</rich:panel>
+				</h:panelGroup>
+			</h:panelGroup>
+			
+			
+		</s:div>
+
+	</h:form>
+</s:div>

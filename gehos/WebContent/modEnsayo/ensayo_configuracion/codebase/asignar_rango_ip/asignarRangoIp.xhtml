@@ -1,0 +1,315 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle("#{messages.msg_titulo_ensClin}")</script>
+
+	<rich:messages styleClass="custom-error" globalOnly="true">
+
+	</rich:messages>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+		type='text/css' />
+
+	<h:form id="asigip">
+		<a:outputPanel ajaxRendered="true" id="errorOutputPanel">
+			<s:div style="height:30px;width:100%"
+				rendered="#{facesMessages.getCurrentMessagesForControl('error').size() > 0 }">
+				<div class="custom-error">
+					<rich:message for="error"></rich:message>
+				</div>
+			</s:div>
+		</a:outputPanel>
+
+		<a:keepAlive beanName="asignaripControlador" />
+
+		<table width="100%" cellpadding="5px" cellspacing="0px"
+			style="vertical-align: top;">
+			<tr>
+				<td style="vertical-align: top; width: 45%;"><rich:panel
+						id="treePanel">
+
+						<f:facet name="header">
+							<a:status stopText="#{messages.msg_selectEntidad_ensClin}"
+								startText="#{messages.msg_actualizando_ensClin}"
+								for="studioTreePanel" id="studiosTreeStatus">
+							</a:status>
+						</f:facet>
+
+						<div
+							style="border: 1px; position: relative; left: -1px; top: 2px;">
+
+							<a:region id="studioTreePanel">
+								<a:outputPanel ajaxRendered="true">
+
+									<s:div style="margin-left:2px;">
+										<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+											<h:graphicImage
+												value="/resources/modConfiguracion/hospital-icon.png"
+												height="16" />
+											<a:commandLink ajaxSingle="true" immediate="true"
+												event="onclick" reRender="errorOutputPanel,dataStudioPanel"
+												action="#{asignaripControlador.setSelectedItem(null)}"
+												value="#{messages.msg_Centro_ensClin}"
+												style="margin-left:1px;" />
+										</h:panelGrid>
+									</s:div>
+									<div style="position: relative; left: 1px;">
+
+										<rich:tree
+											changeExpandListener="#{asignaripControlador.OnNodeCollapseExpand}"
+											style="width:200px"
+											value="#{asignaripControlador.treeRootData}"
+											switchType="ajax" treeNodeVar="treenode" var="node"
+											nodeFace="#{node.toString()}" id="studioTree">
+
+											<rich:treeNode type="entidad"
+												icon="#{asignaripControlador.entidadIcon(node)}"
+												iconLeaf="#{asignaripControlador.entidadIcon(node)}">
+												<a:commandLink value="#{node.value.nombre}"
+													ajaxSingle="true" immediate="true" event="onclick"
+													action="#{asignaripControlador.setSelectedItem(node)}"
+													reRender="errorOutputPanel,dataStudioPanel">
+												</a:commandLink>
+											</rich:treeNode>
+										</rich:tree>
+									</div>
+								</a:outputPanel>
+							</a:region>
+						</div>
+					</rich:panel></td>
+				<td style="vertical-align: top; width: 55%;">
+					<table width="100%" cellspacing="0px" style="vertical-align: top;">
+						<tr>
+							<td><a:region>
+									<a:outputPanel ajaxRendered="true">
+										<rich:panel id="studioPanel"
+											rendered="#{asignaripControlador.selectedItem.toString() == 'entidad'}">
+
+											<f:facet name="header">
+												<s:div id="headerStudioPanel">
+													<a:status id="statusHeaderStudioPanel"
+														onstart="document.body.style.cursor='wait'; Richfaces.showModalPanel('ajaxLoadingModalBox',{left:1, top:-15});"
+														onstop="document.body.style.cursor='default'; Richfaces.hideModalPanel('ajaxLoadingModalBox');">
+													</a:status>
+
+													<s:div
+														rendered="#{asignaripControlador.selectedItem == null}">
+															#{messages.msg_listIP_ensClin}											
+														</s:div>
+
+													<s:div
+														rendered="#{asignaripControlador.selectedItem.toString() == 'entidad'}">
+														<h:panelGrid columns="3" cellpadding="0" cellspacing="0">
+															<rich:spacer width="3" />
+															<h:outputLabel
+																value="#{asignaripControlador.selectedItem.value.nombre}" />
+														</h:panelGrid>
+													</s:div>
+
+												</s:div>
+											</f:facet>
+
+											<s:div id="dataStudioPanel">
+												<s:div id="infoDataStudioPanel" style="display: inline;">
+
+													<s:div
+														rendered="#{asignaripControlador.selectedItem == null}">
+															#{messages.msg_notData_ensClin}											
+														</s:div>
+
+													<s:div
+														rendered="#{asignaripControlador.selectedItem.toString() == 'entidad'}">
+														<div align="right">
+															<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+																<h:graphicImage height="12" width="12"
+																	value="/resources/icons/default/acciones/adicionar.png"
+																	style="margin: 2px 2px 2px 2px;" />
+																<h:outputLink value="#"
+																	style="margin-left: 0px; margin-bottom: 4px; margin-top: 2px;">
+																		#{messages.btn_addIP_ensClin}
+																		<a:support event="onclick" limitToList="true"
+																		ajaxSingle="true" reRender="agregar_IP_panel"
+																		oncomplete="javascript:Richfaces.showModalPanel('agregar_IP')" />
+																</h:outputLink>
+
+															</h:panelGrid>
+
+														</div>
+
+													</s:div>
+
+													<s:div
+														rendered="#{asignaripControlador.selectedItem.toString() == 'entidad'}"
+														id="ipTable">
+
+														<h:dataTable value="#{asignaripControlador.IPs()}"
+															var="ipe" border="1"
+															style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+															cellspacing="0" cellpadding="0"
+															columnClasses="strech,  nostrech"
+															rowClasses="dr-table-firstrow2">
+
+															<f:facet name="header">
+																<div style="background-color: ##{theme.headercolor}; cursor: default;">#{messages.msg_listIP_ensClin}</div>
+															</f:facet>
+
+															<h:column
+																rendered="#{asignaripControlador.IPs().size() != 0}">
+																<f:facet name="header">
+																	<div style="background-color: ##{theme.headercolor}; cursor: default;">
+																		#{messages.msg_tablaIP_ensClin}</div>
+																</f:facet>
+
+																<h:panelGrid cellpadding="0" cellspacing="0">
+																	<s:div> 
+																		#{ipe.ip}		
+																	</s:div>
+
+																</h:panelGrid>
+															</h:column>
+															<h:column
+																rendered="#{asignaripControlador.IPs().size() != 0}">
+																<f:facet name="header">
+																	<div style="background-color: ##{theme.headercolor};">
+																		<span style="margin-left: 2px; margin-right: 2px;">#{messages.msg_eliminar_ensClin}</span>
+																	</div>
+																</f:facet>
+
+																<div align="center" style="cursor: default;">
+																	<a:commandLink rendered="true"
+																		action="#{asignaripControlador.setIPToRemove(ipe.id)}"
+																		oncomplete="Richfaces.showModalPanel('eliminar_IP')">
+																		<h:graphicImage style="border:0px; cursor: pointer"
+																			title="#{messages.msg_eliminar_ensClin}"
+																			rendered="true"
+																			url="/resources/icons/default/acciones/eliminar.png">
+																		</h:graphicImage>
+																	</a:commandLink>
+																</div>
+															</h:column>
+														</h:dataTable>
+														<br/>
+														<s:div
+															rendered="#{asignaripControlador.IPs().size() == 0}">#{messages.msg_notdata_ensClin}</s:div>
+													</s:div>
+													<br />
+													<s:div
+														rendered="#{asignaripControlador.selectedItem.toString() == 'entidad'}">
+														<div align="right">
+															<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+																<h:graphicImage height="12" width="12"
+																	value="/resources/icons/default/acciones/adicionar.png"
+																	style="margin: 2px 2px 2px 2px;" />
+																<h:outputLink value="#"
+																	style="margin-left: 0px; margin-bottom: 4px; margin-top: 2px;">
+																		#{messages.btn_addRIP_ensClin}
+																		<a:support event="onclick" limitToList="true"
+																		ajaxSingle="true" reRender="agregar_rangoIP_panel"
+																		oncomplete="javascript:Richfaces.showModalPanel('agregar_rangoIP')" />
+																</h:outputLink>
+
+															</h:panelGrid>
+
+														</div>
+
+													</s:div>
+													<s:div
+														rendered="#{asignaripControlador.selectedItem.toString() == 'entidad'}"
+														id="iprangoTable">
+														
+														<h:dataTable value="#{asignaripControlador.IPRango()}"
+															var="iprango" border="1"
+															style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+															cellspacing="0" cellpadding="0"
+															columnClasses="strech11, strech1, nostrech"
+															rowClasses="dr-table-firstrow2">
+
+															<f:facet name="header">
+																<div style="background-color: ##{theme.headercolor}; cursor: default;">#{messages.msg_listRangoIP_ensClin}</div>
+															</f:facet>
+
+															<h:column
+																rendered="#{asignaripControlador.IPRango().size() != 0}">
+																<f:facet name="header">
+																	<div style="background-color: ##{theme.headercolor}; cursor: default;">
+																		#{messages.msg_tablaIPI_ensClin}</div>
+																</f:facet>
+
+																<h:panelGrid cellpadding="0" cellspacing="0">
+																	<s:div> 
+																		#{iprango.ip}		
+																	</s:div>
+
+																</h:panelGrid>
+															</h:column>
+
+															<h:column
+																rendered="#{asignaripControlador.IPRango().size() != 0}">
+																<f:facet name="header">
+																	<div style="background-color: ##{theme.headercolor}; cursor: default;">
+																		#{messages.msg_tablaIPF_ensClin}</div>
+																</f:facet>
+
+																<h:panelGrid cellpadding="0" cellspacing="0">
+																	<s:div> 
+																		#{iprango.ipFinal}		
+																	</s:div>
+
+																</h:panelGrid>
+															</h:column>
+
+															<h:column
+																rendered="#{asignaripControlador.IPRango().size() != 0}">
+																<f:facet name="header">
+																	<div style="background-color: ##{theme.headercolor};">
+																		<span style="margin-left: 2px; margin-right: 2px;">#{messages.msg_eliminar_ensClin}</span>
+																	</div>
+																</f:facet>
+
+																<div align="center" style="cursor: default;">
+																	<a:commandLink rendered="true"
+																		action="#{asignaripControlador.setIPToRemove(iprango.id)}"
+																		oncomplete="Richfaces.showModalPanel('eliminar_rangoIP')">
+																		<h:graphicImage style="border:0px; cursor: pointer"
+																			title="#{messages.msg_eliminar_ensClin}"
+																			rendered="true"
+																			url="/resources/icons/default/acciones/eliminar.png">
+																		</h:graphicImage>
+																	</a:commandLink>
+																</div>
+															</h:column>
+														</h:dataTable>
+														<br/>
+														<s:div
+															rendered="#{asignaripControlador.IPRango().size() == 0}">#{messages.msg_notdata_ensClin}</s:div>
+													</s:div>
+												</s:div>
+											</s:div>
+										</rich:panel>
+									</a:outputPanel>
+								</a:region></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</h:form>
+	<s:div>
+		<ui:include
+			src="/modEnsayo/ensayo_configuracion/codebase/asignar_rango_ip/modalpanels/agregar_ragoIPaEntidad.xhtml" />
+		<ui:include
+			src="/modEnsayo/ensayo_configuracion/codebase/asignar_rango_ip/modalpanels/agregar_IPaEntidad.xhtml" />
+		<ui:include
+			src="/modEnsayo/ensayo_configuracion/codebase/asignar_rango_ip/modalpanels/confirmar_eliminarRangoIP.xhtml" />
+		<ui:include
+			src="/modEnsayo/ensayo_configuracion/codebase/asignar_rango_ip/modalpanels/confirmar_eliminarIP.xhtml" />
+	</s:div>
+</s:div>

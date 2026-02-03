@@ -1,0 +1,58 @@
+.fnd{
+  color:#000000!important;
+}
+.fnd:hover{
+  color:#22466b !important;
+  font-weigth:bold !important;
+}
+.borde{
+	border:0px !important;
+	background-color : white !important;
+	padding-left: 10px;	
+}
+.panelRes{
+	border:0px !important;
+	width:122px; height:97px;
+	cursor:pointer;
+	background-color : white !important;
+	
+}
+.panelRes:hover{
+	background-image:url("fondoRes.png");
+	background-repeat:no-repeat;
+}
+.panelRes2{
+	background-image:url("fondoRes2.png");
+	background-repeat:no-repeat;
+	border:0px !important;
+	width:122px; height:97px;
+	cursor:pointer;
+}
+.sele{
+	color: #000000 !important; font-weight:normal !important;
+	border:0px !important;
+}
+.favpanel{
+	text-align: center;
+	padding: 5px;
+}
+.dr-sb-cell-padding{padding: 0px;} .rich-sb-cell-padding{padding: 0px;}
+.rich-sb-int-sel{
+	color: #000000 !important; font-weight:normal !important;
+	background-image: url('#{facesContext.externalContext.requestContextPath}/layouts/soto-layout/themes/#{theme.color}/images/backR.png');
+	background-repeat: no-repeat;
+}
+.dr-mpnl-mask-div{
+    		background-color: transparent; 
+}
+.dr-mpnl-pnl, .dr-mpnl-shadow, .rich-mpnl-shadow {
+    		background-color: transparent !important; border: 0px !important;
+    		vertical-align: middle;
+}
+
+.barHeaderC
+{
+	font-weight:bold;
+	color:#153151;
+	cursor:default;
+}

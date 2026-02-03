@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+      xmlns:a4j="http://richfaces.org/a4j"
+      template="#{theme.template}"
+                xmlns:rich="http://richfaces.org/rich">
+                
+<ui:define name="body" >
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('Detalles del nomenclador')</script>
+	<style type="text/css">.rich-stglpanel-body{padding:0px}</style>
+	<style type="text/css">.rich-panel-body{padding:0px}</style>
+	
+	<h:form>	
+	<a4j:keepAlive beanName="nomencladorDetailController" />	
+	<rich:panel>
+		<f:facet name="header">Datos del nomenclador</f:facet>
+		<table cellpadding="0px" cellspacing="0px" border="0px" >
+			<tr>
+				<td style="height: 11px;" colspan="6">
+				</td>
+			</tr>
+			<tr style="vertical-align: top;">
+				<td style="width: 7px;"></td>
+				<td>
+					Código:
+					<h:outputLabel value="#{nomencladorDetailController.nomenclador.codigo}" />
+				</td>
+				<td style="width: 25px"></td>
+				<td>
+					Valor:
+					<h:outputLabel value="#{nomencladorDetailController.nomenclador.valor}" />
+				</td>
+				<td style="width: 25px"></td>
+				<td  style="vertical-align: bottom;">
+				</td>
+				<td style="width: 25px"></td>
+				<td style="vertical-align: bottom;">
+				</td>
+			</tr>
+		</table>
+		<br/>
+	</rich:panel> 
+	<div align="right">
+		<h:commandButton action="#{nomencladorEditController.setNomenclador(nomencladorDetailController.nomenclador)}"
+				value="Modificar" style="margin-left: 0px; margin-bottom: 0px;" >
+		</h:commandButton>
+		<s:button value="Salir" view="/modConfiguracion/nomencladores/NomencladoresDetail.xhtml"
+					style="margin-right: 0px; margin-bottom: 0px;" >
+	           <f:param id="nomenc" name="nomenc" value="#{nomencladorDetailController.nomenclador.entityName}"/>					
+		</s:button>
+	
+	</div>
+	<br/>
+		
+  </h:form>
+
+</ui:define>
+
+</ui:composition>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

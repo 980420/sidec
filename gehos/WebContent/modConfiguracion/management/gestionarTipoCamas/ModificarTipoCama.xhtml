@@ -1,0 +1,112 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		
+		<!-- CSS -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/style/stylesheet_configuracion.css"
+			rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+		<!-- Java Functions -->
+		<a4j:form>
+			<a4j:jsFunction name="updateIcon" limitToList="true" ajaxSingle="true">
+				<a4j:actionparam name="icn"
+					assignTo="#{tipoCamaModificarControlador.icon}" />
+			</a4j:jsFunction>
+		</a4j:form>
+
+		<a4j:outputPanel ajaxRendered="true">
+			<rich:messages id="message" styleClass="message" ajaxRendered="true" for="message"/>
+		</a4j:outputPanel>
+
+		<h:form id="form" styleClass="create"
+			enctype="multipart/form-data">
+			<s:validateAll>
+				<rich:panel>
+					<f:facet name="header">#{messages.datos}</f:facet>
+
+					<table cellpadding="0px" cellspacing="0px" class="tabla col-mt-izq fil-mc-botton col-mc-der" style="padding-top: 12px">						
+						<tr >							
+							<td style="padding-right: 23px"><h:outputLabel value="#{messages.icono}"></h:outputLabel><br />
+							<s:div id="iconspanel" rendered="true">
+								<s:div id="modulo_agregar_cat_iconslist">
+									<div style="overflow: auto;">
+									<div align="center"><a4j:outputPanel id="aIcono">
+										<h:graphicImage width="16" height="16" tabindex="3"
+											style="cursor:pointer" title="#{message.seleccionar}"
+											url="/resources/modCommon/tipocamaimage/#{tipoCamaModificarControlador.icon}">
+
+											<a4j:support ajaxSingle="true" event="onclick"
+												oncomplete="Richfaces.showModalPanel('icono_tipo_ubicacion')" />
+										</h:graphicImage>
+									</a4j:outputPanel></div>
+
+									</div>
+								</s:div>
+							</s:div></td>							
+							<td class="colg-c"><h:outputLabel value="#{messages.codigo}" />
+							<rich:message for="codigo" showDetail="false" showSummary="false"
+								tooltip="true">
+								<f:facet name="errorMarker">
+									<h:outputText
+										title="#{facesMessages.getCurrentMessagesForControl('codigo').get(0).getDetail()}"
+										 value="*" style="cursor: default;"
+										styleClass="errorLabel" />
+								</f:facet>
+							</rich:message><br />
+							<h:inputText id="codigo"
+								validator="#{tipoCamaValidarControlador.code}"
+								value="#{tipoCamaModificarControlador.codigo}" tabindex="1"
+								required="true" requiredMessage="#{messages.valorRequerido}"
+								styleClass="inputText" /> </td>
+
+							
+							<td><h:outputLabel value="#{messages.valor}"/>
+							<rich:message for="valor" showDetail="false" showSummary="false"
+								tooltip="true">
+								<f:facet name="errorMarker">
+									<h:outputText
+										title="#{facesMessages.getCurrentMessagesForControl('valor').get(0).getDetail()}"
+										 value="*" style="cursor: default;" 
+										styleClass="errorLabel" />
+								</f:facet>
+							</rich:message> <br />
+							<h:inputText value="#{tipoCamaModificarControlador.valor}"
+								required="true"
+								validator="#{tipoCamaValidarControlador.value}" id="valor"
+								tabindex="2" requiredMessage="#{messages.valorRequerido}"
+								styleClass="inputText" /> </td>
+						</tr>
+					</table>
+				</rich:panel>				
+			</s:validateAll>
+			
+			<div align="right">
+				<table cellpadding="0" cellspacing="0" class="table fil-c">
+					<tr>
+						<td class="col-botton"><h:commandButton id="buttonAceptar"
+							value="#{messages.aceptar}" styleClass="botton"
+								action="#{tipoCamaModificarControlador.modificar()}" tabindex="2" style=""/></td>
+						<td><h:commandButton value="#{messages.cancelar}"
+							immediate="true" tabindex="3" action="cancelar"
+							styleClass="botton" /></td>
+					</tr>
+				</table>
+				</div>
+		</h:form>
+		<ui:include
+			src="/modConfiguracion/management/gestionarTipoCamas/modalspanel/SeleccionarIconoTipoCamaModificar.xhtml" />
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition xmlns="" name="solicitar_productos">
+
+
+	<start-state name="inicio">
+		<transition to="tipo_de_solicitud"></transition>
+	</start-state>
+
+
+	<decision name="tipo_de_solicitud">
+		<handler class="org.jboss.seam.drools.DroolsDecisionHandler">
+			<workingMemoryName>solicitarProductosWorkingMemory</workingMemoryName>
+			<assertObjects>
+				<element>#{crearSolicitudControlador_almacen.tipo}</element>
+			</assertObjects>
+		</handler>
+		<transition to="otro_almacen" name="to_otro_almacen"></transition>
+		<transition to="detalles_de_solicitud_de_compra" name="to_detalles_de_solicitud_de_compra"></transition>
+		<transition to="detalles_de_solicitud_de_licitacion" name="to_detalles_de_solicitud_de_licitacion"></transition>
+	</decision>
+
+	<task-node name="otro_almacen">
+		<transition to="fin" name="to_fin"></transition>
+	</task-node>
+
+	<task-node name="detalles_de_solicitud_de_compra">
+		<task name="detalles_de_solicitud_de_compra">
+			<description>
+				Solicitud para compras
+			</description>
+			<assignment pooled-actors="#{activeModule.activeSubModulePhysicalName}"></assignment>
+		</task>
+		<transition to="aceptar_solicitud_de_compra" name="to_aceptar_solicitud_de_compra"></transition>
+		<transition to="fin" name="to_fin"></transition>
+	</task-node>
+
+	<task-node name="detalles_de_solicitud_de_licitacion">
+		<task name="detalles_de_solicitud_de_licitacion">
+			<description>
+				Solicitud para licitación
+			</description>
+			<assignment pooled-actors="#{assigmentRoleTask.nameLogicModule}"></assignment>
+		</task>
+		<transition to="procesar_solicitud_de_productos" name="to_procesar_solicitud_de_productos"></transition>
+		<transition to="fin" name="to_fin"></transition>
+	</task-node>
+
+	<task-node name="procesar_solicitud_de_productos">
+		<task name="procesar_solicitud_de_productos">
+			<description>
+				Solicitud realizada por #{datosSolicitud.solicitud.almacen.nombre}
+			</description>
+			<assignment pooled-actors="admin,comite_de_licitacion_1"></assignment>
+		</task>
+		<transition to="fin" name="to_registrar_ofertas"></transition>
+		<transition to="fin" name="to_fin"></transition>
+	</task-node>
+
+	<task-node name="registrar_ofertas">
+		<task name="registrar_ofertas">
+			<description>
+				Solicitud realizada por #{datosSolicitud.solicitud.almacen.nombre}
+			</description>
+			<assignment pooled-actors="admin,comite_de_licitacion_1"></assignment>
+		</task>
+		<transition to="procesar_ofertas" name="to_procesar_ofertas"></transition>
+	</task-node>
+
+	<task-node name="procesar_ofertas">
+		<task name="procesar_ofertas">
+			<description>
+				Solicitud realizada por #{datosSolicitud.solicitud.almacen.nombre}
+			</description>
+			<assignment pooled-actors="admin,#{datosSolicitud.solicitud.almacen.funcionalidad.nombre}"></assignment>
+		</task>
+		<transition to="aprobar_adjudicacion" name="to_aprobar_adjudicacion"></transition>
+	</task-node>
+
+	<task-node name="aceptar_solicitud_de_compra">
+		<task name="aceptar_solicitud_de_compras">
+			<description>
+				Aceptar solicitud de compras de #{datosSolicitud.solicitud.almacen.nombre}
+			</description>
+			<assignment pooled-actors="compras_1"></assignment>
+		</task>
+		<transition to="fin" name="to_fin"></transition>
+	</task-node>
+
+	<task-node name="aprobar_adjudicacion">
+		<task name="aprobar_adjudicacion">
+			<description>
+				Solicitud realizada por #{datosSolicitud.solicitud.almacen.nombre}
+			</description>
+			<assignment pooled-actors="comite_de_licitacion_1"></assignment>
+		</task>
+		<transition to="fork1"></transition>
+	</task-node>
+
+	<fork name="fork1">
+		<transition to="crear_orden_de_compra" name="to_crear_orden_de_compra"></transition>
+		<transition to="crear_contrato" name="to_crear_contrato"></transition>
+	</fork>
+
+	<task-node name="crear_orden_de_compra">
+		<task name="crear_orden_de_compra">
+			<description>
+				Solicitud realizada por #{datosSolicitud.solicitud.almacen.nombre}
+			</description>
+			<assignment pooled-actors="compras_1"></assignment>
+		</task>
+		<transition to="join1"></transition>
+	</task-node>
+
+	<task-node name="crear_cronograma_de_entrega">
+		<task name="crear_cronograma_de_entrega">
+			<description>
+				Cronograma de entrega para la solicitud de #{datosSolicitud.solicitud.almacen.nombre}
+			</description>
+			<assignment pooled-actors="admin,#{datosSolicitud.solicitud.almacen.funcionalidad.nombre}"></assignment>
+		</task>
+		<transition to="fin" name="to_fin"></transition>
+	</task-node>
+
+	<task-node name="crear_contrato">
+		<task name="crear_contrato">
+			<description>
+				Solicitud realizada por #{datosSolicitud.solicitud.almacen.nombre}
+			</description>
+			<assignment pooled-actors="comite_de_licitacion_1"></assignment>
+		</task>
+		<transition to="join1"></transition>
+	</task-node>
+
+	<join name="join1">
+		<transition to="crear_cronograma_de_entrega" name="to_crear_cronograma_de_entrega"></transition>
+	</join>
+
+
+	<end-state name="fin"></end-state>
+
+
+</process-definition>

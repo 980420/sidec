@@ -1,0 +1,42 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:rich="http://richfaces.org/rich" >
+      <rich:contextMenu  attached="false"   id="#{nombreMenu}" submitMode="ajax">       	                  
+		<rich:menuItem value="#{messages.ordMenorMayor}"
+					   ajaxSingle="true"
+					   icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					   action="#{customList.setOrder(columna.concat(' asc'))}"
+					   reRender="#{tablaRender}">
+		</rich:menuItem>				
+		<rich:menuItem value="#{messages.ordMayorMenor}"
+			           ajaxSingle="true"
+			           icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+			           action="#{customList.setOrder(columna.concat(' desc'))}"
+			           reRender="#{tablaRender}">
+		</rich:menuItem>	
+	</rich:contextMenu>
+	<h:graphicImage 
+		rendered="#{not customList.order.equals(columna.concat(' asc')) and not customList.order.equals(columna.concat(' desc'))}"
+		value="/resources/icons/default/filtro/default.png">				
+		<rich:componentControl 
+							   event="onclick" 
+		                       for="#{nombreMenu}"
+			                   operation="show">
+		</rich:componentControl>
+	</h:graphicImage>
+	<h:graphicImage rendered="#{customList.order.equals(columna.concat(' asc'))}"
+		value="/resources/icons/default/filtro/asc_sort.png" width="17" height="17">
+		<rich:componentControl 
+			event="onclick" 
+			for="#{nombreMenu}"
+			operation="show">
+		</rich:componentControl>
+	</h:graphicImage>
+	<h:graphicImage rendered="#{customList.order.equals(columna.concat(' desc'))}"
+		value="/resources/icons/default/filtro/des_sort.png" width="17" height="17">
+		<rich:componentControl 
+			event="onclick" 
+			for="#{nombreMenu}"
+			operation="show">
+		</rich:componentControl>
+	</h:graphicImage>	
+</div>

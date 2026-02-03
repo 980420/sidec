@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+      
+   <param name="servicioId" value="#{serviciosEdit_common.servicioId}"/>
+   
+	<navigation from-action="#{serviciosEdit_common.salvar()}">
+		<rule if-outcome="gotodetails">
+			<redirect view-id="/modConfiguracion/servicios/serviciosDetail.xhtml">
+				<param  name="servicioId" value="#{serviciosEdit_common.servicio.id}"/>
+			</redirect> 
+		</rule>
+	</navigation>
+   
+
+</page>

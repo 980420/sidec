@@ -1,0 +1,21 @@
+package process_rules;
+ 
+import org.jboss.seam.drools.Decision;
+import java.lang.Boolean;
+ 
+global Decision decision
+
+function String hacerDistribucion(Boolean emergencia) {
+	if(emergencia)
+		return "no";
+	return "si";
+}
+
+rule "realizar_asignacion"
+	when 
+		$emergencia : Boolean()
+	then 
+		decision.setOutcome(hacerDistribucion($emergencia));
+end
+
+

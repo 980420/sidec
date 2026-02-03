@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+   
+   <action execute = "#{entidadBuscarControler.begin()}"/> 
+   <param name="open" value="#{entidadBuscarControler.openSimpleTogglePanel}" />
+   <param name="order" value="#{entidadBuscarControler.order}" />     
+   <param name="firstResult" value="#{entidadBuscarControler.firstResult}"/>  
+   <param name="critB1" value="#{entidadBuscarControler.nombre}"/>
+   
+  <!--  <navigation from-action="#{entidadBuscarControler.buscar()}">		
+			<redirect view-id="/modConfiguracion/management/gestionarEntidades/BuscarEntidades.xhtml">
+				<param name="open" value="#{entidadBuscarControler.openSimpleTogglePanel}" />
+				<param name="firstResult" value="#{entidadBuscarControler.firstResult}"/>
+				<param name="order" value="#{entidadBuscarControler.order}" /> 
+				<param name="critB1" value="#{entidadBuscarControler.parametros.encodec(entidadBuscarControler.nombre)}"/>											
+			</redirect> 		
+	</navigation> -->
+   
+  <navigation from-action="crear">		
+			<redirect view-id="/modConfiguracion/management/gestionarEntidades/CrearEntidades.xhtml">
+				<param name="open" value="#{entidadBuscarControler.openSimpleTogglePanel}" />
+				<param name="firstResult" value="#{entidadBuscarControler.firstResult}"/>
+				<param name="order" value="#{entidadBuscarControler.order}" /> 
+				<param name="critB1" value="#{entidadBuscarControler.parametros.encodec(entidadBuscarControler.nombre)}"/>											
+			</redirect> 		
+	</navigation>
+  
+
+</page>

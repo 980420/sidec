@@ -1,0 +1,94 @@
+<! DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+  <meta charset="UTF-8">
+     <script type="text/javascript" language="javascript" src="./assets/chart.js"></script>
+     <script type="text/javascript" language="javascript" src="./assets/chartjs-plugin-datalabels.js"></script>
+   
+</head>
+<body>
+
+     <canvas id="procesoMonitoreoChart"></canvas>
+
+    <script type="text/javascript">
+
+    var iframe = parent.document.getElementById('procesoMonitoreoChartIframe');
+    var width = iframe.offsetWidth;
+    var height = iframe.offsetHeight;
+
+    var canvas = document.getElementById('procesoMonitoreoChart');
+
+    canvas.width = width;
+    canvas.height = height;
+
+    
+    function procesoMonitoreo() {
+        
+        let iniciadosProcesoMonitoreo = parent.document.getElementById('iniciadosProcesoMonitoreo').value;
+        let noIniciadosProcesoMonitoreo = parent.document.getElementById('noIniciadosProcesoMonitoreo').value;
+        let completadosProcesoMonitoreo = parent.document.getElementById('completadosProcesoMonitoreo').value;
+        let completadosPendienteFirmaProcesoMonitoreo = parent.document.getElementById('completadosPendienteFirmaProcesoMonitoreo').value;
+        let notasSinResolverProcesoMonitoreo = parent.document.getElementById('notasSinResolverProcesoMonitoreo').value;
+               
+        var ctxProcesoMonitoreoChart = document.getElementById('procesoMonitoreoChart').getContext('2d');
+        var procesoInclusionSujetoChart = new Chart(ctxProcesoMonitoreoChart, {
+            type: 'bar',
+            data: {
+                labels: ['Iniciados', 'No Iniciados', 'Completados', 'Completados sin firmar', 'Notas sin resolver'
+],
+                datasets: [{
+                    label: 'Proceso de monitoreo',
+                    data: [iniciadosProcesoMonitoreo, noIniciadosProcesoMonitoreo,
+                           completadosProcesoMonitoreo, completadosPendienteFirmaProcesoMonitoreo,
+                           notasSinResolverProcesoMonitoreo],
+                    backgroundColor: [
+                        'rgba(255, 153, 0, 0.75)', 
+						'rgba(195, 212, 229, 1)', 
+						'rgba(0, 102, 255, 0.75)', 
+						'rgba(43, 91, 44, 0.75)',
+		                'rgba(255, 0, 0, 0.75)' 
+                    ],
+                    borderColor: [
+						'rgba(255, 153, 0, 1)', 
+						'rgba(195, 212, 229, 1)', 
+						'rgba(0, 102, 255, 1)', 
+						'rgba(43, 91, 44, 1)',
+						'rgba(255, 0, 0, 1)'
+                    ],
+                    borderWidth: 0.5,
+                    datalabels: {
+						anchor: 'end',
+						align: 'top',
+						offset: 5
+                    }
+                }]
+            },
+            plugins: [ChartDataLabels],
+            options: {
+            	plugins: {
+            		//Cambio de cursor al pasar por la leyenda
+                	legend: {
+                		onHover: (event, chartElement) => {
+     						event.native.target.style.cursor = 'pointer';
+     					},
+     					onLeave: (event, chartElement) => {
+     						event.native.target.style.cursor = 'default';
+     					}
+                    } 					
+                },
+				scales: {
+					y:{
+						beginAtZero: true,
+						grace: '10%'
+					}
+				}
+            }
+        });
+      
+    }
+    window.onload = procesoMonitoreo;
+        
+    </script>
+</body>
+</html>

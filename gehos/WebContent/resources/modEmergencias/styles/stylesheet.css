@@ -1,0 +1,19 @@
+.rich-calendar-button{
+ width: 16px;
+ height: 16px;
+}
+.rich-calendar-input{
+ margin: 0px 0px 0px 0px; 
+ border: 0px 0px 0px 0px;
+ spacing: 0px 0px 0px 0px; 
+}
+
+.myPanel {
+	padding: 0px 0px 0px 0px;
+}
+.rich-panel-body{
+ padding-left: 8px;
+ padding-right: 8px;
+ padding-bottom: 11px;
+ padding-top: 11px
+}

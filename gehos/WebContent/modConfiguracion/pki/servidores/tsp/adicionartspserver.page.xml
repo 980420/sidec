@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<action execute="#{crearServidorTSPControlador.initConversation()}" if="#{crearServidorTSPControlador.initConv}"/>
+	<navigation from-action="#{crearServidorTSPControlador.crear()}">
+		<rule if="#{!crearServidorTSPControlador.error}"> 		
+			<end-conversation before-redirect="true" />
+			<redirect
+				view-id="/modConfiguracion/pki/servidores/tsp/verdetallestspserver.xhtml">
+				<param name="id" value="#{crearServidorTSPControlador.server.id}" />
+				<param name="from" value="creatsp" />
+			</redirect>
+
+		</rule>
+	</navigation>
+
+
+
+	<navigation from-action="seleccionarproxy">
+		<redirect
+			view-id="/modConfiguracion/pki/servidores/tsp/seleccionarproxy.xhtml">
+			
+		</redirect>
+	</navigation>
+
+	<navigation from-action="cancelar">
+		<end-conversation before-redirect="true" />
+		<redirect
+			view-id="/modConfiguracion/pki/servidores/tsp/buscartspserver.xhtml" />
+	</navigation>
+</page>

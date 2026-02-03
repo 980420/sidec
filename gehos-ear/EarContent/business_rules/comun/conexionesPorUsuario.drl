@@ -1,0 +1,196 @@
+package cantDiasDespacho
+
+#list any import classes here.
+import gehos.autenticacion.session.custom.ConectionLimit;
+
+rule "usuario root"
+
+	when
+		ConectionLimit(user=="root")
+		$limit: ConectionLimit()
+	then
+		$limit.setMaxConections(-1);
+
+end
+
+rule "usuario emergencias"
+
+	when
+		ConectionLimit(user=="tresemergencias")
+		$limit: ConectionLimit()
+	then
+		$limit.setMaxConections(4);
+
+end
+
+rule "usuario elizabeth"
+
+	when
+		ConectionLimit(user=="pinoen@pdvsa.com")
+		$limit: ConectionLimit()
+	then
+		$limit.setMaxConections(3);
+
+end
+
+rule "usuario fanny"
+
+	when
+		ConectionLimit(user=="castillofl@pdvsa.com")
+		$limit: ConectionLimit()
+	then
+		$limit.setMaxConections(-1);
+
+end
+
+
+
+rule "usuario lopresti"
+
+	when
+		ConectionLimit(user=="loprestiv@pdvsa.com")
+		$limit: ConectionLimit()
+	then
+		$limit.setMaxConections(-1);
+
+end
+
+rule "usuario gonzalezm"
+
+	when
+		ConectionLimit(user=="gonzalezm")
+		$limit: ConectionLimit()
+	then
+		$limit.setMaxConections(-1);
+
+end
+
+rule "usuario blancoc"
+
+	when
+		ConectionLimit(user=="blancoc")
+		$limit: ConectionLimit()
+	then
+		$limit.setMaxConections(-1);
+
+end
+
+rule "usuario cabreraj"
+
+	when
+		ConectionLimit(user=="cabreraj")
+		$limit: ConectionLimit()
+	then
+		$limit.setMaxConections(-1);
+
+end
+
+rule "usuario martinezt"
+
+	when
+		ConectionLimit(user=="martinezt")
+		$limit: ConectionLimit()
+	then
+		$limit.setMaxConections(-1);
+
+end
+
+rule "usuario hernandezp"
+
+	when
+		ConectionLimit(user=="hernandezp")
+		$limit: ConectionLimit()
+	then
+		$limit.setMaxConections(-1);
+
+end
+
+rule "usuario gomezc"
+
+	when
+		ConectionLimit(user=="gomezc")
+		$limit: ConectionLimit()
+	then
+		$limit.setMaxConections(-1);
+
+end
+
+rule "usuario infantej"
+
+	when
+		ConectionLimit(user=="infantej")
+		$limit: ConectionLimit()
+	then
+		$limit.setMaxConections(-1);
+
+end
+
+rule "usuario vegar"
+
+	when
+		ConectionLimit(user=="vegar")
+		$limit: ConectionLimit()
+	then
+		$limit.setMaxConections(-1);
+
+end
+
+rule "usuario rodriguezl"
+
+	when
+		ConectionLimit(user=="rodriguezl")
+		$limit: ConectionLimit()
+	then
+		$limit.setMaxConections(-1);
+
+end
+
+rule "usuario fernandezc"
+
+	when
+		ConectionLimit(user=="fernandezc")
+		$limit: ConectionLimit()
+	then
+		$limit.setMaxConections(-1);
+
+end
+
+rule "usuario vazquezr"
+
+	when
+		ConectionLimit(user=="vazquezr")
+		$limit: ConectionLimit()
+	then
+		$limit.setMaxConections(-1);
+
+end
+
+rule "usuario mayloris"
+
+	when
+		ConectionLimit(user=="mayloris")
+		$limit: ConectionLimit()
+	then
+		$limit.setMaxConections(5);
+
+end
+
+rule "usuario salcedoln"
+
+	when
+		ConectionLimit(user=="salcedoln")
+		$limit: ConectionLimit()
+	then
+		$limit.setMaxConections(-1);
+
+end
+
+
+rule "usuario generico"
+	salience 10
+	when
+		$limit: ConectionLimit()
+	then
+		$limit.setMaxConections(5);
+
+end

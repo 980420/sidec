@@ -1,0 +1,13 @@
+package updateAddress
+
+#list any import classes here.
+import gehos.comun.updater.UpdateAddress;
+
+rule "update"
+
+	when
+		$address: UpdateAddress()
+	then
+		$address.setAddress("D:\\Test\\");
+
+end

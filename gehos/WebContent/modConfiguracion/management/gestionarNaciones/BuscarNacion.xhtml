@@ -1,0 +1,352 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- CSS -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/style/stylesheet.css"
+			rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+		<h:form id="form">
+			<rich:messages id="message" ajaxRendered="true" for="message" />
+
+			<rich:simpleTogglePanel switchType="client"
+				label="#{messages.criterios}" bodyClass="simpleTogglePanel"
+				opened="#{nacionBuscarControlador.state}">
+				<a4j:support event="oncollapse" ajaxSingle="true"
+					action="#{nacionBuscarControlador.changeSimpleTogglePanelState()}" />
+				<a4j:support event="onexpand" ajaxSingle="true"
+					action="#{nacionBuscarControlador.changeSimpleTogglePanelState()}" />
+				<table class="tabla lh-cont lv-comp-l lh-comp-b lv-comp-r"
+					cellpadding="0px" cellspacing="0px">
+					<tr>
+						<td class="lvg-bet-comp">#{messages.crit1}:<br />
+						<h:inputText id="codigo" tabindex="1"
+							value="#{nacionBuscarControlador.codigo}" styleClass="imputText" /></td>
+						<td class="lvg-bet-comp">#{messages.crit2}:<br />
+						<h:inputText id="nombre" tabindex="1"
+							value="#{nacionBuscarControlador.valor}" styleClass="imputText" /></td>
+						<td >#{messages.crit3}:<br />
+						<h:inputText id="nacionalidad" tabindex="1"
+							value="#{nacionBuscarControlador.nacionalidad}"
+							styleClass="imputText" /></td>
+					</tr>
+					<tr>
+						<td colspan="3" align="right">
+						<table class="tabla"
+							cellpadding="0px" cellspacing="0px">
+							<tr>
+								<td class="lv-bet-botton" valign="bottom"><h:commandButton
+									tabindex="2" value="#{messages.buscar}" styleClass="botton"
+									action="#{nacionBuscarControlador.buscar()}">
+									<s:defaultAction />
+								</h:commandButton></td>
+								<td valign="bottom"><s:button
+									view="/modCommons/modHome/home.gehos"
+									value="#{messages.cancelar}" tabindex="3" styleClass="botton"
+									rendered="#{not identificadorManager.editing}">
+									<f:param name="idFuncionalidad"
+										value="#{activeModule.activeModule.id}" />
+									<f:param name="idancestors"
+										value="#{activeModule.activeModule.id}a" />
+									<f:param name="moduleName"
+										value="#{activeModule.activeModuleName}" />
+								</s:button></td>
+							</tr>
+						</table>
+						</td>
+					</tr>
+				</table>
+			</rich:simpleTogglePanel>
+			<br />
+			<div align="right">
+			<table class="tablaLinkAdd" cellpadding="0" cellspacing="0">
+				<tr>
+					<td><h:graphicImage title="#{messages.adicionarIcon}"
+						height="12" width="12"
+						value="/resources/icons/default/acciones/adicionar.png" /></td>
+					<td valign="middle" class="lv-link-add"><h:commandLink
+						action="#{nacionCrearControlador.begin()}" tabindex="4"
+						value=" #{messages.adicionar}" /></td>
+				</tr>
+			</table>
+			</div>
+			<a4j:outputPanel id="tablas_id">
+				<rich:panel
+					rendered="#{empty nacionBuscarControlador.resultList and nacionBuscarControlador.valor.equals('') and nacionBuscarControlador.nacionalidad.equals('') and nacionBuscarControlador.codigo.equals('')}">
+					<f:facet name="header">#{messages.listado}</f:facet>
+					<div class="lh-cont lv-text-l lh-conb lv-text-r"><h:outputText
+						value="#{messages.noInf2}" /></div>
+				</rich:panel>
+				<rich:panel
+					rendered="#{empty nacionBuscarControlador.resultList and (nacionBuscarControlador.valor != '' || nacionBuscarControlador.nacionalidad != '' || nacionBuscarControlador.codigo != '')}">
+					<f:facet name="header">#{messages.listado}</f:facet>
+					<div class="lh-cont lv-text-l lh-sinb lv-text-r"><h:outputText
+						value="#{messages.noInf}" /></div>
+				</rich:panel>
+				<rich:dataTable id="nacionList_Table" style="width: 100%;"
+					rendered="#{not empty nacionBuscarControlador.resultList}"
+					var="nacion" value="#{nacionBuscarControlador.resultList}"
+					columnsWidth="20%, 40%, 40%, 1%, 1%">
+					<f:facet name="header">
+							#{messages.listado}
+					</f:facet>
+					<h:column>
+						<f:facet name="header">
+							<h:panelGrid columns="2"
+								style="width: 100%; padding:0px; margin:0px;" border="0"
+								cellpadding="0" cellspacing="0">
+								<s:div style="float: left;">#{messages.crit1}</s:div>
+								<s:div style="text-align: right; padding-left:3px;">
+									<h:graphicImage
+										rendered="#{not nacionBuscarControlador.order.equals('nacion.codigo asc') and not nacionBuscarControlador.order.equals('nacion.codigo desc')}"
+										value="/resources/icons/default/filtro/default.png" width="17"
+										height="17">
+										<rich:componentControl event="onclick" for="codigocontextmenu"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{nacionBuscarControlador.order.equals('nacion.codigo asc')}"
+										value="/resources/icons/default/filtro/asc_sort.png"
+										width="17" height="17">
+										<rich:componentControl event="onclick" for="codigocontextmenu"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{nacionBuscarControlador.order.equals('nacion.codigo desc')}"
+										value="/resources/icons/default/filtro/des_sort.png"
+										width="17" height="17">
+										<rich:componentControl event="onclick" for="codigocontextmenu"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+								</s:div>
+							</h:panelGrid>
+						</f:facet>
+	            	#{nacion.codigo}
+	        	</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:panelGrid columns="2"
+								style="width: 100%; padding:0px; margin:0px;" border="0"
+								cellpadding="0" cellspacing="0">
+								<s:div style="float: left;">#{messages.crit2}</s:div>
+								<s:div style="text-align: right; padding-left:3px;">
+									<h:graphicImage
+										rendered="#{not nacionBuscarControlador.order.equals('nacion.valor asc') and not nacionBuscarControlador.order.equals('nacion.valor desc')}"
+										value="/resources/icons/default/filtro/default.png" width="17"
+										height="17">
+										<rich:componentControl event="onclick" for="valorcontextmenu"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{nacionBuscarControlador.order.equals('nacion.valor asc')}"
+										value="/resources/icons/default/filtro/asc_sort.png"
+										width="17" height="17">
+										<rich:componentControl event="onclick" for="valorcontextmenu"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{nacionBuscarControlador.order.equals('nacion.valor desc')}"
+										value="/resources/icons/default/filtro/des_sort.png"
+										width="17" height="17">
+										<rich:componentControl event="onclick" for="valorcontextmenu"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+								</s:div>
+							</h:panelGrid>
+						</f:facet>
+	            	#{nacion.valor}
+	        	</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:panelGrid columns="2"
+								style="width: 100%; padding:0px; margin:0px;" border="0"
+								cellpadding="0" cellspacing="0">
+								<s:div style="float: left;">#{messages.crit3}</s:div>
+								<s:div style="text-align: right; padding-left:3px;">
+									<h:graphicImage
+										rendered="#{not nacionBuscarControlador.order.equals('nacion.nacionalidad asc') and not nacionBuscarControlador.order.equals('nacion.nacionalidad desc')}"
+										value="/resources/icons/default/filtro/default.png" width="17"
+										height="17">
+										<rich:componentControl event="onclick"
+											for="nacionalidadContextMenu" operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{nacionBuscarControlador.order.equals('nacion.nacionalidad asc')}"
+										value="/resources/icons/default/filtro/asc_sort.png"
+										width="17" height="17">
+										<rich:componentControl event="onclick"
+											for="nacionalidadContextMenu" operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{nacionBuscarControlador.order.equals('nacion.nacionalidad desc')}"
+										value="/resources/icons/default/filtro/des_sort.png"
+										width="17" height="17">
+										<rich:componentControl event="onclick"
+											for="nacionalidadContextMenu" operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+								</s:div>
+							</h:panelGrid>
+						</f:facet>
+	            	#{nacion.nacionalidad}
+	        	</h:column>
+
+					<h:column>
+						<center><h:commandLink
+							action="#{nacionVerDetallesControlador.setNacionId(nacion.id)}">
+							<h:graphicImage title="#{messages.ver}" style="border: 0px;"
+								value="/resources/icons/default/acciones/ver.png" />
+						</h:commandLink></center>
+					</h:column>
+					<h:column>
+						<center><h:commandLink
+							action="#{nacionModificarControlador.setNacionId(nacion.id)}">
+							<h:graphicImage title="#{messages.modificar}"
+								style="border: 0px;"
+								value="/resources/icons/default/acciones/modificar.png" />
+						</h:commandLink></center>
+					</h:column>
+					<h:column>
+						<center><a4j:commandLink
+							oncomplete="Richfaces.showModalPanel('panelEliminar')"
+							action="#{nacionBuscarControlador.seleccionar(nacion.id)}">
+
+							<h:graphicImage title="#{messages.eliminar}"
+								style="border: 0px; cursor:pointer;"
+								value="/resources/icons/default/acciones/eliminar.png">
+							</h:graphicImage>
+						</a4j:commandLink></center>
+					</h:column>
+					<h:column>
+						<center><h:graphicImage
+							rendered="#{not nacion.eliminado}"
+							value="/resources/modConfiguracion/visible.png" width="14"
+							height="14" style="border:0px; cursor:pointer"
+							title="#{messages.visibilidad}">
+							<a4j:support event="onclick" ajaxSingle="true"
+								action="#{nacionBuscarControlador.cambiarVisibilidad(nacion.id)}"
+								reRender="tablas_id,nacionList_Table" />
+						</h:graphicImage> <h:graphicImage rendered="#{nacion.eliminado}"
+							value="/resources/modConfiguracion/not-visible.png" width="14"
+							height="14" style="border:0px; cursor:pointer; height : 14px;"
+							title="#{messages.visibilidad}">
+							<a4j:support event="onclick" ajaxSingle="true"
+								action="#{nacionBuscarControlador.cambiarVisibilidad(nacion.id)}"
+								reRender="tablas_id,nacionList_Table" />
+						</h:graphicImage></center>
+					</h:column>
+				</rich:dataTable>
+				<br />
+				<s:div id="pagingcontrols" styleClass="tableControl"
+					style="width: 100%; text-align:center" align="center"
+					rendered="#{not empty nacionBuscarControlador.resultList}">
+					<h:graphicImage
+						value="/resources/icons/default/paginado/iniciod.png"
+						rendered="#{!nacionBuscarControlador.previousExists}" />
+					<h:commandLink
+						action="#{nacionBuscarControlador.setFirstResult(0)}"
+						rendered="#{nacionBuscarControlador.previousExists}">
+						<h:graphicImage title="#{messages.pag1}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/inicio.png" />
+					</h:commandLink>
+					<h:graphicImage
+						value="/resources/icons/default/paginado/anteriord.png"
+						rendered="#{!nacionBuscarControlador.previousExists}" />
+					<h:commandLink
+						action="#{nacionBuscarControlador.setFirstResult(nacionBuscarControlador.previousFirstResult)}"
+						rendered="#{nacionBuscarControlador.previousExists}">
+						<h:graphicImage title="#{messages.pag2}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/anterior.png" />
+					</h:commandLink>
+					<h:graphicImage
+						value="/resources/icons/default/paginado/siguiented.png"
+						rendered="#{!nacionBuscarControlador.nextExists}" />
+					<h:commandLink
+						action="#{nacionBuscarControlador.setFirstResult(nacionBuscarControlador.nextFirstResult)}"
+						rendered="#{nacionBuscarControlador.nextExists}">
+						<h:graphicImage title="#{messages.pag3}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/siguiente.png" />
+					</h:commandLink>
+					<h:graphicImage value="/resources/icons/default/paginado/find.png"
+						rendered="#{!nacionBuscarControlador.nextExists}" />
+					<h:commandLink
+						action="#{nacionBuscarControlador.setFirstResult(nacionBuscarControlador.lastFirstResult)}"
+						rendered="#{nacionBuscarControlador.nextExists}">
+						<h:graphicImage title="#{messages.pag4}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/fin.png" />
+					</h:commandLink>
+				</s:div>
+			</a4j:outputPanel>
+
+			<rich:contextMenu attached="false" id="codigocontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{nacionBuscarControlador.setOrder('nacion.codigo desc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{nacionBuscarControlador.setOrder('nacion.codigo asc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+			</rich:contextMenu>
+
+			<rich:contextMenu attached="false" id="valorcontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{nacionBuscarControlador.setOrder('nacion.valor desc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{nacionBuscarControlador.setOrder('nacion.valor asc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+			</rich:contextMenu>
+
+			<rich:contextMenu attached="false" id="nacionalidadContextMenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{nacionBuscarControlador.setOrder('nacion.nacionalidad desc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{nacionBuscarControlador.setOrder('nacion.nacionalidad asc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+			</rich:contextMenu>
+		</h:form>
+
+		<ui:include
+			src="/modConfiguracion/management/gestionarNaciones/modalspanel/ConfirmarEliminarNacionBuscar.xhtml" />
+
+	</ui:define>
+</ui:composition>

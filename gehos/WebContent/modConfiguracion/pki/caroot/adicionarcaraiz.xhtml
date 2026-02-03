@@ -1,0 +1,181 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/pkiStyles/pkistyles.css"
+			rel="stylesheet" type="text/css" />
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+
+
+		<h:form id="form">
+			<a4j:outputPanel ajaxRendered="true">
+				<rich:messages styleClass="custom-error" for="buttonAceptar"
+					ajaxRendered="true" />
+
+			</a4j:outputPanel>
+			
+				<s:validateAll>
+					<rich:panel bodyClass="rich-panel-body-custom">
+						<f:facet name="header">#{messages.datosCA}</f:facet>
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+
+							<tr style="vertical-align: top;">
+
+								<td>#{messages.commonName}: <rich:message for="commonName"
+									showDetail="false" tooltip="true"
+									style="color:red;cursor:pointer;">
+									<f:facet name="errorMarker">
+										<h:outputText value="*"
+											title="#{facesMessages.getCurrentMessagesForControl('commonName').get(0).getDetail()}" />
+									</f:facet>
+								</rich:message><br />
+								<h:inputText id="commonName" style="width: 148px;"
+									value="#{raFunctions.rootCacommonName}"
+									/></td>
+								<td><rich:spacer styleClass="h-spacer-between-2c" /></td>
+								<td>#{messages.organizationalUnit}: <rich:message
+									for="organizationalUnit" showDetail="false" tooltip="true"
+									style="color:red;cursor:pointer;">
+									<f:facet name="errorMarker">
+										<h:outputText value="*"
+											title="#{facesMessages.getCurrentMessagesForControl('organizationalUnit').get(0).getDetail()}" />
+									</f:facet>
+								</rich:message><br />
+								<h:inputText id="organizationalUnit" style="width: 148px;"
+									value="#{raFunctions.rootCaorganizationalUnit}"
+									
+									 /></td>
+								<td><rich:spacer styleClass="h-spacer-between-2c" /></td>
+
+								<td>#{messages.organization}: <rich:message
+									for="organization" showDetail="false" tooltip="true"
+									style="color:red;cursor:pointer;">
+									<f:facet name="errorMarker">
+										<h:outputText value="*"
+											title="#{facesMessages.getCurrentMessagesForControl('organization').get(0).getDetail()}" />
+									</f:facet>
+								</rich:message><br />
+								<h:inputText id="organization" style="width: 148px;"
+									value="#{raFunctions.rootCaorganization}"
+									/></td>
+							</tr>
+							<tr>
+								<td colspan="5"><rich:spacer
+									styleClass="v-spacer-between-2l" /></td>
+							</tr>
+							<tr style="vertical-align: top;">
+								<td>#{messages.country}: <rich:message for="country"
+									showDetail="false" tooltip="true"
+									style="color:red;cursor:pointer;">
+									<f:facet name="errorMarker">
+										<h:outputText value="*"
+											title="#{facesMessages.getCurrentMessagesForControl('country').get(0).getDetail()}" />
+									</f:facet>
+								</rich:message><br />
+								<rich:comboBox id="country"
+									suggestionValues="#{raFunctions.getNaciones()}"
+									defaultLabel="#{messages.seleccione}" enableManualInput="false"
+									style=" width : 150px;" value="#{raFunctions.rootCacountry}">
+									<a4j:support ajaxSingle="true" event="onselect"
+										reRender="stateId, localityId" limitToList="true" 
+										action="#{raFunctions.fillEstados()}"/>
+
+								</rich:comboBox></td>
+
+								<td><rich:spacer styleClass="h-spacer-between-2c" /></td>
+								<td>#{messages.state}: <a4j:outputPanel id="stateId">
+									<rich:message for="state" showDetail="false" tooltip="true"
+										style="color:red;cursor:pointer;">
+										<f:facet name="errorMarker">
+											<h:outputText value="*"
+												title="#{facesMessages.getCurrentMessagesForControl('state').get(0).getDetail()}" />
+										</f:facet>
+									</rich:message>
+									<br />
+
+									<rich:comboBox id="state"
+										suggestionValues="#{raFunctions.estados}"
+										defaultLabel="#{messages.seleccione}"
+										enableManualInput="false" style=" width : 150px;"
+										value="#{raFunctions.rootCastate}">
+
+										<a4j:support ajaxSingle="true" event="onselect"
+											reRender="localityId" limitToList="true" 
+											action="#{raFunctions.fillLocalidades()}"/>
+									</rich:comboBox>
+								</a4j:outputPanel></td>
+								<td><rich:spacer styleClass="h-spacer-between-2c" /></td>
+								<td>#{messages.locality}: <a4j:outputPanel id="localityId">
+									<rich:message for="locality" showDetail="false" tooltip="true"
+										style="color:red;cursor:pointer;">
+										<f:facet name="errorMarker">
+											<h:outputText value="*"
+												title="#{facesMessages.getCurrentMessagesForControl('locality').get(0).getDetail()}" />
+										</f:facet>
+									</rich:message>
+									<br />
+									<rich:comboBox id="locality"
+										suggestionValues="#{raFunctions.localidades}"
+										defaultLabel="#{messages.seleccione}"
+										enableManualInput="false" style=" width : 150px;"
+										value="#{raFunctions.rootCalocality}">
+
+									</rich:comboBox>
+								</a4j:outputPanel></td>
+							</tr>
+
+						</table>
+
+
+					</rich:panel>
+
+
+				</s:validateAll>
+
+				<rich:spacer height="8px" style="display: block"></rich:spacer>
+<div align="right">
+				<table cellpadding="0" cellspacing="0" border="0">
+					<tr>
+						<td><h:commandButton id="buttonAceptar"
+							value="#{messages.aceptar}"
+							action="#{raFunctions.createcaKeystore()}"
+							style="margin-bottom: 0px; margin-right: 5px; margin-left: 0px; margin-top: 0px">
+						</h:commandButton>
+						</td>
+						<td>
+						<h:commandButton id="cancelar"
+							value="#{messages.cancelar}"
+							action="cancelar"
+							style="margin-bottom: 0px; margin-right: 0px; margin-left: 0px; margin-top: 0px">
+						</h:commandButton></td>
+					</tr>
+				</table>
+				<rich:spacer height="8px" style="display: block"></rich:spacer></div>
+				
+			
+			
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

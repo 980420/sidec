@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+      
+      <action execute="#{permisosEstudiosPorUsuarioController.begin()}" />       
+	  <param name="idEstudio" value="#{permisosEstudiosPorUsuarioController.idEstudio}"/>
+	
+	
+  	<navigation from-action="#{permisosEstudiosPorUsuarioController.salvar()}">		 	
+  		<rule if-outcome="ok">
+		<end-conversation before-redirect="true"/>			
+  		  			<redirect view-id="/modEnsayo/ensayo_configuracion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarPermisosEstudio/permisos_estudios_por_usuarios.xhtml"></redirect>
+	  	</rule>
+	
+	</navigation>
+	
+	
+	<navigation from-action="salir">				
+			
+		<end-conversation before-redirect="true"/>			
+  		 <redirect view-id="/modEnsayo/ensayo_configuracion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarPermisosEstudio/seleccionarEstudio.xhtml"></redirect>
+	  
+	  	
+	</navigation>
+	
+</page>

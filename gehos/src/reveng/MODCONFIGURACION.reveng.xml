@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+	<table-filter match-name="hospital" match-schema="comun"></table-filter>
+	<table-filter match-name="tipo_hospital"
+		match-schema="comun">
+	</table-filter>
+	<table-filter match-name="actividad_investigacion_docencia"
+		match-schema="comun">
+	</table-filter>
+
+	<table-filter match-name="asignacion_financiera_hospital"
+		match-schema="comun">
+	</table-filter>
+	<table-filter match-name="entidad_organizacional"
+		match-schema="comun">
+	</table-filter>
+	<table-filter match-name="establecimiento_area_influencia_hospital"
+		match-schema="comun">
+	</table-filter>
+	<table-filter match-name="tipo_establecimiento_salud"
+		match-schema="comun">
+	</table-filter>
+	<table-filter match-name="partida_presupuestaria_hospital"
+		match-schema="comun">
+	</table-filter>
+
+
+
+
+
+
+	<table-filter match-name="departamento" match-schema="comun"></table-filter>
+	<table-filter match-name="servicio" match-schema="comun"></table-filter>
+	<table-filter match-name="cama" match-schema="comun"></table-filter>
+	<table-filter match-name="tipo_cama" match-schema="comun"></table-filter>
+	<table-filter match-name="estado_cama"
+		match-schema="comun">
+	</table-filter>
+	<table-filter match-name="categoria_cama"
+		match-schema="comun">
+	</table-filter>
+
+	<table-filter match-name="ubicacion" match-schema="comun"></table-filter>
+	<table-filter match-name="tipo_ubicacion" match-schema="comun"></table-filter>
+
+
+	<table-filter match-name="usuario" match-schema="comun"></table-filter>
+	<table-filter match-name="role" match-schema="seguridad"></table-filter>
+
+	<table-filter match-name="user_in_role" match-schema="seguridad"></table-filter>
+	<table-filter match-name="usuario_in_servicio"
+		match-schema="comun">
+	</table-filter>
+	<table-filter match-name="usuario_in_tipo_funcionario"
+		match-schema="comun">
+	</table-filter>
+	<table-filter match-name="usuario_in_cargo" match-schema="comun"></table-filter>
+
+
+
+
+
+
+	<table-filter match-name="tipo_funcionario" match-schema="comun">
+	</table-filter>
+
+	<table-filter match-name="cargo_funcionario" match-schema="comun">
+	</table-filter>
+
+
+
+	<table-filter match-name="enfermera" match-schema="comun"></table-filter>
+	<table-filter match-name="medico" match-schema="comun"></table-filter>
+
+
+
+
+
+
+	<table-filter match-name="especialidad" match-schema="comun"></table-filter>
+
+
+
+
+
+
+
+
+	<table-filter match-name="medico_in_especialidad"
+		match-schema="comun">
+	</table-filter>
+
+
+
+
+
+
+	<table-filter match-name="nacion" match-schema="nomencladores"></table-filter>
+	<table-filter match-name="estado" match-schema="nomencladores"></table-filter>
+	<table-filter match-name="municipio" match-schema="nomencladores"></table-filter>
+
+
+
+
+
+
+
+
+	<table-filter match-name="localidad" match-schema="nomencladores"></table-filter>
+</hibernate-reverse-engineering>

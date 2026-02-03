@@ -1,0 +1,100 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- CSS -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/style/stylesheet.css"
+			rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+		<h:form id="form" styleClass="create" enctype="multipart/form-data">
+			<rich:messages id="message" styleClass="message" ajaxRendered="true"
+				for="message" />
+
+			<s:validateAll>
+				<rich:panel>
+					<f:facet name="header">#{messages.datos}</f:facet>
+					<table cellpadding="0px" cellspacing="0px"
+						class="table lh-sint lv-comp-l lh-comp-b lv-comp-r">
+
+						<tr style="vertical-align: top;">
+							<!-- El style es para que el ComboBox suba porque no es del mismo tamano -->
+
+							<td class="lvg-bet-comp"><h:outputLabel
+								value="#{messages.codigo}" /> <rich:message for="codigo"
+								showDetail="false" showSummary="false" tooltip="true">
+								<f:facet name="errorMarker">
+									<h:outputText
+										title="#{facesMessages.getCurrentMessagesForControl('codigo').get(0).getDetail()}"
+										value="*" styleClass="errorLabel" />
+								</f:facet>
+							</rich:message><br />
+
+							<h:inputText id="codigo"
+								value="#{estadoModificarControlador.codigo}" required="true"
+								requiredMessage="#{messages.valorRequerido}"
+								validator="#{estadoValidarControlador.codigo}"
+								styleClass="imputText" /></td>
+							<td class="lvg-bet-comp"><h:outputLabel
+								value="#{messages.nombre}" /> <rich:message for="nombre"
+								showDetail="false" showSummary="false" tooltip="true">
+								<f:facet name="errorMarker">
+									<h:outputText
+										title="#{facesMessages.getCurrentMessagesForControl('nombre').get(0).getDetail()}"
+										value="*" styleClass="errorLabel" />
+								</f:facet>
+							</rich:message><br />
+
+							<h:inputText id="nombre"
+								value="#{estadoModificarControlador.valor}" required="true"
+								requiredMessage="#{messages.valorRequerido}"
+								validator="#{estadoValidarControlador.valor}"
+								styleClass="imputText" /></td>
+							<td class="lvg-bet-comp"><h:outputLabel
+								value="#{messages.nacion}" /> <rich:message for="nacion"
+								showDetail="false" showSummary="false" tooltip="true">
+								<f:facet name="errorMarker">
+									<h:outputText
+										title="#{facesMessages.getCurrentMessagesForControl('nacion').get(0).getDetail()}"
+										value="*" styleClass="errorLabel" />
+								</f:facet>
+							</rich:message><br />
+							<rich:comboBox id="nacion"
+								value="#{estadoModificarControlador.nacionSelecc}"
+								suggestionValues="#{estadoModificarControlador.listNaciones()}"
+								required="true" requiredMessage="#{messages.valorRequerido}"
+								defaultLabel="#{estadoModificarControlador.nacionSelecc}"
+								enableManualInput="false" tabindex="2">
+							</rich:comboBox></td>
+						</tr>
+					</table>
+				</rich:panel>
+
+				<div align="right">
+				<table cellpadding="0" cellspacing="0" class="table">
+					<tr>
+						<td class="lv-bet-botton"><h:commandButton id="buttonAceptar"
+							value="#{messages.aceptar}" styleClass="botton"
+							action="#{estadoModificarControlador.modificar()}" tabindex="2" /></td>
+						<td><h:commandButton value="#{messages.cancelar}"
+							immediate="true" tabindex="3" action="cancelar"
+							styleClass="botton" /></td>
+					</tr>
+				</table>
+				</div>
+			</s:validateAll>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<page    xmlns               ="http://jboss.com/products/seam/pages"  
+         xmlns:xsi           ="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">  
+           
+    <begin-conversation flush-mode="manual" join="true"/>
+    <param name="idNota" value="#{verNotaSitioListado.idNota}" />
+  	<param name="idSujeto" value="#{verNotaSitioListado.idSujeto}"/>
+  	<param name="idcrd" value="#{verNotaSitioListado.idcrd}" />
+  	<param name="idMS" value="#{verNotaSitioListado.idMS}" />
+  	<param name="from" value="#{verNotaSitioListado.from}"/>
+  	<param name="idGrupo" value="#{verNotaSitioListado.idGrupo}" />
+  	
+  	<param name="desde"/>	
+  	<action execute="#{verNotaSitioListado.inicializarNota()}"/>
+    
+	<navigation from-action="salir">
+		<rule if="#{desde == 'listarNota'}">
+           <redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/buscarNotas/listarNotasSitio.xhtml" >
+           		<param name="idSujeto" value="#{verNotaSitioListado.idSujeto}"/>   
+           		<param name="idGrupo" value="#{verNotaSitioListado.idGrupo}" />        		
+           </redirect>
+           </rule>
+           <rule if="#{desde == 'gestionarHoja'}">
+           <redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCRD/gestionarHoja.xhtml" >
+           		<param name="idcrd" value="#{verNotaSitioListado.idcrd}" />   
+           		<param name="from" value="#{verNotaSitioListado.from}"/>
+           		<param name="idMS" value="#{verNotaSitioListado.idMS}" />   
+           		<param name="idSujeto" value="#{verNotaSitioListado.idSujeto}"/>   		
+           </redirect>
+           </rule>
+	</navigation>
+</page>

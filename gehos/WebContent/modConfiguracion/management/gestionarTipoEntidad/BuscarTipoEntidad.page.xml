@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+     
+  <action execute="#{tipoEntidadBuscarControlador.begin()}"/>
+   
+  <!-- Create -->
+	<navigation from-action="#{tipoEntidadCrearControlador.begin()}" evaluate="#{tipoEntidadCrearControlador.error}">	
+		<rule if-outcome="0">	
+			<redirect view-id="/modConfiguracion/management/gestionarTipoEntidad/CrearTipoEntidad.xhtml" />
+		</rule>
+	</navigation>
+	
+	<!-- View details -->    
+	<navigation from-action="#{tipoEntidadVerDetallesControlador.setId(tipoEntidad.id)}" evaluate="#{tipoEntidadVerDetallesControlador.error}">
+		<rule if-outcome="0"> 
+			<redirect view-id="/modConfiguracion/management/gestionarTipoEntidad/VerDetallesTipoEntidad.xhtml" >
+				<param name="from" value="listar" />
+			</redirect>
+		</rule>
+	</navigation>	
+	
+	<!-- Modify -->
+	<navigation from-action="#{tipoEntidadModificarControlador.setId(tipoEntidad.id)}" evaluate="#{tipoEntidadModificarControlador.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarTipoEntidad/ModificarTipoEntidad.xhtml" />
+		</rule>
+	</navigation>
+</page>

@@ -1,0 +1,111 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- CSS -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/style/stylesheet.css"
+			rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+		<h:form id="form" >
+			<rich:messages id="message" ajaxRendered="true"
+					for="message" />
+
+			<s:validateAll>
+				<rich:panel>
+					<f:facet name="header">#{messages.datos}</f:facet>
+
+					<table class="tabla lh-cont lv-comp-l lh-comp-b lv-comp-r" cellpadding="0px" cellspacing="0px" >
+						
+						<tr >
+						
+							<td class="lvg-bet-comp"><h:outputLabel value="#{messages.codigo}"></h:outputLabel>
+
+							<rich:message for="codigo" showDetail="false" showSummary="false"
+								tooltip="true">
+								<f:facet name="errorMarker">
+									<h:outputText
+										title="#{facesMessages.getCurrentMessagesForControl('codigo').get(0).getDetail()}"
+										style="color : red;cursor:pointer;" value="*"
+										styleClass="nombre" />
+								</f:facet>
+							</rich:message><br />
+							<h:inputText id="codigo"
+								validator="#{nacionValidarControlador.codigo}"
+								value="#{nacionCrearControlador.codigo}" required="true"
+								requiredMessage="#{messages.valorRequerido}" styleClass="imputText"
+								 /> </td>							
+							<td class="lvg-bet-comp"><h:outputLabel value="#{messages.nombre}"></h:outputLabel>
+
+							<rich:message for="nombre" showDetail="false" showSummary="false"
+								tooltip="true">
+								<f:facet name="errorMarker">
+									<h:outputText
+										title="#{facesMessages.getCurrentMessagesForControl('nombre').get(0).getDetail()}"
+										style="color : red;cursor:pointer;" value="*"
+										styleClass="nombre" />
+								</f:facet>
+							</rich:message><br />
+							<h:inputText id="nombre"
+								validator="#{nacionValidarControlador.valor}"
+								value="#{nacionCrearControlador.valor}" required="true"
+								requiredMessage="#{messages.valorRequerido}" styleClass="imputText"
+								 /> </td>
+							<td><h:outputLabel value="#{messages.nacionalidad}"></h:outputLabel>
+
+							<rich:message for="nacionalidad" showDetail="false"
+								showSummary="false" tooltip="true">
+								<f:facet name="errorMarker">
+									<h:outputText
+										title="#{facesMessages.getCurrentMessagesForControl('nacionalidad').get(0).getDetail()}"
+										style="color : red;cursor:pointer;" value="*"
+										styleClass="nombre" />
+								</f:facet>
+							</rich:message><br />
+							<h:inputText id="nacionalidad"
+								validator="#{nacionValidarControlador.nacionalidad}"
+								value="#{nacionCrearControlador.nacionalidad}" required="true"
+								requiredMessage="#{messages.valorRequerido}"
+								styleClass="imputText" /> </td>
+						</tr>
+					</table>
+				</rich:panel>
+			</s:validateAll>
+		
+
+			<div align="right">
+			<table cellpadding="0" cellspacing="0" class="table">
+				<tr>
+					<td class="lv-bet-botton"><h:commandButton id="buttonAceptar"
+						value="#{messages.aceptar}" styleClass="botton"
+						action="#{nacionCrearControlador.crear()}" tabindex="2" />
+					</td>
+					<td><h:commandButton value="#{messages.cancelar}"
+						immediate="true" tabindex="3" action="cancelar"
+						styleClass="botton" /></td>
+				</tr>
+			</table>
+			</div>
+
+		</h:form>
+
+
+		<br />
+	</ui:define>
+
+</ui:composition>
+

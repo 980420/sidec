@@ -1,2 +1,1 @@
-# sidec
-mi proyecto de trabajo
+HIS general...

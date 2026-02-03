@@ -1,0 +1,60 @@
+#created on: Mar 7, 2009
+package gehos.enfermeria.rules
+
+#list any import classes here.
+import org.jboss.seam.drools.Decision;
+import java.security.Principal;
+import org.jboss.seam.security.Role;
+import org.jboss.seam.security.AuthorizationException;
+import gehos.enfermeria.entity.custom.ListaPacienteRule;
+import java.lang.Exception;
+#declare any global variables here
+
+
+rule "not_in_role"
+	salience 0
+	when
+		#conditions
+		ListaPacienteRule( roles not contains "Enfermero de hospitalizacion" ) and ListaPacienteRule( roles not contains "Enfermero de post-operatorio" )
+		$l : ListaPacienteRule() 
+	then 
+		#actions
+		$l.setVistaGeneral("not defined");
+	
+end
+
+rule "paciente_en_recuperacion"
+	salience 1
+	no-loop true
+	when
+		#conditions
+		ListaPacienteRule( roles contains "Enfermero de post-operatorio" )
+		$l : ListaPacienteRule()
+	then 
+		#actions
+		$l.setVistaGeneral("R");
+end
+
+rule "paciente_en_hospitalizacion"
+	salience 1
+	no-loop true
+	when
+		#conditions
+		ListaPacienteRule( roles contains "Enfermero de hospitalizacion" )
+		$l : ListaPacienteRule()
+	then 
+		#actions
+		$l.setVistaGeneral("H");
+end
+
+rule "paciente_en_hospitalizacion_y_recuperacion"
+	salience 1
+	no-loop true
+	when
+		#conditions
+		ListaPacienteRule( roles contains "Enfermero de hospitalizacion" ) and ListaPacienteRule( roles contains "Enfermero de post-operatorio" )
+		$l : ListaPacienteRule()
+	then 
+		#actions
+		$l.setVistaGeneral("HR");
+end

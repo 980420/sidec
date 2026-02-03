@@ -1,0 +1,97 @@
+<rich:modalPanel id="escoger_ubicacion_panel" minHeight="150" minWidth="170"
+	autosized="true" resizeable="false"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j"
+	onshow="">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<f:facet name="header">
+		<h:panelGroup id="escoger_ubicacion_header">
+			<a:status stopText="Seleccionar ubicación" 
+							  startText="Actualizando..." id="ubicstatus" forceId="true"></a:status>
+		</h:panelGroup>
+	</f:facet>
+	<f:facet name="controls">
+		<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+			style="cursor:pointer; position:relative; top:2px;"
+			onclick="Richfaces.hideModalPanel('escoger_ubicacion_panel')" />
+	</f:facet>
+	
+		<h:form id="escoger_ubicacion_form" >
+			<a:keepAlive beanName="ubicacionesChooserTreeBuilder"></a:keepAlive>
+			
+			<s:div rendered="#{ubicacionesChooserTreeBuilder.putSelectedEntity(camasPorServiciosManager.selectedItem.entidadID)}"></s:div>
+			
+			<table cellpadding="0" cellspacing="0" style="height: 130px; width: 100%; ">
+				<tr>
+				<td valign="top">
+				<div style="position: relative; top: 5px; left: 3px;">
+					<h:panelGrid columns="2" cellpadding="0" cellspacing="0"
+						rendered="#{camasPorServiciosManager.selectedItem != null}">
+						<h:graphicImage
+							value="#{modulosPorEntidadManager.entidadIcon(camasPorServiciosManager.selectedItem.value.entidad)}"
+							height="18" />
+						<h:outputLabel value="#{camasPorServiciosManager.selectedItem.value.entidad.nombre}" 
+							style="margin-left: 2px;"/>
+					</h:panelGrid>
+					<a:outputPanel>
+					<rich:tree  changeExpandListener="#{ubicacionesChooserTreeBuilder.OnNodeCollapseExpand}"
+							value="#{ubicacionesChooserTreeBuilder.treeData}"
+							switchType="ajax" preserveModel="state"
+									preserveDataInRequest="true" treeNodeVar="treenode" 
+						    nodeFace="#{node.toString()}" 
+							var="node" >
+		
+						<rich:treeNode type="ubicacion" 
+							icon="/resources/modCommon/ubicacionesimages/#{node.value.tipoUbicacion.icono}"
+							iconLeaf="/resources/modCommon/ubicacionesimages/#{node.value.tipoUbicacion.icono}">
+							
+								<a:commandLink value="#{node.value.tipoUbicacion.descripcion} #{node.value.identificador}"
+									status="ubicSelectedStatus" 
+									limitToList="true" immediate="true"
+									ajaxSingle="true" 
+									event="onclick"
+									action="#{camasPorServiciosManager.putNewLocation(node)}"
+									reRender="ubicacionEnModificacionInput" >
+								</a:commandLink>
+						</rich:treeNode>
+					</rich:tree>
+					</a:outputPanel>			
+					</div>
+				</td>
+				</tr>
+				<tr>
+				<td style="text-align: right; vertical-align: bottom">
+					<rich:spacer height="6" style="display:block"/>
+					<hr style="border-color: #f0f0f0;" />
+					<a:status id="ubicSelectedStatus" forceId="true">
+						<f:facet name="stop">
+							<input type="button"
+								onclick="javascript:Richfaces.hideModalPanel('escoger_ubicacion_panel');"
+								value="Aceptar"
+								style="margin-bottom: 0px; margin-top: 0px; margin-left: 2px; margin-right: 0px;" />
+						</f:facet>
+						<f:facet name="start">
+							 <h:graphicImage url="/resources/icons/default/acciones/loading_small.gif" />
+						</f:facet>
+					</a:status>
+				</td>
+				<td width="1%"> 
+					<rich:spacer width="6"/> 
+				</td>
+				</tr>
+				<tr>
+					<td style="height: 6px;" colspan="6"></td>
+				</tr>
+			</table>
+			
+		</h:form>
+
+
+</rich:modalPanel>

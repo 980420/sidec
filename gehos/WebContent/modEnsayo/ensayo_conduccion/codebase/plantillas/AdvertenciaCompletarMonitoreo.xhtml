@@ -1,0 +1,57 @@
+<rich:modalPanel resizeable="false" id="mpAdvertenciaCompletarMon"
+	width="320" autosized="true" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<f:facet name="header">
+		<h:outputText value="#{messages['completarTitulo']}" />
+	</f:facet>
+	<f:facet name="controls">
+		<a4j:commandButton id="btnCerrar" image="/resources/icons/default/acciones/cerrar.gif">
+			<rich:componentControl for="mpAdvertenciaCompletarMon" event="onclick" operation="hide" attachTo="btnCerrar" />
+		</a4j:commandButton>
+	</f:facet>
+	<h:form id="eliminar_funcionalidad_panel_form">
+		<table cellpadding="0px" cellspacing="0px">
+			<tr>
+				<td style="height: 9px;" colspan="6" />
+			</tr>
+			<tr style="vertical-align: top;">
+				<td style="width: 6px;" />
+				<td rowspan="2">
+					<h:graphicImage value="/resources/icons/default/acciones/advertencia.png" />
+				</td>
+				<td>
+					<table cellpadding="0px" cellspacing="0px">
+						<tr>
+							<td><rich:spacer width="8" /></td>
+							<td>
+								<s:div style="text-align:left">
+									<h:outputText value="#{messages['completarConfirmar']}" />
+								</s:div>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td style="height: 7px;" colspan="6" />
+			</tr>
+			<tr>
+				<td colspan="3">
+					<s:div style="text-align:center">
+						<!-- <a4j:commandButton action="#{gestionarHoja.CompletarInstanciaHoja()}" value="#{messages['si']}" oncomplete="javascript:Richfaces.hideModalPanel('mpAdvertenciaCompletarMon');" reRender="#{listaIdElementos}" ajaxSingle="false" limitToList="true" /> -->
+						<h:commandButton action="#{gestionarHoja.CompletarInstanciaHoja()}" value="#{messages['si']}" onclick="javascript:Richfaces.hideModalPanel('mpAdvertenciaCompletarMon');" />						
+						<a4j:commandButton id="btnNo" value="#{messages['lbl_no']}">
+							<rich:componentControl for="mpAdvertenciaCompletarMon" event="onclick" operation="hide" attachTo="btnNo" />
+						</a4j:commandButton>
+					</s:div>
+				</td>
+			</tr>
+		</table>
+	</h:form>
+</rich:modalPanel>

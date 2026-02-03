@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+      
+   <action execute="#{habitacionesCreate_common.begin()}"/>
+   
+	<navigation from-action="#{habitacionesCreate_common.insert()}">
+		<rule if-outcome="gotodetails">
+			<redirect view-id="/modConfiguracion/habitacion/habitacionesDetail.xhtml">
+				<param  name="habitacionId" value="#{habitacionesCreate_common.habitacion.id}"/>
+			</redirect> 
+		</rule>
+	</navigation>
+   
+
+</page>

@@ -1,0 +1,299 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- CSS -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/style/stylesheet.css"
+			rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+		<h:form id="form">
+			<rich:messages styleClass="message" ajaxRendered="true" for="message" />
+			<a4j:queue ignoreDupResponses="true" />
+			<rich:simpleTogglePanel switchType="client"
+				label="#{messages.criterios}"
+				opened="#{cargoFuncionarioBuscarControlador.state}"
+				bodyClass="simpleTogglePanel">
+				<a4j:support event="oncollapse" ajaxSingle="true"
+					action="#{cargoFuncionarioBuscarControlador.changeSimpleTogglePanelState()}" />
+				<a4j:support event="onexpand" ajaxSingle="true"
+					action="#{cargoFuncionarioBuscarControlador.changeSimpleTogglePanelState()}" />
+				<table cellpadding="0px" cellspacing="0px"
+					class="tabla lh-sint lv-comp-l lh-comp-b lv-comp-r">
+					<tr>
+						<td class="lvg-bet-comp"><h:outputText
+							value="#{messages.crit1}:" /><br />
+						<h:inputText id="nombre" tabindex="1" styleClass="imputText"
+							value="#{cargoFuncionarioBuscarControlador.nombre}" /></td>
+						<td class="lvg-bet-comp" valign="top"><h:outputText
+							value="#{messages.crit2}:" /><br />
+						<rich:comboBox id="tipoFuncionario"
+							defaultLabel="#{messages.seleccione}"
+							value="#{cargoFuncionarioBuscarControlador.tipoFuncionario}"
+							suggestionValues="#{cargoFuncionarioBuscarControlador.listadoTipoFuncionario()}"
+							enableManualInput="false">
+						</rich:comboBox></td>
+						<td valign="bottom" class="lv-bet-botton"><h:commandButton
+							tabindex="2" value="#{messages.buscar}" styleClass="botton" 
+							action="#{cargoFuncionarioBuscarControlador.buscar()}">
+							<s:defaultAction />
+						</h:commandButton></td>
+						<td valign="bottom"><s:button styleClass="botton" 
+							view="/modCommons/modHome/home.gehos"
+							value="#{messages.cancelar}" tabindex="3"
+							rendered="#{not identificadorManager.editing}">
+							<f:param name="idFuncionalidad"
+								value="#{activeModule.activeModule.id}" />
+							<f:param name="idancestors"
+								value="#{activeModule.activeModule.id}a" />
+							<f:param name="moduleName"
+								value="#{activeModule.activeModuleName}" />
+						</s:button></td>
+					</tr>
+				</table>
+			</rich:simpleTogglePanel>
+			<br />
+			<div align="right">
+			<table class="tablaLinkAdd" cellpadding="0" cellspacing="0">
+				<tr>
+					<td><h:graphicImage title="#{messages.adicionarIcon}"
+						height="12" width="12"
+						value="/resources/icons/default/acciones/adicionar.png" /></td>
+					<td valign="middle" class="lv-link-add"><h:commandLink
+						action="#{cargoFuncionarioCrearControlador.begin()}" tabindex="4"
+						value=" #{messages.adicionar}" /></td>
+				</tr>
+			</table>
+			</div>
+
+			<a4j:outputPanel id="tablas_id">
+				<rich:panel
+					rendered="#{empty cargoFuncionarioBuscarControlador.resultList and cargoFuncionarioBuscarControlador.nombre.equals('') and cargoFuncionarioBuscarControlador.tipoFuncionario.equals('')}">
+					<f:facet name="header">
+						<h:outputText value="#{messages.listado}" />
+					</f:facet>
+					<div class="lh-cont lv-text-l lh-sinb lv-text-r" style="FONT-FAMILY: 'Aharoni';"><h:outputText
+						value="#{messages.noInf}" /></div>
+				</rich:panel>
+				<rich:panel
+					rendered="#{empty cargoFuncionarioBuscarControlador.resultList and (cargoFuncionarioBuscarControlador.nombre != '' || cargoFuncionarioBuscarControlador.tipoFuncionario != '')}">
+					<f:facet name="header">
+						<h:outputText value="#{messages.listado}" />
+					</f:facet>
+					<div class="lh-cont lv-text-l lh-conb lv-text-r"><h:outputText
+						value="#{messages.noInf2}" /></div>
+				</rich:panel>
+				<rich:dataTable id="cargoList_Table" style="width: 100%;"
+					rendered="#{not empty cargoFuncionarioBuscarControlador.resultList}"
+					var="carg" value="#{cargoFuncionarioBuscarControlador.resultList}"
+					columnsWidth="60%, 40%, 1%, 1%">
+					<f:facet name="header">
+						<h:outputText value="#{messages.listado}" />
+					</f:facet>
+
+					<h:column>
+						<f:facet name="header">
+							<h:panelGrid columns="2"
+								style="width: 100%; padding:0px; margin:0px;" border="0"
+								cellpadding="0" cellspacing="0">
+								<s:div style="float: left;">
+									<h:outputText value="#{messages.crit1}" />
+								</s:div>
+								<s:div style="text-align: right; padding-left:3px;">
+									<h:graphicImage
+										rendered="#{not cargoFuncionarioBuscarControlador.order.equals('cargo.valor asc') and not cargoFuncionarioBuscarControlador.order.equals('cargo.valor desc')}"
+										value="/resources/icons/default/filtro/default.png" width="17"
+										height="17">
+										<rich:componentControl event="onclick" for="valorcontextmenu"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{cargoFuncionarioBuscarControlador.order.equals('cargo.valor asc')}"
+										value="/resources/icons/default/filtro/asc_sort.png"
+										width="17" height="17">
+										<rich:componentControl event="onclick" for="valorcontextmenu"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{cargoFuncionarioBuscarControlador.order.equals('cargo.valor desc')}"
+										value="/resources/icons/default/filtro/des_sort.png"
+										width="17" height="17">
+										<rich:componentControl event="onclick" for="valorcontextmenu"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+								</s:div>
+							</h:panelGrid>
+						</f:facet>
+						<h:outputText value="#{carg.valor}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:panelGrid columns="2"
+								style="width: 100%; padding:0px; margin:0px;" border="0"
+								cellpadding="0" cellspacing="0">
+								<s:div style="float: left;">
+									<h:outputText value="#{messages.crit2}" />
+								</s:div>
+								<s:div style="text-align: right; padding-left:3px;">
+									<h:graphicImage
+										rendered="#{not cargoFuncionarioBuscarControlador.order.equals('cargo.tipoFuncionario.valor asc') and not cargoFuncionarioBuscarControlador.order.equals('cargo.tipoFuncionario.valor desc')}"
+										value="/resources/icons/default/filtro/default.png" width="17"
+										height="17">
+										<rich:componentControl event="onclick"
+											for="tipoFuncionarioContextMenu" operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{cargoFuncionarioBuscarControlador.order.equals('cargo.tipoFuncionario.valor asc')}"
+										value="/resources/icons/default/filtro/asc_sort.png"
+										width="17" height="17">
+										<rich:componentControl event="onclick"
+											for="tipoFuncionarioContextMenu" operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{cargoFuncionarioBuscarControlador.order.equals('cargo.tipoFuncionario.valor desc')}"
+										value="/resources/icons/default/filtro/des_sort.png"
+										width="17" height="17">
+										<rich:componentControl event="onclick"
+											for="tipoFuncionarioContextMenu" operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+								</s:div>
+							</h:panelGrid>
+						</f:facet>
+						<h:outputText value="#{carg.tipoFuncionario.valor}" />
+					</h:column>
+
+					<h:column>
+						<center><h:commandLink
+							action="#{cargoFuncionarioVerDetallesControlador.setCargoId(carg.id)}"
+							view="/modConfiguracion/management/gestionarCargoFuncionario/VerDetallesCargoFuncionario.gehos">
+							<h:graphicImage title="#{messages.ver}" styleClass="select"
+								value="/resources/icons/default/acciones/ver.png" />
+						</h:commandLink></center>
+					</h:column>
+					<h:column>
+						<center><h:commandLink
+							action="#{cargoFuncionarioModificarControlador.setCargoId(carg.id)}"
+							view="/modConfiguracion/management/gestionarCargoFuncionario/ModificarCargoFuncionario.gehos">
+							<h:graphicImage title="#{messages.modificar}" styleClass="select"
+								value="/resources/icons/default/acciones/modificar.png" />
+						</h:commandLink></center>
+					</h:column>
+					<h:column>
+						<center><a4j:commandLink
+							oncomplete="Richfaces.showModalPanel('panelEliminar')"
+							action="#{cargoFuncionarioBuscarControlador.seleccionar(carg.id)}">
+
+							<h:graphicImage title="#{messages.eliminar}" styleClass="select"
+								value="/resources/icons/default/acciones/eliminar.png">
+							</h:graphicImage>
+						</a4j:commandLink></center>
+					</h:column>
+					<h:column>
+						<center><h:graphicImage rendered="#{not carg.eliminado}"
+							value="/resources/modConfiguracion/visible.png" width="14"
+							height="14" styleClass="select" title="#{messages.visibilidad}">
+							<a4j:support event="onclick" ajaxSingle="true"
+								action="#{cargoFuncionarioBuscarControlador.cambiarVisibilidad(carg.id)}"
+								reRender="tablas_id,cargoList_Table" />
+						</h:graphicImage> <h:graphicImage rendered="#{carg.eliminado}"
+							value="/resources/modConfiguracion/not-visible.png" width="14"
+							height="14" styleClass="select" title="#{messages.visibilidad}">
+							<a4j:support event="onclick" ajaxSingle="true"
+								action="#{cargoFuncionarioBuscarControlador.cambiarVisibilidad(carg.id)}"
+								reRender="tablas_id,cargoList_Table" />
+						</h:graphicImage></center>
+					</h:column>
+				</rich:dataTable>
+				<br />
+				<s:div id="pagingcontrols" style="width: 100%; text-align:center"
+					rendered="#{not empty cargoFuncionarioBuscarControlador.resultList}"
+					align="center">
+					<h:graphicImage
+						value="/resources/icons/default/paginado/iniciod.png"
+						rendered="#{!cargoFuncionarioBuscarControlador.previousExists}" />
+					<h:commandLink
+						action="#{cargoFuncionarioBuscarControlador.setFirstResult(0)}"
+						rendered="#{cargoFuncionarioBuscarControlador.previousExists}">
+						<h:graphicImage title="#{messages.pag1}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/inicio.png" />
+					</h:commandLink>
+					<h:graphicImage
+						value="/resources/icons/default/paginado/anteriord.png"
+						rendered="#{!cargoFuncionarioBuscarControlador.previousExists}" />
+					<h:commandLink
+						action="#{cargoFuncionarioBuscarControlador.setFirstResult(cargoFuncionarioBuscarControlador.previousFirstResult)}"
+						rendered="#{cargoFuncionarioBuscarControlador.previousExists}">
+						<h:graphicImage title="#{messages.pag2}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/anterior.png" />
+					</h:commandLink>
+					<h:graphicImage
+						value="/resources/icons/default/paginado/siguiented.png"
+						rendered="#{!cargoFuncionarioBuscarControlador.nextExists}" />
+					<h:commandLink
+						action="#{cargoFuncionarioBuscarControlador.setFirstResult(cargoFuncionarioBuscarControlador.nextFirstResult)}"
+						rendered="#{cargoFuncionarioBuscarControlador.nextExists}">
+						<h:graphicImage title="#{messages.pag3}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/siguiente.png" />
+					</h:commandLink>
+					<h:graphicImage value="/resources/icons/default/paginado/find.png"
+						rendered="#{!cargoFuncionarioBuscarControlador.nextExists}" />
+					<h:commandLink
+						action="#{cargoFuncionarioBuscarControlador.setFirstResult(cargoFuncionarioBuscarControlador.lastFirstResult)}"
+						rendered="#{cargoFuncionarioBuscarControlador.nextExists}">
+						<h:graphicImage title="#{messages.pag4}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/fin.png" />
+					</h:commandLink>
+				</s:div>
+			</a4j:outputPanel>
+			<rich:contextMenu attached="false" id="valorcontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{cargoFuncionarioBuscarControlador.setOrder('cargo.valor desc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{cargoFuncionarioBuscarControlador.setOrder('cargo.valor asc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+			</rich:contextMenu>
+			<rich:contextMenu attached="false" id="tipoFuncionarioContextMenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{cargoFuncionarioBuscarControlador.setOrder('cargo.tipoFuncionario.valor desc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{cargoFuncionarioBuscarControlador.setOrder('cargo.tipoFuncionario.valor asc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+			</rich:contextMenu>
+		</h:form>
+		<ui:include
+			src="/modConfiguracion/management/gestionarCargoFuncionario/modalspanel/ConfirmarEliminarCargoFuncionarioBuscar.xhtml" />
+	</ui:define>
+</ui:composition>

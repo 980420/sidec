@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+      xmlns:a4j="http://richfaces.org/a4j"
+      template="#{theme.template}"
+                xmlns:rich="http://richfaces.org/rich">
+                
+<ui:define name="body" >
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('Detalles del nomenclador')</script>
+	<style type="text/css">.rich-stglpanel-body{padding:0px}</style>
+	<style type="text/css">.rich-panel-body{padding:0px}</style>
+	<h:form>
+	<h:inputText rendered="#{nomencladoresDetailController.constructor()}" />
+	<a4j:keepAlive beanName="nomencladoresDetailController" />
+	<rich:simpleTogglePanel switchType="client"  >
+		<f:facet name="header">Criterios de búsqueda</f:facet>
+		<table cellpadding="0px" cellspacing="0px" border="0px" >
+			<tr>
+				<td style="height: 11px;" colspan="6">
+				</td>
+			</tr>
+			<tr style="vertical-align: top;">
+				<td style="width: 7px;"></td>
+				<td>
+					Valor:<br />
+					<h:inputText value="#{nomencladoresDetailController.valor}" autocomplete="off" 
+						disabled="#{not nomencladoresDetailController.tieneValor}">
+					</h:inputText>
+				</td>
+				<td style="width: 25px"></td>
+				<td>
+					<s:div rendered="#{nomencladoresDetailController.tieneCodigo}">
+						Código:<br />
+						<h:inputText value="#{nomencladoresDetailController.codigo}" autocomplete="off" 
+							disabled="#{not nomencladoresDetailController.tieneCodigo}">
+						</h:inputText>
+					</s:div>
+				</td>
+				<td style="width: 25px"></td>
+				<td  style="vertical-align: bottom;">
+					<h:commandButton action="buscar" value="Buscar" style="margin-left: 0px; margin-bottom: 0px;" >
+						<s:defaultAction />
+					</h:commandButton>
+					<a4j:commandButton value="Cancelar" onclick="history.go(-1)" 
+								style="margin-right: 0px; margin-bottom: 0px;" >
+					</a4j:commandButton>
+				</td>
+				<td style="width: 25px"></td>
+				<td style="vertical-align: bottom;">
+				</td>
+			</tr>
+		</table>
+		<br/>
+	</rich:simpleTogglePanel> 
+	<br/>
+
+	<rich:dataTable id="nomDataGrid" width="100%" rows="8"
+		value="#{nomencladoresDetailController.getResultList()}" var="nom"
+		columnsWidth="40%, 40%, 0*, 0*, 0*, 0*" >
+		<f:facet name="header">Listado de valores del nomenclador #{nomencladoresDetailController.nombreNomenclador}</f:facet>
+		<h:column>
+			<f:facet name="header">
+			   	<h:panelGrid columns="2" style="width: 100%; padding:0px; margin:0px;" 
+            		border="0" cellpadding="0" cellspacing="0">
+            		<s:div style="float: left;">Código</s:div>
+	            	<s:div style="text-align: right; padding-left:3px;" rendered="#{nomencladoresDetailController.tieneCodigo}">
+						<h:graphicImage 
+							rendered="#{not nomencladoresDetailController.order.equals('codigo asc')  and  not nomencladoresDetailController.order.equals('codigo desc')}"
+							value="/resources/icons/default/filtro/default.png" width="17" height="17">
+							<rich:componentControl 
+								event="onclick" 
+								for="codigocontextmenu"
+								operation="show">
+							</rich:componentControl>
+						</h:graphicImage>
+						<h:graphicImage rendered="#{nomencladoresDetailController.order.equals('codigo asc')}"
+							value="/resources/icons/default/filtro/asc_sort.png" width="17" height="17">
+							<rich:componentControl 
+								event="onclick" 
+								for="codigocontextmenu"
+								operation="show">
+							</rich:componentControl>
+						</h:graphicImage>
+						<h:graphicImage rendered="#{nomencladoresDetailController.order.equals('codigo desc')}"
+							value="/resources/icons/default/filtro/des_sort.png" width="17" height="17">
+							<rich:componentControl 
+								event="onclick" 
+								for="codigocontextmenu"
+								operation="show">
+							</rich:componentControl>
+						</h:graphicImage>	
+					</s:div>												
+            	</h:panelGrid>
+			</f:facet>
+			#{nom.codigo}
+		</h:column>
+		<h:column>
+			<f:facet name="header">
+			   	<h:panelGrid columns="2" style="width: 100%; padding:0px; margin:0px;" 
+            		border="0" cellpadding="0" cellspacing="0">
+            		<s:div style="float: left;">Valor</s:div>
+	            	<s:div style="text-align: right; padding-left:3px;" rendered="#{nomencladoresDetailController.tieneValor}">
+						<h:graphicImage 
+							rendered="#{not nomencladoresDetailController.order.equals('valor asc')  and  not nomencladoresDetailController.order.equals('valor desc')}"
+							value="/resources/icons/default/filtro/default.png" width="17" height="17">
+							<rich:componentControl 
+								event="onclick" 
+								for="valorcontextmenu"
+								operation="show">
+							</rich:componentControl>
+						</h:graphicImage>
+						<h:graphicImage rendered="#{nomencladoresDetailController.order.equals('valor asc')}"
+							value="/resources/icons/default/filtro/asc_sort.png" width="17" height="17">
+							<rich:componentControl 
+								event="onclick" 
+								for="valorcontextmenu"
+								operation="show">
+							</rich:componentControl>
+						</h:graphicImage>
+						<h:graphicImage rendered="#{nomencladoresDetailController.order.equals('valor desc')}"
+							value="/resources/icons/default/filtro/des_sort.png" width="17" height="17">
+							<rich:componentControl 
+								event="onclick" 
+								for="valorcontextmenu"
+								operation="show">
+							</rich:componentControl>
+						</h:graphicImage>	
+					</s:div>												
+            	</h:panelGrid>
+			</f:facet>
+			#{nom.valor}
+		</h:column>
+		<h:column style="text-align: center;">
+			<f:facet name="header">Activo</f:facet>
+			<div align="center">
+				<h:selectBooleanCheckbox value="#{not nom.eliminado}" disabled="true" />
+			</div>
+		</h:column>
+		<h:column >
+			<div align="center">
+			<h:commandLink action="#{nomencladorDetailController.setNomenclador(nom)}">
+                    <h:graphicImage title="Ver" style="border: 0px;"
+                   					value="/resources/icons/default/acciones/ver.png"/>
+            </h:commandLink>
+			</div>
+        </h:column>
+        <h:column >
+			<div align="center">
+			<h:commandLink action="#{nomencladorEditController.setNomenclador(nom)}">
+                   <h:graphicImage title="Modificar" style="border: 0px;" 
+                   					value="/resources/icons/default/acciones/modificar.png"/>
+            </h:commandLink>
+			</div>
+        </h:column>
+        <h:column >
+			<div align="center">
+                   <h:graphicImage title="Eliminar" style="border: 0px; cursor:pointer;"
+                   		value="/resources/icons/default/acciones/eliminar.png"
+                   		onclick="Richfaces.showModalPanel('panelEliminar')">
+               		</h:graphicImage>
+			</div>
+        </h:column>
+	</rich:dataTable>	
+
+	<div align="center">
+		<a4j:status id="nomencdetstatus">
+			<f:facet name="start"><h:graphicImage url="/resources/icons/default/acciones/loading_small.gif" />
+			</f:facet>
+		</a4j:status> <br />
+		<rich:datascroller for="nomDataGrid" status="nomencdetstatus"  />
+	</div>
+		
+  </h:form>
+  <h:form>
+	 <rich:contextMenu attached="false" id="codigocontextmenu" submitMode="ajax">
+		<rich:menuItem value="Ordenar de mayor a menor" ajaxSingle="true"
+			icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+			action="#{nomencladoresDetailController.setOrder('codigo desc')}" reRender="nomDataGrid">
+		</rich:menuItem>
+		<rich:menuItem value="Ordenar de menor a mayor" ajaxSingle="true"
+			icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+			action="#{nomencladoresDetailController.setOrder('codigo asc')}" reRender="nomDataGrid">
+		</rich:menuItem>
+	 </rich:contextMenu>
+	 <rich:contextMenu attached="false" id="valorcontextmenu" submitMode="ajax">
+		<rich:menuItem value="Ordenar de mayor a menor" ajaxSingle="true"
+			icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+			action="#{nomencladoresDetailController.setOrder('valor desc')}" reRender="nomDataGrid">
+		</rich:menuItem>
+		<rich:menuItem value="Ordenar de menor a mayor" ajaxSingle="true"
+			icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+			action="#{nomencladoresDetailController.setOrder('valor asc')}" reRender="nomDataGrid">
+		</rich:menuItem>
+	 </rich:contextMenu>
+  </h:form>   
+</ui:define>
+
+</ui:composition>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

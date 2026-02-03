@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.1.xsd">
+
+<begin-conversation flush-mode="manual" join="true"/>	
+<navigation from-action="cancelar">		
+		<redirect view-id="/modCommons/modHome/home.gehos">
+			<param name="moduleName" value="ensayo_ensayo_estadisticas_3" />
+			<param name="idFuncionalidad" value="1001000000000103391" />
+			<param name="idancestors" value="1001000000000103391a" />
+		</redirect>
+</navigation>		
+
+<navigation evaluate="#{seguridadEstudio.CanSeeThisFunctionalityNow()}">	
+		<rule if-outcome="not-selected">
+			<redirect view-id="/modEnsayo/codebase/seleccionar_estudio/seleccionarEstudio.xhtml">
+				<!-- Colocal el valor la direccion a la que se debe redireccionar al seleccionar el estudio -->
+				<param name="direccion" value="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/reglas/reporte.xhtml" />
+			</redirect>
+		</rule>
+		<rule if-outcome="not-authorized">
+			<redirect view-id="/error.xhtml">
+				<message>Su usuario no puede acceder a este recurso en el estudio activo actualmente</message>
+			</redirect>
+		</rule>		
+	</navigation>
+
+</page>

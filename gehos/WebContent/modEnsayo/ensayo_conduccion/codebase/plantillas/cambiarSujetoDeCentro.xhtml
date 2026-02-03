@@ -1,0 +1,247 @@
+<!--CU 5 Cambiar sujeto de centro -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle('#{titulo}')</script>
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css"
+		rel="stylesheet" type="text/css" />
+	<rich:messages globalOnly="true" styleClass="message"
+		id="globalMessage" ajaxRendered="true" />
+	<table class="Tabla" width="100%" cellpadding="0" cellspacing="0">
+		<tr>
+			<td><rich:simpleTogglePanel switchType="client"
+					label="#{messages.criterioBusqueda}">
+					<table width="100%" cellpadding="0" cellspacing="0">
+						<tr>
+							<td><h:form id="form1">
+									<table class="Tabla" id="buscarPacienteN" style="#{controlador.displayBN}"
+										cellspacing="0" cellpadding="0">
+										<tr id="A" class="filSepPeq">
+											<td id="A1" class="colSepGran"><h:outputText
+													value="#{messages.ident}:"
+													style="margin:0px; padding:0px; spacing:0px" /></td>
+										</tr>
+										<tr>
+											<td class="colSepGran"><h:inputText
+													styleClass="inputText" id="cedula1"
+													value="#{controlador.sujeto.codigoPaciente}">
+												</h:inputText></td>
+											<td><h:commandButton value="#{messages.buscar}"
+													action="#{controlador.buscar()}" style="margin:0px;" /> <rich:spacer
+													width="10" /> <h:commandButton
+													value="#{messages.cancelar}" action="cancelar"
+													style="margin:0px;" /></td>
+										</tr>
+									</table>
+								</h:form> </td>
+						</tr>
+					</table>
+				</rich:simpleTogglePanel> <br /></td>
+		</tr>
+		<tr>
+			<td><h:form>
+					<a:outputPanel id="tb1">
+						<rich:panel rendered="#{not controlador.existResultados}">
+							<f:facet name="header">#{messages.listadoSujetos}</f:facet>
+							<table class="Tabla">
+								<tr>
+									<td ><h:outputText
+											value="#{messages.noResults}" /></td>
+								</tr>
+							</table>
+						</rich:panel>
+						<rich:panel
+							rendered="#{empty controlador.resultList and controlador.existResultados}">
+							<f:facet name="header">#{messages.listadoSujetos}</f:facet>
+							<table class="Tabla">
+								<tr>
+									<td ><h:outputText
+											value="#{messages.noSujeto}" /></td>
+								</tr>
+							</table>
+						</rich:panel>
+						<div style="margin-left: 1px">
+							<rich:dataTable id="tb" value="#{controlador.resultList}"
+								var="subject" width="100%"
+								rendered="#{not empty controlador.resultList}">
+								<f:facet name="header">
+									<h:outputText value="#{messages.listadoSujetos}" />
+								</f:facet>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.ident}" styleClass="label" /></td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList" value="#{controlador}" />
+															<ui:param name="columna" value="sujeto.codigoPaciente" />
+															<ui:param name="nombreMenu" value="ordenarNombresMenu" />
+															<ui:param name="tablaRender" value="tb" />
+														</ui:include></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText value="#{subject.codigoPaciente}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.nombreG}" styleClass="label" />
+													</td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList" value="#{controlador}" />
+															<ui:param name="columna"
+																value="sujeto.grupoSujetos.nombreGrupo" />
+															<ui:param name="nombreMenu" value="ordenarNombreGMenu" />
+															<ui:param name="tablaRender" value="tb" />
+														</ui:include></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText value="#{subject.grupoSujetos.nombreGrupo}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.estadoInclucion}" styleClass="label" />
+													</td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList" value="#{controlador}" />
+															<ui:param name="columna"
+																value="sujeto.estadoInclusion.nombre" />
+															<ui:param name="nombreMenu" value="ordenarPapellidoMenu" />
+															<ui:param name="tablaRender" value="tb" />
+														</ui:include></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText value="#{subject.estadoInclusion.nombre}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.estadoTratamiento}" styleClass="label" />
+													</td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList" value="#{controlador}" />
+															<ui:param name="columna"
+																value="sujeto.estadoTratamiento.nombre" />
+															<ui:param name="nombreMenu" value="ordenarPapellidoMenu1" />
+															<ui:param name="tablaRender" value="tb" />
+														</ui:include></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText value="#{subject.estadoTratamiento.nombre}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.estadoMonitoreo}" styleClass="label" />
+													</td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText value="#{controlador.estadoMonitoreo(subject.id)}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.fechaMSAnterior}" styleClass="label" />
+													</td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<table width="100%">
+										<tr>
+											<td align="left"><h:outputText rendered="#{controlador.obtenerfechaMSAnterior(subject.id) != null}"
+													value="#{controlador.obtenerfechaMSAnterior(subject.id).fechaInicio}">
+													<s:convertDateTime pattern="#{messages.patronFecha}"></s:convertDateTime>
+												</h:outputText></td>
+										</tr>
+									</table>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.fechaProximoMS}" styleClass="label" />
+													</td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<table width="100%">
+										<tr>
+											<td align="left"><h:outputText rendered="#{controlador.obtenerfechaProximoMS(subject.id) != null}"
+													value="#{controlador.obtenerfechaProximoMS(subject.id).fechaInicio}">
+													<s:convertDateTime pattern="#{messages.patronFecha}"></s:convertDateTime>
+												</h:outputText></td>
+										</tr>
+									</table>
+								</rich:column>
+								<rich:column width="1px" styleClass="alineacionCentrada">
+									<h:commandLink action="gestionar"
+										rendered="#{controlador.gestionar}"
+										title="#{messages.seleccionar}"
+										style="border: 0px; cursor:pointer;">
+										<h:graphicImage
+											value="/resources/icons/default/acciones/seleccionar_uno.png"
+											style="border:0;" />
+										<f:param name="idSujeto" value="#{subject.id}" />
+									</h:commandLink>
+								</rich:column>
+							</rich:dataTable>
+						</div>
+					</a:outputPanel>
+				</h:form></td>
+		</tr>
+
+		<tr class="filSepGranRA">
+			<td align="center"><h:form>
+					<a:outputPanel id="paginado1" ajaxRendered="true">
+						<ui:include src="/modEnsayo/codebase/plantillas/paginado_tabla_inferior_generico.xhtml/" >
+						<ui:param name="vzPaginado" value="#{cambiarSujetoCentro.resultCount>10}"/>
+						<ui:param name="nomControladorList" value="#{cambiarSujetoCentro}" />
+						<ui:param name="idListado" value="tb" />
+						</ui:include>
+					</a:outputPanel>
+				</h:form> <br /></td>
+		</tr>
+	</table>
+</ui:composition>

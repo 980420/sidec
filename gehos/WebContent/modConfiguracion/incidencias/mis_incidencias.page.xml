@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	
+	<param name="idSub" value="#{misIncidencias.idSub}"/>
+	<param name="id" value="#{misIncidencias.id}"/>
+	
+	<navigation from-action="crear">
+		<redirect view-id="/modConfiguracion/incidencias/crear_incidencia.gehos">
+			<param name="idSub" value="#{misIncidencias.idSub}"/>
+		</redirect>
+	</navigation>	
+	
+	<navigation from-action="Ver">
+		<redirect view-id="/modConfiguracion/incidencias/ver_incidencia.gehos">
+			<param name="idSub" value="#{misIncidencias.idSub}"/>
+			<param name="id" value="#{misIncidencias.id}"/>
+		</redirect>
+	</navigation>	
+	
+
+</page>

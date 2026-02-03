@@ -1,0 +1,137 @@
+<rich:modalPanel id="emailsRulePanel" onhide="" resizeable="false"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" onshow="" width="600" height="400">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<f:facet name="header">
+		<h:panelGroup>
+			<h:outputText value="#{messages['cuadroDialogImpr_Applet']}"></h:outputText>
+		</h:panelGroup>
+	</f:facet>
+	<f:facet name="controls">
+		<h:panelGroup>
+			<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+				styleClass="hidelink" id="hidelink" />
+			<rich:componentControl for="emailsRulePanel" attachTo="hidelink"
+				operation="hide" event="onclick" />
+		</h:panelGroup>
+	</f:facet>
+	<rich:messages ajaxRendered="true" ></rich:messages>
+s#{ReglasControlador.actionInstance.name}
+			<a4j:form>
+			<a4j:region>
+			<a4j:outputPanel id="opModal">
+			<rich:dataTable id="id_datatable"
+					style="width: 100%;" var="prov"
+					value="#{ReglasControlador.actionInstance.usuarios}"
+					rendered="#{not empty ReglasControlador.actionInstance.usuarios}"
+					columnsWidth="1%,20%, 77%, 1%, 1%">
+					<f:facet name="header">
+						<s:div>
+							<div style="float: left;"><h:outputText
+								value="#{messages.listado}"/></div>
+						</s:div>
+					</f:facet>
+									
+					<h:column>
+						<f:facet name="header">
+							<h:panelGrid columns="2"
+								style="width: 100%; padding:0px; margin:0px;" border="0"
+								cellpadding="0" cellspacing="0">
+								<s:div style="float: left;">#{messages.codigo}</s:div>
+								<s:div style="text-align: right; padding-left:3px;">
+									<h:graphicImage
+										rendered="#{not clGrado.order.equals('pais.codigo asc') and not clGrado.order.equals('pais.codigo desc')}"
+										value="/resources/icons/default/filtro/default.png" width="12"
+										height="17">
+										<rich:componentControl event="onclick" for="nombrecontextmenuCodigo"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{clGrado.order.equals('pais.codigo asc')}"
+										value="/resources/icons/default/filtro/asc_sort.png"
+										width="12" height="17">
+										<rich:componentControl event="onclick" for="nombrecontextmenuCodigo"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{clGrado.order.equals('pais.codigo desc')}"
+										value="/resources/icons/default/filtro/des_sort.png"
+										width="12" height="17" style=" width : 12px;">
+										<rich:componentControl event="onclick" for="nombrecontextmenu"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+								</s:div>
+							</h:panelGrid>
+						</f:facet>
+						
+							#{prov.username}						 
+							 		            
+	        </h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:panelGrid columns="2"
+								style="width: 100%; padding:0px; margin:0px;" border="0"
+								cellpadding="0" cellspacing="0">
+								<s:div style="float: left;">#{messages.nombre}</s:div>
+								<s:div style="text-align: right; padding-left:3px;">
+									<h:graphicImage
+										rendered="#{not clGrado.order.equals('pais.nombre asc') and not clGrado.order.equals('pais.nombre desc')}"
+										value="/resources/icons/default/filtro/default.png" width="12"
+										height="17">
+										<rich:componentControl event="onclick" for="nombrecontextmenu"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{clGrado.order.equals('pais.nombre asc')}"
+										value="/resources/icons/default/filtro/asc_sort.png"
+										width="12" height="17">
+										<rich:componentControl event="onclick" for="nombrecontextmenu"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{clGrado.order.equals('pais.nombre desc')}"
+										value="/resources/icons/default/filtro/des_sort.png"
+										width="12" height="17" style=" width : 12px;">
+										<rich:componentControl event="onclick" for="nombrecontextmenu"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+								</s:div>
+							</h:panelGrid>
+						</f:facet>
+						
+							#{prov.username}						 
+							 		            
+	        </h:column>
+	        
+			<h:column>
+						<div align="center">
+						<a4j:commandLink action="#{ReglasControlador.actionInstance.mark(prov)}" rendered="#{ReglasControlador.actionInstance.ismarked(prov)}" reRender="id_datatable">						
+							<h:graphicImage title="#{messages.editar}" style="border: 0px;"
+								value="/resources/icons/default/acciones/modificar.png" />					
+						
+						</a4j:commandLink>
+						
+						<a4j:commandLink action="#{ReglasControlador.actionInstance.mark(prov)}" rendered="#{!ReglasControlador.actionInstance.ismarked(prov)}" reRender="id_datatable">						
+							<h:graphicImage title="#{messages.editar}" style="border: 0px;"
+								value="/resources/icons/default/acciones/eliminar.png" />					
+						
+						</a4j:commandLink>
+						</div>
+					</h:column>
+					
+				</rich:dataTable>				
+			</a4j:outputPanel></a4j:region></a4j:form>
+</rich:modalPanel>

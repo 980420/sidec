@@ -1,0 +1,111 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css">
+			/*Panel*/
+			.rich-panel-body {
+				padding: 0px;
+				white-space: nowrap !IMPORTANT;
+			}
+			
+			/*Modal Panel*/
+			.dr-mpnl-pnl-b {
+				padding: 1px;
+			}			
+		</style>
+
+		<s:div
+			rendered="#{not entidadOrganizacionalVerDetallesControlador.from.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.titulo1}')</script>
+		</s:div>
+
+		<s:div rendered="#{entidadOrganizacionalVerDetallesControlador.from.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.titulo2}')</script>
+		</s:div>
+
+
+		<a4j:outputPanel ajaxRendered="true">
+			<rich:messages styleClass="message" for="btnSi" ajaxRendered="true" />
+		</a4j:outputPanel>
+
+		<h:form id="userCreate" styleClass="create"
+			enctype="multipart/form-data">
+
+			<rich:panel>
+				<f:facet name="header">#{messages.datos}</f:facet>
+
+				<table cellpadding="0px" cellspacing="0px" border="0px">
+					<tr>
+						<td style="height: 10px;" colspan="6"></td>
+					</tr>
+					<tr style="vertical-align: top;">
+						<td style="width: 7px;"></td>
+						<td><h:outputLabel value="#{messages.nombre}"></h:outputLabel>
+						<rich:spacer width="9px" /> <h:outputText id="valor"
+							value="#{entidadOrganizacionalVerDetallesControlador.entidadOrganizacional.valor}"
+							styleClass="dataText" style="width:150px;" /></td>
+
+
+
+
+					</tr>
+
+
+				</table>
+				<rich:spacer height="4px" />
+			</rich:panel>
+
+
+
+			<rich:spacer height="3px" />
+
+
+			<div align="right"><h:commandButton
+				value="#{messages.modificar}"
+				rendered="#{not entidadOrganizacionalVerDetallesControlador.from.equals('listar')}"
+				style="margin-right:0px;margin-top:5px;"
+				action="#{entidadOrganizacionalModificarControlador.cambId(entidadOrganizacionalVerDetallesControlador.entidadOrganizacional.id)}"
+				propagation="end" /> <rich:spacer width="5px" /> <a4j:commandButton
+				id="btnEliminar" onclick="Richfaces.showModalPanel('eliminar_entidadOrganizacional')"
+				value="#{messages.eliminar}"
+				style="margin-right:0px;margin-top:5px;"
+				rendered="#{not entidadOrganizacionalVerDetallesControlador.from.equals('listar')}">
+			</a4j:commandButton> <rich:spacer width="5px" /> <h:commandButton
+				value="#{messages.salir}" style="margin-right:0px;margin-top:5px;"
+				action="salir" propagation="end" /></div>
+
+
+		</h:form>
+
+		<h:form id="modalform">
+
+
+
+		</h:form>
+
+		<a4j:form>
+			<a4j:jsFunction name="updateIcon" limitToList="true">
+				<a4j:actionparam name="icn"
+					assignTo="#{crearTipoCamaControlador.existingCategoryIconName}" />
+			</a4j:jsFunction>
+		</a4j:form>
+		<br />
+
+
+		 <ui:include
+			src="/modConfiguracion/management/gestionarEntidadOrganizacional/modalspanel/ConfirmarEliminarEntidadOrganizacionalVerDetalles.xhtml" />
+	   
+	</ui:define>
+
+</ui:composition>
+

@@ -1,0 +1,41 @@
+<rich:modalPanel id="modalContainer" onhide="installRafa()"
+	resizeable="false" autosized="true" showWhenRendered="false"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" onshow="" width="600">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<f:facet name="header">
+		<h:panelGroup>
+			<h:outputText value="#{messages['cuadroDialogImpr_Applet']}"></h:outputText>
+		</h:panelGroup>
+	</f:facet>
+	<f:facet name="controls">
+		<h:panelGroup>
+			<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif" styleClass="hidelink" id="rchidelink4" />
+			<rich:componentControl for="modalContainer" attachTo="rchidelink4" operation="hide" event="onclick" />
+		</h:panelGroup>
+	</f:facet>
+	<a4j:form id="ssaa">
+		<a4j:jsFunction name="tryCloseModal" data="#{currentActionManager.completed}" oncomplete="closeModal(data)" ajaxSingle="true" reRender="nadie" limitToList="true" />
+		<ui:include src="#{action.pathFileContent}" />
+		<br />
+		<div align="right" style="width: 100%">
+			<a4j:commandButton id="aceptarr" value="Aceptar" action="#{currentActionManager.Process()}" oncomplete="onSave(data);tryCloseModal();" data="#{ruleManager.clientData}" style="margin-right: 0px; margin-bottom: 0px; margin-top: 0px;">
+				<a4j:support event="onclick" action="#{currentActionManager.setAction(action)}" />
+			</a4j:commandButton>
+			<rich:spacer width="8" />
+			<a4j:commandButton id="cancelarr" value="Cancelar" oncomplete="javascript:Richfaces.hideModalPanel('modalContainer');" />
+		</div>
+	</a4j:form>
+	<script>
+			function closeModal(close){
+				if(close==true)
+					Richfaces.hideModalPanel('modalContainer')
+			}
+		</script>
+</rich:modalPanel>

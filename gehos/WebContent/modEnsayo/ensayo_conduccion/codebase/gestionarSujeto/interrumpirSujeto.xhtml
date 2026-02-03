@@ -1,0 +1,263 @@
+<!--CU 8 Interrumpir sujeto-->
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" xmlns:a4j="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle('#{interrumpirSujeto.sujeto.fechaInterrupcion == null ? messages.interrumpirSuj : messages.interrumpirSujMod} #{interrumpirSujeto.NombreSujetoById()}')</script>
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+		type='text/css' />
+	
+
+	<script type="text/javascript">			
+	var curDtN = new Date();
+	 var calDtN=null;
+
+	 function previousDate(date){
+		calDtN = date;
+	 }
+
+	 function disablementFunction(day){
+		 if(calDtN == null){
+			 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+					return true; 
+				else 
+					return false; 
+		 }
+		 else {
+			 if (calDtN.getTime() - day.date.getTime() &#62;= 0 ) 
+					return true; 
+				else 
+					return false;
+		 }					 
+	 }
+
+	 function disabledClassesProv(day){
+		 if(calDtN == null){
+			 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+					return ''; 
+				else 
+					return 'noavailable'; 
+		 }
+		 else {
+			 if (calDtN.getTime() - day.date.getTime() &#62;= 0) 
+					return ''; 
+				else 
+					return 'noavailable';
+		 }				
+	 }
+
+	 function resetSecondDate(first,second) {
+		 var firstDate = first.getSelectedDate().getTime();
+		 var secondDate = second.getSelectedDate().getTime();
+
+		 if(firstDate - secondDate &#62; 0)
+			 second.resetSelectedDate();
+	 }
+	 
+	 function disablementFunctionPreviousEx(day){
+		if(calDtN == null){
+			if (curDtN.getTime() - day.date.getTime() &#62; 0) return true; else return false;
+		}
+		if ((curDtN.getTime() - day.date.getTime() &#62; 0) &#38;&#38; (calDtN.getTime() - day.date.getTime() &#60;= 0)){
+			return true;
+		}
+		else 
+			return false;
+	  }
+
+	function disabledClassesProvPreviousEx(day){
+		if(calDtN == null){
+			if (curDtN.getTime() - day.date.getTime() &#60; 0)
+				return 'noavailable';
+			else 
+				return '';
+		}
+		if ((curDtN.getTime() - day.date.getTime() &#60; 0) || (calDtN.getTime() - day.date.getTime() &#62; 0))
+			return 'noavailable';
+		else 
+			return '';
+	}
+</script>
+
+	<h:form id="idForm" enctype="multipart/form-data">
+		<table class="Tabla" width="100%" cellpadding="0" cellspacing="0">
+
+			<tr>
+				<td><rich:panel>
+						<f:facet name="header">
+							<h:panelGroup>
+								<div>
+									<div align="left">#{messages.datosSujeto}</div>
+								</div>
+							</h:panelGroup>
+						</f:facet>
+						<table class="Tabla" cellspacing="0" cellpadding="0" width="100%">
+							<tr>
+								<td>
+									<table cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td>
+												<table cellpadding="0" cellspacing="0">
+													<tr>
+														<td class="">
+															<table cellpadding="0" cellspacing="0">
+																<tr class="filSepGranRA">
+																	<td class="colSepPeq"><h:outputText
+																			value="#{messages.iniciales}:"
+																			style="margin:0px; padding:0px;" /></td>
+																	<td class="colSepGran"><h:outputText
+																			styleClass="dataText"
+																			value="#{(not empty interrumpirSujeto.sujeto.inicialesPaciente) ? interrumpirSujeto.sujeto.inicialesPaciente : messages.vacio}"
+																			style="margin:0px; padding:0px;" /></td>
+																	<td class="colSepPeq"><h:outputText
+																			value="#{messages.numinclusion}:"
+																			style="margin:0px; padding:0px;" /></td>
+																	<td class="colSepGran"><h:outputText
+																			styleClass="dataText"
+																			value="#{(not empty interrumpirSujeto.sujeto.numeroInclucion) ? interrumpirSujeto.sujeto.numeroInclucion : messages.vacio}"
+																			style="margin:0px; padding:0px;" /></td>
+																	<td class="colSepPeq"><h:outputText
+																			value="#{messages.estadoInclusion}:"
+																			style="margin:0px; padding:0px;" /></td>
+																	<td class="colSepGran"><h:outputText
+																			styleClass="dataText"
+																			value="#{(not empty interrumpirSujeto.sujeto.estadoInclusion.nombre) ? interrumpirSujeto.sujeto.estadoInclusion.nombre : messages.vacio}"
+																			style="margin:0px; padding:0px;" /></td>
+																</tr>
+																<tr class="filSepGranRA">
+																	<td class="colSepPeq"><h:outputText
+																			value="#{messages.inicialesCentro}:"
+																			style="margin:0px; padding:0px;" /></td>
+																	<td class="colSepGran"><h:outputText
+																			styleClass="dataText"
+																			value="#{(not empty interrumpirSujeto.sujeto.inicialesCentro) ? interrumpirSujeto.sujeto.inicialesCentro : messages.vacio}"
+																			style="margin:0px; padding:0px;" /></td>
+																	<td class="colSepPeq"><h:outputText
+																			value="#{messages.codigoSuj}:"
+																			style="margin:0px; padding:0px;" /></td>
+																	<td class="colSepGran"><h:outputText
+																			styleClass="dataText"
+																			value="#{(not empty interrumpirSujeto.sujeto.codigoPaciente) ? interrumpirSujeto.sujeto.codigoPaciente : messages.vacio}"
+																			style="margin:0px; padding:0px;" /></td>
+																	<td class="colSepPeq"><h:outputText
+																			value="#{messages.grupodelSujeto}:"
+																			style="margin:0px; padding:0px;" /></td>
+
+																	<td class="colSepGran"><h:outputText
+																			styleClass="dataText"
+																			value="#{(not empty interrumpirSujeto.sujeto.grupoSujetos.nombreGrupo) ? interrumpirSujeto.sujeto.grupoSujetos.nombreGrupo : messages.vacio}"
+																			style="margin:0px; padding:0px;" /></td>
+
+																</tr>
+																<tr>
+																	<td class="colSepPeq"><h:outputText
+																			value="#{messages.fechaInclusion}:"
+																			style="margin:0px; padding:0px;" /></td>
+																	<td class="colSepGran"><h:outputText
+																			styleClass="dataText"
+																			value="#{(not empty interrumpirSujeto.sujeto.fechaInclucion) ? interrumpirSujeto.sujeto.fechaInclucion : messages.vacio}"
+																			style="margin:0px; padding:0px;">
+																		</h:outputText></td>
+																	<td class="colSepPeq"><h:outputText
+																			value="#{messages.estadoTratamiento}:"
+																			style="margin:0px; padding:0px;" /></td>
+																	<td class="colSepGran"><h:outputText
+																			styleClass="dataText"
+																			value="#{(not empty interrumpirSujeto.sujeto.estadoTratamiento.nombre) ? interrumpirSujeto.sujeto.estadoTratamiento.nombre : messages.vacio}"
+																			style="margin:0px; padding:0px;" /></td>
+																	<td class="colSepPeq"><h:outputText
+																		value="#{messages.nombreEntidad}:"
+																		style="margin:0px; padding:0px;" /></td>
+
+																<td class="colSepGran"><h:outputText
+																		styleClass="dataText"
+																		value="#{(not empty interrumpirSujeto.sujeto.entidad) ? interrumpirSujeto.sujeto.entidad.nombre : messages.vacio}"
+																		style="margin:0px; padding:0px;" /></td>
+																</tr>
+															</table>
+														</td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</rich:panel></td>
+			</tr>
+			<tr>
+				<td><br /></td>
+			</tr>
+			<tr>
+				<td><rich:panel id="idInterrumpir" opened="true"
+						switchType="client" style="height:70px">
+						<f:facet name="header">
+							<h:panelGroup>
+								<div>
+									<div align="left">#{interrumpirSujeto.sujeto.fechaInterrupcion == null ? messages.Interrupciontratamiento : messages.InterrupciontratamientoMod}</div>
+								</div>
+							</h:panelGroup>
+						</f:facet>
+						<table>
+							<tr>
+								<td><s:label styleClass="#{invalid?'labelErrors':''}"
+										value="#{messages.fechainterrupcion}:">
+										<rich:message for="fechaHasta" showDetail="false">
+											<f:facet name="errorMarker">
+												<h:outputText style="color: red;cursor: pointer !important;"
+													title="#{facesMessages.getCurrentMessagesForControl('fechaHasta').get(0).getDetail()}"
+													value="*" />
+											</f:facet>
+										</rich:message>
+									</s:label><br /> <rich:calendar id="fechaHasta"
+										value="#{interrumpirSujeto.fechainterrupcion}"
+										enableManualInput="false"
+										isDayEnabled='disablementFunctionPreviousEx'
+										dayStyleClass='disabledClassesProvPreviousEx'
+										datePattern="#{messages.patronFecha}"
+										required="#{!empty param['idForm:aceptarr'] and interrumpirSujeto.fechaInterrupcionRequired}"
+										onexpand="previousDate(document.getElementById('idForm:fechaDesde').component.getSelectedDate());Richfaces.getComponent('calendar',this).nextMonth(); Richfaces.getComponent('calendar',this).prevMonth(); return true;">
+									</rich:calendar>
+									<div style="display: none;">
+										<h:outputLabel styleClass='normalText'
+											value='#{messages.desde}:' />
+										<br />
+										<rich:calendar datePattern="#{messages.patronFecha}"
+											tabindex="12"
+											value='#{interrumpirSujeto.fechaInclusion}'
+											id='fechaDesde' isDayEnabled='disablementFunction'
+											dayStyleClass='disabledClassesProv'
+											onexpand="previousDate(document.getElementById('idForm:fechaHasta').component.getSelectedDate());Richfaces.getComponent('calendar',this).nextMonth(); Richfaces.getComponent('calendar',this).prevMonth(); return true;" />
+									</div></td>
+							</tr>
+						</table>
+					</rich:panel></td>
+			</tr>
+			<tr>
+				<td>
+					<div align="right">
+						<br></br>
+						<a:commandButton id="aceptarr" value="#{messages.aceptar}"
+							oncomplete="#{interrumpirSujeto.validarCampo()}" />
+						<rich:spacer width="10" />
+						<a:commandButton value="#{messages.cancelar}" style="margin:0px;"
+							action="cancelar" immediate="true" />
+					</div>
+				</td>
+			</tr>
+
+		</table>
+	</h:form>
+	<ui:include
+		src="/modEnsayo/ensayo_conduccion/codebase/plantillas/AdvertenciaInterrumpirSuj.xhtml">
+		<ui:param name="control" value="#{interrumpirSujeto}" />
+		<!--  <ui:param name="listaIdElementos" value="tb2" />-->
+
+	</ui:include>
+</s:div>

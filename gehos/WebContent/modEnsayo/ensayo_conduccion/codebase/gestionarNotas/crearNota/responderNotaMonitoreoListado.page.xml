@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	
+	<action execute="#{responderNotaMonitoreoListado.inicializarNota()}" />
+	<param name="idNota" value="#{responderNotaMonitoreoListado.idNota}" />
+	<param name="idSujeto" value="#{responderNotaMonitoreoListado.idSujeto}" />
+	<param name="idGrupo" value="#{responderNotaMonitoreoListado.idGrupo}" />
+	<param name="idcrd" value="#{responderNotaMonitoreoListado.idcrd}" />
+	<param name="from" value="#{responderNotaMonitoreoListado.from}" />
+	<param name="desde" value="#{responderNotaMonitoreoListado.desde}" />	
+	<param name="desdeFrom" />
+	<param name="idMS" value="#{responderNotaMonitoreoListado.idMS}" />
+
+	<navigation from-action="#{responderNotaMonitoreoListado.crear()}">
+		<rule if="#{desdeFrom == 'listarNota'}">
+			<redirect
+				view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/buscarNotas/listarNotasMonitoreo.xhtml">
+				<param name="idSujeto" value="#{responderNotaMonitoreoListado.idSujeto}" />
+				<param name="idGrupo" value="#{responderNotaMonitoreoListado.idGrupo}" />
+			</redirect>
+		</rule>
+		<rule if="#{desdeFrom == 'verNota'}">
+			<redirect
+				view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/verNota/verNotaMonitoreoListado.xhtml">
+				<param name="idNota" value="#{responderNotaMonitoreoListado.idNota}" />
+				<param name="idSujeto" value="#{responderNotaMonitoreoListado.idSujeto}" />
+				<param name="idGrupo" value="#{responderNotaMonitoreoListado.idGrupo}" />
+				<param name="idcrd" value="#{responderNotaMonitoreoListado.idcrd}" />
+				<param name="from" value="#{responderNotaMonitoreoListado.from}" />
+				<param name="idMS" value="#{responderNotaMonitoreoListado.idMS}" />
+				<param name="desde" value="#{responderNotaMonitoreoListado.desde}" />
+			</redirect>
+		</rule>
+	</navigation>
+
+
+	<navigation from-action="cancelar">
+		<rule if="#{desdeFrom == 'listarNota'}">
+			<redirect
+				view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/buscarNotas/listarNotasMonitoreo.xhtml">
+				<param name="idSujeto" value="#{responderNotaMonitoreoListado.idSujeto}" />
+				<param name="idGrupo" value="#{responderNotaMonitoreoListado.idGrupo}" />
+			</redirect>
+		</rule>
+		<rule if="#{desdeFrom == 'verNota'}">
+			<redirect
+				view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/verNota/verNotaMonitoreoListado.xhtml">
+				<param name="idNota" value="#{responderNotaMonitoreoListado.idNota}" />
+				<param name="idSujeto" value="#{responderNotaMonitoreoListado.idSujeto}" />
+				<param name="idGrupo" value="#{responderNotaMonitoreoListado.idGrupo}" />
+				<param name="idcrd" value="#{responderNotaMonitoreoListado.idcrd}" />
+				<param name="from" value="#{responderNotaMonitoreoListado.from}" />
+				<param name="idMS" value="#{responderNotaMonitoreoListado.idMS}" />
+				<param name="desde" value="#{responderNotaMonitoreoListado.desde}" />
+			</redirect>
+		</rule>
+	</navigation>
+
+
+</page>

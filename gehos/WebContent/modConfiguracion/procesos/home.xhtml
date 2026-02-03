@@ -1,0 +1,876 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+      xmlns:a="http://richfaces.org/a4j" template="#{theme.template}"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:c="http://java.sun.com/jstl/core">
+                
+<ui:define name="body" >
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('Configuración de procesos')</script>
+	<style type="text/css">.rich-stglpanel-body{padding:0px}</style>
+	<style type="text/css">.rich-panel-body{padding:0px}</style>
+	<link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/modCommons/notifications/styles/dialog.css" media="screen" />
+
+<style>
+	.functpanelbody {
+		padding: 0px;
+	}	
+	.functpanelbody2 {
+		padding: 5px;
+	}
+	.vert-align-colum{
+		style="vertical-align: top;
+	}
+	.dr-mpnl-pnl-b{
+		padding:1px; 
+	}
+	.dr-mpnl-pnl{
+   		border: 1px !important; 
+   		border-style :solid !important; 
+   		border-color: #BED6F8 !important;
+	}	
+	.strech{
+		width:100%; 
+	}
+	.nostrech{
+		width:1%; 
+	}
+
+</style>	
+
+<rich:hotKey key="esc" handler="subir()"/>
+
+<a:form>
+	<a:jsFunction name="subir" ajaxSingle="true" status="funcSelectedStatus" 
+		action="#{processRepositoryManager.subir()}"></a:jsFunction>
+</a:form>
+	
+<h:form id="processesForm">
+	
+	<a:keepAlive beanName="processRepositoryManager" />	
+
+	<a:jsFunction name="showSlowForm" reRender="slowForm, modalpanelsOutputpanel" ajaxSingle="true"
+		action="#{processRepositoryManager.setShowForm(true)}">
+	</a:jsFunction>
+		
+	<a:outputPanel ajaxRendered="true" >
+		<s:div rendered="#{not processRepositoryManager.showSlowForm()}" > 
+			<div align="center">
+				<h:panelGrid columns="2">
+					<h:graphicImage url="/resources/icons/default/acciones/loading_small.gif" />
+					<h:outputLabel value="Cargando..."  />
+				</h:panelGrid>
+			</div>
+		</s:div>
+	</a:outputPanel>
+	
+	<a:outputPanel id="slowForm" >
+	<s:div rendered="#{processRepositoryManager.showSlowForm()}">
+
+	<a:status id="blockingStatus"
+			  onstart="document.body.style.cursor='wait'; Richfaces.showModalPanel('ajaxLoadingModalBox',{left:1, top:-15});" 
+ 			  onstop="document.body.style.cursor='default'; Richfaces.hideModalPanel('ajaxLoadingModalBox');">
+	</a:status>
+	
+	<rich:modalPanel id="ajaxLoadingModalBox" minHeight="10" minWidth="10" 
+	        height="10" width="10" zindex="2000" >
+	</rich:modalPanel> 	
+	
+	<table width="100%" cellpadding="5px" cellspacing="0px"	style="vertical-align: top;">
+	<tr>
+		<td style="vertical-align: top; width: 38%;" >
+			<rich:panel bodyClass="functpanelbody2" id="error">
+				<f:facet name="header">
+					<a:status stopText="Repositorio de procesos" forceId="true"
+						startText="Actualizando..." id="processRepoStatus"
+						onstart="document.body.style.cursor='wait'; "
+						onstop="document.body.style.cursor='default'; ">
+					</a:status>
+				</f:facet>
+				
+				<div style="border: 1px; position: relative; left: -2px; ">
+					<a:region id="processesTree">
+					<a:outputPanel ajaxRendered="true">
+						<s:div style="margin-left:0px; ">
+							<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+								<h:graphicImage
+									value="/resources/modConfiguracion/bpm.png"
+									height="18" width="20"/>
+								<a:commandLink
+									action="#{processRepositoryManager.setSelectedItem(null, null)}"
+									value="Procesos" style="margin-left:1px;"
+									status="funcSelectedStatus" />
+							</h:panelGrid>
+						</s:div>
+						<rich:tree status="processRepoStatus"
+							changeExpandListener="#{processRepositoryManager.treeBuilder.OnNodeCollapseExpand}"
+							value="#{processRepositoryManager.treeBuilder.treeData}"
+							switchType="ajax" preserveModel="state"
+							preserveDataInRequest="true" treeNodeVar="treenode"
+							style="width:200px; "	
+							nodeFace="#{node.toString()}" var="node" id="functree"
+							componentState="#{treeStateController.departamentosPorEntidadTreeState}">
+							
+							<rich:treeNode type="modulo" 
+								icon="/modCommons/modSelector/#{theme.name}/themes/#{theme.color}/images/icons/bg.png"
+								iconLeaf="/modCommons/modSelector/#{theme.name}/themes/#{theme.color}/images/icons/bg.png">
+								<div style="left:-20px; position: relative; top: 2px;">
+									<c:set var="conc"
+										value="/resources/modCommon/moduleimages/#{theme.name}/#{node.value.imagen}"></c:set>
+									<c:set var="existeicon" value="#{viewSelectorBuilder.existFile(conc)}"></c:set>
+									<h:graphicImage value="#{conc}" 
+										height="16" style="left:-1px; position: relative;"
+										rendered="#{existeicon}"/>
+									<h:graphicImage value="/resources/modCommon/moduleimages/#{theme.name}/generic.png" 
+										height="16" style="left:-1px; position: relative;"
+										rendered="#{not existeicon}"/>
+									<a:commandLink value="#{node.value.label}"
+										style="position: relative; top: -2px; left: 1px;"
+										status="funcSelectedStatus" ajaxSingle="true"
+										immediate="true" event="onclick"
+										action="#{processRepositoryManager.setSelectedItem(node, treenode)}"
+										reRender="errorOutputPanel, settingsdiv, detailspanelheader, modalpanelsdiv">
+									</a:commandLink>
+								</div>
+							</rich:treeNode>
+							
+							<rich:treeNode type="proceso" 
+								icon="/resources/modConfiguracion/bpm.png"
+								iconLeaf="/resources/modConfiguracion/bpm.png">
+								<a:commandLink value="#{node.value.nombre}"
+									status="funcSelectedStatus" ajaxSingle="true"
+									immediate="true" event="onclick"
+									action="#{processRepositoryManager.setSelectedItem(node, treenode)}"
+									reRender="errorOutputPanel, settingsdiv, detailspanelheader, modalpanelsdiv">
+								</a:commandLink>
+							</rich:treeNode>
+							
+							<rich:treeNode type="revision" 
+								icon="/resources/modConfiguracion/revision.png"
+								iconLeaf="/resources/modConfiguracion/revision.png">
+								<a:commandLink value="revisión-#{node.value.numero}"
+									status="funcSelectedStatus" ajaxSingle="true"
+									immediate="true" event="onclick"
+									action="#{processRepositoryManager.setSelectedItem(node, treenode)}"
+									reRender="errorOutputPanel, settingsdiv, detailspanelheader, modalpanelsdiv">
+								</a:commandLink>
+							</rich:treeNode>
+							
+							<rich:treeNode type="definicion" 
+								icon="/resources/modConfiguracion/process.png"
+								iconLeaf="/resources/modConfiguracion/process.png">
+								<a:commandLink value="processdefinition.xml"
+									status="funcSelectedStatus" ajaxSingle="true"
+									immediate="true" event="onclick"
+									action="#{processRepositoryManager.setSelectedItem(node, treenode)}"
+									reRender="errorOutputPanel, settingsdiv, detailspanelheader, modalpanelsdiv">
+								</a:commandLink>
+							</rich:treeNode>
+							
+							<rich:treeNode type="diagrama" 
+								icon="/resources/modConfiguracion/processimage.png"
+								iconLeaf="/resources/modConfiguracion/processimage.png">
+								<a:commandLink value="processimage.png"
+									status="funcSelectedStatus" ajaxSingle="true"
+									immediate="true" event="onclick"
+									action="#{processRepositoryManager.setSelectedItem(node, treenode)}"
+									reRender="errorOutputPanel, settingsdiv, detailspanelheader, 
+										modalpanelsdiv">
+								</a:commandLink>
+							</rich:treeNode>
+							
+							<rich:treeNode type="reglas" 
+								icon="/resources/modConfiguracion/drools.png"
+								iconLeaf="/resources/modConfiguracion/drools.png">
+								<a:commandLink value="processrules.drl"
+									status="funcSelectedStatus" ajaxSingle="true"
+									immediate="true" event="onclick"
+									action="#{processRepositoryManager.setSelectedItem(node, treenode)}"
+									reRender="errorOutputPanel, settingsdiv, detailspanelheader, modalpanelsdiv">
+								</a:commandLink>
+							</rich:treeNode>
+							
+						</rich:tree>					
+					</a:outputPanel>
+					</a:region>
+				</div>
+			</rich:panel>
+		</td>	
+		<td style="vertical-align: top; width: 62%;" ><a:region>
+		  <a:outputPanel ajaxRendered="true" >	
+			<rich:panel bodyClass="functpanelbody" >
+				<f:facet name="header">
+				  <s:div id="detailspanelheader" >
+					<a:status forceId="true"
+						startText="Actualizando..." id="processesDeployedStatus"
+						onstart="document.body.style.cursor='wait'; Richfaces.showModalPanel('ajaxLoadingModalBox',{left:1, top:-15});"
+						onstop="document.body.style.cursor='default'; Richfaces.hideModalPanel('ajaxLoadingModalBox');">
+					</a:status>
+					<s:div rendered="#{processRepositoryManager.selectedItem == null}">
+						Módulos
+					</s:div>
+					<s:div rendered="#{processRepositoryManager.selectedItem.toString() == 'modulo'}">
+						<h:panelGrid columns="4" cellpadding="0" cellspacing="0">
+							<h:graphicImage value="/modCommons/modSelector/#{theme.name}/themes/#{theme.color}/images/icons/bg.png" 
+								height="16" style="margin-left: 1px; margin-top: 1px; margin-bottom: 1px; " />
+							<h:graphicImage value="/resources/modCommon/moduleimages/#{theme.name}/#{processRepositoryManager.selectedItem.value.imagen}" 
+								height="16" style="margin-left: 1px; margin-top: 1px; margin-bottom: 1px; 
+												   position: relative; left: -16px;" />							
+							<rich:spacer width="2"/>	
+							<h:outputLabel 
+								value="#{processRepositoryManager.selectedItem.value.label}"
+								style="position: relative; left: -16px;" />
+						</h:panelGrid>					
+					</s:div>
+					<s:div rendered="#{processRepositoryManager.selectedItem.toString() == 'proceso'}">
+						<h:panelGrid columns="3" cellpadding="0" cellspacing="0">
+							<h:graphicImage
+								value="/resources/modConfiguracion/bpm.png"
+								height="16" width="16" />
+							<rich:spacer width="3"/>	
+							<h:outputLabel 
+								value="#{processRepositoryManager.selectedItem.value.nombre}" />
+						</h:panelGrid>					
+					</s:div>
+					<s:div rendered="#{processRepositoryManager.selectedItem.toString() == 'revision'}">
+						<h:panelGrid columns="3" cellpadding="0" cellspacing="0">
+							<h:graphicImage
+								value="/resources/modConfiguracion/revision.png"
+								height="16" width="16" />
+							<rich:spacer width="3"/>	
+							<h:outputLabel 
+								value="revisión-#{processRepositoryManager.selectedItem.value.numero}" />
+						</h:panelGrid>					
+					</s:div>
+					<s:div rendered="#{processRepositoryManager.selectedItem.toString() == 'definicion'}">
+						<h:panelGrid columns="3" cellpadding="0" cellspacing="0">
+							<h:graphicImage
+								value="/resources/modConfiguracion/process.png"
+								height="16" width="16" />
+							<rich:spacer width="3"/>	
+							<h:outputLabel 
+								value="Definición del proceso" />
+						</h:panelGrid>					
+					</s:div>
+					<s:div rendered="#{processRepositoryManager.selectedItem.toString() == 'diagrama'}">
+						<h:panelGrid columns="3" cellpadding="0" cellspacing="0">
+							<h:graphicImage
+								value="/resources/modConfiguracion/processimage.png"
+								 width="16" style="position:relative; top:1px;" />
+							<rich:spacer width="3"/>	
+							<h:outputLabel 
+								value="Diagrama del proceso" />
+						</h:panelGrid>					
+					</s:div>
+					<s:div rendered="#{processRepositoryManager.selectedItem.toString() == 'reglas'}">
+						<h:panelGrid columns="3" cellpadding="0" cellspacing="0">
+							<h:graphicImage
+								value="/resources/modConfiguracion/drools.png"
+								 width="16" height="16" />
+							<rich:spacer width="3"/>	
+							<h:outputLabel 
+								value="Reglas del proceso" />
+						</h:panelGrid>					
+					</s:div>
+				  </s:div>	
+				</f:facet>
+				
+				<a:status id="funcSelectedStatus" forceId="true" 
+					  onstart="Richfaces.showModalPanel('ajaxLoadingModalBox',{left:1, top:-15});
+					  		   javascript:document.getElementById('processesForm:settsdiv').style.display = 'none';
+					  		   javascript:document.getElementById('processesForm:loadingdiv').style.display = ''"
+					  onstop="Richfaces.hideModalPanel('ajaxLoadingModalBox');
+					  		  javascript:document.getElementById('processesForm:loadingdiv').style.display = 'none';
+					  		  javascript:document.getElementById('processesForm:settsdiv').style.display = ''">
+				  <f:facet name="start">
+				  </f:facet>
+			    </a:status>
+			    <s:div id="loadingdiv" style="text-align: center; width: 100%; display:none;">
+				  <br/><br/>
+					 <h:graphicImage url="/resources/icons/default/acciones/loading_small.gif" />
+				  <br/><br/><br/>	 
+				</s:div>	 
+				<s:div id="settsdiv">
+				  <s:div id="settingsdiv" style="display: inline;">
+					 <div align="right" >	
+						<h:panelGrid columns="2" rendered="#{processRepositoryManager.selectedItem == null}"
+							cellpadding="0" cellspacing="0">
+							<h:graphicImage height="16" width="16"
+								value="/resources/modConfiguracion/clean.png" 
+								style="margin-top:1px; margin-bottom:1px;"/>
+							<a:commandLink
+								action="#{processRepositoryManager.cleanDeployedProcessesDefinitions()}"
+								value="Limpiar procesos desplegados" style="margin-left:1px;"
+								status="funcSelectedStatus" />
+						</h:panelGrid>
+					</div>
+					<div>	
+						<h:dataTable rendered="#{processRepositoryManager.selectedItem == null}"
+							value="#{processRepositoryManager.modules()}" 
+							var="mods" border="1" columnClasses="strech, nostrech, nostrech, nostrech"
+							style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+							cellspacing="0" cellpadding="0" rowClasses="dr-table-firstrow2" >
+							<f:facet name="header">
+								<div style="background-color: ##{theme.headercolor}; cursor: default;">Módulos con procesos</div>
+							</f:facet>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">Nombre</div>
+								</f:facet>
+								<h:panelGrid columns="3" cellpadding="0" cellspacing="0">
+									<h:graphicImage value="/modCommons/modSelector/#{theme.name}/themes/#{theme.color}/images/icons/bg.png" 
+										height="16" style="margin: 2px 2px 2px 2px; " />
+									<h:graphicImage value="/resources/modCommon/moduleimages/#{theme.name}/#{mods.imagen}" 
+										height="16" style="margin-left: 1px; margin-top: 1px; margin-bottom: 1px; 
+														   position: relative; left: -19px;" />
+									<a:commandLink 
+										ajaxSingle="true"
+										reRender="settingsdiv, detailspanelheader" limitToList="true"
+										value="#{mods.label}" status="funcSelectedStatus"
+										action="#{processRepositoryManager.setSelectedItem(mods)}"
+										style="margin-left: 0px; color: ##{theme.linkscolor}; position: relative; left: -17px;" />
+								</h:panelGrid>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">
+										<span style="margin-left: 2px; margin-right: 2px;">Procesos</span>
+									</div>
+								</f:facet>
+								<div align="center" >
+									#{processRepositoryManager.processCountForModule(mods)}
+								</div>
+							</h:column>
+						</h:dataTable>
+						
+					</div>
+					<s:div rendered="#{processRepositoryManager.selectedItem.toString() == 'modulo'}">
+						<h:dataTable value="#{processRepositoryManager.processesForSelectedModule()}" 
+							var="proc" border="1" columnClasses="strech, nostrech, nostrech, nostrech"
+							style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+							cellspacing="0" cellpadding="0" rowClasses="dr-table-firstrow2" >
+							<f:facet name="header">
+								<div style="background-color: ##{theme.headercolor}; cursor: default;">Procesos</div>
+							</f:facet>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">Nombre</div>
+								</f:facet>
+								<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+									<h:graphicImage value="/resources/modConfiguracion/bpm.png" height="15" width="16" 
+										style="margin: 2px 2px 2px 2px;"/>
+									<a:commandLink 
+										ajaxSingle="true"
+										reRender="settingsdiv, detailspanelheader" limitToList="true"
+										value="#{proc.nombre}" status="funcSelectedStatus"
+										action="#{processRepositoryManager.setSelectedItem(proc)}"
+										style="margin-left: 1px; color: ##{theme.linkscolor};" />
+
+								</h:panelGrid>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">
+										<span style="margin-left: 2px; margin-right: 2px;">Revisiones</span>
+									</div>
+								</f:facet>
+								<div align="center" >
+									#{processRepositoryManager.revisionsCountForProcess(proc)}
+								</div>
+							</h:column>
+						</h:dataTable>
+						<br/>
+					</s:div>
+					<s:div rendered="#{processRepositoryManager.selectedItem.toString() == 'proceso'}">
+						<c:set var="actrev" value="#{processRepositoryManager.actualDeployedRevisionForProcess()}" />
+						revisión actual desplegada: 
+						<strong>
+							<s:span rendered="#{actrev != -1}">revisión-#{actrev}</s:span>
+							<s:span rendered="#{actrev == -1}">( proceso no desplegado )</s:span>
+						</strong>
+						<h:dataTable value="#{processRepositoryManager.revisionsForSelectedProcess()}" 
+							var="revision" border="1" columnClasses="strech, nostrech, nostrech, nostrech"
+							style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+							cellspacing="0" cellpadding="0" rowClasses="dr-table-firstrow2" >
+							<f:facet name="header">
+								<div style="background-color: ##{theme.headercolor}; cursor: default;">Revisiones</div>
+							</f:facet>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">Revisión</div>
+								</f:facet>
+								<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+									<h:graphicImage value="/resources/modConfiguracion/revision.png" height="18" 
+										style="margin: 1px 1px 1px 1px;"  />
+									<a:commandLink 
+										ajaxSingle="true" 
+										reRender="settingsdiv, detailspanelheader" limitToList="true"
+										value="revisión-#{revision.numero}" status="funcSelectedStatus"
+										action="#{processRepositoryManager.setSelectedItem(revision)}"
+										style="margin-left: 1px; color: ##{theme.linkscolor};" 
+										/>
+									
+									<h:outputLabel rendered="false" 
+										value="revisión-#{revision.numero}" style="padding-left:2px;"/>
+								</h:panelGrid>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">
+										<span style="margin-left: 2px; margin-right: 2px;">Definiciones</span>
+									</div>
+								</f:facet>
+								<div align="center" >
+									#{processRepositoryManager.definitiosForAProcessRevision(revision)}
+								</div>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">
+										<span style="margin-left: 2px; margin-right: 2px;">Instancias</span>
+									</div>
+								</f:facet>
+								<div align="center" >
+									#{processRepositoryManager.instacesForAProcessRevision(revision)}
+								</div>
+							</h:column>
+						</h:dataTable>
+						
+						<s:div style="border-left: 1px solid #d0d7e5;
+									  border-right: 1px solid #d0d7e5;
+									  border-bottom: 1px solid #d0d7e5;" 
+							rendered="#{processRepositoryManager.revisionsForSelectedProcess().size() == 0}">
+							<rich:spacer height="10" style="display:block"/>
+							<h:outputLabel value="No existe información a mostrar." 
+							 	style="margin-left:7px;" />
+							<rich:spacer height="5" style="display:block"/>
+						</s:div>						
+						<br/>
+						<h:dataTable value="#{processRepositoryManager.deployedDefinitionsForSelectedProcess()}" 
+							var="def" border="1" columnClasses="strech, nostrech, nostrech, nostrech"
+							style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+							cellspacing="0" cellpadding="0" rowClasses="dr-table-firstrow2" >
+							<f:facet name="header">
+								<div style="background-color: ##{theme.headercolor}; cursor: default;">Definiciones desplegadas</div>
+							</f:facet>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">Definición</div>
+								</f:facet>
+								<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+									<h:graphicImage value="/resources/modConfiguracion/process.png" height="18" />
+									<h:outputLabel value="#{def.nombreProceso}" style="padding-left:2px;"/>
+								</h:panelGrid>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">
+										<span style="margin-left: 2px; margin-right: 2px;">Versión</span>
+									</div>
+								</f:facet>
+								<div align="center" >
+									#{def.version}
+								</div>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">
+										<span style="margin-left: 2px; margin-right: 2px;">Revisión</span>
+									</div>
+								</f:facet>
+								<div align="center" >
+									#{def.numeroRevision}
+								</div>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">
+										<span style="margin-left: 2px; margin-right: 2px;">Instancias</span>
+									</div>
+								</f:facet>
+								<div align="center" >
+									#{def.numeroInstancias}
+								</div>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default; height: 14px;"> </div>
+								</f:facet>
+							    <div align="center" >
+								  	<a:commandLink rendered="true" status="blockingStatus"
+								  				action="#{processRepositoryManager.putDefinitionToPossiblyUndeploy(def)}"
+								  				oncomplete="Richfaces.showModalPanel('eliminar_definicion_proceso_panel')" 
+								  				view="/modConfiguracion/departamentos/clinicos/home.xhtml">
+								  		<h:graphicImage style="border:0px; cursor: pointer" title="Eliminar" 
+											url="/resources/icons/default/acciones/eliminar.png" >
+										</h:graphicImage>
+								  	</a:commandLink>
+							 	</div>		
+							</h:column>						
+						</h:dataTable>	
+						
+						<s:div style="border-left: 1px solid #d0d7e5; 
+									  border-right: 1px solid #d0d7e5;
+									  border-bottom: 1px solid #d0d7e5;" 
+							rendered="#{processRepositoryManager.deployedDefinitionsForSelectedProcess().size() == 0}">
+							<rich:spacer height="10" style="display:block"/>
+							<h:outputLabel value="No existe información a mostrar." 
+							 	style="margin-left:7px;" />
+							<rich:spacer height="5" style="display:block"/>
+						</s:div>						
+						
+						<br/>	
+						<h:dataTable value="#{processRepositoryManager.runningInstancesForSelectedProcess()}" 
+							var="inst" border="1" columnClasses="strech, nostrech, nostrech, nostrech, nostrech"
+							style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+							cellspacing="0" cellpadding="0" rowClasses="dr-table-firstrow2" >
+							<f:facet name="header">
+								<div style="background-color: ##{theme.headercolor}; cursor: default;">Instancias corriendo</div>
+							</f:facet>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">Instancia</div>
+								</f:facet>
+								<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+									<h:graphicImage value="/resources/modConfiguracion/bpm.png" height="9"
+										style="padding-left:2px;" />
+									<h:outputLabel value="#{inst.nombreProceso}" style="padding-left:2px;"/>
+								</h:panelGrid>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">
+										<span style="margin-left: 2px; margin-right: 2px;">Versión</span>
+									</div>
+								</f:facet>
+								<div align="center" >
+									#{inst.version}
+								</div>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">
+										<span style="margin-left: 2px; margin-right: 2px;">Revisión</span>
+									</div>
+								</f:facet>
+								<div align="center" >
+									#{inst.numeroRevision}
+								</div>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">
+										<span style="margin-left: 2px; margin-right: 2px;">Día inicio</span>
+									</div>
+								</f:facet>
+								<div align="center" >
+									<h:outputText value="#{inst.iniciadoEn}"
+										style="margin-left:2px; margin-right:2px; ">
+		                                <s:convertDateTime pattern="dd/MM/yyyy"></s:convertDateTime>
+		                            </h:outputText>
+								</div>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">
+										<span style="margin-left: 2px; margin-right: 2px;">Hora</span>
+									</div>
+								</f:facet>
+								<div align="center" >
+									<h:outputText value="#{inst.iniciadoEn}" 
+										style="margin-left:2px; margin-right:2px; ">
+		                                <s:convertDateTime pattern="hh:mm:ssa"></s:convertDateTime>
+		                            </h:outputText>
+								</div>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default; height: 14px;"></div>
+								</f:facet>
+							    <div align="center" >
+								  	<a:commandLink rendered="true" status="blockingStatus"
+								  				action="#{processRepositoryManager.putInstanceToPossiblyDelete(inst)}"
+								  				oncomplete="Richfaces.showModalPanel('eliminar_instancia_proceso_panel')" 
+								  				view="/modConfiguracion/departamentos/clinicos/home.xhtml">
+								  		<h:graphicImage style="border:0px; cursor: pointer" title="Eliminar" 
+											url="/resources/icons/default/acciones/eliminar.png" >
+										</h:graphicImage>
+								  	</a:commandLink>
+							 	</div>		
+							</h:column>							
+						</h:dataTable>	
+						
+						<s:div style="border-left: 1px solid #d0d7e5;
+									  border-right: 1px solid #d0d7e5;
+									  border-bottom: 1px solid #d0d7e5;" 
+							rendered="#{processRepositoryManager.runningInstancesForSelectedProcess().size() == 0}">
+							<rich:spacer height="10" style="display:block"/>
+							<h:outputLabel value="No existe información a mostrar." 
+							 	style="margin-left:7px;" />
+							<rich:spacer height="5" style="display:block"/>
+						</s:div>						
+					<br /> 							
+					</s:div>
+					
+					<s:div rendered="#{processRepositoryManager.selectedItem.toString() == 'revision'}">
+						<table cellpadding="0" cellspacing="0" border="0" width="100%">
+						<tr>
+							<td width="33%">
+							  <h:panelGrid columns="2" cellpadding="0" cellspacing="1">
+							  	<h:graphicImage value="/resources/modConfiguracion/process.png" />
+								<a:commandLink value="definición"
+									status="funcSelectedStatus" ajaxSingle="true"
+									immediate="true" event="onclick"
+									action="#{processRepositoryManager.setSelectedItem(processRepositoryManager.selectedItem.value, 'definicion')}"
+									reRender="settingsdiv, detailspanelheader">
+								</a:commandLink>							
+							  </h:panelGrid>
+							</td>
+							<td width="33%">
+							  <h:panelGrid columns="2" cellpadding="0" cellspacing="1">
+							  	<h:graphicImage value="/resources/modConfiguracion/processimage.png" />
+								<a:commandLink value="diagrama"
+									status="funcSelectedStatus" ajaxSingle="true"
+									immediate="true" event="onclick"
+									action="#{processRepositoryManager.setSelectedItem(processRepositoryManager.selectedItem.value, 'diagrama')}"
+									reRender="settingsdiv, detailspanelheader, flujo_zoom">
+								</a:commandLink>							
+							  </h:panelGrid>
+							</td>
+							<td width="33%">
+							  <h:panelGrid columns="2" cellpadding="0" cellspacing="1"
+							  	rendered="#{processRepositoryManager.selectedItem.value.tieneReglas == true}">
+							  	<h:graphicImage value="/resources/modConfiguracion/drools.png" height="19"/>
+								<a:commandLink value="reglas"
+									status="funcSelectedStatus" ajaxSingle="true"
+									immediate="true" event="onclick"
+									action="#{processRepositoryManager.setSelectedItem(processRepositoryManager.selectedItem.value, 'reglas')}"
+									reRender="settingsdiv, detailspanelheader">
+								</a:commandLink>							
+							  </h:panelGrid>
+							</td>
+						</tr>
+						</table>
+						<h:dataTable value="#{processRepositoryManager.deployedDefinitionsForSelectedRevision()}" 
+							var="def" border="1" columnClasses="strech, nostrech, nostrech, nostrech"
+							style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+							cellspacing="0" cellpadding="0" rowClasses="dr-table-firstrow2" >
+							<f:facet name="header">
+								<div style="background-color: ##{theme.headercolor}; cursor: default;">Definiciones desplegadas</div>
+							</f:facet>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">Definición</div>
+								</f:facet>
+								<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+									<h:graphicImage value="/resources/modConfiguracion/process.png" height="18" />
+									<h:outputLabel value="#{def.nombreProceso}" style="padding-left:2px;"/>
+								</h:panelGrid>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">
+										<span style="margin-left: 2px; margin-right: 2px;">Versión</span>
+									</div>
+								</f:facet>
+								<div align="center" >
+									#{def.version}
+								</div>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">
+										<span style="margin-left: 2px; margin-right: 2px;">Instancias</span>
+									</div>
+								</f:facet>
+								<div align="center" >
+									#{def.numeroInstancias}
+								</div>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default; height: 14px;"></div>
+								</f:facet>
+							    <div align="center" >
+								  	<a:commandLink rendered="true" status="blockingStatus"
+								  				action="#{processRepositoryManager.putDefinitionToPossiblyUndeploy(def)}"
+								  				oncomplete="Richfaces.showModalPanel('eliminar_definicion_proceso_panel')" 
+								  				view="/modConfiguracion/departamentos/clinicos/home.xhtml">
+								  		<h:graphicImage style="border:0px; cursor: pointer" title="Eliminar" 
+											url="/resources/icons/default/acciones/eliminar.png" >
+										</h:graphicImage>
+								  	</a:commandLink>
+							 	</div>		
+							</h:column>							
+						</h:dataTable>	
+						
+						<s:div style="border-left: 1px solid #d0d7e5; 
+									  border-right: 1px solid #d0d7e5;
+									  border-bottom: 1px solid #d0d7e5;" 
+							rendered="#{processRepositoryManager.deployedDefinitionsForSelectedRevision().size() == 0}">
+							<rich:spacer height="10" style="display:block"/>
+							<h:outputLabel value="No existe información a mostrar." 
+							 	style="margin-left:7px;" />
+							<rich:spacer height="5" style="display:block"/>
+						</s:div>						
+						
+						<br/>	
+						<h:dataTable value="#{processRepositoryManager.runningInstancesForSelectedProcessRevision()}" 
+							var="inst" border="1" columnClasses="strech, nostrech, nostrech, nostrech, nostrech"
+							style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+							cellspacing="0" cellpadding="0" rowClasses="dr-table-firstrow2" >
+							<f:facet name="header">
+								<div style="background-color: ##{theme.headercolor}; cursor: default;">Instancias corriendo</div>
+							</f:facet>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">Instancia</div>
+								</f:facet>
+								<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+									<h:graphicImage value="/resources/modConfiguracion/bpm.png" height="9"
+										style="padding-left:2px;" />
+									<h:outputLabel value="#{inst.nombreProceso}" style="padding-left:2px;"/>
+								</h:panelGrid>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">
+										<span style="margin-left: 2px; margin-right: 2px;">Versión</span>
+									</div>
+								</f:facet>
+								<div align="center" >
+									#{inst.version}
+								</div>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">
+										<span style="margin-left: 2px; margin-right: 2px;">Día inicio</span>
+									</div>
+								</f:facet>
+								<div align="center" >
+									<h:outputText value="#{inst.iniciadoEn}"
+										style="margin-left:2px; margin-right:2px; ">
+		                                <s:convertDateTime pattern="dd/MM/yyyy"></s:convertDateTime>
+		                            </h:outputText>
+								</div>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">
+										<span style="margin-left: 2px; margin-right: 2px;">Hora</span>
+									</div>
+								</f:facet>
+								<div align="center" >
+									<h:outputText value="#{inst.iniciadoEn}"
+										style="margin-left:2px; margin-right:2px; ">
+		                                <s:convertDateTime pattern="hh:mm:ssa"></s:convertDateTime>
+		                            </h:outputText>
+								</div>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default; height: 14px;"></div>
+								</f:facet>
+							    <div align="center" >
+								  	<a:commandLink rendered="true" status="blockingStatus"
+								  				action="#{processRepositoryManager.putInstanceToPossiblyDelete(inst)}"
+								  				oncomplete="Richfaces.showModalPanel('eliminar_instancia_proceso_panel')" 
+								  				view="/modConfiguracion/departamentos/clinicos/home.xhtml">
+								  		<h:graphicImage style="border:0px; cursor: pointer" title="Eliminar" 
+											url="/resources/icons/default/acciones/eliminar.png" >
+										</h:graphicImage>
+								  	</a:commandLink>
+							 	</div>		
+							</h:column>							
+						</h:dataTable>	
+						
+						<s:div style="border-left: 1px solid #d0d7e5; 
+									  border-right: 1px solid #d0d7e5;
+									  border-bottom: 1px solid #d0d7e5;" 
+							rendered="#{processRepositoryManager.runningInstancesForSelectedProcessRevision().size() == 0}">
+							<rich:spacer height="10" style="display:block"/>
+							<h:outputLabel value="No existe información a mostrar." 
+							 	style="margin-left:7px;" />
+							<rich:spacer height="5" style="display:block"/>
+						</s:div>						
+						
+					</s:div>
+					<s:div rendered="#{processRepositoryManager.selectedItem.toString() == 'definicion'}">
+						<table width="100%"><tr valign="top">
+						<td>	
+							<s:div>
+								<h:panelGrid columns="2">
+									<h:outputLabel value="módulo:" />
+									<h:outputLabel value="#{processRepositoryManager.selectedItem.value.modulo}" />
+									<h:outputLabel value="proceso:" />
+									<h:outputLabel value="#{processRepositoryManager.selectedItem.value.nombreProceso}" />
+									<h:outputLabel value="revisión:" />
+									<h:outputLabel value="#{processRepositoryManager.selectedItem.value.numeroRevision}" />								
+								</h:panelGrid>
+							</s:div>
+						</td>
+						<td>	
+							<a:commandButton value="Desplegar proceso" style="width:130px;"
+								action="#{processRepositoryManager.deploySelectedProcess()}"
+								status="deployingProcessStatus" />
+						</td>	
+						<td>
+							<a:status id="deployingProcessStatus" forceId="true">
+								<f:facet name="start">
+						           <img id="favsloadingdiv" 
+							        	src="#{facesContext.externalContext.requestContextPath}/resources/icons/default/acciones/loading_small.gif" />
+								</f:facet>
+							</a:status>
+						</td>	
+						</tr></table>
+					</s:div>
+					<s:div rendered="#{processRepositoryManager.selectedItem.toString() == 'diagrama'}"
+						style="border:0px;">
+						<h:graphicImage value="/modConfiguracion/procesos/tmp/#{processRepositoryManager.tempImgUUID}.png"
+							width="400" style="border:0px; cursor: pointer;" 
+							onclick="Richfaces.showModalPanel('flujo_zoom')">
+						</h:graphicImage>	
+					</s:div>
+					<s:div rendered="#{processRepositoryManager.selectedItem.toString() == 'reglas'}">
+					  <div style="overflow: auto; border: 1px;" > 
+					  	<div style="width: 400px;">
+						  <h:outputLabel value="#{rulesEditor.ruleToHtml(processRepositoryManager.selectedItem.rulePath())}" escape="false"/>
+						</div>
+					  </div>	
+					</s:div>
+				</s:div>
+			  </s:div>	
+			</rich:panel>
+			</a:outputPanel>
+			</a:region>
+		</td>	
+	</tr>
+	</table>
+	</s:div>
+	</a:outputPanel>
+ </h:form>
+
+ <a:outputPanel id="modalpanelsOutputpanel">
+	<s:div id="modalpanelsdiv" rendered="#{processRepositoryManager.showSlowForm()}">
+
+		<ui:include src="/modConfiguracion/procesos/modalpanels/confirmar_eliminar_definicion_proceso.xhtml" />
+
+		<ui:include src="/modConfiguracion/procesos/modalpanels/confirmar_eliminar_instancia_proceso.xhtml" />
+
+		<ui:include src="/modConfiguracion/procesos/modalpanels/flujo_zoom.xhtml" />
+
+	</s:div>
+ </a:outputPanel>
+
+ <script type="text/javascript">showSlowForm()</script> 
+
+</ui:define>
+
+</ui:composition>
+

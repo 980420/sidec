@@ -1,0 +1,23 @@
+package gehos;
+import gehos.configuracion.management.entity.Ubicacion_configuracion;
+import gehos.configuracion.clinicaldata.ubicaciones.management.UbicacionID;
+import java.util.ArrayList;
+
+function String getUbicacionID(ArrayList ubicaciones){
+	String result = "";
+	String delimiter = "-"; 
+	for (Object obj : ubicaciones) {
+		Ubicacion_configuracion ubicacion = (Ubicacion_configuracion)obj;
+		result += ubicacion.getTipoUbicacion().getCodigo() + ubicacion.getIdentificador() + delimiter;
+	}
+	return result.substring(0, result.length()-delimiter.length());
+}
+
+rule "id_ubicacion"
+	when
+		$ubicacionId : UbicacionID()
+		$ubicaciones : ArrayList()
+	then
+		$ubicacionId.setId(getUbicacionID($ubicaciones));	
+end;
+

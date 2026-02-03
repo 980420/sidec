@@ -1,0 +1,810 @@
+<s:div   xmlns     ="http://www.w3.org/1999/xhtml" 
+ 			      xmlns:ui  ="http://java.sun.com/jsf/facelets" 
+      		      xmlns:h   ="http://java.sun.com/jsf/html" 
+			      xmlns:f   ="http://java.sun.com/jsf/core" 
+			      xmlns:s   ="http://jboss.com/products/seam/taglib" 
+			      xmlns:rich="http://richfaces.org/rich" 
+                  xmlns:a4j   ="http://richfaces.org/a4j"                  
+                  template  ="#{theme.template}">
+	<s:div >  
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+		<script type="text/javascript">
+
+	setContentTitle('#{messages.lbl_titulo_ens}');
+		
+	var curDtN = new Date();
+	 var calDtN=null;
+
+	 function previousDate(date){
+		calDtN = date;
+	 }
+
+	 function disablementFunction(day){
+		 if(calDtN == null){
+			 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+					return true; 
+				else 
+					return false; 
+		 }
+		 else {
+			 if (calDtN.getTime() - day.date.getTime() &#62;= 0 ) 
+					return true; 
+				else 
+					return false;
+		 }					 
+	 }
+
+	 function disabledClassesProv(day){
+		 if(calDtN == null){
+			 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+					return ''; 
+				else 
+					return 'noavailable'; 
+		 }
+		 else {
+			 if (calDtN.getTime() - day.date.getTime() &#62;= 0) 
+					return ''; 
+				else 
+					return 'noavailable';
+		 }				
+	 }
+
+	 function resetSecondDate(first,second) {
+		 var firstDate = first.getSelectedDate().getTime();
+		 var secondDate = second.getSelectedDate().getTime();
+
+		 if(firstDate - secondDate &#62; 0)
+			 second.resetSelectedDate();
+	 }
+	 
+	 function disablementFunctionPreviousEx(day){
+		if(calDtN == null){
+			if (curDtN.getTime() - day.date.getTime() &#62; 0) return true; else return false;
+		}
+		if ((curDtN.getTime() - day.date.getTime() &#62; 0) &#38;&#38; (calDtN.getTime() - day.date.getTime() &#60;= 0)){
+			return true;
+		}
+		else 
+			return false;
+	  }
+
+	function disabledClassesProvPreviousEx(day){
+		if(calDtN == null){
+			if (curDtN.getTime() - day.date.getTime() &#60; 0)
+				return 'noavailable';
+			else 
+				return '';
+		}
+		if ((curDtN.getTime() - day.date.getTime() &#60; 0) || (calDtN.getTime() - day.date.getTime() &#62; 0))
+			return 'noavailable';
+		else 
+			return '';
+	}
+	//<![CDATA[
+    function hideErrorSpans() {
+        var errorSpans = document.getElementsByClassName('errorSpan');
+        for(var i = 0; i < errorSpans.length; i++) {
+            errorSpans[i].style.display = 'none';
+        }
+    }
+//]]>
+	
+		</script>	
+    <link href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css"  rel="stylesheet" type="text/css" />
+    <link rel='stylesheet' href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css' type='text/css' /> 
+       
+     <rich:messages globalOnly="true" styleClass="message"  id="globalMessage" ajaxRendered="true"/>	    
+     <h:form id="modificarConjuntoDatosPes">
+     	
+		<rich:panel>
+		<f:facet name="header">#{messages.lbl_datosGenerales_ens}</f:facet>
+				<table cellpadding="0px" cellspacing="0px" border="0px">
+							<tr>							
+										
+								<td>
+									<h:outputLabel value="#{messages.lbl_nombre_ens}:" styleClass="normalText" />
+										<span class="errorSpan" style="color:red;">*</span>
+										<rich:message for="nombreConjuntoDatos"
+											showDetail="false" tooltip="true" style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputLabel value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('nombreConjuntoDatos').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message>
+										<br/>								
+										<h:inputText styleClass="tbx" value="#{modificarConjuntoDatosPes.conjuntoDatos.nombre}" id="nombreConjuntoDatos" required="#{!empty param['modificarConjuntoDatosPes:aceptarBtn']}" validator="#{validations_ensayo.textnumber50}"/>
+										<br/>
+										<rich:spacer height="8px"></rich:spacer>
+										</td>
+										<td class="colGran">
+								<h:outputLabel styleClass='normalText' value='#{messages.desde}:' />
+								
+										<br/>
+								<rich:calendar datePattern='dd/MM/yyyy' tabindex="12" 
+									value="#{modificarConjuntoDatosPes.conjuntoDatos.fechaInicio}" 
+									id="fechaDesde" 
+									isDayEnabled="disablementFunction"
+							dayStyleClass="disabledClassesProv"
+							onexpand="previousDate(document.getElementById('modificarConjuntoDatosPes:fechaHasta').component.getSelectedDate());Richfaces.getComponent('calendar',this).nextMonth(); Richfaces.getComponent('calendar',this).prevMonth(); return true;"/>
+	           				 
+							
+							</td>
+							<td class="colGran">
+								<h:outputLabel styleClass="normalText" value="#{messages.hasta}:" />
+								
+										<br/>
+								<rich:calendar datePattern="dd/MM/yyyy" tabindex="12" 
+									value="#{modificarConjuntoDatosPes.conjuntoDatos.fechaFin}"
+									id="fechaHasta" 
+									isDayEnabled="disablementFunctionPreviousEx"
+							dayStyleClass="disabledClassesProvPreviousEx"
+							onexpand="previousDate(document.getElementById('modificarConjuntoDatosPes:fechaDesde').component.getSelectedDate());Richfaces.getComponent('calendar',this).nextMonth(); Richfaces.getComponent('calendar',this).prevMonth(); return true;"/>
+	           				
+       						</td>
+									</tr>
+								</table>
+								
+								<table cellpadding="0px" cellspacing="0px" border="0px" width="100%">
+									<tr>
+								
+			     						<td>
+			     							<h:outputLabel value="#{messages.lbl_descripcion_ens}:" styleClass="normalText" />
+			     							<rich:message for="descripcion"
+											showDetail="false" tooltip="true" style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputLabel value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('descripcion').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message>
+																								
+											<br/>
+			     							<h:inputTextarea id="descripcion" value="#{modificarConjuntoDatosPes.conjuntoDatos.descripcion}" 
+			     							validator="#{validations_ensayo.allstrings250}"
+											style="width:50%;resize: vertical">
+											</h:inputTextarea>
+			     						</td>
+			     			
+			     					</tr>
+			     				</table>
+			     				<rich:spacer height="8px"></rich:spacer>
+				<div style="border: 1px;" > 
+					<rich:panel>
+						<f:facet name="header">#{messages.lbl_atributosSujeto_ens}</f:facet>
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr>
+										<td>
+									
+											<h:outputLabel value="#{messages.lbl_estadoSujeto_ens}:" styleClass="normalText" />							 			
+	     															 
+											<br/>
+											<rich:spacer height="8px"></rich:spacer>
+										</td>
+										<td class="colPeq">
+											<h:selectBooleanCheckbox value="#{modificarConjuntoDatosPes.conjuntoDatos.mostrarEstadoSujeto}" style="margin: 0px;"/>
+										</td>
+										
+										<td class="colGran" >
+											<h:outputLabel value="#{messages.lbl_fechaInclusion_ens}:" styleClass="normalText" />										
+											
+										</td>
+										<td class="colPeq">
+											<h:selectBooleanCheckbox value="#{modificarConjuntoDatosPes.conjuntoDatos.mostrarFechaInclusionSujeto}" style="margin: 0px;"/>
+										</td>
+										
+										<td class="colGran" >
+											<h:outputLabel value="#{messages.lbl_inicialesSujeto_ens}:" styleClass="normalText" />										
+											
+										</td>
+										<td class="colPeq">
+											<h:selectBooleanCheckbox value="#{modificarConjuntoDatosPes.conjuntoDatos.mostrarInicialesSujeto}" style="margin: 0px;"/>
+										</td>
+																				
+										
+									</tr>
+									
+									<tr>
+										<td>
+									
+											<h:outputLabel value="#{messages.lbl_numeroInclusion_ens}:" styleClass="normalText" />							 			
+	     															 
+											<br/>
+											<rich:spacer height="8px"></rich:spacer>
+										</td>
+										<td class="colPeq">
+											<h:selectBooleanCheckbox value="#{modificarConjuntoDatosPes.conjuntoDatos.mostrarNumeroInclusionSujeto}" style="margin: 0px;"/>
+										</td>	
+										
+										<td class="colGran" >
+											<h:outputLabel value="#{messages.lbl_sitioClinico_ens}:" styleClass="normalText" />										
+											
+										</td>
+										<td class="colPeq">
+											<h:selectBooleanCheckbox value="#{modificarConjuntoDatosPes.conjuntoDatos.mostrarSitioClinicaSujeto}" style="margin: 0px;"/>
+										</td>
+										
+										<!-- Hora de inclusion -->
+										<td class="colGran" >
+											<h:outputLabel value="#{messages.lbl_horaInclusion_ens}:" styleClass="normalText" />										
+											
+										</td>
+										<td class="colPeq">
+											<h:selectBooleanCheckbox value="#{modificarConjuntoDatosPes.conjuntoDatos.mostrarHoraInclusionSujeto}" style="margin: 0px;"/>
+										</td>										
+												
+										
+																				
+										
+									</tr>
+									
+									
+						</table>
+					</rich:panel>
+					<rich:spacer height="8px" />
+					<rich:panel>
+						<f:facet name="header">#{messages.lbl_atributosCRD_ens}</f:facet>
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr>
+										
+										<td >
+											<h:outputLabel value="#{messages.lbl_estadoCRD_ens}:" styleClass="normalText" />							 			
+	     									<br/>
+	     									<rich:spacer height="8px"></rich:spacer>
+										</td>
+										<td class="colPeq">
+											<h:selectBooleanCheckbox value="#{modificarConjuntoDatosPes.conjuntoDatos.mostrarEstadoCrdEspecifico}" style="margin: 0px;"/>
+										</td>
+										<td class="colGran">
+											<h:outputLabel value="#{messages.lbl_estadoMonitoreoCRD_ens}:" styleClass="normalText" />							 			
+	     								
+										</td>
+										<td class="colPeq">
+											<h:selectBooleanCheckbox value="#{modificarConjuntoDatosPes.conjuntoDatos.mostrarEstadoMonitoreoCrdEspecifico}" style="margin: 0px;"/>
+										</td>
+									</tr>
+									
+									
+						</table>
+					</rich:panel>
+					<rich:spacer height="8px" />
+					<rich:panel>
+						<f:facet name="header">#{messages.lbl_atributosMS_ens}</f:facet>
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr>
+										<td>
+									
+											<h:outputLabel value="#{messages.lbl_fechaInicio_ens}:" styleClass="normalText" />
+																		 
+											<br/>
+											<rich:spacer height="8px"></rich:spacer>
+										</td>
+										<td class="colPeq">
+											<h:selectBooleanCheckbox value="#{modificarConjuntoDatosPes.conjuntoDatos.mostrarFechaInicioMs}" style="margin: 0px;" />
+										</td>
+										<td class="colGran">
+											<h:outputLabel value="#{messages.lbl_fechaFin_ens}:" styleClass="normalText" />							 			
+	     								
+										</td>
+										<td class="colPeq">
+											<h:selectBooleanCheckbox value="#{modificarConjuntoDatosPes.conjuntoDatos.mostrarFechaFinMs}" style="margin: 0px;"/>
+										</td>
+										<td class="colGran" >
+											<h:outputLabel value="#{messages.lbl_estadoMS_ens}:" styleClass="normalText" />										
+																			
+											 			
+	     								
+										</td>
+										<td class="colPeq">
+											<h:selectBooleanCheckbox value="#{modificarConjuntoDatosPes.conjuntoDatos.mostrarEstadoMs}" style="margin: 0px;"/>
+										</td>
+									</tr>
+									
+									
+						</table>
+					</rich:panel>
+					
+				</div>
+			</rich:panel>
+		<rich:spacer height="8px" />
+		<rich:panel>
+		<f:facet name="header">#{messages.lbl_datosConjuntoDatos_ens}</f:facet>
+		
+		
+     	<table width="100%" cellpadding="0px" cellspacing="0px" style="vertical-align: top;">
+		<tr>
+
+		<td style="vertical-align: top; width: 20%;">
+			<rich:panel>
+				<f:facet name="header">#{messages.lbl_cronogramas_ens}</f:facet>
+				<div style="border: 1px;" > 
+				<a4j:region id="cronogramasTree" >
+				<a4j:outputPanel ajaxRendered="true">
+				
+				
+				
+				<s:div style="margin-left:2px;">
+					<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+						<h:graphicImage
+							value="/resources/funcionalidadesIcons/ensayo/gestionar_estudio.png"
+							height="16" />
+						 
+						 <a4j:commandLink
+							action="#{modificarConjuntoDatosPes.seleccionarEstudio()}"
+							value="#{modificarConjuntoDatosPes.estudio.nombre}" style="margin-left:1px;"
+							status="estadoVariables" ajaxSingle="true"
+							reRender="listadoVariables" />
+					</h:panelGrid>
+				</s:div>
+				
+				<rich:tree>
+							
+									<rich:treeNodesAdaptor nodes="#{modificarConjuntoDatosPes.cronogramas}"
+										var="cronograma">
+										<rich:treeNode
+											icon="/resources/funcionalidadesIcons/ensayo/cronograma_aprobado.png">
+											<a4j:commandLink
+												action="#{modificarConjuntoDatosPes.seleccionarCronograma(cronograma)}" value="#{cronograma.grupoSujetos.nombreGrupo}" style="margin-left:1px;"
+												status="estadoVariables" ajaxSingle="true"
+												reRender="listadoVariables" />
+										</rich:treeNode>
+										<rich:treeNodesAdaptor
+											nodes="#{modificarConjuntoDatosPes.momentosCronograma(cronograma)}"
+											var="momentoGeneral">
+											<rich:treeNode
+												icon="/resources/funcionalidadesIcons/ensayo/gestionar_momentos.png">
+												
+												<a4j:commandLink
+													action="#{modificarConjuntoDatosPes.seleccionarMomento(momentoGeneral)}" value="#{momentoGeneral.nombre}" style="margin-left:1px;"
+													status="estadoVariables" ajaxSingle="true"
+													reRender="listadoVariables" />
+											</rich:treeNode>
+											<rich:treeNodesAdaptor nodes="#{modificarConjuntoDatosPes.hojasMomentos(momentoGeneral)}"
+												var="msHojaCrd">
+												<rich:treeNode
+													icon="/resources/funcionalidadesIcons/ensayo/gestionar_hoja_crd.png">
+													
+													<a4j:commandLink
+													action="#{modificarConjuntoDatosPes.seleccionarHojaCRD(msHojaCrd)}" value="#{msHojaCrd.hojaCrd.nombreHoja}" style="margin-left:1px;"
+													status="estadoVariables" ajaxSingle="true"
+													reRender="listadoVariables" />
+												</rich:treeNode>
+												
+											</rich:treeNodesAdaptor>
+										</rich:treeNodesAdaptor>
+									</rich:treeNodesAdaptor>
+									
+
+						</rich:tree>
+				
+				</a4j:outputPanel>
+				</a4j:region>
+				</div>
+			</rich:panel>		
+		</td>
+		
+		<td style="vertical-align: top; width: 80%;">
+		
+		<a4j:region >
+			
+			<rich:panel id="listadoVariables">
+			
+				<f:facet name="header" > 
+						<s:div>
+						<table cellpadding="0" cellspacing="0"><tr>
+							<td>
+								<h:graphicImage rendered="#{modificarConjuntoDatosPes.seleccCronograma}"
+									value="/resources/funcionalidadesIcons/ensayo/cronograma_aprobado.png"
+									height="12" style="position: relative;" />	
+									<h:graphicImage rendered="#{modificarConjuntoDatosPes.seleccEstudio}"
+									value="/resources/funcionalidadesIcons/ensayo/gestionar_estudio.png"
+									height="12" style="position: relative;" />
+									<h:graphicImage rendered="#{modificarConjuntoDatosPes.seleccMomento}"
+									value="/resources/funcionalidadesIcons/ensayo/gestionar_momentos.png"
+									height="12" style="position: relative;" />							
+									<h:graphicImage rendered="#{modificarConjuntoDatosPes.seleccCRD}"
+									value="/resources/funcionalidadesIcons/ensayo/gestionar_hoja_crd.png"
+									height="12" style="position: relative;" />												
+							</td>
+							<td>
+								<h:outputLabel rendered="#{modificarConjuntoDatosPes.seleccCronograma}" style="position: relative;" value="#{modificarConjuntoDatosPes.cronograma.grupoSujetos.nombreGrupo}" >
+								</h:outputLabel>
+								<h:outputLabel rendered="#{modificarConjuntoDatosPes.seleccEstudio}" style="position: relative;" value="#{modificarConjuntoDatosPes.estudio.nombre}" >
+								</h:outputLabel>
+								<h:outputLabel rendered="#{modificarConjuntoDatosPes.seleccMomento}" style="position: relative;" value="#{modificarConjuntoDatosPes.momento.nombre}" >
+								</h:outputLabel>
+								<h:outputLabel rendered="#{modificarConjuntoDatosPes.seleccCRD}" style="position: relative;" value="#{modificarConjuntoDatosPes.msHojaCRD.hojaCrd.nombreHoja}" >
+								</h:outputLabel>
+							</td>
+						</tr></table>
+					</s:div>
+						
+					
+						
+						</f:facet>
+						<a4j:status id="estadoVariables" forceId="true" 
+					  onstart="javascript:document.getElementById('modificarConjuntoDatosPes:settsdiv').style.display = 'none';
+					  		   javascript:document.getElementById('modificarConjuntoDatosPes:loadingdiv').style.display = ''"
+					  onstop="javascript:document.getElementById('modificarConjuntoDatosPes:loadingdiv').style.display = 'none';
+					  		  javascript:document.getElementById('modificarConjuntoDatosPes:settsdiv').style.display = ''">
+				  <f:facet name="start">
+				  </f:facet>
+			    </a4j:status>
+			    <s:div id="loadingdiv" style="text-align: center; width: 100%; display:none;">
+				  <br/><br/>
+					 <h:graphicImage url="/resources/icons/default/acciones/loading_small.gif" />
+				  <br/><br/><br/>	 
+				</s:div>	 
+				<s:div id="settsdiv">
+				<a4j:outputPanel id="tablas_variables">		
+						<a4j:jsFunction name="selectVariable" action="#{modificarConjuntoDatosPes.seleccionarVariable()}" 
+			       		 reRender="tablas_variables, tabla_listado_variables, variables" ajaxSingle="true">
+			       			<a4j:actionparam name="idVariable" assignTo="#{modificarConjuntoDatosPes.idVariable}"/>
+			       		</a4j:jsFunction>
+			       		<a4j:jsFunction name="marcarDesmarcarTodo" action="#{modificarConjuntoDatosPes.marcarDesmarcarTodo()}" 
+			       		 reRender="tablas_variables, tabla_listado_variables, variables" ajaxSingle="true">
+			       		</a4j:jsFunction>
+				<rich:panel styleClass="whitespace"
+					rendered="#{modificarConjuntoDatosPes.listadoVariables().resultList.size() == 0}">
+					<f:facet name="header">#{messages.lbl_listadoVariables_ens}</f:facet>
+					
+					<div class="results" id="roleList">
+					<h:outputText value="#{messages.msg_listaVacia_ens}" /></div>
+					
+				</rich:panel>
+						<s:div style="margin-left:1px;margin-top:1px"
+					rendered="#{not empty modificarConjuntoDatosPes.listadoVariables().resultList}">
+					
+					<rich:dataTable id="tabla_listado_variables"
+						style="width: 100%;" var="variable"
+						value="#{modificarConjuntoDatosPes.listadoVariables().resultList}"
+						rowKeyVar="keyVar"
+						
+						columnsWidth="0*,0*,0*,30%, 20%, 20%,0*,0*,0*">
+						<f:facet name="header">
+							<div>#{messages.lbl_listadoVariables_ens}</div>
+						</f:facet>
+						<h:column>
+									<f:facet name="header">
+										<h:panelGrid columns="2"
+											style="width: 100%; padding:0px; margin:0px;" border="0"
+											cellpadding="0" cellspacing="0">
+											<s:div style="float: left;">
+											<s:div rendered="#{modificarConjuntoDatosPes.todoMarcado()}">
+												<input type="checkbox" style="margin: 0px 0px 0px 0px;" checked="true" onclick="marcarDesmarcarTodo()"/>	
+											</s:div>
+											<s:div rendered="#{!modificarConjuntoDatosPes.todoMarcado()}">
+												<input type="checkbox" style="margin: 0px 0px 0px 0px;" onclick="marcarDesmarcarTodo()"/>	
+											</s:div>
+											</s:div>
+											<s:div style="text-align: right; padding-left:3px;"></s:div>
+										</h:panelGrid>
+									</f:facet>	
+									<s:div rendered="#{modificarConjuntoDatosPes.variablesSeleccionadas.containsKey(variable.id)}">
+								<input type="checkbox" style="margin: 0px 0px 0px 0px;" checked="true" onclick="selectVariable('#{variable.id}')"/>	
+							</s:div>
+							<s:div rendered="#{not modificarConjuntoDatosPes.variablesSeleccionadas.containsKey(variable.id)}">
+								<input type="checkbox" style="margin: 0px 0px 0px 0px;" onclick="selectVariable('#{variable.id}')"/>	
+							</s:div>							
+			            			
+			       					
+			        			</h:column>
+			        			
+			        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_nombreMS_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{variable.momentoSeguimientoGeneral.nombre}
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_nombreHojaCRD_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{variable.variable.seccion.hojaCrd.nombreHoja}
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_nombre_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{variable.variable.nombreVariable}
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_descripcion_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{variable.variable.descripcionVariable}
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_seccionVariable_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{variable.variable.seccion.tituloSeccion}
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_grupoVariable_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			<h:outputText value="#{variable.variable.grupoVariables.encabezado}" rendered="#{variable.variable.grupoVariables!=null}"/>
+	            			<h:outputText value="-" rendered="#{variable.variable.grupoVariables ==null}"/>
+	            			
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_tipoDato_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			<h:outputText value="#{variable.variable.tipoDato.nombre}" rendered="#{variable.variable.tipoDato!=null}"/>
+	            			<h:outputText value="-" rendered="#{variable.variable.tipoDato ==null}"/>
+	            			
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_unidadesVariable_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			<h:outputText value="#{variable.variable.unidadesVariable}" rendered="#{variable.variable.unidadesVariable!=null}"/>
+	            			<h:outputText value="-" rendered="#{variable.variable.unidadesVariable ==null}"/>
+	            			
+	        			</h:column>	
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_tipoRespuesta_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			<h:outputText value="#{variable.variable.presentacionFormulario.nombre}" rendered="#{variable.variable.presentacionFormulario!=null}"/>
+	            			<h:outputText value="-" rendered="#{variable.variable.presentacionFormulario ==null}"/>
+	            			
+	        			</h:column>	
+						
+					</rich:dataTable>
+					
+				</s:div>
+				<rich:spacer height="11px" />
+
+				<!-- Paginado  -->
+				<ui:include src="/modEnsayo/codebase/plantillas/paginado_tabla_inferior_generico.xhtml/" >
+					<ui:param name="vzPaginado" value="#{modificarConjuntoDatosPes.listadoVariables().resultCount>10}"/>
+					<ui:param name="nomControladorList" value="#{modificarConjuntoDatosPes.listadoVariables()}" />
+					<ui:param name="idListado" value="tablas_variables" />
+					
+				</ui:include>
+			    <!--
+			     END Paginado -->
+				</a4j:outputPanel>
+				</s:div>
+			</rich:panel>
+		</a4j:region>
+		</td>
+		</tr>
+		</table>
+		<rich:spacer height="8px"/>
+		<table width="100%" cellpadding="0px" cellspacing="0px" style="vertical-align: top;">
+		<tr>
+
+		<td style="vertical-align: top; width: 100%;">
+			<a4j:outputPanel id="variables">		
+				
+				<rich:panel styleClass="whitespace"
+					rendered="#{modificarConjuntoDatosPes.listadoVariablesConjuntoDatos.resultList.size() == 0}">
+					<f:facet name="header">#{messages.lbl_variablesSeleccionadas_ens}</f:facet>
+					
+					<div class="results" id="roleList">
+					<h:outputText value="#{messages.msg_listaVacia_ens}" /></div>
+					
+				</rich:panel>
+						<s:div style="margin-left:1px;margin-top:1px"
+					rendered="#{modificarConjuntoDatosPes.listadoVariablesConjuntoDatos.resultList.size() > 0}">
+					<rich:dataTable id="tabla_listado_variables_seleccionadas"
+						style="width: 100%;" var="variable"
+						value="#{modificarConjuntoDatosPes.listadoVariablesConjuntoDatos.resultList}"
+						columnsWidth="0*,0*,30%,30%, 20%, 20%,0*,0*,0*,0*">
+						<f:facet name="header">
+							<div>#{messages.lbl_variablesSeleccionadas_ens}</div>
+						</f:facet>
+						
+	        			
+			        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_nombreMS_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{variable.momentoSeguimientoGeneral.nombre}
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_nombreHojaCRD_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{variable.variable.seccion.hojaCrd.nombreHoja}
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_nombre_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{variable.variable.nombreVariable}
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_descripcion_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{variable.variable.descripcionVariable}
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_seccionVariable_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{variable.variable.seccion.tituloSeccion}
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_grupoVariable_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			<h:outputText value="#{variable.variable.grupoVariables.encabezado}" rendered="#{variable.variable.grupoVariables!=null}"/>
+	            			<h:outputText value="-" rendered="#{variable.variable.grupoVariables ==null}"/>
+	            			
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_tipoDato_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			<h:outputText value="#{variable.variable.tipoDato.nombre}" rendered="#{variable.variable.tipoDato!=null}"/>
+	            			<h:outputText value="-" rendered="#{variable.variable.tipoDato ==null}"/>
+	            			
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_unidadesVariable_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			<h:outputText value="#{variable.variable.unidadesVariable}" rendered="#{variable.variable.unidadesVariable!=null}"/>
+	            			<h:outputText value="-" rendered="#{variable.variable.unidadesVariable ==null}"/>
+	            			
+	        			</h:column>	
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_tipoRespuesta_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			<h:outputText value="#{variable.variable.presentacionFormulario.nombre}" rendered="#{variable.variable.presentacionFormulario!=null}"/>
+	            			<h:outputText value="-" rendered="#{variable.variable.presentacionFormulario ==null}"/>
+	            			
+	        			</h:column>	
+						<h:column>
+							<div align="center">
+								<a4j:commandLink action="#{modificarConjuntoDatosPes.eliminarVariable(variable.id)}"
+								ajaxSingle="true" status="estadoVariablesSeleccionadas" reRender="tablas_variables,tabla_listado_variables,variables">
+									<h:graphicImage title="#{messages.lbl_eliminar_ens}"
+													style="border: 0px; cursor:pointer;"
+													value="/resources/icons/default/acciones/eliminar.png">
+													
+									</h:graphicImage>
+								</a4j:commandLink>
+							</div>
+						</h:column>
+					</rich:dataTable>
+					
+				
+				<rich:spacer height="11px" />
+
+				<!-- Paginado  -->
+				<ui:include src="/modEnsayo/codebase/plantillas/paginado_tabla_inferior_generico_segundo.xhtml/" >
+					<ui:param name="vzPaginado" value="#{modificarConjuntoDatosPes.listadoVariablesConjuntoDatos.resultCount>10}"/>					
+					<ui:param name="nomControladorList" value="#{modificarConjuntoDatosPes.listadoVariablesConjuntoDatos}" />
+					<ui:param name="idListado" value="variables" />
+					
+				</ui:include>
+			    <!--
+			     END Paginado -->
+			     </s:div>
+				</a4j:outputPanel>	
+		</td>
+	
+		
+		</tr>
+		</table>
+		</rich:panel>
+     	
+	 	<div align="right">
+				
+		<a4j:commandButton 	id="aceptarBtn"	
+			action="#{modificarConjuntoDatosPes.modificarConjuntoDatosPes()}"
+			
+			value="#{messages.btn_aceptar_ens}" 
+			style="margin-bottom: 0px; margin-right: 10px; margin-left: 0px; margin-top: 8px" 
+			onclick="hideErrorSpans();">
+		</a4j:commandButton>
+							
+		
+									<a4j:commandButton 		
+					action="cancelar" immediate="true"
+			
+					value="#{messages.btn_cancelar_ens}" 
+					style="margin-bottom: 0px; margin-right: 0px; margin-left: 0px; margin-top: 8px">
+				</a4j:commandButton>
+	</div>
+	
+     </h:form>
+     
+	</s:div>
+</s:div>

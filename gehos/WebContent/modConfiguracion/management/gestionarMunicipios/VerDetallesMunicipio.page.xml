@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<param name="municipioId" value="#{municipioVerDetallesControlador.id}" />
+	<param name="from" value="#{municipioVerDetallesControlador.from}" />
+	
+	<!-- validation -->	
+	
+	<navigation>
+		<rule if="#{municipioVerDetallesControlador.id == null or municipioVerDetallesControlador.error == 1}">
+			<redirect view-id="/modConfiguracion/management/gestionarMunicipios/BuscarMunicipio.xhtml" />			
+		</rule>					
+	</navigation>
+
+	<!-- go to modify -->
+	<navigation from-action="#{municipioModificarControlador.setId(municipioVerDetallesControlador.municipio.id)}" evaluate="#{municipioModificarControlador.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarMunicipios/ModificarMunicipio.xhtml" />	
+		</rule>
+	</navigation>
+
+	<!-- remove and go to view search -->
+	<navigation from-action="#{municipioVerDetallesControlador.eliminar()}" evaluate="#{municipioVerDetallesControlador.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarMunicipios/BuscarMunicipio.xhtml" />	
+		</rule>
+	</navigation>
+
+	<!-- go to view search -->
+	<navigation from-action="salir">		
+		<redirect view-id="/modConfiguracion/management/gestionarMunicipios/BuscarMunicipio.xhtml" />	
+	</navigation>	
+</page>

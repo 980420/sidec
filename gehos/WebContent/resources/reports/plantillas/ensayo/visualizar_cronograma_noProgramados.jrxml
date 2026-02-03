@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" pageWidth="800" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="728" leftMargin="43" rightMargin="29" topMargin="0" bottomMargin="29" isSummaryWithPageHeaderAndFooter="true">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="144"/>
+	<style name="Crosstab Data Text"/>
+	<parameter name="P_TITULO" class="java.lang.String"/>
+	<parameter name="LOGO_URL" class="java.lang.String"/>
+	<parameter name="SEPARADOR" class="java.lang.String"/>
+	<parameter name="AUTOR_RPT" class="java.lang.String"/>
+	<parameter name="DEPARTAMENTO" class="java.lang.String"/>
+	<parameter name="DATE_TODAY" class="java.lang.String"/>
+	<parameter name="PRODUCT_IMG" class="java.lang.String"/>
+	<parameter name="nombre_MS" class="java.lang.String"/>
+	<parameter name="etapa_evaluacion" class="java.lang.String"/>
+	<parameter name="etapa_tratamiento" class="java.lang.String"/>
+	<parameter name="etapa_seguimiento" class="java.lang.String"/>
+	<parameter name="SUBREPORTS" class="java.util.Map"/>
+	<parameter name="SUBREPORTS_DATASOURCES" class="java.util.Map"/>
+	<parameter name="listadoMS" class="java.lang.String"/>
+	<parameter name="SUBREPORTS_PARAMETERS" class="java.util.Map"/>
+	<parameter name="ESTUDIO" class="java.lang.String"/>
+	<parameter name="nb_ESTUDIO" class="java.lang.String"/>
+	<parameter name="GRUPO_SUJETO" class="java.lang.String"/>
+	<parameter name="nb_GRUPO_SUJETO" class="java.lang.String"/>
+	<field name="nombre_MS" class="java.lang.String"/>
+	<field name="evaluacion" class="java.lang.String"/>
+	<field name="tratamiento" class="java.lang.String"/>
+	<field name="seguimiento" class="java.lang.String"/>
+	<group name="MS_Programados">
+		<groupExpression><![CDATA[$F{nombre_MS}]]></groupExpression>
+		<groupHeader>
+			<band height="50">
+				<subreport>
+					<reportElement x="1" y="0" width="714" height="50"/>
+					<parametersMapExpression><![CDATA[$P{SUBREPORTS_PARAMETERS}.get("SUBREPORT_VISUALIZAR_CRONOGRAMA_PROGRAMADOS_PARAMETERS")]]></parametersMapExpression>
+					<dataSourceExpression><![CDATA[$P{SUBREPORTS_DATASOURCES}.get("SUBREPORT_VISUALIZAR_CRONOGRAMA_PROGRAMADOS_DATASOURCE")]]></dataSourceExpression>
+					<subreportExpression class="net.sf.jasperreports.engine.JasperReport"><![CDATA[$P{SUBREPORTS}.get("SUBREPORT_VISUALIZAR_CRONOGRAMA_PROGRAMADOS")]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="MS_NoProgramados">
+		<groupExpression><![CDATA[$F{nombre_MS}]]></groupExpression>
+		<groupHeader>
+			<band height="50">
+				<subreport>
+					<reportElement x="1" y="0" width="714" height="50"/>
+					<parametersMapExpression><![CDATA[$P{SUBREPORTS_PARAMETERS}.get("SUBREPORT_VISUALIZAR_CRONOGRAMA_NOPROGRAMADOS_PARAMETERS")]]></parametersMapExpression>
+					<dataSourceExpression><![CDATA[$P{SUBREPORTS_DATASOURCES}.get("SUBREPORT_VISUALIZAR_CRONOGRAMA_NOPROGRAMADOS_DATASOURCE")]]></dataSourceExpression>
+					<subreportExpression class="net.sf.jasperreports.engine.JasperReport"><![CDATA[$P{SUBREPORTS}.get("SUBREPORT_VISUALIZAR_CRONOGRAMA_NOPROGRAMADOS")]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band height="1" splitType="Immediate"/>
+	</background>
+	<pageHeader>
+		<band height="77" splitType="Immediate">
+			<image>
+				<reportElement x="0" y="14" width="147" height="43"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{PRODUCT_IMG}]]></imageExpression>
+			</image>
+			<image isUsingCache="true">
+				<reportElement stretchType="RelativeToTallestObject" x="266" y="14" width="147" height="43"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO_URL}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement key="textField" x="488" y="42" width="227" height="14"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{DATE_TODAY}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="488" y="13" width="227" height="14"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{DEPARTAMENTO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="488" y="27" width="226" height="14"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{AUTOR_RPT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="50">
+			<textField>
+				<reportElement x="0" y="5" width="657" height="16"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_TITULO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="28" width="50" height="16"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{ESTUDIO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="400" y="28" width="226" height="16"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{nb_GRUPO_SUJETO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="305" y="28" width="95" height="16"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{GRUPO_SUJETO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="51" y="28" width="185" height="16"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{nb_ESTUDIO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<pageFooter>
+		<band height="31" splitType="Immediate">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="308" y="10" width="39" height="15"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="textField" x="369" y="10" width="43" height="15"/>
+				<textElement>
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="347" y="10" width="22" height="15"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{SEPARADOR}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

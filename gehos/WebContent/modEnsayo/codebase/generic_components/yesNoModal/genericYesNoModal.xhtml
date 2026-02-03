@@ -1,0 +1,21 @@
+<ui:composition
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+	<a4j:form>
+			<a4j:jsFunction name="#{jsFuncName}" oncomplete="Richfaces.showModalPanel('#{modalId}')" >
+				<a4j:actionparam name="item" assignTo="#{controller.GetObjectIdForModalId(modalId).value}" />
+			</a4j:jsFunction>
+	</a4j:form>		
+		<ui:include src="/modEnsayo/codebase/generic_components/yesNoModal/yesNoModal.xhtml">
+			<ui:param name="modalId" value="#{modalId}" /> <!-- id del modal-->
+			<ui:param name="modalHeader" value="#{modalHeader}" /> <!-- texto para el encabezado del modal -->
+			<ui:param name="modalBody" value="#{modalBody}" /> <!-- texto para el cuerpo  del modal -->
+			<ui:param name="onYesRerender" value="#{onYesRerender}" /> <!-- lista de ids a renderizar cuando se presione el boton Yes -->
+			<ui:param name="controller" value="#{controller}" /> <!-- controlador, debe heredar la clase ....  -->
+		</ui:include>		
+</ui:composition>

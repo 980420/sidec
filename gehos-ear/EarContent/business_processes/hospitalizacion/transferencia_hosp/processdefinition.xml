@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition  name="transferencia_hosp">
+
+
+	<start-state name="inicio">
+		<transition to="procesar_transferencia_hosp"></transition>
+	</start-state>
+
+
+	<task-node name="procesar_transferencia_hosp">
+		<task name="procesar_transferencia_hosp">
+			<description>
+				Procesar transferencia
+			</description>
+			<assignment pooled-actors="Jefe de Servicio #{transferenciaContextGetterHosp.ordenTransferencia.servicioInEntidadByIdServicioReceptor.id}"></assignment>
+		</task>
+		<transition to="fin"></transition>
+	</task-node>
+
+
+	<end-state name="fin"></end-state>
+
+
+</process-definition>

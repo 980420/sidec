@@ -1,0 +1,115 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/pkiStyles/pkistyles.css"
+			rel="stylesheet" type="text/css" />
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+		<s:div
+			rendered="#{not verDetallesProxyControlador.from.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.titulo1}')</script>
+		</s:div>
+		<s:div rendered="#{verDetallesProxyControlador.from.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.titulo2}')</script>
+		</s:div>
+
+
+
+
+		<h:form id="form1">
+			<a4j:outputPanel ajaxRendered="true">
+				<rich:messages styleClass="message" for="buttonAceptar"
+					ajaxRendered="true" />
+
+			</a4j:outputPanel>
+			<rich:panel bodyClass="rich-panel-body-custom">
+				<f:facet name="header">#{messages.datos}</f:facet>
+				<table cellpadding="0px" cellspacing="0px" border="0px">
+					<tr style="vertical-align: top;">
+
+						<td>#{messages.url}:</td>
+						<td><rich:spacer styleClass="h-spacer-between-p-and-v"></rich:spacer></td>
+						<td><h:outputText
+							value="#{verDetallesProxyControlador.proxy.direccion}"
+							styleClass="dataText"></h:outputText></td>
+						<td><rich:spacer styleClass="h-spacer-between-2c" /></td>
+						<td>#{messages.puerto}:</td>
+						<td><rich:spacer styleClass="h-spacer-between-p-and-v"></rich:spacer></td>
+						<td><h:outputText
+							value="#{verDetallesProxyControlador.proxy.puerto}"
+							styleClass="dataText"></h:outputText></td>
+						
+						
+						
+						
+
+
+					</tr>
+					<tr>
+						<td colspan="11"><rich:spacer
+							styleClass="v-spacer-between-2l" /></td>
+					</tr>
+
+					
+
+				</table>
+				<table cellpadding="0px" cellspacing="0px" border="0px"
+				width="100%">
+				<tr style="vertical-align: top;">
+
+						<td colspan="11">#{messages.descripcion}:<br/>
+						<h:inputTextarea styleClass="input-text-area"
+							readonly="true"
+							value="#{verDetallesProxyControlador.proxy.descripcion}"
+							/>
+						</td>
+						
+
+					</tr>
+				</table>
+			</rich:panel>
+
+
+			<rich:spacer height="8px" style="display: block"></rich:spacer>
+
+
+			<s:div styleClass="actionButtons" style="text-align: right">
+				<div align="right"><h:commandButton
+					value="#{messages.modificar}"
+					action="#{modificarProxyControlador.setId(verDetallesProxyControlador.id)}"
+					rendered="#{not verDetallesProxyControlador.from.equals('listar')}"
+					style="margin-bottom: 0px; margin-right: 0px; margin-top: 0px" />
+
+				<a4j:commandButton
+					rendered="#{not verDetallesProxyControlador.from.equals('listar')}"
+					onclick="Richfaces.showModalPanel('panelEliminarproxyVerDetalles')"
+					style="margin-bottom: 0px; margin-right: 5px; margin-top: 0px"
+					value="#{messages.eliminar}">
+					<s:conversationPropagation type="end"></s:conversationPropagation>
+				</a4j:commandButton> <h:commandButton action="salir" value="#{messages.salir}"
+					style="margin-right: 0px; margin-left: 0px; margin-top: 0px" /></div>
+			</s:div>
+		</h:form>
+		<ui:include
+			src="/modConfiguracion/pki/servidores/proxy/modalspanel/confirmareliminarproxyverdetalles.xhtml" />
+	</ui:define>
+
+</ui:composition>
+

@@ -1,0 +1,823 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+<head>
+<title>#{messages.tit_sistema_conf}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link rel="shortcut icon"
+	href="#{facesContext.externalContext.requestContextPath}/img/gehos.ico" />
+
+<link
+	href="#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/stylesheet/#{theme.color}.css"
+	rel="stylesheet" type="text/css" />
+<link
+	href="#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/stylesheet/notification.css"
+	rel="stylesheet" type="text/css" />
+
+
+<link
+	href="#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/stylesheet/styleTemplate.css"
+	rel="stylesheet" type="text/css" />
+<script type="text/javascript" language="javascript"
+	src="#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/script/notification.js">
+	</script>
+<script type="text/javascript"><!--
+
+	function openPrincipal(){
+	 	window.open("#{facesContext.externalContext.requestContextPath}/modTeleconsulta/Teleconsulta/teleconsulta.gehos","nueva","width=320,height=500, left=380, top=130,resizable=yes, target=_blanck");
+	}
+	
+	var abierto;
+function menuCollapse()
+{
+
+	if(abierto)
+	{
+		document.getElementById('menuContent').style.display='none';
+		document.getElementById('menuFun').style.display='none';
+		document.getElementById('menuFooter').style.display='none';
+		
+		
+		document.getElementById('headerFunTop').className="sinpad";
+		document.getElementById('workspace').className="sinpad1";
+		document.getElementById('show').style.display='';
+		
+		
+	}
+	else
+	{
+	  	document.getElementById('menuContent').style.display='';
+		document.getElementById('menuFun').style.display='';
+		document.getElementById('menuFooter').style.display='';
+		
+		
+		document.getElementById('headerFunTop').className="headerFunTop";
+		document.getElementById('workspace').className="workspace";
+		document.getElementById('show').style.display='none';
+		
+    }
+    abierto=!abierto;
+
+}
+function setContentTitle(value){
+	document.getElementById("contentTitle").innerHTML = value;
+	document.title = "XAVIA SIDEC - " + value;
+}
+function setWindowsTitle(value){
+	document.title = value;
+}
+function redirectMenu(e,s){
+	e.cancelBubble=true;
+	//alert(window.event.keyCode);
+	window.location =s;
+}
+function cambiaImgClose(el,condi){
+	if(condi)
+	 el.setAttribute("src","#{facesContext.externalContext.requestContextPath}/img/cerrar2.gif");
+	else
+	  el.setAttribute("src","#{facesContext.externalContext.requestContextPath}/img/cerrar.gif");
+}
+function processObjectsChange(suggestionBox) {
+    var items = suggestionBox.getSelectedItems();
+    if (items && items.length > 0) {
+          //alert( items[0].p + " id: " + items[0].id );
+          var functId = items[0].id;
+          //redirectToFunct(functId);
+          window.location='#{facesContext.externalContext.requestContextPath}' + items[0].url + '?idFuncionalidad='  + items[0].id + '#{messages.signo}idancestors=' +  items[0].id + 'a' + '#{messages.signo}moduleName=#{activeModule.activeModuleName}';         
+    }
+}
+function expandOrCollapseMenuClient(){
+	menuCollapse();
+	expandOrCollapseMenuServer();
+}
+function redirectMenu(e,s){
+	e.cancelBubble=true;
+	window.location =s;
+}
+function cambiaImgClose(el,condi){
+	if(condi)
+	 el.setAttribute("src","#{facesContext.externalContext.requestContextPath}/img/cerrar2.gif");
+	else
+	  el.setAttribute("src","#{facesContext.externalContext.requestContextPath}/img/cerrar.gif");
+}
+-->	
+</script>
+
+
+
+
+
+<style type="text/css">
+.seleccionar2 {
+	font-weight: normal !important;
+	font-family: Verdana !important;
+	color: #000000 !important;
+	cursor: pointer !important;
+	font-size: 10px !important;
+	text-decoration: none;
+}
+
+.seleccionar {
+	height: 18px;
+	padding-top: 3px;
+	font-weight: normal !important;
+	padding-left: 6px;
+	vertical-align: middle;
+	font-family: Verdana;
+	color: #000000 !important;
+	cursor: pointer;
+	font-size: 10px;
+}
+
+.seleccionar:hover {
+	color: #000000 !important;
+	font-weight: normal !important;
+	background-image:
+		url('#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/images/menu/resaltado.png')
+		!important;
+	background-repeat: no-repeat;
+}
+
+.panelStyle {
+	padding: 0px;
+	margin: 0px;
+	background: none;
+}
+
+.divPanelStyle {
+	margin: 0px;
+	padding-top: 3px;
+	padding-bottom: 2px;
+	cursor: pointer;
+	font-family: Verdana;
+	font-size: 10px;
+	font-weight: normal;
+	color: #000000;
+}
+
+.divPanelStyle:hover {
+	background-image:
+		url('#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/images/menu/resaltado.png');
+	background-repeat: no-repeat;
+}
+
+.panelHeaderStyle {
+	background-color: none;
+	background: none;
+	margin: 0px;
+	background-image: none;
+	border: 0px;
+	font-family: Verdana;
+	font-size: 10px;
+	font-weight: normal;
+	padding-left: 7px;
+	padding-top: 3px;
+	padding-bottom: 2px;
+	color: #000000;
+}
+
+.panelHeaderStyle:hover {
+	background-image:
+		url('#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/images/menu/resaltado.png');
+	background-repeat: no-repeat;
+	background-color: none;
+}
+
+.labelPanelStyle {
+	font-family: Verdana;
+	font-size: 10px;
+	font-weight: normal;
+	cursor: pointer;
+	color: black !important;
+	position: relative;
+	top: -2px;
+}
+
+.labelPanelStyle:hover {
+	color: #882d05;
+}
+</style>
+</head>
+
+<body>
+
+	<rich:modalPanel id="cristal"
+		style="background:transient !important;border: 0px !important;background-color: transparent;position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+		<h:graphicImage value="/resources/icons/default/acciones/loading.gif"
+			style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);width: 42px;height: 42px;" />
+	</rich:modalPanel>
+
+	<script type="text/javascript">
+	try {
+	    history.forward();
+	} catch (e) {
+	    // OK to ignore
+	}
+	#{rich:component('cristal')}.show();
+	window.onload = function() {
+		#{rich:component('cristal')}.hide();
+	}
+	window.onbeforeunload = function() {
+		#{rich:component('cristal')}.show();
+	}
+</script>
+	<a:form>
+		<a:jsFunction status="expandorcollapsestatus" limitToList="true"
+			name="expandOrCollapseMenuServer" ajaxSingle="true"
+			action="#{userTools.expandOrCollapseCategory()}">
+		</a:jsFunction>
+	</a:form>
+	<a:form>
+		<a:jsFunction status="expandorcollapsestatus" limitToList="true"
+			name="sendexpandorcollapse" ajaxSingle="true"
+			action="#{activeModule.expandOrCollapseCategory()}">
+			<a:actionparam name="catId"
+				assignTo="#{activeModule.categoryToModify}" />
+		</a:jsFunction>
+	</a:form>
+	<a:form>
+		<a:jsFunction status="expandorcollapsestatus" limitToList="true"
+			name="expandOrCollapseMenuServer" ajaxSingle="true"
+			action="#{userTools.expandOrCollapseCategory()}">
+		</a:jsFunction>
+	</a:form>
+	<input type="hidden"
+		value="#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/"
+		id="hidden_root" />
+	<div class="contentAllL">
+		<div class="effect">
+			<!-- all content-->
+			<table class="allContent" cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td>
+						<!-- header content-->
+
+						<div class="header">
+							<div class="rC" id="sas">
+								<div class="banner">
+									<div class="logo"
+										style="background-image:url('#{facesContext.externalContext.requestContextPath}/resources/modCommon/appLogos/SIDEC.png');"></div>
+								</div>
+								<div class="userData">
+									<s:div styleClass="photoFrameUser"
+										rendered="#{userTools.userImageExist(user.username)}">
+										<c:set var="userphoto"
+											value="#{facesContext.externalContext.requestContextPath}/resources/modCommon/userphotos/#{user.username}.png"></c:set>
+										<c:if test="#{not userTools.userImageExist(user.username)}">
+											<c:set var="userphoto"
+												value="#{facesContext.externalContext.requestContextPath}/resources/modCommon/unknown/#{theme.name}/generico/desconocido.png"></c:set>
+										</c:if>
+										<img alt="" class="photoFrameUser2" src="#{userphoto}"
+											height="50" width="50" />
+										<img alt="" class="photoFrame"
+											src="#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/images/bannerImg/marco.png" />
+									</s:div>
+									<s:div styleClass="photoFrameUser"
+										rendered="#{not userTools.userImageExist(user.username)}">
+										<img alt="" class="photoFrameUser2"
+											src="#{facesContext.externalContext.requestContextPath}/resources/modCommon/unknown/#{theme.name}/generico/desconocido.png"
+											height="50" width="50" />
+										<img alt="" class="photoFrame"
+											src="#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/images/bannerImg/marco.png" />
+									</s:div>
+									<div class="userDataText">
+										<div style="margin-left: -200px;" class="userName">
+											<h:outputLabel title="#{user.nombre}"
+												value="#{user.nombre}
+											#{user.primerApellido} #{user.segundoApellido} (#{user.username})"
+												rendered="#{seguridadEstudio.rolUsuarioEstudio()==''}" />
+											<h:outputLabel
+												title="#{seguridadEstudio.rolUsuarioEstudio()}"
+												value="#{seguridadEstudio.rolUsuarioEstudio()} (#{user.username})"
+												rendered="#{seguridadEstudio.rolUsuarioEstudio()!=''}" />
+										</div>
+										<div class="userSep"></div>
+
+
+									</div>
+
+									<div class="entityName">
+										<h:outputLabel style="margin-left: -180px;"
+											value="#{modSelectorController.selectedEntity.nombre}"
+											rendered="#{activeModule.activeModule.nombre != 'configuracion'}" />
+										<h:outputLabel value="Configuración general"
+											rendered="#{activeModule.activeModule.nombre == 'configuracion'}" />
+									</div>
+
+									<div class="location">
+										<h:outputLabel class="userName"
+											value="Estudio: #{seguridadEstudio.EstudioActivo().nombre}"
+											rendered="#{seguridadEstudio.VerificarActivo()}" />
+									</div>
+
+								</div>
+
+
+							</div>
+
+							<!--linkbar-->
+							<div class="linkBar">
+								<div class="linkBarR"></div>
+								<div class="linkBarC">
+									<table cellpadding="0" cellspacing="0" style="height: 26px;">
+										<tr>
+											<td class="barMenuSeparator1" valign="middle"><img
+												alt=""
+												src="#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/images/icons/modulos_azul.png" /></td>
+											<td class="barMenuSeparator2" valign="middle">
+												<!-- NUEVO CAMBIO EL 03/01/2014 yurien
+                        SE AGREGO EL RENDERED PARA CUANDO EL USUARIO SEA ROOT,
+                        NO TENGA ENTIDAD ASOCIADA,ESTE EN EL CONFIGURAR 
+                        Y DESEE REGRESAR AL INICIO
+                             
+                        COMO NO TIENE ENTIDAD PUES DEBE QUEDARSE EN LA MISMA PAGINA
+                        PARA EVITAR UN ERROR  
+                         --> <s:link styleClass="linksBar"
+													view="/modCommons/modSelector/#{theme.name}/themes/modSelector.gehos">
+						     Inicio
+						     	
+						    </s:link>
+
+											</td>
+											<td class="barMenuSeparator1" valign="middle"><img
+												alt=""
+												src="#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/images/icons/configuracion_azul(1).png" /></td>
+											<td class="barMenuSeparator2" valign="middle"><s:link
+													styleClass="linksBar" view="/profile/home.gehos"
+													target="_blank">Preferencias</s:link></td>
+
+											<td class="barMenuSeparator1" valign="middle"><img
+												alt=""
+												src="#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/images/icons/mensaje_azul.png" /></td>
+											<td class="barMenuSeparator2" valign="middle"><s:link
+													styleClass="linksBar" target="_blank"
+													id="notificationscountslink"
+													view="/modCommons/notifications/control.xhtml">
+													<f:param name="moduleName"
+														value="#{activeModule.activeModuleName}" />  
+					       		 	Notificaciones (
+					                <span
+														style="font-size: 10px; font-weight: bold; margin: 0 0 0 0; padding: 0 0 0 0;">
+														#{notificationManager.unreadedNotificationsCountByUserAndModule()}
+													</span> )
+			                </s:link></td>
+											<!--  
+                        <td class="barMenuSeparator2" valign="middle">                        
+                        	<s:link view="/modConfiguracion/incidencias/crear_incidencia.gehos"  styleClass="linksBar" value="Incidencias"
+                            	rendered="#{not userRoleRoot.root and not misIncidencias.hayIncidencias}" target="_blank" >
+                            	<f:param name="idSub" value="#{activeModule.activeModule.id}" />
+                            </s:link>
+                            <s:link view="/modConfiguracion/incidencias/mis_incidencias.gehos"  styleClass="linksBar" value="Incidencias"
+                            	rendered="#{not userRoleRoot.root and misIncidencias.hayIncidencias}" target="_blank" >
+                            	<f:param name="idSub" value="#{activeModule.activeModule.id}" />
+                            </s:link>
+                        </td>
+                        -->
+											<s:div
+												rendered="#{activeModule.activeModule.nombre.contains('ensayo') }">
+
+												<td class="barMenuSeparator1" valign="middle"><img
+													alt=""
+													src="#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/images/icons/ayuda_azul.png" /></td>
+												<td class="barMenuSeparator2" valign="middle"><s:link
+														styleClass="linksBar" id="cambestlink"
+														view="/modEnsayo/codebase/seleccionar_estudio/seleccionarEstudio.xhtml"
+														value="Seleccionar estudio">
+													</s:link></td>
+											</s:div>
+											<td class="barMenuSeparator1" valign="middle"><img
+												alt=""
+												src="#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/images/icons/ayuda_azul.png" /></td>
+											<td class="barMenuSeparator2" valign="middle"><a
+												href="/gehos/resources/modCommon/manuals/#{manualsManager.manual.manual}#page=#{manualsManager.manual.pagina}"
+												styleClass="linksBar" target="_blank"> <h:outputLabel
+														value="Ayuda" styleClass="linksBar" />
+											</a></td>
+											<td class="barMenuSeparator1" valign="middle"><img
+												alt=""
+												src="#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/images/icons/salir.png" /></td>
+											<td valign="middle"><s:link styleClass="linksBar"
+													view="/index.html" action="#{identity.logout}"
+													value="#{messages.logout}" rendered="#{identity.loggedIn}" />
+
+											</td>
+										</tr>
+									</table>
+								</div>
+								<div class="linkBarL"></div>
+							</div>
+
+							<!--end  linkbar-->
+						</div> <!--end  header content--> <!--  body content-->
+						<div class="bodyContent">
+							<div class="traceBar">
+
+								<div class="traceBarEntitys">
+
+									<div style="width: 3px; height: 1px; float: left;"></div>
+									<s:div rendered="#{activeModule.brothers}">
+										<s:link action="toGroup">
+											<table cellpadding="0" cellspacing="0" style="float: left">
+												<tr>
+													<td class="buttonModulesL"></td>
+													<td class="buttonModulesBack">
+														<div
+															style="background-image:url(#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/images/icons/modulos_azul.png)"
+															class="iconBar"></div>
+													</td>
+													<td class="buttonModulesBack">
+														<div class="nameButtonE" style="padding-right: 5px;">
+															<div class="mylinksEntitys">#{activeModule.activeModule.funcionalidadPadre.funcionalidadPadre.label}</div>
+														</div>
+													</td>
+													<td class="buttonModulesR"></td>
+												</tr>
+											</table>
+										</s:link>
+									</s:div>
+									<s:div>
+										<s:link view="/modCommons/modHome/home.gehos">
+											<f:param name="idFuncionalidad"
+												value="#{activeModule.activeModule.id}" />
+											<f:param name="idancestors"
+												value="#{activeModule.activeModule.id}a" />
+											<f:param name="moduleName"
+												value="#{activeModule.activeModuleName}" />
+											<table cellpadding="0" cellspacing="0">
+												<tr>
+													<td class="buttonEntitysL"></td>
+													<td class="buttonEntitysBack">
+														<div
+															style="background-image:url(#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/images/icons/inicio_azul.png); margin-right:2px;"
+															class="iconBar"></div>
+													</td>
+													<td class="buttonEntitysBack">
+														<div class="nameButtonE">
+															<div class="mylinksEntitys">#{activeModule.activeModule.label}</div>
+														</div>
+													</td>
+													<td class="buttonEntitysR"></td>
+												</tr>
+											</table>
+										</s:link>
+									</s:div>
+								</div>
+
+							</div>
+							<!--  content-->
+							<div class="contentBody">
+
+
+								<table cellpadding="0" cellspacing="0" width="100%"
+									style="height: 100%" border="0">
+									<tr>
+										<td valign="top" class="menuContent" id="menuContent">
+											<div class="menuTop">
+												<div class="menuHeader">
+													<div class="menuText">Menú</div>
+													<div class="menuHide"
+														onclick="expandOrCollapseMenuClient()"></div>
+												</div>
+											</div>
+										</td>
+										<td valign="top" class="headerFunTop" id="headerFunTop">
+											<table cellpadding="0" cellspacing="0" width="100%">
+												<tr>
+													<td class="funHeaderL" valign="top"></td>
+													<td class="funHeaderC">
+														<table cellpadding="0" cellspacing="0" border="0"
+															width="100%">
+															<tr>
+																<td style="width: 15px; display: none" class="show"
+																	id="show" align="left">
+																	<div class="menushow"
+																		onclick="expandOrCollapseMenuClient()"></div>
+																</td>
+																<td align="left"><span id="contentTitle">Contenido</span>
+																</td>
+																<td align="right" style="padding-right: 5px">
+																	<table cellpadding="0" cellspacing="0">
+																		<tr>
+																			<td><h:form id="searchform">
+																					<div>
+																						<a:status id="searchform" for="searchregion">
+																							<f:facet name="stop"></f:facet>
+																							<f:facet name="start"></f:facet>
+																						</a:status>
+																						<a:region id="searchregion">
+																							<h:inputText id="sgbinput" autocomplete="off"
+																								value="Buscar..."
+																								onfocus="javascript:this.value=''"
+																								onblur="javascript:this.value='Buscar...'"
+																								style="color:#5e5e5e; font-size:10px; padding-left:12px; width: 100px; height: 18; border: 1px #E6E5E5 solid; background:no-repeat #ffffff scroll 1px 2px; background-image:url('#{facesContext.externalContext.requestContextPath}/resources/icons/default/acciones/searchInput.png'); " />
+																							<rich:suggestionbox id="sgbox" for="sgbinput"
+																								ajaxSingle="true" fetchValue="#{suggest.label}"
+																								immediate="true" requestDelay="500"
+																								nothingLabel=""
+																								suggestionAction="#{funSearchController.SearchFuncionalidad}"
+																								var="suggest" style="text-align: left;"
+																								height="80" usingSuggestObjects="true"
+																								onobjectchange="processObjectsChange(suggestion)">
+																								<h:column>
+																									<div title="#{suggest.label}"
+																										onclick="event.cancelBubble=true; window.location='#{facesContext.externalContext.requestContextPath}#{suggest.url}?idFuncionalidad=#{suggest.id}#{messages.signo}idancestors=#{suggest.id}a#{messages.signo}moduleName=#{activeModule.activeModuleName}'">
+																										<img width="12" height="12" align="absmiddle"
+																											src="#{facesContext.externalContext.requestContextPath}/resources/funcionalidadesIcons/#{suggest.modulo}/#{suggest.imagen}" />
+																										#{suggest.label}
+																									</div>
+																								</h:column>
+																							</rich:suggestionbox>
+																						</a:region>
+																					</div>
+																				</h:form></td>
+																		</tr>
+																	</table>
+
+																</td>
+															</tr>
+														</table>
+													</td>
+													<td class="funHeaderR" valign="top"></td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+									<tr>
+										<td valign="top" class="menuFun" id="menuFun">
+											<div class="modFunContent">
+
+												<!--                         <h:graphicImage  value="/resources/modCommon/actionimages/favoritos.png" -->
+												<!--						   	style="border:0 ;!important;vertical-align:bottom;position:relative; left:4px;"/>-->
+												<!--                         <a href="#" onclick="openPrincipal()" style="position:relative; left:3px;">Teleconsulta</a>-->
+
+												<a
+													href="#{facesContext.externalContext.requestContextPath}/modCommons/funSelector/favorites.gehos?moduleName=#{activeModule.activeModuleName}">
+													<div class="seleccionar"
+														style="font-family: Verdana; font-size: 10px;">
+														<h:graphicImage
+															value="/resources/modCommon/actionimages/favoritos.png"
+															style="border:0 ;!important;vertical-align:bottom;position:relative; left:-2px;" />
+														<h:outputLabel value="#{messages.favorites}"
+															style="position:relative; left:-2px; cursor:pointer;" />
+													</div>
+												</a>
+
+												<s:div rendered="#{user.profile.treeLikeMenu}"
+													binding="#{menuBuilder.divmenu}" style="width:100%; " />
+
+												<h:dataTable rendered="#{not user.profile.treeLikeMenu}"
+													border="0" value="#{activeModule.moduleMenu}"
+													var="funcionalidad" style="text-align: left; width: 100%; "
+													cellpadding="0" cellspacing="0">
+													<h:column>
+														<a
+															href="#{facesContext.externalContext.requestContextPath}#{funcionalidad.url}?idFuncionalidad=#{funcionalidad.id}#{messages.signo}idancestors=#{funcionalidad.id}a">
+															<div class="seleccionar"
+																style="font-family: Verdana; font-size: 11px;">
+																<h:graphicImage width="16" height="16"
+																	value="/resources/funcionalidadesIcons/#{funSelectorController.iconsContainer(activeModule.activeModule).nombre}/#{funcionalidad.imagen}"
+																	style="border:0 !important;vertical-align:bottom;" />
+																#{funcionalidad.label}
+															</div>
+														</a>
+													</h:column>
+												</h:dataTable>
+
+
+												<br /> <br /> <br /> <br />
+												<rich:spacer width="198" id="supporter"></rich:spacer>
+											</div> <s:div
+												rendered="#{activeModule.activeModuleName.equals('almacen2')}">
+												<s:div rendered="#{activeModule.isShowMenu()}">
+													<div class="funHover" style="cursor: auto;">
+														<strong style="padding-left: 3px;">#{activeAlmacenController.activeAlmacen.nombre}</strong>
+													</div>
+													<div class="funHover">
+														<a
+															href="#{facesContext.externalContext.requestContextPath}/modAlmacen/restricted/task_board.gehos">
+															Tareas Pendientes
+															(#{crearSolicitudProcessController.getTotalTareasPendientes()})
+														</a>
+													</div>
+
+												</s:div>
+											</s:div> <!--  --> <img alt=""
+											src="#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/images/icons/spacer.png" />
+										</td>
+										<td valign="top" id="workspace" class="workspace"
+											style="padding-top: 5px">
+											<!--workspace--> <ui:insert name="body" /> <!--end workspace-->
+										</td>
+									</tr>
+									<tr>
+										<td valign="top" id="menuFooter" class="menuFooter"></td>
+										<td valign="top"></td>
+									</tr>
+								</table>
+
+
+							</div>
+							<!--end  content-->
+
+						</div> <!--end  body content--> <!-- footer content-->
+
+						<div class="footer">
+							<div class="footerL">
+								<div class="footerR">#{messages.msg_uci_com}
+									#{messages.msg_sidec_com} #{messages.msg_prodre_com} ©
+									#{messages.msg_anno_com} 2018</div>
+							</div>
+						</div> <!-- end footer content-->
+					</td>
+				</tr>
+			</table>
+			<!-- end all content-->
+		</div>
+	</div>
+	<script type="text/javascript">
+	abierto = #{not userTools.isMenuExpanded()};
+	menuCollapse();
+</script>
+
+	<!-- message component -->
+
+	<a:status rendered="false" forceId="true" id="notifstatus" startText=""
+		stopText=""></a:status>
+	<a:form rendered="false">
+		<a:jsFunction name="rerendernotifications" ajaxSingle="true"
+			reRender="notificationsdiv" limitToList="true" status="notifstatus">
+		</a:jsFunction>
+	</a:form>
+
+	<script type="text/javascript">
+	function notificationstimer(){
+		rerendernotifications();
+		setTimeout(notificationstimer, 3000);
+		notificationstimer();
+	}
+</script>
+
+	<a:form>
+		<a:jsFunction limitToList="true" rendered="false"
+			name="markNotificationAsReaded" ajaxSingle="true"
+			action="#{notificationManager.markNotificationAsReaded }"
+			reRender="notificationspanelsdiv, notificationscountslink">
+			<a:actionparam name="notId"
+				assignTo="#{notificationManager.notificationId}" />
+		</a:jsFunction>
+	</a:form>
+
+	<script type="text/javascript">
+	visibleNotificationIndex = 0;
+	function prev(step, size){
+		newVisibleNotification = visibleNotificationIndex + step;
+		if(0 > newVisibleNotification) newVisibleNotification = size - 1;
+		newVisibleNotification = newVisibleNotification % size;
+		if(document.getElementById("not" + newVisibleNotification) != null ){
+			document.getElementById("not" + visibleNotificationIndex).style.display='none';
+			document.getElementById("not" + newVisibleNotification).style.display='inline';
+			visibleNotificationIndex = newVisibleNotification;
+			document.getElementById("notificationnumberlabel").innerHTML = visibleNotificationIndex + 1;
+		}		
+	}
+</script>
+
+	<div class="pos" id="messages" onmouseover="onMouseOver()"
+		onmouseout="onMouseOut()" style="display: none; z-index: 1000;">
+		<div class="messa">
+			<div>
+				<div class="title">
+					<table cellpadding="0" cellspacing="0" width="190px">
+						<tr>
+							<td>Notificaciones</td>
+							<td><label id="notificationnumberlabel">1</label></td>
+							<td>/</td>
+							<td><label id="notificationssizelabel">1</label></td>
+							<td width="10px"><input name="" type="image"
+								src="#{facesContext.externalContext.requestContextPath}/img/cerrar.gif"
+								onmouseover="cambiaImgClose(this,true)"
+								onmouseout="cambiaImgClose(this,false)"
+								onclick="closeMessages();" /></td>
+						</tr>
+					</table>
+				</div>
+				<div id="headMessages"></div>
+			</div>
+			<div id="bodyMessages">
+				<a:form>
+					<table cellpadding="0" cellspacing="0" border="0">
+						<tr>
+							<td width="99%" valign="top">
+								<div id="notificationsdiv">
+									<h:dataTable
+										value="#{notificationDataLoader.notificationForUser()}"></h:dataTable>
+									<a:repeat id="notificationsrepeat" value="#{notificaciones}"
+										var="notificationInUser">
+										<s:div
+											rendered="#{notificaciones.indexOf(notificationInUser) == 0}">
+											<div id="not#{notificaciones.indexOf(notificationInUser)}"
+												style="display: inline;">
+												<table cellpadding="0" cellspacing="0" border="0">
+													<tr>
+														<td valign="top"><s:link rendered="true"
+																view="#{notificationInUser.notificacion.tipoNotificacion.url}"
+																target="_blank"
+																style="font-weight: bold; color: black; cursor: pointer "
+																onmouseover="javascript:this.style.color='#15428b'"
+																onmouseout="javascript:this.style.color='#000000'">
+																<f:param name="param"
+																	value="#{notificationInUser.notificacion.paramValue}" />
+																<a:support event="onclick" ajaxSingle="false"
+																	reRender="notificationspanelsdiv, notificationscountslink"
+																	action="#{notificationManager.markNotificationAsReaded(notificationInUser.id)}" />						
+													#{notificationInUser.notificacion.tipoNotificacion.descripcion}
+												</s:link> <br /> De:
+															#{notificationInUser.notificacion.usuario.username}</td>
+														<td valign="top"><h:graphicImage
+																style="padding-right:3px;"
+																value="/modCommons/notifications/styles/important.png"
+																rendered="#{notificationInUser.notificacion.importante}"
+																height="13" /></td>
+													</tr>
+												</table>
+											</div>
+										</s:div>
+										<s:div
+											rendered="#{notificaciones.indexOf(notificationInUser) != 0}">
+											<div id="not#{notificaciones.indexOf(notificationInUser)}"
+												style="display: none;">
+												<table cellpadding="0" cellspacing="0" border="0">
+													<tr>
+														<td valign="top"><s:link rendered="true"
+																view="#{notificationInUser.notificacion.tipoNotificacion.url}"
+																target="_blank"
+																style="font-weight: bold; color: black; cursor: pointer "
+																onmouseover="javascript:this.style.color='#15428b'"
+																onmouseout="javascript:this.style.color='#000000'">
+																<f:param name="param"
+																	value="#{notificationInUser.notificacion.paramValue}" />
+																<a:support event="onclick" ajaxSingle="false"
+																	reRender="notificationspanelsdiv, notificationscountslink"
+																	action="#{notificationManager.markNotificationAsReaded(notificationInUser.id)}" />						
+													#{notificationInUser.notificacion.tipoNotificacion.descripcion}					
+												</s:link> <br /> De:
+															#{notificationInUser.notificacion.usuario.username}</td>
+														<td valign="top"><h:graphicImage
+																style="padding-right:3px;"
+																value="/modCommons/notifications/styles/important.png"
+																rendered="#{notificationInUser.notificacion.importante}"
+																height="13" /></td>
+													</tr>
+												</table>
+											</div>
+										</s:div>
+									</a:repeat>
+
+									<s:div
+										rendered="#{notificationDataLoader.visiblenotificationForUser()}">
+										<script type="text/javascript">
+								f();
+								document.getElementById("notificationssizelabel").innerHTML = #{notificaciones.size()};
+							</script>
+									</s:div>
+								</div>
+							</td>
+
+							<td valign="top">
+								<div align="right" style="padding-right: 20px;">
+									<table cellpadding="0" cellspacing="0" border="0">
+										<tr>
+											<td><h:graphicImage title="anterior"
+													style="border: 0px; cursor: pointer;"
+													onclick="prev(-1, #{notificaciones.size()})"
+													value="/resources/icons/default/paginado/#{theme.color}/anterior.png" />
+											</td>
+											<td><h:graphicImage title="siguiente"
+													style="border: 0px; cursor: pointer;"
+													onclick="prev(1, #{notificaciones.size()})"
+													value="/resources/icons/default/paginado/#{theme.color}/siguiente.png" />
+											</td>
+										</tr>
+									</table>
+								</div>
+							</td>
+						</tr>
+					</table>
+
+				</a:form>
+			</div>
+		</div>
+	</div>
+	<!-- end message component -->
+</body>
+
+</html>

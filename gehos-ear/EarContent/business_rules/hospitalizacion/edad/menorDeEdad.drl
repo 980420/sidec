@@ -1,0 +1,21 @@
+#created on: 24-may-2009
+package Edad
+
+#list any import classes here.
+
+import java.lang.Integer;
+
+#declare any global variables here
+global gehos.hospitalizacion.session.utilidades.reglasNegocio.RuleResult_hospitalizacion ruleResult;
+
+
+rule "esMenorEdad"
+	
+	when
+		Integer(intValue <= 19)
+	then 
+		ruleResult.setPuede(true);
+		
+end
+
+

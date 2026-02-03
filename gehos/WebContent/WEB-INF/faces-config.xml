@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config version="1.2" xmlns="http://java.sun.com/xml/ns/javaee"
+ xmlns:xi="http://www.w3.org/2001/XInclude"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd">
+ <converter>
+  <converter-id>dateTimeConverter</converter-id>
+  <converter-class>org.jboss.seam.ui.converter.DateTimeConverter</converter-class>
+ </converter>
+ <validator>
+  <validator-id>MayorQue</validator-id>
+  <validator-class>gehos.bancosangre.session.common.custom.MayorQueValidator</validator-class>
+ </validator>
+ <validator>
+  <validator-id>MenorQueValidator</validator-id>
+  <validator-class>gehos.bancosangre.session.common.custom.MenorQueValidator</validator-class>
+ </validator>
+ <validator>
+  <validator-id>RangoFecha</validator-id>
+  <validator-class>gehos.bancosangre.session.common.custom.FechaValidator</validator-class>
+ </validator> 
+ <application>
+  <view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
+  <locale-config>
+   <default-locale>es</default-locale>
+   <!--<supported-locale>es</supported-locale>-->
+   <supported-locale>es_CU</supported-locale> 
+   
+  </locale-config>
+ </application>
+ <lifecycle>
+  <phase-listener>gehos.comun.phaseListeners.ModuleSelectorListener</phase-listener>
+ </lifecycle>
+</faces-config>

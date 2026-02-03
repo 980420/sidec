@@ -1,0 +1,161 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/pkiStyles/pkistyles.css"
+			rel="stylesheet" type="text/css" />
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+		<s:div
+			rendered="#{not verDetallesServidorTSPControlador.from.equals('listatsp')}">
+			<script type="text/javascript">setContentTitle('#{messages.titulo1}')</script>
+		</s:div>
+
+		<s:div
+			rendered="#{verDetallesServidorTSPControlador.from.equals('listatsp')}">
+			<script type="text/javascript">setContentTitle('#{messages.titulo2}')</script>
+		</s:div>
+
+
+		<h:form id="destallesServidor">
+			<a4j:outputPanel ajaxRendered="true">
+				<rich:messages styleClass="message" ajaxRendered="true" for="btnSi" />
+			</a4j:outputPanel>
+			<rich:panel bodyClass="rich-panel-body-custom">
+				<f:facet name="header">#{messages.datos}</f:facet>
+				<table cellpadding="0px" cellspacing="0px" border="0px">
+
+					<tr style="vertical-align: top;">
+
+						<td>#{messages.url}:</td>
+						<td><rich:spacer styleClass="h-spacer-between-p-and-v"></rich:spacer></td>
+						<td><h:outputLabel styleClass="dataText"
+							value="#{verDetallesServidorTSPControlador.server.url}"></h:outputLabel>
+						</td>
+
+						<td><rich:spacer styleClass="h-spacer-between-2c" /></td>
+						<td>#{messages.activo}:</td>
+						<td><rich:spacer styleClass="h-spacer-between-p-and-v"></rich:spacer></td>
+						<td><s:div
+							rendered="#{verDetallesServidorTSPControlador.server.activo}">
+							<h:outputLabel styleClass="dataText"
+								value="#{messages.eliminar4}"></h:outputLabel>
+						</s:div> <s:div
+							rendered="#{not verDetallesServidorTSPControlador.server.activo}">
+							<h:outputLabel styleClass="dataText"
+								value="#{messages.eliminar5}"></h:outputLabel>
+						</s:div></td>
+					</tr>
+					<tr>
+						<td colspan="11"><rich:spacer
+							styleClass="v-spacer-between-2l" /></td>
+					</tr>
+					
+
+				</table>
+				<table cellpadding="0px" cellspacing="0px" border="0px"
+				width="100%">
+				<tr style="vertical-align: top;">
+						<td colspan="11">#{messages.descripcion}:<br/>
+						<h:inputTextarea styleClass="input-text-area"
+							readonly="true"
+							value="#{verDetallesServidorTSPControlador.server.descripcion}"
+							/>
+						</td>
+					</tr>
+				</table>
+			</rich:panel>
+			
+
+			<br />
+			<rich:panel styleClass="whitespace" id="idnada"
+				rendered="#{verDetallesServidorTSPControlador.server.proxy == null}">
+				<f:facet name="header">#{messages.proxy}</f:facet>
+				<rich:spacer height="11px" style="display: block" />
+				<div class="results" id="roleList"><rich:spacer width="6px" />
+				<h:outputText value="#{messages.info1}" /></div>
+				<rich:spacer height="6px" style="display: block" />
+			</rich:panel>
+			<s:div style="margin-left:0px;margin-top:0px"
+					rendered="#{verDetallesServidorTSPControlador.server.proxy != null}">
+					<rich:dataTable id="proxyDatail_Table" style="width: 100%;"
+						var="proxy" value="#{verDetallesServidorTSPControlador.server.proxy}"
+						columnsWidth="50%, 50%">
+						<f:facet name="header">
+							#{messages.proxy}
+					</f:facet>
+
+						<rich:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.url}</s:div>
+
+								</h:panelGrid>
+							</f:facet>
+	            	#{proxy.direccion}
+	        	</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.puerto}</s:div>
+
+								</h:panelGrid>
+							</f:facet>
+	            	#{proxy.puerto}
+	        	</rich:column>
+						
+
+
+
+						
+
+					</rich:dataTable>
+				</s:div>
+
+			<div align="right">
+			<table cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td><h:commandButton
+						action="#{modificarServidorTSPControlador.setId(verDetallesServidorTSPControlador.server.id)}"
+						value="#{messages.modificar}" tabindex="1"
+						rendered="#{not verDetallesServidorTSPControlador.from.equals('listatsp')}"
+						style="margin-bottom: 0px; margin-right: 10px; margin-top: 8px" /></td>
+					<td><a4j:commandButton
+						onclick="Richfaces.showModalPanel('panelEliminarServer')"
+						tabindex="2"
+						style="margin-bottom: 0px; margin-right: 10px;margin-left: 0px; margin-top: 8px"
+						rendered="#{not verDetallesServidorTSPControlador.from.equals('listatsp')}"
+						value="#{messages.eliminar}" /></td>
+					<td><h:commandButton action="salir" value="#{messages.salir}"
+						tabindex="3"
+						style="margin-bottom: 0px; margin-right: 0px; margin-left: 0px; margin-top: 8px">
+					</h:commandButton></td>
+				</tr>
+			</table>
+			</div>
+		</h:form>
+
+		<ui:include
+			src="/modConfiguracion/pki/servidores/tsp/modalspanel/confirmareliminarservidortspderdetalles.xhtml" />
+
+	</ui:define>
+</ui:composition>

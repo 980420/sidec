@@ -1,0 +1,165 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css">
+.rich-stglpanel-body {
+	padding: 0px
+}
+
+.whitespace {
+	white-space: nowrap;
+}
+</style>
+		<style type="text/css">
+.rich-panel-body {
+	padding: 0px
+}
+</style>
+		<style type="text/css">
+.dr-mpnl-pnl-b {
+	padding: 1px;
+}
+
+.dr-mpnl-pnl {
+	border: 1px !important;
+	border-style: solid !important;
+	border-color: #BED6F8 !important;
+}
+</style>
+
+		<!-- Estilo para los mensajes -->
+		<style type="text/css">
+.custom-error {
+	border: 1px solid #FFCC00;
+	padding: 5px;
+	background-color: #F0F8FF;
+	font-size: 10px;
+	font-family: "Verdana";
+	position: relative;
+	left: 5px;
+	top: 5px;
+	margin-right: 10px;
+}
+/*inputext del paginado*/
+.paginadoLabel
+{
+width: 28px;
+height: 12px;
+vertical-align: top;
+margin:0px;
+padding:0px;
+margin-top: 1px;
+text-align: center;
+
+}
+.bb{padding-top:11px; padding-left:6px; padding-bottom:6px !important;}
+</style>
+
+		<script type="text/javascript">setContentTitle('Usuarios conectados')</script>
+
+		<h:form id="userSearch" styleClass="edit">
+			
+			<rich:simpleTogglePanel switchType="client"  style="margin-left: -1px;" bodyClass="bb">
+	            <f:facet name="header">#{messages.criterios}</f:facet>
+	            <table cellpadding="0px" cellspacing="0px">
+	                  <tr style="vertical-align: top;">
+	                        <td>
+	                             #{messages.Usuario}:
+	                             <rich:spacer height="0px" style="display: block"></rich:spacer>
+	                             <h:inputText value="#{userLoggedList.userName}" style="width: 150px;"/>
+	                        </td>
+	                        <td style="width: 25px"></td>
+	                        <td>
+	                             #{messages.Ip}:
+	                             <rich:spacer height="0px" style="display: block"></rich:spacer>
+	                             <h:inputText value="#{userLoggedList.ip}" style="width: 150px;"/>
+	                        </td>
+	                        <td style="width: 25px"></td>
+	                        <td style="vertical-align: bottom;">
+	                             <h:commandButton action="#{userLoggedList.users.refresh()}" value="#{messages.Buscar}" style="margin: 0px;" ></h:commandButton>
+	                             
+	                             <h:commandLink action="cancelar">
+	                             	<h:commandButton value="#{messages.Cancelar}" action="cancelar"
+	                             	 style="margin: 0px; margin-left: 10px;"></h:commandButton>
+	                             </h:commandLink>
+	                             
+	                        </td>
+	                  </tr>
+	            </table>
+	      </rich:simpleTogglePanel>
+			<br />
+			<a4j:outputPanel id="tablas_id">
+
+				<rich:panel
+					rendered="#{empty userLoggedList.users.resultList}">
+					<f:facet name="header">#{messages.usuarioConectado}</f:facet>
+					<div class="results" id="userList"><br />
+					<rich:spacer width="8px" /> <h:outputText
+						value="#{messages.emptyVal}" />
+					</div>
+					<rich:spacer height="7px" />
+				</rich:panel>
+
+				<s:div style="margin-left:1px;margin-top:1px"
+					rendered="#{not empty userLoggedList.users.resultList}">
+					<rich:dataTable id="userList_security_datatable"
+						style="width: 100%;" var="usuario"
+						value="#{userLoggedList.users.resultList}"
+						styleClass=" whitespace "
+						columnsWidth="33%, 33%, 33%">
+						<f:facet name="header">#{messages.usuarioConectado}</f:facet>
+						<h:column>
+							<f:facet name="header">
+								#{messages.Usuario}
+				            </f:facet>
+
+							#{usuario.username}
+
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								#{messages.Ip}
+				            </f:facet>
+
+							#{usuario.ip}
+
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								#{messages.Conexiones}
+				            </f:facet>
+
+							#{usuario.conections}
+
+						</h:column>					
+
+					</rich:dataTable>
+					
+				</s:div>
+
+				<rich:spacer height="11px" />
+			<ui:include src="/modEnsayo/codebase/plantillas/paginado_tabla_inferior_generico.xhtml/" >
+					<ui:param name="vzPaginado" value="#{userLoggedList.users.maxResult>10}"/>
+					<ui:param name="nomControladorList" value="#{userLoggedList}" />
+					<ui:param name="idListado" value="tablas_id" />
+			</ui:include>
+			</a4j:outputPanel>
+			<br />
+			<div align="right">
+				<h:commandButton action="#{userLoggedList.purgeAndRefresh()}" value="#{messages.Limpiar}" />
+			</div>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+

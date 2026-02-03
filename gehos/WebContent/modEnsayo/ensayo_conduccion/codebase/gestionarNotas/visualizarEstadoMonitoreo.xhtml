@@ -1,0 +1,550 @@
+<!-- CU 21 Visualizar estado de monitoreo-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a="http://richfaces.org/a4j" xmlns:a4j="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle('#{messages.listadoNotas} #{visualizarEstadoMonitoreo.getHospitalActivo().nombre}')</script>
+	<script type="text/javascript" language="javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/javascript.js" />
+
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css"
+		rel="stylesheet" type="text/css" />
+
+	<s:div>
+		<table>
+			<tr>
+				<td class="colSepPeq"><h:outputText value="#{messages.estado}:"
+						style="margin:0px; padding:0px;" /></td>
+				<td class="colSepGran"><h:graphicImage
+						title="#{messages.nuevo}" height="12"
+						style="position: relative; vertical-align: middle;"
+						value="/resources/funcionalidadesIcons/ensayo/nueva.png" /> <h:outputText
+						styleClass="dataText" value="(#{messages.nuevo})"
+						style="margin:0px; padding:0px;" /></td>
+				<td class="colSepGran"><h:graphicImage
+						title="#{messages.actualizado}" height="12"
+						style="position: relative; vertical-align: middle;"
+						value="/resources/funcionalidadesIcons/ensayo/actualizada.png" />
+					<h:outputText styleClass="dataText"
+						value="(#{messages.actualizado})" style="margin:0px; padding:0px;" /></td>
+				<td class="colSepGran"><h:graphicImage
+						title="#{messages.resuelto}" height="12"
+						style="position: relative; vertical-align: middle;"
+						value="/resources/funcionalidadesIcons/ensayo/resuelta.png" /> <h:outputText
+						styleClass="dataText" value="(#{messages.resuelto})"
+						style="margin:0px; padding:0px;" /></td>
+				<td class="colSepGran"><h:graphicImage
+						title="#{messages.cerrado}" height="12"
+						style="position: relative; vertical-align: middle;"
+						value="/resources/funcionalidadesIcons/ensayo/cerrada.png" /> <h:outputText
+						styleClass="dataText" value="(#{messages.cerrado})"
+						style="margin:0px; padding:0px;" /></td>
+				<td class="colSepGran"><h:graphicImage
+						title="#{messages.sitio}" height="12"
+						style="position: relative; vertical-align: middle;"
+						value="/resources/funcionalidadesIcons/ensayo/adicionar_nota_sitio1.gif" />
+					<h:outputText styleClass="dataText" value="(#{messages.sitio})"
+						style="margin:0px; padding:0px;" /></td>
+				<td class="colSepGran"><h:outputText styleClass="dataText"
+						value="#{messages.momentosRepetidos}"
+						style="margin:0px; padding:0px;" /></td>
+				<td class="colSepGran"><h:outputText styleClass="dataText"
+						value="#{messages.cantidadNotas}" style="margin:0px; padding:0px;" /></td>
+			</tr>
+		</table>
+	</s:div>
+	<table style="margin-top: 10px" class="Tabla" width="100%"
+		cellpadding="0" cellspacing="0">
+		<tr>
+			<td><h:form id="idForm" enctype="multipart/form-data">
+					<a4j:outputPanel id="tb1">
+						<rich:tabPanel id="tabPanelSeleccionar" switchType="client"
+							width="100%"
+							selectedTab="#{visualizarEstadoMonitoreo.tabSeleccionado}">
+							<rich:tab id="tabMonitoreo" name="tabMonitoreo">
+								<!-- <a4j:support event="ontabenter"
+									action="#{visualizarEstadoMonitoreo.cambiarTabSeleccionado('tabMonitoreo')}" /> -->
+								<f:facet name="label">
+									<s:div>
+										<table cellpadding="0" cellspacing="0" border="0" width="100%">
+											<tr>
+												<td><h:outputText
+														value="#{messages.listadoNotasMonitoreo}" /></td>
+											</tr>
+										</table>
+									</s:div>
+								</f:facet>
+								<rich:panel
+									rendered="#{visualizarEstadoMonitoreo.listaSujetosNotasMon.size() == 0}">
+									<f:facet name="header">#{messages.listadoNotasMonitoreo}</f:facet>
+									<table >
+										<tr>
+											<td ><h:outputText
+													value="#{messages.noSujeto}" /></td>
+										</tr>
+									</table>
+								</rich:panel>
+								<div style="margin-left: 1px; margin-top: 8px">
+									<rich:scrollableDataTable
+										rendered="#{visualizarEstadoMonitoreo.listaSujetosNotasMon.size() > 0}"
+										height="200px" hideWhenScrolling="true" width="100%"
+										id="tabla_listado_notas"
+										rows="#{visualizarEstadoMonitoreo.listaSujetosNotasMon.size()}"
+										value="#{visualizarEstadoMonitoreo.listaSujetosNotasMon}"
+										var="notasSujeto">
+										<rich:column>
+											<f:facet name="header">
+												<s:div>
+													<table width="100%" cellpadding="0" cellspacing="0">
+														<tr>
+															<td align="middle" width="40px"><h:outputText
+																	value="#{messages.idSujeto}" styleClass="label" /></td>
+														</tr>
+													</table>
+												</s:div>
+											</f:facet>
+											<h:outputText styleClass="normalText" value="#{notasSujeto.codigoPaciente}" />
+										</rich:column>
+										<rich:column>
+											<f:facet name="header">
+												<s:div>
+													<table width="100%" cellpadding="0" cellspacing="0">
+														<tr>
+															<td align="middle" width="40px"><h:outputText
+																	value="#{messages.estadoSujeto}" styleClass="label" /></td>
+														</tr>
+													</table>
+												</s:div>
+											</f:facet>
+											<h:outputText styleClass="normalText" value="#{notasSujeto.estadoInclusion.nombre}" />
+										</rich:column>
+										<c:forEach items="#{visualizarEstadoMonitoreo.listaMomentos}"
+											var="momento">
+											<rich:column>
+												<f:facet name="header">
+													<s:div>
+														<table width="100%" cellpadding="0" cellspacing="0">
+															<tr>
+																<td align="middle" width="40px"><h:outputText
+																		value="#{momento.nombre}" styleClass="label" /></td>
+															</tr>
+														</table>
+													</s:div>
+												</f:facet>
+												<div align="middle">
+													<h:graphicImage
+														rendered="#{visualizarEstadoMonitoreo.esMomentoDeSujeto(momento, notasSujeto).size() > 0}"
+														title="#{visualizarEstadoMonitoreo.esMomentoDeSujeto(momento, notasSujeto).get(0).estadoMomentoSeguimiento.nombre}"
+														height="16"
+														style="position: relative; vertical-align: middle;"
+														value="#{visualizarEstadoMonitoreo.estadoIconMomento(visualizarEstadoMonitoreo.esMomentoDeSujeto(momento, notasSujeto).get(0).estadoMomentoSeguimiento)}" />
+													<rich:spacer width="4px" />
+													<h:graphicImage 
+														rendered="#{visualizarEstadoMonitoreo.esMomentoDeSujeto(momento, notasSujeto).size() > 0 and visualizarEstadoMonitoreo.esMomentoDeSujeto(momento, notasSujeto).get(0).estadoMonitoreo.codigo != 2}"
+														title="#{visualizarEstadoMonitoreo.esMomentoDeSujeto(momento, notasSujeto).get(0).estadoMonitoreo.nombre}"
+														height="16"
+														style="position: relative; vertical-align: middle;"
+														value="#{visualizarEstadoMonitoreo.estadoMomentoMonitoreo(visualizarEstadoMonitoreo.esMomentoDeSujeto(momento, notasSujeto).get(0).estadoMonitoreo)}" />
+													<rich:spacer width="4px" />
+													<h:outputText styleClass="normalText"
+														rendered="#{visualizarEstadoMonitoreo.esMomentoDeSujeto(momento, notasSujeto).size() > 1}"
+														value="[#{visualizarEstadoMonitoreo.esMomentoDeSujeto(momento, notasSujeto).size()}]" />
+													<rich:spacer width="4px" />
+													<h:graphicImage
+														rendered="#{visualizarEstadoMonitoreo.CantidadNotasMonitoreo(momento, notasSujeto).get(0) > 0}"
+														title="#{messages.nuevo}" height="12"
+														style="position: relative; vertical-align: middle;"
+														value="/resources/funcionalidadesIcons/ensayo/nueva.png" />
+													<h:outputText styleClass="normalText"
+														rendered="#{visualizarEstadoMonitoreo.listaCant.get(0) > 0}"
+														value="(#{visualizarEstadoMonitoreo.listaCant.get(0)})" />
+													<h:graphicImage
+														rendered="#{visualizarEstadoMonitoreo.listaCant.get(1) > 0}"
+														title="#{messages.actualizado}" height="12"
+														style="position: relative; vertical-align: middle;"
+														value="/resources/funcionalidadesIcons/ensayo/actualizada.png" />
+													<h:outputText styleClass="normalText"
+														rendered="#{visualizarEstadoMonitoreo.listaCant.get(1) > 0}"
+														value="(#{visualizarEstadoMonitoreo.listaCant.get(1)})" />
+													<h:graphicImage
+														rendered="#{visualizarEstadoMonitoreo.listaCant.get(2) > 0}"
+														title="#{messages.resuelto}" height="12"
+														style="position: relative; vertical-align: middle;"
+														value="/resources/funcionalidadesIcons/ensayo/resuelta.png" />
+													<h:outputText styleClass="normalText"
+														rendered="#{visualizarEstadoMonitoreo.listaCant.get(2) > 0}"
+														value="(#{visualizarEstadoMonitoreo.listaCant.get(2)})" />
+
+													<h:graphicImage
+														rendered="#{visualizarEstadoMonitoreo.listaCant.get(3) > 0}"
+														title="#{messages.cerrado}" height="12"
+														style="position: relative; vertical-align: middle;"
+														value="/resources/funcionalidadesIcons/ensayo/cerrada.png" />
+													<h:outputText styleClass="normalText"
+														rendered="#{visualizarEstadoMonitoreo.listaCant.get(3) > 0}"
+														value="(#{visualizarEstadoMonitoreo.listaCant.get(3)})" />
+												</div>
+											</rich:column>
+										</c:forEach>
+										<rich:column>
+											<div align="middle">
+												<s:link title="#{messages.ver}"
+													action="listarNotasMonitoreo" rendered="true"
+													style="border: 0px; cursor:pointer;">
+													<h:graphicImage
+														value="/resources/icons/default/acciones/ver.png"
+														style="border:0;" />
+													<f:param name="idSujeto" value="#{notasSujeto.id}" />
+												</s:link>
+											</div>
+										</rich:column>
+									</rich:scrollableDataTable>
+
+								</div>
+							</rich:tab>
+
+							<rich:tab id="tabSitio" name="tabSitio">
+								<!--  <a4j:support event="ontabenter"
+									action="#{visualizarEstadoMonitoreo.cambiarTabSeleccionado('tabSitio')}" /> -->
+								<f:facet name="label">
+									<s:div>
+										<table cellpadding="0" cellspacing="0" border="0" width="100%">
+											<tr>
+												<td><h:outputText value="#{messages.notasSitio}" /></td>
+											</tr>
+										</table>
+									</s:div>
+								</f:facet>
+								<rich:panel
+									rendered="#{visualizarEstadoMonitoreo.listaSujetosNotaSitio.size() == 0}">
+									<f:facet name="header">#{messages.notasSitio}</f:facet>
+									<table class="Tabla">
+										<tr>
+											<td ><h:outputText
+													value="#{messages.noSujeto}" /></td>
+										</tr>
+									</table>
+								</rich:panel>
+								<div style="margin-left: 1px; margin-top: 8px">
+									<rich:scrollableDataTable
+										rendered="#{visualizarEstadoMonitoreo.listaSujetosNotaSitio.size() > 0}"
+										height="200px" hideWhenScrolling="true" width="100%"
+										id="tabla_listado_notas_sitio"
+										rows="#{visualizarEstadoMonitoreo.listaSujetosNotaSitio.size()}"
+										value="#{visualizarEstadoMonitoreo.listaSujetosNotaSitio}"
+										var="notasSujeto">
+										<rich:column>
+											<f:facet name="header">
+												<s:div>
+													<table width="100%" cellpadding="0" cellspacing="0">
+														<tr>
+															<td align="middle" width="40px"><h:outputText
+																	value="#{messages.idSujeto}" styleClass="label" /></td>
+														</tr>
+													</table>
+												</s:div>
+											</f:facet>
+											<h:outputText styleClass="normalText" value="#{notasSujeto.codigoPaciente}" />
+										</rich:column>
+										<rich:column>
+											<f:facet name="header">
+												<s:div>
+													<table width="100%" cellpadding="0" cellspacing="0">
+														<tr>
+															<td align="middle" width="40px"><h:outputText
+																	value="#{messages.estadoSujeto}" styleClass="label" /></td>
+														</tr>
+													</table>
+												</s:div>
+											</f:facet>
+											<h:outputText styleClass="normalText" value="#{notasSujeto.estadoInclusion.nombre}" />
+										</rich:column>
+										<c:forEach items="#{visualizarEstadoMonitoreo.listaMomentos}"
+											var="momento">
+											<rich:column>
+												<f:facet name="header">
+													<s:div>
+														<table width="100%" cellpadding="0" cellspacing="0">
+															<tr>
+																<td align="middle" width="40px"><h:outputText
+																		value="#{momento.nombre}" styleClass="label" /></td>
+															</tr>
+														</table>
+													</s:div>
+												</f:facet>
+												<div align="middle">
+													<h:graphicImage
+														rendered="#{visualizarEstadoMonitoreo.esMomentoDeSujeto(momento, notasSujeto).size() > 0}"
+														title="#{visualizarEstadoMonitoreo.esMomentoDeSujeto(momento, notasSujeto).get(0).estadoMomentoSeguimiento.nombre}"
+														height="16"
+														style="position: relative; vertical-align: middle;"
+														value="#{visualizarEstadoMonitoreo.estadoIconMomento(visualizarEstadoMonitoreo.esMomentoDeSujeto(momento, notasSujeto).get(0).estadoMomentoSeguimiento)}" />
+													<rich:spacer rendered="#{visualizarEstadoMonitoreo.esMomentoDeSujeto(momento, notasSujeto).size() > 0}" width="4px" />
+													<h:graphicImage
+														rendered="#{visualizarEstadoMonitoreo.esMomentoDeSujeto(momento, notasSujeto).size() > 0 and visualizarEstadoMonitoreo.esMomentoDeSujeto(momento, notasSujeto).get(0).estadoMonitoreo.codigo != 2}"
+														title="#{visualizarEstadoMonitoreo.esMomentoDeSujeto(momento, notasSujeto).get(0).estadoMonitoreo.nombre}"
+														height="16"
+														style="position: relative; vertical-align: middle;"
+														value="#{visualizarEstadoMonitoreo.estadoMomentoMonitoreo(visualizarEstadoMonitoreo.esMomentoDeSujeto(momento, notasSujeto).get(0).estadoMonitoreo)}" />
+													<rich:spacer rendered="#{visualizarEstadoMonitoreo.esMomentoDeSujeto(momento, notasSujeto).size() > 0 and visualizarEstadoMonitoreo.esMomentoDeSujeto(momento, notasSujeto).get(0).estadoMonitoreo.codigo != 2}" width="4px" />
+													<h:outputText styleClass="normalText"
+														rendered="#{visualizarEstadoMonitoreo.esMomentoDeSujeto(momento, notasSujeto).size() > 1}"
+														value="[#{visualizarEstadoMonitoreo.esMomentoDeSujeto(momento, notasSujeto).size()}]" />
+													<rich:spacer rendered="#{visualizarEstadoMonitoreo.esMomentoDeSujeto(momento, notasSujeto).size() > 1}" width="4px" />
+													<h:graphicImage
+														rendered="#{visualizarEstadoMonitoreo.CantidadNotasSitio(momento, notasSujeto).size() > 0}"
+														title="#{messages.sitio}" height="12"
+														style="position: relative; vertical-align: middle;"
+														value="/resources/funcionalidadesIcons/ensayo/adicionar_nota_sitio1.gif"  />
+													<h:outputText styleClass="normalText"
+														rendered="#{visualizarEstadoMonitoreo.CantidadNotasSitio(momento, notasSujeto).size() > 0}"
+														value="(#{visualizarEstadoMonitoreo.CantidadNotasSitio(momento, notasSujeto).size()})" />
+												</div>
+											</rich:column>
+										</c:forEach>
+										<rich:column>
+											<div align="middle">
+												<s:link title="#{messages.ver}" action="listarNotasSitio"
+													rendered="true" style="border: 0px; cursor:pointer;">
+													<h:graphicImage
+														value="/resources/icons/default/acciones/ver.png"
+														style="border:0;" />
+													<f:param name="idSujeto" value="#{notasSujeto.id}" />
+												</s:link>
+											</div>
+										</rich:column>
+									</rich:scrollableDataTable>
+								</div>
+							</rich:tab>
+
+							<rich:tab id="tabGeneral" name="tabGeneral">
+								<!-- <a4j:support event="ontabenter"
+									action="#{visualizarEstadoMonitoreo.cambiarTabSeleccionado('tabGeneral')}" /> -->
+								<f:facet name="label">
+									<s:div>
+										<table cellpadding="0" cellspacing="0" border="0" width="100%">
+											<tr>
+												<td><h:outputText value="#{messages.notasGenerales}" /></td>
+											</tr>
+										</table>
+									</s:div>
+								</f:facet>
+								<table width="100%" cellpadding="0" cellspacing="0"
+									style="margin: 0px; padding: 0px;">
+									<tr>
+										<td width="100%"><s:div rendered="#{listarNotasGenerales.DevolverRol().getCodigo() == 'ecMon' or listarNotasGenerales.DevolverRol().getCodigo() == 'ecCord' or listarNotasGenerales.DevolverRol().getCodigo() == 'ecProm' or listarNotasGenerales.DevolverRol().getCodigo() == 'ecInv'}"
+												style="float: right;">
+												<s:link action="crearNotaGeneral"
+													style="border: 0px; cursor:pointer;">
+													<h:panelGrid columns="2">
+														<h:graphicImage
+															value="/resources/icons/default/acciones/adicionar.png"
+															style="border:0;" />
+														<h:outputText value="#{messages.crearNotaGeneral}" />
+													</h:panelGrid>
+												</s:link>
+											</s:div></td>
+									</tr>
+								</table>
+								<a4j:outputPanel id="tbNotasGen">
+									<rich:panel
+										rendered="#{listarNotasGenerales.resultList.size() == 0}">
+										<f:facet name="header">#{messages.notasGenerales}</f:facet>
+										<table class="Tabla">
+											<tr>
+												<td ><h:outputText
+														value="#{messages.noSujeto}" /></td>
+											</tr>
+										</table>
+									</rich:panel>
+									<div style="margin-left: 1px">
+										<rich:dataTable id="tbNotasGenerales"
+											value="#{listarNotasGenerales.resultList}" var="notaGeneral"
+											width="100%"
+											rendered="#{not empty listarNotasGenerales.resultList}"
+											columnsWidth="25%,25%,15%,15%,20%,0*,0*,0*,0*">
+											<f:facet name="header">
+												<h:outputText value="#{messages.notasGenerales}" />
+											</f:facet>
+											<rich:column>
+												<f:facet name="header">
+													<s:div>
+														<table width="100%" cellpadding="0" cellspacing="0">
+															<tr>
+																<td align="left" width="40px"><h:outputText
+																		value="#{messages.descripcion}" styleClass="label" /></td>
+															</tr>
+														</table>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{notaGeneral.descripcion}" />
+											</rich:column>
+											<rich:column>
+												<f:facet name="header">
+													<s:div>
+														<table width="100%" cellpadding="0" cellspacing="0">
+															<tr>
+																<td align="left" width="40px"><h:outputText
+																		value="#{messages.detalles}" styleClass="label" /></td>
+															</tr>
+														</table>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{notaGeneral.detallesNota}" />
+											</rich:column>
+											<rich:column>
+												<f:facet name="header">
+													<s:div>
+														<table width="100%" cellpadding="0" cellspacing="0">
+															<tr>
+																<td align="left" width="40px"><h:outputText
+																		value="#{messages.fechaCreacion}" styleClass="label" /></td>
+															</tr>
+														</table>
+													</s:div>
+												</f:facet>
+												<table width="100%">
+													<tr>
+														<td align="left"><h:outputText
+																value="#{notaGeneral.fechaCreacion}">
+																<s:convertDateTime pattern="#{messages.patronFecha}"></s:convertDateTime>
+															</h:outputText></td>
+													</tr>
+												</table>
+											</rich:column>
+											<rich:column>
+												<f:facet name="header">
+													<s:div>
+														<table width="100%" cellpadding="0" cellspacing="0">
+															<tr>
+																<td align="left" width="40px"><h:outputText
+																		value="#{messages.numeroNotas}" styleClass="label" /></td>
+															</tr>
+														</table>
+													</s:div>
+												</f:facet>
+												<h:outputText
+													value="#{visualizarEstadoMonitoreo.DevolverNotaGeneralAsociadas(notaGeneral).size()}" />
+											</rich:column>
+											<rich:column>
+												<f:facet name="header">
+													<s:div>
+														<table width="100%" cellpadding="0" cellspacing="0">
+															<tr>
+																<td align="left" width="40px"><h:outputText
+																		value="#{messages.estadoResolucion}"
+																		styleClass="label" /></td>
+															</tr>
+														</table>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{notaGeneral.estadoNota.nombre}" />
+											</rich:column>
+											<rich:column>
+												<div align="middle">
+													<s:link title="#{messages.ver}" action="verDetalles"
+														rendered="true" style="border: 0px; cursor:pointer;">
+														<h:graphicImage
+															value="/resources/icons/default/acciones/ver.png"
+															style="border:0;" />
+														<f:param name="idNota" value="#{notaGeneral.id}" />
+													</s:link>
+													</div>
+											</rich:column>
+											<rich:column>
+											<div align="middle">
+													<s:link title="#{messages.responderNota}"
+														action="responderNota" rendered="true"
+														style="border: 0px; cursor:pointer;">
+														<h:graphicImage
+															value="/resources/modEnsayo/img/responder.png"
+															style="border:0;" />
+														<f:param name="idNota" value="#{notaGeneral.id}" />
+													</s:link>
+													</div>
+													</rich:column>
+											<rich:column>
+											<div align="middle" >
+													<s:link rendered="#{listarNotasGenerales.user.id == notaGeneral.usuario.id}" title="#{messages.modificarNota}"
+														action="modificarNota"
+														style="border: 0px; cursor:pointer;">
+														<h:graphicImage
+															value="/resources/icons/default/acciones/modificar.png"
+															style="border:0;" />
+														<f:param name="idNota" value="#{notaGeneral.id}" />
+													</s:link>
+													<h:graphicImage rendered="#{listarNotasGenerales.user.id != notaGeneral.usuario.id}" 
+															value="/resources/icons/default/acciones/modificar.png"
+															style="border:0; opacity: 0.4;" />
+													</div>
+											</rich:column>
+											<rich:column >
+											<div align="middle" >
+													<a4j:commandLink rendered="#{listarNotasGenerales.user.id == notaGeneral.usuario.id}"
+														id="eliminarCommandLink"
+														action="#{listarNotasGenerales.SeleccionarInstanciaNota(notaGeneral.id)}"
+														oncomplete="Richfaces.showModalPanel('mpAdvertenciaEliminarNota')">
+														<h:graphicImage
+															style="border:0px; cursor: pointer "
+															title="#{messages.eliminar}"
+															url="/resources/icons/default/acciones/eliminar.png">
+														</h:graphicImage>
+													</a4j:commandLink>
+													<h:graphicImage rendered="#{listarNotasGenerales.user.id != notaGeneral.usuario.id}"
+															style="border:0px; opacity: 0.4; cursor: pointer "
+															
+															url="/resources/icons/default/acciones/eliminar.png">
+														</h:graphicImage>
+												</div>
+											</rich:column>
+										</rich:dataTable>
+									</div>
+								</a4j:outputPanel>
+
+								<!-- Paginado  -->
+								<ui:include
+									src="/modEnsayo/codebase/plantillas/paginado_tabla_inferior_generico.xhtml/">
+									<ui:param name="vzPaginado"
+										value="#{listarNotasGenerales.resultCount>10}" />
+									<ui:param name="nomControladorList"
+										value="#{listarNotasGenerales}" />
+									<ui:param name="idListado" value="tbNotasGen" />
+
+								</ui:include>
+								<!--
+			     END Paginado -->
+							</rich:tab>
+						</rich:tabPanel>
+
+
+					</a4j:outputPanel>
+				</h:form></td>
+		</tr>
+		<tr>
+			<h:form>
+				<td>
+					<div align="right">
+						<br></br>
+						<!-- Incluir boton salir -->
+						<h:commandButton value="#{messages.salir}" style="margin:0px;"
+							action="salir" immediate="true" />
+					</div>
+				</td>
+			</h:form>
+		</tr>
+
+
+	</table>
+	<ui:include
+		src="/modEnsayo/ensayo_conduccion/codebase/plantillas/AdvertenciaEliminarNota.xhtml">
+		<ui:param name="control" value="#{visualizarEstadoMonitoreo}" />
+		<ui:param name="listaIdElementos" value="tbNotasGen" />
+
+	</ui:include>
+</ui:composition>

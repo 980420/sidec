@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<action
+		execute="#{establecimientoAreaInfluenciaHospitalBuscarControlador.begin()}" />
+
+	<param name="from"
+		value="#{establecimientoAreaInfluenciaHospitalBuscarControlador.from}" />
+	<param name="entidadId"
+		value="#{establecimientoAreaInfluenciaHospitalBuscarControlador.entidadId}" />
+
+	<!-- <navigation
+		from-action="#{establecimientoAreaInfluenciaHospitalBuscarControlador.buscar()}">
+		<redirect
+			view-id="/modConfiguracion/management/establecimientosAreaInfluenciaHospital/BuscarEstablecimientoAreaInfluenciaHospital.xhtml">
+			<param name="from"
+				value="#{establecimientoAreaInfluenciaHospitalBuscarControlador.from}" />
+			<param name="entidadId"
+				value="#{establecimientoAreaInfluenciaHospitalBuscarControlador.entidadId}" />
+		</redirect>
+
+	</navigation>
+
+	<navigation
+		from-action="#{establecimientoAreaInfluenciaHospitalBuscarControlador.limpiarCampos()}">
+		<redirect
+			view-id="/modConfiguracion/management/establecimientosAreaInfluenciaHospital/BuscarEstablecimientoAreaInfluenciaHospital.xhtml">
+			<param name="from"
+				value="#{establecimientoAreaInfluenciaHospitalBuscarControlador.from}" />
+			<param name="entidadId"
+				value="#{establecimientoAreaInfluenciaHospitalBuscarControlador.entidadId}" />
+		</redirect>
+	</navigation> -->
+
+	<navigation
+		from-action="#{establecimientoAreaInfluenciaHospitalBuscarControlador.asignar()}">
+		<rule if='#{from.equals("modificar")}'>
+			<redirect
+				view-id="/modConfiguracion/management/gestionarEntidadesSistema/ModificarEntidadSistema.xhtml" />
+		</rule>
+		<rule if='#{from.equals("crear")}'>
+			<redirect
+				view-id="/modConfiguracion/management/gestionarEntidadesSistema/CrearEntidadSistema.xhtml" />
+		</rule>
+	</navigation>
+
+	<navigation
+		from-action="#{establecimientoAreaInfluenciaHospitalBuscarControlador.setSalida(1)}">
+		<rule if='#{from.equals("modificar")}'>
+			<redirect
+				view-id="/modConfiguracion/management/gestionarEntidadesSistema/ModificarEntidadSistema.xhtml" />
+		</rule>
+		<rule if='#{from.equals("crear")}'>
+			<redirect
+				view-id="/modConfiguracion/management/gestionarEntidadesSistema/CrearEntidadSistema.xhtml" />
+		</rule>
+	</navigation>
+</page>

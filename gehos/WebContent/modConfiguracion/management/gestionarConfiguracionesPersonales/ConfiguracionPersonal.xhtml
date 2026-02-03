@@ -1,0 +1,296 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+		<style type="text/css">
+.rich-stglpanel-body {
+	padding: 0px
+}
+</style>
+		<style type="text/css">
+.rich-panel-body {
+	padding: 0px
+}
+</style>
+	<!-- Java functions -->
+		<script type="text/javascript">
+			//Clean the field of password when the panel are closed (chekBox)
+	    	function cleanPasswordField(){	
+	    		document.getElementById('form:oldPassword').value='';	    		    		
+	    		document.getElementById('form:newPassword').value='';
+	    		document.getElementById('form:confirmPassword').value='';	    		
+	    	}
+	   	</script>
+
+		<h:form id="form" enctype="multipart/form-data">
+			<s:validateAll>
+				<a4j:outputPanel ajaxRendered="true">
+					<rich:messages id="error" styleClass="message" ajaxRendered="true" for="error"/>					
+				</a4j:outputPanel>
+				<rich:panel>
+					<f:facet name="header">#{messages.contrasena}</f:facet>
+
+					<table cellpadding="0" cellspacing="0" border="0">
+
+						<tr>
+							<td><rich:spacer width="7px" /></td>
+							<td valign="middle"><br />
+							<h:outputLabel value="#{messages.mantener}"></h:outputLabel> <rich:spacer
+								width="7"></rich:spacer></td>
+							<td valign="middle"><br />
+							<h:selectBooleanCheckbox style="margin: 0px;" tabindex="5"
+								value="#{configuracionPersonalControlador.keepPassword}">
+								<a4j:support event="onclick" ajaxSingle="true"
+									reRender="changepass" oncomplete="cleanPasswordField();" />
+							</h:selectBooleanCheckbox></td>
+						</tr>
+						<tr height="6px" />
+					</table>
+
+					<a4j:outputPanel id="changepass">
+						<s:div id="divPassword"
+							rendered="#{not configuracionPersonalControlador.keepPassword}">
+							<table cellpadding="0px" cellspacing="0px" border="0px">
+								<tr>
+									<td><rich:spacer width="7px" /></td>
+									<td>
+									<table cellpadding="0px" cellspacing="0px" border="0px">
+										<tr style="vertical-align: top;">
+											<td style="width: 0px;"></td>
+											<td><h:outputLabel value="#{messages.passAnterior}" />
+											<rich:message for="oldPassword" showDetail="false"
+												tooltip="true" style="color:red;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('oldPassword').get(0).getDetail()}"
+														style="color:red;cursor:pointer;" />
+												</f:facet>
+											</rich:message> <br />
+											<h:inputSecret
+												value="#{configuracionPersonalControlador.passOld}"
+												required="true" requiredMessage="#{messages.valorRequerido}"
+												validator="#{configuracionPersonalValidarControlador.oldPassword}"
+												label="password" id="oldPassword" redisplay="true"
+												tabindex="2" style=" width : 148px;" /> <br />
+
+											<table cellpadding="0" cellspacing="0" border="0"
+												style="vertical-align: middle;">
+											</table>
+											</td>
+											<td style="width: 25px"></td>
+
+											<td><h:outputLabel value="#{messages.newPass}"></h:outputLabel>
+											<rich:message for="newPassword" showDetail="false"
+												tooltip="true" style="color:red;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('newPassword').get(0).getDetail()}"
+														style="color:red;cursor:pointer;" />
+												</f:facet>
+											</rich:message><br />
+											<h:inputSecret
+												value="#{configuracionPersonalControlador.passNew}"
+												required="true" redisplay="true" label="password"
+												id="newPassword"
+												requiredMessage="#{messages.valorRequerido}" tabindex="2"
+												style=" width : 148px;" />
+
+											<table cellpadding="0" cellspacing="0" border="0"
+												style="vertical-align: middle;">
+
+											</table>
+
+											</td>
+
+											<td style="width: 24px"></td>
+											<td><h:outputLabel value="#{messages.confirmarPass}"></h:outputLabel>
+											<rich:message for="confirmPassword" showDetail="false"
+												tooltip="true" style="color:red;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('confirmPassword').get(0).getDetail()}"
+														style="color:red;cursor:pointer;" />
+												</f:facet>
+											</rich:message><br />
+											<h:inputSecret
+												value="#{configuracionPersonalControlador.confPass}"
+												validator="#{configuracionPersonalValidarControlador.confirmPassword}"
+												redisplay="true" label="password" id="confirmPassword"
+												required="true" requiredMessage="#{messages.valorRequerido}"
+												tabindex="2" style=" width : 148px;" />
+
+											<table cellpadding="0" cellspacing="0" border="0"
+												style="vertical-align: middle;">
+
+											</table>
+
+											</td>
+										</tr>
+									</table>
+									</td>
+								</tr>
+								<tr height="7px" />
+							</table>
+						</s:div>
+					</a4j:outputPanel>
+
+
+
+
+
+
+
+
+				</rich:panel>
+
+				<br />
+
+
+				<rich:panel>
+					<f:facet name="header">#{messages.foto}</f:facet>
+					<table cellpadding="0" cellspacing="0" border="0">
+						<tr>
+							<td height="10px"></td>
+						</tr>
+						<tr>
+							<td width="7px" />
+							<td><h:outputLabel value="#{messages.labelFoto}"></h:outputLabel><br />
+							<s:fileUpload id="addPhoto1" accept="*.*" tabindex="6"
+								data="#{configuracionPersonalControlador.data}"
+								fileName="#{configuracionPersonalControlador.photoName}" /></td>
+							<td style="width: 24px"></td>
+						</tr>
+					</table>
+
+					<rich:spacer height="6px" style="display: block" />
+				</rich:panel>
+				<br />
+
+
+
+
+
+
+				<rich:panel>
+					<f:facet name="header">#{messages.confTemaIdioma}</f:facet>
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr>
+							<td style="height: 11px;" colspan="6"></td>
+						</tr>
+						<tr style="vertical-align: top;">
+							<td style="width: 7px;"></td>
+							<td><h:outputLabel value="#{messages.tema}"></h:outputLabel>
+							<rich:message for="tema" showDetail="false"
+												tooltip="true" style="color:red;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('tema').get(0).getDetail()}"
+														style="color:red;cursor:pointer;" />
+												</f:facet>
+											</rich:message>
+							<br />
+
+							<rich:comboBox id="tema" enableManualInput="false" width="150px"
+								tabindex="4" required="true" requiredMessage="#{messages.valorRequerido}"
+								suggestionValues="#{configuracionPersonalControlador.themes}"
+								value="#{configuracionPersonalControlador.theme}"
+								defaultLabel="#{configuracionPersonalControlador.theme}">
+
+							</rich:comboBox></td>
+							<td style="width: 25px"></td>
+							<td><h:outputLabel value="#{messages.idioma}"></h:outputLabel>
+							<rich:message for="cultura" showDetail="false"
+												tooltip="true" style="color:red;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('cultura').get(0).getDetail()}"
+														style="color:red;cursor:pointer;" />
+												</f:facet>
+											</rich:message><br />
+
+
+							<rich:comboBox id="cultura" enableManualInput="false"
+								width="150px" tabindex="4" required="true" requiredMessage="#{messages.valorRequerido}"
+								suggestionValues="#{configuracionPersonalControlador.cultura()}"
+								value="#{configuracionPersonalControlador.cultureSelect}"
+								defaultLabel="#{configuracionPersonalControlador.cultureSelect}">
+							</rich:comboBox></td>
+							<td style="width: 25px"></td>
+
+						</tr>
+					</table>
+					<rich:spacer height="8px" />
+				</rich:panel>
+				<br />
+
+
+				<rich:panel>
+					<f:facet name="header">#{messages.confMenu}</f:facet>
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr>
+							<td style="height: 11px;" colspan="6"></td>
+						</tr>
+						<tr style="vertical-align: top;">
+							<td style="width: 7px;"></td>
+							<td style="vertical-align: top; padding: 0px;">
+							#{messages.menuArbol} <rich:spacer height="8px"></rich:spacer></td>
+							<td style="vertical-align: top; padding: 0px;"><h:selectBooleanCheckbox
+								value="#{configuracionPersonalControlador.treeState}"
+								style="margin-top: 0px; margin-right: 0px;">
+							</h:selectBooleanCheckbox></td>
+							<td style="width: 25px"></td>
+
+						</tr>
+					</table>
+					<rich:spacer height="4px" />
+				</rich:panel>
+				<rich:spacer height="3px" />
+				<table cellpadding="0" cellspacing="0" border="0" align="right">
+					<tr>
+						<td valign="bottom"><h:commandButton id="buttonAceptar"
+							value="#{messages.aceptar}"
+							action="#{configuracionPersonalControlador.cambiar()}"
+							style="margin-left: 0px; margin-top: 0px; margin-bottom: 0px;" />
+
+						</td>
+						<td valign="top"><s:button
+							view="/modCommons/modHome/home.gehos"
+							value="#{messages.cancelar}"
+							style="margin-right:0px;margin-bottom: 0px;">
+							<f:param name="idFuncionalidad"
+								value="#{activeModule.activeModule.id}" />
+							<f:param name="idancestors"
+								value="#{activeModule.activeModule.id}a" />
+							<f:param name="moduleName"
+								value="#{activeModule.activeModuleName}" />
+						</s:button></td>
+					</tr>
+				</table>
+			</s:validateAll>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,237 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:a4j="http://richfaces.org/a4j" xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+<s:div>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('#{messages.lbl_titulo_ensClin}')</script>
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+		type='text/css' />
+
+
+	<script type="text/javascript">
+  		function makeVisible()
+  		{
+  			document.getElementById('resultado').style.display='';
+  		}
+
+  		var curDt = new Date();
+		 var calDt=null;
+
+		 function previousDate(date){
+			calDt = date;
+		 }
+
+		 function disablementFunction(day){
+			 if(calDt == null){
+				 if (curDt.getTime() - day.date.getTime() &#62; 0) return true; else return false; 
+			 }
+			 else {
+				 if (calDt.getTime() - day.date.getTime() &#62;= 0 ) return true; else return false;
+			 }					 
+		 }
+
+		 function disabledClassesProv(day){
+			 if(calDt == null){
+				 if (curDt.getTime() - day.date.getTime() &#62; 0) return ''; else return 'noavailable'; 
+			 }
+			 else {
+				 if (calDt.getTime() - day.date.getTime() &#62;= 0) return ''; else return 'noavailable';
+			 }				
+		 }
+		 
+		 function resetSecondDate(first,second) {
+			 var firstDate = first.getSelectedDate().getTime();
+			 var secondDate = second.getSelectedDate().getTime();
+
+			 if(firstDate - secondDate &#62; 0)
+				 second.resetSelectedDate();
+		 }
+
+		 function disablementFunctionPreviousEx(day){
+			if(calDt == null){
+				if (curDt.getTime() - day.date.getTime() &#62; 0) return true; else return false;
+			}
+			if ((curDt.getTime() - day.date.getTime() &#62; 0) &#38;&#38; (calDt.getTime() - day.date.getTime() &#60;= 0)){
+				return true;
+			}
+			else 
+				return false;
+		  }
+
+		function disabledClassesProvPreviousEx(day){
+			if(calDt == null){
+				if (curDt.getTime() - day.date.getTime() &#60; 0)
+					return 'noavailable';
+				else 
+					return '';
+			}
+			if ((curDt.getTime() - day.date.getTime() &#60; 0) || (calDt.getTime() - day.date.getTime() &#62; 0))
+				return 'noavailable';
+			else 
+				return '';
+		}
+		//<![CDATA[
+	    function hideErrorSpans() {
+	        var errorSpans = document.getElementsByClassName('errorSpan');
+	        for(var i = 0; i < errorSpans.length; i++) {
+	            errorSpans[i].style.display = 'none';
+	        }
+	    }
+	//]]>
+	  //<![CDATA[
+	    function validarCamposVacios() {
+	        var campos = ['bloquearEstForm:causa']; // Añade aquí los IDs de todos los campos de entrada que quieres verificar
+	        for(var i = 0; i < campos.length; i++) {
+	            var input = document.getElementById(campos[i]);
+	            if(input.value == '') {
+	                input.style.border = '1px solid red';
+	            } else {
+	                input.style.border = '';
+	            }
+	        }
+	    }
+	 //]]>
+		
+  	</script>
+
+
+
+	<rich:messages globalOnly="true" styleClass="message"
+		id="globalMessage" ajaxRendered="true" />
+	<a4j:outputPanel ajaxRendered="true">
+		<s:div
+			rendered="#{facesMessages.getCurrentMessagesForControl('bloquearEstForm').size() > 0 }"
+			styleClass="custom-error">
+			<div>
+				<rich:message for="bloquearEstForm" />
+			</div>
+		</s:div>
+	</a4j:outputPanel>
+
+	<h:form id="bloquearEstForm">
+
+		<rich:panel>
+			<f:facet name="header">
+				<h:outputLabel value="#{messages.lbl_titulo_ensClin}" />
+			</f:facet>
+			<table cellpadding='0' cellspacing='0' border='0' style='width: 100%'>
+				<tr>
+
+					<td><h:outputLabel styleClass="#{invalid?'labelErrors':''}"
+							value='#{messages.lbl_dateBloq_ensClin}:' />
+							<rich:message
+							showDetail='false' tooltip='true'
+							style='color:red; font-size:10px;' for='fechaBloqueo'>
+							<f:facet name='errorMarker'>
+								<h:outputLabel value='*' style='cursor:pointer'
+									title="#{facesMessages.getCurrentMessagesForControl('fechaBloqueo').get(0).getDetail()}" />
+							</f:facet>
+						</rich:message> <br /> <rich:calendar id="fechaBloqueo" width="200"
+							enableManualInput="false" datePattern="dd/MM/yyyy"
+							required="#{!empty param['idForm:aceptar']}"
+							value="#{listarEstudiosControlador.fecha}"
+							isDayEnabled="disablementFunctionPreviousEx"
+							dayStyleClass="disabledClassesProvPreviousEx">
+						</rich:calendar> <rich:spacer height="5px" style="display: block"></rich:spacer></td>
+
+				</tr>
+				<tr>
+					<td><rich:spacer height='8px' /></td>
+				</tr>
+				<tr>
+					<td colspan='5'><h:outputLabel styleClass='normalText'
+							value='#{messages.lbl_causa_ensClin}:' />
+							<span class="errorSpan" style="color:red;">*</span>
+							<rich:message
+							showDetail='false' tooltip='true'
+							style='color:red; font-size:10px;' for='causa'>
+							<f:facet name='errorMarker'>
+								<h:outputLabel value='*' style='cursor:pointer'
+									title="#{facesMessages.getCurrentMessagesForControl('causa').get(0).getDetail()}" />
+							</f:facet>
+						</rich:message> <br /> <h:inputTextarea required='true' style='width:100%'
+							value='#{listarEstudiosControlador.descripcion}' rendered="true"
+							validator="#{listarEstudiosControlador.textnumber250}" id='causa' /></td>
+				</tr>
+			</table>
+		</rich:panel>
+
+		<s:div>
+			<div align="right">
+				<rich:spacer width="100%" height="8px" />
+			</div>
+		</s:div>
+
+		<s:div>
+			<div align="right">
+				<a:commandButton id="aceptarr" value="#{messages.aceptar}"
+					oncomplete="#{listarEstudiosControlador.validarCampo()}"
+					onclick="hideErrorSpans();validarCamposVacios();" />
+				<rich:spacer width="10" />
+				<h:commandButton value="#{messages.cancelar}" immediate="true"
+					action="#{listarEstudiosControlador.limpiar()}" styleClass="botton" />
+			</div>
+
+
+		</s:div>
+
+
+		<rich:spacer height="11px" />
+
+		<!-- Modal Panel Bloquear Estudio -->
+		<rich:modalPanel id="confirmar_bloquear_estudio" width="320"
+			height="100" autosized="true" resizeable="false">
+			<f:facet name="header">
+				<h:outputText value="#{messages.lbl_titulo_ensClin}" />
+			</f:facet>
+			<f:facet name="controls">
+
+				<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+					style="cursor:pointer; position:relative; top:1px;"
+					onclick="Richfaces.hideModalPanel('confirmar_bloquear_estudio')" />
+
+			</f:facet>
+
+			<s:div>
+				<br />
+				<div align="left">
+					<div style="float: left">
+						<h:graphicImage
+							value="/resources/icons/default/acciones/advertencia.png" />
+						<rich:spacer width="4px" />
+					</div>
+					<div>
+						<h:outputText value="#{messages.msg_bloquear_ensClin}"></h:outputText>
+					</div>
+				</div>
+
+
+				<div align="center" style="padding-top: 18px;">
+					<h:commandLink id="aceptar"
+						action="#{listarEstudiosControlador.bloquearEstudio()}"
+						style="margin:0px"
+						onclick="hideErrorSpans();">
+						<input type="button" value="#{messages.Si}" style="margin: 0px" />
+					</h:commandLink>
+					<rich:spacer width="6" />
+					<input type="button" value="No"
+						onclick="#{rich:component('confirmar_bloquear_estudio')}.hide()"
+						style="margin: 0px" />
+
+				</div>
+
+			</s:div>
+
+		</rich:modalPanel>
+		<!-- Fin modal panel Bloquear estudio -->
+
+	</h:form>
+
+</s:div>
+</html>

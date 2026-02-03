@@ -1,0 +1,92 @@
+<rich:modalPanel id="icono_tipo_ubicacion" resizeable="false" autosized="true"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+	<f:facet name="header">
+		<h:panelGroup>
+			<h:outputText value="#{messages.titulo2}"></h:outputText>
+		</h:panelGroup>
+	</f:facet>
+	<f:facet name="controls">
+		<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+			style="cursor:pointer; position:relative; top:1px;"
+			onclick="Richfaces.hideModalPanel('icono_tipo_ubicacion')" />
+	</f:facet>
+
+	<h:form id="eliminar_entidad_panel_form">
+		<table cellpadding="0px" cellspacing="0px" border="0px" id="container">
+			<tr>
+				<td style="height: 12px;" colspan="6"></td>
+			</tr>
+			<tr style="vertical-align: top;">
+				<td><rich:spacer width="6px" /></td>
+				<td valign="top">
+				<table cellpadding="0px" cellspacing="0px">
+					<tr valign="top">
+						<td></td>
+						<td valign="top"><h:outputLabel value="#{messages.icono}"></h:outputLabel><br />
+
+						<s:div id="iconspanel" rendered="true">
+
+
+							<s:div id="modulo_agregar_cat_iconslist">
+
+								<div style="overflow: auto; width: 207px;"><rich:dataGrid
+									columns="4"
+									value="#{tipoUbicacionCrearControlador.existingModuleIcons}"
+									 cellpadding="0" cellspacing="0" border="0px"
+									var="icon">
+									<s:div style="float: left;"
+										rendered="#{tipoUbicacionCrearControlador.isSelected(icon)}">
+										<input type="radio"
+											onclick="var icn='#{icon}'; updateIcon(icn);"
+											style="visibility: visible;" name="musictype2"
+											checked="checked"> </input>
+									</s:div>
+									<s:div style="float: left;"
+										rendered="#{not tipoUbicacionCrearControlador.isSelected(icon)}">
+										<input type="radio"
+											onclick="var icn='#{icon}'; updateIcon(icn);"
+											style="visibility: visible;" name="musictype2"> </input>
+									</s:div>
+									<h:graphicImage width="20" height="20" title="#{icon}"
+										url="/resources/modCommon/ubicacionesimages/#{icon}" />
+								</rich:dataGrid></div>
+							</s:div>
+						</s:div></td>
+					</tr>
+				</table>
+				</td>
+				<td></td>				
+			</tr>
+			<tr>
+				<td style="height: 8px;" colspan="6"></td>
+			</tr>
+			<tr>
+				<td />
+				<td align="right">
+				<table cellpadding="0" cellspacing="0" border="0">
+					<tr>
+						<td><a:commandButton ajaxSingle="true" value="#{messages.aceptar}"
+							reRender="aIcono" limitToList="true"
+							oncomplete="Richfaces.hideModalPanel('icono_tipo_ubicacion')"
+							style="margin-bottom: 6px; margin-top: 0px;" /></td>
+						<td><input type="button"
+							onclick="javascript:Richfaces.hideModalPanel('icono_tipo_ubicacion');"
+							value="#{messages.cancelar}"
+							style="margin-bottom: 6px; margin-top: 0px; margin-left: 3px; margin-right: 6px;" /></td>
+					
+					</tr>
+					
+				</table>
+				
+				</td>
+				<td></td>
+			</tr>
+		</table>
+	</h:form>
+	</rich:modalPanel>

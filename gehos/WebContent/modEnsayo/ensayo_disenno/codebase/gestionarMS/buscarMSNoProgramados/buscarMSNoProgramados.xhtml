@@ -1,0 +1,271 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+	<s:div>
+		<script type="text/javascript">setContentTitle('#{messages.lbl_titulo_ens}')</script>
+		<link rel='stylesheet'
+			href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+			type='text/css' />
+
+		<h:form>
+
+			<rich:simpleTogglePanel switchType="client" styleClass="whitespace">
+				<f:facet name="header">#{messages.lbl_criterios_ens}</f:facet>
+				<a4j:outputPanel id="busquedas_noprogramados">
+					<a4j:outputPanel>
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+
+							<tr style="vertical-align: top;">
+
+								<td>#{messages.lbl_nombre_ens}:<br /> <h:inputText
+										tabindex="6"
+										value="#{momentoSeguimientoNoProgramdoCustomList.nombre}"
+										style="width:148px;" />
+
+								</td>
+
+
+								<td><rich:spacer width="25px" /></td>
+								<td><br /> <a4j:commandButton
+										value="#{messages.btn_buscar_ens}" tabindex="10"
+										action="buscar"
+										style="margin-left: 0px; margin-bottom:  0px; margin-top: 0px;"
+										reRender="tablas_noprogramados,tabla_listado_noprogramados">
+										<s:defaultAction />
+									</a4j:commandButton></td>
+								<td><br /> <a4j:commandButton action="cancelar"
+										value="#{messages.btn_cancelar_ens}"
+										style="margin-right:0px;margin-bottom:  0px; margin-top: 0px;"
+										tabindex="4">
+									</a4j:commandButton></td>
+							</tr>
+
+
+						</table>
+					</a4j:outputPanel>
+				</a4j:outputPanel>
+			</rich:simpleTogglePanel>
+
+			<rich:spacer height="11px" />
+			<div align="right">
+				<table cellpadding="0" cellspacing="1" border="0">
+					<tr>
+						<td><h:graphicImage
+								title="#{messages.lbl_addNoProgramados_ens}"
+								style="margin-right: 1px;" height="12" width="12"
+								rendered="#{not funcionalidadesManager.editingOrders}"
+								value="/resources/icons/default/acciones/adicionar.png" /></td>
+						<td><s:link
+								view="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarMS/crearMS/crearMSNoProgramados.gehos"
+								id="crearnoprogramados"
+								value="#{messages.lbl_addNoProgramados_ens}">
+								<f:param name="idCronograma"
+									value="#{momentoSeguimientoNoProgramdoCustomList.idCronograma}"></f:param>
+							</s:link></td>
+					</tr>
+				</table>
+			</div>
+			<a4j:outputPanel id="tablas_noprogramados">
+				<rich:panel styleClass="whitespace"
+					rendered="#{momentoSeguimientoNoProgramdoCustomList.resultList.size() == 0 and momentoSeguimientoNoProgramdoCustomList.nombre == ''}">
+					<f:facet name="header">#{messages.lbl_listadoNoProgramados_ens}</f:facet>
+
+					<div class="results" id="roleList">
+						<h:outputText value="#{messages.msg_listaVacia_ens}" />
+					</div>
+
+				</rich:panel>
+				<rich:panel
+					rendered="#{momentoSeguimientoNoProgramdoCustomList.resultList.size() == 0 and momentoSeguimientoNoProgramdoCustomList.nombre != ''}">
+					<f:facet name="header">#{messages.lbl_listadoNoProgramados_ens}</f:facet>
+
+					<div class="results" id="roleList">
+						<h:outputText value="#{messages.msg_noResultados_ens}" />
+					</div>
+
+				</rich:panel>
+				<s:div style="margin-left:1px;margin-top:1px"
+					rendered="#{not empty momentoSeguimientoNoProgramdoCustomList.resultList}">
+					<rich:dataTable id="tabla_listado_noprogramados"
+						style="width: 100%;" var="msNoProgramado"
+						value="#{momentoSeguimientoNoProgramdoCustomList.resultList}"
+						columnsWidth="30%, 60%, 10%, 10%,  0*, 0*">
+						<f:facet name="header">
+							<div>#{messages.lbl_listadoNoProgramados_ens}</div>
+						</f:facet>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_nombre_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{msNoProgramado.nombre}
+	        			</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_ocurre_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{msNoProgramado.descripcion}
+	        			</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_dateCr_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+							<h:outputLabel value='#{msNoProgramado.fechaCreacion}'>
+								<s:convertDateTime pattern='dd/MM/yyyy' />
+							</h:outputLabel>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_dateAc_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+							<h:outputText value="#{msNoProgramado.fechaActualizacion}"
+								rendered="#{msNoProgramado.fechaActualizacion !=null}" />
+							<h:outputText value="-"
+								rendered="#{msNoProgramado.fechaActualizacion ==null}" />
+						</h:column>
+
+
+
+
+						<h:column>
+							<div align="center">
+								<s:link
+									view="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarMS/modificarMS/modificarMSNoProgramados.gehos">
+									<h:graphicImage title="#{messages.lbl_modificar_ens}"
+										style="border: 0px;"
+										value="/resources/icons/default/acciones/modificar.png" />
+									<f:param name="idCronograma"
+										value="#{momentoSeguimientoNoProgramdoCustomList.idCronograma}"></f:param>
+									<f:param name="idMS" value="#{msNoProgramado.id}"></f:param>
+								</s:link>
+							</div>
+						</h:column>
+						<h:column>
+							<div align="center">
+								<a4j:commandLink
+									oncomplete="Richfaces.showModalPanel('eliminar_noprogramados')"
+									action="#{buscarMS.seleccionarMS(msNoProgramado)}"
+									rendered="#{!buscarMS.habilitarEliminar(msNoProgramado.nombre)}">
+									<h:graphicImage title="#{messages.lbl_eliminar_ens}"
+										style="border: 0px; cursor:pointer;"
+										value="/resources/icons/default/acciones/eliminar.png">
+
+									</h:graphicImage>
+								</a4j:commandLink>
+								<h:graphicImage
+									rendered="#{buscarMS.habilitarEliminar(msNoProgramado.nombre)}"
+									value="/resources/icons/default/acciones/eliminar.png"
+									style="border:0; opacity: 0.4; height : 16px;" />
+							</div>
+						</h:column>
+					</rich:dataTable>
+				</s:div>
+				<rich:spacer height="11px" />
+
+				<!-- Paginado -->
+
+				<ui:include
+					src="/layouts/alas-layout/themes/template_auxiliares/paginado_tabla_inferior_generico.xhtml/">
+					<ui:param name="vzPaginado"
+						value="#{momentoSeguimientoNoProgramdoCustomList.resultCount>10}" />
+					<ui:param name="nomControladorList"
+						value="#{momentoSeguimientoNoProgramdoCustomList}" />
+					<ui:param name="idListado" value="tablas_noprogramados" />
+
+				</ui:include>
+
+				<!-- END Paginado -->
+			</a4j:outputPanel>
+
+
+
+		</h:form>
+
+		<!-- Modal Panel Eliminar MS no programados-->
+
+		<rich:modalPanel id="eliminar_noprogramados" width="350" height="100"
+			resizeable="false">
+			<f:facet name="header">
+				<h:outputLabel value="#{messages.msg_modalEliminarInfo_ens}" />
+			</f:facet>
+
+			<f:facet name="controls">
+				<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+					style="cursor:pointer;"
+					onclick="#{rich:component('eliminar_noprogramados')}.hide()" />
+
+			</f:facet>
+			<h:form id="eliminar_noprogramadosBody">
+				<table cellpadding="0px" cellspacing="0px" border="0px"
+					id="container">
+					<tr>
+						<td style="height: 12px;" colspan="6"></td>
+					</tr>
+					<tr style="vertical-align: top;">
+						<td><rich:spacer width="6px" /></td>
+						<td valign="top">
+							<table cellpadding="0px" cellspacing="0px" border="0">
+								<tr valign="top">
+									<td>
+										<!-- Imagen de advertencia --> <h:graphicImage
+											value="/resources/icons/default/acciones/advertencia.png" />
+									</td>
+									<td><rich:spacer width="6px" /></td>
+									<td>
+										<!-- Aqui va el texto para eliminar --> <h:outputLabel
+											value="#{messages.msg_eliminarInfo_ens}" />
+									</td>
+								</tr>
+							</table>
+						</td>
+						<td><rich:spacer width="6px" /></td>
+					</tr>
+					<tr>
+						<td style="height: 7px;" colspan="6"></td>
+					</tr>
+					<tr>
+						<td colspan="3">
+							<div align="center">
+								<h:commandButton style="margin:0px"
+									action="#{buscarMS.eliminar()}"
+									value="#{messages.msg_siEliminar_ens}" />
+								<rich:spacer width="8px" />
+								<a4j:commandButton style="margin:0px"
+									value="#{messages.msg_noEliminar_ens}"
+									onclick="#{rich:component('eliminar_noprogramados')}.hide()" />
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td style="height: 6px;" colspan="6"></td>
+					</tr>
+				</table>
+			</h:form>
+		</rich:modalPanel>
+
+		<!-- END Modal Panel Eliminar MS no programados-->
+	</s:div>
+</s:div>

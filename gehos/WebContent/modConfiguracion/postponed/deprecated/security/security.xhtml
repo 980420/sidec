@@ -1,0 +1,700 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" 
+	xmlns:c="http://java.sun.com/jstl/core" 
+	template="#{theme.template}"
+	>
+
+	<ui:define name="body" >
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css">
+			.rich-tree-node-highlighted{text-decoration:none;}
+			.dr-table-subheadercell, .rich-table-subheadercell, .dr-table-cell, .rich-table-cell{
+				padding: 1px;
+			}
+			.denied{
+				background-image: url("#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/bgred.png");
+				background-repeat : repeat-x;
+			}
+			.allowed{
+				background-image: url("#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/bggreen.png");
+				background-repeat : repeat-x;
+			}
+			.dr-tbpnl-cntnt, .rich-tabpanel-content, .logicrules{
+				padding: 2px;
+			}
+			.logicrules{
+				padding: 0px; border: 1px;
+			}
+			.dr-pnl-b, .rich-panel-body{
+				background-color:white;
+			}
+			.securitytable{
+				border: 1px solid #F3F3F3;
+			}
+			.strech{
+				width:100%; padding-left:2px !important; padding-top:2px !important;
+			}
+			.nostrech{
+				width:1%; padding-left:2px !important; padding-right:2px !important;
+			}
+		</style>
+
+		<a:keepAlive beanName="permissionManager"></a:keepAlive>
+		<a:keepAlive beanName="logicPermissionManager"></a:keepAlive>
+		<a:keepAlive beanName="functionalitiesController"></a:keepAlive>
+		<a:keepAlive beanName="securityController"></a:keepAlive>
+		
+		<script type="text/javascript">setContentTitle('Administrar seguridad')</script>
+		
+		<a:outputPanel ajaxRendered="true">
+			<rich:messages styleClass="message" ajaxRendered="true" />
+		</a:outputPanel>
+		
+		<h:form id="securityControllerForm">
+		<rich:tabPanel switchType="client">
+			<rich:tab label="Vista física" >
+				
+					<h:commandButton rendered="false" action="#{permissionResolverDataLoader.loadAccessControlLists()}" 
+									value="Recargar reglas de seguridad"/>
+					<table width="100%" cellpadding="5px" cellspacing="0px" style="vertical-align: top;">
+						<tr>
+							<td style="vertical-align: top;">
+								<rich:panel style="width: 99%">
+									<f:facet name="header">
+										<a:status for="resourcestree" layout="inline" 
+											startText="cargando.."
+											stopText="Recursos"></a:status>
+									</f:facet>		
+					
+									<div style="width: 200px; overflow: auto; border: 1px;" > 
+									 <a:region id="resourcestree" >
+									 <a:outputPanel ajaxRendered="true">
+										<rich:tree changeExpandListener="#{securityController.OnNodeCollapseExpand}"	
+													switchType="ajax" 
+													style="width:200px" 
+													value="#{securityController.treeData}" 
+													var="item">
+											<rich:treeNode rendered="#{item.toString().equals('directorio')}"
+													icon="/img/folder#{theme.color}.png" >	
+													<h:outputLabel title="#{item.getVirtualPath()}" 
+																   value="#{item.value.name}" 
+																   style="cursor: pointer">
+														<a:support status="rulespanelregionstatus"
+															limitToList="true"
+															ajaxSingle="true" immediate="true"
+															event="onclick"
+															action="#{permissionManager.setSelectedResource(item.getVirtualPath())}"
+															reRender="rulesdiv"
+															
+														/>
+													</h:outputLabel>
+											</rich:treeNode>
+											<rich:treeNode rendered="#{item.toString().equals('archivo')}" 
+														   >
+													<h:outputLabel title="#{item.getVirtualPath()}" 
+																   value="#{item.value.name}" 
+																   style="cursor: pointer" > 
+														<a:support status="rulespanelregionstatus"
+															limitToList="true"
+															ajaxSingle="true" immediate="true"
+															event="onclick"
+															action="#{permissionManager.setSelectedResource(item.getVirtualPath())}"
+															reRender="rulesdiv"
+															
+														/>
+													</h:outputLabel>			
+											</rich:treeNode>
+										</rich:tree>
+									</a:outputPanel>
+									</a:region>			
+									</div>
+									
+								</rich:panel >
+							</td>
+							<td style="vertical-align: top;">
+							
+							  <a:region id="rulespanelregion">
+							  <div style="width: 100%; overflow: auto; border: 1px;" > 	
+								<rich:panel id="rulespanel" style="width: 320px; height: 100%" 
+											rendered="true">
+									<f:facet name="header" >
+										<s:label escape="false" value="Reglas">
+										</s:label>
+									</f:facet>		
+							    	<table cellpadding="0" cellspacing="0" border="0">
+										<tr>
+											<td>
+												<div style="vertical-align: middle;  ">
+													Rol:<br />
+													<rich:comboBox suggestionValues="#{permissionManager.allRoles()}"
+																   defaultLabel="&lt;Seleccione&gt;" selectFirstOnUpdate="true"
+																   style="width: 130px;" width="130"
+																   value="#{permissionManager.selectedRole}">
+													</rich:comboBox>
+													<h:commandButton style="width: 60px; margin-left:0px;" 
+																	action="#{permissionManager.provideAccessToRole()}" 
+																	value="Permitir" >
+													</h:commandButton> 
+													
+													<h:commandButton style="width: 60px; margin-right:0px;" 
+																	action="#{permissionManager.denyAccessToRole()}" 
+																	value="Denegar" >
+													</h:commandButton>
+													
+												</div>
+											</td>
+											<td>
+												<rich:spacer width="25"></rich:spacer>
+											</td>
+											<td>
+												<div style="vertical-align: middle;  ">
+													Usuario:<br />
+													<rich:comboBox suggestionValues="#{permissionManager.allUsers()}"
+																   defaultLabel="&lt;Seleccione&gt;" selectFirstOnUpdate="true"
+																   style="width: 130px;" width="130" 
+																   value="#{permissionManager.selectedUser}" >
+													</rich:comboBox>
+													
+													<h:commandButton style="width: 60px; margin-left:0px;" 
+																	action="#{permissionManager.provideAccessToUser(user)}" 
+																	value="Permitir" >
+													</h:commandButton> 
+													
+													<h:commandButton style="width: 60px; " 
+																	action="#{permissionManager.denyAccessToUser()}" 
+																	value="Denegar"	>
+													</h:commandButton>
+												</div>
+											</td>
+										</tr>
+									</table>
+							    
+							    	<a:status id="rulespanelregionstatus"
+										  onstart="javascript:document.getElementById('securityControllerForm:rulesdiv').style.visibility = 'hidden'"
+										  onstop="javascript:document.getElementById('securityControllerForm:rulesdiv').style.visibility = 'visible'">
+									  <f:facet name="start">
+										  <s:div style="text-align: center; width: 100%">
+										  <br/><br/>
+											 <h:graphicImage url="/resources/icons/default/acciones/loading_small.gif" />
+										  </s:div>	 
+									  </f:facet>
+								    </a:status>
+							    
+									<s:div id="rulesdiv" style="display: inline;">
+									<br/>
+										<s:span rendered="#{permissionManager.initializePrecedenceTables()}"></s:span>
+										<a:repeat value="#{permissionManager.listHierarchy()}"
+												   var="resource" columns="1" style="width: 100%">
+											
+											<strong>
+												<h:outputLabel value="#{permissionManager.trimResourceName(resource)}"
+															   title="#{resource}">
+												</h:outputLabel> 
+											</strong>
+											 
+											<h:dataTable value="#{permissionManager.userDeniedForResource(resource)}"
+															var="entry" 
+															style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;" 
+															rendered="#{permissionManager.userDeniedForResource(resource).size() > 0}"
+															cellspacing="0" cellpadding="0" rowClasses="dr-table-firstrow2" border="1"
+															columnClasses="strech, nostrech">
+												<h:column  >
+													<f:facet name="header">
+														<div style="text-align:left; background-color: #FEEFEC; ">
+															Usuarios denegados
+														</div>	
+													</f:facet>
+													<table cellpadding="0px" cellspacing="0px">
+														<tr>
+															<td >
+																<h:graphicImage url="/resources/modConfiguracion/usuarios.png" 
+																	rendered="#{not permissionManager.existMoreImportantRuleForUser(entry)}"/>
+																<h:graphicImage url="/resources/modConfiguracion/usuarios_fade.png" 
+																	rendered="#{permissionManager.existMoreImportantRuleForUser(entry)}"/>
+															</td>
+															<td style="padding-left: 3px;">
+																<s:link view="/index.html" value="#{entry}" 
+																	rendered="#{not permissionManager.existMoreImportantRuleForUser(entry)}"/>
+																<h:outputLabel value="#{entry}" style="text-decoration: line-through"
+																	rendered="#{permissionManager.existMoreImportantRuleForUser(entry)}">
+																</h:outputLabel>
+															</td>
+														</tr>
+													</table>
+													<rich:spacer width="200"></rich:spacer>
+												</h:column>
+												<h:column >
+													<f:facet name="header">
+														<div style="background-color: #FEEFEC; text-align: center; padding-left: 2px; padding-right: 2px;">
+															Eliminar
+														</div>	
+													</f:facet>
+													<s:div style="text-align: center" >
+														<h:commandLink onclick="event.cancelBubble=true; return true;" 
+																	   action="#{permissionManager.deletedRestrictedUser(resource, entry)}">
+															<h:graphicImage style="border:0px; cursor: pointer" title="eliminar" 
+															url="/resources/icons/default/acciones/eliminar.png" />
+														</h:commandLink>
+													</s:div>
+												</h:column>
+											</h:dataTable>
+											<rich:spacer height="2px;" style="display: block"></rich:spacer>
+											<s:span rendered="#{permissionManager.updateUserPrecedenceTableForRestrictedOnes(resource)}"></s:span>
+											
+											<h:dataTable value="#{permissionManager.usersAllowedForResource(resource)}"
+															var="entry" style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;" 
+															rendered="#{permissionManager.usersAllowedForResource(resource).size() > 0}"
+															cellspacing="0" cellpadding="0" rowClasses="dr-table-firstrow2" border="1" 
+															columnClasses="strech, nostrech">
+												<h:column>
+													<f:facet name="header">
+														<s:div style="text-align:left; background-color: #E1FFDF">
+															Usuarios permitidos
+														</s:div>
+													</f:facet>
+													<table cellpadding="0px" cellspacing="0px">
+														<tr>
+															<td>
+																<h:graphicImage url="/resources/modConfiguracion/usuarios.png" 
+																	rendered="#{not permissionManager.existMoreImportantRuleForUser(entry)}"/>
+																<h:graphicImage url="/resources/modConfiguracion/usuarios_fade.png" 
+																	rendered="#{permissionManager.existMoreImportantRuleForUser(entry)}"/>
+															</td>
+															<td style="padding-left: 3px;">
+																<s:link view="/index.html" value="#{entry}" 
+																	rendered="#{not permissionManager.existMoreImportantRuleForUser(entry)}"/>
+																<h:outputLabel value="#{entry}" style="text-decoration: line-through"
+																	rendered="#{permissionManager.existMoreImportantRuleForUser(entry)}">
+																</h:outputLabel>
+															</td>
+														</tr>
+													</table>
+													<rich:spacer width="200"></rich:spacer>
+												</h:column>
+												<h:column>
+													<f:facet name="header">
+														<s:div style="background-color: #E1FFDF;padding-left: 2px; padding-right: 2px;">
+															Eliminar
+														</s:div>
+													</f:facet>
+													<s:div style="text-align: center;">
+														<h:commandLink action="#{permissionManager.deletedPermitedUser(resource, entry)}">
+															<h:graphicImage style="border:0px; cursor: pointer" title="eliminar" 
+															url="/resources/icons/default/acciones/eliminar.png" />
+														</h:commandLink>
+													</s:div>
+												</h:column>
+											</h:dataTable>
+											<rich:spacer height="2px;" style="display: block"></rich:spacer>
+											<s:span rendered="#{permissionManager.updateUserPrecedenceTableForPermittedOnes(resource)}"></s:span>
+											
+											<h:dataTable value="#{permissionManager.rolesDeniedForResource(resource)}"
+															var="entry" style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+															rendered="#{permissionManager.rolesDeniedForResource(resource).size() > 0}"
+															cellspacing="0" cellpadding="0" rowClasses="dr-table-firstrow2" border="1" 
+															columnClasses="strech, nostrech">
+												<h:column>
+													<f:facet name="header">
+														<s:div style="text-align:left;background-color: #FEEFEC">
+															Roles denegados
+														</s:div>		
+													</f:facet>
+													<table cellpadding="0px" cellspacing="0px">
+														<tr>
+															<td>
+																<h:graphicImage url="/resources/modConfiguracion/roles.png" 
+																	rendered="#{not permissionManager.existMoreImportantRuleForRole(entry)}"/>
+																<h:graphicImage url="/resources/modConfiguracion/roles_fade.png" 
+																	rendered="#{permissionManager.existMoreImportantRuleForRole(entry)}"/>
+															</td>
+															<td style="padding-left: 3px;">
+																<s:link view="/index.html" value="#{entry}" 
+																	rendered="#{not permissionManager.existMoreImportantRuleForRole(entry)}"/>
+																<h:outputLabel value="#{entry}" style="text-decoration: line-through"
+																	rendered="#{permissionManager.existMoreImportantRuleForRole(entry)}">
+																</h:outputLabel>
+															</td>
+														</tr>
+													</table>
+													<rich:spacer width="200"></rich:spacer>
+												</h:column>
+												<h:column>
+													<f:facet name="header">
+														<s:div style="background-color: #FEEFEC;padding-left: 2px; padding-right: 2px;">
+															Eliminar
+														</s:div>
+													</f:facet>
+													<s:div style="text-align: center;">
+														<h:commandLink action="#{permissionManager.deletedRestrictedRole(resource, entry)}">
+															<h:graphicImage style="border:0px; cursor: pointer" title="eliminar" 
+															url="/resources/icons/default/acciones/eliminar.png" />
+														</h:commandLink>
+													</s:div>
+												</h:column>
+											</h:dataTable>
+											<rich:spacer height="2px;" style="display: block"></rich:spacer>
+											<s:span rendered="#{permissionManager.updateRolesPrecedenceTableForRestrictedOnes(resource)}"></s:span>
+											
+											<h:dataTable value="#{permissionManager.rolesAllowedForResource(resource)}"
+															var="entry" style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+															rendered="#{permissionManager.rolesAllowedForResource(resource).size() > 0}"
+															cellspacing="0" cellpadding="0" rowClasses="dr-table-firstrow2" border="1"
+															columnClasses="strech, nostrech">
+												<h:column>
+													<f:facet name="header">
+														<s:div style="text-align:left;background-color: #E1FFDF">
+															Roles permitidos
+														</s:div>	
+													</f:facet>
+													<table cellpadding="0px" cellspacing="0px">
+														<tr>
+															<td>
+																<h:graphicImage url="/resources/modConfiguracion/roles.png" 
+																	rendered="#{not permissionManager.existMoreImportantRuleForRole(entry)}"/>
+																<h:graphicImage url="/resources/modConfiguracion/roles_fade.png" 
+																	rendered="#{permissionManager.existMoreImportantRuleForRole(entry)}"/>
+															</td>
+															<td style="padding-left: 3px;">
+																<s:link view="/index.html" value="#{entry}" 
+																	rendered="#{not permissionManager.existMoreImportantRuleForRole(entry)}"/>
+																<h:outputLabel value="#{entry}" style="text-decoration: line-through"
+																	rendered="#{permissionManager.existMoreImportantRuleForRole(entry)}">
+																</h:outputLabel>
+															</td>
+														</tr>
+													</table>
+													<rich:spacer width="200"></rich:spacer>
+												</h:column>
+												<h:column>
+													<f:facet name="header">
+														<s:div style="background-color: #E1FFDF;padding-left: 2px; padding-right: 2px;">
+															Eliminar
+														</s:div>
+													</f:facet>
+													<s:div style="text-align: center;">
+														<h:commandLink action="#{permissionManager.deletedPermitedRole(resource, entry)}">
+															<h:graphicImage style="border:0px; cursor: pointer" title="eliminar" 
+															url="/resources/icons/default/acciones/eliminar.png" />
+														</h:commandLink>
+													</s:div>
+												</h:column>
+											</h:dataTable>
+											<rich:spacer height="2px;" style="display: block"></rich:spacer>
+											<s:span rendered="#{permissionManager.updateRolesPrecedenceTableForPermittedOnes(resource)}"></s:span>
+											<p/>
+										</a:repeat>
+								 	</s:div>
+								
+								</rich:panel>
+							   </div>		
+							  </a:region>
+							
+							</td>
+						</tr>
+					</table>		
+			</rich:tab>
+			
+			<rich:tab label="Vista lógica" >
+			<h:commandButton rendered="false" action="#{logicPermissionResolverDataLoader.loadAccessControlLists()}"
+							 value="Recargar reglas de seguridad"/>
+			<table width="100%" cellpadding="5px" cellspacing="0px" style="vertical-align: top;">
+				<tr>
+					<td style="vertical-align: top;">
+					<rich:panel style="width: 99%">
+						<f:facet name="header">
+							<a:status for="functionalitiestree" layout="inline" 
+									startText="cargando.."
+									stopText="Recursos">
+							</a:status>
+						</f:facet>		
+					
+						<div style="width: 200px; overflow: auto; border: 1px;" > 
+						<a:region id="functionalitiestree" >
+						<a:outputPanel ajaxRendered="true">
+						<rich:tree  changeExpandListener="#{functionalitiesController.OnNodeCollapseExpand}"
+									style="width:200px" 
+									value="#{functionalitiesController.treeData}"
+									switchType="ajax" 
+									treeNodeVar="treenode"
+									var="node" 
+									id="functree">
+							
+								<rich:treeNode rendered="#{node.toString().equals('modulo')}" 
+									icon="/resources/modCommon/moduleimages/#{theme.name}/#{theme.color}/#{node.value.imagen}"
+									iconLeaf="/resources/modCommon/moduleimages/#{theme.name}/#{theme.color}/#{node.value.imagen}">
+										<h:outputLabel value="#{node.value.label}"
+													   style="cursor: pointer" >
+											<a:support status="logicalrulespanelregionstatus"
+												limitToList="true" 
+												ajaxSingle="true" immediate="true"
+												event="onclick"
+												action="#{logicPermissionManager.setSelectedFunctionality(node)}"
+												reRender="logicalrulesdiv" 
+											/>
+										</h:outputLabel>
+								</rich:treeNode>
+								
+								<rich:treeNode rendered="#{node.toString().equals('categoria')}"
+									icon="/resources/funcionalidadesIcons/#{node.value.modulo.nombre}/#{node.value.imagen}"
+									iconLeaf="/resources/funcionalidadesIcons/#{node.value.modulo.nombre}/#{node.value.imagen}">
+										<h:outputLabel value="#{node.value.label}"
+													   style="cursor: pointer" >
+											<a:support status="logicalrulespanelregionstatus"
+												limitToList="true"
+												ajaxSingle="true" immediate="true"
+												event="onclick"
+												action="#{logicPermissionManager.setSelectedFunctionality(node)}"
+												reRender="logicalrulesdiv" 
+											/>
+										</h:outputLabel>
+								</rich:treeNode>
+								
+								<rich:treeNode rendered="#{node.toString().equals('funcionalidad')}"
+									icon="/resources/funcionalidadesIcons/#{node.value.modulo.nombre}/#{node.value.imagen}"
+									iconLeaf="/resources/funcionalidadesIcons/#{node.value.modulo.nombre}/#{node.value.imagen}">
+										<h:outputLabel value="#{node.value.label}"
+													   style="cursor: pointer" >
+											<a:support status="logicalrulespanelregionstatus"
+												limitToList="true"
+												ajaxSingle="true" immediate="true"
+												event="onclick"
+												action="#{logicPermissionManager.setSelectedFunctionality(node)}"
+												reRender="logicalrulesdiv" 
+											/>
+										</h:outputLabel>
+								</rich:treeNode>
+						</rich:tree>
+						</a:outputPanel>
+					</a:region>
+					</div>
+					</rich:panel>
+				</td>
+				<td valign="top">
+					<a:region id="logicalrulespanelregion">
+					  <div style="width: 100%; overflow: auto; border: 1px;" > 	
+						<rich:panel id="logicalrulespanel" style="width: 320px; height: 100%" 
+									rendered="true">
+							<f:facet name="header" >
+								<s:label escape="false" value="Reglas">
+								</s:label>
+							</f:facet>		
+					    	<table cellpadding="0" cellspacing="0" border="0">
+								<tr>
+									<td>
+										<div style="vertical-align: middle;  ">
+											Rol:<br />
+											<rich:comboBox suggestionValues="#{permissionManager.allRoles()}"
+														   defaultLabel="&lt;Seleccione&gt;" selectFirstOnUpdate="true"
+														   style="width: 130px;" width="130"
+														   value="#{logicPermissionManager.selectedRole}">
+											</rich:comboBox>
+											<h:commandButton style="width: 60px; margin-left:0px;" 
+															action="#{logicPermissionManager.provideAccessToRole()}" 
+															value="Permitir" >
+											</h:commandButton> 
+											
+											<h:commandButton style="width: 60px; margin-right:0px;" 
+															action="#{logicPermissionManager.denyAccessToRole()}" 
+															value="Denegar" >
+											</h:commandButton>
+											
+										</div>
+									</td>
+									<td>
+										<rich:spacer width="25"></rich:spacer>
+									</td>
+									<td>
+										<div style="vertical-align: middle;  ">
+											Usuario:<br />
+											<rich:comboBox suggestionValues="#{permissionManager.allUsers()}"
+														   defaultLabel="&lt;Seleccione&gt;" selectFirstOnUpdate="true"
+														   style="width: 130px;" width="130" 
+														   value="#{logicPermissionManager.selectedUser}" >
+											</rich:comboBox>
+											
+											<h:commandButton style="width: 60px; margin-left:0px;" 
+															action="#{logicPermissionManager.provideAccessToUser(user)}" 
+															value="Permitir" >
+											</h:commandButton> 
+											
+											<h:commandButton style="width: 60px; " 
+															action="#{logicPermissionManager.denyAccessToUser()}" 
+															value="Denegar"	>
+											</h:commandButton>
+										</div>
+									</td>
+								</tr>
+							</table>
+					    
+					    	<a:status id="logicalrulespanelregionstatus"
+								  onstart="javascript:document.getElementById('securityControllerForm:logicalrulesdiv').style.visibility = 'hidden'"
+								  onstop="javascript:document.getElementById('securityControllerForm:logicalrulesdiv').style.visibility = 'visible'">
+							  <f:facet name="start">
+								  <s:div style="text-align: center; width: 100%">
+								  <br/><br/>
+									 <h:graphicImage url="/resources/icons/default/acciones/loading_small.gif" />
+								  </s:div>	 
+							  </f:facet>
+						    </a:status>
+					    	
+					    	
+							<s:div id="logicalrulesdiv" style="display: inline;" >
+							<br/>
+							  <div id="rightdiv" align="right">
+								<a:repeat value="#{logicPermissionManager.functionalitiesPath()}" var="func">
+									<div align="left" style="width: #{logicPermissionManager.percent(func.id)}%; ">
+										<strong>#{func.value.label}</strong>
+									</div>	
+									<s:div style="width: #{logicPermissionManager.percent(func.id)}%;"
+											 styleClass="logicrules" >										
+									  <div align="left">
+									  		<h:dataTable value="#{logicPermissionManager.usersDeniedForFunctionality(func)}"
+															var="entry" style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;" 
+															rendered="#{logicPermissionManager.usersDeniedForFunctionality(func).size() > 0}"
+															cellspacing="0" cellpadding="0" rowClasses="dr-table-firstrow2" border="1" 
+															columnClasses="strech, nostrech">
+												<h:column style="width: 100%">
+													<f:facet name="header">
+														<s:div style="text-align:left; background-color: #FEEFEC">Usuarios denegados	</s:div>	
+													</f:facet>
+													<table cellpadding="0px" cellspacing="0px" >
+														<tr>
+															<td><h:graphicImage url="/resources/modConfiguracion/usuarios_fade.png" /></td>
+															<td style="padding-left: 3px;"><s:link view="/index.html" value="#{entry}" /></td>
+														</tr>
+													</table>
+												</h:column>
+												<h:column >
+													<f:facet name="header">
+														<div align="center" style="background-color: #FEEFEC">Eliminar</div>	
+													</f:facet>
+													<s:div style="text-align: center" >
+														<h:commandLink action="#{logicPermissionManager.deletedRestrictedUser(func.id, entry)}">
+															<h:graphicImage style="border:0px; cursor: pointer" title="eliminar" 
+															url="/resources/icons/default/acciones/eliminar.png" />
+														</h:commandLink>
+													</s:div>
+													<rich:spacer width="50"></rich:spacer>
+												</h:column>
+											</h:dataTable>
+											
+											<h:dataTable value="#{logicPermissionManager.usersAllowedForFunctionality(func)}"
+															var="entry" style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;" 
+															rendered="#{logicPermissionManager.usersAllowedForFunctionality(func).size() > 0}"
+															cellspacing="0" cellpadding="0" rowClasses="dr-table-firstrow2" border="1" 
+															columnClasses="strech, nostrech">
+												<h:column style="width: 100%;">
+													<f:facet name="header">
+														<s:div style="text-align:left; background-color: #E1FFDF">Usuarios permitidos</s:div>
+													</f:facet>
+													<table cellpadding="0px" cellspacing="0px">
+														<tr>
+															<td><h:graphicImage url="/resources/modConfiguracion/usuarios.png" /></td>
+															<td style="padding-left: 3px;"><s:link view="/index.html" value="#{entry}" /></td>
+														</tr>
+													</table>
+												</h:column>
+												<h:column>
+													<f:facet name="header">
+														<div align="center" style="background-color: #E1FFDF">Eliminar</div>	
+													</f:facet>
+													<s:div style="text-align: center;">
+														<h:commandLink action="#{logicPermissionManager.deletedPermitedUser(func.id, entry)}">
+															<h:graphicImage style="border:0px; cursor: pointer" title="eliminar" 
+															url="/resources/icons/default/acciones/eliminar.png" />
+														</h:commandLink>
+													</s:div>
+													<rich:spacer width="50"></rich:spacer>
+												</h:column>
+											</h:dataTable>
+											
+											<h:dataTable value="#{logicPermissionManager.rolesDeniedForFunctionality(func)}"
+															var="entry" style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+															rendered="#{logicPermissionManager.rolesDeniedForFunctionality(func).size() > 0}"
+															cellspacing="0" cellpadding="0" rowClasses="dr-table-firstrow2" border="1"  
+															columnClasses="strech, nostrech">
+												<h:column style="width: 100%;">
+													<f:facet name="header">
+														<s:div style="text-align:left; background-color: #FEEFEC">Roles denegados</s:div>		
+													</f:facet>
+													<table cellpadding="0px" cellspacing="0px" >
+														<tr>
+															<td><h:graphicImage url="/resources/modConfiguracion/roles_fade.png" /></td>
+															<td style="padding-left: 3px;"><s:link view="/index.html" value="#{entry}" /></td>
+														</tr>
+													</table>
+												</h:column>
+												<h:column>
+													<f:facet name="header">
+														<div align="center" style="background-color: #FEEFEC">Eliminar</div>	
+													</f:facet>
+													<s:div style="text-align: center;">
+														<h:commandLink action="#{logicPermissionManager.deletedRestrictedRole(func.id, entry)}">
+															<h:graphicImage style="border:0px; cursor: pointer" title="eliminar" 
+															url="/resources/icons/default/acciones/eliminar.png" />
+														</h:commandLink>
+													</s:div>
+													<rich:spacer width="50"></rich:spacer>
+												</h:column>
+											</h:dataTable>
+																						
+											<h:dataTable value="#{logicPermissionManager.rolesAllowedForFunctionality(func)}"
+															var="entry" style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+															rendered="#{logicPermissionManager.rolesAllowedForFunctionality(func).size() > 0}"
+															cellspacing="0" cellpadding="0" rowClasses="dr-table-firstrow2"  border="1"
+															columnClasses="strech, nostrech">
+												<h:column style="100%">
+													<f:facet name="header">
+														<s:div style="text-align:left; background-color: #E1FFDF">Roles permitidos</s:div>	
+													</f:facet>
+													<table cellpadding="0px" cellspacing="0px">
+														<tr>
+															<td><h:graphicImage url="/resources/modConfiguracion/roles.png" /></td>
+															<td style="padding-left: 3px;"><s:link view="/index.html" value="#{entry}" /></td>
+														</tr>
+													</table>
+												</h:column>
+												<h:column width="10px">
+													<f:facet name="header">
+														<div align="center" style="background-color: #E1FFDF">Eliminar</div>	
+													</f:facet>
+													<s:div style="text-align: center;">
+														<h:commandLink action="#{logicPermissionManager.deletedPermitedRole(func.id, entry)}">
+															<h:graphicImage style="border:0px; cursor: pointer" title="eliminar" 
+															url="/resources/icons/default/acciones/eliminar.png" />
+														</h:commandLink>
+													</s:div>
+												<rich:spacer width="50"></rich:spacer>
+												</h:column>
+											</h:dataTable>
+											<p/>
+									  </div>	
+										
+									</s:div>
+								</a:repeat>
+							  </div>
+						 	</s:div>
+						   
+						</rich:panel>
+					   </div>		
+					  </a:region>
+				</td>
+				</tr>
+			</table>	
+			</rich:tab>
+		</rich:tabPanel>
+		<s:div style="text-align: right;">
+			<s:button value="Salir" style="margin-right:0px;"
+					  view="/modConfiguracion/home.xhtml"></s:button>
+		</s:div>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

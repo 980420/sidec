@@ -1,0 +1,96 @@
+<rich:modalPanel resizeable="false" id="escoger_ubicacion_panel" minHeight="150"
+	minWidth="170" autosized="true" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" onshow="">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<f:facet name="header">
+		<h:panelGroup id="escoger_ubicacion_header">
+			<a4j:status stopText="#{messages.titulo2}"
+				startText="#{messages.actualizando}" id="ubicstatus" forceId="true"></a4j:status>
+		</h:panelGroup>
+	</f:facet>
+	<f:facet name="controls">
+		<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+			style="cursor:pointer; position:relative; top:2px;"
+			onclick="Richfaces.hideModalPanel('escoger_ubicacion_panel')" />
+	</f:facet>
+
+	<h:form id="escoger_ubicacion_form">
+
+		<table cellpadding="0" cellspacing="0"
+			style="height: 130px; width: 100%;">
+			<tr>
+				<td height="5px" />
+			</tr>
+			<tr>
+				<td width="6px" />
+				<td valign="top">
+				<div style="position: relative; top: 5px; left: 3px;"><h:panelGrid
+					columns="2" cellpadding="0" cellspacing="0">
+					<h:graphicImage
+						value="/resources/modCommon/entidades_logos/#{theme.name}/#{theme.color}/#{ubicacionModificarControlador.entidad.logo}"
+						height="18" />
+					<a4j:commandLink reRender="ubicacionEnModificacionInput"
+						action="#{ubicacionModificarControlador.selectEntidadLocation()}"
+						status="ubicSelectedStatus" limitToList="true" ajaxSingle="true"
+						immediate="true" event="onclick" style="FONT-FAMILY: 'AlBattar';">
+						<h:outputLabel
+							value="#{ubicacionModificarControlador.entidad.nombre}"
+							style="margin-left: 2px;" />
+					</a4j:commandLink>
+
+
+
+				</h:panelGrid> <rich:tree
+					changeExpandListener="#{ubicacionModificarControlador.OnNodeCollapseExpand}"
+					value="#{ubicacionModificarControlador.treeData}" switchType="ajax"
+					treeNodeVar="treenode" nodeFace="#{node.toString()}" var="node">
+
+					<rich:treeNode type="ubicacion"
+						icon="/resources/modCommon/ubicacionesimages/#{node.value.tipoUbicacion.icono}"
+						iconLeaf="/resources/modCommon/ubicacionesimages/#{node.value.tipoUbicacion.icono}">
+						<a4j:commandLink
+							value="#{node.value.tipoUbicacion.descripcion} #{node.value.identificador}"
+							status="ubicSelectedStatus" limitToList="true" ajaxSingle="true"
+							immediate="true" event="onclick"
+							action="#{ubicacionModificarControlador.putNewLocation(node)}"
+							reRender="ubicacionEnModificacionInput"
+							style="FONT-FAMILY: 'AlBattar';">
+						</a4j:commandLink>
+					</rich:treeNode>
+				</rich:tree></div>
+				</td>
+			</tr>
+			<tr>
+				<td width="6px" />
+				<td style="text-align: right; vertical-align: bottom"><rich:spacer
+					height="6" style="display:block" />
+				<hr style="border-color: #f0f0f0;" />
+				<a4j:status id="ubicSelectedStatus" forceId="true">
+					<f:facet name="stop">
+						<input type="button"
+							onclick="javascript:Richfaces.hideModalPanel('escoger_ubicacion_panel');"
+							value="#{messages.aceptar}"
+							style="margin-bottom: 0px; margin-top: 2px; margin-left: 2px; margin-right: 1px;" />
+					</f:facet>
+					<f:facet name="start">
+						<h:graphicImage
+							url="/resources/icons/default/acciones/loading_small.gif" />
+					</f:facet>
+				</a4j:status></td>
+				<td width="1%"><rich:spacer width="6" /></td>
+			</tr>
+			<tr>
+				<td style="height: 6px;" colspan="6"></td>
+			</tr>
+		</table>
+
+	</h:form>
+	</rich:modalPanel>

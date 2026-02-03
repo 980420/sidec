@@ -1,0 +1,13 @@
+<a:status for="#{forComponent}" id="#{idStatus}"
+    xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"	xmlns:s="http://jboss.com/products/seam/taglib" xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" xmlns:c="http://java.sun.com/jstl/core"> 
+    <f:facet name="start">
+        <s:div>
+			<h:panelGrid columns="2">
+				<h:graphicImage url="/resources/icons/default/acciones/loading_small.gif" />
+				<h:outputLabel value="#{messages.cargando}" styleClass="normalText" />
+			</h:panelGrid>												
+		</s:div>										
+	</f:facet>
+</a:status>

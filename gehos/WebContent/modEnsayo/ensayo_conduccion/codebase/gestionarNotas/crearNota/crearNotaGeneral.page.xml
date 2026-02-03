@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<page    xmlns               ="http://jboss.com/products/seam/pages"  
+         xmlns:xsi           ="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">  
+           
+  
+	<action execute="#{crearNotaGeneral.inicializarNota()}"/>
+	<param name="idGrupo" value="#{crearNotaGeneral.idGrupo}"/>	
+	
+	<navigation from-action="#{crearNotaGeneral.crear()}">	
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/visualizarEstadoMonitoreo.xhtml">
+			<param name="idGrupo" value="#{crearNotaGeneral.idGrupo}"/>	
+		</redirect>
+	</navigation>
+	
+	
+	<navigation from-action="cancelar">
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/visualizarEstadoMonitoreo.xhtml">
+			<param name="idGrupo" value="#{crearNotaGeneral.idGrupo}"/>	
+		</redirect>
+	</navigation>
+	
+	
+</page>

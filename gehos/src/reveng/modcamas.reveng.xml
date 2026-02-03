@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+	<table-filter match-name="hospital" match-schema="comun"></table-filter>
+	<table-filter match-name="estado" match-schema="nomencladores"></table-filter>
+	<table-filter match-name="municipio" match-schema="nomencladores"></table-filter>
+	<table-filter match-name="localidad" match-schema="nomencladores"></table-filter>
+	<table-filter match-name="tipo_hospital"
+		match-schema="nomencladores">
+	</table-filter>
+	<table-filter match-name="actividad_investigativa_docencia"
+		match-schema="comun">
+	</table-filter>
+	<table-filter match-name="establecimiento_area_influencia"
+		match-schema="comun">
+	</table-filter>
+	<table-filter match-name="tipo_establecimiento_area_influencia"
+		match-schema="nomencladores">
+	</table-filter>
+	<table-filter match-name="partida_presupuestaria"
+		match-schema="comun">
+	</table-filter>
+	<table-filter match-name="destino_partida_presupuestaria"
+		match-schema="nomencladores">
+	</table-filter>
+	<table-filter match-name="asignacion_financiera"
+		match-schema="comun">
+	</table-filter>
+	<table-filter match-name="origen_asignacion_financiera"
+		match-schema="nomencladores">
+	</table-filter>
+</hibernate-reverse-engineering>

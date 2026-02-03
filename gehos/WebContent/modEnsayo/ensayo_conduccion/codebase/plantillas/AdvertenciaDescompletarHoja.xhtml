@@ -1,0 +1,70 @@
+<!-- CU XX Restablecer  -->
+<rich:modalPanel resizeable="false" id="mpAdvertenciaDescompletarHoja" width="320"
+   autosized="true"
+   			      xmlns     ="http://www.w3.org/1999/xhtml" 
+ 			      xmlns:ui  ="http://java.sun.com/jsf/facelets" 
+      		      xmlns:h   ="http://java.sun.com/jsf/html" 
+			      xmlns:f   ="http://java.sun.com/jsf/core" 
+			      xmlns:s   ="http://jboss.com/products/seam/taglib" 
+			      xmlns:rich="http://richfaces.org/rich" 
+                  xmlns:a4j ="http://richfaces.org/a4j" 
+ > 
+  
+			<f:facet name="header">				
+				<h:outputText value="Descompletar hoja CRD"></h:outputText>		
+			</f:facet>			
+			<f:facet name="controls">
+				<a4j:commandButton id="btnCerrarDescompletarHoja" 
+					onclick="Richfaces.hideModalPanel('mpAdvertenciaDescompletarHoja')"
+					image="/resources/icons/default/acciones/cerrar.gif">
+				</a4j:commandButton>
+			</f:facet>
+			<h:form id="eliminar_funcionalidad_panel_formDescompletarHoja">			
+			<table cellpadding="0px" cellspacing="0px" >
+				<tr>
+					<td style="height: 9px;" colspan="6">
+                    </td>
+				</tr>		                  
+				<tr style="vertical-align: top;">
+					<td style="width: 6px;"></td>
+					<td rowspan="2">
+						<h:graphicImage value="/resources/icons/default/acciones/advertencia.png"/>
+					</td>
+					<td>
+						<table cellpadding="0px" cellspacing="0px" >
+							<tr>
+								<td>
+									<rich:spacer width="8"/>
+								</td>
+								<td>
+									<s:div style="text-align:left">																
+										<h:outputText value="Se descompletará la gestión de la Hoja CRD. Al seleccionar Sí, se podrán modificar los datos. ¿ Desea continuar ?" />
+									</s:div>
+								</td>								
+							</tr>
+						</table>						
+					</td>
+				</tr>
+				<tr>
+			<td style="height: 7px;" colspan="6"></td>
+		</tr>
+				<tr>
+					<td colspan="3">
+						<s:div style="text-align:center">
+																	
+							<a4j:commandButton  
+								action="#{gestionarHoja.descompletarHoja()}" 
+								value="#{messages['si']}" 
+								oncomplete="#{rich:component('ajaxLoadingModalBox')}.hide(),#{gestionarHoja.esEvento()}"
+								data="#{ruleManager.clientData}"/>
+							<a4j:commandButton 
+							 id="btnNoDescompletarHoja" 
+							 value="#{messages['no']}"
+							onclick="Richfaces.hideModalPanel('mpAdvertenciaDescompletarHoja')"
+							/>			
+						</s:div>
+					</td>
+				</tr>
+			</table>
+			</h:form>
+		</rich:modalPanel>

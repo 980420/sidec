@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" 
+	xmlns:a="http://richfaces.org/a4j"
+	template="#{theme.template}">
+
+	<ui:composition>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript">setContentTitle("#{messages.msg_titulo_ensClin}")</script>
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+		type='text/css' />
+
+	<rich:messages globalOnly="true" styleClass="message"
+		id="globalMessage" ajaxRendered="true" />
+	<a4j:outputPanel ajaxRendered="true" id="errorOutputPanel">
+		<s:div style="height:35px;"
+			rendered="#{facesMessages.getCurrentMessagesForControl('forma').size() > 0 }">
+			<div class="custom-error">
+				<rich:message for="forma"></rich:message>
+			</div>
+		</s:div>
+	</a4j:outputPanel>
+	<h:form id="forma" enctype="multipart/form-data">
+
+		<rich:panel style=" height : 350px;">
+
+			<table cellpadding="0" cellspacing="0" border="0">
+				<!-- PARA SUBIR EL ARCHIVO -->
+				<td> <h:outputLabel value="#{messages.lbl_n_direccion}">
+						<rich:message for="addExcel" showDetail="false" tooltip="true"
+							style="color:red;">
+							<f:facet name="errorMarker">
+								<h:outputText value="*" style='cursor:pointer'
+									title="#{facesMessages.getCurrentMessagesForControl('addExcel').get(0).getDetail()}" />
+							</f:facet>
+						</rich:message>
+					</h:outputLabel><br /> <s:fileUpload id="addExcel" accept="*.*" tabindex="1"
+						data="#{gestionarDiccionarios.data}"
+						fileName="#{gestionarDiccionarios.forigen.nombre}"
+						required="#{!empty param['forma:buttonAceptar']}">
+						<a4j:support event="onchange"
+							action="#{gestionarDiccionarios.prueba()}"></a4j:support>
+					</s:fileUpload>
+					</td>
+					 <tr>
+					  
+					   <td>
+					   <br />
+			     				<h:outputLabel value="#{messages.lbl_descripcion_ens}:" styleClass="normalText" />
+			     				 <rich:message for="descripcion"
+								showDetail="false" tooltip="true" style="color:red;">
+								   <f:facet name="errorMarker">
+								<h:outputLabel value="*"
+									title="#{facesMessages.getCurrentMessagesForControl('descripcion').get(0).getDetail()}" />
+								   </f:facet>
+							    </rich:message>
+								<br/>
+			     					 <h:inputTextarea id="descripcion" value="#{gestionarDiccionarios.diccionariosEnsayo.descripcion}" 
+			     	                    validator="#{validations_ensayo.allstrings250}" style="resize: vertical; width : 809px;">
+							    	 </h:inputTextarea></td>
+					</tr>
+			</table>
+
+			<table cellpadding="0" cellspacing="0" border="0"
+				style="margin-top: 17px; margin-right: 0px">
+				<tr>
+					<td>
+ 					<h:commandButton tabindex="5" value="#{messages.btn_aceptar_ens}" 
+							id="buttonAceptar" 
+							style="margin-bottom: 0px; margin-right: 10px; margin-left: 0px; margin-top: 8px" 
+							
+							action="#{gestionarDiccionarios.Execute}" /> 
+
+                       
+							</td>
+					<td></td>
+					<td></td>
+					<td><h:commandButton value="#{messages.btn_cancelar_ens}"  tabindex="6"
+							immediate="true"
+							style="margin-bottom: 0px; margin-right: 0px; margin-left: 0px; margin-top: 8px"
+							action="cancelar" /></td>
+
+
+				</tr>
+			</table>
+			<rich:spacer height="10px" style="display: block" />
+			<a4j:region>
+			<rich:dataTable
+				value="#{crearEstudioControlador.cieConsList_custom.seleccionDiccionario()}"
+				var="diccionario" id="f"
+				style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+				cellspacing="0" cellpadding="0" rowClasses="dr-table-firstrow2"
+				rendered="#{!crearEstudioControlador.cieConsList_custom.seleccionDiccionario().isEmpty()}">
+				<f:facet name="header" > <h:outputText value="#{messages.listaDiccionarios}" /></f:facet>
+				<rich:column>
+					<f:facet name="header">
+						<h:panelGrid columns="2" width="100%" cellpadding="0"
+							cellspacing="0" border="0">
+							<s:div style="float: left;">
+								<h:outputLabel value="#{messages.lbl_nombre_ens}" />
+							</s:div>
+						</h:panelGrid>
+					</f:facet>
+					<h:outputLabel value='#{diccionario.nombre}' />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						<h:panelGrid columns="2" width="100%" cellpadding="0"
+							cellspacing="0" border="0">
+							<s:div style="float: left;">
+								<h:outputLabel value="#{messages.lbl_descripcion_ens}" />
+							</s:div>
+						</h:panelGrid>
+					</f:facet>
+					<h:outputText value="#{diccionario.descripcion}" rendered="#{diccionario.descripcion !=null}"/>
+	            	<h:outputText value="-" rendered="#{diccionario.descripcion ==null}"/>
+				</rich:column>
+				<rich:column>
+				<f:facet name="header">
+						<h:panelGrid columns="2" width="100%" cellpadding="0"
+							cellspacing="0" border="0">
+							<s:div style="float: left;">
+								<h:outputLabel value="#{messages.eliminar}" />
+							</s:div>
+						</h:panelGrid>
+					</f:facet>
+					<a:commandLink
+						id="eliminarCommandLink"
+						action="#{gestionarDiccionarios.ocultarDiccionario(diccionario)}"
+						reRender="eliminarCommandLink, forma, buttonAceptar" >
+						<h:graphicImage style="border:0px; cursor: pointer "
+							title="Ocultar"
+							url="/resources/icons/default/acciones/eliminar.png">
+						</h:graphicImage>
+					</a:commandLink>
+				</rich:column>
+			</rich:dataTable>
+			</a4j:region>
+
+			
+			<s:div>
+			<div align="right">
+			<rich:spacer width="100%" height="8px" />
+			</div>
+			</s:div>
+			<rich:spacer height="5px" style="display: block" />
+		</rich:panel>
+
+	</h:form>
+
+	</ui:composition>
+</html>

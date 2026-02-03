@@ -1,0 +1,43 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" 
+	xmlns:a4j="http://richfaces.org/a4j">
+	
+<script type="text/javascript">setContentTitle('#{messages.crearSujeto}')</script>	
+<script type="text/javascript" language="javascript" src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/javascript.js"></script>
+
+<link href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css"
+			rel="stylesheet" type="text/css" />
+<h:form id="idForm" enctype="multipart/form-data" >    
+	<a:queue id="cola" ignoreDupResponses="true" />
+	<a:outputPanel id="outPutForm">		
+<s:validateAll>
+    <a4j:outputPanel ajaxRendered="true" id="errorOutputPanel">
+				<s:div style="height:35px;"
+					rendered="#{facesMessages.getCurrentMessagesForControl('idForm').size() > 0 }">
+					<div class="custom-error">
+						<rich:message for="idForm"></rich:message>
+					</div>	
+				</s:div>
+			</a4j:outputPanel>
+    <ui:include src="/modEnsayo/ensayo_conduccion/codebase/plantillas/crearSujeto.xhtml" >
+		<ui:param name="controlador" value="#{crearSujeto}" />
+		 <ui:param name="validator" value="#{validations_sujeto}" />
+	</ui:include>
+	<div align="right">
+		<br></br>		
+		<h:commandButton style="margin:0px;" id="aceptarr" value="#{messages.aceptar}" action="#{crearSujeto.persistir()}" />
+		<rich:spacer width="10" />
+		<h:commandButton
+			value="#{messages.cancelar}" style="margin:0px;"
+			action="cancelar"  immediate="true"/>
+	</div>
+</s:validateAll>	
+</a:outputPanel>				
+					
+</h:form>
+</s:div>

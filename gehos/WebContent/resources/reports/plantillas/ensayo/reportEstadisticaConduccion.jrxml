@@ -1,0 +1,965 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportTazas" language="groovy" pageWidth="1090" pageHeight="800" orientation="Landscape" columnWidth="1050" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="0.7513148009015783"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="107"/>
+	<style name="Title" fontName="SansSerif" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="SansSerif" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="SansSerif" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="SansSerif" fontSize="12"/>
+	<subDataset name="dataset1">
+		<parameter name="entidad" class="java.lang.String"/>
+		<parameter name="estudio" class="java.lang.String"/>
+		<parameter name="grupo" class="java.lang.String"/>
+		<parameter name="nombreSujeto" class="java.lang.String"/>
+		<parameter name="momentosIniciados" class="java.lang.String"/>
+		<parameter name="momentosCompletados" class="java.lang.String"/>
+		<parameter name="momentosTotal" class="java.lang.String"/>
+		<parameter name="momentosAtrasados" class="java.lang.String"/>
+		<parameter name="crdIniciadas" class="java.lang.String"/>
+		<parameter name="crdCompletadas" class="java.lang.String"/>
+		<parameter name="crdTotal" class="java.lang.String"/>
+		<parameter name="momentoSeguimiento" class="java.lang.String"/>
+		<parameter name="hojaCrd" class="java.lang.String"/>
+		<parameter name="totalGrupo" class="java.lang.String"/>
+		<parameter name="totalEstudio" class="java.lang.String"/>
+		<parameter name="totalEntidad" class="java.lang.String"/>
+		<parameter name="totalEstado" class="java.lang.String"/>
+		<parameter name="provincia" class="java.lang.String"/>
+		<parameter name="totalMomentoF" class="java.lang.String"/>
+		<parameter name="crdFirmadas" class="java.lang.String"/>
+		<field name="valor" class="java.lang.String"/>
+		<field name="entidades" class="java.util.List"/>
+		<field name="totalMIEstado" class="java.lang.String"/>
+		<field name="totalMCEstado" class="java.lang.String"/>
+		<field name="totalMTEstado" class="java.lang.String"/>
+		<field name="totalMAEstado" class="java.lang.String"/>
+		<field name="totalCIEstado" class="java.lang.String"/>
+		<field name="totalCCEstado" class="java.lang.String"/>
+		<field name="totalCTEstado" class="java.lang.String"/>
+		<field name="totalCFEstado" class="java.lang.String"/>
+		<field name="totalMFEstado" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="dataset2">
+		<parameter name="estudio" class="java.lang.String"/>
+		<parameter name="grupo" class="java.lang.String"/>
+		<parameter name="nombreSujeto" class="java.lang.String"/>
+		<parameter name="momentosIniciados" class="java.lang.String"/>
+		<parameter name="momentosCompletados" class="java.lang.String"/>
+		<parameter name="momentosTotal" class="java.lang.String"/>
+		<parameter name="momentosAtrasados" class="java.lang.String"/>
+		<parameter name="crdIniciadas" class="java.lang.String"/>
+		<parameter name="crdCompletadas" class="java.lang.String"/>
+		<parameter name="crdTotal" class="java.lang.String"/>
+		<parameter name="momentoSeguimiento" class="java.lang.String"/>
+		<parameter name="hojaCrd" class="java.lang.String"/>
+		<parameter name="totalGrupo" class="java.lang.String"/>
+		<parameter name="totalEstudio" class="java.lang.String"/>
+		<parameter name="totalEntidad" class="java.lang.String"/>
+		<parameter name="crdFirmadas" class="java.lang.String"/>
+		<parameter name="totalMomentoF" class="java.lang.String"/>
+		<parameter name="entidad" class="java.lang.String"/>
+		<field name="nombre" class="java.lang.String"/>
+		<field name="estudios" class="java.util.List"/>
+		<field name="totalMIEntidad" class="java.lang.String"/>
+		<field name="totalMCEntidad" class="java.lang.String"/>
+		<field name="totalMTEntidad" class="java.lang.String"/>
+		<field name="totalMAEntidad" class="java.lang.String"/>
+		<field name="totalCIEntidad" class="java.lang.String"/>
+		<field name="totalCCEntidad" class="java.lang.String"/>
+		<field name="totalCTEntidad" class="java.lang.String"/>
+		<field name="totalCFEntidad" class="java.lang.String"/>
+		<field name="totalMFEntidad" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="dataset3">
+		<parameter name="grupo" class="java.lang.String"/>
+		<parameter name="nombreSujeto" class="java.lang.String"/>
+		<parameter name="momentosIniciados" class="java.lang.String"/>
+		<parameter name="momentosCompletados" class="java.lang.String"/>
+		<parameter name="momentosTotal" class="java.lang.String"/>
+		<parameter name="momentosAtrasados" class="java.lang.String"/>
+		<parameter name="crdIniciadas" class="java.lang.String"/>
+		<parameter name="crdCompletadas" class="java.lang.String"/>
+		<parameter name="crdTotal" class="java.lang.String"/>
+		<parameter name="momentoSeguimiento" class="java.lang.String"/>
+		<parameter name="hojaCrd" class="java.lang.String"/>
+		<parameter name="totalGrupo" class="java.lang.String"/>
+		<parameter name="totalEstudio" class="java.lang.String"/>
+		<parameter name="totalMomentoF" class="java.lang.String"/>
+		<parameter name="crdFirmadas" class="java.lang.String"/>
+		<parameter name="estudio" class="java.lang.String"/>
+		<field name="nombreEstudio" class="java.lang.String"/>
+		<field name="grupos" class="java.util.List"/>
+		<field name="totalMIEstudio" class="java.lang.String"/>
+		<field name="totalMCEstudio" class="java.lang.String"/>
+		<field name="totalMTEstudio" class="java.lang.String"/>
+		<field name="totalMAEstudio" class="java.lang.String"/>
+		<field name="totalCIEstudio" class="java.lang.String"/>
+		<field name="totalCCEstudio" class="java.lang.String"/>
+		<field name="totalCTEstudio" class="java.lang.String"/>
+		<field name="totalCFestudio" class="java.lang.String"/>
+		<field name="totalMFEstudio" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="dataset4">
+		<parameter name="nombreSujeto" class="java.lang.String"/>
+		<parameter name="momentosIniciados" class="java.lang.String"/>
+		<parameter name="momentosCompletados" class="java.lang.String"/>
+		<parameter name="momentosTotal" class="java.lang.String"/>
+		<parameter name="momentosAtrasados" class="java.lang.String"/>
+		<parameter name="crdIniciadas" class="java.lang.String"/>
+		<parameter name="crdCompletadas" class="java.lang.String"/>
+		<parameter name="crdTotal" class="java.lang.String"/>
+		<parameter name="momentoSeguimiento" class="java.lang.String"/>
+		<parameter name="hojaCrd" class="java.lang.String"/>
+		<parameter name="totalGrupo" class="java.lang.String"/>
+		<parameter name="crdFirmadas" class="java.lang.String"/>
+		<parameter name="totalMomentoF" class="java.lang.String"/>
+		<parameter name="grupo" class="java.lang.String"/>
+		<field name="nombreGrupo" class="java.lang.String"/>
+		<field name="sujetos" class="java.util.List"/>
+		<field name="totalMomentosIniciados" class="java.lang.String"/>
+		<field name="totalMomentosCompletados" class="java.lang.String"/>
+		<field name="totalMomentosTotal" class="java.lang.String"/>
+		<field name="totalMomentosAtrasados" class="java.lang.String"/>
+		<field name="totalCrdIniciadas" class="java.lang.String"/>
+		<field name="totalCrdCompletadas" class="java.lang.String"/>
+		<field name="totalCrdTotal" class="java.lang.String"/>
+		<field name="totalCrdFirmada" class="java.lang.String"/>
+		<field name="totalMomentosFirmados" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="dataset5">
+		<parameter name="nombreSujeto" class="java.lang.String"/>
+		<field name="nombreSujeto" class="java.lang.String"/>
+		<field name="momentosIniciados" class="java.lang.String"/>
+		<field name="momentosCompletados" class="java.lang.String"/>
+		<field name="momentosTotal" class="java.lang.String"/>
+		<field name="momentosAtrasados" class="java.lang.String"/>
+		<field name="crdIniciadas" class="java.lang.String"/>
+		<field name="crdCompletadas" class="java.lang.String"/>
+		<field name="crdTotal" class="java.lang.String"/>
+		<field name="crdFirmada" class="java.lang.String"/>
+		<field name="momentosFirmados" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="LOGO_URL" class="java.lang.String"/>
+	<parameter name="SUBREPORTS" class="java.util.Map"/>
+	<parameter name="SUBREPORTS_DATASOURCES" class="java.util.Map"/>
+	<parameter name="SUBREPORTS_PARAMETERS" class="java.util.Map"/>
+	<parameter name="pais" class="java.lang.String"/>
+	<parameter name="provincia" class="java.lang.String"/>
+	<parameter name="sujetos" class="java.lang.String"/>
+	<parameter name="entidad" class="java.lang.String"/>
+	<parameter name="grupo" class="java.lang.String"/>
+	<parameter name="estudio" class="java.lang.String"/>
+	<parameter name="nombreSujeto" class="java.lang.String"/>
+	<parameter name="momentosIniciados" class="java.lang.String"/>
+	<parameter name="momentosCompletados" class="java.lang.String"/>
+	<parameter name="momentosTotal" class="java.lang.String"/>
+	<parameter name="momentosAtrasados" class="java.lang.String"/>
+	<parameter name="crdIniciadas" class="java.lang.String"/>
+	<parameter name="crdCompletadas" class="java.lang.String"/>
+	<parameter name="crdTotal" class="java.lang.String"/>
+	<parameter name="momentoSeguimiento" class="java.lang.String"/>
+	<parameter name="hojaCrd" class="java.lang.String"/>
+	<parameter name="totalGrupo" class="java.lang.String"/>
+	<parameter name="totalEstudio" class="java.lang.String"/>
+	<parameter name="totalEntidad" class="java.lang.String"/>
+	<parameter name="totalEstado" class="java.lang.String"/>
+	<parameter name="totalNacion" class="java.lang.String"/>
+	<parameter name="crdFirmadas" class="java.lang.String"/>
+	<parameter name="totalMomentoF" class="java.lang.String"/>
+	<field name="valorpais" class="java.lang.String"/>
+	<field name="estados" class="java.util.List"/>
+	<field name="totalMINacion" class="java.lang.String"/>
+	<field name="totalMCNacion" class="java.lang.String"/>
+	<field name="totalMTNacion" class="java.lang.String"/>
+	<field name="totalMANacion" class="java.lang.String"/>
+	<field name="totalCCNacion" class="java.lang.String"/>
+	<field name="totalCTNacion" class="java.lang.String"/>
+	<field name="totalCINacion" class="java.lang.String"/>
+	<field name="totalCFNacion" class="java.lang.String"/>
+	<field name="totalMFNacion" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="63" splitType="Stretch">
+			<image>
+				<reportElement x="314" y="11" width="162" height="39"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO_URL}]]></imageExpression>
+			</image>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="509" y="19" width="111" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="h.mm a">
+				<reportElement x="628" y="19" width="99" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="11" width="298" height="39"/>
+				<textElement>
+					<font size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{sujetos}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement style="Detail" isPrintRepeatedValues="false" x="70" y="0" width="85" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{valorpais}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" mode="Opaque" x="0" y="0" width="70" height="20" forecolor="#666666" backcolor="#99FF99"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{pais}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="330">
+			<componentElement>
+				<reportElement x="0" y="0" width="940" height="295" isPrintInFirstWholeBand="true"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="dataset1">
+						<datasetParameter name="entidad">
+							<datasetParameterExpression><![CDATA[$P{entidad}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="estudio">
+							<datasetParameterExpression><![CDATA[$P{estudio}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="grupo">
+							<datasetParameterExpression><![CDATA[$P{grupo}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="nombreSujeto">
+							<datasetParameterExpression><![CDATA[$P{nombreSujeto}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="momentosIniciados">
+							<datasetParameterExpression><![CDATA[$P{momentosIniciados}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="momentosCompletados">
+							<datasetParameterExpression><![CDATA[$P{momentosCompletados}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="momentosTotal">
+							<datasetParameterExpression><![CDATA[$P{momentosTotal}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="momentosAtrasados">
+							<datasetParameterExpression><![CDATA[$P{momentosAtrasados}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="crdIniciadas">
+							<datasetParameterExpression><![CDATA[$P{crdIniciadas}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="crdCompletadas">
+							<datasetParameterExpression><![CDATA[$P{crdCompletadas}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="crdTotal">
+							<datasetParameterExpression><![CDATA[$P{crdTotal}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="momentoSeguimiento">
+							<datasetParameterExpression><![CDATA[$P{momentoSeguimiento}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="hojaCrd">
+							<datasetParameterExpression><![CDATA[$P{hojaCrd}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="totalGrupo">
+							<datasetParameterExpression><![CDATA[$P{totalGrupo}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="totalEstudio">
+							<datasetParameterExpression><![CDATA[$P{totalEstudio}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="totalEntidad">
+							<datasetParameterExpression><![CDATA[$P{totalEntidad}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="totalEstado">
+							<datasetParameterExpression><![CDATA[$P{totalEstado}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="provincia">
+							<datasetParameterExpression><![CDATA[$P{provincia}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="totalMomentoF">
+							<datasetParameterExpression><![CDATA[$P{totalMomentoF}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="crdFirmadas">
+							<datasetParameterExpression><![CDATA[$P{crdFirmadas}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{estados})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="295" width="940">
+						<textField>
+							<reportElement x="90" y="0" width="202" height="18"/>
+							<textElement/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$F{valor}]]></textFieldExpression>
+						</textField>
+						<componentElement>
+							<reportElement x="0" y="30" width="910" height="230"/>
+							<jr:list printOrder="Vertical">
+								<datasetRun subDataset="dataset2">
+									<datasetParameter name="estudio">
+										<datasetParameterExpression><![CDATA[$P{estudio}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="grupo">
+										<datasetParameterExpression><![CDATA[$P{grupo}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="nombreSujeto">
+										<datasetParameterExpression><![CDATA[$P{nombreSujeto}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="momentosIniciados">
+										<datasetParameterExpression><![CDATA[$P{momentosIniciados}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="momentosCompletados">
+										<datasetParameterExpression><![CDATA[$P{momentosCompletados}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="momentosTotal">
+										<datasetParameterExpression><![CDATA[$P{momentosTotal}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="momentosAtrasados">
+										<datasetParameterExpression><![CDATA[$P{momentosAtrasados}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="crdIniciadas">
+										<datasetParameterExpression><![CDATA[$P{crdIniciadas}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="crdCompletadas">
+										<datasetParameterExpression><![CDATA[$P{crdCompletadas}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="crdTotal">
+										<datasetParameterExpression><![CDATA[$P{crdTotal}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="momentoSeguimiento">
+										<datasetParameterExpression><![CDATA[$P{momentoSeguimiento}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="hojaCrd">
+										<datasetParameterExpression><![CDATA[$P{hojaCrd}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="totalGrupo">
+										<datasetParameterExpression><![CDATA[$P{totalGrupo}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="totalEstudio">
+										<datasetParameterExpression><![CDATA[$P{totalEstudio}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="totalEntidad">
+										<datasetParameterExpression><![CDATA[$P{totalEntidad}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="crdFirmadas">
+										<datasetParameterExpression><![CDATA[$P{crdFirmadas}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="totalMomentoF">
+										<datasetParameterExpression><![CDATA[$P{totalMomentoF}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="entidad">
+										<datasetParameterExpression><![CDATA[$P{entidad}]]></datasetParameterExpression>
+									</datasetParameter>
+									<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{entidades})]]></dataSourceExpression>
+								</datasetRun>
+								<jr:listContents height="230" width="910">
+									<textField>
+										<reportElement x="90" y="0" width="300" height="19"/>
+										<textElement/>
+										<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre}]]></textFieldExpression>
+									</textField>
+									<componentElement>
+										<reportElement x="0" y="30" width="890" height="170"/>
+										<jr:list printOrder="Vertical">
+											<datasetRun subDataset="dataset3">
+												<datasetParameter name="grupo">
+													<datasetParameterExpression><![CDATA[$P{grupo}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="nombreSujeto">
+													<datasetParameterExpression><![CDATA[$P{nombreSujeto}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="momentosIniciados">
+													<datasetParameterExpression><![CDATA[$P{momentosIniciados}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="momentosCompletados">
+													<datasetParameterExpression><![CDATA[$P{momentosCompletados}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="momentosAtrasados">
+													<datasetParameterExpression><![CDATA[$P{momentosAtrasados}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="crdIniciadas">
+													<datasetParameterExpression><![CDATA[$P{crdIniciadas}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="crdCompletadas">
+													<datasetParameterExpression><![CDATA[$P{crdCompletadas}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="crdTotal">
+													<datasetParameterExpression><![CDATA[$P{crdTotal}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="momentoSeguimiento">
+													<datasetParameterExpression><![CDATA[$P{momentoSeguimiento}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="hojaCrd">
+													<datasetParameterExpression><![CDATA[$P{hojaCrd}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="momentosTotal">
+													<datasetParameterExpression><![CDATA[$P{momentosTotal}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="totalGrupo">
+													<datasetParameterExpression><![CDATA[$P{totalGrupo}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="totalEstudio">
+													<datasetParameterExpression><![CDATA[$P{totalEstudio}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="totalMomentoF">
+													<datasetParameterExpression><![CDATA[$P{totalMomentoF}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="crdFirmadas">
+													<datasetParameterExpression><![CDATA[$P{crdFirmadas}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="estudio">
+													<datasetParameterExpression><![CDATA[$P{estudio}]]></datasetParameterExpression>
+												</datasetParameter>
+												<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{estudios})]]></dataSourceExpression>
+											</datasetRun>
+											<jr:listContents height="170" width="890">
+												<textField>
+													<reportElement x="90" y="0" width="300" height="20"/>
+													<textElement/>
+													<textFieldExpression class="java.lang.String"><![CDATA[$F{nombreEstudio}]]></textFieldExpression>
+												</textField>
+												<componentElement>
+													<reportElement x="0" y="30" width="880" height="100"/>
+													<jr:list printOrder="Vertical">
+														<datasetRun subDataset="dataset4">
+															<datasetParameter name="nombreSujeto">
+																<datasetParameterExpression><![CDATA[$P{nombreSujeto}]]></datasetParameterExpression>
+															</datasetParameter>
+															<datasetParameter name="momentosIniciados">
+																<datasetParameterExpression><![CDATA[$P{momentosIniciados}]]></datasetParameterExpression>
+															</datasetParameter>
+															<datasetParameter name="momentosCompletados">
+																<datasetParameterExpression><![CDATA[$P{momentosCompletados}]]></datasetParameterExpression>
+															</datasetParameter>
+															<datasetParameter name="momentosTotal">
+																<datasetParameterExpression><![CDATA[$P{momentosTotal}]]></datasetParameterExpression>
+															</datasetParameter>
+															<datasetParameter name="crdIniciadas">
+																<datasetParameterExpression><![CDATA[$P{crdIniciadas}]]></datasetParameterExpression>
+															</datasetParameter>
+															<datasetParameter name="crdCompletadas">
+																<datasetParameterExpression><![CDATA[$P{crdCompletadas}]]></datasetParameterExpression>
+															</datasetParameter>
+															<datasetParameter name="crdTotal">
+																<datasetParameterExpression><![CDATA[$P{crdTotal}]]></datasetParameterExpression>
+															</datasetParameter>
+															<datasetParameter name="momentoSeguimiento">
+																<datasetParameterExpression><![CDATA[$P{momentoSeguimiento}]]></datasetParameterExpression>
+															</datasetParameter>
+															<datasetParameter name="hojaCrd">
+																<datasetParameterExpression><![CDATA[$P{hojaCrd}]]></datasetParameterExpression>
+															</datasetParameter>
+															<datasetParameter name="momentosAtrasados">
+																<datasetParameterExpression><![CDATA[$P{momentosAtrasados}]]></datasetParameterExpression>
+															</datasetParameter>
+															<datasetParameter name="totalGrupo">
+																<datasetParameterExpression><![CDATA[$P{totalGrupo}]]></datasetParameterExpression>
+															</datasetParameter>
+															<datasetParameter name="crdFirmadas">
+																<datasetParameterExpression><![CDATA[$P{crdFirmadas}]]></datasetParameterExpression>
+															</datasetParameter>
+															<datasetParameter name="totalMomentoF">
+																<datasetParameterExpression><![CDATA[$P{totalMomentoF}]]></datasetParameterExpression>
+															</datasetParameter>
+															<datasetParameter name="grupo">
+																<datasetParameterExpression><![CDATA[$P{grupo}]]></datasetParameterExpression>
+															</datasetParameter>
+															<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{grupos})]]></dataSourceExpression>
+														</datasetRun>
+														<jr:listContents height="100" width="880">
+															<textField>
+																<reportElement x="90" y="0" width="300" height="20"/>
+																<textElement/>
+																<textFieldExpression class="java.lang.String"><![CDATA[$F{nombreGrupo}]]></textFieldExpression>
+															</textField>
+															<componentElement>
+																<reportElement x="30" y="56" width="850" height="24"/>
+																<jr:list printOrder="Vertical">
+																	<datasetRun subDataset="dataset5">
+																		<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{sujetos})]]></dataSourceExpression>
+																	</datasetRun>
+																	<jr:listContents height="24" width="850">
+																		<textField isStretchWithOverflow="true">
+																			<reportElement x="0" y="0" width="130" height="24"/>
+																			<textElement textAlignment="Left" verticalAlignment="Middle">
+																				<font size="10"/>
+																				<paragraph lineSpacing="1_1_2"/>
+																			</textElement>
+																			<textFieldExpression class="java.lang.String"><![CDATA[$F{nombreSujeto}]]></textFieldExpression>
+																		</textField>
+																		<textField>
+																			<reportElement x="130" y="0" width="70" height="24"/>
+																			<textElement textAlignment="Center" verticalAlignment="Middle">
+																				<font size="10"/>
+																				<paragraph lineSpacing="1_1_2"/>
+																			</textElement>
+																			<textFieldExpression class="java.lang.String"><![CDATA[$F{momentosIniciados}]]></textFieldExpression>
+																		</textField>
+																		<textField>
+																			<reportElement x="200" y="0" width="90" height="24"/>
+																			<textElement textAlignment="Center" verticalAlignment="Middle">
+																				<font size="10"/>
+																				<paragraph lineSpacing="1_1_2"/>
+																			</textElement>
+																			<textFieldExpression class="java.lang.String"><![CDATA[$F{momentosCompletados}]]></textFieldExpression>
+																		</textField>
+																		<textField>
+																			<reportElement x="430" y="0" width="70" height="24"/>
+																			<textElement textAlignment="Center" verticalAlignment="Middle">
+																				<font size="10"/>
+																				<paragraph lineSpacing="1_1_2"/>
+																			</textElement>
+																			<textFieldExpression class="java.lang.String"><![CDATA[$F{momentosTotal}]]></textFieldExpression>
+																		</textField>
+																		<textField>
+																			<reportElement x="360" y="0" width="70" height="24"/>
+																			<textElement textAlignment="Center" verticalAlignment="Middle">
+																				<font size="10"/>
+																				<paragraph lineSpacing="1_1_2"/>
+																			</textElement>
+																			<textFieldExpression class="java.lang.String"><![CDATA[$F{momentosAtrasados}]]></textFieldExpression>
+																		</textField>
+																		<textField>
+																			<reportElement x="500" y="0" width="80" height="24"/>
+																			<textElement textAlignment="Center" verticalAlignment="Middle">
+																				<font size="10"/>
+																				<paragraph lineSpacing="1_1_2"/>
+																			</textElement>
+																			<textFieldExpression class="java.lang.String"><![CDATA[$F{crdIniciadas}]]></textFieldExpression>
+																		</textField>
+																		<textField>
+																			<reportElement x="580" y="0" width="100" height="24"/>
+																			<textElement textAlignment="Center" verticalAlignment="Middle">
+																				<font size="10"/>
+																				<paragraph lineSpacing="1_1_2"/>
+																			</textElement>
+																			<textFieldExpression class="java.lang.String"><![CDATA[$F{crdCompletadas}]]></textFieldExpression>
+																		</textField>
+																		<textField>
+																			<reportElement x="770" y="0" width="80" height="24"/>
+																			<textElement textAlignment="Center" verticalAlignment="Middle">
+																				<font size="10"/>
+																				<paragraph lineSpacing="1_1_2"/>
+																			</textElement>
+																			<textFieldExpression class="java.lang.String"><![CDATA[$F{crdTotal}]]></textFieldExpression>
+																		</textField>
+																		<textField>
+																			<reportElement x="680" y="0" width="90" height="24"/>
+																			<textElement textAlignment="Center" verticalAlignment="Middle">
+																				<font size="10"/>
+																				<paragraph lineSpacing="1_1_2"/>
+																			</textElement>
+																			<textFieldExpression class="java.lang.String"><![CDATA[$F{crdFirmada}]]></textFieldExpression>
+																		</textField>
+																		<textField>
+																			<reportElement x="290" y="0" width="70" height="24"/>
+																			<textElement textAlignment="Center" verticalAlignment="Middle">
+																				<font size="10"/>
+																				<paragraph lineSpacing="1_1_2"/>
+																			</textElement>
+																			<textFieldExpression class="java.lang.String"><![CDATA[$F{momentosFirmados}]]></textFieldExpression>
+																		</textField>
+																	</jr:listContents>
+																</jr:list>
+															</componentElement>
+															<textField>
+																<reportElement mode="Opaque" x="30" y="38" width="130" height="18" forecolor="#666666" backcolor="#99FF99"/>
+																<textElement verticalAlignment="Middle">
+																	<font size="12" isBold="true"/>
+																</textElement>
+																<textFieldExpression class="java.lang.String"><![CDATA[$P{nombreSujeto}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement mode="Opaque" x="160" y="20" width="370" height="18" forecolor="#666666" backcolor="#99FF99"/>
+																<textElement textAlignment="Center" verticalAlignment="Middle">
+																	<font size="12" isBold="true"/>
+																</textElement>
+																<textFieldExpression class="java.lang.String"><![CDATA[$P{momentoSeguimiento}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement mode="Opaque" x="530" y="20" width="350" height="18" forecolor="#666666" backcolor="#33FFCC"/>
+																<textElement textAlignment="Center" verticalAlignment="Middle">
+																	<font size="12" isBold="true"/>
+																</textElement>
+																<textFieldExpression class="java.lang.String"><![CDATA[$P{hojaCrd}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement mode="Opaque" x="160" y="38" width="70" height="18" forecolor="#666666" backcolor="#99FF99"/>
+																<textElement textAlignment="Center" verticalAlignment="Middle">
+																	<font size="12" isBold="true"/>
+																</textElement>
+																<textFieldExpression class="java.lang.String"><![CDATA[$P{momentosIniciados}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement mode="Opaque" x="230" y="38" width="90" height="18" forecolor="#666666" backcolor="#99FF99"/>
+																<textElement textAlignment="Center" verticalAlignment="Middle">
+																	<font size="12" isBold="true"/>
+																</textElement>
+																<textFieldExpression class="java.lang.String"><![CDATA[$P{momentosCompletados}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement mode="Opaque" x="460" y="38" width="70" height="18" forecolor="#666666" backcolor="#99FF99"/>
+																<textElement textAlignment="Center" verticalAlignment="Middle">
+																	<font size="12" isBold="true"/>
+																</textElement>
+																<textFieldExpression class="java.lang.String"><![CDATA[$P{momentosTotal}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement mode="Opaque" x="390" y="38" width="70" height="18" forecolor="#666666" backcolor="#99FF99"/>
+																<textElement textAlignment="Center" verticalAlignment="Middle">
+																	<font size="12" isBold="true"/>
+																</textElement>
+																<textFieldExpression class="java.lang.String"><![CDATA[$P{momentosAtrasados}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement mode="Opaque" x="530" y="38" width="80" height="18" forecolor="#666666" backcolor="#33FFCC"/>
+																<textElement textAlignment="Center" verticalAlignment="Middle">
+																	<font size="12" isBold="true"/>
+																</textElement>
+																<textFieldExpression class="java.lang.String"><![CDATA[$P{crdIniciadas}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement mode="Opaque" x="610" y="38" width="100" height="18" forecolor="#666666" backcolor="#36FFCC"/>
+																<textElement textAlignment="Center" verticalAlignment="Middle">
+																	<font size="12" isBold="true"/>
+																</textElement>
+																<textFieldExpression class="java.lang.String"><![CDATA[$P{crdCompletadas}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement mode="Opaque" x="800" y="38" width="80" height="18" forecolor="#666666" backcolor="#33FFCC"/>
+																<textElement textAlignment="Center" verticalAlignment="Middle">
+																	<font size="12" isBold="true"/>
+																</textElement>
+																<textFieldExpression class="java.lang.String"><![CDATA[$P{crdTotal}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement positionType="Float" mode="Opaque" x="0" y="80" width="160" height="20" forecolor="#666666" backcolor="#99FF99"/>
+																<textElement verticalAlignment="Middle">
+																	<font size="12" isBold="true"/>
+																</textElement>
+																<textFieldExpression class="java.lang.String"><![CDATA[$P{totalGrupo}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement positionType="Float" x="160" y="80" width="70" height="20"/>
+																<textElement textAlignment="Center" verticalAlignment="Middle"/>
+																<textFieldExpression class="java.lang.String"><![CDATA[$F{totalMomentosIniciados}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement positionType="Float" x="230" y="80" width="90" height="20"/>
+																<textElement textAlignment="Center" verticalAlignment="Middle"/>
+																<textFieldExpression class="java.lang.String"><![CDATA[$F{totalMomentosCompletados}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement positionType="Float" x="460" y="80" width="70" height="20"/>
+																<textElement textAlignment="Center" verticalAlignment="Middle"/>
+																<textFieldExpression class="java.lang.String"><![CDATA[$F{totalMomentosTotal}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement positionType="Float" x="390" y="80" width="70" height="20"/>
+																<textElement textAlignment="Center" verticalAlignment="Middle"/>
+																<textFieldExpression class="java.lang.String"><![CDATA[$F{totalMomentosAtrasados}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement positionType="Float" x="530" y="80" width="80" height="20"/>
+																<textElement textAlignment="Center" verticalAlignment="Middle"/>
+																<textFieldExpression class="java.lang.String"><![CDATA[$F{totalCrdIniciadas}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement positionType="Float" x="610" y="80" width="100" height="20"/>
+																<textElement textAlignment="Center" verticalAlignment="Middle"/>
+																<textFieldExpression class="java.lang.String"><![CDATA[$F{totalCrdCompletadas}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement positionType="Float" x="800" y="80" width="80" height="20"/>
+																<textElement textAlignment="Center" verticalAlignment="Middle"/>
+																<textFieldExpression class="java.lang.String"><![CDATA[$F{totalCrdTotal}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement mode="Opaque" x="320" y="38" width="70" height="18" forecolor="#666666" backcolor="#99FF99"/>
+																<textElement textAlignment="Center" verticalAlignment="Middle">
+																	<font size="12" isBold="true"/>
+																</textElement>
+																<textFieldExpression class="java.lang.String"><![CDATA[$P{totalMomentoF}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement mode="Opaque" x="710" y="38" width="90" height="18" forecolor="#666666" backcolor="#33FFCC"/>
+																<textElement textAlignment="Center">
+																	<font size="12" isBold="true"/>
+																</textElement>
+																<textFieldExpression class="java.lang.String"><![CDATA[$P{crdFirmadas}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement positionType="Float" x="710" y="80" width="90" height="20"/>
+																<textElement textAlignment="Center" verticalAlignment="Middle"/>
+																<textFieldExpression class="java.lang.String"><![CDATA[$F{totalCrdFirmada}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement positionType="Float" x="320" y="80" width="70" height="20"/>
+																<textElement textAlignment="Center" verticalAlignment="Middle"/>
+																<textFieldExpression class="java.lang.String"><![CDATA[$F{totalMomentosFirmados}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement mode="Opaque" x="0" y="0" width="90" height="20" forecolor="#666666" backcolor="#99FF99"/>
+																<textElement>
+																	<font size="12" isBold="true"/>
+																</textElement>
+																<textFieldExpression class="java.lang.String"><![CDATA[$P{grupo}]]></textFieldExpression>
+															</textField>
+														</jr:listContents>
+													</jr:list>
+												</componentElement>
+												<textField>
+													<reportElement positionType="Float" mode="Opaque" x="0" y="140" width="160" height="20" forecolor="#666666" backcolor="#99FF99"/>
+													<textElement verticalAlignment="Middle">
+														<font size="12" isBold="true"/>
+													</textElement>
+													<textFieldExpression class="java.lang.String"><![CDATA[$P{totalEstudio}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement positionType="Float" x="160" y="140" width="70" height="20"/>
+													<textElement textAlignment="Center" verticalAlignment="Middle"/>
+													<textFieldExpression class="java.lang.String"><![CDATA[$F{totalMIEstudio}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement positionType="Float" x="230" y="140" width="90" height="20"/>
+													<textElement textAlignment="Center" verticalAlignment="Middle"/>
+													<textFieldExpression class="java.lang.String"><![CDATA[$F{totalMCEstudio}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement positionType="Float" x="460" y="140" width="70" height="20"/>
+													<textElement textAlignment="Center" verticalAlignment="Middle"/>
+													<textFieldExpression class="java.lang.String"><![CDATA[$F{totalMTEstudio}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement positionType="Float" x="390" y="140" width="70" height="20"/>
+													<textElement textAlignment="Center" verticalAlignment="Middle"/>
+													<textFieldExpression class="java.lang.String"><![CDATA[$F{totalMAEstudio}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement positionType="Float" x="530" y="140" width="80" height="20"/>
+													<textElement textAlignment="Center" verticalAlignment="Middle"/>
+													<textFieldExpression class="java.lang.String"><![CDATA[$F{totalCIEstudio}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement positionType="Float" x="610" y="140" width="100" height="20"/>
+													<textElement textAlignment="Center" verticalAlignment="Middle"/>
+													<textFieldExpression class="java.lang.String"><![CDATA[$F{totalCCEstudio}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement positionType="Float" x="800" y="140" width="80" height="20"/>
+													<textElement textAlignment="Center" verticalAlignment="Middle"/>
+													<textFieldExpression class="java.lang.String"><![CDATA[$F{totalCTEstudio}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement positionType="Float" x="710" y="140" width="90" height="20"/>
+													<textElement textAlignment="Center" verticalAlignment="Middle"/>
+													<textFieldExpression class="java.lang.String"><![CDATA[$F{totalCFestudio}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement positionType="Float" x="320" y="140" width="70" height="20"/>
+													<textElement textAlignment="Center" verticalAlignment="Middle"/>
+													<textFieldExpression class="java.lang.String"><![CDATA[$F{totalMFEstudio}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement mode="Opaque" x="0" y="0" width="90" height="20" forecolor="#666666" backcolor="#99FF99"/>
+													<textElement>
+														<font size="12" isBold="true"/>
+													</textElement>
+													<textFieldExpression class="java.lang.String"><![CDATA[$P{estudio}]]></textFieldExpression>
+												</textField>
+											</jr:listContents>
+										</jr:list>
+									</componentElement>
+									<textField>
+										<reportElement positionType="Float" mode="Opaque" x="0" y="205" width="160" height="20" forecolor="#666666" backcolor="#99FF99"/>
+										<textElement verticalAlignment="Middle">
+											<font size="12" isBold="true"/>
+										</textElement>
+										<textFieldExpression class="java.lang.String"><![CDATA[$P{totalEntidad}]]></textFieldExpression>
+									</textField>
+									<textField>
+										<reportElement positionType="Float" x="160" y="205" width="70" height="20"/>
+										<textElement textAlignment="Center" verticalAlignment="Middle"/>
+										<textFieldExpression class="java.lang.String"><![CDATA[$F{totalMIEntidad}]]></textFieldExpression>
+									</textField>
+									<textField>
+										<reportElement positionType="Float" x="230" y="205" width="90" height="20"/>
+										<textElement textAlignment="Center" verticalAlignment="Middle"/>
+										<textFieldExpression class="java.lang.String"><![CDATA[$F{totalMCEntidad}]]></textFieldExpression>
+									</textField>
+									<textField>
+										<reportElement positionType="Float" x="460" y="205" width="70" height="20"/>
+										<textElement textAlignment="Center" verticalAlignment="Middle"/>
+										<textFieldExpression class="java.lang.String"><![CDATA[$F{totalMTEntidad}]]></textFieldExpression>
+									</textField>
+									<textField>
+										<reportElement positionType="Float" x="390" y="205" width="70" height="20"/>
+										<textElement textAlignment="Center" verticalAlignment="Middle"/>
+										<textFieldExpression class="java.lang.String"><![CDATA[$F{totalMAEntidad}]]></textFieldExpression>
+									</textField>
+									<textField>
+										<reportElement positionType="Float" x="530" y="205" width="80" height="20"/>
+										<textElement textAlignment="Center" verticalAlignment="Middle"/>
+										<textFieldExpression class="java.lang.String"><![CDATA[$F{totalCIEntidad}]]></textFieldExpression>
+									</textField>
+									<textField>
+										<reportElement positionType="Float" x="610" y="205" width="100" height="20"/>
+										<textElement textAlignment="Center" verticalAlignment="Middle"/>
+										<textFieldExpression class="java.lang.String"><![CDATA[$F{totalCCEntidad}]]></textFieldExpression>
+									</textField>
+									<textField>
+										<reportElement positionType="Float" x="800" y="205" width="80" height="20"/>
+										<textElement textAlignment="Center" verticalAlignment="Middle"/>
+										<textFieldExpression class="java.lang.String"><![CDATA[$F{totalCTEntidad}]]></textFieldExpression>
+									</textField>
+									<textField>
+										<reportElement positionType="Float" x="710" y="205" width="90" height="20"/>
+										<textElement textAlignment="Center" verticalAlignment="Middle"/>
+										<textFieldExpression class="java.lang.String"><![CDATA[$F{totalCFEntidad}]]></textFieldExpression>
+									</textField>
+									<textField>
+										<reportElement positionType="Float" x="320" y="205" width="70" height="20"/>
+										<textElement textAlignment="Center" verticalAlignment="Middle"/>
+										<textFieldExpression class="java.lang.String"><![CDATA[$F{totalMFEntidad}]]></textFieldExpression>
+									</textField>
+									<textField>
+										<reportElement mode="Opaque" x="0" y="0" width="90" height="20" forecolor="#666666" backcolor="#99FF99"/>
+										<textElement>
+											<font size="12" isBold="true"/>
+										</textElement>
+										<textFieldExpression class="java.lang.String"><![CDATA[$P{entidad}]]></textFieldExpression>
+									</textField>
+								</jr:listContents>
+							</jr:list>
+						</componentElement>
+						<textField>
+							<reportElement positionType="Float" mode="Opaque" x="0" y="270" width="160" height="20" forecolor="#666666" backcolor="#99FF99"/>
+							<textElement verticalAlignment="Middle">
+								<font size="12" isBold="true"/>
+							</textElement>
+							<textFieldExpression class="java.lang.String"><![CDATA[$P{totalEstado}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="160" y="270" width="70" height="20"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$F{totalMIEstado}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="230" y="270" width="90" height="20"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$F{totalMCEstado}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="460" y="270" width="70" height="20"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$F{totalMTEstado}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="390" y="270" width="70" height="20"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$F{totalMAEstado}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="530" y="270" width="80" height="20"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$F{totalCIEstado}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="610" y="270" width="100" height="20"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$F{totalCCEstado}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="800" y="270" width="80" height="20"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$F{totalCTEstado}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement mode="Opaque" x="0" y="0" width="90" height="20" forecolor="#666666" backcolor="#99FF99"/>
+							<textElement>
+								<font size="12" isBold="true"/>
+							</textElement>
+							<textFieldExpression class="java.lang.String"><![CDATA[$P{provincia}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="710" y="270" width="90" height="20"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$F{totalCFEstado}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="320" y="270" width="70" height="20"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$F{totalMFEstado}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<textField>
+				<reportElement positionType="Float" mode="Opaque" x="0" y="300" width="160" height="20" forecolor="#666666" backcolor="#99FF99"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{totalNacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="160" y="300" width="70" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{totalMINacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="230" y="300" width="90" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{totalMCNacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="460" y="300" width="70" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{totalMTNacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="390" y="300" width="70" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{totalMANacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="530" y="300" width="80" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{totalCINacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="610" y="300" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{totalCCNacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="800" y="300" width="81" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{totalCTNacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="710" y="300" width="90" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{totalCFNacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="320" y="300" width="70" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{totalMFNacion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

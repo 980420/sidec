@@ -1,0 +1,47 @@
+package horarios
+
+import gehos.consulta.entity.custom.PlanificacionRuleResult;
+import gehos.citas.entity.TipoFuncionario_citas;
+
+rule "Medicos especialistas"
+	when 
+		TipoFuncionario_citas(valor=="Médico especialista")
+		$result : PlanificacionRuleResult()
+	then 
+		$result.setHorarioPrimera(true);
+		$result.setHorarioControl(true);
+		$result.setHorarioInter(true);
+		$result.setHorarioCharla(true);
+		$result.setHorarioTriageEsp(true);
+		$result.setHorarioTriageGen(false);
+			
+end
+
+rule "Medicos residentes"
+	when 
+		TipoFuncionario_citas(valor=="Médico residente")
+		$result : PlanificacionRuleResult()
+	then 
+		$result.setHorarioPrimera(false);
+		$result.setHorarioControl(false);
+		$result.setHorarioInter(false);
+		$result.setHorarioCharla(true);
+		$result.setHorarioTriageEsp(true);
+		$result.setHorarioTriageGen(true);
+			
+end
+
+rule "Medicos internos"
+	when 
+		TipoFuncionario_citas(valor=="Médico interno")
+		$result : PlanificacionRuleResult()
+	then 
+		$result.setHorarioPrimera(false);
+		$result.setHorarioControl(false);
+		$result.setHorarioInter(false);
+		$result.setHorarioCharla(false);
+		$result.setHorarioTriageGen(false);
+		$result.setHorarioTriageEsp(true);
+		
+			
+end

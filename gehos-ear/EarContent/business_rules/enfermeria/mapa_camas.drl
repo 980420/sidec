@@ -1,0 +1,34 @@
+#created on: Mar 7, 2009
+package gehos.enfermeria.rules
+
+#list any import classes here.
+import org.jboss.seam.drools.Decision;
+import java.security.Principal;
+import org.jboss.seam.security.Role;
+import org.jboss.seam.security.AuthorizationException;
+import gehos.enfermeria.entity.custom.MapaCamaRule;
+import java.lang.Exception;
+#declare any global variables here
+
+
+rule "show_habitacion"
+	salience 0
+	when
+		#conditions
+		MapaCamaRule ( codigo == "H" )
+		$m : MapaCamaRule() 
+	then 
+		#actions
+		$m.setTipoUbicacion("H");
+end
+
+rule "show_sala"
+	salience 0
+	when
+		#conditions
+		MapaCamaRule ( codigo == "C" )
+		$m : MapaCamaRule() 
+	then 
+		#actions
+		$m.setTipoUbicacion("S");
+end

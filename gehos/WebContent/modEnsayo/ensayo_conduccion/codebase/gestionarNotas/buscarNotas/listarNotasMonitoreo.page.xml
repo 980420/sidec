@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<page    xmlns               ="http://jboss.com/products/seam/pages"  
+         xmlns:xsi           ="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd"> 
+    
+           
+   	 <begin-conversation flush-mode="manual" join="true"/>
+	<action execute="#{listarNotasMonitoreo.refresh()}"/>
+	<param name="idNota"/>	
+	<param name="idcrd" />
+	<param name="idGrupo" value="#{listarNotasMonitoreo.idGrupo}"/>	
+	<param name="idSujeto" value="#{listarNotasMonitoreo.idSujeto}"/>
+	
+	<navigation from-action="modificarNota">
+	     <end-conversation before-redirect="true"/>
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/modificarNota/modificarNotaMonitoreo.xhtml">
+		<param name="idNota" value="#{idNota}"/>
+		<param name="idSujeto" value="#{listarNotasMonitoreo.idSujeto}"/>
+		<param name="idGrupo" value="#{listarNotasMonitoreo.idGrupo}"/>	
+		</redirect>
+	</navigation>
+	
+	<navigation from-action="resolverDiscrepancia">
+    <end-conversation before-redirect="true"/>
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCRD/gestionarHoja.xhtml">
+		<param name="from" value="listarNotas"/>
+		<param name="idcrd" value="#{idcrd}"/>
+		<param name="idSujeto" value="#{listarNotasMonitoreo.idSujeto}"/>
+		<param name="idGrupo" value="#{listarNotasMonitoreo.idGrupo}"/>	
+		</redirect>
+	</navigation>
+	
+	<navigation from-action="responderNota">
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/crearNota/responderNotaMonitoreoListado.xhtml">
+		<param name="idNota" value="#{idNota}"/>
+		<param name="idSujeto" value="#{listarNotasMonitoreo.idSujeto}"/>
+		<param name="idGrupo" value="#{listarNotasMonitoreo.idGrupo}"/>	
+		<param name="desdeFrom" value="listarNota"/>
+		</redirect>
+	</navigation>
+	
+	
+	
+	<navigation from-action="verDetalles">
+    <end-conversation before-redirect="true"/>	
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/verNota/verNotaMonitoreoListado.xhtml">
+		<param name="idNota" value="#{idNota}"/>
+		<param name="idSujeto" value="#{listarNotasMonitoreo.idSujeto}"/>
+		<param name="idGrupo" value="#{listarNotasMonitoreo.idGrupo}"/>	
+		<param name="desde" value="listarNota"/>
+		</redirect>
+	</navigation>
+	
+	 <navigation from-action="cancelar">
+    <end-conversation before-redirect="true"/>
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/visualizarEstadoMonitoreo.xhtml">
+			 <param name="idGrupo" value="#{listarNotasMonitoreo.idGrupo}"/>	
+			 <param name="idFuncionalidad" value="#{activeModule.activeModule.id}" />
+   			 <param name="idancestors" value="#{activeModule.activeModule.id}a" />
+		</redirect>			
+	</navigation>
+	
+</page>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<page    xmlns               ="http://jboss.com/products/seam/pages"  
+         xmlns:xsi           ="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">  
+           
+    <begin-conversation flush-mode="manual" join="true"/>
+    
+    <param name="desde" value="#{verEstudioControlador.desde}" />
+	<param name="IdEstudiov" value="#{verEstudioControlador.estudyId}"/>
+	<action execute="#{verEstudioControlador.iniVerestudio()}"/>
+	
+	
+	
+	<navigation from-action="cancelar">
+		<end-conversation before-redirect = "true" />
+      <redirect view-id="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarEstudio/buscarEstudio.xhtml">
+		</redirect>
+    </navigation>   
+    
+    <!-- Modificar -->
+	<navigation from-action="modificar">
+		
+		<end-conversation before-redirect = "true" />
+		<redirect view-id="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarEstudio/modificarEstudio.xhtml">
+			<param name="IdEstudiom" value="#{verEstudioControlador.estudio.id}" />
+			
+		</redirect>
+		
+	</navigation>
+	
+    	<!--Eliminar -->
+	<navigation from-action="#{verEstudioControlador.eliminarEstudio()}">
+	<end-conversation before-redirect = "true" />
+		<redirect view-id="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarEstudio/buscarEstudio.xhtml"/>
+	</navigation>
+    
+	
+</page>

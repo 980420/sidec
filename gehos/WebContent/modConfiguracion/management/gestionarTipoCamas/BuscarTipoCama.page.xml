@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<action execute="#{tipoCamaBuscarControlador.begin()}" />
+
+	<!-- Create -->
+	<navigation from-action="#{tipoCamaCrearControlador.begin()}">	
+		<rule>	
+			<redirect view-id="/modConfiguracion/management/gestionarTipoCamas/CrearTipoCama.xhtml" />
+		</rule>
+	</navigation>
+
+	<!-- View details -->
+	<navigation from-action="#{tipoCamaBuscarControlador.seleccionarVer()}" evaluate="#{tipoCamaBuscarControlador.error}">
+		<rule if-outcome="0">	
+			<redirect view-id="/modConfiguracion/management/gestionarTipoCamas/VerDetallesTipoCama.xhtml">
+				<param name="tipoCamaId" value="#{tipoCamaBuscarControlador.idEliminar}" />
+				<param name="from" value="listar" />
+			</redirect>			
+		</rule>
+	</navigation>
+
+	<!-- Modify -->
+	<navigation from-action="#{tipoCamaBuscarControlador.seleccionarModificar()}" evaluate="#{tipoCamaBuscarControlador.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarTipoCamas/ModificarTipoCama.xhtml" >
+				<param name="tipoCamaId" value="#{tipoCamaBuscarControlador.idEliminar}" />
+			</redirect>
+		</rule>
+	</navigation>
+</page>

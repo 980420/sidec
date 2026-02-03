@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+
+	<s:div rendered="#{node.type.ordinal()!=3}">
+		<ui:include
+			src="/modEnsayo/ensayo_disenno/codebase/reglas/conditionstree/nodeCondition.xhtml">
+			<ui:param name="node" value="#{node}" />
+		</ui:include>
+	</s:div>
+	<s:div rendered="#{node.type.ordinal()==3}">	
+	<a4j:outputPanel id="reg#{node.id}">
+	
+		<c:set var="vartype" value="#{node.variable.tipoDato.codigo.toLowerCase()}"></c:set> 
+		<c:set var="nodeid" value="rminput#{vartype}#{node.id}"></c:set>
+		   
+		<table cellpadding="0" cellspacing="1">
+			<tr>
+				<td><rich:spacer width="#{node.level*12}px"></rich:spacer></td>
+				<td><s:div style="width: 130px;overflow: hidden; text-overflow: ellipsis;">
+						<a4j:commandLink id="cl#{node.id}"
+							value="#{node.variable.nombreVariable}"
+							action="#{RuleConditionsManager.setNodeToChangeVariable(node)}"
+							oncomplete="Richfaces.showModalPanel('variableSelection')"
+							ajaxSingle="true" reRender="ioahra"></a4j:commandLink>							
+
+						<rich:toolTip>
+
+							<p style="font-style: italic; text-align: center;">&lt;Haz
+								click para cambiarla&gt;</p>
+							<table>
+								<tr>
+									<td>Nombre:</td>
+									<td>#{node.variable.nombreVariable}</td>
+								</tr>
+								<!-- <tr>
+									<td>Requerida:</td>
+									<td>#{node.variable.requerido}</td>
+								</tr> -->
+								<tr>
+									<td>Tipo:</td>
+									<td>#{node.variable.tipoDato.nombre}</td>
+								</tr>
+								<tr>
+									<td>Grupo:</td>
+									<td>#{not empty node.variable.grupoVariables ? 'Sí':'No'}</td>
+								</tr>
+							</table>
+						</rich:toolTip>
+					</s:div></td>
+					<td width='4px;'>
+					<rich:message for="#{nodeid}" showDetail="false" tooltip="true"
+											style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title='#{facesMessages.getCurrentMessagesForControl(nodeid).get(0).getDetail()}' />
+											</f:facet>
+										</rich:message>
+					
+					</td>
+				<td><rich:comboBox suggestionValues="#{node.operators}" enableManualInput="false"
+						value="#{node.operator}">
+						<a4j:support event="onselect" ajaxSingle="true"></a4j:support>
+					</rich:comboBox></td>
+				<td><rich:spacer styleClass="button-margin-left" width="0" height="0"/></td>
+				<td>
+					<c:if test="#{(node.variable.tipoDato.codigo=='INT')}">
+						<h:inputText id="#{nodeid}" value="#{node.value}" styleClass="inputTextWidth" maxlength="10"
+							rendered="#{(node.variable.tipoDato.codigo=='INT') and !node.valueIsExpression}" validator="#{valida.validateIntegerConds}"
+							required="true">
+							<a4j:support event="onblur" ajaxSingle="true" limitToList="true" reRender="reg#{node.id}"></a4j:support>							
+						</h:inputText>
+					</c:if>
+					<c:if test="#{(node.variable.tipoDato.codigo=='REAL')}">
+					<h:inputText id="#{nodeid}" value="#{node.value}" styleClass="inputTextWidth" maxlength="10"
+						rendered="#{(node.variable.tipoDato.codigo=='REAL') and !node.valueIsExpression}" validator="#{valida.validateDoubleConds}"
+						required="true">
+						<a4j:support event="onblur" ajaxSingle="true" limitToList="true" reRender="reg#{node.id}"></a4j:support>
+					</h:inputText>
+					</c:if>
+					<c:if test="#{(node.variable.tipoDato.codigo=='ST')}">
+					<h:inputText id="#{nodeid}" value="#{node.value}" styleClass="inputTextWidth" maxlength="30"
+						rendered="#{(node.variable.tipoDato.codigo=='ST') and !node.valueIsExpression}"
+						required="true">
+						<a4j:support event="onblur" ajaxSingle="true" limitToList="true" reRender="reg#{node.id}"></a4j:support>
+					</h:inputText> 
+					</c:if>
+					<c:if test="#{(node.variable.tipoDato.codigo=='DATE')}">
+					<h:inputText id="#{nodeid}" value="#{node.value}" required="true"
+						styleClass="inputTextWidth #{node.variable.tipoDato.codigo=='DATE' ? 'likedate':''}"
+						rendered="#{(node.variable.tipoDato.codigo=='DATE') and !node.valueIsExpression}"
+						validator="#{valida.validateDateSigec}">
+						<a4j:support event="onblur" ajaxSingle="true" limitToList="true" reRender="reg#{node.id}"></a4j:support>
+					</h:inputText> 
+					</c:if>					
+					<h:outputText value="#{node.value}"
+						style="border: 1px solid gray;padding: 1px 4px;border-radius: 2px;"
+						rendered="#{(node.variable.tipoDato.codigo=='INT' or node.variable.tipoDato.codigo=='ST' or node.variable.tipoDato.codigo=='REAL' or node.variable.tipoDato.codigo=='DATE') and node.valueIsExpression}" /> 
+					
+					<c:if test="#{(node.variable.tipoDato.codigo=='BL')}">
+					<h:selectBooleanCheckbox id="#{nodeid}" value="#{node.value}"
+						rendered="#{node.variable.tipoDato.codigo=='BL'}">
+						<a4j:support event="onchange" limitToList="true" reRender="reg#{node.id}"></a4j:support><!-- reRender="ruleform"  -->
+					</h:selectBooleanCheckbox> <s:span rendered="#{node.variable.tipoDato.codigo=='BL'}"
+						style="vertical-align: 3px;">#{node.value? 'Verdadero':'Falso'}</s:span>
+						</c:if>
+					<c:if test="#{(node.variable.tipoDato.codigo=='NOM')}">
+					<rich:comboBox id="#{nodeid}" rendered="#{node.variable.tipoDato.codigo=='NOM'}" styleClass="inputTextWidth"
+						value="#{node.value}"
+						required="true"
+						suggestionValues="#{RuleConditionsManager.SuggestionValues(node.variable)}">
+						<a4j:support event="onselect" ajaxSingle="true" limitToList="true" reRender="reg#{node.id}"></a4j:support>
+						</rich:comboBox>
+						</c:if>	
+						<c:if test="#{(node.variable.tipoDato.codigo=='FILE')}">		
+						<h:inputText id="#{nodeid}" value="#{node.value}" styleClass="inputTextWidth #{node.findValidationFor()}" validator="#{valida.validateFileInputConds}"
+						rendered="#{(node.variable.tipoDato.codigo=='FILE') and !node.valueIsExpression}" maxlength="15"
+						required="true">
+							<a4j:support event="onblur" ajaxSingle="true" limitToList="true" reRender="reg#{node.id}"></a4j:support>
+						</h:inputText>
+						</c:if>
+						</td>
+				       
+				<td><a4j:outputPanel style="background: #E2E2E2; display: inline-table;border-radius: 6px;padding: 0px 3px 0px 0px; border: 1px solid #A0A0A0;">						
+						<a4j:commandButton title="#{messages.eliminar}"
+											action="#{RuleConditionsManager.removeNode(node)}" reRender="ruleform,opValues" ajaxSingle="true"
+											image="/resources/icons/default/acciones/eliminar.png">											
+										</a4j:commandButton>
+					<!-- 	<s:div rendered="false">			 -->							
+						<a4j:commandButton title="Entrar expresión" style="margin-left: 2px;"
+							oncomplete="Richfaces.showModalPanel('expressionbuilder')"
+							action="#{dragDropBean.SetNode(node)}" 
+							reRender="ruleform,opValues,src,phptable" 
+							rendered="#{(node.variable.tipoDato.codigo=='INT' or node.variable.tipoDato.codigo=='DATE' or node.variable.tipoDato.codigo=='REAL')}"
+							ajaxSingle="true"
+							image="/resources/modEnsayo/img/iconos/expression.png">											
+						</a4j:commandButton>
+						<a4j:commandButton title="Entrar valor"	style="margin-left: 3px;"						
+							action="#{RuleConditionsManager.NodeToNormalValue(node)}" 
+							reRender="ruleform,opValues" 
+							rendered="#{node.valueIsExpression and (node.variable.tipoDato.codigo=='INT' or node.variable.tipoDato.codigo=='DATE' or node.variable.tipoDato.codigo=='DATE')}"
+							ajaxSingle="true"
+							image="/resources/modEnsayo/img/iconos/input.png">										
+						</a4j:commandButton>
+					<!-- 	</s:div>  -->
+					</a4j:outputPanel>
+				</td>
+				<td>
+				   <s:div styleClass="eval-sign eval-#{node.boolValue == true ? 'ok':(node.boolValue == false ? 'fail':'')}"></s:div>
+				</td>
+			</tr>
+			<tr>
+				<td><rich:spacer styleClass="field-hor-space" width="0" height="0"/></td>
+			</tr>
+		</table>
+	
+</a4j:outputPanel>
+
+	</s:div>
+	<c:if test="#{not empty node.children}">
+		<s:div>
+			<c:forEach var="child" items="#{node.children}" varStatus="loop">
+				<ui:include
+					src="/modEnsayo/ensayo_disenno/codebase/reglas/conditionstree/node.xhtml">
+					<ui:param name="node" value="#{child}" />
+				</ui:include>
+			</c:forEach>
+
+		</s:div>
+	</c:if>
+
+</s:div>

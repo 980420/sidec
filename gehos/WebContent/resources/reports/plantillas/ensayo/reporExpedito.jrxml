@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 4.5.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporExpedito" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORTS_PARAMETERS" class="java.util.Map"/>
+	<parameter name="SUBREPORTS_DATASOURCES" class="java.util.Map"/>
+	<parameter name="SUBREPORTS" class="java.util.Map"/>
+	<group name="primerEx">
+		<groupExpression><![CDATA[$V{PAGE_NUMBER}]]></groupExpression>
+		<groupHeader>
+			<band height="50">
+				<subreport>
+					<reportElement x="0" y="0" width="572" height="50"/>
+					<parametersMapExpression><![CDATA[$P{SUBREPORTS_PARAMETERS}.get("REPOREXPEDITO_SUBREPORT1_PARAMETERS")]]></parametersMapExpression>
+					<dataSourceExpression><![CDATA[$P{SUBREPORTS_DATASOURCES}.get("REPOREXPEDITO_SUBREPORT1_DATASOURCE")]]></dataSourceExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORTS}.get("REPOREXPEDITO_SUBREPORT1")]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="segundoEx">
+		<groupExpression><![CDATA[$V{PAGE_NUMBER}]]></groupExpression>
+		<groupHeader>
+			<band height="50">
+				<subreport>
+					<reportElement x="0" y="0" width="572" height="50"/>
+					<parametersMapExpression><![CDATA[$P{SUBREPORTS_PARAMETERS}.get("REPOREXPEDITO_SUBREPORT2_PARAMETERS")]]></parametersMapExpression>
+					<dataSourceExpression><![CDATA[$P{SUBREPORTS_DATASOURCES}.get("REPOREXPEDITO_SUBREPORT2_DATASOURCE")]]></dataSourceExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORTS}.get("REPOREXPEDITO_SUBREPORT2")]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="tercerEx">
+		<groupExpression><![CDATA[$V{PAGE_NUMBER}]]></groupExpression>
+		<groupHeader>
+			<band height="50">
+				<subreport>
+					<reportElement x="0" y="0" width="572" height="50"/>
+					<parametersMapExpression><![CDATA[$P{SUBREPORTS_PARAMETERS}.get("REPOREXPEDITO_SUBREPORT3_PARAMETERS")]]></parametersMapExpression>
+					<dataSourceExpression><![CDATA[$P{SUBREPORTS_DATASOURCES}.get("REPOREXPEDITO_SUBREPORT3_DATASOURCE")]]></dataSourceExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORTS}.get("REPOREXPEDITO_SUBREPORT3")]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="cuartoEx">
+		<groupExpression><![CDATA[$V{PAGE_NUMBER}]]></groupExpression>
+		<groupHeader>
+			<band height="50">
+				<subreport>
+					<reportElement x="0" y="0" width="572" height="50"/>
+					<parametersMapExpression><![CDATA[$P{SUBREPORTS_PARAMETERS}.get("REPOREXPEDITO_SUBREPORT4_PARAMETERS")]]></parametersMapExpression>
+					<dataSourceExpression><![CDATA[$P{SUBREPORTS_DATASOURCES}.get("REPOREXPEDITO_SUBREPORT4_DATASOURCE")]]></dataSourceExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORTS}.get("REPOREXPEDITO_SUBREPORT4")]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="quintoEx">
+		<groupExpression><![CDATA[$V{PAGE_NUMBER}]]></groupExpression>
+		<groupHeader>
+			<band height="50">
+				<subreport>
+					<reportElement x="0" y="0" width="572" height="50"/>
+					<parametersMapExpression><![CDATA[$P{SUBREPORTS_PARAMETERS}.get("REPOREXPEDITO_SUBREPORT5_PARAMETERS")]]></parametersMapExpression>
+					<dataSourceExpression><![CDATA[$P{SUBREPORTS_DATASOURCES}.get("REPOREXPEDITO_SUBREPORT5_DATASOURCE")]]></dataSourceExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORTS}.get("REPOREXPEDITO_SUBREPORT5")]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupHeader>
+	</group>
+</jasperReport>

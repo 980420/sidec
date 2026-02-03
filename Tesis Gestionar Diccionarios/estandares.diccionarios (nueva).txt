@@ -1,0 +1,15 @@
+CREATE TABLE estandares.diccionarios
+(
+    id bigint NOT NULL DEFAULT serial_gen('estandares.diccionarios_id_seq'::character varying),
+    nombre character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    eliminado boolean,
+    descripcion character varying(255) COLLATE pg_catalog."default",
+    CONSTRAINT diccionarios_pkey PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE estandares.diccionarios
+    OWNER to postgres;

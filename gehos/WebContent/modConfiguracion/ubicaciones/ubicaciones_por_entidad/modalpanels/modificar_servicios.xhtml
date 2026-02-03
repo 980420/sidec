@@ -1,0 +1,302 @@
+<h:form id="adicionar_servicios_form"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<rich:modalPanel id="adicionar_servicios" onhide="" top="25"
+		autosized="true" resizeable="false" minWidth="400">
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<f:facet name="header">
+			<h:panelGroup id="adicionar_servicios_header">
+				<h:outputText value="#{messages.adicionarServicios}" />
+			</h:panelGroup>
+		</f:facet>
+		<f:facet name="controls">
+			<a:commandLink action="#{ubicacionesManager.limpiarSeleccion()}"
+				oncomplete="javascript:Richfaces.hideModalPanel('adicionar_servicios');"
+				reRender="serviciostable,serviciosselecctable,pagingcontrols,pagingcontrols2"
+				limitToList="true">
+				<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+					style="cursor:pointer; position:relative; top:2px; border:0px;" />
+			</a:commandLink>
+		</f:facet>
+
+
+		<a:keepAlive beanName="servicioInEntidadList_configuracion" />
+
+		<s:div
+			rendered="#{servicioInEntidadList_configuracion.setNombreEntidad(ubicacionesManager.currentEntity())}"></s:div>
+
+		<a:jsFunction name="putOrDeleteInSelectedServices"
+			action="#{ubicacionesManager.putOrDeleteInSelectedServices()}"
+			reRender="serviciostable,serviciosselecctable,pagingcontrols,pagingcontrols2"
+			status="blockingStatus" limitToList="true" ajaxSingle="true">
+			<a:actionparam name="serviceId"
+				assignTo="#{ubicacionesManager.serviceId}" />
+		</a:jsFunction>
+		<a:jsFunction name="filterSearch" reRender="serviciostable, pagingcontrols" 
+			limitToList="true"  action="#{servicioInEntidadList_configuracion.buscar()}" >
+			<a:actionparam name="serviceName"
+				assignTo="#{servicioInEntidadList_configuracion.nombreServicio}" />
+		</a:jsFunction>
+
+		<a:status forceId="true"
+			onstart="document.getElementById('adicionar_servicios_form:acpbtn').style.cursor='wait'"
+			id="modificarserviciosstatus"
+			onstop="document.getElementById('adicionar_servicios_form:acpbtn').style.cursor='default'">
+		</a:status>
+
+		<table cellpadding="0px" cellspacing="0px" border="0px"
+			style="width: 100%" id="container" title="">
+			<tr>
+				<td style="height: 10px;" colspan="8"></td>
+			</tr>
+			<tr style="vertical-align: top;">
+				<td><rich:spacer width="6" /></td>
+				<td width="100%">#{messages.nombre}<br />
+				<h:inputText style="width:148px" id="servicenameinput"
+					value="#{servicioInEntidadList_configuracion.nombreServicio}" /> <rich:spacer
+					width="25" /> <input type="button" value="#{messages.buscar}"
+					onclick="var serviceName = document.getElementById('adicionar_servicios_form:servicenameinput').value; filterSearch(serviceName);"
+					style="margin-top: 0px;"> </input> <a:commandButton
+					value="#{messages.cancelar}" reRender="serviciostable, servicenameinput"
+					limitToList="true"
+					action="#{servicioInEntidadList_configuracion.setNombreServicio('')}"
+					style="margin-top:0px;" /> <rich:spacer height="3"
+					style="display:block;" /> <rich:dataTable
+					value="#{servicioInEntidadList_configuracion.resultList}"
+					var="serv" style="width: 100%"
+					columnClasses="nostrech, strech40, strech40" id="serviciostable">
+					<f:facet name="header">#{messages.listadoServicios}</f:facet>
+					<rich:column>
+						<s:span
+							rendered="#{ubicacionesManager.serviciosExistentes.containsKey(serv.id)}">
+							<input type="checkbox" checked="checked" disabled="disabled">
+							</input>
+						</s:span>
+						<s:span
+							rendered="#{not ubicacionesManager.serviciosExistentes.containsKey(serv.id)}">
+							<s:div
+								rendered="#{ubicacionesManager.serviciosSeleccionados.containsKey(serv.id)}">
+								<input type="checkbox" checked="checked"
+									onclick="var serviceId = '#{serv.id}'; putOrDeleteInSelectedServices(serviceId);">
+								</input>
+							</s:div>
+							<s:div
+								rendered="#{not ubicacionesManager.serviciosSeleccionados.containsKey(serv.id)}">
+								<input type="checkbox"
+									onclick="var serviceId = '#{serv.id}'; putOrDeleteInSelectedServices(serviceId);">
+								</input>
+							</s:div>
+						</s:span>
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">#{messages.nombre}</f:facet>
+							#{serv.servicio.nombre}
+						</rich:column>
+					<rich:column>
+						<f:facet name="header">#{messages.departamento}</f:facet>
+							#{ubicacionesManager.departamentoDadoServicio(serv.servicio)}
+						</rich:column>
+				</rich:dataTable> <br />
+				<s:div id="pagingcontrols" styleClass="tableControl"
+					style="width: 100%; text-align:center" align="center">
+
+					<h:graphicImage
+						value="/resources/icons/default/paginado/iniciod.png"
+						rendered="#{!servicioInEntidadList_configuracion.previousExists}" />
+
+					<h:graphicImage title="#{messages.primera}"
+						style="border: 0px; cursor:pointer;"
+						rendered="#{servicioInEntidadList_configuracion.previousExists}"
+						value="/resources/icons/default/paginado/#{theme.color}/inicio.png">
+						<a:support ajaxSingle="true" event="onclick"
+							action="#{servicioInEntidadList_configuracion.setFirstResult(0)}"
+							reRender="serviciostable, pagingcontrols" limitToList="true" />
+					</h:graphicImage>
+
+
+					<h:graphicImage
+						value="/resources/icons/default/paginado/anteriord.png"
+						rendered="#{!servicioInEntidadList_configuracion.previousExists}" />
+
+
+					<h:graphicImage title="#{messages.anterior}"
+						style="border: 0px; cursor:pointer;"
+						rendered="#{servicioInEntidadList_configuracion.previousExists}"
+						value="/resources/icons/default/paginado/#{theme.color}/anterior.png">
+						<a:support ajaxSingle="true" event="onclick"
+							action="#{servicioInEntidadList_configuracion.setFirstResult(servicioInEntidadList_configuracion.previousFirstResult)}"
+							reRender="serviciostable, pagingcontrols" limitToList="true" />
+					</h:graphicImage>
+
+
+
+					<h:graphicImage
+						value="/resources/icons/default/paginado/siguiented.png"
+						rendered="#{!servicioInEntidadList_configuracion.nextExists}" />
+
+
+
+					<h:graphicImage title="#{messages.siguiente}"
+						style="border: 0px; cursor:pointer;"
+						rendered="#{servicioInEntidadList_configuracion.nextExists}"
+						value="/resources/icons/default/paginado/#{theme.color}/siguiente.png">
+						<a:support ajaxSingle="true" event="onclick"
+							action="#{servicioInEntidadList_configuracion.setFirstResult(servicioInEntidadList_configuracion.nextFirstResult)}"
+							reRender="serviciostable, pagingcontrols" limitToList="true" />
+					</h:graphicImage>
+
+
+
+					<h:graphicImage value="/resources/icons/default/paginado/find.png"
+						rendered="#{!servicioInEntidadList_configuracion.nextExists}" />
+
+
+
+					<h:graphicImage title="#{messages.ultima}"
+						style="border: 0px; cursor:pointer;"
+						rendered="#{servicioInEntidadList_configuracion.nextExists}"
+						value="/resources/icons/default/paginado/#{theme.color}/fin.png">
+						<a:support ajaxSingle="true" event="onclick"
+							action="#{servicioInEntidadList_configuracion.setFirstResult(servicioInEntidadList_configuracion.lastFirstResult)}"
+							reRender="serviciostable, pagingcontrols" limitToList="true" />
+					</h:graphicImage>
+				</s:div> <br />
+				<s:div id="serviciosselecctable">
+					<rich:panel
+						rendered="#{ubicacionesManager.serviciosSeleccionadosList.resultList.size() == 0}">
+						<f:facet name="header">#{messages.serviciosSeleccionados}</f:facet>
+						<rich:spacer height="10" style="display:block" />
+						<h:outputLabel value="#{messages.noInf}"
+							style="margin-left:6px;" />
+						<rich:spacer height="4" style="display:block" />
+					</rich:panel>
+					<rich:dataTable
+						rendered="#{ubicacionesManager.serviciosSeleccionadosList.resultList.size() > 0}"
+						value="#{ubicacionesManager.serviciosSeleccionadosList.resultList}"
+						var="serv" style="width: 100%"
+						columnClasses="strech40, strech40, nostrech">
+						<f:facet name="header">#{messages.serviciosSeleccionados}</f:facet>
+						<rich:column>
+							<f:facet name="header">#{messages.nombre}</f:facet>
+						#{serv.servicio.nombre}
+					</rich:column>
+						<rich:column>
+							<f:facet name="header">#{messages.departamento}</f:facet>
+						#{ubicacionesManager.departamentoDadoServicio(serv.servicio)}
+					</rich:column>
+						<rich:column>
+							<img
+								src="#{facesContext.externalContext.requestContextPath}/resources/icons/default/acciones/eliminar.png"
+								onclick="var serviceId = '#{serv.id}'; putOrDeleteInSelectedServices(serviceId);"
+								style="border: 0px; cursor: pointer" title="#{messages.eliminar}" />
+						</rich:column>
+					</rich:dataTable>
+				</s:div> <br />
+				<s:div id="pagingcontrols2" styleClass="tableControl"
+					style="width: 100%; text-align:center" align="center">
+
+					<h:graphicImage
+						value="/resources/icons/default/paginado/iniciod.png"
+						rendered="#{!ubicacionesManager.serviciosSeleccionadosList.previousExists}" />
+
+					<h:graphicImage title="#{messages.primera}"
+						style="border: 0px; cursor:pointer;"
+						rendered="#{ubicacionesManager.serviciosSeleccionadosList.previousExists}"
+						value="/resources/icons/default/paginado/#{theme.color}/inicio.png">
+						<a:support ajaxSingle="true" event="onclick"
+							action="#{ubicacionesManager.serviciosSeleccionadosList.setFirstResult(0)}"
+							reRender="serviciosselecctable, pagingcontrols2"
+							limitToList="true" />
+					</h:graphicImage>
+
+
+					<h:graphicImage
+						value="/resources/icons/default/paginado/anteriord.png"
+						rendered="#{!ubicacionesManager.serviciosSeleccionadosList.previousExists}" />
+
+
+					<h:graphicImage title="#{messages.anterior}"
+						style="border: 0px; cursor:pointer;"
+						rendered="#{ubicacionesManager.serviciosSeleccionadosList.previousExists}"
+						value="/resources/icons/default/paginado/#{theme.color}/anterior.png">
+						<a:support ajaxSingle="true" event="onclick"
+							action="#{ubicacionesManager.serviciosSeleccionadosList.setFirstResult(ubicacionesManager.serviciosSeleccionadosList.previousFirstResult)}"
+							reRender="serviciosselecctable, pagingcontrols2"
+							limitToList="true" />
+					</h:graphicImage>
+
+
+
+					<h:graphicImage
+						value="/resources/icons/default/paginado/siguiented.png"
+						rendered="#{!ubicacionesManager.serviciosSeleccionadosList.nextExists}" />
+
+
+
+					<h:graphicImage title="#{messages.siguiente}"
+						style="border: 0px; cursor:pointer;"
+						rendered="#{ubicacionesManager.serviciosSeleccionadosList.nextExists}"
+						value="/resources/icons/default/paginado/#{theme.color}/siguiente.png">
+						<a:support ajaxSingle="true" event="onclick"
+							action="#{ubicacionesManager.serviciosSeleccionadosList.setFirstResult(ubicacionesManager.serviciosSeleccionadosList.nextFirstResult)}"
+							reRender="serviciosselecctable, pagingcontrols2"
+							limitToList="true" />
+					</h:graphicImage>
+
+
+
+					<h:graphicImage value="/resources/icons/default/paginado/find.png"
+						rendered="#{!ubicacionesManager.serviciosSeleccionadosList.nextExists}" />
+
+
+
+					<h:graphicImage title="#{messages.ultima}"
+						style="border: 0px; cursor:pointer;"
+						rendered="#{ubicacionesManager.serviciosSeleccionadosList.nextExists}"
+						value="/resources/icons/default/paginado/#{theme.color}/fin.png">
+						<a:support ajaxSingle="true" event="onclick"
+							action="#{ubicacionesManager.serviciosSeleccionadosList.setFirstResult(ubicacionesManager.serviciosSeleccionadosList.lastFirstResult)}"
+							reRender="serviciosselecctable, pagingcontrols2"
+							limitToList="true" />
+					</h:graphicImage>
+				</s:div></td>
+				<td><rich:spacer width="6" /></td>
+			</tr>
+			<tr>
+				<td style="height: 8px;" colspan="8"></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+				<div align="right"><a:commandButton value="#{messages.aceptar}"
+					id="acpbtn"
+					action="#{ubicacionesManager.adicionarServiciosAUbicacionSelecc()}"
+					status="modificarserviciosstatus"
+					style="margin-bottom: 0px; margin-top: 0px;"
+					oncomplete="javascript:Richfaces.hideModalPanel('adicionar_servicios');">
+				</a:commandButton> <a:commandButton value="#{messages.cancelar}" id="cancelbtn"
+					action="#{ubicacionesManager.limpiarSeleccion()}"
+					style="margin-bottom: 0px; margin-top: 0px; margin-left: 2px; margin-right: 0px;"
+					oncomplete="javascript:Richfaces.hideModalPanel('adicionar_servicios');"
+					reRender="serviciostable,serviciosselecctable,pagingcontrols,pagingcontrols2">
+				</a:commandButton></div>
+				</td>
+			</tr>
+			<tr>
+				<td style="height: 6px;" colspan="6"></td>
+			</tr>
+		</table>
+
+	</rich:modalPanel>
+
+</h:form>
+
+

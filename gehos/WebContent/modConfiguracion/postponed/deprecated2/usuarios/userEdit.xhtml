@@ -1,0 +1,286 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a="http://richfaces.org/a4j" 
+                template="#{theme.template}">
+                       
+<ui:define name="body">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style type="text/css">.rich-stglpanel-body{padding:0px}</style>
+	<style type="text/css">.rich-panel-body{padding:0px}</style>
+    <script type="text/javascript">setContentTitle('Modificar usuario')</script>
+    
+    
+    <h:form id="userSearch" styleClass="edit">
+    
+    <rich:panel switchType="client" >
+		<f:facet name="header">Datos como funcionario</f:facet>
+		<table cellpadding="0px" cellspacing="0px" border="0px" >
+			<tr>
+				<td style="height: 11px;" colspan="6">
+				</td>
+			</tr>
+			<tr style="vertical-align: top;">
+				<td style="width: 7px;"></td>
+				<td>
+	                <h:outputLabel value="Nombre:"></h:outputLabel><br/>
+	                <h:inputText id="name" value="#{usuariosEdit_common.user.nombre}" style="width:150px;"/>
+	                
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+		           	<h:outputLabel value="Cédula:"></h:outputLabel><br/>
+	                <h:inputText id="username" value="#{usuariosEdit_common.user.cedula}" style="width:150px;"/>
+
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+		           	<h:outputLabel value="Pasaporte:"></h:outputLabel><br/>
+	                <h:inputText  value="#{usuariosEdit_common.user.pasaporte}" style="width:150px;"/>
+
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+		           	<h:outputLabel value="Tipo de funcionario:"></h:outputLabel><br/>
+	                <h:inputText  value="" style="width:150px;" />
+				</td>
+				<td style="width: 25px"></td>
+				<td>
+	                <h:outputLabel value="Primer apellido:"></h:outputLabel><br/>
+	                <h:inputText  value="#{usuariosEdit_common.user.primerApellido}" style="width:150px;"/>
+	                
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+	                <h:outputLabel value="Tipo cédula:"></h:outputLabel><br/>
+	                
+	                <rich:comboBox defaultLabel="&lt;Seleccione&gt;"  width="152" >
+	                        <f:selectItem itemValue="Venezolana" itemLabel="Venezolana" />
+	                        <f:selectItem itemValue="Extranjera" itemLabel="Extranjera" />
+	                </rich:comboBox>
+
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+
+	                <h:outputLabel value="Dirección particular:"></h:outputLabel><br/>
+	                <h:inputText  value="#{usuariosEdit_common.user.direccionParticular}" style="width:150px;"/>
+
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+
+	                <h:outputLabel value="Cargo:"></h:outputLabel><br/>
+	               	<rich:comboBox defaultLabel="&lt;Seleccione&gt;" width="152"  >
+                        	<f:selectItem  itemValue="M&#233;dico" />
+	                        <f:selectItem  itemValue="Enfermero" />
+	                        <f:selectItem  itemValue="Bioanalista" />
+	                        <f:selectItem  itemValue="Otro" />
+	                </rich:comboBox>
+				</td>
+				<td style="width: 25px"></td>
+				<td valign="top">
+	                <h:outputLabel value="Segundo apellido:"></h:outputLabel><br/>
+	                <h:inputText  value="#{usuariosEdit_common.user.segundoApellido}" style="width:150px;"/>
+	                
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+
+	                <h:outputLabel value="Teléfono:"></h:outputLabel><br/>
+	                <h:inputText  value="#{usuariosEdit_common.user.telefono}" style="width:150px;"/>
+
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+
+	                <h:outputLabel value="Foto:"></h:outputLabel><br/>
+	                <s:fileUpload data="Buscar"  />
+	                
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                <h:outputLabel value="Fecha de nacimiento:"></h:outputLabel><br/>
+	                <rich:calendar datePattern="dd/MM/yyyy" style="width:150px;"
+	                	value="#{usuariosEdit_common.user.fechaNacimiento}">
+	                </rich:calendar>
+
+	                
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 7px;"></td>
+				<td colspan="6">
+					<br/>
+					<rich:listShuttle sourceValue="#{usuariosEdit_common.allServices()}"
+			            var="service"  sourceCaptionLabel="Servicios del hospital:" 
+			            targetCaptionLabel="Servicios del funcionario:" 
+			            targetValue="#{usuariosEdit_common.userServices()}"
+			            
+			           	showButtonLabels="false"
+			           	fastOrderControlsVisible="false"
+			           	orderControlsVisible="false"
+			           	
+			           	topControlLabel="Primero" 
+			            copyAllControlLabel="Copiar Todos"
+			            copyControlLabel="Copiar"
+			            downControlLabel="Bajar"
+			            upControlLabel="Subir"
+			            removeAllControlLabel="Eliminar Todos"
+			            removeControlLabel="Eliminar"
+			            bottomControlLabel="&#218;ltimo">
+			            <rich:column>
+			                <h:outputText value="#{service.nombre}"/>
+			            </rich:column>
+                	</rich:listShuttle>
+				</td>
+			</tr>
+			</table>
+			<br/>
+	</rich:panel><br/>
+	<rich:panel>
+		<f:facet name="header">Datos como usuario</f:facet>
+		<table cellpadding="0px" cellspacing="0px" border="0px" >
+			<tr>
+				<td style="height: 11px;" colspan="6">
+				</td>
+			</tr>
+			<tr style="vertical-align: top;">
+				<td style="width: 7px;"></td>
+				<td>
+	                <h:outputLabel value="Usuario:"></h:outputLabel><br/>
+	                <h:inputText  value="#{usuariosEdit_common.user.username}" style="width:150px;"/>
+	                
+	                <rich:spacer height="6" style="display:block"></rich:spacer>	                
+	                
+	                <table cellpadding="0" cellspacing="0" border="0" style="vertical-align: middle;">
+	                <tr>
+	                	<td valign="middle">
+	                		<h:outputLabel value="Cuenta habilitada:"></h:outputLabel>
+	                		<rich:spacer width="7"></rich:spacer>
+	                	</td>
+	                	<td valign="middle">
+	                	 	<h:selectBooleanCheckbox style="margin: 0px;"
+	                	 		value="#{usuariosEdit_common.user.cuentaHabilitada}">
+							</h:selectBooleanCheckbox>
+	                	</td>
+	                </tr>
+	                </table>
+	                
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+
+				</td>
+				<td style="width: 25px"></td>
+				<td>
+	                <h:outputLabel value="Contraseña:"></h:outputLabel><br/>
+	                <h:inputText  value="#{usuariosEdit_common.user.password}" style="width:150px;"/>
+	                
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+	                
+				</td>
+				<td style="width: 25px"></td>
+				<td valign="top">
+
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 7px;"></td>
+				<td colspan="6">
+					<br/>
+				   	<rich:listShuttle sourceValue="#{usuariosEdit_common.allRoles()}"
+			            var="role"  sourceCaptionLabel="Roles del sistema:" 
+			            targetCaptionLabel="Roles del usuario:" 
+			            targetValue="#{usuariosEdit_common.userRoles()}"
+			            
+			           	showButtonLabels="false"
+			           	fastOrderControlsVisible="false"
+			           	orderControlsVisible="false"
+			           	
+			           	topControlLabel="Primero" 
+			            copyAllControlLabel="Copiar Todos"
+			            copyControlLabel="Copiar"
+			            downControlLabel="Bajar"
+			            upControlLabel="Subir"
+			            removeAllControlLabel="Eliminar Todos"
+			            removeControlLabel="Eliminar"
+			            bottomControlLabel="&#218;ltimo">
+			           <rich:column>
+			                <h:outputText value="#{role.name}"/>
+			           </rich:column>
+		            </rich:listShuttle>
+				</td>
+			</tr>
+			
+			</table>
+			<br/>	
+	</rich:panel><br/>
+	
+	<rich:panel switchType="client" >
+		<f:facet name="header">Datos como médico</f:facet>
+		<table cellpadding="0px" cellspacing="0px" border="0px" >
+			<tr>
+				<td style="height: 11px;" colspan="6">
+				</td>
+			</tr>
+			<tr style="vertical-align: top;">
+				<td style="width: 7px;"></td>
+				<td>
+	                <h:outputLabel value="No. MMPPS:"></h:outputLabel><br/>
+	                <h:inputText value="" style="width:150px;"/>
+	                
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+		           	<h:outputLabel value="Especialidad:"></h:outputLabel><br/>
+		           	<rich:comboBox defaultLabel="&lt;Seleccione&gt;" width="152"  >
+                        <f:selectItem  itemValue="Cardiólogo" />
+                        <f:selectItem  itemValue="Urólogo" />
+                        <f:selectItem  itemValue="Anestesista" />
+                        <f:selectItem  itemValue="Otro" />
+	                </rich:comboBox>
+				</td>
+				<td style="width: 25px"></td>
+				<td>
+	                <h:outputLabel value="No. MCM:"></h:outputLabel><br/>
+	                <h:inputText  value="" style="width:150px;"/>
+	                
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+	                
+				</td>
+				<td style="width: 25px"></td>
+				<td valign="top">
+	                <h:outputLabel value="Fecha de graduación:"></h:outputLabel><br/>
+	                <rich:calendar datePattern="dd/MM/yyyy"  style="width:150px;"
+	                	value="">
+	                </rich:calendar>
+	                
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+	               
+				</td>
+			</tr></table>
+			<br/>
+		    
+			<br/>
+	</rich:panel>
+	
+	
+    </h:form>
+    
+    <h:form>
+    <s:div styleClass="actionButtons" rendered="#{empty from}" style="text-align: right" >
+    <div align="right">
+		<s:button value="Aceptar" style=""
+			view="/modConfiguracion/usuarios/userDetail.xhtml" >
+			<f:param name="userId" value="#{usuariosEdit_common.user.id}"/>
+		</s:button>	
+		<s:button value="Cancelar" style="margin-right:0px;"
+			view="/modConfiguracion/usuarios/userList.xhtml" />
+    </div>
+    </s:div>  
+   
+    </h:form>
+    <br/>
+    
+    
+
+    
+</ui:define>
+
+</ui:composition>
+

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+	
+	<action execute="#{estadoBuscarControlador.begin()}"/>
+	
+	<!-- Create -->
+	<navigation from-action="#{estadoCrearControlador.begin()}" evaluate="#{estadoCrearControlador.error}">	
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarEstados/CrearEstado.xhtml" />
+		</rule>
+	</navigation>
+	
+	<!-- View details -->
+	<navigation from-action="#{estadoVerDetallesControlador.setId(estado.id)}" evaluate="#{estadoVerDetallesControlador.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarEstados/VerDetallesEstado.xhtml" >
+				<param name="from" value="listar" />
+			</redirect>
+		</rule>
+	</navigation>
+	
+	<!-- Modify -->
+	<navigation from-action="#{estadoModificarControlador.setId(estado.id)}" evaluate="#{estadoModificarControlador.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarEstados/ModificarEstado.xhtml" />
+		</rule>
+	</navigation>
+</page>

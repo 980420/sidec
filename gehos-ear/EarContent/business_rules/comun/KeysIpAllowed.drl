@@ -1,0 +1,42 @@
+package Keys
+
+import gehos.comun.updater.IpKey;
+
+rule "local"
+
+	when
+		IpKey(ip=="0:0:0:0:0:0:0:1")
+		$allow: IpKey()
+	then
+		$allow.setAllowed(true);
+
+end
+
+rule "gerardo"
+
+	when
+		IpKey(ip=="167.175.104.37")
+		$allow: IpKey()
+	then
+		$allow.setAllowed(true);
+
+end
+
+rule "kenia"
+
+	when
+		IpKey(ip=="167.175.104.211")
+		$allow: IpKey()
+	then
+		$allow.setAllowed(true);
+
+end
+
+rule "denegar"
+	salience 10
+	when
+		$allow: IpKey()
+	then
+		$allow.setAllowed(false);
+
+end

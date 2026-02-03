@@ -1,0 +1,329 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+<s:div>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+		type='text/css' />
+
+
+
+	<h:form id="busquedaEstForm">
+		<a4j:outputPanel ajaxRendered="true">
+			<s:div
+				rendered="#{facesMessages.getCurrentMessagesForControl('listOfEstudios').size() > 0 }"
+				styleClass="custom-error">
+				<div>
+					<rich:message for="listOfGruposujetos" />
+				</div>
+			</s:div>
+		</a4j:outputPanel>
+
+		<rich:simpleTogglePanel switchType="client" style="margin-top:5px;"
+			bodyClass="simpleTogPanel">
+			<f:facet name="header">
+				<h:outputLabel value="#{messages.criterioBusqueda}"></h:outputLabel>
+			</f:facet>
+			<a4j:outputPanel id="busquedas">
+				<a4j:outputPanel id="simplesearch"
+					rendered="#{!listarEstudiosControlador.busquedaTipo}">
+					<table cellpadding="0" cellspacing="0">
+						<tr>
+							<td><h:outputText value="#{messages.nombre}:"
+									styleClass="normalText" /><br /> <h:inputText
+									styleClass="inputText" id="advusername" tabindex="6"
+									value="#{listarEstudiosControlador.estudio.nombre}"
+									requiredMessage="#{messages.Valid6}"
+									onkeypress="return soloLetras(event)" /></td>
+							<td><rich:spacer width="25px" /></td>
+							<td style="vertical-align: bottom;"><br /> <a4j:commandButton
+									reRender="listadoEstudios"
+									action="#{listarEstudiosControlador.busqueda(false)}"
+									style="margin:0px" value="#{messages.buscar}">
+									<s:defaultAction />
+								</a4j:commandButton> <rich:spacer width="8px" /> <h:commandButton action="cancelar"
+									style="margin:0px" value="#{messages.cancelar}" /></td>
+						</tr>
+						<tr>
+							<td style="width: 7px;"></td>
+							<td align="right" colspan="4"><h:panelGrid columns="2"
+									cellpadding="0" cellspacing="0" border="0">
+									<h:graphicImage height="12"
+										style="margin-top:2px;margin-right:2px;"
+										value="/resources/icons/default/acciones/buscar.png" />
+									<a4j:commandLink tabindex="5"
+										action="#{listarEstudiosControlador.cambiar(true)}"
+										value="#{messages.busquedaAvanzada}"
+										reRender="busquedas,listadoEstudios">
+									</a4j:commandLink>
+								</h:panelGrid> <rich:spacer height="7px" /></td>
+							<td></td>
+						</tr>
+					</table>
+				</a4j:outputPanel>
+				<a4j:outputPanel id="advancedsearch"
+					rendered="#{listarEstudiosControlador.busquedaTipo == true}">
+					<table cellpadding="0" cellspacing="0">
+						<tr>
+							<td><h:outputText value="#{messages.nombre}:"
+									styleClass="normalText" /><br /> <h:inputText
+									styleClass="inputText" id="advusernameA" tabindex="6"
+									value="#{listarEstudiosControlador.estudio.nombre}"
+									requiredMessage="#{messages.Valid6}"
+									onkeypress="return soloLetras(event)" /></td>
+							<td><rich:spacer width="25px" /></td>
+							<td><h:outputText value="#{messages.investigadorPrincipal}:"
+									styleClass="normalText"></h:outputText><br /> <h:inputText
+									id="advname" tabindex="7" styleClass="inputText"
+									value="#{listarEstudiosControlador.estudio.investigadorPrincipal}"
+									requiredMessage="#{messages.Valid6}"
+									onkeypress="return soloLetras(event)" /></td>
+
+						</tr>
+						<tr>
+							<td colspan="6"><rich:spacer height="8px" width="100%" /></td>
+						</tr>
+						<tr>
+							<td><h:outputText value="#{messages.lbl_faseEstudio_enDis}:"
+									styleClass="normalText" /><br /> <rich:comboBox
+									value="#{listarEstudiosControlador.EFaseEstudio}"
+									styleClass="cbx"
+									defaultLabel="#{messages.lbl_seleccione_ensClin}"
+									enableManualInput="false"
+									suggestionValues="#{listarEstudiosControlador.lisfase}">
+								</rich:comboBox></td>
+							<td><rich:spacer width="25px" /></td>
+							<td><h:outputText
+									value="#{messages.lbl_estadoEstudio_enDis}:"
+									styleClass="normalText"></h:outputText><br /> <rich:comboBox
+									value="#{listarEstudiosControlador.estadoEstudio}"
+									styleClass="cbx"
+									defaultLabel="#{messages.lbl_seleccione_ensClin}"
+									enableManualInput="false"
+									suggestionValues="#{listarEstudiosControlador.lisEstados}">
+								</rich:comboBox></td>
+							<td><rich:spacer width="25px" /></td>
+						</tr>
+						<tr>
+							<td colspan="5"><rich:spacer height="11px" width="100%" /></td>
+						</tr>
+						<tr>
+							<td align="right" colspan="5"><a4j:commandButton
+									reRender="listadoEstudios,paginado1" value="#{messages.buscar}"
+									tabindex="10"
+									action="#{listarEstudiosControlador.busqueda(true)}">
+									<s:defaultAction />
+								</a4j:commandButton> <rich:spacer width="8px" /> <h:commandButton align="right"
+									action="cancelar" value="#{messages.cancelar}" /></td>
+						</tr>
+						<tr>
+							<td style="width: 7px;"></td>
+							<td align="right" colspan="5"><h:panelGrid columns="2">
+
+								</h:panelGrid>
+								<table cellpadding="0" cellspacing="0" border="0">
+									<tr>
+										<td><h:graphicImage height="12"
+												style="margin-top:2px;margin-right:2px;"
+												value="/resources/icons/default/acciones/buscar.png" /></td>
+										<td><a4j:commandLink tabindex="12"
+												action="#{listarEstudiosControlador.cambiar(false)}"
+												value="#{messages.busquedaSimple}"
+												reRender="busquedas,listadoEstudios">
+											</a4j:commandLink></td>
+									</tr>
+								</table> <rich:spacer height="7px" /></td>
+							<td style="width: 7px;"></td>
+						</tr>
+
+					</table>
+				</a4j:outputPanel>
+			</a4j:outputPanel>
+		</rich:simpleTogglePanel>
+	</h:form>
+	<rich:spacer height="11px" width="100%" />
+
+	<div align="right">
+		<a4j:status id="status" onstart="#{rich:component('bloqueo')}.show()"
+			onstop="#{rich:component('bloqueo')}.hide()">
+			<f:facet name="start">
+				<s:div>
+					<table>
+						<tr>
+							<td><h:graphicImage width="12" height="12"
+									value="/resources/icons/default/acciones/loading_big.gif" /></td>
+							<td><h:outputText value="#{messages.lblProcesando_ap}" /></td>
+						</tr>
+					</table>
+				</s:div>
+			</f:facet>
+		</a4j:status>
+	</div>
+
+	<h:form id="listOfEstudios">
+		<a4j:outputPanel id="listadoEstudios">
+
+			<rich:panel
+				rendered="#{empty listarEstudiosControlador.resultList and listarEstudiosControlador.existResultados }">
+				<f:facet name="header">
+					<h:outputText value="#{messages.listado}" />
+				</f:facet>
+				<h:outputText value="#{messages.listaVacia}" />
+			</rich:panel>
+
+			<rich:panel
+				rendered="#{not listarEstudiosControlador.existResultados}">
+				<f:facet name="header">
+					<h:outputText value="#{messages.listado}" />
+				</f:facet>
+				<h:outputText value="#{messages.noResults}" />
+			</rich:panel>
+			<rich:dataTable
+				rendered="#{not empty listarEstudiosControlador.resultList}"
+				width="100%" id="lista"
+				value="#{listarEstudiosControlador.resultList}" var="result"
+				columnsWidth="30%,30%,10%,10%,20%,0*, 0*, 0*, 0*">
+				<f:facet name="header">
+					<h:outputText value="#{messages.listado}" />
+				</f:facet>
+				<rich:column>
+					<f:facet name="header">
+						<h:panelGrid columns="2" width="100%" cellpadding="0"
+							cellspacing="0" border="0">
+							<s:div style="float: left;">
+								<h:outputLabel value="#{messages.nombre}" />
+							</s:div>
+							<s:div style="text-align: right; padding-left:3px;">
+								<ui:include
+									src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/">
+									<ui:param name="controladorList"
+										value="#{listarEstudiosControlador}" />
+									<ui:param name="atributo" value="e.nombre" />
+									<ui:param name="listado" value="listadoEstudios" />
+								</ui:include>
+							</s:div>
+						</h:panelGrid>
+					</f:facet>
+					<h:outputLabel value='#{result.nombre}' />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						<h:panelGrid columns="2" width="100%" cellpadding="0"
+							cellspacing="0" border="0">
+							<s:div style="float: left;">
+								<h:outputLabel value="#{messages.investigadorPrincipal}" />
+							</s:div>
+							<s:div style="text-align: right;">
+								<ui:include
+									src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/">
+									<ui:param name="controladorList"
+										value="#{listarEstudiosControlador}" />
+									<ui:param name="atributo" value="e.investigadorPrincipal" />
+									<ui:param name="listado" value="listadoEstudios" />
+								</ui:include>
+							</s:div>
+						</h:panelGrid>
+					</f:facet>
+					<h:outputLabel value='#{result.investigadorPrincipal}' />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						<h:panelGrid columns="2" width="100%" cellpadding="0"
+							cellspacing="0" border="0">
+							<s:div style="float: left;">
+								<h:outputLabel value="#{messages.lbl_faseEstudio_enDis}" />
+							</s:div>
+						</h:panelGrid>
+					</f:facet>
+					<h:outputLabel value='#{result.EFaseEstudio.nombre}' />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						<h:panelGrid columns="2" width="100%" cellpadding="0"
+							cellspacing="0" border="0">
+							<s:div style="float: left;">
+								<h:outputLabel value="#{messages.lbl_estadoEstudio_enDis}" />
+							</s:div>
+							<s:div style="text-align: right;">
+								<ui:include
+									src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/">
+									<ui:param name="controladorList" value="#{listarEstudiosControlador}" />
+									<ui:param name="atributo" value="e.estadoEstudio" />
+									<ui:param name="listado" value="listadoEstudios" />
+								</ui:include>
+							</s:div>
+						</h:panelGrid>
+					</f:facet>
+					<h:outputLabel value='#{result.estadoEstudio.nombre}' />
+				</rich:column>
+
+				<rich:column>
+					<f:facet name="header">
+						<h:panelGrid columns="2" width="100%" cellpadding="0"
+							cellspacing="0" border="0">
+							<s:div style="float: left;">
+								<h:outputLabel value="#{messages.nombreCentro}" />
+							</s:div>
+						</h:panelGrid>
+					</f:facet>
+					<h:outputLabel value='#{result.entidad.nombre}' />
+				</rich:column>
+
+				<h:column width="1px" styleClass="alineacionCentrada">
+					<div align="center">
+						<s:link
+							view="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarEstudio/bloquearEstudio.xhtml"
+							action="modificar">
+							<h:graphicImage title="#{messages.lbl_bloquearestudio_ens}"
+								rendered="#{listarEstudiosControlador.UsuarioPromotor(result.id)}"
+								style="border: 0px;width : 16px; height : 16px;"
+								value="/resources/modEnsayo/img/bloquearEstudio.png" />							
+							<f:param id="IdEstudiob" name="IdEstudiob" value="#{result.id}" />
+						</s:link>
+
+                       <s:link
+							view="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarEstudio/desbloquearEstudio.xhtml"
+							action="modificardes">
+							<h:graphicImage title="#{messages.lbl_desbloquearestudio_ens}"
+								rendered="#{listarEstudiosControlador.UsuarioPromotorDes(result.id)}"
+								style="border: 0px;width : 16px; height : 16px;"
+								value="/resources/modEnsayo/img/desbloquearEstudio.png" />
+							<f:param id="IdEstudiob2" name="IdEstudiob2" value="#{result.id}" />
+						</s:link>
+
+
+						<h:graphicImage title="#{messages.lbl_sinAcceso_ens}"
+							rendered="#{!listarEstudiosControlador.UsuarioPromotor(result.id) and !listarEstudiosControlador.UsuarioPromotorDes(result.id)}"
+							style="border:0; opacity: 0.4; height : 16px;"
+							value="/resources/modEnsayo/img/sinAcceso.png" />
+					</div>
+				</h:column>
+
+			</rich:dataTable>
+
+			<rich:spacer height="11px" />
+
+		</a4j:outputPanel>
+		<h:form>
+			<a:outputPanel id="paginado1" ajaxRendered="true">
+				<ui:include
+					src="/modEnsayo/codebase/plantillas/paginado_tabla_inferior_generico.xhtml/">
+					<ui:param name="vzPaginado"
+						value="#{listarEstudiosControlador.resultCount>10}" />
+					<ui:param name="nomControladorList"
+						value="#{listarEstudiosControlador}" />
+					<ui:param name="idListado" value="listadoEstudios" />
+				</ui:include>
+			</a:outputPanel>
+		</h:form>
+	</h:form>
+</s:div>
+</html>

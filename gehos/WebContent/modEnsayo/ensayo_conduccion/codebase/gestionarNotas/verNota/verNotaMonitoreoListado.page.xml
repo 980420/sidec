@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+
+	<begin-conversation flush-mode="manual" join="true" />
+	<param name="idNota" value="#{verNotaMonitoreoListado.idNota}" />
+	<param name="idSujeto" value="#{verNotaMonitoreoListado.idSujeto}" />
+	<param name="idMS" value="#{verNotaMonitoreoListado.idMS}" />
+	<param name="idcrd" value="#{verNotaMonitoreoListado.idcrd}" />
+	<param name="idGrupo" value="#{verNotaMonitoreoListado.idGrupo}" />
+	<param name="from" value="#{verNotaMonitoreoListado.from}" />
+	<param name="desde" />
+	<action execute="#{verNotaMonitoreoListado.inicializarNota()}" />
+
+	<navigation from-action="responderNota">
+		<redirect
+			view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/crearNota/responderNotaMonitoreoListado.xhtml">
+			<param name="idNota" value="#{verNotaMonitoreoListado.idNota}" />
+			<param name="idSujeto" value="#{verNotaMonitoreoListado.idSujeto}" />
+			<param name="idGrupo" value="#{verNotaMonitoreoListado.idGrupo}" />
+			<param name="idcrd" value="#{verNotaMonitoreoListado.idcrd}" />
+			<param name="from" value="#{verNotaMonitoreoListado.from}" />
+			<param name="idMS" value="#{verNotaMonitoreoListado.idMS}" />
+			<param name="desde" value="#{desde}" />			
+			<param name="desdeFrom" value="verNota"/>
+		</redirect>
+	</navigation>
+
+	<navigation from-action="salir">
+		<rule if="#{desde == 'listarNota'}">
+			<redirect
+				view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/buscarNotas/listarNotasMonitoreo.xhtml">
+				<param name="idSujeto" value="#{verNotaMonitoreoListado.idSujeto}" />
+				<param name="idGrupo" value="#{verNotaMonitoreoListado.idGrupo}" />
+			</redirect>
+		</rule>
+		<rule if="#{desde == 'gestionarHoja'}">
+			<redirect
+				view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCRD/gestionarHoja.xhtml">
+				<param name="idcrd" value="#{verNotaMonitoreoListado.idcrd}" />
+				<param name="from" value="#{verNotaMonitoreoListado.from}" />
+				<param name="idSujeto" value="#{verNotaMonitoreoListado.idSujeto}" />
+				<param name="idMS" value="#{verNotaMonitoreoListado.idMS}" />
+			</redirect>
+		</rule>
+	</navigation>
+</page>

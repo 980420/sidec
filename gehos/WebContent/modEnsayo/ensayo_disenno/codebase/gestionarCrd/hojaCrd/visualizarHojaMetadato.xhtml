@@ -1,0 +1,421 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<s:div>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript">setContentTitle("#{messages.msg_titulo_modCond}")</script>
+		<script type="text/javascript">setWindowTitle("#{messages.msg_titulo_modCond}")</script>
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css"
+			rel="stylesheet" type="text/css" />
+		<h:form id="idForm">
+			<rich:messages globalOnly='true' styleClass='message'
+				id='globalMessage' ajaxRendered="true" />
+			<s:validateAll>
+				<rich:panel>
+					<f:facet name="header">
+						<h:outputText value="#{messages.msg_datosHoja_modCond}" />
+					</f:facet>
+							<table border="0" cellpadding="0" cellspacing="0">
+											<tr>
+												<td rowspan="15" class="espacio_corto_h"></td>
+												<td><h:outputText
+														value="#{messages.msg_nombreHoja_modCond}:"
+														styleClass="normalText" /></td>
+												<td class="espacio_mediano"></td>
+												<td><h:outputText
+														value="#{visualizarHojaMetadato_Disenno.hoja.nombreHoja}"
+														styleClass="normalText" /></td>
+												<!-- <td class="espacio_grande"></td>
+														<td><h:outputText value="#{messages.msg_cedula}:" styleClass="normalText" /></td>
+														<td class="espacio_mediano"></td>
+														<td><h:outputText value="#{crearSolicitudExternaControlador.solicitud.medicoExterno.cedula}" styleClass="normalText" /></td>
+														<td class="espacio_grande"></td>
+														<td><h:outputText value="#{messages.msg_entidad}:" styleClass="normalText" /></td>
+														<td class="espacio_mediano"></td>
+														<td><h:outputText value="#{crearSolicitudExternaControlador.solicitud.medicoExterno.nombreClinica}" styleClass="normalText" /></td> -->
+											</tr>
+												<!-- <tr>
+												<td colspan="7" class="espacio_corto_v" />
+												</tr>
+													<tr>
+											<td style="vertical-align: top"><h:outputText value="#{messages.msg_fecha_emision}: " styleClass="normaltext" /></td>
+											<td class="espacio_mediano" />
+											<td style="vertical-align: top"><h:outputLabel id="fecha" styleClass="normalText" value="#{crearSolicitudExternaControlador.solicitud.fecha}">
+												<s:convertDateTime pattern="#{messages.msg_patron_fecha}" />
+											</h:outputLabel></td>
+										</tr> -->
+										<td colspan="8" class="espacio_corto_v" />
+										</table>
+										<rich:panel
+					rendered="#{visualizarHojaMetadato_Disenno.listadoSeccionesA().size() == 0 }">
+					<f:facet name="header">#{messages.lbl_listadosecciones_ens}</f:facet>
+					
+					<div class="results" id="roleList">
+					<h:outputText value="#{messages.msg_noResultadosMetadato_ens}" /></div>
+					
+				</rich:panel>
+				<s:div style="margin-left:1px;margin-top:1px"
+					rendered="#{not empty visualizarHojaMetadato_Disenno.listadoSeccionesA()}">
+					<rich:dataTable id="tabla_listado_secciones"
+						style="width: 100%;" var="secciones"
+						value="#{visualizarHojaMetadato_Disenno.listadoSeccionesA()}"
+						columnsWidth="30%, 30%, 30%, 10%, 0*">
+						<f:facet name="header">
+							<div>#{messages.lbl_listadosecciones_ens}</div>
+						</f:facet>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_etiquetata_seccion_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{secciones.etiquetaSeccion}
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_titulo_seccion_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{secciones.tituloSeccion}
+	            			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_subtitulo_seccion_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{secciones.subtitulo}
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_intrucciones_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+							#{secciones.instrucciones}
+	            			</h:column>  			
+	        			
+						
+					</rich:dataTable>
+				</s:div>
+				<rich:spacer height="8px" />
+				<rich:panel
+					rendered="#{visualizarHojaMetadato_Disenno.listadoGrupoVariablesTotal().size() == 0 }">
+					<f:facet name="header">#{messages.lbl_listadogrupovariable_ens}</f:facet>
+					
+					<div class="results" id="roleList">
+					<h:outputText value="#{messages.msg_noResultadosMetadato_ens}" /></div>
+					
+				</rich:panel>
+				<s:div style="margin-left:1px;margin-top:1px"
+					rendered="#{not empty visualizarHojaMetadato_Disenno.listadoGrupoVariablesTotal()}">
+					<rich:dataTable id="tabla_listado_GrupoVariablesTotal"
+						style="width: 100%;" var="grupo"
+						value="#{visualizarHojaMetadato_Disenno.listadoGrupoVariablesTotal()}"
+						columnsWidth="32%, 32%,32%, 2%, 2%">
+						<f:facet name="header">
+							<div>#{messages.lbl_listadogrupovariable_ens}</div>
+						</f:facet>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_nombregrupo_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{grupo.etiquetaGrupo}
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_seccionVariable_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{grupo.seccion.tituloSeccion}
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_encabezado_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{grupo.encabezado}
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_numero_repeticion_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+							#{grupo.numRepeticiones.toString()}
+	            			</h:column> 
+	            			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_repeticion_maxima_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+							#{grupo.numMaxRepeticiones.toString()}
+	            			</h:column> 			
+	        			
+						
+					</rich:dataTable>
+				</s:div>
+				<rich:spacer height="8px" />
+				<rich:panel
+					rendered="#{visualizarHojaMetadato_Disenno.listadoVariablesTotal().size() == 0 }">
+					<f:facet name="header">#{messages.lbl_listadovariables_ens}</f:facet>
+					
+					<div class="results" id="roleList">
+					<h:outputText value="#{messages.msg_noResultadosMetadato_ens}" /></div>
+					
+				</rich:panel>
+				<s:div style="margin-left:1px;margin-top:1px"
+					rendered="#{not empty visualizarHojaMetadato_Disenno.listadoVariablesTotal()}">
+					<rich:dataTable id="tabla_listado_VariablesTotal"
+						style="width: 100%;" var="variables"
+						value="#{visualizarHojaMetadato_Disenno.listadoVariablesTotal()}"
+						columnsWidth="20%, 60%, 10%, 10%, 0*, 0*, 0*">
+						<f:facet name="header">
+							<div>#{messages.lbl_listadovariables_ens}</div>
+						</f:facet>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_nombre_variable_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{variables.nombreVariable}
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_descripcion_variable_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{variables.descripcionVariable}
+	            			</h:column>
+	        			
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_nombre_grupo_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+							#{variables.grupoVariables.etiquetaGrupo}
+	            			</h:column> 
+	            			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_seccionVariable_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{variables.seccion.tituloSeccion}
+	        			</h:column>
+	            			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_unidades_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+							#{variables.unidadesVariable}
+	            			</h:column> 			
+	        				<h:column>
+								<f:facet name="header">
+									<h:panelGrid columns="2"
+										style="width: 100%; padding:0px; margin:0px;" border="0"
+										cellpadding="0" cellspacing="0">
+										<s:div style="float: left;">#{messages.lbl_item_data_ens}</s:div>
+										<s:div style="text-align: right; padding-left:3px;"></s:div>
+									</h:panelGrid>
+								</f:facet>
+			            			#{variables.tipoDato.nombre}
+			        		</h:column>
+			        		<h:column>
+								<f:facet name="header">
+									<h:panelGrid columns="2"
+										style="width: 100%; padding:0px; margin:0px;" border="0"
+										cellpadding="0" cellspacing="0">
+										<s:div style="float: left;">#{messages.lbl_presentacion_formulario_ens}</s:div>
+										<s:div style="text-align: right; padding-left:3px;"></s:div>
+									</h:panelGrid>
+								</f:facet>
+			            			#{variables.presentacionFormulario.nombre}
+			        		</h:column>	
+			        		<h:column>
+								<f:facet name="header">
+									<h:panelGrid columns="2"
+										style="width: 100%; padding:0px; margin:0px;" border="0"
+										cellpadding="0" cellspacing="0">
+										<s:div style="float: left;">#{messages.lbl_ubicacion_ens}</s:div>
+										<s:div style="text-align: right; padding-left:3px;"></s:div>
+									</h:panelGrid>
+								</f:facet>
+			            			#{variables.ubicacionRespuesta}
+			        		</h:column>
+			        		<h:column>
+								<f:facet name="header">
+									<h:panelGrid columns="2"
+										style="width: 100%; padding:0px; margin:0px;" border="0"
+										cellpadding="0" cellspacing="0">
+										<s:div style="float: left;">#{messages.lbl_texto_izquierda_ens}</s:div>
+										<s:div style="text-align: right; padding-left:3px;"></s:div>
+									</h:panelGrid>
+								</f:facet>
+			            			#{variables.textoIzquierdaVariable}
+			        		</h:column>
+			        		<h:column>
+								<f:facet name="header">
+									<h:panelGrid columns="2"
+										style="width: 100%; padding:0px; margin:0px;" border="0"
+										cellpadding="0" cellspacing="0">
+										<s:div style="float: left;">#{messages.lbl_texto_derecha_ens}</s:div>
+										<s:div style="text-align: right; padding-left:3px;"></s:div>
+									</h:panelGrid>
+								</f:facet>
+			            			#{variables.textoDerechaVariable}
+			        		</h:column>
+			        		<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_encabezado_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{variables.encabezadoVariable}
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_subencabezado_variable_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{variables.subencabezadoVariable}
+	            			</h:column>
+	        			
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_numeropregunta_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+							#{variables.numeroPregunta}
+	            			</h:column> 
+	            			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_numerocolumna_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+							#{variables.numeroColumna}
+	            			</h:column> 	        						        		
+			        		<h:column>
+								<f:facet name="header">
+									<h:panelGrid columns="2"
+										style="width: 100%; padding:0px; margin:0px;" border="0"
+										cellpadding="0" cellspacing="0">
+										<s:div style="float: left;">#{messages.lbl_requerido_ens}</s:div>
+										<s:div style="text-align: right; padding-left:3px;"></s:div>
+									</h:panelGrid>
+								</f:facet>
+			            			#{visualizarHojaMetadato_Disenno.SioNo(variables.requerido)}
+			        		</h:column>
+						<h:column>
+								<f:facet name="header">
+									<h:panelGrid columns="2"
+										style="width: 100%; padding:0px; margin:0px;" border="0"
+										cellpadding="0" cellspacing="0">
+										<s:div style="float: left;">#{messages.lbl_critica_ens}</s:div>
+										<s:div style="text-align: right; padding-left:3px;"></s:div>
+									</h:panelGrid>
+								</f:facet>
+			            			#{visualizarHojaMetadato_Disenno.SioNo(variables.critica)}
+			        		</h:column>
+			        		
+			        		<h:column>
+								<f:facet name="header">
+									<h:panelGrid columns="2"
+										style="width: 100%; padding:0px; margin:0px;" border="0"
+										cellpadding="0" cellspacing="0">
+										<s:div style="float: left;">#{messages.lbl_unico_ens}</s:div>
+										<s:div style="text-align: right; padding-left:3px;"></s:div>
+									</h:panelGrid>
+								</f:facet>
+			            			#{visualizarHojaMetadato_Disenno.SioNo(variables.unica)}
+			        		</h:column>
+						
+					</rich:dataTable>
+				</s:div>					
+												
+				</rich:panel>
+			</s:validateAll>
+			   <rich:spacer height="8px;" width="100%" />
+			<div align="right" style="width: 100%">
+				<h:commandButton value="#{messages.btn_cancelar_modCond}"
+					action="cancelar"
+					style="margin-right: 0px; margin-bottom: 0px; margin-top: 0px;"
+					immediate="true" />
+			</div>
+		</h:form>
+	</s:div>
+</s:div>

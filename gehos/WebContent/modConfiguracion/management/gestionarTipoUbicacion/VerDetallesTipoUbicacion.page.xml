@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<param name="ubicationTypeId" value="#{tipoUbicacionVerDetallesControlador.id}" />
+	<param name="from" value="#{tipoUbicacionVerDetallesControlador.from}" />	
+	<param name="critB1" />
+	<param name="critB2" />
+	<param name="state" />
+	<param name="order" />
+	<param name="firstResult" />
+	
+	<!-- validation -->	
+	<navigation>
+		<rule if="#{tipoUbicacionVerDetallesControlador.id == null or tipoUbicacionVerDetallesControlador.id == '' or tipoUbicacionVerDetallesControlador.errorLoadData == true}">
+			<redirect view-id="/modConfiguracion/management/gestionarTipoUbicacion/BuscarTipoUbicacion.xhtml">
+				<param name="firstResult" value="#{firstResult}" />
+				<param name="order" value="#{order}" />
+				<param name="critB1" value="#{critB1}" />
+				<param name="critB2" value="#{critB2}" />
+				<param name="state" value="#{state}" />				
+			</redirect>			
+		</rule>			
+	</navigation>
+
+	<!-- go to modify -->
+	<navigation from-action="#{tipoUbicacionModificarControlador.setId(tipoUbicacionVerDetallesControlador.tipo.id)}">		
+		<redirect view-id="/modConfiguracion/management/gestionarTipoUbicacion/ModificarTipoUbicacion.xhtml">
+			<param name="ubicID" value="#{tipoUbicacionVerDetallesControlador.id}" />
+			<param name="firstResult" value="#{firstResult}" />
+			<param name="order" value="#{order}" />
+			<param name="critB1" value="#{critB1}" />
+			<param name="critB2" value="#{critB2}" />
+			<param name="state" value="#{state}" />			
+		</redirect>					
+	</navigation>
+
+	<!-- remove and go to search -->
+	<navigation from-action="#{tipoUbicacionVerDetallesControlador.eliminar()}" evaluate="#{tipoUbicacionVerDetallesControlador.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarTipoUbicacion/BuscarTipoUbicacion.xhtml">
+				<param name="firstResult" value="#{firstResult}" />
+				<param name="order" value="#{order}" />
+				<param name="critB1" value="#{critB1}" />
+				<param name="critB2" value="#{critB2}" />
+				<param name="state" value="#{state}" />
+			</redirect>					
+		</rule>
+	</navigation>
+
+	<!-- go to search -->
+	<navigation from-action="salir">
+		<redirect view-id="/modConfiguracion/management/gestionarTipoUbicacion/BuscarTipoUbicacion.xhtml">
+			<param name="firstResult" value="#{firstResult}" />
+			<param name="order" value="#{order}" />
+			<param name="critB1" value="#{critB1}" />
+			<param name="critB2" value="#{critB2}" />
+			<param name="state" value="#{state}" />
+		</redirect>		
+	</navigation>
+
+</page>

@@ -1,0 +1,28 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+ xmlns:ui="http://java.sun.com/jsf/facelets"
+ xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core"
+ xmlns:s="http://jboss.com/products/seam/taglib"
+ xmlns:a4j="http://richfaces.org/a4j"
+
+xmlns:rich="http://richfaces.org/rich">
+ 
+			
+ <ui:include src="/modEnsayo/ensayo_conduccion/codebase/gestionarCRD/Imprimir/imprimirhojaconduccion.xhtml"/>
+<link rel="shortcut icon"
+	href="#{facesContext.externalContext.requestContextPath}/img/gehos.ico" />
+
+<link
+	href="#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/stylesheet/#{theme.color}.css"
+	rel="stylesheet" type="text/css" />
+<link
+	href="#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/stylesheet/notification.css"
+	rel="stylesheet" type="text/css" />
+
+
+<link
+	href="#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/stylesheet/styleTemplate.css"
+	rel="stylesheet" type="text/css" />
+</ui:composition>

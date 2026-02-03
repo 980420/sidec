@@ -1,0 +1,443 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html 
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j"  
+	xmlns:c="http://java.sun.com/jstl/core">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" href="#{facesContext.externalContext.requestContextPath}/img/gehos.ico" />
+<title>#{messages.tit_selectorModul_com}</title>
+<link href="#{theme.color}/style/modSelectorStyle.css" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript" src="#{theme.color}/script/modSelectorScript.js"></script>
+<script language="javascript" type="text/javascript">
+<!--
+var auxEff;
+function showFavorites(cond,e)
+{
+	if(cond)
+	{
+		
+		document.getElementById("realContent").style.display="none";
+		document.getElementById("favoritesContent").style.display="";
+		document.onkeydown="";
+		showScreenLocker(e);
+		refresh();
+		
+		
+	}
+	else
+	{
+		document.getElementById("realContent").style.display="";
+		document.getElementById("favoritesContent").style.display="none";
+		document.onkeydown = keySelector;
+		
+	}
+
+
+}
+function addToFavorites(img,idFav,idEnt,e)
+{
+	if(document.all)
+		e=window.event;
+	e.cancelBubble = true; 
+	var parent=document.getElementById("star"+idFav+idEnt);
+	var url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}";
+    if(img.src==url+"/resources/modCommon/actionimages/favoritos.png")
+    {
+	  img.src = url+"/resources/modCommon/actionimages/nofavoritos.png";
+	  img.title="#{messages.tit_agregarFav_com}";
+	  parent.src=url+"/resources/modCommon/actionimages/nofavoritos.png";
+	  parent.title="#{messages.tit_agregarFav_com}";
+	  
+    }
+	else
+	{
+		img.src = url+"/resources/modCommon/actionimages/favoritos.png";
+		img.title="#{messages.tit_quitarFav_com}";
+		parent.src = url+"/resources/modCommon/actionimages/favoritos.png";
+		parent.title="#{messages.tit_quitarFav_com}";
+	}
+   
+	addFav(idFav,idEnt);
+	showScreenLocker(e);
+	return false;
+}
+function addToFavorites2(idFav,idEnt,e)
+{
+	var url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}";
+	var parent=document.getElementById("star"+idFav+idEnt);
+    if(parent!=null)
+    {
+	parent.src=url+"/resources/modCommon/actionimages/nofavoritos.png";
+	parent.title="#{messages.tit_agregarFav_com}";
+    }
+	e.cancelBubble = true; 
+	removeFav(idFav,idEnt);
+	showScreenLocker(e)
+	return false;
+}
+var IE = document.all?true:false;
+var tempX = 0; var tempY = 0;	
+function getMouseXY(e) {
+	if (IE) {
+	  tempX = event.clientX + document.body.scrollTop;
+	  tempY = event.clientY + document.body.scrollLeft;
+	} else {  
+	  var scrollpos = getScrollingPosition();
+	  tempX = e.pageX - scrollpos[0]; 
+	  tempY = e.pageY - scrollpos[1];
+	}  
+}
+function showScreenLocker(e)
+{
+	getMouseXY(e);
+	document.getElementById("divLocker").style.display="";
+	moveToCoordinate();
+	
+}
+
+function moveToCoordinate(){
+	document.getElementById("loadingdiv").style.top = (tempY - 15) + "px";
+	document.getElementById("loadingdiv").style.left = (tempX - 8 + 20) + "px";
+}
+function getScrollingPosition(){
+	var position = [0, 0];
+	if (typeof window.pageYOffset != 'undefined'){
+		position = [window.pageXOffset,window.pageYOffset];
+	}
+	else if (typeof document.documentElement.scrollTop != 'undefined' 
+				 && document.documentElement.scrollTop > 0){
+		position = [document.documentElement.scrollLeft, document.documentElement.scrollTop];
+	}
+	else if (typeof document.body.scrollTop != 'undefined'){
+		position = [document.body.scrollLeft,document.body.scrollTop];
+	}
+	return position;
+}
+function hideScreenLocker()
+{
+	document.getElementById("divLocker").style.display="none";
+}
+
+function searchFilter(element,cant)
+{
+
+    var value=element.value;
+
+	for(var i=0;i<cant-1;i++)
+	{
+	
+		var div=document.getElementById("entity"+i);
+		var value2=new String(div.value);
+		value2=value2.toLowerCase();
+		value=value.toLowerCase();
+		
+
+		if(value2.indexOf(value)==-1)
+		{
+			div.parentNode.style.display="none";
+		}
+		else
+		{
+			div.parentNode.style.display="";
+		}
+	}
+	
+}
+
+-->	
+</script>
+</head>
+
+<body onload="init()">
+<div id="divLocker"  style="z-index:1000;position:absolute;height:100%;width:100%; display:none">
+  <div id="loadingdiv" style="position:absolute;height: 16px;width: 16px;">
+  		<h:graphicImage value="/resources/icons/default/acciones/loading_other.gif" />
+  </div>
+</div>
+
+<a:form>
+<a:jsFunction  reRender="favoritos" name="refresh" ajaxSingle="true" oncomplete="hideScreenLocker()"></a:jsFunction>
+<a:jsFunction oncomplete="hideScreenLocker()" action="#{viewSelectorBuilder.addorRemoveFavorites()}" name="addFav" ajaxSingle="true" eventsQueue="queueRequests"  >
+ <a:actionparam name="idFun" assignTo="#{viewSelectorBuilder.idFun}"/>
+ <a:actionparam name="idEntidad" assignTo="#{viewSelectorBuilder.idEntidad}"/>
+</a:jsFunction>
+<a:jsFunction action="#{viewSelectorBuilder.addorRemoveFavorites()}" name="removeFav" ajaxSingle="true" eventsQueue="queueRequests"  oncomplete="hideScreenLocker()">
+ <a:actionparam name="idFun" assignTo="#{viewSelectorBuilder.idFun}"/>
+ <a:actionparam name="idEntidad" assignTo="#{viewSelectorBuilder.idEntidad}"/>
+</a:jsFunction>
+</a:form>
+<div id="contentAllL"><div id="effect">
+	<div id="allContent">
+          <!-- header Content-->
+   <div id="header">
+              <div id="headerContentLogo">
+               
+                 <div id="logo" style="background-image:url(#{facesContext.externalContext.requestContextPath}/resources/modCommon/appLogos/logoMod.png);">
+                
+                 </div>
+                  
+              </div>
+              <div id="headerContentR">
+                  <div  id="headerContentWell">
+                   <span>#{messages.bienvenido} </span><span></span><span>#{user.nombre} #{user.primerApellido} #{user.segundoApellido}</span>
+                  </div>
+                  
+                  
+                  <div id="headerBar">
+                  			      <div id="headerBarR">
+                                  
+                                  </div>
+                                  <div id="headerBarC">
+                                     <div id="headerLinks">
+                                       <h:form>
+                                         <table cellpadding="0" cellspacing="0">
+                                          	<tr>
+                                              <td class="barMenuSeparator1" valign="middle"><img alt="" src="#{theme.color}/images/icons/modulos_azul.png"/></td>
+                                                <td class="barMenuSeparator2" valign="middle">
+                                                
+                                                <h:commandLink action="inicio" value="#{messages.btn_Inicio_conf}" styleClass="linksBar"/> 
+                                               
+                                                </td>
+                                                <td class="barMenuSeparator1" valign="middle"><img alt="" src="#{theme.color}/images/icons/configuracion_azul(1).png"/></td>
+                                                <td class="barMenuSeparator2" valign="middle">
+                                                <s:link view="/modCommons/modHome/home.gehos"  styleClass="linksBar" value="#{messages.btn_Configurar_com}">
+													<f:param name="moduleName" value="configuracion" />
+													<f:param name="idFuncionalidad" value="7" />
+													<f:param name="idancestors" value="7a" />
+												</s:link> 														
+													
+                                                
+                                                </td>
+                                                <td class="barMenuSeparator1" valign="middle"><img alt="" src="#{theme.color}/images/icons/ayuda_azul.png" /></td>
+                                                <td class="barMenuSeparator2" valign="middle">
+                                                 <s:link view="/modConfiguracion/incidencias/crear_incidencia.gehos"  styleClass="linksBar" value="#{messages.btn_Incidencias_conf}"
+                                                 	rendered="#{not userRoleRoot.root and not misIncidencias.hayIncidencias}" target="_blank" >
+                                                 	<f:param name="idSub" value="#{activeModule.activeModule.id}" />
+                                                 </s:link>
+                                                 <s:link view="/modConfiguracion/incidencias/mis_incidencias.gehos"  styleClass="linksBar" value="#{messages.btn_Incidencias_conf}"
+                                                 	rendered="#{not userRoleRoot.root and misIncidencias.hayIncidencias}" target="_blank" >
+                                                 	<f:param name="idSub" value="#{activeModule.activeModule.id}" />
+                                                 </s:link>
+                                                </td>
+                                                <td class="barMenuSeparator1" valign="middle"><img alt="" src="#{theme.color}/images/icons/salir.png" /></td>
+                                                <td valign="middle">
+                                                 <h:commandLink action="#{identity.logout}" value="#{messages.lbl_Salir_conf}" styleClass="linksBar" />
+                                              </td>
+                                                
+                                            </tr>
+                                         </table>
+                                         </h:form>
+                                     </div>
+                                  </div>
+                                  
+                                  <div id="headerBarL">
+                                  
+                                  </div>
+                  </div>
+
+              </div>
+         </div>
+         <!--end header Content-->
+         
+         
+         <!-- real Content-->
+          
+          <div id="realContent"  >
+          		<div id="borderMarginR">
+               		 <div id="borderMarginL">
+                        <div id="backGradient">
+                            <!--Content-->
+                            <div id="shadow"></div>
+                             <div id="everything">
+                        		<div id="traceBar">
+                                  <div id="traceBarEntitys">
+             						  <table cellpadding="0" cellspacing="0" style="float:left;">
+                                             <tr>
+                                                <td class="buttonEntitysL"></td>
+                                               <td class="buttonEntitysBack">
+                                                 <div style="background-image:url(#{theme.color}/images/icons/entidades_azul.png);" class="iconBar">
+                                                   
+                                                   </div>
+                                                </td>
+                                               <td class="buttonEntitysBack">
+                                                  <div class="nameButtonE">
+                                                  
+                                                   <a   class="single"  >#{messages.lbl_Entidades_com}</a>
+                                                 
+                                                  </div>
+                                               </td>
+                                                <td class="buttonEntitysR"></td>
+                                             </tr>
+                                       </table>
+								       <table cellpadding="0" cellspacing="0" style="width: 138px;"><tr><td style="text-align: right;padding-top:2px;">
+								
+										<div id="inputSearch2"
+											style="width: 100px;display:none;height:19px;padding-right: 20px;padding-top:2px;padding-left:2px;background:url(#{theme.color}/images/search.png) no-repeat; margin-left:auto;">
+										<input id="inputSearch3" type="text"
+											onfocus="document.onkeydown = ''; "
+											onblur="document.onkeydown = keySelector;document.getElementById('inputSearch').style.display='';this.parentNode.style.display='none';document.getElementById('inputSearch4').value=this.value;document.getElementById('inputSearch').style.opacity='0.4' "
+											style="width: 100px; font-size: 10px !important; border: 0 !important;"
+											onkeyup="searchFilter(this,#{entities.size()})" /></div>
+										<div id="inputSearch"
+											style="opacity:0.4;filter:alpha(opacity=40);width: 100px;height:19px;padding-right: 20px;padding-top:2px;padding-left:2px;background:url(#{theme.color}/images/search.png) no-repeat; margin-left:auto;">
+										<input id="inputSearch4" type="text"
+											onfocus="document.onkeydown = '';document.getElementById('inputSearch2').style.display='';this.parentNode.style.display='none';document.getElementById('inputSearch3').focus();this.parentNode.style.opacity='0.4'"
+											style="width: 100px; font-size: 10px !important; border: 0 !important;" />
+										</div>
+								
+										<rich:effect for="inputSearch"  event="onmouseover" type="Opacity" params="duration:0.3, from:0.4, to:1.0" />
+				        			   <rich:effect for="inputSearch" event="onmouseout"  type="Opacity" params="duration:0.3, from:1.0, to:0.4" />
+				        			  
+                                       </td></tr></table>
+                                       
+                                    </div>
+                                     <div id="traceBarModules">
+                                     	<!--  favorites -->
+                                        <table id="favorites" cellpadding="0" cellspacing="0" style="float:left">
+                                             <tr>
+                                                <td class="buttonModulesL"></td>
+                                               <td class="buttonModulesBack">
+                                                 <div style="background-image:url(#{theme.color}/images/icons/favoritestar.png)" class="iconBar">
+                                                   
+                                                   </div>
+                                                </td>
+                                               <td class="buttonModulesBack">
+                                                  <div class="nameButtonE" style="padding-right:5px;">
+                                                    <a  class="mylinksEntitys" onclick="showFavorites(true,event)"  >#{messages.lbl_Favoritos_com}</a>
+                                                  </div>
+                                               </td>
+                                                <td class="buttonModulesR"></td>
+                                             </tr>
+                                       </table>
+                                        
+                                       <!-- end favorites --> 
+                                        
+                                        <!--  trace loop -->
+                                        <table id="trace2"  cellpadding="0" cellspacing="0" class="float" style="display:none;">
+                                             <tr>
+                                                <td class="buttonModulesL"></td>
+                                               <td class="buttonModulesBack">
+                                                 <div style="background-image:url(#{theme.color}/images/icons/modulos_azul.png)" class="iconBar">
+                                                   
+                                                   </div>
+                                                </td>
+                                               <td class="buttonModulesBack">
+                                                  <div class="nameButtonE" style="padding-right:5px;">
+                                                    <a   class="mylinksEntitys" onclick="document.onkeydown(event)" >#{messages.lbl_Modulos_com}</a>
+                                                  </div>
+                                               </td>
+                                                <td class="buttonModulesR"></td>
+                                             </tr>
+                                       </table>
+                                        
+                                       <!-- end trace loop -->
+                                       
+                                        <!--  other trace loop -->
+                                        <table id="trace1"  cellpadding="0" cellspacing="0" class="float">
+                                             <tr>
+                                                <td class="buttonEntitysL"></td>
+                                               <td class="buttonEntitysBack">
+                                                 <div style="background-image:url(#{theme.color}/images/icons/modulos_azul.png)" class="iconBar">
+                                                   
+                                                   </div>
+                                                </td>
+                                               <td class="buttonEntitysBack">
+                                                  <div class="nameButtonE" style="padding-right:5px;">
+                                                   <a  class="single">#{messages.lbl_Modulos_com}</a>
+                                                  </div>
+                                               </td>
+                                                <td class="buttonEntitysR"></td>
+                                             </tr>
+                                       </table>
+                                        
+                                       <!-- end other trace loop --> 
+                                       
+                                        <!--  subtrace loop -->
+                                        <table id="subtrace"  cellpadding="0" cellspacing="0" class="float" style="display:none">
+                                             <tr>
+                                                <td class="buttonEntitysL"></td>
+                                               <td class="buttonEntitysBack">
+                                                 <div style="background-image:url(#{theme.color}/images/icons/submodulos_azul.png);" class="iconBar">
+                                                   
+                                                   </div>
+                                                </td>
+                                               <td class="buttonEntitysBack">
+                                                  <div class="nameButtonE" style="padding-right:5px;">
+                                                    <a  id="subtraceValue" class="single">#{messages.lbl_submodulos_com}</a>
+                                                  </div>
+                                               </td>
+                                                <td class="buttonEntitysR"></td>
+                                             </tr>
+                                       </table>
+                                        
+                                       <!-- end subtrace loop --> 
+                                        
+                                        
+                                     </div>
+                                </div>
+                                <table cellpadding="0" cellspacing="0" width="100%">
+                                	<tr>
+                                       <td id="entitysPanel">
+                                         
+                                         <ui:include src="/modCommons/modSelector/#{theme.name}/themes/entitiesMenuInclude.xhtml" />
+                                         
+                                       </td>
+                                       <td id="modulesPanel">
+                                       		
+                                            <!--Modules-->
+                                             <ui:insert	name="modulesFrame" />
+                                             <ui:include src="/modCommons/modSelector/#{theme.name}/themes/moduleInclude.xhtml" />
+                                            <!--end Modules-->
+                                       </td>
+                                    </tr>
+                                </table>
+                         
+                                
+                                
+                            <!--end Content-->
+                        </div>
+                        </div>
+                     </div>
+                </div>
+          </div>   
+            
+         <!-- end real Content-->
+         
+                               
+
+         <!-- favorite Content-->
+         
+             <ui:include src="/modCommons/modSelector/#{theme.name}/themes/favorites.xhtml" />
+         <!--end favorite Content-->
+         <!-- footer Content-->
+         	<div id="footerContent">
+                <div id="footerContentL">
+                    <div id="footerContentR">
+                   #{messages.msg_uci_com} #{messages.msg_sidec_com} #{messages.msg_prodre_com} © #{messages.msg_anno_com} 2018
+
+                    </div>
+                </div>
+            </div>
+         <!-- end footer Content initVars(10,3,4,2,2,false,"Farmacias")  -->
+    
+    </div> </div></div>
+#{viewSelectorBuilder.isGroup2(viewSelectorBuilder.idFun).label}
+<c:if test="#{not viewSelectorBuilder.ok}">
+<script language="javascript" type="text/javascript">
+initVars(#{viewSelectorBuilder.entitiesModules().size()},3,4);
+</script>
+</c:if>
+<c:if test="#{viewSelectorBuilder.ok}">
+<script language="javascript" type="text/javascript">
+     initVars(#{viewSelectorBuilder.entitiesModules().size()}, #{viewSelectorBuilder.isGroup2(viewSelectorBuilder.idFuncionalidad).childrenList.size()},4,0,#{viewSelectorBuilder.isGroup2(viewSelectorBuilder.idFuncionalidad).order},1,'#{viewSelectorBuilder.isGroup2(viewSelectorBuilder.idFuncionalidad).label}');
+	 
+</script>
+</c:if>
+</body>
+</html>

@@ -1,0 +1,497 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" xmlns:a="http://richfaces.org/a4j">
+
+<ui:composition>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('#{messages.lbl_titulo_ens}')</script>
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+		type='text/css' />
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css'
+		type='text/css' />
+	<script type="text/javascript">					
+
+		//funcion para cambiar el tamano de la lista del combobox
+		function cambiarStyle(id,size)
+		{
+		var size2=''+size+'px';
+		var n=new String(id);
+		var idN=n.replace('combobox','list');
+		
+		var com=document.getElementById(idN);
+		var parent=com.parentNode;
+		var gran=parent.parentNode;
+		parent.style.width=size2;
+		gran.style.width=size2;
+		com.style.width=size2;
+		
+		} 
+
+		var curDtN = new Date();
+		 var calDtN=null;
+
+		 function previousDate(date){
+			calDtN = date;
+		 }
+
+		 function disablementFunction(day){
+			 if(calDtN == null){
+				 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+						return true; 
+					else 
+						return false; 
+			 }
+			 else {
+				 if (calDtN.getTime() - day.date.getTime() &#62;= 0 ) 
+						return true; 
+					else 
+						return false;
+			 }					 
+		 }
+
+		 function disabledClassesProv(day){
+			 if(calDtN == null){
+				 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+						return ''; 
+					else 
+						return 'noavailable'; 
+			 }
+			 else {
+				 if (calDtN.getTime() - day.date.getTime() &#62;= 0) 
+						return ''; 
+					else 
+						return 'noavailable';
+			 }				
+		 }
+
+		 function resetSecondDate(first,second) {
+			 var firstDate = first.getSelectedDate().getTime();
+			 var secondDate = second.getSelectedDate().getTime();
+
+			 if(firstDate - secondDate &#62; 0)
+				 second.resetSelectedDate();
+		 }
+ 		 
+		 function disablementFunctionPreviousEx(day){
+			if(calDtN == null){
+				if (curDtN.getTime() - day.date.getTime() &#62; 0) return true; else return false;
+			}
+			if ((curDtN.getTime() - day.date.getTime() &#62; 0) &#38;&#38; (calDtN.getTime() - day.date.getTime() &#60;= 0)){
+				return true;
+			}
+			else 
+				return false;
+		  }
+
+		function disabledClassesProvPreviousEx(day){
+			if(calDtN == null){
+				if (curDtN.getTime() - day.date.getTime() &#60; 0)
+					return 'noavailable';
+				else 
+					return '';
+			}
+			if ((curDtN.getTime() - day.date.getTime() &#60; 0) || (calDtN.getTime() - day.date.getTime() &#62; 0))
+				return 'noavailable';
+			else 
+				return '';
+		}
+	</script>
+
+	<h:form id="busquedasForm">
+		<a:status forceId="true"
+			onstart="document.getElementById('busquedasForm:acpbtn').style.cursor='wait'"
+			id="newdepstatus"
+			onstop="document.getElementById('busquedasForm:acpbtn').style.cursor='default'">
+		</a:status>
+		<a4j:outputPanel ajaxRendered="true">
+			<s:div
+				rendered="#{facesMessages.getCurrentMessagesForControl('listOfGruposujetos').size() > 0 }"
+				styleClass="custom-error">
+				<div>
+					<rich:message for="listOfGruposujetos" />
+				</div>
+			</s:div>
+		</a4j:outputPanel>
+
+		<rich:simpleTogglePanel switchType="client" style="margin-top:5px;"
+			bodyClass="simpleTogPanel">
+			<f:facet name="header">
+				<h:outputLabel value="#{messages.lbl_criterios_ens}"
+					style="cursor:pointer;" />
+			</f:facet>
+			<a4j:outputPanel id="busquedas">
+
+				<table cellpadding="0" cellspacing="0" border="0">
+					<tr>
+						<td><h:outputLabel styleClass='normalText'
+								value='#{messages.lbl_nombreGrupo_ens}:' /> <br /> <h:inputText
+								value='#{aprobardiseno.nombreGrupo}' /></td>
+						<td><rich:spacer width="25px" /></td>
+						<td><h:outputLabel styleClass='normalText'
+								value='#{messages.lbl_desde_ens}:' /> <br /> <rich:calendar
+								datePattern='dd/MM/yyyy' tabindex="12"
+								value='#{aprobardiseno.desde}' id='fechaDesde'
+								isDayEnabled='disablementFunction'
+								dayStyleClass='disabledClassesProv'
+								onexpand="previousDate(document.getElementById('busquedasForm:fechaHasta').component.getSelectedDate());Richfaces.getComponent('calendar',this).nextMonth(); Richfaces.getComponent('calendar',this).prevMonth(); return true;" />
+						</td>
+						<td><rich:spacer width="25px" /></td>
+						<td><h:outputLabel styleClass='normalText'
+								value='#{messages.lbl_hasta_ens}:' /> <br /> <rich:calendar
+								datePattern='dd/MM/yyyy' value='#{aprobardiseno.hasta}'
+								id='fechaHasta' isDayEnabled='disablementFunctionPreviousEx'
+								dayStyleClass='disabledClassesProvPreviousEx'
+								onexpand="previousDate(document.getElementById('busquedasForm:fechaDesde').component.getSelectedDate());Richfaces.getComponent('calendar',this).nextMonth(); Richfaces.getComponent('calendar',this).prevMonth(); return true;" />
+						</td>
+					</tr>
+					<tr>
+						<td colspan="5"><rich:spacer height="11px" width="100%" /></td>
+					</tr>
+					<tr>
+						<td colspan="5" align="right"><a4j:commandButton
+								action="#{aprobardiseno.BuscarCronogramas()}"
+								value="#{messages.btn_buscar_ens}"
+								style="margin-left: 0px; margin-bottom:  0px; margin-top: 0px;"
+								reRender="listadoCronogramas" tabindex="3">
+								<s:defaultAction />
+							</a4j:commandButton> <rich:spacer width="8px" /> <s:button
+								view="/modCommons/modHome/home.gehos"
+								value="#{messages.btn_cancelar_ens}" tabindex="4"
+								style="margin-right:0px;margin-bottom:  0px; margin-top: 0px;"
+								rendered="#{not identificadorManager.editing}">
+								<f:param name="idFuncionalidad"
+									value="#{activeModule.activeModule.id}" />
+								<f:param name="idancestors"
+									value="#{activeModule.activeModule.id}a" />
+								<f:param name="moduleName"
+									value="#{activeModule.activeModuleName}" />
+							</s:button></td>
+					</tr>
+				</table>
+
+			</a4j:outputPanel>
+		</rich:simpleTogglePanel>
+	</h:form>
+	<rich:spacer height="11px" width="100%" />
+	<h:form id="listOfGruposujetos">
+		<div align="right">
+			<table cellpadding="0" cellspacing="1" border="0">
+				<tr>
+					<td valign="middle" class="lv-link-add"><s:div id="aprobar"
+							rendered="#{aprobardiseno.PuedeAprobar() and
+							aprobardiseno.resultList.size() !=0}">
+							<a4j:commandLink
+								oncomplete="Richfaces.showModalPanel('aprobar_diseno')"
+								action="a">
+								<h:graphicImage title="#{messages.lbl_aprobardiseno_ens}"
+									style="margin-right: 1px;" height="12" width="12"
+									value="/resources/icons/default/acciones/ok.png" />
+							</a4j:commandLink>
+							<a4j:commandLink style="cursor: pointer; margin-left:2px;"
+								oncomplete="Richfaces.showModalPanel('aprobar_diseno')"
+								title="#{messages.lbl_aprobardiseno_ens}" action="crear"
+								tabindex="4" value="#{messages.lbl_aprobardiseno_ens}" />
+						</s:div></td>
+					<td valign="middle" class="lv-link-add"><s:div id="desaprobar"
+							rendered="#{aprobardiseno.PuedeDesaprobar() and aprobardiseno.resultList.size() != 0}">
+							<a4j:commandLink
+								oncomplete="Richfaces.showModalPanel('desaprobar_diseno')"
+								action="a">
+								<h:graphicImage title="#{messages.lbl_desaprobardiseno_ens}"
+									style="margin-right: 1px;" height="12" width="12"
+									value="/resources/icons/default/acciones/error.png" />
+							</a4j:commandLink>
+							<a4j:commandLink style="cursor: pointer; margin-left:2px;"
+								oncomplete="Richfaces.showModalPanel('desaprobar_diseno')"
+								title="#{messages.lbl_desaprobardiseno_ens}" action="crear"
+								tabindex="4" value="#{messages.lbl_desaprobardiseno_ens}" />
+						</s:div></td>
+				</tr>
+			</table>
+		</div>
+		<a4j:outputPanel id="listadoCronogramas">
+			<rich:panel
+				rendered="#{aprobardiseno.resultList.size() == 0 and empty aprobardiseno.nombreGrupo and aprobardiseno.desde == null and aprobardiseno.hasta == null}">
+				<f:facet name="header">
+					<h:outputText value="#{messages.lbl_listadoCronogramas_ens}" />
+				</f:facet>
+				<h:outputText value="#{messages.msg_listaVacia_ens}" />
+			</rich:panel>
+			<rich:panel
+				rendered="#{aprobardiseno.resultList.size() == 0 and not empty aprobardiseno.nombreGrupo || aprobardiseno.desde != null || aprobardiseno.hasta != null}">
+				<f:facet name="header">
+					<h:outputText value="#{messages.lbl_listadoCronogramas_ens}" />
+				</f:facet>
+				<h:outputText value="#{messages.msg_noResultados_ens}" />
+			</rich:panel>
+			<rich:dataTable rendered="#{not empty aprobardiseno.resultList}"
+				id="tabla_listadoCronogramas" width="100%"
+				columnsWidth="20%,40%,15%,15%,10%,0*"
+				value="#{aprobardiseno.resultList}" var="cronograma">
+				<f:facet name="header">
+					<h:outputLabel value="#{messages.lbl_listadoCronogramas_ens}" />
+				</f:facet>
+				<rich:column>
+					<f:facet name="header">
+						<h:panelGrid columns="2" width="100%" cellpadding="0"
+							cellspacing="0" border="0">
+							<s:div style="float: left;">
+								<h:outputLabel value="#{messages.lbl_nombreGrupo_ens}" />
+							</s:div>
+							<s:div style="text-align: right;">
+								<ui:include
+									src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/">
+									<ui:param name="controladorList" value="#{aprobardiseno}" />
+									<ui:param name="atributo" value="grupoSujetos.nombreGrupo" />
+									<ui:param name="listado" value="listadoCronogramas" />
+								</ui:include>
+							</s:div>
+						</h:panelGrid>
+					</f:facet>
+					<h:outputLabel value='#{cronograma.grupoSujetos.nombreGrupo}' />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						<h:panelGrid columns="2" width="100%" cellpadding="0"
+							cellspacing="0" border="0">
+							<s:div style="float: left;">
+								<h:outputLabel value="#{messages.lbl_descripcion_ens}" />
+							</s:div>
+							<s:div style="text-align: right;">
+								<ui:include
+									src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/">
+									<ui:param name="controladorList" value="#{aprobardiseno}" />
+									<ui:param name="atributo" value="cronograma.descripcion" />
+									<ui:param name="listado" value="listadoCronogramas" />
+								</ui:include>
+							</s:div>
+						</h:panelGrid>
+					</f:facet>
+					<h:outputLabel value='#{cronograma.descripcion}'
+						rendered="#{cronograma.descripcion !=null}" />
+					<h:outputText value="-" rendered="#{cronograma.descripcion ==''}" />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						<h:panelGrid columns="2" width="100%" cellpadding="0"
+							cellspacing="0" border="0">
+							<s:div style="float: left;">
+								<h:outputLabel value="#{messages.lbl_estadoCronograma_ens}" />
+							</s:div>
+							<s:div style="text-align: right;">
+								<ui:include
+									src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/">
+									<ui:param name="controladorList" value="#{aprobardiseno}" />
+									<ui:param name="atributo"
+										value="cronograma.estadoCronograma.nombre" />
+									<ui:param name="listado" value="listadoCronogramas" />
+								</ui:include>
+							</s:div>
+						</h:panelGrid>
+					</f:facet>
+					<h:outputLabel value='#{cronograma.estadoCronograma.nombre}' />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						<h:panelGrid columns="2" width="100%" cellpadding="0"
+							cellspacing="0" border="0">
+							<s:div style="float: left;">
+								<h:outputLabel value="#{messages.lbl_estadoReglas_ens}" />
+							</s:div>
+						</h:panelGrid>
+					</f:facet>
+					<h:outputLabel value='#{cronograma.estadoReglas.nombre}' />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						<h:panelGrid columns="2" width="100%" cellpadding="0"
+							cellspacing="0" border="0">
+							<s:div style="float: left;">
+								<h:outputLabel value="#{messages.lbl_dateCr_ens}" />
+							</s:div>
+							<s:div style="text-align: right;">
+								<ui:include
+									src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/">
+									<ui:param name="controladorList" value="#{aprobardiseno}" />
+									<ui:param name="atributo" value="cronograma.fechaCreacion" />
+									<ui:param name="listado" value="listadoCronogramas" />
+								</ui:include>
+							</s:div>
+						</h:panelGrid>
+					</f:facet>
+					<h:outputLabel value='#{cronograma.fechaCreacion}'>
+						<s:convertDateTime pattern='dd/MM/yyyy' />
+					</h:outputLabel>
+				</rich:column>
+
+			</rich:dataTable>
+			<rich:spacer height="11px" />
+			<ui:include
+				src="/layouts/alas-layout/themes/template_auxiliares/paginado_tabla_inferior_generico.xhtml/">
+				<ui:param name="vzPaginado" value="#{aprobardiseno.resultCount>10}" />
+				<ui:param name="nomControladorList" value="#{aprobardiseno}" />
+				<ui:param name="idListado" value="listadoCronogramas" />
+			</ui:include>
+		</a4j:outputPanel>
+	</h:form>
+	<rich:spacer height="11px" />
+
+	<!-- Modal Panel Aprobar diseno -->
+	<rich:modalPanel id="aprobar_diseno" width="320" height="170">
+		<f:facet name="header" id="aprobardiseno">
+			<h:outputText value="#{messages.lbl_titulo_ens}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+					style="cursor:pointer" id="hidelink" />
+				<rich:componentControl for="aprobar_diseno" attachTo="hidelink"
+					operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form id="modalAprobar">
+			<table cellpadding="0px" cellspacing="0px" border="0px"
+				id="container" title="">
+
+				<tr style="vertical-align: top;">
+					<td><rich:spacer width="6px" /></td>
+					<td valign="top">
+						<table cellpadding="0px" cellspacing="0px" border="0">
+							<tr valign="top">
+								<td>
+									<!-- Imagen de advertencia --> <h:graphicImage
+										value="/resources/icons/default/acciones/advertencia.png" />
+								</td>
+								<td><rich:spacer width="6px" /></td>
+								<td>
+									<!-- Aqui va el texto para eliminar --> <h:outputText
+										value="#{messages.msg_confiraprobarD_ens}" />
+								</td>
+							</tr>
+						</table>
+					</td>
+					<td><rich:spacer width="6px" /></td>
+				</tr>
+				<tr>
+					<td style="height: 7px;" colspan="6"></td>
+				</tr>
+				<tr>
+					<td colspan="3">
+						<div align="center">
+							<a:commandButton action="#{aprobardiseno.Aprobar()}"
+								value="#{messages.btn_si_ens}"
+								oncomplete="Richfaces.hideModalPanel('aprobar_diseno')"
+								reRender="listadoCronogramas, desaprobar, aprobar, listOfGruposujetos">
+							</a:commandButton>
+
+							<a4j:commandButton id="btnNoA" value="#{messages.btn_no_ens}">
+								<rich:componentControl for="aprobar_diseno" event="onclick"
+									operation="hide" attachTo="btnNoA">
+								</rich:componentControl>
+							</a4j:commandButton>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td style="height: 6px;" colspan="6"></td>
+				</tr>
+			</table>
+		</h:form>
+	</rich:modalPanel>
+	<!-- Fin del modal panel aprobar diseno -->
+
+	<!-- Modal Panel Desaprobar diseno -->
+	<rich:modalPanel id="desaprobar_diseno" width="380" height="170">
+		<f:facet name="header">
+			<h:panelGroup>
+				<h:outputText value="#{messages.lbl_des_ens}"></h:outputText>
+			</h:panelGroup>
+		</f:facet>
+		<!-- Boton de cerrar el panel -->
+		<!-- Boton de cerrar el panel -->
+		
+			<f:facet name="controls">
+			<a:form>
+				<a:commandLink reRender="outputDesaprobar"
+					action="#{aprobardiseno.Limpiar()}">
+					<h:graphicImage
+						value="/resources/icons/default/acciones/cerrar.gif"
+						style="cursor:pointer; top:2px;"
+						onclick="Richfaces.hideModalPanel('desaprobar_diseno')" />
+				</a:commandLink></a:form>
+			</f:facet>
+		
+		<a:outputPanel id="outputDesaprobar">
+			<h:form id="modalDesaprobar">
+				<table cellpadding="0px" cellspacing="0px" border="0px"
+					id="container">
+					<tr style="vertical-align: top;">
+						<td><rich:spacer width="6px" /></td>
+						<td valign="top">
+							<table cellpadding="0px" cellspacing="0px" border="0">
+								<tr valign="top">
+									<td>
+										<!-- Imagen de advertencia --> <h:graphicImage
+											value="/resources/icons/default/acciones/advertencia.png" />
+									</td>
+									<td><rich:spacer width="6px" /></td>
+									<td><h:outputText
+											value="#{messages.msg_confirdesaprobarD1_ens}" /> <rich:message
+											for="caus" showDetail="false" tooltip="true"
+											style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*" style='cursor:pointer'
+													title="#{facesMessages.getCurrentMessagesForControl('caus').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message> <br /> <h:inputTextarea
+											value="#{aprobardiseno.descripcionCausa}" required="true"
+											id="caus" style="width:100%;resize: vertical" /> <br /> <h:outputText
+											value="#{messages.msg_confirdesaprobarD2_ens}" /></td>
+								</tr>
+							</table>
+						</td>
+						<td><rich:spacer width="6px" /></td>
+					</tr>
+					<tr>
+						<td style="height: 7px;" colspan="6"></td>
+					</tr>
+					<tr>
+						<td colspan="3">
+							<div align="center">
+								<a:commandButton action="#{aprobardiseno.Desaprobar()}"
+									value="#{messages.btn_si_ens}" id="aceptar"
+									oncomplete="#{aprobardiseno.onCompleteDesaprobar('desaprobar_diseno')}"
+									reRender="listadoCronogramas, desaprobar, aprobar,listOfGruposujetos">
+								</a:commandButton>
+
+								<a4j:commandButton id="btnNo" value="#{messages.btn_no_ens}"
+									reRender="outputDesaprobar" action="#{aprobardiseno.Limpiar()}">
+									<rich:componentControl for="desaprobar_diseno" event="onclick"
+										operation="hide" attachTo="btnNo">
+									</rich:componentControl>
+								</a4j:commandButton>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td style="height: 6px;" colspan="6"></td>
+					</tr>
+				</table>
+			</h:form>
+			<a:form>
+				<a:jsFunction name="clean" action="#{aprobardiseno.Limpiar()}">
+				</a:jsFunction>
+			</a:form>
+		</a:outputPanel>
+	</rich:modalPanel>
+
+	<!-- Fin del modal panel desaprobar diseno -->
+</ui:composition>
+</html>

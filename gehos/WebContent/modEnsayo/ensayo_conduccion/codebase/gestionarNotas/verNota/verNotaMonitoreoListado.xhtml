@@ -1,0 +1,206 @@
+<!-- CU 32 Visualizar detalles de nota de monitoreo-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" xmlns:a4j="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle('#{messages.verDetallesMonitoreo}')</script>
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css"
+		rel="stylesheet" type="text/css" />
+
+
+	<table class="Tabla" width="100%" cellpadding="0" cellspacing="0">
+		<tr>
+			<td>
+				<div style="margin-left: 1px">
+					<rich:panel switchType="client">
+						<f:facet name="header">
+							<s:div>
+								<h:outputText value="#{messages.datosGenerales}" />
+
+							</s:div>
+						</f:facet>
+						<table cellpadding="0" cellspacing="0">
+							<tr class="filSepGranRA">
+								<td class="colSepPeq"><h:outputText
+										value="#{messages.nombreVariable}:"
+										style="margin:0px; padding:0px;" /></td>
+								<td class="colSepGran"><h:outputText styleClass="dataText"
+										value="#{(not empty verNotaMonitoreoListado.notaMonitoreo.variable.nombreVariable) ? verNotaMonitoreoListado.notaMonitoreo.variable.nombreVariable : messages.vacio}"
+										style="margin:0px; padding:0px;" /></td>
+								<td class="colSepPeq"><h:outputText
+										value="#{messages.valorVariable}:"
+										style="margin:0px; padding:0px;" /></td>
+								<td class="colSepGran"><h:outputText styleClass="dataText"
+										value="#{verNotaMonitoreoListado.notaMonitoreo.variableDato == null ? (verNotaMonitoreoListado.ObtenerValorVariable() != null ? verNotaMonitoreoListado.ObtenerValorVariable().valor : messages.vacio) : (verNotaMonitoreoListado.notaMonitoreo.variableDato.valor)}"
+										style="margin:0px; padding:0px;" /></td>
+								<td class="colSepPeq"><h:outputText
+										value="#{messages.idSujetEstudio}:"
+										style="margin:0px; padding:0px;" /></td>
+								<td class="colSepGran"><h:outputText styleClass="dataText"
+										value="#{(not empty verNotaMonitoreoListado.notaMonitoreo.crdEspecifico.momentoSeguimientoEspecifico.sujeto.codigoPaciente) ? verNotaMonitoreoListado.notaMonitoreo.crdEspecifico.momentoSeguimientoEspecifico.sujeto.codigoPaciente : messages.vacio}"
+										style="margin:0px; padding:0px;" /></td>
+							</tr>
+							<tr>
+								<td class="colSepPeq"><h:outputText
+										value="#{messages.crd}:" style="margin:0px; padding:0px;" /></td>
+								<td class="colSepGran"><h:outputText styleClass="dataText"
+										value="#{(not empty verNotaMonitoreoListado.notaMonitoreo.crdEspecifico.hojaCrd.nombreHoja) ? verNotaMonitoreoListado.notaMonitoreo.crdEspecifico.hojaCrd.nombreHoja : messages.vacio}"
+										style="margin:0px; padding:0px;" /></td>
+								<td class="colSepPeq"><h:outputText
+										value="#{messages.mometo}:" style="margin:0px; padding:0px;" /></td>
+								<td class="colSepGran"><h:outputText styleClass="dataText"
+										value="#{(not empty verNotaMonitoreoListado.notaMonitoreo.crdEspecifico.momentoSeguimientoEspecifico.momentoSeguimientoGeneral.nombre) ? verNotaMonitoreoListado.notaMonitoreo.crdEspecifico.momentoSeguimientoEspecifico.momentoSeguimientoGeneral.nombre : messages.vacio}"
+										style="margin:0px; padding:0px;" /></td>
+								<td class="colSepPeq"><h:outputText
+										value="#{messages.fechaMomento}:"
+										style="margin:0px; padding:0px;" /></td>
+								<td class="colSepGran"><h:outputText styleClass="dataText"
+										value="#{(not empty verNotaMonitoreoListado.notaMonitoreo.crdEspecifico.momentoSeguimientoEspecifico.fechaInicio) ? verNotaMonitoreoListado.notaMonitoreo.crdEspecifico.momentoSeguimientoEspecifico.fechaInicio : messages.vacio}"
+										style="margin:0px; padding:0px;">
+										<s:convertDateTime pattern="#{messages.patronFecha}">
+										</s:convertDateTime>
+									</h:outputText></td>
+
+							</tr>
+						</table>
+					</rich:panel>
+
+				</div>
+			</td>
+
+		</tr>
+		<tr>
+			<td><rich:panel style="margin-top: 8px">
+					<f:facet name="header">
+						<h:panelGroup>
+							<div>
+								<div align="left">#{messages.detalles}</div>
+							</div>
+						</h:panelGroup>
+					</f:facet>
+					<table width="80%" cellpadding="0" cellspacing="0"
+						style="margin-bottom: 0.5px; padding: 0px;">
+						<tr>
+							<td width="80%"><s:div
+									rendered="#{verNotaMonitoreoListado.notaMonitoreo.estadoNota.codigo != 4 and verNotaMonitoreoListado.notaMonitoreo.estadoNota.codigo != 3}"
+									style="float: right;">
+									<s:link action="responderNota"
+										style="border: 0px; cursor:pointer;">
+										<h:panelGrid columns="2">
+											<h:graphicImage
+												value="/resources/icons/default/acciones/adicionar.png"
+												style="border:0;" />
+											<h:outputText value="#{messages.responderNota}" />
+										</h:panelGrid>
+									</s:link>
+								</s:div></td>
+						</tr>
+					</table>
+
+					<table width="80%" cellpadding="0" cellspacing="0" border="1px;">
+						<tr class="filSepGranRA">
+							<td align="left" width="40%"><h:outputText
+									value="#{messages.descripcion}:"
+									style="margin:0px; padding:0px; font-weight: bold;margin-left:5px;" />
+								<h:outputText
+									value="#{(not empty verNotaMonitoreoListado.notaMonitoreo.descripcion) ? verNotaMonitoreoListado.notaMonitoreo.descripcion : messages.vacio}"
+									style="margin:0px; padding:0px;margin-left:5px;" /></td>
+							<td align="right" width="40%"><h:outputText
+									value="#{messages.ultimaActualizacion}:"
+									style="margin:0px; padding:0px; font-weight: bold; " /> <h:outputText
+									styleClass="dataText"
+									value="#{(not empty verNotaMonitoreoListado.notaMonitoreo.fechaActualizacion) ? verNotaMonitoreoListado.notaMonitoreo.fechaActualizacion : verNotaMonitoreoListado.notaMonitoreo.fechaCreacion }"
+									style="margin:0px; padding:0px; margin-left:5px; ">
+									<s:convertDateTime pattern="#{messages.patronFecha}">
+									</s:convertDateTime>
+								</h:outputText> <h:outputText value="#{messages.por}:"
+									style="margin:0px; padding:0px; font-weight: bold; margin-left:5px;" />
+								<h:outputText styleClass="dataText"
+									value="#{(not empty verNotaMonitoreoListado.notaMonitoreo.usuario.nombre) ? verNotaMonitoreoListado.notaMonitoreo.usuario.nombre : messages.vacio}"
+									style="margin:0px; padding:0px; margin-left:5px;" /></td>
+						</tr>
+					</table>
+					<table width="80%" cellpadding="0" cellspacing="0" border="1px;">
+						<tr class="filSepGranRA">
+							<td align="left" width="40%"><h:outputText
+									value="#{messages.Detalles}:"
+									style="margin:0px; padding:0px; font-weight: bold; margin-left:5px;" />
+								<h:outputText styleClass="dataText"
+									value="#{(not empty verNotaMonitoreoListado.notaMonitoreo.detallesNota) ? verNotaMonitoreoListado.notaMonitoreo.detallesNota : messages.vacio}"
+									style="margin:0px; padding:0px; margin-left:5px; " /></td>
+							<td align="left" width="20%"><h:outputText
+									value="#{messages.estadoRes}:"
+									style="margin:0px; padding:0px; font-weight: bold; margin-left:5px;" />
+								<h:outputText styleClass="dataText"
+									value="#{(not empty verNotaMonitoreoListado.notaMonitoreo.estadoNota.nombre) ? verNotaMonitoreoListado.notaMonitoreo.estadoNota.nombre : messages.vacio}"
+									style="margin:0px; padding:0px; margin-left:5px; " /></td>
+							<td align="left" width="20%"><h:outputText
+									value="#{messages.nroNotas}:"
+									style="margin:0px; padding:0px; font-weight: bold; margin-left:5px;" />
+								<h:outputText styleClass="dataText"
+									value="#{(not empty verNotaMonitoreoListado.DevolverNotaMonitoreoAsociadas(verNotaMonitoreoListado.notaMonitoreo)) ? verNotaMonitoreoListado.DevolverNotaMonitoreoAsociadas(verNotaMonitoreoListado.notaMonitoreo).size() : 0}"
+									style="margin:0px; padding:0px; margin-left:5px; " /></td>
+
+
+						</tr>
+
+					</table>
+					<rich:spacer height="2px;" width="80%" />
+					<c:forEach
+						items="#{verNotaMonitoreoListado.DevolverNotaMonitoreoAsociadas(verNotaMonitoreoListado.notaMonitoreo)}"
+						var="nota" varStatus="cont">
+						<table border="1px;" cellpadding="0" cellspacing="0" width="80%">
+							<tr style="border: 1px;" bgcolor="#BFE1FF" class="filSepGranRA">
+								<td width="26.6%" align="left"><h:outputText
+										value="#{nota.descripcion}"
+										style="margin:0px; padding:0px;font-weight: bold;margin-left:5px;" /></td>
+								<td width="26.6%" align="center"><h:outputText
+										styleClass="dataText"
+										value="#{(not empty nota.fechaActualizacion) ? nota.fechaActualizacion : nota.fechaCreacion}"
+										style="margin:0px; padding:0px; margin-left:5px; ">
+										<s:convertDateTime pattern="#{messages.patronFecha}">
+										</s:convertDateTime>
+									</h:outputText> <h:outputText value="#{messages.por}:"
+										style="margin:0px; padding:0px; font-weight: bold; margin-left:5px;" />
+									<h:outputText styleClass="dataText"
+										value="#{(not empty nota.usuario.nombre) ? nota.usuario.nombre : messages.vacio}"
+										style="margin:0px; padding:0px; margin-left:5px;" /></td>
+								<td width="26.6%" align="right"><h:outputText
+										value="#{messages.estado}:"
+										style="margin:0px; padding:0px; font-weight: bold; " /> <h:outputText
+										styleClass="dataText"
+										value="#{(not empty nota.estadoNota.nombre) ? nota.estadoNota.nombre : messages.vacio}"
+										style="margin:0px; padding:0px; margin-left:5px; " /></td>
+							</tr>
+						</table>
+						<table border="1px;" cellpadding="0" cellspacing="0" width="80%">
+							<tr border="1px;" class="filSepGranRA">
+								<td><h:outputText styleClass="dataText"
+										value="#{(not empty nota.detallesNota) ? nota.detallesNota : messages.vacio}"
+										style="margin:0px; padding:0px; margin-left:5px; " /></td>
+							</tr>
+						</table>
+						<rich:spacer height="2px;" width="80%" />
+
+					</c:forEach>
+
+				</rich:panel></td>
+		</tr>
+		<tr>
+			<td><h:form>
+					<div align="right">
+						<br></br>
+						<h:commandButton value="#{messages.salir}" style="margin:0px;"
+							action="salir" immediate="true" />
+					</div>
+				</h:form></td>
+		</tr>
+
+	</table>
+</ui:composition>

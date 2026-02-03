@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="desincorporar_productos" width="833" height="502">
+  <node name="inicio" x="55" y="40" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="aprobar_desincorporacion" x="254" y="207" width="188" height="36">
+    <edge>
+      <label x="-57" y="-12"/>
+    </edge>
+  </node>
+  <node name="acta_de_desincorporacion" x="240" y="128" width="208" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="desincorporar producto" x="247" y="39" width="189" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="fin" x="281" y="298" width="132" height="36"/>
+</root-container>

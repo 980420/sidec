@@ -1,0 +1,376 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}">
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+/*Estilo para el panel */
+.rich-panel-body {
+	padding: 0px
+}
+
+.custom-error {
+	border: 1px solid #FFCC00;
+	padding: 5px;
+	background-color: #F0F8FF;
+	font-size: 10px;
+	font-family: "Verdana";
+	position: relative;
+	left: 5px;
+	top: 5px;
+	margin-right: 10px;
+}
+</style>
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo6}')</script>
+
+		<a4j:form>
+			<a4j:jsFunction
+				action="#{establecimientoAreaInfluenciaHospitalBuscarControlador.asignarEstablecimiento()}"
+				name="selectedEstablecimiento" ignoreDupResponses="true"
+				reRender="listEstablecimientosSeleccionados,establecimientoList_custom_datatable">
+				<a4j:actionparam name="id"
+					assignTo="#{establecimientoAreaInfluenciaHospitalBuscarControlador.idEstablecimiento}" />
+			</a4j:jsFunction>
+		</a4j:form>
+
+		<a4j:form>
+			<a4j:jsFunction
+				oncomplete="Richfaces.hideModalPanel('crearEstablecimientoAreaInfluenciaHospital')"
+				name="cerrarCrearEstablecimiento" ignoreDupResponses="true"
+				action="#{establecimientoAreaInfluenciaHospitalBuscarControlador.limpiarCampos()}"
+				reRender="a_establecimientoList_datatable">
+			</a4j:jsFunction>
+			<a4j:jsFunction
+				oncomplete="Richfaces.hideModalPanel('modificarEstablecimientoAreaInfluenciaHospital')"
+				name="cerrarModificarEstablecimiento" ignoreDupResponses="true"
+				action="#{establecimientoAreaInfluenciaHospitalBuscarControlador.limpiarCampos()}"
+				reRender="a_establecimientoList_datatable">
+			</a4j:jsFunction>
+		</a4j:form>
+
+		<a4j:form>
+			<a4j:jsFunction
+				oncomplete="Richfaces.hideModalPanel('gestTipoEstablecimiento')"
+				name="cerrarCrearTipoEstablecimiento" ignoreDupResponses="true"
+				reRender="idATipoEstablecimientoCrear,crear_entidad_panel_form:idATipoEstablecimientoModificar,tipoEstablecimiento">
+			</a4j:jsFunction>
+		</a4j:form>
+
+		<h:form id="camaSearch" styleClass="edit">
+			
+			<a4j:outputPanel ajaxRendered="true" id="errorOutputPanel">
+				<s:div style="height:30px;width:100%"
+					rendered="#{facesMessages.getCurrentMessagesForControl('buttonAceptar').size() > 0 }">
+					<div class="custom-error">
+						<rich:message for="buttonAceptar"></rich:message>
+					</div>	
+				</s:div>
+			</a4j:outputPanel>			
+			<a4j:outputPanel ajaxRendered="true">
+				<rich:messages styleClass="message" for="btnSi" ajaxRendered="true" />
+			</a4j:outputPanel>
+			<a4j:outputPanel id="establecimientoList_custom_datatable">
+				<rich:simpleTogglePanel switchType="client">
+					<f:facet name="header">#{messages.criterios}</f:facet>
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr>
+							<td style="height: 13px;" colspan="6" />
+						</tr>
+						<tr style="vertical-align: top;">
+							<td style="width: 7px;" />
+							<td>#{messages.crit1}<br />
+							<h:inputText style="width : 148px;"
+								value="#{establecimientoAreaInfluenciaHospitalBuscarControlador.valor}" />
+							</td>
+							<td style="width: 25px" />
+							<td>#{messages.crit2}<br />
+
+							<rich:comboBox style=" width : 150px;" id="tipoEstablecimiento"
+								immediate="true" defaultLabel="#{messages.seleccione}"
+								enableManualInput="false"
+								suggestionValues="#{establecimientoAreaInfluenciaHospitalBuscarControlador.tiposEstablecimientosBuscar()}"
+								value="#{establecimientoAreaInfluenciaHospitalBuscarControlador.segundoValor}">
+							</rich:comboBox></td>
+							<td style="width: 25px" />
+							<td style="vertical-align: bottom;">
+							<table cellpadding="0" cellspacing="0" border="0">
+								<tr>
+									<td><h:commandButton id="search"
+										value="#{messages.buscar}"
+										style="margin-left: 0px; margin-bottom: 0px;"
+										action="#{establecimientoAreaInfluenciaHospitalBuscarControlador.buscar()}" /></td>
+									<td><h:commandButton value="#{messages.cancelar}"
+										style="margin-right: 0px; margin-bottom: 0px;"
+										action="#{establecimientoAreaInfluenciaHospitalBuscarControlador.setSalida(1)}" /></td>
+								</tr>
+							</table>
+							</td>
+						</tr>
+					</table>
+					<rich:spacer height="7px" style="display: block" />
+				</rich:simpleTogglePanel>
+
+				<rich:spacer height="11px" style="display: block" />
+
+				<s:div>
+
+					<div align="right"><h:panelGrid columns="2" cellpadding="1"
+						cellspacing="0" border="0">
+						<h:graphicImage style="border: 0px;"
+							height="12" width="12" title="#{messages.adicionarT}"
+							value="/resources/icons/default/acciones/adicionar.png" />
+						<a4j:commandLink value="#{messages.adicionar}" immediate="true"
+							styleClass="whitespace"
+							action="#{establecimientoAreaInfluenciaHospitalBuscarControlador.limpiarCamposCrear()}"
+							oncomplete="Richfaces.showModalPanel('crearEstablecimientoAreaInfluenciaHospital')"
+							reRender="modalPanelCrear" />
+					</h:panelGrid></div>
+
+				</s:div>
+
+				<rich:panel styleClass="whitespace"
+					rendered="#{establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosControler.resultList.size() == 0 and establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosControler.valor == '' and establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosControler.segundoValor == ''}">
+					<f:facet name="header">
+						<s:div>
+							<table cellpadding="0" cellspacing="0" width="100%">
+								<tr>
+									<td>
+									<table cellpadding="0" cellspacing="0">
+										<tr>
+											<td>#{messages.listado}</td>
+										</tr>
+									</table>
+									</td>
+								</tr>
+							</table>
+						</s:div>
+					</f:facet>
+					<rich:spacer height="11px" style="display: block" />
+					<div class="results" id="roleList"><rich:spacer width="6px" />
+					<h:outputText value="#{messages.noInf}" /></div>
+					<rich:spacer height="4px" style="display: block" />
+				</rich:panel>
+				<rich:panel styleClass="whitespace"
+					rendered="#{establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosControler.resultList.size() == 0 and (establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosControler.valor != '' || establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosControler.segundoValor != '')}">
+					<f:facet name="header">#{messages.listado}</f:facet>
+					<rich:spacer height="11px" style="display: block" />
+					<div class="results" id="roleList"><rich:spacer width="6px" />
+					<h:outputText value="#{messages.noInf2}" /></div>
+					<rich:spacer height="6px" style="display: block" />
+				</rich:panel>
+
+				<s:div style="margin-left:1px;margin-top:1px"
+					rendered="#{establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosControler.resultList.size() != 0}">
+					<rich:dataTable style="width:100%; white-space:nowrap"
+						styleClass="whitespace" columnsWidth="0*, 70%, 30%, 0*,0*"
+						var="establecimiento"
+						value="#{establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosControler.resultList}">
+						<f:facet name="header">
+							<div style="float: left;">#{messages.listado}</div>
+						</f:facet>
+						<h:column>
+							<s:div
+								rendered="#{!establecimientoAreaInfluenciaHospitalBuscarControlador.existeEstablecimiento(establecimiento.id)}"
+								align="center">
+								<input type="checkbox"
+									onclick="selectedEstablecimiento('#{establecimiento.id}');"
+									checked=""
+									style="margin-top: 0px; margin-right: 0px; margin-left: 0px; margin-bottom: 0px;" />
+							</s:div>
+							<s:div
+								rendered="#{establecimientoAreaInfluenciaHospitalBuscarControlador.existeEstablecimiento(establecimiento.id)}">
+								<input type="checkbox"
+									onclick="selectedEstablecimiento('#{establecimiento.id}');"
+									checked="true"
+									style="margin-top: 0px; margin-right: 0px; margin-left: 0px; margin-bottom: 0px;" />
+							</s:div>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.nombre}</s:div>
+								</h:panelGrid>
+							</f:facet>
+            				#{establecimiento.nombre}
+        				</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.tipoEstablecimiento}</s:div>
+								</h:panelGrid>
+							</f:facet>
+            				#{establecimiento.tipoEstablecimientoSalud.valor}
+        				</h:column>
+						<h:column>
+							<div align="center"><a4j:commandLink
+								oncomplete="Richfaces.showModalPanel('crearEstablecimientoAreaInfluenciaHospital')"
+								reRender="modalPanelCrear"
+								action="#{establecimientoAreaInfluenciaHospitalBuscarControlador.seleccionar(establecimiento.id)}">
+								<h:graphicImage title="#{messages.modificar}"
+									style="border: 0px;"
+									value="/resources/icons/default/acciones/modificar.png" />
+							</a4j:commandLink></div>
+						</h:column>
+						<h:column>
+							<div align="center"><a4j:commandLink
+								oncomplete="Richfaces.showModalPanel('confirmarEliminarTipoEstablecimientoAreaInfluenciaHospital')"
+								reRender="modalPanelEliminar"
+								action="#{establecimientoAreaInfluenciaHospitalBuscarControlador.seleccionar(establecimiento.id)}">
+								<h:graphicImage title="#{messages.eliminar}"
+									style="border: 0px; cursor:pointer;"
+									value="/resources/icons/default/acciones/eliminar.png">
+								</h:graphicImage>
+							</a4j:commandLink></div>
+						</h:column>
+
+
+					</rich:dataTable>
+					<rich:spacer height="11px" />
+
+					<div class="tableControl" id="paginado"
+						style="width: 100%; height: 14px;" align="center"><h:graphicImage
+						title="#{messages.pag1}" style="cursor:pointer; border: 0px;"
+						rendered="#{establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosControler.previousExists}"
+						value="/resources/icons/default/paginado/#{theme.color}/inicio.png">
+						<a4j:support ajaxSingle="true" event="onclick"
+							action="#{establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosControler.setFirstResult(0)}"
+							reRender="establecimientoList_custom_datatable" />
+					</h:graphicImage> <h:graphicImage
+						value="/resources/icons/default/paginado/iniciod.png"
+						rendered="#{!establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosControler.previousExists}" />
+
+					<h:graphicImage title="#{messages.pag2}"
+						style="cursor:pointer; border: 0px;"
+						rendered="#{establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosControler.previousExists}"
+						value="/resources/icons/default/paginado/#{theme.color}/anterior.png">
+						<a4j:support ajaxSingle="true" event="onclick"
+							action="#{establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosControler.setFirstResult(establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosControler.previousFirstResult)}"
+							reRender="establecimientoList_custom_datatable" />
+					</h:graphicImage> <h:graphicImage
+						value="/resources/icons/default/paginado/anteriord.png"
+						rendered="#{!establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosControler.previousExists}" />
+
+					<h:graphicImage title="#{messages.pag3}"
+						style="cursor:pointer; border: 0px;"
+						rendered="#{establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosControler.nextExists}"
+						value="/resources/icons/default/paginado/#{theme.color}/siguiente.png">
+						<a4j:support ajaxSingle="true" event="onclick"
+							action="#{establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosControler.setFirstResult(establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosControler.nextFirstResult)}"
+							reRender="establecimientoList_custom_datatable" />
+					</h:graphicImage> <h:graphicImage
+						value="/resources/icons/default/paginado/siguiented.png"
+						rendered="#{!establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosControler.nextExists}" />
+					<h:graphicImage title="#{messages.pag4}"
+						style="cursor:pointer; border: 0px;"
+						rendered="#{establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosControler.nextExists}"
+						value="/resources/icons/default/paginado/#{theme.color}/fin.png">
+						<a4j:support ajaxSingle="true" event="onclick"
+							action="#{establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosControler.setFirstResult(establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosControler.lastFirstResult)}"
+							reRender="establecimientoList_custom_datatable" />
+					</h:graphicImage> <h:graphicImage value="/resources/icons/default/paginado/find.png"
+						rendered="#{!establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosControler.nextExists}" /></div>
+				</s:div>
+			</a4j:outputPanel>
+
+			<a4j:outputPanel id="listEstablecimientosSeleccionados">
+				<rich:spacer height="13px" style="display: block"
+					rendered="#{establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosSelect.size() != 0}"></rich:spacer>
+				<table cellpadding="0" cellspacing="0" border="0" width="100%">
+					<tr>
+						<td><s:div
+							rendered="#{establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosSelect.size() != 0}"
+							style="margin-left:1px">
+							<rich:dataTable
+								style="width:100%; white-space:nowrap;margin-top:1px"
+								styleClass="whitespace" columnsWidth="70%, 30%,0*"
+								var="establecimiento"
+								value="#{establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosSelect}">
+								<f:facet name="header">
+									<div style="float: left;">#{messages.listadoSeleccionado}</div>
+								</f:facet>
+								<h:column>
+									<f:facet name="header">
+										<h:panelGrid columns="2"
+											style="width: 100%; padding:0px; margin:0px;" border="0"
+											cellpadding="0" cellspacing="0">
+											<s:div style="float: left;">#{messages.nombre}</s:div>
+										</h:panelGrid>
+									</f:facet>
+            				#{establecimiento.nombre}
+        				</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:panelGrid columns="2"
+											style="width: 100%; padding:0px; margin:0px;" border="0"
+											cellpadding="0" cellspacing="0">
+											<s:div style="float: left;">#{messages.tipoEstablecimiento}</s:div>
+										</h:panelGrid>
+									</f:facet>
+            				#{establecimiento.tipoEstablecimientoSalud.valor}
+        				</h:column>
+								<h:column>
+									<div align="center"><a4j:commandLink
+										onclick="selectedEstablecimiento('#{establecimiento.id}');">
+										<h:graphicImage title="#{messages.eliminar}"
+											style="border: 0px; cursor:pointer;"
+											value="/resources/icons/default/acciones/eliminar.png">
+										</h:graphicImage>
+									</a4j:commandLink></div>
+								</h:column>
+							</rich:dataTable>
+						</s:div></td>
+
+					</tr>
+					<tr>
+						<td>
+						<div align="right"><h:commandButton
+							rendered="#{establecimientoAreaInfluenciaHospitalBuscarControlador.establecimientosSelect.size() != 0}"
+							id="buttonCrearEstablecimiento" value="#{messages.aceptar}"
+							action="#{establecimientoAreaInfluenciaHospitalBuscarControlador.asignar()}"
+							style="margin-bottom: 0px; margin-right: 0px; margin-top: 8px">
+						</h:commandButton> <rich:spacer height="8px" style="display: block"></rich:spacer></div>
+						</td>
+
+					</tr>
+				</table>
+			</a4j:outputPanel>
+
+
+
+
+		</h:form>
+
+		<a4j:outputPanel id="modalPanelEliminar">
+			<ui:include
+				src="/modConfiguracion/management/establecimientosAreaInfluenciaHospital/modalpanels/ConfirmarEliminarEstablecimientoAreaInfluenciaHospital.xhtml" />
+		</a4j:outputPanel>
+
+		<a4j:outputPanel id="modalPanelCrear">
+			<ui:include
+				src="/modConfiguracion/management/establecimientosAreaInfluenciaHospital/modalpanels/CrearEstablecimientoAreaInfluenciaHospital.xhtml" />
+
+		</a4j:outputPanel>
+	</ui:define>
+
+
+
+</ui:composition>
+

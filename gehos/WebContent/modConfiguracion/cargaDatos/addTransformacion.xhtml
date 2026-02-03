@@ -1,0 +1,252 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}">
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+		<style type="text/css">
+.top {
+	vertical-align: top;
+}
+
+.rich-fileupload-toolbar-decor {
+	border-bottom: 1px solid #A4BAA8 !important;
+	border-top: 1px solid #C7C7C7 !important;
+	border-left: 1px solid #FFF !important;
+	padding: 0px !important;
+	background-color: rgba(87, 146, 98, 0.22) !important;
+	width: 100%;
+}
+
+.fileupload-decor {
+	border-bottom: 1px solid #3C6B44;
+	border-top: 1px solid #FFF;
+	border-left: 1px solid #FFF;
+	padding: 2px;
+	background-color: #528A5D;
+	width: 100%;
+}
+
+.list-decor {
+	border: 1px solid #3C6B44;
+	background-color: #FFF;
+	width: 100%;
+}
+
+.rich-tabpanel {
+	white-space: nowrap !IMPORTANT;
+}
+
+.filSepPeq {
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+.filSepPeq td {
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+.colSepGran {
+	padding-right: 25px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+.colSepPeq {
+	padding-right: 9px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+.colSepImg {
+	padding-right: 6px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+filSepGran td {
+	padding-bottom: 8px;
+	vertical-align: top;
+}
+
+.filSepGranRA td {
+	/*padding-bottom:10px; inicialmente yo lo cambie por 8*/
+	padding-bottom: 8px;
+	vertical-align: top;
+}
+
+.Tabla {
+	border: 0px;
+	vertical-align: top;
+	text-align: left;
+	padding: 0px;
+	spacing: 0px;
+}
+
+.margenSupIzq {
+	padding-right: 7px;
+	padding-top: 10px;
+	padding-bottom: 8px;
+	padding-left: 8px;
+}
+
+.noAvailableDay {
+	color: red !important;
+	text-decoration: line-through;
+}
+</style>
+		<script type="text/javascript">
+		setContentTitle('Adicionar transformación')
+		function enviarDatos(elemento) {
+			elemento.form.submit();
+		}
+		function refresh(numero){
+			if(numero == 0){
+				document.location.href = document.location.href;
+			}
+		}
+		</script>
+		<s:div id="pagBtns" style="text-align: left; width:100%"
+			rendered="true">
+
+			<h:form id="fileUp" enctype="multipart/form-data"
+				onsubmit="#{addTransf.addListaT()}">
+				<table cellpadding="0px" cellspacing="0px" border="0px" width="100%">
+					<tr>
+						<td width="8px"></td>
+						<td><rich:panel>
+								<f:facet name="header">#{messages.lbl_adicionar_trans}</f:facet>
+								<table cellpadding="0" cellspacing="0" border="0">
+									<tr>
+										<td height="10px"></td>
+									</tr>
+									<tr>
+										<td><rich:spacer width="6px" /></td>
+										<td><h:outputLabel
+												value="#{messages.lbl_dir_trans}"></h:outputLabel><br />
+											<s:fileUpload id="addTransformacion" accept="*.ktr"
+												tabindex="0" data="#{addTransf.ficheroXML.data}"
+												fileName="#{addTransf.ficheroXML.nombre}"
+												onchange="enviarDatos(this)">
+											</s:fileUpload></td>
+									</tr>
+									<tr>
+										<td><rich:spacer height="6px" /></td>
+									</tr>
+									<tr>
+										<td><rich:spacer width="6px" /></td>
+										<td><h:panelGroup layout="block" id="transfList"
+												rendered="#{not empty addTransf.listatemporal}"
+												style="width:690px;height:200px;overflow:auto;">
+												<rich:dataTable width="100%" var="transfT"
+													columnsWidth="91%, 9%" value="#{addTransf.listatemporal}"
+													rows="0" rowKeyVar="row">
+													<f:facet name="header">
+														<h:outputText
+															value="#{messages.lbl_list_add_trans}" />
+													</f:facet>
+													<rich:column style="text-align: left;">
+														<f:facet name="header">
+															<h:panelGrid columns="2"
+																style="padding: 0px;margin: -3px -3px;">
+																<h:outputText styleClass="headerText"
+																	style="text-align: left;"
+																	value="#{messages.lbl_nomb_trans}" />
+															</h:panelGrid>
+														</f:facet>
+														<h:outputText value="#{transfT.nombre}" />
+													</rich:column>
+													<rich:column>
+														<a4j:commandLink rendered="true" title="Cancelar"
+															oncomplete="refresh(#{addTransf.listatemporal.size()})"
+															action="#{addTransf.cancelListaT(row)}"
+															reRender="transfList">
+															<h:outputText value="#{messages.lbl_cancelar}" />
+														</a4j:commandLink>
+													</rich:column>
+												</rich:dataTable>
+											</h:panelGroup></td>
+
+
+									</tr>
+								</table>
+							</rich:panel></td>
+					</tr>
+				</table>
+				<s:div style="text-align:right">
+					<table cellpadding="0" cellspacing="0" border="0" align="right">
+						<tr>
+							<td><a4j:commandButton tabindex="1" value="#{messages.lbl_aceptar}"
+									disabled="#{empty addTransf.listatemporal}" id="buttonAceptar"
+									style="margin-bottom: 0px; margin-right: 10px; margin-left: 0px; margin-top: 8px"
+									action="#{addTransf.adicionarLista()}"
+									oncomplete="javascript:Richfaces.showModalPanel('add_transf_panel');"
+									reRender="add_transf_panel" /></td>
+							<td><a4j:commandButton
+									style="margin-bottom: 0px; margin-right: 10px; margin-left: 0px; margin-top: 8px"
+									id="btnverlogs" action="verlog"
+									oncomplete="Richfaces.showModalPanel('ver_logs_panel')"
+									rendered="#{not empty transfManager.logs}" value="#{messages.lbl_registro}" /></td>
+							<td><h:commandButton value="#{messages.lbl_cancelar}" tabindex="2"
+									immediate="true"
+									style="margin-bottom: 0px; margin-right: 0px; margin-left: 0px; margin-top: 8px"
+									action="#{addTransf.terminar()}" propagation="end" /></td>
+						</tr>
+					</table>
+				</s:div>
+			</h:form>
+			<br />
+			<s:div style="text-align: center;margin: 0px 45%;">
+				<a4j:status>
+					<f:facet name="start">
+						<h:panelGrid columns="2">
+							<h:graphicImage
+								value="/resources/icons/default/acciones/loading.gif" width="20" />
+							<h:outputLabel value="#{messages.lbl_cargando}" />
+						</h:panelGrid>
+					</f:facet>
+				</a4j:status>
+			</s:div>
+		</s:div>
+		<s:div id="modalpanelsdiv">
+			<ui:include
+				src="/modConfiguracion/cargaDatos/modalpanels/transf_adicionada.xhtml" />
+			<ui:include
+				src="/modConfiguracion/cargaDatos/modalpanels/ver_logs.xhtml" />
+		</s:div>
+	</ui:define>
+</ui:composition>

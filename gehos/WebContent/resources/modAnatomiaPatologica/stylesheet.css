@@ -1,0 +1,121 @@
+
+
+.rich-stglpanel-body-custom {
+	padding-top: 11px;
+	padding-bottom: 13px;
+	padding-left: 7px;
+	padding-right: 8px;
+}
+
+.rich-panel-body-custom {
+	padding-bottom: 13px; 
+	padding-top: 11px; 
+	padding-left: 8px; 
+	padding-right: 8px; 
+}
+
+.rich-tabpanel-content-custom {
+	padding-bottom: 13px; 
+	padding-top: 13px; 
+	padding-left: 8px; 
+	padding-right: 8px; 
+}
+
+.dr-pnlbar-c {
+	padding: 8px;
+}
+
+
+/*
+	Clase para separar la propiedad del valor de forma horizontal, 
+	a una distancia específica
+	Valor nominal: 	 8px
+	Valor real:		10px
+*/
+.h-spacer-between-p-and-v {
+	width: 8px;
+}
+/*
+	Clase para separar dos conjuntos de componentes de forma horizontal, 
+	a una distancia específica
+	Valor nominal: 	25px
+	Valor real:		26px
+*/
+.h-spacer-between-2c {
+	width: 25px;
+}
+/*
+	Clase para separar dos conjuntos de componentes de forma vertical, 
+	a una distancia específica
+	Valor nominal: 	 
+	Valor real:		
+*/
+.v-spacer-between-2l{
+	height: 8px;
+	width: 8px;
+	display: block;
+}
+/*
+	Clase para separar dos conjuntos de componentes de forma vertical, 
+	a una distancia específica en los 'Datos generales del paciente'
+	Valor nominal: 	12px
+	Valor real:		15px 
+*/
+.v-spacer-between-2l-patientPersonalData{
+	height: 12px;
+	display: block;
+}
+/*
+	Clase para separar la foto de la primera columna de datos, 
+	a una distancia específica en los 'Datos generales del paciente'.
+	Valor nominal: 	 5px
+	Valor real:		13px 
+*/
+.h-spacer-between-picture-and-data-patientPersonalData{
+	width: 5px;
+}
+/*
+	Valor nominal: 	13px
+	Valor real:		13px 
+*/
+.top-spacer-patientPersonalData {
+	height: 13px;	
+}
+/*
+	Valor nominal: 	 8px
+	Valor real:		10px 
+*/
+.left-spacer-patientPersonalData {
+	width: 8px;
+}
+/*
+	Clase para darle la alineación a los datos numéricos correspondientes a:
+	-Códigos
+	-Identificadores 
+	Aplicado a: los valores de las columnas de las tablas.
+*/
+.code-align {
+	text-align: left;	
+}
+.number-align {
+	text-align: right;
+}
+.patientPersonalData{
+	padding: 0px;
+	padding-bottom: 13px;	
+}
+/*PARA LOS MENSAJES DE ELIMINAR*/
+.message-align{
+	text-align: left;
+}
+/*PARA LA IMAGEN DE LOS FILTROS*/
+.img-filters{
+	float: right;
+	padding-left: 3px;
+}
+/*PARA LA IMAGEN DE LAS ACCIONES EN LAS TABLAS*/
+.img-table-actions{
+	border: 0px;
+	margin: 0px;
+	padding: 0px;
+}

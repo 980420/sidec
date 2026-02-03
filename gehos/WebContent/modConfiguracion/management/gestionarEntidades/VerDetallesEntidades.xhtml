@@ -1,0 +1,264 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+
+
+		<s:div
+			rendered="#{not entidadVerDetallesControlador.from.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.titulo1}')</script>
+		</s:div>
+		<s:div
+			rendered="#{entidadVerDetallesControlador.from.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.titulo2}')</script>
+		</s:div>
+
+
+
+		<h:form id="userCreate" styleClass="create"
+			enctype="multipart/form-data">
+			<a4j:outputPanel ajaxRendered="true">
+				<rich:messages styleClass="message" ajaxRendered="true" for="btnSi" />
+				<a4j:outputPanel ajaxRendered="true">
+					<rich:messages styleClass="message" globalOnly="true"
+						ajaxRendered="true" />
+				</a4j:outputPanel>
+			</a4j:outputPanel>
+
+			<rich:panel styleClass="whitespace">
+				<f:facet name="header">#{messages.datos}</f:facet>
+
+				<table cellpadding="0px" cellspacing="0px" border="0px" width="100%">
+					<tr>
+						<td height="13px" />
+					</tr>
+					<tr>
+						<td width="7px" />
+						<td>
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+							<tr>
+
+								<td>
+								<table cellpadding="0px" cellspacing="0px" border="0px"
+									width="100%">
+									<tr>
+										<td>#{messages.nombre}</td>
+										<td><rich:spacer width="9px" /></td>
+										<td><h:outputLabel styleClass="dataText"
+											value="#{entidadVerDetallesControlador.entidad.nombre}" /></td>
+										<td><rich:spacer width="24px" /></td>
+										<td>#{messages.direccion}</td>
+										<td><rich:spacer width="9px" /></td>
+										<td><h:outputLabel
+											rendered="#{entidadVerDetallesControlador.entidad.direccion != '' and entidadVerDetallesControlador.entidad.direccion != null}"
+											styleClass="dataText"
+											value="#{entidadVerDetallesControlador.entidad.direccion}" />
+										<h:outputLabel
+											rendered="#{entidadVerDetallesControlador.entidad.direccion == '' || entidadVerDetallesControlador.entidad.direccion == null}"
+											styleClass="dataText" value="-" /></td>
+										<td><rich:spacer width="25px" /></td>
+										<td>#{messages.area}</td>
+										<td><rich:spacer width="9px" /></td>
+										<td><h:outputLabel styleClass="dataText"
+											value="#{entidadVerDetallesControlador.poblacionAreaInfluencia()}"
+											rendered="#{entidadVerDetallesControlador.poblacionAreaInfluencia() != 0}" />
+										<h:outputLabel
+											rendered="#{entidadVerDetallesControlador.poblacionAreaInfluencia() == 0}"
+											styleClass="dataText" value="-" /></td>
+										<td width="6px" />
+									</tr>
+									<tr >
+							<td height="8px" />
+							</tr>
+									<tr>
+										<td>#{messages.correo}</td>
+										<td width="9px" />
+										<td><h:outputLabel
+											rendered="#{entidadVerDetallesControlador.entidad.correo != '' and entidadVerDetallesControlador.entidad.correo != null}"
+											styleClass="dataText"
+											value="#{entidadVerDetallesControlador.entidad.correo}" /> <h:outputLabel
+											rendered="#{entidadVerDetallesControlador.entidad.correo == '' || entidadVerDetallesControlador.entidad.correo == null}"
+											styleClass="dataText" value="-" /></td>
+										<td style="width: 24px"></td>
+										<td>#{messages.telefono}</td>
+										<td width="9px" />
+										<td><h:outputLabel
+											rendered="#{entidadVerDetallesControlador.entidad.telefonos != '' and entidadVerDetallesControlador.entidad.telefonos != null}"
+											styleClass="dataText"
+											value="#{entidadVerDetallesControlador.entidad.telefonos}" />
+										<h:outputLabel
+											rendered="#{entidadVerDetallesControlador.entidad.telefonos == '' || entidadVerDetallesControlador.entidad.telefonos == null}"
+											styleClass="dataText" value="-" /></td>
+									</tr>
+									<tr>
+									</tr>
+								</table>
+								</td>
+
+							</tr>
+						</table>
+						</td>
+
+					</tr>
+					<tr>
+						<td><rich:spacer height="8px" style="display: block" /></td>
+					</tr>
+					<tr>
+						<td><rich:spacer width="7px" /></td>
+						<td><rich:panel>
+							<f:facet name="header">#{messages.datos2}</f:facet>
+							<table cellpadding="0px" cellspacing="0px" border="0px">
+								<tr>
+									<td style="height: 13px;" />
+								</tr>
+								<tr>
+									<td><rich:spacer width="7px" /></td>
+									<td>#{messages.tipoEntidad}</td>
+									<td><rich:spacer width="9px" /></td>
+									<td><h:outputLabel styleClass="dataText"
+										value="#{entidadVerDetallesControlador.entidad.tipoEntidad.valor}" />
+									</td>
+									<td><rich:spacer width="24px" /></td>
+									<td>#{messages.fechaApertura}</td>
+									<td><rich:spacer width="9px" /></td>
+									<td><h:outputLabel
+										rendered="#{entidadVerDetallesControlador.entidad.fechaApertura != '' and entidadVerDetallesControlador.entidad.fechaApertura != null}"
+										styleClass="dataText"
+										value="#{entidadVerDetallesControlador.entidad.fechaApertura}">
+										<s:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputLabel> <h:outputLabel
+										rendered="#{entidadVerDetallesControlador.entidad.fechaApertura == '' || entidadVerDetallesControlador.entidad.fechaApertura == null}"
+										styleClass="dataText" value="-" /></td>
+									<td><rich:spacer width="24px" /></td>
+									<td>#{messages.caracter}</td>
+									<td><rich:spacer width="9px" /></td>
+									<td><h:outputLabel styleClass="dataText"
+										value="#{entidadVerDetallesControlador.caracter}" /></td>
+									<td><rich:spacer width="6px" /></td>
+								</tr>
+								<tr >
+							<td height="8px" />
+							</tr>
+
+								<tr>
+									<td width="7px" />
+									<td>#{messages.camasArquitectonicas}</td>
+									<td width="9px" />
+									<td><h:outputLabel
+										rendered="#{entidadVerDetallesControlador.entidad.camasArquitectonicas != '' and entidadVerDetallesControlador.entidad.camasArquitectonicas != null}"
+										styleClass="dataText"
+										value="#{entidadVerDetallesControlador.entidad.camasArquitectonicas}" />
+									<h:outputLabel
+										rendered="#{entidadVerDetallesControlador.entidad.camasArquitectonicas == '' || entidadVerDetallesControlador.entidad.camasArquitectonicas == null}"
+										styleClass="dataText" value="-" /></td>
+									<td width="24px" />
+									<td>#{messages.camasPresupuestadas}</td>
+									<td width="9px" />
+									<td><h:outputLabel
+										rendered="#{entidadVerDetallesControlador.entidad.camasPresupuestadas != '' and entidadVerDetallesControlador.entidad.camasPresupuestadas != null}"
+										styleClass="dataText"
+										value="#{entidadVerDetallesControlador.entidad.camasPresupuestadas}" />
+									<h:outputLabel
+										rendered="#{entidadVerDetallesControlador.entidad.camasPresupuestadas == '' || entidadVerDetallesControlador.entidad.camasPresupuestadas == null}"
+										styleClass="dataText" value="-" /></td>
+									<td width="24px" />
+									<td>#{messages.pais}</td>
+									<td width="9px" />
+									<td><h:outputLabel styleClass="dataText"
+										value="#{entidadVerDetallesControlador.entidad.estado.nacion.valor}" />
+									</td>
+								</tr>
+								<tr>
+									<td height="8px" />
+								</tr>
+								<tr>
+									<td width="7px" />
+									<td><h:outputText
+										value="#{entidadVerDetallesControlador.provinciaEtic}:" /></td>
+									<td width="9px" />
+									<td><h:outputLabel styleClass="dataText"
+										value="#{entidadVerDetallesControlador.entidad.estado.valor}" />
+									</td>
+									<td width="24px" />
+									<td><h:outputText
+										value="#{entidadVerDetallesControlador.municipioEtic}:" /></td>
+									<td width="9px" />
+									<td><h:outputLabel styleClass="dataText"
+										value="#{entidadVerDetallesControlador.entidad.municipio.valor}" />
+									</td>
+									<td width="24px" />
+									<td><h:outputText
+										value="#{entidadVerDetallesControlador.localidadEtic}:" /></td>
+									<td width="9px" />
+									<td><h:outputText
+										value="#{entidadVerDetallesControlador.entidad.localidad.valor}"
+										styleClass="dataText"></h:outputText>
+										
+										<h:outputLabel
+										rendered="#{eentidadVerDetallesControlador.entidad.localidad.valor == '' || entidadVerDetallesControlador.entidad.localidad.valor == null}"
+										styleClass="dataText" value="-" /></td>
+								</tr>
+								<tr>
+									<td height="7px" />
+								</tr>
+							</table>
+						</rich:panel></td>
+						<td><rich:spacer width="8px" /></td>
+					</tr>
+					<tr>
+						<td><rich:spacer height="7px" style="display: block" /></td>
+					</tr>
+				</table>
+			</rich:panel>
+
+
+
+
+
+
+			<div align="right">
+			<table cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td><h:commandButton tabindex="1"
+						value="#{messages.modificar}"
+						rendered="#{not entidadVerDetallesControlador.from.equals('listar')}"
+						style="margin-bottom: 0px; margin-right: 10px; margin-left: 0px; margin-top: 8px"
+						action="modificar" propagation="end" /></td>
+					<td><a4j:commandButton id="btnEliminar" tabindex="2"
+						onclick="Richfaces.showModalPanel('eliminar_entidad_panel')"
+						value="#{messages.eliminar}"
+						style="margin-bottom: 0px; margin-right: 10px; margin-left: 0px;margin-top: 8px"
+						rendered="#{not entidadVerDetallesControlador.from.equals('listar')}">
+					</a4j:commandButton></td>
+					<td><h:commandButton value="#{messages.salir}" tabindex="3"
+						style="margin-bottom: 0px; margin-right: 0px; margin-left: 0px;margin-top: 8px"
+						action="salir" propagation="end" /></td>
+				</tr>
+			</table>
+			</div>
+
+
+		</h:form>
+		<ui:include
+			src="/modConfiguracion/management/gestionarEntidades/modalspanel/confirmar_eliminar_entidad_detail.xhtml" />
+
+	</ui:define>
+
+</ui:composition>
+

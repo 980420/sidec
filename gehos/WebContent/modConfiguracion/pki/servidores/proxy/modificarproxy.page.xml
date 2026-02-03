@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+	<action execute="#{modificarProxyControlador.setId(modificarProxyControlador.id)}"/>
+	<param name="from" />
+	<navigation from-action="#{modificarProxyControlador.modificar()}">
+		<rule if="#{modificarProxyControlador.error == false}">
+			
+			<redirect
+				view-id="/modConfiguracion/pki/servidores/proxy/verdetalleproxy.xhtml">
+				<param name="id" value="#{modificarProxyControlador.id}" />
+
+				<param name="from" value="#{from}" />
+				
+			</redirect>
+		<end-conversation before-redirect="true" />
+		</rule>
+	</navigation>
+
+	<navigation from-action="cancelar">
+		<rule if="#{from == 'seleccionaproxy'}">
+			<end-conversation before-redirect="true" />
+			<redirect
+				view-id="/modConfiguracion/pki/servidores/tsp/seleccionarproxy.xhtml">
+
+			</redirect>
+		</rule>
+		<rule if="#{from == 'seleccionaproxymod'}">
+			<end-conversation before-redirect="true" />
+			<redirect
+				view-id="/modConfiguracion/pki/servidores/tsp/seleccionarproxymodificar.xhtml">
+
+			</redirect>
+		</rule>
+		<rule>
+			<end-conversation before-redirect="true" />
+			<redirect view-id="/modConfiguracion/pki/servidores/proxy/buscarproxy.xhtml" />
+		</rule>
+	</navigation>
+</page>

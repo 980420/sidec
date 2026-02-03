@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+	<table-filter match-schema="seguridad" match-name="funcionalidad" />
+	<table-filter match-schema="seguridad" match-name="menu_item" />
+	<table-filter match-schema="seguridad" match-name="resource" />
+	<table-filter match-name="usuario" match-schema="comun"></table-filter>
+	<table-filter match-schema="seguridad" match-name="role" />
+
+	<table-filter match-schema="seguridad"
+		match-name="role_menuitem_permission" />
+
+	<table-filter match-schema="seguridad"
+		match-name="role_resource_permission" />
+
+	<table-filter match-schema="seguridad"
+		match-name="user_menuitem_permission" />
+
+	<table-filter match-schema="seguridad"
+		match-name="user_resource_permission" />
+
+</hibernate-reverse-engineering>

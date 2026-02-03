@@ -1,0 +1,201 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<h:form id="molule_form">
+		<div>
+		<div id="contentModules">
+		<div id="tableMove">
+
+		<table cellpadding="0" cellspacing="0">
+			<tr>
+				<td class="widthCell">
+
+				<div id="modules">
+				
+				<rich:dataGrid border="0" var="modu"
+					value="#{viewSelectorBuilder.entitiesModules()}" columns="4" cellpadding="0"
+					cellspacing="0" >
+                   <c:set var="conc"
+							value="/resources/modCommon/moduleimages/#{theme.name}/#{modu.image}"></c:set>
+
+                  
+                  <c:if test="#{not viewSelectorBuilder.existFile(conc)}">
+                  	<c:set var="conc"
+							value="/resources/modCommon/moduleimages/#{theme.name}/generic.png"></c:set>
+                  </c:if>
+                  
+					<s:div rendered="#{modu.lock}">
+						<div id="action_0#{modu.order}" class="lockNode"
+							title="#{messages.lock}.">
+						<div class="access gen"></div>
+						<div class="fav gen"></div>
+						<div class="moduleIMGContent"
+							style="background-image: url(#{theme.color}/images/icons/bg.png);">
+
+						<s:div styleClass="moduleIMG"
+							style="background-image:url(#{facesContext.externalContext.requestContextPath}#{conc})"
+							rendered="#{viewSelectorBuilder.existFile(conc)}"></s:div> <s:div
+							styleClass="moduleIMG"
+							style="background-image:url(#{facesContext.externalContext.requestContextPath}/resources/modCommon/moduleimages/#{theme.name}/generic.png)"
+							rendered="#{not viewSelectorBuilder.existFile(conc)}"></s:div></div>
+						<div class="moduleName">#{modu.label}</div>
+						</div>
+					</s:div>
+					<s:div rendered="#{not modu.lock}">
+						<s:div rendered="#{not modu.children}">
+						
+						   <s:div rendered="#{not modu.external}" >
+						   		<div id="action_0#{modu.order}" class="unchecked"
+								    onclick="gotourl('#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}','#{rewriteFilter.viewMapping}','#{modu.name}','#{modu.id}');"
+									>
+								<div class="gen"></div>
+								  <div class="fav gen" style="z-index: 1000;">
+							        <s:div rendered="#{not modu.favorites}">
+									 <img id="star#{modu.id}#{modu.entityId}" onclick="addToFavorites(this,'#{modu.id}','#{modu.entityId}',event)" title="#{messages.btn_adicFavoritos_com}"
+					            		style="opacity: 0.4;border:0px;" 
+					            		src="#{facesContext.externalContext.requestContextPath}/resources/modCommon/actionimages/nofavoritos.png" 
+					            		/>
+					            		
+					            	
+					            	<rich:effect for="star#{modu.id}#{modu.entityId}"  event="onmouseover" type="Opacity" params="duration:0.3, from:0.4, to:1.0" />
+				        			<rich:effect for="star#{modu.id}#{modu.entityId}" event="onmouseout"  type="Opacity" params="duration:0.3, from:1.0, to:0.4" />
+					            	</s:div>
+					            	 <s:div  rendered="#{modu.favorites}">
+									<img id="star#{modu.id}#{modu.entityId}" onclick="addToFavorites(this,'#{modu.id}','#{modu.entityId}',event)" title="#{messages.tit_quitarFav_com}"
+					            		style="opacity: 0.4;" 
+					            		src="#{facesContext.externalContext.requestContextPath}/resources/modCommon/actionimages/favoritos.png" 
+					            		/>
+					            	<rich:effect for="star#{modu.id}#{modu.entityId}"  event="onmouseover" type="Opacity" params="duration:0.3, from:0.4, to:1.0" />
+				        			<rich:effect for="star#{modu.id}#{modu.entityId}" event="onmouseout"  type="Opacity" params="duration:0.3, from:1.0, to:0.4" />
+					            	</s:div>
+								</div>
+								<div class="moduleIMGContent"
+									style="background-image: url(#{theme.color}/images/icons/bg.png);">
+							    
+								
+								<s:div styleClass="moduleIMG"
+									style="background-image:url(#{facesContext.externalContext.requestContextPath}#{conc})"
+									rendered="#{viewSelectorBuilder.existFile(conc)}"></s:div>
+							    <s:div
+									styleClass="moduleIMG"
+									style="background-image:url(#{facesContext.externalContext.requestContextPath}/resources/modCommon/moduleimages/#{theme.name}/generic.png)"
+									rendered="#{not viewSelectorBuilder.existFile(conc)}"></s:div>
+								</div>
+								<div class="moduleName">#{modu.label}</div>
+								</div>
+						   </s:div>
+						   <s:div rendered="#{modu.external}" style="font-weight:bold">
+						   		<div id="action_0#{modu.order}" class="unchecked"
+								    onclick="javascript:clickext('#{modu.link}');"
+									>
+								<div class="gen"></div>
+								  <div class="fav gen" style="z-index: 1000;">
+							        <s:div rendered="#{not modu.favorites}">
+									 <img id="star#{modu.id}#{modu.entityId}" onclick="addToFavorites(this,'#{modu.id}','#{modu.entityId}',event)" title="#{messages.btn_adicFavoritos_com}"
+					            		style="opacity: 0.4;border:0px;" 
+					            		src="#{facesContext.externalContext.requestContextPath}/resources/modCommon/actionimages/nofavoritos.png" 
+					            		/>
+					            		
+					            	
+					            	<rich:effect for="star#{modu.id}#{modu.entityId}"  event="onmouseover" type="Opacity" params="duration:0.3, from:0.4, to:1.0" />
+				        			<rich:effect for="star#{modu.id}#{modu.entityId}" event="onmouseout"  type="Opacity" params="duration:0.3, from:1.0, to:0.4" />
+					            	</s:div>
+					            	 <s:div  rendered="#{modu.favorites}">
+									<img id="star#{modu.id}#{modu.entityId}" onclick="addToFavorites(this,'#{modu.id}','#{modu.entityId}',event)" title="#{messages.tit_quitarFav_com}"
+					            		style="opacity: 0.4;" 
+					            		src="#{facesContext.externalContext.requestContextPath}/resources/modCommon/actionimages/favoritos.png" 
+					            		/>
+					            	<rich:effect for="star#{modu.id}#{modu.entityId}"  event="onmouseover" type="Opacity" params="duration:0.3, from:0.4, to:1.0" />
+				        			<rich:effect for="star#{modu.id}#{modu.entityId}" event="onmouseout"  type="Opacity" params="duration:0.3, from:1.0, to:0.4" />
+					            	</s:div>
+								</div>
+								<div class="moduleIMGContent"
+									style="background-image: url(#{theme.color}/images/icons/bg.png);">
+							    
+								
+								<s:div styleClass="moduleIMG"
+									style="background-image:url(#{facesContext.externalContext.requestContextPath}#{conc})"
+									rendered="#{viewSelectorBuilder.existFile(conc)}"></s:div>
+							    <s:div
+									styleClass="moduleIMG"
+									style="background-image:url(#{facesContext.externalContext.requestContextPath}/resources/modCommon/moduleimages/#{theme.name}/generic.png)"
+									rendered="#{not viewSelectorBuilder.existFile(conc)}"></s:div>
+								</div>
+								<div class="moduleName">#{modu.label}</div>
+								</div>
+						   </s:div>
+						
+								
+						
+						</s:div>
+						<s:div rendered="#{modu.children}">
+
+							<div id="action_0#{modu.order}" class="unchecked" title="#{modu.childrenList.size()} #{messages.submodulos}"
+								onclick="move(true, 'molule_form:group_1#{modu.order}',#{modu.childrenList.size()},#{modu.order},'#{modu.label}')"
+								>
+							<div class="gen gen2"  style="background-image:url(#{theme.color}/images/icons/submodulos_azul.png);">
+							</div>
+							<div class="gen3" >
+							<h:outputLabel value="#{modu.childrenList.size()}" styleClass="numberChild"/>
+							</div>
+							<div class="fav2 gen" style="z-index: 1000;">
+							        <s:div rendered="#{not modu.favorites}">
+									 <img id="star#{modu.id}#{modu.entityId}" onclick="addToFavorites(this,'#{modu.id}','#{modu.entityId}',event)" title="#{messages.btn_adicFavoritos_com}"
+					            		style="opacity: 0.4;border:0px;" 
+					            		src="#{facesContext.externalContext.requestContextPath}/resources/modCommon/actionimages/nofavoritos.png" 
+					            		/>
+					            		
+					            
+					            	<rich:effect for="star#{modu.id}#{modu.entityId}"  event="onmouseover" type="Opacity" params="duration:0.3, from:0.4, to:1.0" />
+				        			<rich:effect for="star#{modu.id}#{modu.entityId}" event="onmouseout"  type="Opacity" params="duration:0.3, from:1.0, to:0.4" />
+					            	</s:div>
+					            	 <s:div rendered="#{modu.favorites}">
+									<img id="star#{modu.id}#{modu.entityId}" onclick="addToFavorites(this,'#{modu.id}','#{modu.entityId}',event)" title="#{messages.tit_quitarFav_com}"
+					            		style="opacity: 0.4;" 
+					            		src="#{facesContext.externalContext.requestContextPath}/resources/modCommon/actionimages/favoritos.png" 
+					            		/>
+					            	<rich:effect for="star#{modu.id}#{modu.entityId}"  event="onmouseover" type="Opacity" params="duration:0.3, from:0.4, to:1.0" />
+				        			<rich:effect for="star#{modu.id}#{modu.entityId}" event="onmouseout"  type="Opacity" params="duration:0.3, from:1.0, to:0.4" />
+					            	</s:div>
+							</div>
+							<div class="moduleIMGContent"
+								style="background-image: url(#{theme.color}/images/icons/bg.png);">
+							
+							<s:div styleClass="moduleIMG"
+								style="background-image:url(#{facesContext.externalContext.requestContextPath}#{conc})"
+								rendered="#{viewSelectorBuilder.existFile(conc)}"></s:div> <s:div
+								styleClass="moduleIMG"
+								style="background-image:url(#{facesContext.externalContext.requestContextPath}/resources/modCommon/moduleimages/#{theme.name}/generic.png)"
+								rendered="#{not viewSelectorBuilder.existFile(conc)}"></s:div></div>
+							<div class="moduleName">#{modu.label}</div>
+							</div>
+
+						</s:div>
+					</s:div>
+
+
+				</rich:dataGrid></div>
+				</td>
+				<td class="widthCell">
+				<ui:include src="/modCommons/modSelector/#{theme.name}/themes/subModuleInclude.xhtml" />
+				</td>
+			</tr>
+		</table>
+
+		</div>
+		</div>
+		</div>
+		<a:outputPanel rendered="#{empty viewSelectorBuilder.entitiesModules()}">
+			<div align="center">
+				<h:outputText value="#{messages.noConfigModules}" />
+			</div>
+		</a:outputPanel>
+
+	</h:form>
+</s:div>

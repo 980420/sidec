@@ -1,0 +1,24 @@
+package test
+
+#list any import classes here.
+import gehos.reglasdelnegocio.test.Entity;
+import gehos.reglasdelnegocio.test.ChildEntity;
+import gehos.reglasdelnegocio.test.RuleResult;
+import gehos.admision.session.comparador.configuracion.ResultWrapper;
+#declare any global variables here
+
+rule "Your First Rule"
+	when
+		RuleResult(value == "IComparer")		
+		$result : ResultWrapper()
+	then 
+        $result.setFlag(true);
+end
+
+rule "Your Second Rule"
+	when
+		RuleResult(value != "IComparer")		
+		$result : ResultWrapper()
+	then 
+        $result.setFlag(false);
+end

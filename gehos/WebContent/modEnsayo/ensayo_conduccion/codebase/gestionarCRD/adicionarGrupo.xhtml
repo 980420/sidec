@@ -1,0 +1,316 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" xmlns:a4j="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle('#{!gestionarHojaGrupoControlador_ec.editing ? messages.title : messages.titleUpdate}')</script>
+	<link href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css" rel="stylesheet" type="text/css" />
+	<link rel='stylesheet' href='#{facesContext.externalContext.requestContextPath}/modEnsayo/ensayo_disenno/codebase/reglas/style/richfileupload.css' type='text/css' />
+	<link href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/toastr/toastr.min.css" rel="stylesheet" type="text/css" />
+	<script src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/reglas/vendor/jquery1.9.js" type="text/javascript" />
+	<script src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/toastr/toastr.min.js" type="text/javascript" />	
+	<script type="text/javascript" language="javascript" src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/jquery-inputmask/jquery.inputmask.bundle.js" />
+	<script>
+		var $j = jQuery.noConflict(true);
+		$j(document).ready(function(){
+			installrules();   	   
+			applyDateMask();			
+		});
+		function applyDateMask(){
+			var allInputsLikeDate = $j(".likedate");
+			allInputsLikeDate.inputmask("y/[m]/[d]", { "placeholder": "*", greedy:false });	
+			allInputsLikeDate.attr("placeholder","aaaa/mm/dd");
+		}		
+		function cambiarStyle(id, size){
+			var size2 = '' + size + 'px';
+			var n = new String(id);
+			var idN = n.replace('combobox','list');		
+			var com = document.getElementById(idN);
+			var parent = com.parentNode;
+			var gran=parent.parentNode;
+			parent.style.width = size2;
+			gran.style.width = size2;
+			com.style.width = size2;
+		}
+		toastr.options = {
+				"closeButton": true,
+		  		"debug": false,
+			    "newestOnTop": true,
+			    "progressBar": true,
+			    "positionClass": "toast-bottom-right",
+			    "preventDuplicates": false,
+			    "onclick": null,
+			    "showDuration": "300",
+			    "hideDuration": "100000",
+			    "timeOut": "50000",
+			    "extendedTimeOut": "1000",
+			    "showEasing": "swing",
+			    "hideEasing": "linear",
+			    "showMethod": "fadeIn",
+			    "hideMethod": "fadeOut"
+		}
+		function onSave(data){	
+			data = JSON.parse(data);
+			data.each(function(v,i){
+				var func = new Function(v);
+				func();
+			});
+		}		
+		function uiNotify(message, type){
+			if(type === 0)
+				toastr.error(message);	
+			else
+				toastr.warning(message);		
+		}
+		function removeFile(el){
+			var jEl = $j(el);
+			var fileDetailsEl = jEl.parent().parent();
+			updateFileData(false,fileDetailsEl);
+		}
+		function pickFileData(fileInput){
+			var inputHidden = jQuery(fileInput).parent().parent().prev();//jQuery("#"+hidden);
+			var strin;
+			var fileDetailsEl = inputHidden.siblings('.file-holder').find('div.file-details');
+			if(fileInput.files.length > 0){
+				var f = fileInput.files[0];
+				var json = {'name':f.name, 'size':f.size, 'type':f.type}
+				strin = JSON.stringify(json);						
+				updateFileData(true, fileDetailsEl, json);										
+			} else{	
+				strin = "";
+				updateFileData(false, fileDetailsEl, json);
+			}
+			inputHidden.val(strin);	
+			return true;
+		}
+		function updateFileData(show, fileDetailsEl, data){
+			if(show === true){
+				var fileNameEl= fileDetailsEl.children('.file-name');
+				var fileSizeEl= fileDetailsEl.children('.file-size');
+				fileNameEl[0].textContent = data.name;
+				fileSizeEl[0].textContent = convertBytesToHighest(data.size);
+				fileDetailsEl.css('display','inline-block');
+			} else
+				fileDetailsEl.css('display','none');
+		}
+		function convertBytesToHighest(bytes){
+			var unit = "B";
+			var divisor = 1024;
+			if(bytes > divisor){	
+				bytes = bytes/divisor;
+				unit = "KB";
+			}
+			if(bytes > divisor){	
+				bytes = bytes/divisor;
+				unit = "MB";
+			}
+			if(bytes > divisor){	
+				bytes = bytes/divisor;
+				unit = "GB";
+			}
+			return Math.round(bytes * 10)/10+unit;
+		}
+		function processupload(event){
+			var div = event.target;
+			var fileUploader = FileUploadEntry.getComponent(div);
+			var entries = fileUploader.entries;
+			if(entries.length == 1){
+				var entry = entries[0];
+				entry.uploadObject.deleteFrame();
+				entry.state==FileUploadEntry.READY
+				entry.uploadObject.upload();
+			} else if(entries.length>1){
+				for(var i=0; i &lt; entries.length-1;i++){ 
+					var entry = entries[i];
+					entry.uploadObject.clear(entry);
+					entry.uploadObject.deleteFrame();
+				}
+				var entry = entries[entries.length-1];
+				entry.state==FileUploadEntry.READY
+				entry.uploadObject.deleteFrame();
+				entry.uploadObject.upload();
+			}			
+		}	
+	</script>
+	<s:div id="loadingdiv" style="width: 100%; display:none;">
+		<h:graphicImage url="/resources/icons/default/acciones/loading_small.gif" />
+		<span style="vertical-align: super;">Instalando reglas</span>
+	</s:div>
+	<ui:include src="/modEnsayo/ensayo_conduccion/codebase/plantillas/modalPanelSalvandoHoja.xhtml" />
+	<s:div id="modalContainerDiv">
+		<ui:include src="/modEnsayo/ensayo_disenno/codebase/reglas/modals/modalContainer.xhtml">
+			<ui:param name="action" value="#{ruleManager.lastUserInputAction}" />
+		</ui:include>
+	</s:div>
+	<h:form id="idForm" enctype="multipart/form-data">
+		<rich:messages globalOnly='true' styleClass='message' id='globalMessage' ajaxRendered="true" />
+		<a4j:jsFunction id="installrules" name="installrules" action="#{ruleManager.installRulesOnGroup()}" status="installRulesStatus" reRender="opData" />
+		<a4j:jsFunction id="pullJsCode" name="pullJsCode" ajaxSingle="true" data="#{ruleManager.clientData}" oncomplete="onSave(data)" />
+		<a4j:jsFunction name="installRafa" action="#{notificacion.cleanFromGroup()}" />
+		<a4j:status id="installRulesStatus" forceId="true" onstart="javascript:document.getElementById('loadingdiv').style.display = '';" onstop="javascript:document.getElementById('loadingdiv').style.display = 'none';" />
+		<s:validateAll>
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{messages.titleP1}"/>
+				</f:facet>
+				<table border="0" cellpadding="0" cellspacing="0">
+					<tr>
+						<td>
+							<h:outputLabel value="#{messages.lblSection}:" />
+						</td>
+						<td class="espacio_mediano" />
+						<td>
+							<h:outputText value="#{(gestionarHojaGrupoControlador_ec.section != null and gestionarHojaGrupoControlador_ec.section.tituloSeccion != null and not empty gestionarHojaGrupoControlador_ec.section.tituloSeccion) ? gestionarHojaGrupoControlador_ec.section.tituloSeccion : messages.vacio}" styleClass="dataText" />
+						</td>
+						<td class="espacio_grande" />
+						<td>
+							<h:outputLabel value="#{messages.lblGroup}:" />
+						</td>
+						<td class="espacio_mediano" />
+						<td>
+							<h:outputText value="#{(gestionarHojaGrupoControlador_ec.group != null and gestionarHojaGrupoControlador_ec.group.encabezado != null and not empty gestionarHojaGrupoControlador_ec.group.encabezado) ? gestionarHojaGrupoControlador_ec.group.encabezado : messages.vacio}" styleClass="dataText" />
+						</td>
+					</tr>
+					<tr>
+						<td class="espacio_corto_v" colspan="12" />
+					</tr>
+				</table>
+				<table border="0" cellpadding="0" cellspacing="0" width="100%">
+					<tr>
+						<td width="100%">
+							<a4j:outputPanel id="opData">
+								<rich:panel>
+									<f:facet name="header">
+										<h:outputText value="#{messages.titleP2}" />									
+									</f:facet>
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td class="espacio_vertical" colspan="12" />
+										</tr>
+										<c:forEach begin="1" end="#{gestionarHojaGrupoControlador_ec.rows()}" step="1" var="row">
+											<c:if test="#{row != 1}">
+												<tr>
+													<td class="espacio_corto_v" colspan="12" />
+												</tr>
+											</c:if>
+											<tr style="vertical-align: top;">
+												<c:forEach begin="1" end="#{gestionarHojaGrupoControlador_ec.cols(row - 1)}" step="1" var="col">
+													<c:if test="#{gestionarHojaGrupoControlador_ec.validPosition(row - 1, col - 1)}">
+														<c:if test="#{col != 1}">
+															<td class="espacio_grande" />
+														</c:if>
+														<td>														
+															<h:outputLabel value="#{(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.encabezadoVariable != null and not empty gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.encabezadoVariable) ? gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.encabezadoVariable : ((gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.descripcionVariable != null and not empty gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.descripcionVariable) ? gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.descripcionVariable : gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.nombreVariable)}" styleClass="normalText" />
+															
+																<rich:message for="#{idUtil.ForGroup(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable)}" showDetail="false" tooltip="true" style="color:red;">
+																	<f:facet name="errorMarker">
+																		<h:outputText value="*" title="#{facesMessages.getCurrentMessagesForControl(idUtil.ForGroup(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable)).get(0).getDetail()}" />
+																	</f:facet>
+																</rich:message>
+																<a4j:outputPanel  ajaxRendered="true">
+																<!--Mostrar asteriscos de variables obligatorias-->
+																<h:outputText rendered="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.requerido and facesMessages.getCurrentMessagesForControl(idUtil.ForGroup(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable)).size()==0}" 
+																style="color:red;" 
+																value="*" 
+																title="Valor requerido"	/>
+																</a4j:outputPanel>									
+															<br />
+															<c:if test="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.presentacionFormulario.nombre == 'text' and gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.tipoDato.codigo != 'DATE'}">
+																<c:if test="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.tipoDato.codigo == 'ST'}">
+																	<h:inputText required="#{!ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'disabled') and gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.requerido and (!empty param['idForm:aceptarr'])}" value="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).value}" id="#{idUtil.ForGroup(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable)}" validator="#{validations_sujeto.text2}" disabled="#{ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'disabled')}" rendered="#{ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'rendered')}" />
+																</c:if>
+																<c:if test="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.tipoDato.codigo == 'INT'}">														
+																	<h:inputText required="#{!ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'disabled') and gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.requerido and (!empty param['idForm:aceptarr'])}" value="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).value}" id="#{idUtil.ForGroup(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable)}" validator="#{validations_sujeto.number}" disabled="#{ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'disabled')}" rendered="#{ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'rendered')}" style="text-align: right;" />
+																</c:if>
+																<c:if test="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.tipoDato.codigo == 'REAL'}">														
+																	<h:inputText required="#{!ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'disabled') and gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.requerido and (!empty param['idForm:aceptarr'])}" value="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).value}" id="#{idUtil.ForGroup(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable)}" validator="#{validations_sujeto.validarDouble}" disabled="#{ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'disabled')}" rendered="#{ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'rendered')}" />
+																</c:if>
+																<h:outputText rendered="#{not empty gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.unidadesVariable}" value="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.unidadesVariable}" style="margin-left:8px;" />
+															</c:if>
+															<c:if test="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.presentacionFormulario.nombre == 'textarea'}">
+																<h:inputTextarea required="#{!ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'disabled') and gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.requerido and (!empty param['idForm:aceptarr'])}" value="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).value}" id="#{idUtil.ForGroup(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable)}" validator="#{validations_sujeto.textnumber250}" disabled="#{ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'disabled')}" rendered="#{ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'rendered')}" />
+																<h:outputText rendered="#{not empty gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.unidadesVariable}" value="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.unidadesVariable}" style="margin-left:8px;" />
+															</c:if>
+															<c:if test="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.presentacionFormulario.nombre == 'radio'}">
+																<table border="0" cellpadding="0" cellspacing="0">
+																	<tr style="vertical-align: top;">
+																		<td>
+																			<h:selectOneRadio id="#{idUtil.ForGroup(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable)}" required="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.requerido and (!empty param['idForm:aceptarr'])}" value="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).value}">
+																				<f:selectItems value="#{gestionarHojaGrupoControlador_ec.valoresRadio(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.nomenclador)}" />
+																			</h:selectOneRadio>
+																		</td>
+																		<td>
+																			<h:outputText rendered="#{not empty gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.unidadesVariable}" value="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.unidadesVariable}" style="margin-left:8px;" />	
+																		</td>															
+																	</tr>
+																</table>														
+															</c:if>
+															<c:if test="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.presentacionFormulario.nombre == 'single-select'}">
+																<table border="0" cellpadding="0" cellspacing="0">
+																	<tr style="vertical-align: top;">
+																		<td>
+																			<c:if test="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.nomenclador.nombre == 'CEA'}">
+																				<rich:comboBox id="#{idUtil.ForGroup(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable)}" required="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.requerido and (!empty param['idForm:aceptarr'])}" value="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).value}" defaultLabel="#{messages.seleccione}" suggestionValues="#{gestionarHojaGrupoControlador_ec.valoresCEA(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.nomenclador)}" onclick="cambiarStyle(this.id,#{gestionarHojaGrupoControlador_ec.sizeMaxString(gestionarHojaGrupoControlador_ec.valoresCEA(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.nomenclador))})" enableManualInput="false">
+																					<a4j:support ajaxSingle="true" event="onselect" action="#{gestionarHojaGrupoControlador_ec.resetEA(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).value)}" reRender="eventosAdversos" limitToList="true" />
+																				</rich:comboBox>
+																			</c:if>
+																			<c:if test="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.nomenclador.nombre == 'EA'}">
+																				<a4j:outputPanel id="eventosAdversos">
+																					<rich:comboBox id="#{idUtil.ForGroup(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable)}" required="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.requerido and (!empty param['idForm:aceptarr'])}" value="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).value}" defaultLabel="#{messages.seleccione}" suggestionValues="#{gestionarHojaGrupoControlador_ec.valoresEA(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.nomenclador)}" onclick="cambiarStyle(this.id,#{gestionarHojaGrupoControlador_ec.sizeMaxString(gestionarHojaGrupoControlador_ec.valoresEA(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.nomenclador))})" enableManualInput="false" />																										
+																				</a4j:outputPanel>
+																			</c:if>
+																			<c:if test="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.nomenclador.nombre != 'EA' and gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.nomenclador.nombre != 'CEA'}">
+																				<rich:comboBox id="#{idUtil.ForGroup(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable)}" required="#{!ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'disabled') and gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.requerido and (!empty param['idForm:aceptarr'])}" value="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).value}" defaultLabel="#{messages.seleccione}" suggestionValues="#{gestionarHojaGrupoControlador_ec.valores(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.nomenclador)}" onclick="cambiarStyle(this.id,#{gestionarHojaGrupoControlador_ec.sizeMaxString(gestionarHojaGrupoControlador_ec.valores(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.nomenclador))})" enableManualInput="false" disabled="#{ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'disabled')}" rendered="#{ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'rendered')}" />																			
+																			</c:if>
+																		</td>
+																		<td>
+																			<h:outputText rendered="#{not empty gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.unidadesVariable}" value="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.unidadesVariable}" style="margin-left:8px;" />	
+																		</td>
+																	</tr>
+																</table>
+															</c:if>
+															<c:if test="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.presentacionFormulario.nombre == 'calendar'}">
+																<rich:calendar required="#{!ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'disabled') and gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.requerido and (!empty param['idForm:aceptarr'])}" value="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).value}" id="#{idUtil.ForGroup(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable)}" disabled="#{ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'disabled') or (gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.descripcionVariable == (messages.fechaInclusion) and gestionarHojaGrupoControlador_ec.parentController.hoja.momentoSeguimientoEspecifico.sujeto.cronogramaEspecifico)}" rendered="#{ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'rendered')}" enableManualInput="false" datePattern="#{messages.lbl_patronFecha_modConfig}" requiredMessage="#{messages.msg_requerido_ens}" />
+																<h:outputText rendered="#{not empty gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.unidadesVariable}" value="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.unidadesVariable}" style="margin-left:8px;" />															
+															</c:if>																
+															<c:if test="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.presentacionFormulario.nombre == 'text' and gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.tipoDato.codigo == 'DATE'}">
+																<h:inputText required="#{!ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'disabled') and gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.requerido and (!empty param['idForm:aceptarr'])}" value="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).value}" id="#{idUtil.ForGroup(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable)}" styleClass="likedate" disabled="#{ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'disabled')}" rendered="#{ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'rendered')}" />
+																<script>
+																	applyDateMask();
+																</script>
+																<h:outputText rendered="#{not empty gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.unidadesVariable}" value="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.unidadesVariable}" style="margin-left:8px;" />															
+															</c:if>
+															<c:if test="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.presentacionFormulario.nombre == 'checkbox' and gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.tipoDato.codigo == 'BL'}">
+																<h:selectBooleanCheckbox required="#{!ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'disabled') and gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.requerido and (!empty param['idForm:aceptarr'])}" value="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).value}" id="#{idUtil.ForGroup(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable)}" disabled="#{ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'disabled')}" rendered="#{ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'rendered')}" />
+																<h:outputText rendered="#{not empty gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.unidadesVariable}" value="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.unidadesVariable}" style="margin-left:8px;" />
+															</c:if>
+															<c:if test="#{(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.presentacionFormulario.nombre == 'checkbox' or gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.presentacionFormulario.nombre == 'multi-select') and gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.tipoDato.codigo == 'NOM'}">
+																<h:selectManyCheckbox required="#{!ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'disabled') and gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.requerido and (!empty param['idForm:aceptarr'])}" value="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).values}" id="#{idUtil.ForGroup(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable)}" disabled="#{ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'disabled')}" rendered="#{ruleManager.giveVarState(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable, 'rendered')}" layout="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.ubicacionRespuesta == 'HORIZONTAL' ? 'lineDirection' : 'pageDirection'}">
+																	<f:selectItems value="#{gestionarHojaGrupoControlador_ec.valoresRadio(gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.nomenclador)}" />
+																</h:selectManyCheckbox>
+																<h:outputText rendered="#{not empty gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.unidadesVariable}" value="#{gestionarHojaGrupoControlador_ec.data.data.get(gestionarHojaGrupoControlador_ec.getIndex(row - 1, col - 1)).variable.unidadesVariable}" style="margin-left:8px;" />
+															</c:if>														
+														</td>	
+													</c:if>
+												</c:forEach>
+											</tr>
+										</c:forEach>
+									</table>	
+								</rich:panel>
+							</a4j:outputPanel>	
+						</td>
+					</tr>
+				</table>		
+			</rich:panel>
+		</s:validateAll>
+		<rich:spacer height="8px;" width="100%" />
+		<div align="right" style="width: 100%">
+			<a4j:commandButton id="aceptarr" onclick="#{rich:component('ajaxLoadingModalBox')}.show()" rendered="#{(gestionarHoja.rolLogueado.getCodigo() == 'ecCord' or gestionarHoja.rolLogueado.getCodigo() == 'ecInv' or gestionarHoja.rolLogueado.getCodigo() == 'ecLab') and (gestionarHoja.hoja.estadoMonitoreo.codigo != 3) and (gestionarHoja.hoja.estadoHojaCrd.codigo != 4)}" value="#{messages.aceptar}" action="#{ruleManager.saveGroup()}" oncomplete="#{rich:component('ajaxLoadingModalBox')}.hide(),#{gestionarHoja.esEvento()}" data="#{ruleManager.clientData}" reRender="aceptarHoja,#{gestionarHoja.esEventoReRender()}" style="margin-left: 0px; margin-bottom: 0px; margin-top: 0px;" />
+			<h:commandButton value="#{messages.cancelar}" action="#{gestionarHojaGrupoControlador_ec.cancelar()}" style="margin-right: 0px; margin-bottom: 0px; margin-top: 0px;" onclick="Richfaces.hideModalPanel('modalContainer');" />
+		</div>
+	</h:form>
+</s:div>

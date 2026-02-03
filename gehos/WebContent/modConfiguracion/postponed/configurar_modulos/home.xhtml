@@ -1,0 +1,232 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+      xmlns:a="http://richfaces.org/a4j"
+      template="#{theme.template}"
+                xmlns:rich="http://richfaces.org/rich">
+                
+<ui:define name="body" >
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('Configurar módulos')</script>
+	<style type="text/css">.rich-stglpanel-body{padding:0px}</style>
+	<style type="text/css">.rich-panel-body{padding:0px}</style>
+	<style>
+		.functpanelbody{padding:0px;}.functpanelbody2{padding:5px;}
+	</style>
+	
+	<a:keepAlive beanName="modulosManager" />
+		
+	<h:form id="modulosForm">
+
+	<table width="100%" cellpadding="5px" cellspacing="0px" style="vertical-align: top;">
+		<tr>
+
+		<td style="vertical-align: top; width: 50%;">
+			<rich:panel  bodyClass="functpanelbody2">
+				<f:facet name="header" >
+					<a:status stopText="Módulos" for="functsstree"
+							  startText="Actualizando..." id="funcstatus"></a:status>
+				</f:facet>
+				<div style="border: 1px;" > 
+				<a:region id="functsstree" >
+				<a:outputPanel ajaxRendered="true">
+				
+				<rich:dragIndicator id="treeDragIndicator">
+			        <f:facet name="single">
+			        	<h:panelGrid columns="2">
+				            <h:graphicImage  styleClass="indicatorPicture" value="/resources/modCommon/ubicacionesimages/{iconname}" />
+				            <h:outputLabel value="{label}" />
+			        	</h:panelGrid>
+			        </f:facet>
+				</rich:dragIndicator>
+				
+				<rich:tree  changeExpandListener="#{modulosManager.treeBuilder.OnNodeCollapseExpand}"
+							value="#{modulosManager.treeBuilder.treeData}"
+							switchType="ajax" preserveModel="state" preserveDataInRequest="true"
+							treeNodeVar="treenode"     dragIndicator="treeDragIndicator"
+							style="width:200px"        nodeFace="#{node.toString()}"
+							var="node" id="functree"  
+							componentState="#{treeStateController.modulosTreeState}" >
+					
+						<rich:treeNode type="modulo"  acceptedTypes="funcionalidad"
+							icon="/resources/modCommon/moduleimages/#{theme.name}/#{theme.color}/#{node.value.imagen}"
+							iconLeaf="/resources/modCommon/moduleimages/#{theme.name}/#{theme.color}/#{node.value.imagen}">
+								<a:commandLink value="#{node.value.label}"
+									status="funcSelectedStatus" 
+									limitToList="true"
+									ajaxSingle="true" immediate="true"
+									event="onclick"
+									action="#{modulosManager.setSelectedFunctionality(node, treenode)}"
+									reRender="settingsdiv, detailspanelheader, btnsdiv" >
+								
+								</a:commandLink>
+						</rich:treeNode>
+						
+				</rich:tree>
+				</a:outputPanel>
+				</a:region>
+				</div>
+			</rich:panel>	
+		</td>
+	
+		<td style="vertical-align: top; width: 50%;">
+			<a:region >
+			<rich:panel bodyClass="functpanelbody" id="childfuncspanel">
+				<f:facet name="header">
+					<s:div id="detailspanelheader">
+						Detalles
+					</s:div>
+				</f:facet>
+				
+				<a:status id="funcSelectedStatus" forceId="true"
+					  onstart="javascript:document.getElementById('modulosForm:settingsdiv').style.visibility = 'hidden'"
+					  onstop="javascript:document.getElementById('modulosForm:settingsdiv').style.visibility = 'visible'">
+				  <f:facet name="start">
+					  <s:div style="text-align: center; width: 100%">
+					  <br/><br/>
+						 <h:graphicImage url="/resources/icons/default/acciones/loading_small.gif" />
+					  <br/><br/>	 
+					  </s:div>	 
+				  </f:facet>
+			    </a:status>
+			    
+			    <s:div id="settingsdiv" style="display: inline;">
+					<h:outputLabel value="Seleccione un módulo"
+						rendered="#{modulosManager.selectedModule == null}">
+					</h:outputLabel>
+					<div style="font-weight: bold;"></div>
+					
+					<s:div rendered="#{modulosManager.selectedModule != null and (not modulosManager.editMode)}">
+						Url base:<br/>
+						<h:outputLabel value="#{modulosManager.selectedModule.value.url}" 
+								style="font-weight: bold;" />
+						<br/><br/>		
+						Codebase:<br/>
+						<h:outputLabel value="#{modulosManager.selectedModule.value.codebase}" 
+								style="font-weight: bold;" />
+						<br/><br/>		
+						Label:<br/>
+						<h:outputLabel value="#{modulosManager.selectedModule.value.label}" 
+								style="font-weight: bold;" />
+						<br/><br/>		
+						Nombre:<br/>
+						<h:outputLabel value="#{modulosManager.selectedModule.value.nombre}" 
+								style="font-weight: bold;" />
+						<br/><br/>		
+						
+						<table cellpadding="0" cellspacing="0" border="0" style="font-weight: bold;" >
+							<tr>
+								<td >
+									Modulo físico:
+								</td>
+								<td>
+									<h:selectBooleanCheckbox value="#{modulosManager.selectedModule.value.moduloFisico}" />
+								</td>
+								<td>
+									Contenedor de íconos:
+								</td>
+								<td>
+									<h:selectBooleanCheckbox value="#{modulosManager.selectedModule.value.contenedorIconos}" />
+								</td>
+							</tr>
+						</table>
+						<br/>
+						
+						Descripción:<br/>
+						<h:outputLabel value="#{modulosManager.selectedModule.value.descripcion}" 
+								style="font-weight: bold;" />
+					</s:div>
+					
+					<s:div rendered="#{modulosManager.selectedModule != null and modulosManager.editMode}">
+						Url base:<br/>
+						<h:inputText value="#{modulosManager.selectedModule.value.url}" 
+								style="font-weight: bold; width: 150px;" />
+						<br/><br/>		
+						Codebase:<br/>
+						<h:outputLabel value="#{modulosManager.selectedModule.value.codebase}" 
+								style="font-weight: bold;" />
+						<br/><br/>		
+						Label:<br/>
+						<h:outputLabel value="#{modulosManager.selectedModule.value.label}" 
+								style="font-weight: bold;" />
+						<br/><br/>		
+						Nombre:<br/>
+						<h:outputLabel value="#{modulosManager.selectedModule.value.nombre}" 
+								style="font-weight: bold;" />
+						<br/><br/>		
+						
+						<table cellpadding="0" cellspacing="0" border="0" style="font-weight: bold;" >
+							<tr>
+								<td >
+									Modulo físico:
+								</td>
+								<td>
+									<h:selectBooleanCheckbox value="#{modulosManager.selectedModule.value.moduloFisico}" />
+								</td>
+								<td>
+									Contenedor de íconos:
+								</td>
+								<td>
+									<h:selectBooleanCheckbox value="#{modulosManager.selectedModule.value.contenedorIconos}" />
+								</td>
+							</tr>
+						</table>
+						<br/>
+						
+						Descripción:<br/>
+						<h:outputLabel value="#{modulosManager.selectedModule.value.descripcion}" 
+								style="font-weight: bold;" />
+					</s:div>
+					
+			    </s:div>
+			    
+			</rich:panel>
+			
+			<s:div id="btnsdiv" style="width: 100%; text-align: right;">
+				<h:commandButton value="Editar" 
+						rendered="#{modulosManager.selectedModule != null and (not modulosManager.editMode)}"
+						action="#{modulosManager.setEditMode(true)}" /> 
+				<h:commandButton value="Aceptar" 
+						rendered="#{modulosManager.selectedModule != null and (modulosManager.editMode)}"
+						action="#{modulosManager.setEditMode(false)}" /> 
+				<h:commandButton value="Cancelar" 
+						rendered="#{modulosManager.selectedModule != null and (modulosManager.editMode)}"
+						action="#{modulosManager.setEditMode(false)}" /> 
+				<s:button view="/modCommons/modHome/home.xhtml" value="Salir" style="margin-right: 0px;" 
+						rendered="#{modulosManager.selectedModule != null and (not modulosManager.editMode)}" >
+					 <f:param name="idFuncionalidad" value="#{activeModule.activeModule.id}" />
+				     <f:param name="idancestors" value="#{activeModule.activeModule.id}a" />
+			 		 <f:param name="moduleName" value="#{activeModule.activeModuleName}" />		
+				</s:button>
+			</s:div>
+
+			</a:region>
+
+		</td>
+		</tr>
+	</table>
+	
+	
+	</h:form>
+	
+</ui:define>
+
+</ui:composition>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,429 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+<ui:composition>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+	<link rel='stylesheet' href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/style/cssGenericas.css' type='text/css' />
+<!-- Estilo para los mensajes -->
+
+		<style type="text/css"> 
+			.functpanelbody {
+				padding: 0px;
+			}
+			
+			.functpanelbody2 {
+				padding: 5px;
+			}
+			
+			.iconcell,.labelcell {
+				padding: 0px;
+				border: 1px;
+			}
+			
+			.strech {
+				width: 100%;
+				padding-left: 0px !important;
+				padding-top: 1px;
+				padding-bottom: 1px;
+			}
+			
+			.nostrech {
+				width: 1%;
+				padding-left: 0px !important;
+				padding-right: 0px !important;
+			}
+			
+			.rich-message-label {
+				font-size: 10px;
+				font-family: "Verdana";
+			}
+			
+			.custom-error {
+				border: 1px solid #FFCC00;
+				padding: 5px;
+				background-color: #F0F8FF;
+				font-size: 10px;
+				font-family: "Verdana";
+				position: relative;
+				left: 5px;
+				top: 5px;
+				margin-right: 10px;
+			}
+			</style>
+<script type="text/javascript">					
+
+		//funcion para cambiar el tamano de la lista del combobox
+		function cambiarStyle(id,size)
+		{
+		var size2=''+size+'px';
+		var n=new String(id);
+		var idN=n.replace('combobox','list');
+		
+		var com=document.getElementById(idN);
+		var parent=com.parentNode;
+		var gran=parent.parentNode;
+		parent.style.width=size2;
+		gran.style.width=size2;
+		com.style.width=size2;
+		
+		} 
+
+		var curDtN = new Date();
+		 var calDtN=null;
+
+		 function previousDate(date){
+			calDtN = date;
+		 }
+
+		 function disablementFunction(day){
+			 if(calDtN == null){
+				 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+						return true; 
+					else 
+						return false; 
+			 }
+			 else {
+				 if (calDtN.getTime() - day.date.getTime() &#62;= 0 ) 
+						return true; 
+					else 
+						return false;
+			 }					 
+		 }
+
+		 function disabledClassesProv(day){
+			 if(calDtN == null){
+				 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+						return ''; 
+					else 
+						return 'noavailable'; 
+			 }
+			 else {
+				 if (calDtN.getTime() - day.date.getTime() &#62;= 0) 
+						return ''; 
+					else 
+						return 'noavailable';
+			 }				
+		 }
+
+		 function resetSecondDate(first,second) {
+			 var firstDate = first.getSelectedDate().getTime();
+			 var secondDate = second.getSelectedDate().getTime();
+
+			 if(firstDate - secondDate &#62; 0)
+				 second.resetSelectedDate();
+		 }
+ 		 
+		 function disablementFunctionPreviousEx(day){
+			if(calDtN == null){
+				if (curDtN.getTime() - day.date.getTime() &#62; 0) return true; else return false;
+			}
+			if ((curDtN.getTime() - day.date.getTime() &#62; 0) &#38;&#38; (calDtN.getTime() - day.date.getTime() &#60;= 0)){
+				return true;
+			}
+			else 
+				return false;
+		  }
+
+		function disabledClassesProvPreviousEx(day){
+			if(calDtN == null){
+				if (curDtN.getTime() - day.date.getTime() &#60; 0)
+					return 'noavailable';
+				else 
+					return '';
+			}
+			if ((curDtN.getTime() - day.date.getTime() &#60; 0) || (calDtN.getTime() - day.date.getTime() &#62; 0))
+				return 'noavailable';
+			else 
+				return '';
+		}
+	</script>
+	
+	<h:form id="busquedasForm">
+		<a4j:outputPanel ajaxRendered="true">
+			<s:div
+				rendered="#{facesMessages.getCurrentMessagesForControl('listOfGruposujetoss').size() > 0 }"
+				styleClass="custom-error">
+				<div><rich:message for="listOfGruposujetoss" /></div>
+			</s:div>
+		</a4j:outputPanel>
+
+		<rich:simpleTogglePanel switchType="client" style="margin-top:5px;" bodyClass="simpleTogPanel">
+			<f:facet name="header">
+				<h:outputLabel value="#{messages.criterios}" style="cursor:pointer;"/>
+			</f:facet>
+			<a4j:outputPanel id="busquedas">
+				<a4j:outputPanel rendered="#{not gruposujetosList.busquedaAvanzada}">
+					<table cellpadding="0" cellspacing="0" border="0">
+						<tr>
+							<td>
+								<h:outputLabel styleClass='normalText' value='#{messages.nombregrupo}:' />
+								<br/>
+								<h:inputText style='width:148px;' value='#{gruposujetosList.gruposujetos.nombreGrupo}' />
+							</td>
+							<td>
+								<rich:spacer width="25px" />
+							</td>
+							<td>
+								<h:outputLabel styleClass='normalText' value='#{messages.desde}:' />
+								<br/>
+								<rich:calendar datePattern='dd/MM/yyyy' tabindex="12"
+									value='#{gruposujetosList.desde}' 
+									id='fechaDesde' 
+									isDayEnabled='disablementFunction' 
+									dayStyleClass='disabledClassesProv' 
+									onexpand="previousDate(document.getElementById('busquedasForm:fechaHasta').component.getSelectedDate());Richfaces.getComponent('calendar',this).nextMonth(); Richfaces.getComponent('calendar',this).prevMonth(); return true;" />
+							</td>
+							<td>
+								<rich:spacer width="25px" />
+							</td>
+							<td>
+								<h:outputLabel styleClass='normalText' value='#{messages.hasta}:' />
+								<br/>
+								<rich:calendar datePattern='dd/MM/yyyy' 
+										value='#{gruposujetosList.hasta}' 
+										id='fechaHasta' 
+										isDayEnabled='disablementFunctionPreviousEx' 
+										dayStyleClass='disabledClassesProvPreviousEx' 
+										onexpand="previousDate(document.getElementById('busquedasForm:fechaDesde').component.getSelectedDate());Richfaces.getComponent('calendar',this).nextMonth(); Richfaces.getComponent('calendar',this).prevMonth(); return true;" />
+							</td>
+						</tr>							
+						<tr>
+							<td colspan="5"> 
+								<rich:spacer height="11px"  width="100%"/>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="5" align="right">
+								<a4j:commandButton reRender="listadoGruposujetos" 
+									style="margin:0px" 
+									value="#{messages.buscar}" />
+								<rich:spacer width="8px"/>
+								<h:commandButton action="#{gruposujetosList.cancelarBusqueda()}" 
+									style="margin:0px" 
+									value="#{messages.cancelar}" />
+							</td>
+						</tr>				
+					</table>
+				</a4j:outputPanel>
+			</a4j:outputPanel>
+		</rich:simpleTogglePanel>
+	</h:form>
+	<rich:spacer height="11px" width="100%"/>	
+	<h:form id="listOfGruposujetoss">
+	<a4j:outputPanel id="listadoGruposujetos">
+	
+	<rich:panel
+		rendered="#{gruposujetosList.resultList.size() == 0 and empty gruposujetosList.gruposujetos.nombreGrupo and gruposujetosList.gruposujetos.fechaCreacion == null and gruposujetosList.desde == null and gruposujetosList.hasta == null}">
+		<f:facet name="header">
+			<h:outputText value="#{messages.listado}" />
+		</f:facet>
+		<h:outputText value="#{messages.listaVacia}" />
+	</rich:panel>
+	
+	<rich:panel
+		rendered="#{gruposujetosList.resultList.size() == 0 and (not empty gruposujetosList.gruposujetos.nombreGrupo || gruposujetosList.gruposujetos.fechaCreacion != null || gruposujetosList.desde != null || gruposujetosList.hasta != null)}">
+		<f:facet name="header">
+			<h:outputText value="#{messages.listado}" />
+		</f:facet>
+		<h:outputText value="#{messages.noResultados}" />
+	</rich:panel>
+		<rich:dataTable rendered="#{not empty clSujeto.resultList}"
+			width="100%" value="#{clSujeto.resultList}" var="sujeto">
+			<f:facet name="header">
+				<h:outputLabel value="#{messages.listado}" />
+			</f:facet>	
+			<rich:column>
+				<f:facet name="header">
+					<h:panelGrid columns="2" width="100%" cellpadding="0"
+						cellspacing="0" border="0">
+						<s:div style="float: left;">
+							<h:outputLabel value="#{messages.id_sujeto}" />
+						</s:div>
+						<s:div style="text-align: right;">							
+							<ui:include src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/" >
+								<ui:param name="controladorList" value="#{clSujeto}" />
+								<ui:param name="atributo" value="codigoPaciente" />
+								<ui:param name="listado" value="listadoGruposujetos" />
+							</ui:include>
+						</s:div>
+					</h:panelGrid>
+				</f:facet>
+				<h:outputLabel value="#{sujeto.codigoPaciente}" />
+			</rich:column>
+			
+			<rich:column>
+				<f:facet name="header">
+					<h:panelGrid columns="2" width="100%" cellpadding="0"
+						cellspacing="0" border="0">
+						<s:div style="float: left;">
+							<h:outputLabel value="#{messages.estado_inclusion}" />
+						</s:div>
+						<s:div style="text-align: right;">							
+							<ui:include src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/" >
+								<ui:param name="controladorList" value="#{clSujeto}" />
+								<ui:param name="atributo" value="estadoInclusion.nombre" />
+								<ui:param name="listado" value="listadoGruposujetos" />
+							</ui:include>
+						</s:div>
+					</h:panelGrid>
+				</f:facet>
+				<h:outputLabel value='#{sujeto.estadoInclusion.nombre}' />
+			</rich:column>
+			
+			<rich:column>
+				<f:facet name="header">
+					<h:panelGrid columns="2" width="100%" cellpadding="0"
+						cellspacing="0" border="0">
+						<s:div style="float: left;">
+							<h:outputLabel value="#{messages.estado_tratamiento}" />
+						</s:div>
+						<s:div style="text-align: right;">							
+							<ui:include src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/" >
+								<ui:param name="controladorList" value="#{clSujeto}" />
+								<ui:param name="atributo" value="estadoSujeto.nombre" />
+								<ui:param name="listado" value="listadoGruposujetos" />
+							</ui:include>
+						</s:div>
+					</h:panelGrid>
+				</f:facet>
+				<h:outputLabel value='#{sujeto.estadoSujeto.nombre}' />
+			</rich:column>
+			
+			<rich:column>
+				<f:facet name="header">
+					<h:panelGrid columns="2" width="100%" cellpadding="0"
+						cellspacing="0" border="0">
+						<s:div style="float: left;">
+							<h:outputLabel value="#{messages.fecha_ms_anterior}" />
+						</s:div>
+						<s:div style="text-align: right;">							
+							<ui:include src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/" >
+								<ui:param name="controladorList" value="#{clSujeto}" />
+								<ui:param name="atributo" value="fechaActualizacion" />
+								<ui:param name="listado" value="listadoGruposujetos" />
+							</ui:include>
+						</s:div>
+					</h:panelGrid>
+				</f:facet>
+				<h:outputLabel value='#{sujeto.fechaActualizacion}' />			
+
+			</rich:column>
+
+<rich:column>
+				<f:facet name="header">
+					<h:panelGrid columns="2" width="100%" cellpadding="0"
+						cellspacing="0" border="0">
+						<s:div style="float: left;">
+							<h:outputLabel value="#{messages.fecha_proximo_ms}" />
+						</s:div>
+						<s:div style="text-align: right;">							
+							<ui:include src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/" >
+								<ui:param name="controladorList" value="#{clSujeto}" />
+								<ui:param name="atributo" value="fechaInclusion" />
+								<ui:param name="listado" value="listadoGruposujetos" />
+							</ui:include>
+						</s:div>
+					</h:panelGrid>
+				</f:facet>
+				<h:outputLabel value='#{sujeto.fechaInclucion}' />			
+
+			</rich:column>
+			<rich:column width="1px">
+				<div align="center">
+					<h:commandButton title="#{messages.ver}"
+						action="#{gruposujetosList.seleccionarVer(gruposujetos.id)}"
+						rendered="#{gruposujetos.habilitado}" 
+						image="/resources/icons/default/acciones/ver.png" />
+					<h:commandButton title="#{messages.ensayoDis_cambiar}" 
+						rendered="#{gruposujetos.habilitado != true}" 
+						image="/resources/icons/default/acciones/ver.png"
+						style="border:0; opacity: 0.4;"  />
+				</div>
+			</rich:column>
+
+			<rich:column width="1px" >
+				<div align="center">
+				<h:commandButton title="#{messages.modificar}"
+					rendered="#{gruposujetos.habilitado}"
+					action="#{gruposujetosList.seleccionarModificar(gruposujetos.id)}"
+					image="/resources/icons/default/acciones/modificar.png" />
+				<h:commandButton title="#{messages.ensayoDis_cambiar}" 
+					rendered="#{gruposujetos.habilitado != true}" 
+					image="/resources/icons/default/acciones/modificar.png"
+					style="border:0; opacity: 0.4;"  />
+				</div>
+			</rich:column>
+			
+			<rich:column width="1px" >
+				<div align="center">
+				<h:commandButton title="#{messages.btn_gestionarRegla_enDis}"
+					rendered="#{gruposujetos.habilitado}"
+					action="#{gruposujetosList.seleccionarModificar(gruposujetos.id)}"
+					image="/resources/icons/default/acciones/modificar.png" />
+				<h:commandButton title="#{messages.ensayoDis_cambiar}" 
+					rendered="#{gruposujetos.habilitado != true}" 
+					image="/resources/icons/default/acciones/modificar.png"
+					style="border:0; opacity: 0.4;"  />
+				</div>
+			</rich:column>
+			<rich:column width="1px" >
+				<div align="center">
+				<h:commandButton title="#{messages.btn_gestionarRegla_enDis}"
+					rendered="#{gruposujetos.habilitado}"
+					action="cCronograma"
+					image="/resources/modEnsayo/img/bt_EnterData.png" />	
+				<h:commandButton title="#{messages.ensayoDis_cambiar}" 
+					rendered="#{gruposujetos.habilitado != true}" 
+					image="/resources/modEnsayo/img/bt_EnterData.png"
+					style="border:0; opacity: 0.4;"  />
+				</div>
+			</rich:column>
+			
+			<rich:column width="1px" >
+				<div align="center">
+				<h:commandButton  title="#{messages.btn1_deshabilitarGS_enDis}"
+					rendered="#{gruposujetos.habilitado}"
+					action="#{gruposujetosList.cambiarEstado(gruposujetos.id)}"
+					image="/resources/modEnsayo/img/not-visible.png"/>
+				<h:commandButton title="#{messages.btn1_habilitarGS_enDis}"
+					rendered="#{gruposujetos.habilitado != true}"
+					action="#{gruposujetosList.cambiarEstado(gruposujetos.id)}"
+					image="/resources/modEnsayo/img/visible.png" />
+				</div>
+			</rich:column>
+
+			<rich:column width="1px">
+				<div align="center">
+					<a4j:commandButton title="#{messages.eliminar}"
+						action="#{gruposujetosList.seleccionarEliminar(gruposujetos.id)}"
+						image="/resources/icons/default/acciones/eliminar.png">
+						<rich:componentControl operation="show" event="onclick"
+							for="eliminarGruposujetosModal" />
+					</a4j:commandButton>
+				</div>
+			</rich:column>
+		</rich:dataTable>
+
+		<rich:spacer height="11px" />
+
+		<ui:include src="/modEnsayo/codebase/plantillas/paginadorAjax.xhtml/" >
+			<ui:param name="controladorList" value="#{clSujeto}" />
+			<ui:param name="listado" value="listadoGruposujetos" />
+		</ui:include>
+		</a4j:outputPanel>
+	</h:form>
+		
+	<ui:include src="/modEnsayo/codebase/plantillas/modalPanelEliminar.xhtml" >
+		<ui:param name="controlador" value="#{gruposujetosList}" />
+		<ui:param name="id" value="eliminarGruposujetosModal" />
+	</ui:include>
+</ui:composition>
+
+</html>

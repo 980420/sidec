@@ -1,0 +1,172 @@
+<s:div   xmlns     ="http://www.w3.org/1999/xhtml" 
+ 			      xmlns:ui  ="http://java.sun.com/jsf/facelets" 
+      		      xmlns:h   ="http://java.sun.com/jsf/html" 
+			      xmlns:f   ="http://java.sun.com/jsf/core" 
+			      xmlns:s   ="http://jboss.com/products/seam/taglib" 
+			      xmlns:rich="http://richfaces.org/rich" 
+                  xmlns:a4j   ="http://richfaces.org/a4j"                  
+                  template  ="#{theme.template}">
+	<s:div >  
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>	
+    <link href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css"  rel="stylesheet" type="text/css" />
+          
+       <rich:messages globalOnly="true" styleClass="message"  id="globalMessage" ajaxRendered="true"/>	
+       <a4j:outputPanel>          
+       <table class="Tabla"  width="100%"  cellpadding="0" cellspacing="0">       		  
+       		<tr>
+       			<td>       
+			       <rich:simpleTogglePanel switchType="client"   label="#{messages.criterioBusqueda}">			       		
+			       		<table width="100%"   cellpadding="0"    cellspacing="0">
+							<tr>
+								<td class="margenSupIzq">
+									<h:form id="form1">
+									<table class="Tabla"  id="buscarPacienteN" 
+										   cellspacing="0"  cellpadding="0">										   
+											<tr class="filSepPeq"> 								
+											    <td 
+											        class="colSepGran">											    	
+											        <h:outputText value="#{messages.descripcion}:"   style="margin:0px; padding:0px; spacing:0px"/>
+											    </td>								    
+											</tr> 											   
+											<tr> 											
+												<td class="colSepGran">
+								        		<h:inputText styleClass="inputText"  id="nombre1" style="width:152px"
+								        					 value="#{notaCustomList.descripcion}"/>
+								        	</td>
+																								  
+											    <td>								    				        
+											 		<h:commandButton  value="#{messages.buscar}"  action="#" style="margin:0px;"
+											 		reRender="tabla_noResult,tabla_nota"/>											 		                    
+											 		<rich:spacer width="10"/>											 		
+													<h:commandButton value="#{messages.cancelar}" action="cancelar" style="margin:0px;"/>								
+											 	</td>											 	
+											</tr>												
+													      
+									</table>
+									</h:form>									
+									
+								</td>
+							</tr>							
+			       		</table>					       		
+			       </rich:simpleTogglePanel>       
+       			   <br/>
+       			</td>
+       		</tr>	       			
+       		<tr>
+       			<td>
+       				<h:form>
+                     <a4j:outputPanel  id="tb" >  
+                     <table width="100%" cellpadding="0" cellspacing="0" style="margin:0px; padding:0px;">  
+                     	<tr>  
+                     		<td width="100%">           
+			                    <s:div style="float: right;">
+				                     <h:commandLink action="crearNota" style="border: 0px; cursor:pointer;">	
+				               		 	<h:panelGrid columns="2">
+				      						<h:graphicImage value="/resources/icons/default/acciones/adicionar.png"	style="border:0;"/>				       				
+				      						<h:outputText value="#{messages.crearNota}" />
+						       			</h:panelGrid>				       			
+					       			</h:commandLink>  
+				       			</s:div> 
+			       			</td>
+		       			</tr>
+	       			</table>
+	       			                
+                     <rich:panel rendered="#{empty notaCustomList.resultList and notaCustomList.descripcion == ''}">
+                     	<f:facet name="header">#{messages.listadoNotas}</f:facet>
+                     		<table class="Tabla" id="tabla_noResult">
+								<tr><td class="margenSupIzq">
+                     				<h:outputText value="#{messages.noResults}"  />
+                     			</td></tr>
+                     		</table>
+                     </rich:panel>
+                     <rich:panel rendered="#{empty notaCustomList.resultList and notaCustomList.descripcion != ''}">
+                     	<f:facet name="header">#{messages.listadoNotas}</f:facet>
+                     		<table class="Tabla" id="tabla_noResult">
+								<tr><td class="margenSupIzq">
+                     				<h:outputText value="#{messages.noResults1}"  />
+                     			</td></tr>
+                     		</table>
+                     </rich:panel>
+                     <div style="margin-left: 1px">
+				       <rich:dataTable value="#{notaCustomList.resultList}" id="tabla_nota"
+       				                   var="nota"  width="100%"       				                         				                 
+       				                   rendered="#{!empty notaCustomList.resultList}">				       		
+				       		<f:facet name="header">
+				       			<h:outputText value="#{messages.listadoNotas}"/>
+				       		</f:facet>				       		
+				       					       		
+				       		<rich:column>				       		
+				       			<f:facet name="header">
+									<s:div>
+										<table width="100%"   cellpadding="0"   cellspacing="0">
+											<tr>
+												<td align="left" width="40px">												    
+												    <h:outputText value="#{messages.descripcion}"   styleClass="label" />
+												</td>				
+												
+											</tr>
+										</table>
+									</s:div>
+								</f:facet>								
+								<h:outputText value="#{nota.descripcion}"/>								
+				       		</rich:column>				       		
+				       		
+				       		
+				       		<rich:column width="1px" styleClass="alineacionCentrada"   title="#{messages.ver}" >
+			       		         <div align="center"><s:link
+								view="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/verNota/verNota.gehos">
+								<h:graphicImage title="#{messages.ver}" style="border: 0px; height : 16px;"
+									value="/resources/icons/default/acciones/ver.png" />
+								 <f:param id="id_nota_ver" name="id_nota" value="#{nota.id}" /> 
+								 
+							</s:link></div>
+				       		</rich:column>
+				       		<rich:column width="1px" styleClass="alineacionCentrada" title="#{messages.modificar}" >
+				       		<div align="center"><s:link
+								view="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/modificarNota/modificarNota.gehos">
+								<h:graphicImage title="#{messages.modificar}" style="border: 0px; height : 16px;"
+									value="/resources/icons/default/acciones/modificar.png" />
+								 <f:param id="id_nota_mod" name="id_nota" value="#{nota.id}" /> 
+								 
+							</s:link></div>
+				       		</rich:column>	
+				       		<rich:column width="1px" styleClass="alineacionCentrada" 
+				       		             title="#{messages.eliminar}">
+				       		             <div align="center">
+				       		             <a4j:commandLink
+								oncomplete="Richfaces.showModalPanel('panelEliminar')"
+								action="#{buscarNota.seleccionar(nota)}">
+
+								<h:graphicImage title="#{messages.eliminar}"
+									style="border: 0px; cursor:pointer;"
+									value="/resources/icons/default/acciones/eliminar.png">
+								</h:graphicImage>
+							</a4j:commandLink></div>
+				       		</rich:column>	
+				       </rich:dataTable>
+				       
+				       	</div>
+					</a4j:outputPanel>
+       				   <br/>
+       				</h:form>
+       			</td>
+       		</tr>       		
+       		<tr class="filSepGranRA">
+       			<td align="center">
+       			<h:form> 
+       			<a4j:outputPanel id="paginado" ajaxRendered="true">
+       				<ui:include src="/modEnsayo/ensayo_conduccion/codebase/plantillas/paginado.xhtml" >	
+       					<ui:param name="customList" value="#{notaCustomList}" />		
+					</ui:include>		
+   				</a4j:outputPanel>
+       				</h:form> 
+       				<br/>
+       			</td>
+       		</tr>
+       	</table>
+      	<ui:include src="/modEnsayo/ensayo_conduccion/codebase/plantillas/eliminar.xhtml" >	
+       					<ui:param name="controlador" value="#{buscarNota}" />		
+					</ui:include>
+     	</a4j:outputPanel> 
+	</s:div>
+</s:div>

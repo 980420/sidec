@@ -1,0 +1,1023 @@
+<?xml version="1.0" ?>
+<TiposDeDocumentosClinicos>
+
+    <!-- AD Admisión -->
+		<documento>
+			<titulo>Orden de admisión</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.commonEntities.OrdenAdmision</classToString>
+			<ftl>AD-O.A.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Admisión</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.admision.Admision</classToString>
+			<ftl>AD-A.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Hoja frontal</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.admision.HojaFrontal</classToString>
+			<ftl>AD-H.F.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Referencia recibida</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.admision.Referencia</classToString>
+			<ftl>AD-R.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Referencia emitida</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.admision.ReferenciaOut</classToString>
+			<ftl>AD-RS.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+	<!-- Fin AD Admisión -->
+
+    <!-- AP Anatomía patológica -->
+		<documento>
+			<titulo>Informe final de autopsia</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.anatomiaPatologica.informeDeAutopsia.InformeDeAutopsia</classToString>
+			<ftl>AP-I.FA.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Informe de biopsia</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.anatomiaPatologica.informeDeBiopsia.InformeDeBiopsia</classToString>
+			<ftl>AP-I.FB.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>	
+		<documento>
+			<titulo>Informe de citología</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.anatomiaPatologica.informeDeCitologia.InformeDeCitologia</classToString>
+			<ftl>AP-I.FC.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Informe de inmunohistoquímica</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.anatomiaPatologica.informeDeInmunohistoquimica.InformeDeInmunohistoquimica</classToString>
+			<ftl>AP-I.FIHQ.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>	
+		<documento>
+			<titulo>Informe de microscopia electrónica</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.anatomiaPatologica.informeDeMicroscopiaElectronica.InformeDeMicroscopiaElectronica</classToString>
+			<ftl>AP-I.FME.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Solicitud de estudio de AP</titulo>
+			<classToString></classToString>
+			<ftl>AP-S.E.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>			
+		<documento>
+			<titulo>Solicitud de autopsia</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.anatomiaPatologica.solicitudDeAutopsia.SolicitudDeAutopsia</classToString>
+			<ftl>AP-S.A.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Solicitud de biopsia</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.anatomiaPatologica.solicitudDeBiopsia.SolicitudDeBiopsia</classToString>
+			<ftl>AP-S.B.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+	<!-- Fin AP Anatomía patológica -->
+
+    <!-- BQ Bloque quirúrgico -->
+		<documento>
+			<titulo>Hoja de anestesia estándar y cardiovascular</titulo>
+			<classToString></classToString>
+			<ftl>BQ-H.AEC.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Nota operatoria</titulo>
+			<classToString></classToString>
+			<ftl>BQ-N.O.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+	<!-- Fin BQ Bloque quirúrgico -->
+
+    <!-- BS Banco de sangre -->
+		<documento>
+			<titulo>Ficha de donación</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.bancoSangre.fichaDeDonacion.FichaDeDonacion</classToString>
+			<ftl>BS-F.D.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Registro de transfusión</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.commonEntities.RegistroTransfusion</classToString>
+			<ftl>BS-R.T.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Tratamiento terapéutico</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.bancoSangre.tratamientoTerapeutico.TratamientoTerapeutico</classToString>
+			<ftl>BS-T.T.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>    
+	<!-- Fin BS Banco de sangre -->
+
+    <!-- CI Citas -->	
+		<documento>
+			<titulo>Cita para consulta</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.citas.datosDeCitaParaConsulta.DatosDeCitaParaConsulta</classToString>
+			<ftl>CI-C.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>	
+		<documento>
+			<titulo>Cita para estudio radiológico e imagenológico</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.citas.datosDeCitaParaEstudioRadiologicoImagenologico.DatosDeCitaParaEstudioRadiologicoImagenologico</classToString>
+			<ftl>CI-C.EIG.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+	<!-- Fin CI Citas -->
+
+	<!-- CO Común -->	
+		<documento>
+			<titulo>Contrarreferencia</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExterna.contrarreferencia.Contrarreferencia</classToString>
+			<ftl>CO-C.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Informe médico</titulo>
+			<classToString></classToString>
+			<ftl>CO-I.M.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>	
+		<documento>
+			<titulo>Récipe</titulo>
+			<classToString></classToString>
+			<ftl>CO-R.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+	<!-- Fin CO Común -->
+
+	<!-- EF Enfermería -->		
+		<documento>
+			<titulo>Balance de líquidos</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.enfermeria.balanceDeLiquidos.BalanceLiquidos</classToString>
+			<ftl>EF-B.L.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>	
+		<documento>
+			<titulo>Hoja de signos vitales</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.enfermeria.signosVitales.SignosVitales</classToString>
+			<ftl>EF-H.SV.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Evolución de enfermería</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.enfermeria.evolucion.Evolucion</classToString>
+			<ftl>EF-E.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Hoja de evaluación en UCI</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.enfermeria.evaluacionUci.HojaEvaluacionUci</classToString>
+			<ftl>EF-EUCI.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		
+		<documento>
+			<titulo>Control de tratamiento</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.enfermeria.controlTratamiento.ControlTratamiento</classToString>
+			<ftl>EF-C.T.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		
+	<!-- Fin EF Enfermería -->
+
+   <!-- EM Emergencia -->	
+		<documento>
+			<titulo>Recepción de paciente</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.emergencias.RecepcionPaciente</classToString>
+			<ftl>EM-R.P.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		
+		<documento>
+			<titulo>Hoja de emergencia</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.emergencias.HojaEmergencia</classToString>
+			<ftl>EM-H.E.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		
+		<documento>
+			<titulo>Atención medica</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.emergencias.AtencionMedica</classToString>
+			<ftl>EM-A.M.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		
+		<documento>
+			<titulo>Evolución médica</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.emergencias.EvolucionMedica</classToString>
+			<ftl>EM-E.M.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		
+		<documento>
+			<titulo>Ingreso en observación</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.emergencias.IngresoObservacion</classToString>
+			<ftl>EM-I.O.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		
+		<documento>
+			<titulo>Orden médica</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.commonEntities.ordMed.OrdenMedica</classToString>
+			<ftl>COM-O.M.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+	<!-- Fin EM Emergencia -->
+
+	<!-- EP Epidemiología -->
+		<documento>
+			<titulo>Ficha de alimentos</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.investigacionesEpidemiologicas.fichaAlimentos.FichaAlimentos</classToString>
+			<ftl>EP-F.A.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Ficha de cólera</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.investigacionesEpidemiologicas.fichaColera.FichaColera</classToString>
+			<ftl>EP-F.C.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Ficha de dengue</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.investigacionesEpidemiologicas.fichaDengue.FichaDengue</classToString>
+			<ftl>EP-F.DN.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Ficha de difteria</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.investigacionesEpidemiologicas.fichaDifteria.FichaDifteria</classToString>
+			<ftl>EP-F.DF.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Ficha de enfermedad respiratoria aguda</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.investigacionesEpidemiologicas.fichaEnfRespiratoriaAguda.FichaEnfRespiratoriaAguda</classToString>
+			<ftl>EP-F.ERA.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Ficha de emponzoñamiento ofídico</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.investigacionesEpidemiologicas.FichaEmponsonnamiento.FichaEmponsonnamiento</classToString>
+			<ftl>EP-F.EO.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Ficha de síndrome respiratorio agudo severo</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.investigacionesEpidemiologicas.FichaSindromeRespiratorioAgudoSevero</classToString>
+			<ftl>EP-F.SRAS.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Ficha de hepatitis viral aguda</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.investigacionesEpidemiologicas.fichaHepatitisViralAguda.FichaHepatitisViralAguda</classToString>
+			<ftl>EP-F.HVA.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Ficha del instituto nacional de higiene</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.investigacionesEpidemiologicas.fichaInstitutoNacHigiene.FichaInstitutoNacHigiene</classToString>
+			<ftl>EP-F.INH.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Ficha de investigación de caso</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.investigacionesEpidemiologicas.fichaInvestigacionCaso.FichaInvestigacionCaso</classToString>
+			<ftl>EP-F.IC.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Ficha de leptospirosis</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.investigacionesEpidemiologicas.fichaLeptospirosis.FichaLeptospirosis</classToString>
+			<ftl>EP-F.L.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Ficha de muestra de heces fecales parálisis flácida</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.investigacionesEpidemiologicas.fichaMuestraHecesParalisisFlacida.FichaMuestraHecesParalisisFlacida</classToString>
+			<ftl>EP-F.MHFPF.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Ficha de parotiditis</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.investigacionesEpidemiologicas.fichaParotiditis.FichaParotiditis</classToString>
+			<ftl>EP-F.P.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Ficha de plaguicidas</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.investigacionesEpidemiologicas.fichaPlaguicidas.FichaPlaguicidas</classToString>
+			<ftl>EP-F.PL.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Ficha de rabia</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.investigacionesEpidemiologicas.fichaRabia.FichaRabia</classToString>
+			<ftl>EP-F.R.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Ficha de vacunación e inmunización</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.investigacionesEpidemiologicas.fichaVacunacionInmunizacion.FichaVacunacionInmunizacion</classToString>
+			<ftl>EP-F.VI.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Ficha de VIH</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.investigacionesEpidemiologicas.fichaVIH.FichaVIH</classToString>
+			<ftl>EP-F.VIH.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Ficha de sarampión y rubeola</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.investigacionesEpidemiologicas.fichaSarampionRubeola.FichaSarampionRubeola</classToString>
+			<ftl>EP-F.SR.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Ficha de síndromes febriles íctero-hemorrágicos</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.investigacionesEpidemiologicas.fichaSindromeFebrilesIcteroHemorragico.FichaSindromeFebrilesIcteroHemorragico</classToString>
+			<ftl>EP-F.SFIH.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Ficha de SIREVA</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.investigacionesEpidemiologicas.fichaSIREVA.FichaSIREVA</classToString>
+			<ftl>EP-F.SIREVA.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Ficha de tuberculosis</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.investigacionesEpidemiologicas.fichaTuberculosis.FichaTuberculosis</classToString>
+			<ftl>EP-F.T.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Ficha de poliomielitis</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.investigacionesEpidemiologicas.fichaPoliomielitis.FichaPoliomielitis</classToString>
+			<ftl>EP-F.POLIO.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+	<!-- Fin EP Epidemiología -->
+	
+	<!-- LB Laboratorio -->
+		<documento>
+			<titulo>Solicitud de examen de laboratorio</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.commonEntities.solicitudExamenLaboratorio.SolicitudExamenesLaboratorio</classToString>
+			<ftl>LB-S.E.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Informe de resultados de laboratorio</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.laboratorio.resultado.InformeDeResultadosDeLaboratorio</classToString>
+			<ftl>LB-R.E.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+	<!-- Fin LB Laboratorio -->
+	
+	<!-- CE Consulta externa -->
+		<documento>
+			<titulo>Constancia</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExterna.constancia.Constancia</classToString>
+			<ftl>CE-C.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>	
+		<documento>
+			<titulo>Hoja general de consulta</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExternaCDA.HojaGeneral</classToString>
+			<ftl>CE-H.GC.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>	
+		<documento>
+			<titulo>Hoja para triaje general</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExterna.hojaTriaje.HojaTriaje</classToString>
+			<ftl>CE-H.TG.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>	
+		<documento>
+			<titulo>Referencia</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExterna.referencia.Referencia</classToString>
+			<ftl>CE-R.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Hoja de radioterapia y medicina nuclear</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExterna.hojaRadioterapia.HojaRadioterapia</classToString>
+			<ftl>CE-H.RMN.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Hoja de evolución médica</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExterna.hojaRadioterapia.HojaRadioterapia</classToString>
+			<ftl>CE-H.RMN.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Hoja de Cirugía Colo-Rectal</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExterna.hojaCirugiaColoRectal.HojaCirugiaColoRectal</classToString>
+			<ftl>CE-H.CCR.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Hoja de dermatología</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExterna.hojaDermatologia.HojaDermatologia</classToString>
+			<ftl>CE-H.D.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Hoja de gastroenterología</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExternaCDA.HojaGastro</classToString>
+			<ftl>CE-H.G.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Hoja de ginecología</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExternaCDA.HojaGinecologica</classToString>
+			<ftl>CE-H.GIN.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Hoja de hospitalización</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExterna.hojaHospitalizacion.HojaHospitalizacion</classToString>
+			<ftl>CE-H.H.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Hoja hemato-oncológica</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExterna.hojaHematoOncologica.HojaHematoOncologica</classToString>
+			<ftl>CE-H.HO.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Hoja hemato-oncológica pediátrica</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExterna.hojaHematoOncPediatrica.HojaHematoOncPediatrica</classToString>
+			<ftl>CE-H.HOP.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Hoja de interconsulta</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExterna.hojaInterconsulta.HojaInterconsulta</classToString>
+			<ftl>CE-H.I.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Hoja neurológica</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExternaCDA.HojaNeurologia</classToString>
+			<ftl>CE-H.N.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Hoja de obstetricia</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExternaCDA.HojaObstetrica</classToString>
+			<ftl>CE-H.OBS.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Hoja oftalmológica</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExterna.hojaOftalmologica.HojaOftalmologica</classToString>
+			<ftl>CE-H.OFT.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Hoja evolución oftalmológica</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExterna.hojaEvoOftalmologica.HojaEvoOftalmologica</classToString>
+			<ftl>CE-H.EOFT.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Hoja de ORL</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExternaCDA.HojaORL</classToString>
+			<ftl>CE-H.ORL.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Hoja de atención primaria de salud</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExternaCDA.HojaAPS</classToString>
+			<ftl>CE-H.APS.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Hoja pediátrica</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExterna.hojaPediatrica.HojaPediatrica</classToString>
+			<ftl>CE-H.P.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Hoja de reumatología</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExterna.hojaReumatologia.HojaReumatologia</classToString>
+			<ftl>CE-H.R.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Hoja de traumatología y ortopedia</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExterna.hojaTraumatologia.HojaTraumatologia</classToString>
+			<ftl>CE-H.TO.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Hoja uro-genital</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExternaCDA.HojaUroGen</classToString>
+			<ftl>CE-H.UG.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Hoja preanestésica</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExterna.hojaPreanestesica.HojaPreanestesica</classToString>
+			<ftl>CE-H.PA.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Orden médica</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExterna.ordenMedica.OrdenMedica</classToString>
+			<ftl>CO-O.M.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Solicitud de citología</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExterna.solicitudCxG.SolicitudCxG</classToString>
+			<ftl>CE-S.C.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Solicitud de citología ginecológica</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExterna.solicitudCxNG.SolicitudCxNG</classToString>
+			<ftl>CE-S.CG.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Solicitud de tipiaje</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExterna.solicitudExamenTipiaje.SolicitudExamenTipiaje</classToString>
+			<ftl>CE-S.ET.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Solicitud de interconsulta</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExterna.solicitudInterconsulta.SolicitudInterconsulta</classToString>
+			<ftl>CE-S.I.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Solicitud de intervención quirúrgica</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.commonEntities.SolicitudIntervencionQuirurgica</classToString>
+			<ftl>CE-S.IQ.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Solicitud de transfusión</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExterna.solicitudTransfusion.SolicitudTransfusion</classToString>
+			<ftl>CE-S.T.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Evolución médica</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.consultaExterna.evolucionMedica.EvolucionMedica</classToString>
+			<ftl>CE-E.M.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<!-- Sin clases aun -->
+		<documento>
+			<titulo>Informe de alta</titulo>
+			<classToString></classToString>
+			<ftl>CE-I.A.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Orden de dieta</titulo>
+			<classToString></classToString>
+			<ftl>CE-O.D.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Orden de transferencia</titulo>
+			<classToString></classToString>
+			<ftl>CE-O.T.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Solicitud de transferencia</titulo>
+			<classToString></classToString>
+			<ftl>CE-S.TF.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+		<documento>
+			<titulo>Solicitud de egreso</titulo>
+			<classToString></classToString>
+			<ftl>CE-S.E.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+		</documento>
+	<!-- Fin Cunsulta externa -->
+	
+	<!--Salud Ocupacional  -->
+	<documento>
+		<titulo>Hoja de evaluación de perfiles</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.sldOcupacional.hojasConsulta.HojaEvalperfiles</classToString>
+		<ftl>SO-HEP.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Hoja de ECOR</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.sldOcupacional.hojasConsulta.HojaEcor</classToString>
+		<ftl>SO-HECOR.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Hoja de vigilancia ocupacional</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.sldOcupacional.hojasConsulta.HojaVigOcupacional</classToString>
+		<ftl>SO-HVO.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Solicitud de examen de enfermería</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.sldOcupacional.solicitudes.SolicitudExamEnf</classToString>
+		<ftl>SO-S.EE.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Certificado de asistencia médica</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.sldOcupacional.CertificadoAsistMed.CertificadoAsistMed</classToString>
+		<ftl>SO-S.CAM.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Remisión a laboratorio de salud</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.sldOcupacional.solicitudes.RemisionLabSalud</classToString>
+		<ftl>SO-S.RLS.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Asignación de programas de vigilancia</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.sldOcupacional.ProgramasVigilancia.AsignacionProgVig</classToString>
+		<ftl>SO-S.APV.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Asignación de medidas preventivas</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.sldOcupacional.medidasPreventivas.AsignacionMedPrev</classToString>
+		<ftl>SO-S.AMP.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Antecedentes laborales</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.sldOcupacional.AntecedentesLaborales.AntecedentesLabDoc</classToString>
+		<ftl>SO-A.Lab.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Evaluación de riesgos</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.sldOcupacional.evaluacionRiesgo.evalRiesgo</classToString>
+		<ftl>SO-S.ER.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<!--Fin Documentos Salud Ocupacional  -->
+	
+	<!-- HO Hospitalizacion -->
+	<documento>
+		<titulo>Orden médica</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.hospitalizacion.ordenMedica.OrdenMedica</classToString>
+		<ftl>HO-O.M.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Certificado de defunción</titulo>
+		<classToString></classToString>
+		<ftl>HO-C.D.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Evolución médica</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.hospitalizacion.evolucionMedica.EvolucionMedica</classToString>
+		<ftl>HO-E.M.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Egreso</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.hospitalizacion.egreso.Egreso</classToString>
+		<ftl>HO-E.G.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Hoja preanestésica</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.hospitalizacion.hojaPreanestesica.HojaPreanestesica</classToString>
+		<ftl>HO-H.PA.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Hoja de ginecología</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.hospitalizacion.hojaGinecologia.HojaGinecologica</classToString>
+		<ftl>HO-H.GIN.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Hoja general de hospitalización</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.hospitalizacion.hojaGeneral.HojaGeneral</classToString>
+		<ftl>HO-H.G.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Hoja de interconsulta</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.hospitalizacion.hojaInterconsulta.HojaInterconsulta</classToString>
+		<ftl>HO-H.I.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	
+	<documento>
+		<titulo>Hoja de obstetricia</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.hospitalizacion.hojaObstetricia.HojaObstetricia</classToString>
+		<ftl>HO-H.OBS.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Informe de alta</titulo>
+		<classToString></classToString>
+		<ftl>HO-I.A.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Orden de dieta</titulo>
+		<classToString></classToString>
+		<ftl>HO-O.D.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Orden de transferencia</titulo>
+		<classToString></classToString>
+		<ftl>HO-O.T.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Solicitud de citología</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.hospitalizacion.solicitudCxG.SolicitudCxG</classToString>
+		<ftl>HO-S.C.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Solicitud de citología ginecológica</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.hospitalizacion.solicitudCxNG.SolicitudCxNG</classToString>
+		<ftl>HO-S.CG.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Solicitud de tipiaje</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.hospitalizacion.solicitudExamenTipiaje.SolicitudExamenTipiaje</classToString>
+		<ftl>HO-S.ET.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Solicitud de interconsulta</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.hospitalizacion.solicitudInterconsulta.SolicitudInterconsulta</classToString>
+		<ftl>HO-S.I.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Solicitud de intervención quirúrgica</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.hospitalizacion.solicitudIntervencionQx.SolicitudIntervencionQx</classToString>
+		<ftl>HO-S.IQ.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Solicitud de transfusión</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.hospitalizacion.solicitudTransfusion.SolicitudTransfusion</classToString>
+		<ftl>HO-S.T.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Solicitud de transferencia</titulo>
+		<classToString></classToString>
+		<ftl>HO-S.TF.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Solicitud de egreso</titulo>
+		<classToString></classToString>
+		<ftl>HO-S.E.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<!-- Fin HO Hospitalizacion -->
+	
+	<!--RIS -->	
+	<documento>
+			<titulo>Estudio imagenológico</titulo>
+			<classToString>class gehos.visorhc.entity.custom.documentoClinico.ris.EstudioImagenologico</classToString>
+			<ftl>RIS-E.I.ftl</ftl>
+			<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+			<codigo>28570-0</codigo>
+	</documento>
+	<!-- Fin  RIS -->	
+	<!--Documentos comunes -->	
+	<documento>
+		<titulo>Hábito psicobiológico</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.commonEntities.HabitoPsDoc</classToString>
+		<ftl>COM-HPB.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Antecedente familiar</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.commonEntities.AntecedenteFamiliarDoc</classToString>
+		<ftl>COM-ANTFAM.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Antecedente personal</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.commonEntities.AntecedentePersonalDoc</classToString>
+		<ftl>COM-ANTPER.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Antecedente alimenticio</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.commonEntities.AntecedenteAlimentacion</classToString>
+		<ftl>COM-ANTAl.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Antecedente de desarrollo</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.commonEntities.AntecedenteDesarrollo</classToString>
+		<ftl>COM-ANTD.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Antecedente ginecológico y obstétrico</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.commonEntities.AntecedenteGO</classToString>
+		<ftl>COM-ANTGO.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Antecedentes prenatales, obstétricos y neonatales</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.commonEntities.AntecedentePON</classToString>
+		<ftl>COM-ANTPON.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Antecedentes quirúrgicos</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.commonEntities.AntecedenteQuirurgicoDoc</classToString>
+		<ftl>COM-ANTQI.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Inmunizaciones</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.commonEntities.Inmunizacion</classToString>
+		<ftl>COM-INM.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Problemas detectados</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.commonEntities.AntecedenteProblemaDetectado</classToString>
+		<ftl>COM-ANTPD.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<documento>
+		<titulo>Indicaciones médicas</titulo>
+		<classToString>class gehos.visorhc.entity.custom.documentoClinico.commonEntities.indMed.IndicacionesMedicas</classToString>
+		<ftl>COM-IM.ftl</ftl>
+		<nomenclador>2.16.840.1.113883.6.1</nomenclador>
+		<codigo>28570-0</codigo>
+	</documento>
+	<!--Fin Documentos comunes -->	
+	
+</TiposDeDocumentosClinicos>

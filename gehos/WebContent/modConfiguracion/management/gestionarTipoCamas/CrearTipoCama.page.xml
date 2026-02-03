@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<!-- validation -->	
+	<navigation> 
+		<rule if="#{tipoCamaCrearControlador.tipoCama == null}">
+			<redirect view-id="/modConfiguracion/management/gestionarTipoCamas/BuscarTipoCama.xhtml" />
+		</rule>			
+	</navigation>
+	
+	<!-- create and go to view details -->
+	<navigation from-action="#{tipoCamaCrearControlador.crear()}" evaluate="#{tipoCamaCrearControlador.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarTipoCamas/VerDetallesTipoCama.xhtml">
+				<param name="tipoCamaId" value="#{tipoCamaCrearControlador.tipoCama.id}" />					
+				<param name="from" value="crear" />
+			</redirect>	
+			<end-conversation before-redirect="true" />		
+		</rule>
+	</navigation>
+	
+	<!-- cancel and go to view list -->
+	<navigation from-action="cancelar">
+		<redirect view-id="/modConfiguracion/management/gestionarTipoCamas/BuscarTipoCama.xhtml" />		
+	</navigation>
+
+</page>

@@ -1,0 +1,125 @@
+<s:div   xmlns     ="http://www.w3.org/1999/xhtml" 
+ 			      xmlns:ui  ="http://java.sun.com/jsf/facelets" 
+      		      xmlns:h   ="http://java.sun.com/jsf/html" 
+			      xmlns:f   ="http://java.sun.com/jsf/core" 
+			      xmlns:s   ="http://jboss.com/products/seam/taglib" 
+			      xmlns:rich="http://richfaces.org/rich" 
+                  xmlns:a4j   ="http://richfaces.org/a4j"                  
+                  template  ="#{theme.template}">
+	<s:div >  
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+		<script type="text/javascript">
+		setContentTitle('#{messages.lbl_titulo_ens}')
+		//<![CDATA[
+		    function hideErrorSpans() {
+		        var errorSpans = document.getElementsByClassName('errorSpan');
+		        for(var i = 0; i < errorSpans.length; i++) {
+		            errorSpans[i].style.display = 'none';
+		        }
+		    }
+		//]]>
+		//<![CDATA[
+	    function validarCamposVacios() {
+	        var campos = ['modificarEtapa:descripcion']; // Añade aquí los IDs de todos los campos de entrada que quieres verificar
+	        for(var i = 0; i < campos.length; i++) {
+	            var input = document.getElementById(campos[i]);
+	            if(input.value == '') {
+	                input.style.border = '1px solid red';
+	            } else {
+	                input.style.border = '';
+	            }
+	        }
+	    }
+	 //]]>
+		</script>	
+    <link href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css"  rel="stylesheet" type="text/css" />
+     <rich:messages globalOnly="true" styleClass="message"  id="globalMessage" ajaxRendered="true"/>	    
+     <h:form id="modificarEtapa">
+     	<rich:panel>
+     		<rich:simpleTogglePanel label="#{messages.lbl_datosEtapa_ens}" switchType="client" opened="true" >
+		         		
+					
+					<table cellpadding="0px" cellspacing="0px" border="0px" width="100%">
+					<tr>
+     			<td>
+     				<s:label styleClass="#{invalid?'labelErrors':''}" value="#{messages.lbl_descripcion_ens}:">
+												<span class="errorSpan" style="color:red;">*</span>
+												<rich:message for="descripcion" showDetail="false">
+								    				<f:facet name="errorMarker">
+								    					<h:outputText style="color: red;cursor: pointer !important;" title="#{facesMessages.getCurrentMessagesForControl('descripcion').get(0).getDetail()}" value="*"/>
+								    				</f:facet>
+								    				</rich:message>	
+								    				</s:label>
+								    				<br/>
+     				<h:inputTextarea id="descripcion" value="#{modificarEtapa.etapa.descripcion}" 
+     					validator="#{validations_ensayo.textnumber250}"
+						style="width:50%;resize: vertical" 
+						required="#{!empty param['modificarEtapa:aceptarBtn']}">
+					</h:inputTextarea>
+     			</td>
+     			
+     		</tr>
+     		
+     		</table>
+     		<rich:spacer height="8px"/>
+     		<table cellpadding="0px" cellspacing="0px" >
+     		<tr>     		
+     			
+				<td>     				
+					
+					<s:label styleClass="#{invalid?'labelErrors':''}" value="#{messages.lbl_inicioEtapa_ens}:" >
+					<rich:message for="inicioEtapa" showDetail="false">
+								    				<f:facet name="errorMarker">
+								    					<h:outputText style="color: red;cursor: pointer !important;" title="#{facesMessages.getCurrentMessagesForControl('inicioEtapa').get(0).getDetail()}" value="*"/>
+								    				</f:facet>
+								    				</rich:message>	
+					</s:label>
+					<br/>
+					<rich:comboBox id="inicioEtapa" value="#{modificarEtapa.etapa.inicioEtapa}" defaultLabel="#{modificarEtapa.etapa.inicioEtapa}" enableManualInput="#{modificarEtapa.etapa.nombreEtapa != messages.prm_tratamiento_ens}"
+					   								    styleClass="cbx" suggestionValues="#{modificarEtapa.listaInicioEtapa}" required="#{!empty param['modificarEtapa:aceptarBtn']}" >						   								  
+					   								  
+					</rich:comboBox>
+					
+				</td>
+				<td style="padding-left: 25px">     				
+					
+					<s:label styleClass="#{invalid?'labelErrors':''}" value="#{messages.lbl_finEtapa_ens}:" >
+					<rich:message for="finEtapa" showDetail="false">
+								    				<f:facet name="errorMarker">
+								    					<h:outputText style="color: red;cursor: pointer !important;" title="#{facesMessages.getCurrentMessagesForControl('finEtapa').get(0).getDetail()}" value="*"/>
+								    				</f:facet>
+								    				</rich:message>	
+					</s:label>
+					<br/>
+					<rich:comboBox id="finEtapa" value="#{modificarEtapa.etapa.finEtapa}" defaultLabel="#{modificarEtapa.etapa.finEtapa}" enableManualInput="true"
+					   								    styleClass="cbx" suggestionValues="#{modificarEtapa.listaFinEtapa}" required="#{!empty param['modificarEtapa:aceptarBtn']}" >						   								  
+					   								  
+					</rich:comboBox>
+				</td>
+			</tr>
+			</table>
+		         	</rich:simpleTogglePanel>	
+     	</rich:panel>
+     	<s:div>
+			<div align="right">
+				<rich:spacer width="100%" height="8px"/>
+			</div>
+		</s:div>
+	 <div align="right">
+				
+		<a4j:commandButton 	id="aceptarBtn"	
+			action="#{modificarEtapa.actualizarEtapas()}"
+			onclick="hideErrorSpans();validarCamposVacios();"
+			value="#{messages.btn_aceptar_ens}"  >
+		</a4j:commandButton>
+		<rich:spacer width="10px"/>
+		
+		<a4j:commandButton 	immediate="true"
+			action="cancelar"			
+			value="#{messages.btn_cancelar_ens}" />
+		</div>
+	
+     </h:form>
+     
+	</s:div>
+</s:div>

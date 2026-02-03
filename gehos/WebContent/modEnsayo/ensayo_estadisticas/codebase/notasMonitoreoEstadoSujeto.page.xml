@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<page    xmlns               ="http://jboss.com/products/seam/pages"  
+         xmlns:xsi           ="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">  
+
+	
+     <navigation from-action="cancelar"> 
+          <redirect view-id="/modCommons/modHome/home.gehos">
+          <param name="idFuncionalidad" value="#{activeModule.activeModule.id}" />
+		  <param name="idancestors" value="#{activeModule.activeModule.id}a" />
+ 		  <param name="moduleName" value="#{activeModule.activeModuleName}" />	
+          </redirect>
+    </navigation>
+    
+    <navigation from-action="#{notasMonitoreoEstadoSujeto.generarGrafico()}">
+			<redirect view-id="/modEstadisticas/general/modules/#{activeModule.activeSubModulePhysicalName()}/generarGraficos/generarGraficoConsultaExterna.xhtml">
+			</redirect>
+    </navigation>  
+
+
+</page>

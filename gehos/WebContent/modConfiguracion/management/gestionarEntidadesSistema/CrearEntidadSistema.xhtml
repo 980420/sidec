@@ -1,0 +1,571 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- css -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/gestionarEntidadesSistema/styles/selector2.css"
+			rel="stylesheet" type="text/css" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+		<style type="text/css">
+.rich-tabpanel {
+	white-space: nowrap !IMPORTANT;
+}
+
+.custom-error {
+	border: 1px solid #FFCC00;
+	padding: 5px;
+	background-color: #F0F8FF;
+	font-size: 10px;
+	font-family: "Verdana";
+	position: relative;
+	left: 5px;
+	top: 5px;
+	margin-right: 10px;
+}
+</style>
+
+
+		<a4j:outputPanel ajaxRendered="true" id="errorOutputPanel">
+			<s:div style="height:30px;width:100%"
+				rendered="#{facesMessages.getCurrentMessagesForControl('buttonAceptar').size() > 0 }">
+				<div class="custom-error">
+					<rich:message for="buttonAceptar"></rich:message>
+				</div>
+			</s:div>
+		</a4j:outputPanel>
+
+		<script type="text/javascript">
+  		setContentTitle("#{messages['Buscar orden m&#233;dica']}");
+  		function makeVisible()
+  		{
+  			document.getElementById('resultado').style.display='';
+  		}
+
+  		var curDt = new Date();
+		 var calDt=null;
+
+		 function previousDate(date){
+			calDt = date;
+		 }
+
+		 function disablementFunction(day){
+			if (curDt.getTime() - day.date.getTime() &#62; 0) return true; else return false;  
+		 }
+
+		 function disabledClassesProv(day){
+			if (curDt.getTime() - day.date.getTime() &#60; 0)
+				return 'noAvailable';
+			else 
+				return '';
+		 }
+
+		 function resetSecondDate(first,second) {
+			 var firstDate = first.getSelectedDate().getTime();
+			 var secondDate = second.getSelectedDate().getTime();
+
+			 if(firstDate - secondDate &#62; 0)
+				 second.resetSelectedDate();
+		 }
+ 		 
+		 function disablementFunctionPreviousEx(day){
+			if(calDt == null){
+				if (curDt.getTime() - day.date.getTime() &#62; 0) return true; else return false;
+			}
+			if ((curDt.getTime() - day.date.getTime() &#62; 0) &#38;&#38; (calDt.getTime() - day.date.getTime() &#60;= 0)){
+				return true;
+			}
+			else 
+				return false;
+		  }
+
+		function disabledClassesProvPreviousEx(day){
+			if(calDt == null){
+				if (curDt.getTime() - day.date.getTime() &#60; 0)
+					return 'noAvailable';
+				else 
+					return '';
+			}
+			if ((curDt.getTime() - day.date.getTime() &#60; 0) || (calDt.getTime() - day.date.getTime() &#62; 0))
+				return 'noAvailable';
+			else 
+				return '';
+		}
+  	</script>
+
+		<a4j:form>
+			<!-- Logotipo -->
+			<a4j:jsFunction name="updateIcon" limitToList="true">
+				<a4j:actionparam name="icn"
+					assignTo="#{entidadSistemaCrearControlador.logoSeleccionado}" />
+			</a4j:jsFunction>
+		</a4j:form>
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+		<h:form id="form" styleClass="edit" enctype="multipart/form-data">
+			<s:validateAll>
+				<rich:tabPanel switchType="client"
+					selectedTab="#{entidadSistemaCrearControlador.tabSeleccionado}">
+					<rich:tab label="#{messages.tab1}" name="tabEntidad">
+						<a4j:support event="onlabelclick"
+							action="#{entidadSistemaCrearControlador.cambiarTabSeleccionado('tabEntidad')}" />
+						<table cellpadding="0px" cellspacing="0px" border="0px"
+							width="100%">
+							<tr>
+								<td height="13px" />
+							</tr>
+							<tr>
+								<td width="7px" />
+								<td>
+									<table cellpadding="0px" cellspacing="0px" border="0px">
+
+										<tr>
+											<td><rich:panel styleClass="panelEnt"
+													onmousedown="cambia(this)" onmouseup="cambia2(this)">
+													<table cellpadding="0" cellspacing="0" border="0">
+														<tr>
+															<td><a4j:outputPanel id="aLogo">
+																	<h:graphicImage id="idLogoNoExist"
+																		url="/resources/modCommon/entidades_logos/#{theme.name}/#{theme.color}/#{entidadSistemaCrearControlador.logoSeleccionado}"
+																		border="0" style="width: 74px; height: 74px;" />
+																</a4j:outputPanel></td>
+															<td valign="top"><a4j:commandLink id="logo"
+																	title="Modificar"
+																	oncomplete="Richfaces.showModalPanel('logoPorTema')">
+																	<h:graphicImage id="imgModificar"
+																		url="/resources/icons/default/acciones/modificar.png"
+																		border="0"
+																		style="width: 13px; height: 14px; margin-top: 6px" />
+																</a4j:commandLink></td>
+															<td></td>
+														</tr>
+													</table>
+												</rich:panel></td>
+											<td><rich:spacer width="2px" /></td>
+											<td style="vertical-align: top">
+												<table cellpadding="0px" cellspacing="0px" border="0px">
+													<tr>
+														<td>#{messages.nombre} <rich:message for="nombre"
+																showDetail="false" tooltip="true"
+																style="color:red;cursor:pointer;">
+																<f:facet name="errorMarker">
+																	<h:outputText value="*"
+																		title="#{facesMessages.getCurrentMessagesForControl('nombre').get(0).getDetail()}" />
+																</f:facet>
+															</rich:message><br /> <h:inputText id="nombre" style=" width : 148px;"
+																tabindex="1"
+																required="#{!empty param['form:buttonAceptar']}"
+																
+																value="#{entidadSistemaCrearControlador.nombre}"/></td>
+														<td style="width: 25px" />
+														<td>#{messages.direccion} <rich:message
+																for="direccion" showDetail="false" tooltip="true"
+																style="color:red;cursor:pointer;">
+																<f:facet name="errorMarker">
+																	<h:outputText value="*"
+																		title="#{facesMessages.getCurrentMessagesForControl('direccion').get(0).getDetail()}" />
+																</f:facet>
+															</rich:message><br /> <h:inputText id="direccion"
+																style=" width : 148px;" tabindex="2"
+																
+																value="#{entidadSistemaCrearControlador.direccion}" /></td>
+														<td style="width: 25px" />
+														<td>#{messages.area} <rich:message
+																for="areaInfluencia" showDetail="false" tooltip="true"
+																style="color:red;cursor:pointer;">
+																<f:facet name="errorMarker">
+																	<h:outputText value="*"
+																		title="#{facesMessages.getCurrentMessagesForControl('areaInfluencia').get(0).getDetail()}" />
+																</f:facet>
+															</rich:message><br /> <h:inputText id="areaInfluencia"
+																style="width : 148px;"
+																required="#{!empty param['form:buttonAceptar']}"
+																tabindex="3"
+																
+																value="#{entidadSistemaCrearControlador.poblacion}" /></td>
+													</tr>
+													<tr>
+														<td height="8px" />
+													</tr>
+													<tr>
+														<td>#{messages.correo} <rich:message for="correo"
+																showDetail="false" tooltip="true"
+																style="color:red;cursor:pointer;">
+																<f:facet name="errorMarker">
+																	<h:outputText value="*"
+																		title="#{facesMessages.getCurrentMessagesForControl('correo').get(0).getDetail()}" />
+																</f:facet>
+															</rich:message><br /> <h:inputText id="correo" style="width : 148px;"
+																tabindex="4"
+																
+																value="#{entidadSistemaCrearControlador.correo}" /></td>
+														<td style="width: 25px"></td>
+														<td>#{messages.telefono} <rich:message
+																for="telefonos" showDetail="false" tooltip="true"
+																style="color:red;cursor:pointer;">
+																<f:facet name="errorMarker">
+																	<h:outputText value="*"
+																		title="#{facesMessages.getCurrentMessagesForControl('telefonos').get(0).getDetail()}" />
+																</f:facet>
+															</rich:message><br /> <h:inputText id="telefonos"
+																style=" width : 148px;" tabindex="5"
+																
+																value="#{entidadSistemaCrearControlador.telefonos}" /></td>
+														<td style="width: 25px" />
+														<td>#{messages.inicialesEnt} <rich:message for="fax"
+																showDetail="false" tooltip="true"
+																style="color:red;cursor:pointer;">
+																<f:facet name="errorMarker">
+																	<h:outputText value="*"
+																		title="#{facesMessages.getCurrentMessagesForControl('fax').get(0).getDetail()}" />
+																</f:facet>
+															</rich:message><br /> <h:inputText id="fax" style=" width : 148px;"
+																tabindex="6"
+																
+																required="#{!empty param['form:buttonAceptar']}"
+																value="#{entidadSistemaCrearControlador.fax}" /></td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+									</table>
+								</td>
+								<td width="7px" />
+							</tr>
+							<tr>
+								<td><rich:spacer height="7px" style="display: block" /></td>
+							</tr>
+							<tr>
+								<td width="8px" />
+								<td><rich:panel>
+										<f:facet name="header">#{messages.lbl_otrosDatosE_modConfig}</f:facet>
+										<table cellpadding="0px" cellspacing="0px" border="0px">
+											<tr>
+												<td style="height: 13px;" colspan="6" />
+											</tr>
+											<tr style="vertical-align: top;">
+												<td style="width: 7px;" />
+												<td>#{messages.tipoEntidad} <rich:message
+														for="tipoEntidad" showDetail="false" tooltip="true"
+														style="color:red;cursor:pointer;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('tipoEntidad').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message><br /> <a4j:outputPanel id="aTipoEntidad">
+														<rich:comboBox id="tipoEntidad" enableManualInput="false"
+															tabindex="7" required="#{!empty param['form:buttonAceptar']}"
+															defaultLabel="#{messages.seleccione}"
+															suggestionValues="#{entidadSistemaCrearControlador.tiposEntidades()}"
+															value="#{entidadSistemaCrearControlador.tipoEntidad}">
+														</rich:comboBox>
+													</a4j:outputPanel> <rich:spacer height="10px" style="display: block" /></td>
+												<td style="width: 25px" />
+												<td>#{messages.fechaApertura} <rich:message for="fecha"
+														showDetail="false" tooltip="true"
+														style="color:red;cursor:pointer;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('fecha').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message><br /> <rich:calendar styleClass="normalText" id="fecha"
+														locale="#{messages.lbl_idiomaFechamodConfig}"
+														datePattern="#{messages.lbl_patronFecha_modConfig}"
+														tabindex="8"
+														value="#{entidadSistemaCrearControlador.entidad.fechaApertura}"
+														isDayEnabled="disablementFunctionPreviousEx"
+														dayStyleClass="disabledClassesProvPreviousEx">
+														<s:convertDateTime />
+													</rich:calendar></td>
+												<td style="width: 25px" />
+												<td valign="top" style="width: 1px;">#{messages.caracter}
+													<rich:message for="caracter" showDetail="false"
+														tooltip="true" style="color:red;cursor:pointer;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('caracter').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message><br /> <rich:comboBox id="caracter"
+														enableManualInput="false"
+														required="#{!empty param['form:buttonAceptar']}" tabindex="9"
+														defaultLabel="#{messages.seleccione}"
+														value="#{entidadSistemaCrearControlador.caracter}">
+														<f:selectItem itemValue="#{messages.caracter2}" />
+														<f:selectItem itemValue="#{messages.caracter1}" />
+													</rich:comboBox>
+												</td>
+											</tr>
+											<tr style="vertical-align: top;">
+												<td style="width: 7px;" />
+												<td>#{messages.camasArquitectonicas} <rich:message
+														for="camasArquitectonicas" showDetail="false"
+														tooltip="true" style="color:red;cursor:pointer;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('camasArquitectonicas').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message><br /> <h:inputText id="camasArquitectonicas"
+														tabindex="10" style=" width : 148px;"
+														
+														value="#{entidadSistemaCrearControlador.camasArquitectonicas}" />
+													<rich:spacer height="8px" style="display: block"></rich:spacer>
+												</td>
+												<td style="width: 24px" />
+												<td>#{messages.camasPresupuestadas} <rich:message
+														for="camasPresupuestadas" showDetail="false"
+														tooltip="true" style="color:red;cursor:pointer;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('camasPresupuestadas').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message><br /> <h:inputText id="camasPresupuestadas" tabindex="11"
+														style=" width : 148px;"
+														
+														value="#{entidadSistemaCrearControlador.camasPresupuestadas}" />
+												</td>
+												<td style="width: 24px" />
+												<td>#{messages.lbl_camasFunc_modConfig}: <rich:message
+														for="inputcamasfunc" showDetail="false" tooltip="true"
+														style="color:red;cursor:pointer;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('inputcamasfunc').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message> <br /> <h:inputText id="inputcamasfunc"
+														style="width : 148px;"
+														
+														value="#{entidadSistemaCrearControlador.camasFuncionales}" />
+													<rich:spacer height="10px" style="display: block"></rich:spacer></td>
+											</tr>
+											<tr style="vertical-align: top;">
+												<td style="width: 7px;" />
+												<td>#{messages.pais} <rich:message for="nacion"
+														showDetail="false" tooltip="true"
+														style="color:red;cursor:pointer;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('nacion').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message><br /> <rich:comboBox id="nacion"
+														enableManualInput="false" var="valor" tabindex="12"
+														defaultLabel="#{messages.seleccione}"
+														required="#{!empty param['form:buttonAceptar']}"
+														suggestionValues="#{entidadSistemaCrearControlador.naciones()}"
+														value="#{entidadSistemaCrearControlador.nacion}">
+														<a4j:support event="onselect" ajaxSingle="true"
+															reRender="estadoId, municipioId, localidadId"
+															limitToList="true" />
+													</rich:comboBox></td>
+												<td style="width: 24px" />
+												<td><a4j:outputPanel id="estadoId">
+														<h:outputText value="#{messages.provincia}" />
+														<rich:message for="estado" showDetail="false"
+															tooltip="true" style="color:red;cursor:pointer;">
+															<f:facet name="errorMarker">
+																<h:outputText value="*"
+																	title="#{facesMessages.getCurrentMessagesForControl('estado').get(0).getDetail()}" />
+															</f:facet>
+														</rich:message>
+														<br />
+														<rich:comboBox id="estado" enableManualInput="false"
+															var="valor" tabindex="13"
+															defaultLabel="#{messages.seleccione}"
+															required="#{!empty param['form:buttonAceptar']}"
+															disabled="#{entidadSistemaCrearControlador.estados().size()==0}"
+															suggestionValues="#{entidadSistemaCrearControlador.estados()}"
+															value="#{entidadSistemaCrearControlador.estado}">
+															<a4j:support ajaxSingle="true" event="onselect"
+																reRender="municipioId, localidadId" limitToList="true" />
+														</rich:comboBox>
+													</a4j:outputPanel> <rich:spacer height="9px" style="display: block" /></td>
+												<td style="width: 24px" />
+												<td><a4j:outputPanel id="municipioId">
+														<h:outputText value="#{messages.municipio}" />
+														<rich:message for="municipio" showDetail="false"
+															tooltip="true" style="color:red;cursor:pointer;">
+															<f:facet name="errorMarker">
+																<h:outputText value="*"
+																	title="#{facesMessages.getCurrentMessagesForControl('municipio').get(0).getDetail()}" />
+															</f:facet>
+														</rich:message>
+														<br />
+														<rich:comboBox id="municipio" enableManualInput="false"
+															tabindex="14" defaultLabel="#{messages.seleccione}"
+															required="#{!empty param['form:buttonAceptar']}"
+															disabled="#{entidadSistemaCrearControlador.municipios().size() == 0}"
+															suggestionValues="#{entidadSistemaCrearControlador.municipios()}"
+															value="#{entidadSistemaCrearControlador.municipio}">
+														</rich:comboBox>
+													</a4j:outputPanel> <rich:spacer height="8px" style="display: block" /></td>
+											</tr>
+											<tr>
+												<td style="width: 7px;"></td>
+												<td>#{messages.lbl_cantTrab_modConfig}: <rich:message
+														for="inputcantidadtrab" showDetail="false" tooltip="true"
+														style="color:red;cursor:pointer;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('inputcantidadtrab').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message> <br /> <h:inputText id="inputcantidadtrab"
+														style="width : 148px;"
+														
+														value="#{entidadSistemaCrearControlador.cantidadTrabajadores}" />
+													<rich:spacer height="10px" style="display: block"></rich:spacer></td>
+												<td style="width: 25px"></td>
+
+												<td>#{messages.lbl_cantMed_modConfig}: <rich:message
+														for="inputcantmed" showDetail="false" tooltip="true"
+														style="color:red;cursor:pointer;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('inputcantmed').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message> <br /> <h:inputText id="inputcantmed"
+														style="width : 148px;"
+														
+														value="#{entidadSistemaCrearControlador.cantidadMedicos}" />
+													<rich:spacer height="10px" style="display: block"></rich:spacer></td>
+												<td style="width: 25px"></td>
+												<td valign="top" style="width: 1px;">#{messages.lbl_cantEnf_modConfig}:
+													<rich:message for="inputcantenf" showDetail="false"
+														tooltip="true" style="color:red;cursor:pointer;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('inputcantenf').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message> <br /> <h:inputText id="inputcantenf"
+														style="width : 148px;"
+														
+														value="#{entidadSistemaCrearControlador.cantidadEnfermeros}" />
+													<rich:spacer height="10px" style="display: block"></rich:spacer>
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 7px;" />
+												<td>
+													#{messages.lbl_codigoReeup}:
+													<rich:message for="inputCodigoReeup" showDetail="false" tooltip="true" style="color:red;cursor:pointer;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*" title="#{facesMessages.getCurrentMessagesForControl('inputCodigoReeup').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message>
+													<br />
+													<h:inputText id="inputCodigoReeup" style="width : 148px;" value="#{entidadSistemaCrearControlador.codigoReeup}" validator="#{validations_configuracion.textnumber}" required="#{!empty param['form:buttonAceptar']}" />
+													<rich:spacer height="10px" style="display: block" />
+												</td>
+												<td style="width: 25px" />
+												<td>
+													#{messages.lbl_organismo}:
+													<rich:message for="organismo" showDetail="false" tooltip="true" style="color:red;cursor:pointer;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*" title="#{facesMessages.getCurrentMessagesForControl('organismo').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message><br />
+													<rich:comboBox id="organismo" enableManualInput="false" required="#{!empty param['form:buttonAceptar']}" defaultLabel="#{messages.seleccione}" suggestionValues="#{entidadSistemaCrearControlador.organismos()}" value="#{entidadSistemaCrearControlador.organismo}" />
+													<rich:spacer height="10px" style="display: block" />
+												</td>
+												<td style="width: 25px" />
+												<td>
+													#{messages.lbl_siglas}:
+													<rich:message for="inputSiglas" showDetail="false" tooltip="true" style="color:red;cursor:pointer;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*" title="#{facesMessages.getCurrentMessagesForControl('inputSiglas').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message>
+													<br />
+													<h:inputText id="inputSiglas" style="width : 148px;" value="#{entidadSistemaCrearControlador.siglas}" validator="#{validations_configuracion.textnumber}" required="#{!empty param['form:buttonAceptar']}" />
+													<rich:spacer height="10px" style="display: block" />													
+												</td>
+											</tr>
+											
+										</table>
+										<table border="0" cellpadding="0" cellspacing="0" width="100%">
+											<tr>
+												<td style="width: 7px;" />
+												<td width="99%">
+													#{messages.lbl_observaciones_com}:
+													<rich:message for="inputObservaciones" showDetail="false" tooltip="true" style="color:red;cursor:pointer;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*" title="#{facesMessages.getCurrentMessagesForControl('inputObservaciones').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message><br />
+													<h:inputTextarea id="inputObservaciones" value="#{entidadSistemaCrearControlador.observaciones}" style="width: 99%;" rows="5" />
+													<rich:spacer height="10px" style="display: block" />
+												</td>
+											</tr>
+										</table>
+									</rich:panel></td>
+								<td width="8px" />
+							</tr>
+							<tr>
+								<td><rich:spacer height="8px" style="display: block" /></td>
+							</tr>
+						</table>
+					</rich:tab>
+				</rich:tabPanel>
+			</s:validateAll>
+			<div align="right">
+				<table cellpadding="0" cellspacing="0" border="0">
+					<tr>
+						<td><h:commandButton id="buttonAceptar"
+								value="#{messages.aceptar}" tabindex="16"
+								style="margin-bottom: 0px; margin-right: 10px; margin-top: 8px"
+								action="#{entidadSistemaCrearControlador.crear()}" /></td>
+						<td><h:commandButton value="#{messages.cancelar}" id="cancelar"
+								tabindex="17"
+								style="margin-bottom: 0px; margin-right: 0px; margin-left: 0px; margin-top: 8px"
+								action="cancelar" /></td>
+					</tr>
+				</table>
+			</div>
+
+		</h:form>
+		<a4j:outputPanel id="aMpTipoEntidadCrear">
+			<ui:include
+				src="/modConfiguracion/management/gestionarEntidadesSistema/modalspanel/CrearTipoEntidad_CrearModificar.xhtml" />
+		</a4j:outputPanel>
+
+		<a4j:outputPanel id="aModalPanelAsignacionFinancieraEliminar">
+			<ui:include
+				src="/modConfiguracion/management/gestionarEntidadesSistema/modalspanel/ConfirmarEliminarAsignacionFinanciera_Crear.xhtml" />
+		</a4j:outputPanel>
+		<a4j:outputPanel id="aModalPanelEstablecimientoEliminar">
+			<ui:include
+				src="/modConfiguracion/management/gestionarEntidadesSistema/modalspanel/ConfirmarEliminarEstablecimiento_Crear.xhtml" />
+		</a4j:outputPanel>
+
+		<a4j:outputPanel id="aModalPanelPartidaEliminar">
+			<ui:include
+				src="/modConfiguracion/management/gestionarEntidadesSistema/modalspanel/ConfirmarEliminarPartidaPresupuestaria_Crear.xhtml" />
+		</a4j:outputPanel>
+
+		<a4j:outputPanel id="aModalPanelActividadEliminar">
+			<ui:include
+				src="/modConfiguracion/management/gestionarEntidadesSistema/modalspanel/ConfirmarEliminarActividadInvestigacionDocencia_Crear.xhtml" />
+		</a4j:outputPanel>
+
+		<a4j:outputPanel id="aModalPanelSeleccionarLogo">
+			<ui:include
+				src="/modConfiguracion/management/gestionarEntidadesSistema/modalspanel/SeleccionarLogoPorTema_Crear.xhtml" />
+		</a4j:outputPanel>
+
+
+	</ui:define>
+</ui:composition>

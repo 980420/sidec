@@ -1,0 +1,269 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a="http://richfaces.org/a4j"
+                template="#{theme.template}">
+                       
+<ui:define name="body">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style type="text/css">.rich-stglpanel-body{padding:0px}</style>
+	<style type="text/css">.rich-panel-body{padding:0px}</style>
+
+	
+    <script type="text/javascript">setContentTitle('#{messages.gestionarhabitaciones}')</script>
+    <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
+    
+    
+    <h:form id="habitacionSearch" styleClass="edit">
+    
+    <rich:simpleTogglePanel switchType="client" >
+		<f:facet name="header">#{messages.criteriobusqueda}</f:facet>
+		<table cellpadding="0px" cellspacing="0px" border="0px" >
+			<tr>
+				<td style="height: 11px;" colspan="6">
+				</td>
+			</tr>
+			<tr style="vertical-align: top;">
+				<td style="width: 7px;"></td>
+				<td>
+					#{messages.descripcion}:<br />
+					<h:inputText style=" width : 156px;" value="#{habitacionList_common.habitacion.descripcion}"/>
+					
+				</td>
+				<td style="width: 25px"></td>
+				<td>
+				#{messages.tipohabitacion}:<br />
+					<rich:comboBox suggestionValues="#{habitacionList_common.allTiposHabitaciones()}" 
+								   defaultLabel="#{messages.seleccione}"
+								   value="#{habitacionList_common.habitacion.tipoHabitacion.valor}"></rich:comboBox>
+					<rich:spacer height="8px" style="display: block"></rich:spacer>
+				
+				</td>
+				<td style="width: 25px"></td>
+				<td valign="top">
+					#{messages.servicio}:<br />
+					<rich:comboBox suggestionValues="#{habitacionList_common.allServicios()}" 
+								   defaultLabel="#{messages.seleccione}"
+								   value="#{habitacionList_common.habitacion.servicio.descripcion}"></rich:comboBox>
+				<rich:spacer height="8px" style="display: block"></rich:spacer>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="6" style="text-align: right;">
+					<h:commandButton value="#{messages.buscar}" style="margin-bottom: 0px;">
+					</h:commandButton>
+					<h:commandButton value="#{messages.cancelar}" style="margin-right: 0px; margin-bottom: 0px;" />
+					<rich:spacer height="8px" style="display: block"></rich:spacer>
+				</td>
+			</tr>
+		</table>
+	</rich:simpleTogglePanel>
+</h:form>
+<h:form>
+    <s:div styleClass="actionButtons" rendered="#{empty from}" style="text-align: right" >
+    <div align="right">
+    <table cellpadding="1px" cellspacing="0px" >
+    	<tr>
+    		<td>
+		    	<h:graphicImage height="12" width="12" value="/resources/icons/default/acciones/adicionar.png"/>
+    		</td>
+    		<td style="vertical-align: middle;">
+			    <s:link view="/modConfiguracion/habitacion/habitacionesCreate.xhtml"
+			                id="create" 
+			             value="#{messages.crearhabitacion}">
+			        <f:param name="habitacionId"/>
+			    </s:link>
+    		</td>
+    	</tr>
+    </table>
+    </div>
+    </s:div>  
+    <rich:panel>
+        <f:facet name="header">#{messages.listadohabitaciones}</f:facet>
+    <div class="results" id="habitacionesList">
+
+    <h:outputText value="#{messages.mensajeError}" 
+               rendered="#{empty habitacionList_common.resultList}"/>
+           
+         
+    <rich:dataTable id="habitacionesList_datatable" style="width:100%" 
+                var="habitacion"
+              value="#{habitacionList_common.resultList}" 
+           rendered="#{not empty habitacionList_common.resultList}"
+           columnsWidth="20%, 40%, 40%, 0*, 0*, 0*">
+		        <h:column>
+		            <f:facet name="header">
+		                   		<h:panelGrid columns="2" style="width: 100%; padding:0px; margin:0px;" border="0"
+										cellpadding="0" cellspacing="0">
+										<s:div style="float: left;">#{messages.descripcionhabitacion}</s:div>
+										<s:div style="text-align: right; padding-left:3px;">
+											<h:graphicImage rendered="#{not habitacionList_common.order.equals('descripcion asc') and not habitacionList_common.order.equals('descripcion desc')}"
+												value="/resources/icons/default/filtro/default.png" width="17" height="17">
+												<rich:componentControl 
+													event="onclick" 
+													for="valorcontextmenu"
+													operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+											<h:graphicImage rendered="#{habitacionList_common.order.equals('descripcion asc')}"
+												value="/resources/icons/default/filtro/asc_sort.png" width="17" height="17">
+												<rich:componentControl 
+													event="onclick" 
+													for="valorcontextmenu"
+													operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+											<h:graphicImage rendered="#{habitacionList_common.order.equals('descripcion desc')}"
+												value="/resources/icons/default/filtro/des_sort.png" width="17" height="17">
+												<rich:componentControl 
+													event="onclick" 
+													for="valorcontextmenu"
+													operation="show">
+												</rich:componentControl>
+											</h:graphicImage>										</s:div>
+								</h:panelGrid>
+		            </f:facet>
+		            #{habitacion.descripcion}
+		        </h:column>      
+        <h:column>
+            <f:facet name="header">
+            		<h:panelGrid columns="2" style="width: 100%; padding:0px; margin:0px;" border="0"
+								cellpadding="0" cellspacing="0">
+								<s:div style="float: left;">#{messages.tipohabitacion}</s:div>
+								<s:div style="text-align: right;">
+									<h:graphicImage rendered="false" value="/resources/icons/default/filtro/default.png" />
+								</s:div>
+						</h:panelGrid>
+						</f:facet>
+            #{habitacion.tipoHabitacion.valor}
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                   		<h:panelGrid columns="2" style="width: 100%; padding:0px; margin:0px;" border="0"
+								cellpadding="0" cellspacing="0">
+								<s:div style="float: left;">#{messages.servicio}</s:div>
+								<s:div style="text-align: right;">
+									<h:graphicImage rendered="false" value="/resources/icons/default/filtro/default.png" />
+								</s:div>
+						</h:panelGrid>
+            </f:facet>
+            #{habitacion.servicio.descripcion}
+        </h:column>  
+        <h:column >
+                  <div align="center">
+                        <s:link view="/modConfiguracion/habitacion/habitacionesDetail.xhtml">
+                   <h:graphicImage title="Ver" style="border: 0px;"
+                             value="/resources/icons/default/acciones/ver.png"/>
+                        <f:param id="habitacionparam1" name="habitacionId" value="#{habitacion.id}"/>
+                  </s:link>
+                  </div>
+        </h:column>
+        <h:column >
+                  <div align="center">
+                        <s:link view="/modConfiguracion/habitacion/habitacionesEdit.xhtml">
+                   <h:graphicImage title="Modificar" style="border: 0px;"
+                             value="/resources/icons/default/acciones/modificar.png"/>
+                        <f:param id="habitacionparam2" name="habitacionId" value="#{habitacion.id}"/>
+                  </s:link>
+                  </div>
+        </h:column>
+        <h:column >
+			<div align="center">
+                   <h:graphicImage title="Eliminar" style="border: 0px; cursor:pointer;"
+                   		value="/resources/icons/default/acciones/eliminar.png"
+                   		onclick="Richfaces.showModalPanel('panelEliminar')">
+               		</h:graphicImage>
+			</div>
+        </h:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+  </h:form>  
+    <br/>
+    <div class="tableControl" style="width: 100%" align="center">
+      
+        <s:link view="/modConfiguracion/habitacion/habitacionesList.xhtml" 
+            disabled="#{not habitacionList_common.previousExists}" 
+                  id="firstPage">
+                 <h:graphicImage title="Primera página" style="border: 0px;"
+                 	value="/resources/icons/default/paginado/blue/inicio.png"/>
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+        
+        <s:link view="/modConfiguracion/habitacion/habitacionesList.xhtml" 
+            disabled="#{not habitacionList_common.previousExists}"
+                  id="previousPage">
+                 <h:graphicImage title="Anterior" style="border: 0px;"
+                 	value="/resources/icons/default/paginado/blue/anterior.png"/>
+            <f:param name="firstResult" 
+                    value="#{habitacionList_common.previousFirstResult}"/>
+        </s:link>
+        
+        <s:link view="/modConfiguracion/habitacion/habitacionesList.xhtml" 
+            disabled="#{not habitacionList_common.nextExists}" 
+                  id="nextPage">
+      		<h:graphicImage title="Siguiente" style="border: 0px;"
+      			value="/resources/icons/default/paginado/blue/siguiente.png"/>
+            <f:param name="firstResult" 
+                    value="#{habitacionList_common.nextFirstResult}"/>
+        </s:link>
+        
+        <s:link view="/modConfiguracion/habitacion/habitacionesList.xhtml" 
+            disabled="#{not habitacionList_common.nextExists}" 
+                  id="lastPage">
+                 <h:graphicImage title="última página" style="border: 0px;"
+                 	value="/resources/icons/default/paginado/blue/fin.png"/>
+            <f:param name="firstResult" 
+                    value="#{habitacionList_common.lastFirstResult}"/>
+        </s:link>
+        
+    </div>
+    
+<rich:modalPanel id="panelEliminar" width="290" height="125">
+	<f:facet name="header" id="panelEliminarHeader" >
+			<h:outputText  value="Eliminar habitación" />
+	</f:facet>
+	<s:div id="panelEliminarBody" >
+		<div align="left">
+			<h:graphicImage	value="/resources/icons/default/acciones/advertencia.png" /> 
+			<rich:spacer width="4px" /> 
+			<h:outputText value="Se eliminará la habitación. Al seleccionar Sí se perderán todos los datos." />
+			<br />
+			<h:outputText value="¿Desea continuar?" />
+		</div>
+		<br />
+		<div align="center">
+			<input type="button" value="Sí" style="margin-right: 4px;"
+							 onclick="Richfaces.hideModalPanel('panelEliminar')" />
+			
+			<input type="button" value="No" style="margin-left: 3px;"
+				onclick="Richfaces.hideModalPanel('panelEliminar')" />
+		</div>
+	</s:div>
+
+</rich:modalPanel>
+<h:form>
+	<rich:contextMenu attached="false" id="valorcontextmenu" submitMode="ajax">
+		<rich:menuItem value="Ordenar de mayor a menor" ajaxSingle="true"
+			icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+			action="#{habitacionList_common.setOrder('descripcion desc')}" reRender="habitacionesList_datatable">
+		</rich:menuItem>
+		<rich:menuItem value="Ordenar de menor a mayor" ajaxSingle="true"
+			icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+			action="#{habitacionList_common.setOrder('descripcion asc')}" reRender="habitacionesList_datatable">
+		</rich:menuItem>
+	</rich:contextMenu>
+</h:form>
+    
+</ui:define>
+
+</ui:composition>
+

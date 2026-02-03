@@ -1,0 +1,243 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:c="http://java.sun.com/jstl/core"	
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:a="http://richfaces.org/a4j">
+	<rich:simpleTogglePanel id="Datos" opened="true" switchType="client"
+		label="#{messages.datosDePersona}">
+		<a:region id="datosGeneralesRegion">
+
+			<table width="100%" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<table cellpadding="0" cellspacing="0">
+							<tr class="filSepGranRA">
+								<td class="colSepGran"><s:label
+										styleClass="#{invalid?'labelErrors':''}"
+										value="#{messages.iniciales}:">
+										<span class="errorSpan" style="color:red;">*</span>
+										<rich:message for="iniciales" showDetail="false">
+											<f:facet name="errorMarker">
+												<h:outputText style="color: red;cursor: pointer !important;"
+													title="#{facesMessages.getCurrentMessagesForControl('iniciales').get(0).getDetail()}"
+													value="*" />
+											</f:facet>
+										</rich:message>
+									</s:label><br /> <h:inputText styleClass="inputText" id="iniciales"
+										required="#{!empty param['idForm:aceptarr'] and controlador.inicialesRequired}"
+										value="#{controlador.inicialesP}"
+										validator="#{validator.text}"
+										style="#{!empty param['idForm:aceptarr'] and controlador.inicialesRequired ? 'border: 1px solid red;' : ''}">
+									</h:inputText></td>
+								<td class="colSepGran"><s:decorate>
+										<s:label styleClass="#{invalid ? 'labelErrors' : ''}">
+										        #{messages.fechaInclusion}:
+										    </s:label>
+										<br></br>
+										<span class="#{invalid?'inputErrors':''}"
+											title="#{(invalid) ? facesMessages.getCurrentMessagesForControl('fechaInclusion').get(0).getDetail() : ''}">
+											<rich:calendar id="fechaInclusion" disabled="true"
+												required="#{!empty param['idForm:aceptarr'] and controlador.fechaInclusionRequired}"
+												value="#{controlador.sujeto.fechaInclucion}"
+												enableManualInput="false"
+												datePattern="#{messages.lbl_patronFecha_modConfig}"
+												requiredMessage="#{messages.msg_requerido_ens}"></rich:calendar>
+										</span>
+									</s:decorate></td>
+								<td class="colSepGran"><h:outputText
+										value="#{messages.numinclusion}:" styleClass="normalText" />
+									<rich:spacer style="display:block" /> <h:inputText
+										disabled="true" styleClass="inputText" id="numinclusion"
+										required="#{!empty param['idForm:aceptarr'] and controlador.numInclusionRequired}"
+										value="#{controlador.numeroInclucion}"
+										validator="#{validator.number}">
+									</h:inputText></td>
+							</tr>
+							<tr>
+								<td class="colSepGran"><s:label
+										styleClass="#{invalid?'labelErrors':''}"
+										value="#{messages.grupodelSujeto}:">
+									</s:label><br /> <rich:comboBox
+										suggestionValues="#{controlador.listarGrupo1()}"
+										value="#{controlador.grupo}" disabled="true"
+										defaultLabel="#{messages.grupoPesq}" id="grupodelSujeto"
+										width="152px" enableManualInput="false">
+									</rich:comboBox></td>
+								<td class="colSepGran"><s:decorate>
+										<s:label styleClass="#{invalid?'labelErrors':''}">
+												#{messages.estadoInclusion}:
+											</s:label>
+										<br></br>
+										<span class=" #{invalid?'errors':''}"
+											title="#{(invalid) ? facesMessages.getCurrentMessagesForControl('estadoInclusion').get(0).getDetail() : ''}">
+											<rich:comboBox id="estadoInclusion" enableManualInput="false"
+												suggestionValues="#{controlador.listarEstados1()}"
+												defaultLabel="#{messages.evaluacion}" width="152px"
+												value="#{controlador.estado}" directInputSuggestions="true"
+												disabled="true"
+												required="#{!empty param['idForm:aceptarr'] and controlador.estadoRequired}">
+											</rich:comboBox>
+										</span>
+									</s:decorate></td>
+								<td class="colSepGran"><s:decorate>
+										<s:label styleClass="#{invalid?'labelErrors':''}">
+												#{messages.inicialesCentro}:
+											</s:label>
+										<br></br>
+										<span class=" #{invalid?'errors':''}"
+											title="#{(invalid) ? facesMessages.getCurrentMessagesForControl('inicialesCentro').get(0).getDetail() : ''}">
+											<h:inputText styleClass="inputText" id="inicialesCentro"
+												required="#{!empty param['idForm:aceptarr'] and controlador.inicialesCentroRequired}"
+												value="#{controlador.inicialesCentro}" disabled="true">
+											</h:inputText>
+										</span>
+									</s:decorate></td>
+							</tr>
+							<tr>
+								<td height="10px"></td>
+							</tr>
+							<tr>
+								<td class="colSepGran"><s:label
+										styleClass="#{invalid?'labelErrors':''}"
+										value="#{messages.horaInclusion}:">
+										<rich:message for="horaInclusion" showDetail="false">
+											<f:facet name="errorMarker">
+												<h:outputText style="color: red;cursor: pointer !important;"
+													title="#{facesMessages.getCurrentMessagesForControl('horaInclusion').get(0).getDetail()}"
+													value="*" />
+											</f:facet>
+										</rich:message>
+										</s:label>
+									<br /> 
+									<table cellpadding="0" cellspacing="0" border="0">
+													<tr>
+														<td width="38">
+														<rich:comboBox
+															disabled="true"													
+															width="38" 
+															id="horaInclusion" 
+															enableManualInput="false" 
+															value="#{controlador.hora}" 
+															defaultLabel="--">															
+															<f:selectItem itemValue="01" itemLabel="01" />
+															<f:selectItem itemValue="02" itemLabel="02" />
+															<f:selectItem itemValue="03" itemLabel="03" />
+															<f:selectItem itemValue="04" itemLabel="04" />
+															<f:selectItem itemValue="05" itemLabel="05" />
+															<f:selectItem itemValue="06" itemLabel="06" />
+															<f:selectItem itemValue="07" itemLabel="07" />
+															<f:selectItem itemValue="08" itemLabel="08" />
+															<f:selectItem itemValue="09" itemLabel="09" />
+													<c:forEach begin="10" end="12" var="h">
+														<f:selectItem itemValue="#{h}" itemLabel="#{h}" />
+													</c:forEach>
+													<a4j:support event="onselect" ajaxSingle="true"
+														reRender="minutosOP">
+													</a4j:support>
+												</rich:comboBox></td>
+														<td>
+															<rich:message for="horaP" showDetail="false">
+																<f:facet name="errorMarker">
+																	<h:outputText value="*" styleClass="errorLabel" title="#{facesMessages.getCurrentMessagesForControl('horaP').get(0).detail}" />
+																</f:facet>
+															</rich:message>						
+														</td>
+														<td><rich:spacer width="2" />:<rich:spacer width="2" /></td>
+														<td width="38">
+														<a4j:outputPanel id="minutosOP">
+														<rich:comboBox disabled="#{empty controlador.hora}"  width="38" enableManualInput="false" value="#{controlador.minutos}" defaultLabel="--">
+															<f:selectItem itemValue="00" itemLabel="00" />
+															<f:selectItem itemValue="01" itemLabel="01" />
+															<f:selectItem itemValue="02" itemLabel="02" />
+															<f:selectItem itemValue="03" itemLabel="03" />
+															<f:selectItem itemValue="04" itemLabel="04" />
+															<f:selectItem itemValue="05" itemLabel="05" />
+															<f:selectItem itemValue="06" itemLabel="06" />
+															<f:selectItem itemValue="07" itemLabel="07" />
+															<f:selectItem itemValue="08" itemLabel="08" />
+															<f:selectItem itemValue="09" itemLabel="09" />
+															<c:forEach begin="10" end="59" var="m">
+																<f:selectItem itemValue="#{m}" itemLabel="#{m}" />
+															</c:forEach>
+															<a4j:support event="onselect" ajaxSingle="true"
+														reRender="am_pm_OP">
+													</a4j:support>
+														</rich:comboBox>
+														</a4j:outputPanel>
+														</td>
+														<td>
+															<rich:message for="minP" showDetail="false">
+																<f:facet name="errorMarker">
+																	<h:outputText value="*" styleClass="errorLabel" title="#{facesMessages.getCurrentMessagesForControl('minP').get(0).detail}" />
+																</f:facet>
+															</rich:message>
+														</td>
+														<td><rich:spacer width="4" /></td>
+														<td width="43">
+														<a4j:outputPanel id="am_pm_OP">
+														<rich:comboBox disabled="#{empty controlador.minutos}" id="segP" width="43" enableManualInput="false" value="#{controlador.am_pm}" defaultLabel="--">
+															<f:selectItem itemValue="AM" itemLabel="AM" />
+															<f:selectItem itemValue="PM" itemLabel="PM" />
+														</rich:comboBox>
+														</a4j:outputPanel>
+														</td>
+														<td>
+															<rich:message for="segP" showDetail="false">
+																<f:facet name="errorMarker">
+																	<h:outputText value="*" styleClass="errorLabel" title="#{facesMessages.getCurrentMessagesForControl('segP').get(0).detail}" />
+																</f:facet>
+															</rich:message>															
+														</td>
+													</tr>
+												</table>
+									</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</a:region>
+	</rich:simpleTogglePanel>
+	<script
+		src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/reglas/vendor/jquery1.9.js"
+		type="text/javascript"></script>
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/toastr/toastr.min.css"
+		rel="stylesheet" type="text/css" />
+	<script
+		src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/toastr/toastr.min.js"
+		type="text/javascript"></script>
+
+	<script type="text/javascript" language="javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/jquery-inputmask/jquery.inputmask.bundle.js">
+		</script>
+
+	<script>
+		var $j = jQuery.noConflict(true);
+		$j(document).ready(function()
+		{   	   
+			applyDateMask();
+		});
+
+		function applyDateMask()
+		{
+			var allInputsLikeDate = $j(".likedate");
+			allInputsLikeDate.inputmask("y/[m]/[d]", { "placeholder": "*", greedy:false });	
+			allInputsLikeDate.attr("placeholder","aaaa/mm/dd");
+		}
+		//<![CDATA[
+	    function hideErrorSpans() {
+	        var errorSpans = document.getElementsByClassName('errorSpan');
+	        for(var i = 0; i < errorSpans.length; i++) {
+	            errorSpans[i].style.display = 'none';
+	        }
+	    }
+	//]]>
+
+</script>
+	<!--  <rich:hotKey key="return" handler="#{rich:component('advertencia_modal')}.show()"/>-->
+</s:div>

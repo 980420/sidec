@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<action execute="#{actividadInvestigacionDocenciaBuscarControlador.begin()}" />
+	
+	<param name="from" value="#{actividadInvestigacionDocenciaBuscarControlador.from}" />
+	<param name="entidadId" value="#{actividadInvestigacionDocenciaBuscarControlador.entidadId}" />
+
+	<navigation from-action="#{actividadInvestigacionDocenciaBuscarControlador.asignar()}">
+		<rule if='#{from.equals("modificar")}'>
+			<redirect view-id="/modConfiguracion/management/gestionarEntidadesSistema/ModificarEntidadSistema.xhtml"/>
+		</rule>
+		<rule if='#{from.equals("crear")}'>
+			<redirect view-id="/modConfiguracion/management/gestionarEntidadesSistema/CrearEntidadSistema.xhtml"/>
+		</rule>
+	</navigation>	
+		
+	<navigation from-action="#{actividadInvestigacionDocenciaBuscarControlador.setSalida(1)}">
+		<rule if='#{from.equals("modificar")}'>
+			<redirect view-id="/modConfiguracion/management/gestionarEntidadesSistema/ModificarEntidadSistema.xhtml"/>
+		</rule>
+		<rule if='#{from.equals("crear")}'>
+			<redirect view-id="/modConfiguracion/management/gestionarEntidadesSistema/CrearEntidadSistema.xhtml"/>
+		</rule>
+	</navigation>
+	
+	<!-- <navigation from-action="#{actividadInvestigacionDocenciaBuscarControlador.buscar()}">
+		<redirect view-id="/modConfiguracion/management/gestionarActividadesInvestigacionDocencia/BuscarActividadesInvestigacionDocencia.xhtml">
+			<param name="firstResult" value="0" />
+		</redirect>
+	</navigation> -->
+	
+</page>

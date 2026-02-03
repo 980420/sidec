@@ -1,0 +1,150 @@
+@charset "utf-8";
+
+html {
+	padding: 0px !important;
+	height: 100%;
+	width: 100%;
+}
+
+.select {
+	background: url(../images/input2.png) no-repeat left center;
+	height: 24px;
+	padding-left: 3px;
+	padding-right: 3px;
+	padding-top: 0px;
+	width: 193px;
+	position: absolute;
+	overflow: hidden;
+	display: block;
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 12px;
+	color: #000;
+	font-weight: normal;
+}
+
+.styled {
+	opacity: 0;
+	position: relative;
+	width: 193px;
+	z-index: 10;
+	height: 24px;
+}
+
+body {
+	background: url(../images/back.png) repeat-x;
+	background-color: #083365;
+	margin: 0px;
+	height: 100%;
+	width: 100%;
+	font-family: Verdana, Arial, sans-serif;
+}
+
+#content {
+	background-image: url(../images/manto.png);
+	height: 100%;
+	width: 100%;
+}
+
+#login {
+	height: 380px;
+	width: 496px;
+	background: url(../images/login.png) no-repeat;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-top: -136px;
+	margin-left: -238px;
+}
+
+#copyray {
+    height: 60px;
+    left: 50%;
+    margin-left: -290px;
+    margin-top: -136px;
+    overflow: hidden;
+    position: absolute;
+    top: 110%;
+    width: 560px;
+}
+#effect {
+	background: url(../images/effect.png) repeat-x center center;
+}
+
+#contentData {
+	position: relative;
+	top: 150px;
+	left: 72px;
+	margin-left: 20px;
+	color: #1c2955;
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	width: 300px;
+	float: center;
+}
+
+.fieldContent {
+	height: 15px;
+	width: 187px;
+	border: 0px;
+	font-family: verdana;
+	font-size: 12px;
+}
+
+.fieldContent2 {
+	height: 24px;
+	width: 193px;
+	padding-left: 3px;
+	padding-right: 2px;
+	padding-top: 2px;
+	background: url(../images/input.png) no-repeat left center;
+}
+
+.button {
+	height: 23px;
+	width: 77px;
+	text-align: center;
+	background: url(../images/button.png) no-repeat;
+	margin-left: auto;
+	margin-right: 5px;
+	border: 0px;
+	cursor: pointer;
+	vertical-align: top;
+	padding-top: -5px;
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 11px;
+}
+
+.button:hover {
+	background: url(../images/buttonR.png) no-repeat;
+}
+
+#button2 {
+	height: 23px;
+	width: 77px;
+	text-align: center;
+	margin-right: 5px;
+	margin-left: auto;
+}
+
+.enterLink {
+	font-family: Verdana, Arial, sans-serif;
+	text-decoration: none;
+	color: #1c2955;
+	font-size: 11px;
+	cursor: pointer;
+}
+
+.enterLink:hover {
+	color: #464e6a;
+}
+
+#loading {
+	position: absolute;
+	top: 2px;
+	left: -72px;
+}
+
+.textBtn {
+	
+}

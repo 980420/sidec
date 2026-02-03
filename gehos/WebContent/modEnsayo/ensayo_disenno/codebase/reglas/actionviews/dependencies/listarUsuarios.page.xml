@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.1.xsd">
+	
+
+	<action execute="#{listadosujetosList.begin()}" />
+	<navigation evaluate="#{seguridadEstudio.CanSeeThisFunctionalityNow()}">	
+		<rule if-outcome="not-selected">
+			<redirect view-id="/modEnsayo/codebase/seleccionar_estudio/seleccionarEstudio.xhtml">
+				<!-- Colocal el valor la direccion a la que se debe redireccionar al seleccionar el estudio -->
+				<param name="direccion" value="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarGruposujetos/BuscarGruposujetos.xhtml" />
+			</redirect>
+		</rule>
+		<rule if-outcome="not-authorized">
+			<redirect view-id="/error.xhtml">
+				<message>Su usuario no puede acceder a este recurso en el estudio activo actualmente</message>
+			</redirect>
+		</rule>		
+	</navigation>
+	<!-- Crear -->
+	<navigation from-action="crear" >
+			<redirect view-id="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarGruposujetos/CrearGruposujetos.xhtml" />
+	</navigation>
+	
+	<!-- Ver detalles -->
+	<navigation from-action="#{listadosujetosList.seleccionarVer(gruposujetos.id)}"
+		evaluate="#{listadosujetosList.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarGruposujetos/VerDetallesGruposujetos.xhtml">
+				<param name="gruposujetosId" value="#{listadosujetosList.idGruposujetos}" />
+				<param name="desde" value="listar"/>
+			</redirect>
+		</rule>
+	</navigation>
+
+	<!-- Modificar -->
+	<navigation from-action="#{listadosujetosList.seleccionarModificar(gruposujetos.id)}"
+		evaluate="#{listadosujetosList.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarGruposujetos/ModificarGruposujetos.xhtml">
+				<param name="gruposujetosId" value="#{listadosujetosList.idGruposujetos}" />
+				<param name="desde" value="listar"/>
+			</redirect>
+		</rule>
+	</navigation>
+
+	<!-- Cancelar -->
+	<navigation from-action="#{listadosujetosList.cancelarBusqueda()}">
+		<redirect view-id="/modCommons/modHome/home.gehos">
+			<param name="idFuncionalidad" value="#{activeModule.activeModule.id}" />
+			<param name="idancestors" value="#{activeModule.activeModule.id}a" />
+		</redirect>
+	</navigation>
+
+</page>

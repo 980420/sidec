@@ -1,0 +1,43 @@
+.pos
+{
+	height:1px;
+	width:215px;
+	position:fixed;
+	right:0;
+	bottom:0;
+	overflow:inherit;
+}
+.messa
+{
+	height:105px;
+	width:220px;
+	background-image:url("../images/notif3.png");
+	background-repeat:no-repeat;
+	margin-top:1px;
+}
+#headMessages
+{
+  background-image:url("../images/split3.png");
+  width:197px;
+  height:2px;
+  margin-left:1px;
+}
+.title
+{
+	padding:3px;
+	padding-left:4px;
+	font-family:Verdana;
+	font-size:11px;
+	font-weight:bold;
+}
+.closeI
+{
+	cursor:pointer;
+}
+#bodyMessages
+{
+	padding:3px;
+	padding-left:4px;
+	font-family:Verdana;
+	font-size:11px;
+}

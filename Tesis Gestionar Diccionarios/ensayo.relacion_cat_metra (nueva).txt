@@ -1,0 +1,22 @@
+CREATE TABLE ensayo.relacion_cat_metra
+(
+    id bigint NOT NULL DEFAULT serial_gen('ensayo.relacion_cat_metra_id_seq'::character varying),
+    id_ctc bigint,
+    id_categoria bigint,
+    CONSTRAINT "relacion_cat_codMetra_pkey" PRIMARY KEY (id),
+    CONSTRAINT fk_categoria FOREIGN KEY (id_categoria)
+        REFERENCES ensayo.ctc_categoria (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT fk_ctc FOREIGN KEY (id_ctc)
+        REFERENCES ensayo.ctc (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE ensayo.relacion_cat_metra
+    OWNER to postgres;

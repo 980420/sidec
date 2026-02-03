@@ -1,0 +1,42 @@
+package gehos;
+
+
+import org.jboss.seam.drools.Decision;
+import gehos.configuracion.samples.procesosdelnegocio.entity.Solicitud_test;
+import gehos.configuracion.samples.procesosdelnegocio.entity.Producto_test;
+import gehos.configuracion.samples.procesosdelnegocio.session.test.DataContextGetter;
+ 
+global Decision decision
+
+rule "Crear_adjudicacion_directa"
+	when
+	    $solic : Solicitud_test()
+	    $total : Number( doubleValue >= 100 ) 
+	             from accumulate( Producto_test( $precio : precio ),
+	                              init( double total = 0; ),
+	                              action( total += $precio; ),
+	                              reverse( ; ),
+	                              result( total ) )
+	then
+		decision.setOutcome("si");	
+end;
+
+rule "Aceptar_solicitud"
+	when
+	    $solic : Solicitud_test()
+	    $total : Number( doubleValue < 100 ) 
+	             from accumulate( Producto_test( $precio : precio ),
+	                              init( double total = 0; ),
+	                              action( total += $precio; ),
+	                              reverse( ; ),
+	                              result( total ) )
+	then
+		decision.setOutcome("no");
+		
+end;
+
+
+
+
+
+

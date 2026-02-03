@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<action execute="#{camaBuscarControlador.begin()}" />
+
+	<param name="firstResult" value="#{camaBuscarControlador.firstResult}" />
+	<param name="order" value="#{camaBuscarControlador.order}" />
+	<param name="searchMode" value="#{camaBuscarControlador.searchMode}" />
+	<param name="state" value="#{camaBuscarControlador.state}" />
+	<param name="critB1" value="#{camaBuscarControlador.descripcion}" />
+	<param name="critB2" value="#{camaBuscarControlador.estadoCama}" />
+	<param name="critB3" value="#{camaBuscarControlador.categoriaCama}" />
+	<param name="critB4" value="#{camaBuscarControlador.tipoCama}" />
+	<param name="critB5" value="#{camaBuscarControlador.servicio}" />
+
+	<!-- go to create -->
+	<navigation from-action="#{camaCrearControlador.begin()}">
+			<redirect view-id="/modConfiguracion/management/gestionarCama/CrearCama.xhtml">
+				<param name="firstResult" value="#{camaBuscarControlador.firstResult}" />				
+				<param name="order" value="#{camaBuscarControlador.order}" />
+				<param name="searchMode" value="#{camaBuscarControlador.searchMode}" />
+				<param name="state" value="#{camaBuscarControlador.state}" />
+				<param name="critB1" value="#{parameters.encodec(camaBuscarControlador.descripcion)}" />
+				<param name="critB2" value="#{parameters.encodec(camaBuscarControlador.estadoCama)}" />
+				<param name="critB3" value="#{parameters.encodec(camaBuscarControlador.categoriaCama)}" />
+				<param name="critB4" value="#{parameters.encodec(camaBuscarControlador.tipoCama)}" />
+				<param name="critB5" value="#{parameters.encodec(camaBuscarControlador.servicio)}" />
+			</redirect>
+	</navigation>
+	
+	<!-- go to view details -->
+	<navigation from-action="#{camaBuscarControlador.seleccionarVer()}" evaluate="#{camaBuscarControlador.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarCama/VerDetallesCama.xhtml">
+				<param name="camaId" value="#{camaBuscarControlador.idEliminar}" />
+				<param name="firstResult" value="#{camaBuscarControlador.firstResult}" />				
+				<param name="order" value="#{camaBuscarControlador.order}" />
+				<param name="searchMode" value="#{camaBuscarControlador.searchMode}" />
+				<param name="state" value="#{camaBuscarControlador.state}" />
+				<param name="critB1" value="#{parameters.encodec(camaBuscarControlador.descripcion)}" />
+				<param name="critB2" value="#{parameters.encodec(camaBuscarControlador.estadoCama)}" />
+				<param name="critB3" value="#{parameters.encodec(camaBuscarControlador.categoriaCama)}" />
+				<param name="critB4" value="#{parameters.encodec(camaBuscarControlador.tipoCama)}" />
+				<param name="critB5" value="#{parameters.encodec(camaBuscarControlador.servicio)}" />
+				<param name="from" value="listar" />
+			</redirect>
+		</rule>
+	</navigation>
+	
+	<!-- go to modify -->
+	<navigation from-action="#{camaBuscarControlador.seleccionarModificar()}" evaluate="#{camaBuscarControlador.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarCama/ModificarCama.xhtml">
+				<param name="camaId" value="#{camaBuscarControlador.idEliminar}" />
+				<param name="firstResult" value="#{camaBuscarControlador.firstResult}" />				
+				<param name="order" value="#{camaBuscarControlador.order}" />
+				<param name="searchMode" value="#{camaBuscarControlador.searchMode}" />
+				<param name="state" value="#{camaBuscarControlador.state}" />
+				<param name="critB1" value="#{parameters.encodec(camaBuscarControlador.descripcion)}" />
+				<param name="critB2" value="#{parameters.encodec(camaBuscarControlador.estadoCama)}" />
+				<param name="critB3" value="#{parameters.encodec(camaBuscarControlador.categoriaCama)}" />
+				<param name="critB4" value="#{parameters.encodec(camaBuscarControlador.tipoCama)}" />
+				<param name="critB5" value="#{parameters.encodec(camaBuscarControlador.servicio)}" />
+			</redirect>		
+		</rule>
+	</navigation>	
+</page>

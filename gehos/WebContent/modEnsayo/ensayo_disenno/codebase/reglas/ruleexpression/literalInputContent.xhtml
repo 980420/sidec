@@ -1,0 +1,43 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+	
+	<a4j:form id="literalInputForm">
+	<table cellpadding="0px" cellspacing="0px" border="0px"
+				id="simplesearch">
+				<tr style="height: 13px;" />	
+				<tr>
+					<td class="espacio_corto_h"></td>
+					<td>Valor:<rich:message for="literalVal"
+													showDetail="false" tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('literalVal').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <h:inputText id="literalVal" value="#{dragDropBean.literalValue}" validator="#{valida.validateDoubleOrInteger}" required="true"
+			styleClass="inputTextWidth #{dragDropBean.node.variable.tipoDato.codigo}">#{dragDropBean.variable.tipoDato.codigo}
+		</h:inputText></td>
+					<td><rich:spacer width="25px" /></td>					
+				</tr>
+				<tr style="height: 8px;" />			
+				
+				<tr style="text-align: right">
+							<td colspan="2">
+							<a4j:commandButton action="#{dragDropBean.SetLiteral()}" value="Aceptar"
+						oncomplete="closeLiteralModal(data)" data="#{dragDropBean.literalValue}" 
+						reRender="phptable" />
+							 <a4j:commandButton value="Cancelar" styleClass="standard-button"
+									onclick="Richfaces.hideModalPanel('literalInput')" tabindex="3" style="margin-right:0">
+								</a4j:commandButton></td>
+						</tr>
+			</table>
+		
+		
+		
+	</a4j:form>		
+
+</s:div>

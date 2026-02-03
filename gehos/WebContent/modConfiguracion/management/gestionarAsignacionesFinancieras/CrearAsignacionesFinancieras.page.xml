@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<action execute="#{asignacionFinancieraCrearControlador.begin()}" />
+	<param name="from" value="#{asignacionFinancieraCrearControlador.from}"/>
+
+	<navigation from-action="#{asignacionFinancieraCrearControlador.crear()}">
+		<rule if-outcome="gotodetails">
+			<redirect
+				view-id="/modConfiguracion/management/gestionarAsignacionesFinancieras/VerDetallesAsignacionesFinancieras.xhtml">
+				<param name="from" value="#{from}" />
+			</redirect>
+		</rule>
+	</navigation>
+
+	<navigation from-action="#{asignacionFinancieraCrearControlador.cancelar()}">
+	<rule if="#{asignacionFinancieraCrearControlador.from.equals('crear')}">
+		<redirect
+			view-id="/modConfiguracion/management/gestionarEntidadesSistema/CrearEntidadSistema.xhtml" />
+			</rule>
+			<rule if="#{asignacionFinancieraCrearControlador.from.equals('modificar')}">
+		<redirect
+			view-id="/modConfiguracion/management/gestionarEntidadesSistema/ModificarEntidadSistema.xhtml" />
+			</rule>
+	</navigation>
+
+
+</page>

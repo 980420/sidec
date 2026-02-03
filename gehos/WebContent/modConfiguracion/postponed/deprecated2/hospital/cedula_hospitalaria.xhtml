@@ -1,0 +1,385 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j"  
+	xmlns:c="http://java.sun.com/jstl/core" >    
+      
+<head>
+	<title>Cédula hospitalaria</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+	<link rel="shortcut icon" href="#{facesContext.externalContext.requestContextPath}/img/gehos.ico" />
+
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/stylesheet/layout.css"
+		rel="stylesheet"
+		type="text/css" />
+
+	<style type="text/css">
+			body {
+			      margin-left: 1%;
+			      margin-right: 1%;
+			}
+			html {
+			      margin-left: 1%;
+			      margin-right: 1%;
+			}
+			.recursoshumanos{
+				background-color: #ffcc99;
+				font-weight:bolder;
+			}
+			.asignacionesfinancieras{
+				background-color: #ffff99;
+				font-weight:bolder;
+			}
+			.actividadesinvestigacion{
+				background-color: #ccccff;
+				font-weight:bolder;
+			}
+			.departamentosyoservicios{
+				background-color: #c0c0c0;
+				font-weight:bolder;
+			}
+			.apoyodiagnosticoytratamiento{
+				background-color: #ffcc99;
+				font-weight:bolder;
+			}
+			.estudiosespeciales{
+				background-color: #ccffff;
+				font-weight:bolder;
+			}
+			.serviciosmantenimiento{
+				background-color: #c0c0c0;
+				font-weight:bolder;
+			}
+			.equiposyambientes{
+				background-color: #ffcc99;
+				font-weight:bolder;
+			}
+			.datagridcolums{
+				width:150px;
+			}
+			.datoshospital{
+				background-color: #ccffff;
+				font-weight:bolder;
+			}
+			.numeric{
+				font-weight:bolder; text-align: center;
+			}
+			.transp{
+				background:none; 
+			}
+			table{
+				width:100%; background-color: #FFFFFF; border-collapse: collapse; height:100%;
+			}
+			td{
+				border:1px solid #d0d7e5; 
+			}
+			.dr-table-cell{
+				padding:0px;
+			}
+	</style>
+
+</head>
+      
+<body style="height: 100%;" >
+<div style="height:100px;">	
+
+	<br />
+	<div  align="center">	
+		<h2>CÉDULA HOSPITALARIA</h2>
+	</div>	
+	
+	<table cellpadding="0" cellspacing="0" >
+		
+		<tr>
+			<td class="datoshospital">Nombre del Hospital</td>
+			<td>Jesus Mara Vargas</td>
+			<td class="datoshospital">Tipo</td>
+			<td>IV</td>
+			<td class="datoshospital">Dirección</td>
+			<td>MONTE CARMELO CON PROVIDENCIA LA PASTORA SAN JOSE</td>
+			<td rowspan="2" >
+				<table cellpadding="0" cellspacing="0"  >
+					<tr >
+						<td colspan="3" class="datoshospital">N° de Camas</td>
+					</tr>
+					<tr  class="datoshospital">			
+						<td>Arquitectónica</td>
+						<td>Presupuestadas</td>
+						<td>Funcionando</td>
+					</tr>
+					<tr >			
+						<td class="numeric">494</td>
+						<td class="numeric">444</td>
+						<td class="numeric">444</td>
+					</tr>
+				</table>
+			</td>
+			<td rowspan="2">
+				<table cellpadding="0" cellspacing="0"  >
+					<tr class="datoshospital">
+						<td>Población del Área de Influencia</td>
+					</tr>
+					<tr>			
+						<td class="numeric">230000</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="6">
+				<table cellpadding="0" cellspacing="0"  >
+					<tr class="datoshospital">
+						<td>Teléfonos</td>
+						<td>N° de Fax</td>
+						<td>Email</td>
+						<td>Municipio</td>
+						<td>Parroquia</td>
+						<td>Fecha de Apertura</td>
+						<td>Años de Funcionamiento</td>
+						<td>Área del Terreno</td>
+						<td>Área  Construcción</td>
+						
+					</tr>
+					<tr>															
+						<td class="numeric">0212-860-7274</td>
+						<td></td>
+						<td></td>
+						<td>LIBERTADOR</td>
+						<td>SAN JOSE</td>
+						<td>  </td>
+						<td class="numeric">114</td>
+						<td class="numeric"> </td>
+						<td class="numeric"></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+
+		<tr>
+			<td colspan="20" class="datoshospital" style="text-align: center;">
+				ESTABLECIMIENTOS     EN     EL     ÁREA     DE      INFLUENCIA  
+			</td>
+		</tr>
+		
+		<tr>
+			<td colspan="20">
+				<table cellpadding="0" cellspacing="0" >
+					<tr>
+						<c:forEach var="est" items="#{hospitalData.establecimientosAreaInfluencia()}">
+							<td  class="datoshospital" width="7%">
+								#{est.tipo}
+							</td>
+							<td  width="7%" align="center"  class="numeric">
+								#{est.cantidad}
+							</td>
+						</c:forEach>
+					</tr>
+				</table>
+			</td>
+		</tr>
+
+		<tr>
+			<td colspan="20" class="recursoshumanos" style="text-align: center;">
+				RECURSOS HUMANOS
+			</td>
+		</tr>
+		
+		<tr>
+			<td colspan="20">
+				<rich:dataGrid columns="5" value="#{hospitalData.recursosHumanos()}" var="rec">
+					#{rec.tipoFuncionario}:
+					<span style="font-weight:bolder;">#{rec.cantidad}</span>
+				</rich:dataGrid>
+			</td>
+		</tr>
+		
+		<tr>
+			<td colspan="20" class="asignacionesfinancieras" style="text-align: center;">
+				ASIGNACIONES FINANCIERAS
+			</td>
+		</tr>
+		
+		<tr>
+			<td colspan="20" class="asignacionesfinancieras" style="text-align: center;">
+				Ministerio de Salud (Partidas Presupuestarias)
+			</td>
+		</tr>
+		
+		<tr>
+			<td colspan="20">
+				<table cellpadding="0" cellspacing="0" >
+					<tr>
+						<c:forEach var="par" items="#{hospitalData.partidasPresupuestariasMPPS()}">
+							<td  bgcolor="ffffcc" width="7%">
+								#{par.destinoPresupuesto}
+							</td>
+							<td  width="7%" align="center"  class="numeric">
+								#{par.cantidad}
+							</td>
+						</c:forEach>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		
+		<tr>
+			<td colspan="20" class="asignacionesfinancieras" style="text-align: center;">
+				Otras Asignaciones  Financieras
+			</td>
+		</tr>
+		
+		<tr>
+			<td colspan="20">
+				<table cellpadding="0" cellspacing="0" >
+					<tr>
+						<c:forEach var="par" items="#{hospitalData.asignacionesFinancieras()}">
+							<td  bgcolor="ffffcc" width="7%">
+								#{par.origenFinanzas}
+							</td>
+							<td  width="7%" align="center"  class="numeric">
+								#{par.cantidad}
+							</td>
+						</c:forEach>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		
+		<tr>
+			<td colspan="20" class="asignacionesfinancieras" style="text-align: left;">
+					<span style="font-weight:bolder;">Total:</span>
+					<rich:spacer width="6"></rich:spacer>
+					<span style="font-weight:bolder;">#{hospitalData.totalAsignacionesFinancieras()}</span>
+			</td>
+		</tr>
+		
+		<tr>
+			<td colspan="20" class="actividadesinvestigacion" style="text-align: center;">
+				ACTIVIDADES DE INVESTIGACIÓN Y DOCENCIA
+			</td>
+		</tr>
+		
+		<tr>
+			<td colspan="20">
+				<table cellpadding="0" cellspacing="0" >
+					<tr>
+						<c:forEach var="act" items="#{hospitalData.actividadesInvestigativas()}">
+							<td  class="datoshospital" width="7%">
+								#{act}
+							</td>
+							<td  width="3%" bgcolor="#ffffff"></td>
+						</c:forEach>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		
+		<tr>
+			<td colspan="20" class="departamentosyoservicios" style="text-align: center;">
+				DEPARTAMENTOS  Y/O  SERVICIOS QUE OFERTA EL HOSPITAL (servicio, número de camas, consulta externa)
+			</td>
+		</tr>
+		<tr>
+			<td colspan="20">
+				<table cellpadding="0" cellspacing="0" >
+					<c:forEach var="dep" items="#{departamentosList_common.allDepartamentos()}">
+						<tr>
+							<td  class="departamentosyoservicios" width="7%" align="center">
+								 #{dep.descripcion}
+							</td>
+						</tr>
+						<tr>
+							<td >
+								<rich:dataGrid columns="5" value="#{serviciosList_common.serviciosByDepartment(dep)}" var="serv"
+								columnClasses="datagridcolums, datagridcolums, datagridcolums, datagridcolums" >
+									<table cellpadding="0" cellspacing="0" width="150px;">
+										<tr style="text-align: center; font-weight: bolder;">
+											<td style="font-weight: normal;">#{serv.descripcion}</td>
+											<td width="1%">128</td>
+											<td width="1%">sí</td>
+										</tr>
+									</table>
+									
+								</rich:dataGrid>
+							</td>
+						</tr>
+					</c:forEach>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="20" class="apoyodiagnosticoytratamiento" style="text-align: center;">
+				DEPARTAMENTOS Y/O SERVICIOS DE APOYO DIAGNÓSTICO Y/O TRATAMIENTO QUE OFERTA EL HOSPITAL
+			</td>
+		</tr>
+		<tr>
+			<td colspan="20" style="text-align: center;">
+				<rich:dataGrid columns="5" value="#{serviciosList_common.apoyoDiagYOTratamiento()}" 
+				var="apy" columnClasses="datagridcolums, datagridcolums, datagridcolums, datagridcolums">
+				#{apy}
+				</rich:dataGrid>
+			</td>
+		</tr>		
+		<tr>
+			<td colspan="20" class="estudiosespeciales" style="text-align: center;">
+				ESTUDIOS ESPECIALES
+			</td>
+		</tr>
+		<tr>
+			<td colspan="20" style="text-align: center;">
+				<rich:dataGrid columns="5" value="#{serviciosList_common.estudiosEspeciales()}" 
+				var="apy" columnClasses="datagridcolums, datagridcolums, datagridcolums, datagridcolums">
+				#{apy}
+				</rich:dataGrid>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="20" class="serviciosmantenimiento" style="text-align: center;">
+				DEPARTAMENTOS Y/O SERVICIOS GENERALES/MANTENIMIENTO QUE OFERTA EL HOSPITAL 
+			</td>
+		</tr>
+		<tr>
+			<td colspan="20" style="text-align: center;">
+				<rich:dataGrid columns="5" value="#{serviciosList_common.serviciosGeneralesymantenimiento()}" 
+				var="apy" columnClasses="datagridcolums, datagridcolums, datagridcolums, datagridcolums">
+				#{apy}
+				</rich:dataGrid>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="20" class="equiposyambientes" style="text-align: center;">
+				SERVICIOS EQUIPOS Y  AMBIENTES AUXILIARES
+			</td>
+		</tr>
+		<tr>
+			<td colspan="20" style="text-align: center;">
+				<rich:dataGrid columns="5" value="#{serviciosList_common.equiposyambientesauxiliares()}" 
+				var="apy" columnClasses="datagridcolums, datagridcolums, datagridcolums, datagridcolums">
+				#{apy}
+				</rich:dataGrid>
+			</td>
+		</tr>
+	</table>
+	<br/>
+	<div align="right">
+		<h:commandButton value="Imprimir" />
+		<h:commandButton value="Salir" style="margin-right: 0px;" onclick="window.close()" />
+	</div>
+	<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+</div>
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/pkiStyles/pkistyles.css"
+			rel="stylesheet" type="text/css" />
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+		<h:form id="form1">
+
+
+			<rich:panel bodyClass="rich-panel-body-custom">
+				<f:facet name="header">#{messages.datosCA}</f:facet>
+				<table cellpadding="0px" cellspacing="0px" border="0px">
+					<tr style="vertical-align: top;">
+
+						<td>#{messages.commonName}:</td>
+						<td><rich:spacer styleClass="h-spacer-between-p-and-v"></rich:spacer></td>
+						<td><h:outputText value="#{verDetallesCARaiz.rootCacommonName}"
+							styleClass="dataText"></h:outputText></td>
+						<td><rich:spacer styleClass="h-spacer-between-2c" /></td>
+						<td>#{messages.organizationalUnit}:</td>
+						<td><rich:spacer styleClass="h-spacer-between-p-and-v"></rich:spacer></td>
+						<td><h:outputText
+							value="#{verDetallesCARaiz.rootCaorganizationalUnit}"
+							styleClass="dataText"></h:outputText></td>
+						<td><rich:spacer styleClass="h-spacer-between-2c" /></td>
+						<td>#{messages.organization}:</td>
+						<td><rich:spacer styleClass="h-spacer-between-p-and-v"></rich:spacer></td>
+						<td><h:outputText value="#{verDetallesCARaiz.rootCaorganization}"
+							styleClass="dataText"></h:outputText></td>
+
+					</tr>
+					<tr>
+						<td colspan="11"><rich:spacer
+							styleClass="v-spacer-between-2l" /></td>
+					</tr>
+
+					<tr style="vertical-align: top;">
+						<td>#{messages.country}:</td>
+						<td><rich:spacer styleClass="h-spacer-between-p-and-v"></rich:spacer></td>
+						<td><h:outputText value="#{verDetallesCARaiz.rootCacountry}"
+							styleClass="dataText"></h:outputText></td>
+
+						<td><rich:spacer styleClass="h-spacer-between-2c" /></td>
+						<td>#{messages.state}:</td>
+						<td><rich:spacer styleClass="h-spacer-between-p-and-v"></rich:spacer></td>
+						<td><h:outputText value="#{verDetallesCARaiz.rootCastate}"
+							styleClass="dataText"></h:outputText></td>
+						<td><rich:spacer styleClass="h-spacer-between-2c" /></td>
+						<td style="display:none;">#{messages.locality}:</td>
+						<td style="display:none;"><rich:spacer styleClass="h-spacer-between-p-and-v"></rich:spacer></td>
+						<td style="display:none;"><h:outputText value="#{verDetallesCARaiz.rootCalocality}"
+							styleClass="dataText"></h:outputText></td>
+
+					</tr>
+
+				</table>
+			</rich:panel>
+
+			<rich:spacer height="8px" style="display: block"></rich:spacer>
+
+
+
+			<div align="right"><h:commandButton
+				value="#{messages.modificar}" action="modificar"
+				style="margin-bottom: 0px;margin-left: 0px; margin-top: 0px" />
+			<h:commandButton action="salir" value="#{messages.salir}" 
+			style="margin-bottom: 0px; margin-right: 0px; margin-top: 0px"/></div>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

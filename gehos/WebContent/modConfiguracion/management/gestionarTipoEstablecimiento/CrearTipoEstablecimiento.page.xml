@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<!-- validation -->	
+	<navigation>
+		<rule if="#{tipoEstablecimientoCrearControlador.tipoEstablecimiento == null}">
+			<redirect view-id="/modConfiguracion/management/gestionarTipoEstablecimiento/BuscarTipoEstablecimiento.xhtml" />
+		</rule>			
+	</navigation>
+
+	<!-- create and go to view details -->
+	<navigation from-action="#{tipoEstablecimientoCrearControlador.crear()}" evaluate="#{tipoEstablecimientoCrearControlador.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarTipoEstablecimiento/VerDetallesTipoEstablecimiento.xhtml">
+				<param name="tipoEstablecimientoId" value="#{tipoEstablecimientoCrearControlador.tipoEstablecimiento.id}" />
+				<param name="from" value="crear" />				
+			</redirect>
+			<end-conversation before-redirect="true" />
+		</rule>
+	</navigation>
+
+	<!-- cancel and go to view search -->
+	<navigation from-action="cancelar">		
+			<redirect view-id="/modConfiguracion/management/gestionarTipoEstablecimiento/BuscarTipoEstablecimiento.xhtml" />		
+	</navigation>
+</page>

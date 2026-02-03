@@ -1,0 +1,238 @@
+<!-- 
+Recibe un controlador que hereda de CrearPersona y un validador que hereda de Validators_admision
+
+ -->
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+<rich:simpleTogglePanel id="photo" opened="false" switchType="client" label="#{messages.foto}">
+		<table width="100%" cellpadding="0" cellspacing="0">
+			<tr>
+				<td class="margenSupIzq">		
+					<table  cellpadding="0" cellspacing="0">		
+						<tr>
+							<td class="colSepGran">
+								<s:fileUpload id="addPhoto" accept="png"
+					  						  data="#{controlador.data}" 							  
+					 						  fileName="#{controlador.nombrePhoto}"  />
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</rich:simpleTogglePanel>
+	<rich:simpleTogglePanel id="Datos" opened="true" switchType="client"
+						label="#{messages.datosDePersona}">
+				<a:region id="datosGeneralesRegion">
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td class="margenSupIzq">		
+							<table  cellpadding="0" cellspacing="0">	
+								<tr class="filSepGranRA">
+									<td class="colSepGran">
+										<s:decorate>
+											<s:label styleClass="#{invalid?'labelErrors':''}">
+												#{messages.nombre}:
+												<s:span styleClass="required" title="#{messages['javax.faces.component.UIInput.REQUIRED']}">*</s:span>
+											</s:label>
+											 <br></br>
+											<span class=" #{invalid?'errors':''}" 
+   												title="#{(invalid) ? facesMessages.getCurrentMessagesForControl('nombre').get(0).getDetail() : ''}">
+												<h:inputText styleClass="inputText" id="nombre" required="#{!empty param['idForm:aceptar'] and controlador.nombreRequired}"  
+													value="#{controlador.persona.nombres}" validator="#{validator.validarCaracteres}">																			   												
+												</h:inputText>
+											</span>
+										</s:decorate>
+									</td>
+									<td class="colSepGran">
+										<s:decorate>
+											<s:label styleClass="#{invalid?'labelErrors':''}">
+												#{messages.pApellido}:
+												<s:span styleClass="required" title="#{messages['javax.faces.component.UIInput.REQUIRED']}">*</s:span>
+											</s:label>
+											 <br></br>
+											<span class=" #{invalid?'errors':''}" 
+   												title="#{(invalid) ? facesMessages.getCurrentMessagesForControl('apellido1').get(0).getDetail() : ''}">
+												<h:inputText styleClass="inputText"	id="apellido1" required="#{!empty param['idForm:aceptar'] and controlador.apellido1Required}" 
+													value="#{controlador.persona.apellido1}" validator="#{validator.validarCaracteres}"/>
+											</span>								
+										</s:decorate>
+									</td>
+									<td class="colSepGran">
+										<s:decorate>
+											<s:label styleClass="#{invalid?'labelErrors':''}">
+												#{messages.sApellido}:
+											</s:label>
+											 <br></br>
+											<span class=" #{invalid?'errors':''}" 
+   												title="#{(invalid) ? facesMessages.getCurrentMessagesForControl('apellido2').get(0).getDetail() : ''}">
+												<h:inputText id="apellido2" styleClass="inputText" 
+													value="#{controlador.persona.apellido2}" required="#{!empty param['idForm:aceptar'] and controlador.apellido2Required}" 
+													validator="#{validator.validarCaracteres}"/>
+											</span>	
+										</s:decorate>
+									</td>																		
+								</tr>
+								<tr class="filSepGranRA">
+									<td class="colSepGran">		
+										<s:decorate>
+											<s:label styleClass="#{invalid?'labelErrors':''}">
+												#{messages.cedula_admision}:
+												<s:span styleClass="required" title="#{messages['javax.faces.component.UIInput.REQUIRED']}">*</s:span>
+											</s:label>
+											 <br></br>
+											<span class=" #{invalid?'errors':''}" 
+	  												title="#{(invalid) ? facesMessages.getCurrentMessagesForControl('cedula').get(0).getDetail() : ''}">
+												<h:inputText styleClass="inputText" id="cedula"  required="#{!empty param['idForm:aceptar'] and controlador.cedulaRequired}"
+													value="#{controlador.persona.cedula}" validator="#{validator.validarCedula}">												
+												</h:inputText>
+											</span>	
+										</s:decorate>
+									</td>
+									<td class="colSepGran">
+										<s:decorate>	
+											<s:label styleClass="#{invalid?'labelErrors':''}">
+										        #{messages.fechaNacimiento}:
+										        <s:span styleClass="required" title="#{messages['javax.faces.component.UIInput.REQUIRED']}">*</s:span>
+										    </s:label>
+											<br></br>
+										   	<span class="#{invalid?'inputErrors':''}"
+										   		title="#{(invalid) ? facesMessages.getCurrentMessagesForControl('fechaNacimiento').get(0).getDetail() : ''}">
+												<rich:calendar id="fechaNacimiento"	styleClass="dataText" showFooter="false" popup="true"
+															datePattern="#{messages.patronFecha}" required="#{!empty param['idForm:aceptar'] and controlador.fechaNacimientoRequired}" 
+															isDayEnabled="disableMayoresHoy" dayStyleClass="disableMayoresHoyClass" 
+															value="#{controlador.persona.fechaNacimiento}"
+															validator="#{validator.validarFechaNacimiento}">					
+												</rich:calendar>
+										   	</span>
+										</s:decorate>
+									</td>
+									<td class="colSepGran">	
+										<h:outputLabel for="raza"	value="#{messages.raza}:"	style="margin:0px;" />									
+										<rich:comboBox id="raza" value="#{controlador.raza}" defaultLabel="#{messages.seleccione}" enableManualInput="false"
+					   								   width="152px" suggestionValues="#{controlador.listarRazas}" required="#{!empty param['idForm:aceptar'] and controlador.razaRequired}" >						   								  
+					   								   <a:support event="onselect" reRender="etnia" action="#{controlador.setEtnia('')}" ajaxSingle="true"  eventsQueue="cola" limitToList="true"/>
+					   								   <a:support event="onchange" reRender="etnia" action="#{controlador.setEtnia('')}" ajaxSingle="true"  eventsQueue="cola" limitToList="true"/>
+										</rich:comboBox>
+									</td>	
+								</tr>
+								<tr class="filSepGranRA">
+									<td class="colSepGran">	
+										<s:decorate>
+											<s:label styleClass="#{invalid?'labelErrors':''}">
+												#{messages.etnia}:
+											</s:label>
+											 <br></br>
+											<span class=" #{invalid?'errors':''}" 
+	  												title="#{(invalid) ? facesMessages.getCurrentMessagesForControl('etnia').get(0).getDetail() : ''}">
+												<rich:comboBox id="etnia" enableManualInput="false" value="#{controlador.etnia}" defaultLabel="#{messages.seleccione}"
+						   								   width="152px" suggestionValues="#{controlador.listarEtnias}" directInputSuggestions="true"
+						   								   disabled="#{empty controlador.listarEtnias}" required="#{!empty param['idForm:aceptar'] and controlador.etniaRequired}" >					   								   
+												</rich:comboBox>
+											</span>	
+										</s:decorate>
+									</td>									
+									<td class="colSepGran">
+										<s:decorate>
+											<s:label styleClass="#{invalid?'labelErrors':''}">
+												#{messages.estadoCivil}:
+											</s:label>
+											 <br></br>
+											<span class=" #{invalid?'errors':''}" 
+	  												title="#{(invalid) ? facesMessages.getCurrentMessagesForControl('estadoCivil').get(0).getDetail() : ''}">
+												<rich:comboBox id="estadoCivil" enableManualInput="false" directInputSuggestions="true"
+						   							   	   value="#{controlador.estadoCivil}" defaultLabel="#{messages.seleccione}"
+						   							   	    width="152px" suggestionValues="#{controlador.listarEstadoCivil}" required="#{!empty param['idForm:aceptar'] and controlador.estadoCivilRequired}" >					   							   	    
+												</rich:comboBox>
+											</span>	
+										</s:decorate>
+									</td>											
+									<td class="colSepGran">		
+										<s:decorate>	
+											<s:label styleClass="#{invalid?'labelErrors':''}">
+												#{messages.nacion}:
+												<s:span styleClass="required" title="#{messages['javax.faces.component.UIInput.REQUIRED']}">*</s:span>
+											</s:label>
+											 <br></br>
+											<span class=" #{invalid?'errors':''}" 
+	  												title="#{(invalid) ? facesMessages.getCurrentMessagesForControl('nacionalidad').get(0).getDetail() : ''}">
+												<rich:comboBox suggestionValues="#{controlador.listarNaciones}" required="#{!empty param['idForm:aceptar'] and controlador.nacionalidadRequired}"
+						  								   value="#{controlador.nacion}" defaultLabel="#{messages.seleccione}"
+						  								   id="nacionalidad" width="152px" enableManualInput="false">
+												</rich:comboBox>
+											</span>
+										</s:decorate>								
+									</td>										
+								</tr>
+								<tr class="filSepGranRA">
+									<td class="colSepGran">
+										<s:decorate>	
+											<span class=" #{invalid?'errors':''}">
+												<h:graphicImage value="/resources/modAdmision/img/telefono.gif" style="vertical-align: middle;" />
+												<s:label for="telFijo" value="#{messages.telefonoFijo}:" />
+												<br></br>
+												<h:inputText styleClass="inputText" required="#{!empty param['idForm:aceptar'] and controlador.telfFijoRequired}"
+															 value="#{controlador.persona.telfFijo}" id="telFijo" 
+															 validator="#{validator.validarTelefono}"
+															 title="#{invalid ? facesMessages.getCurrentMessagesForControl('telFijo').get(0).getDetail() : ''}"/>
+										   </span>
+										</s:decorate>
+									</td>
+									<td class="colSepGran">
+										<s:decorate>
+											<span class=" #{invalid?'errors':''}">
+												<h:graphicImage value="/resources/modAdmision/img/telefono.gif" style="vertical-align: middle;" />
+												<s:label for="telCelular" value="#{messages.telefonoCelular}:" />
+												<br></br>
+												<h:inputText styleClass="inputText" style="width:152px" required="#{!empty param['idForm:aceptar'] and controlador.telfCelularRequired}"
+															 value="#{controlador.persona.telfCelular}" id="telCelular"
+															 validator="#{validator.validarTelefono}" 
+															 title="#{invalid ? facesMessages.getCurrentMessagesForControl('telCelular').get(0).getDetail() : ''}"/>
+										 	</span>
+										</s:decorate>	
+									</td>
+									<td class="colSepGran">
+										<s:decorate>
+											<span class=" #{invalid?'errors':''}">
+												<h:graphicImage value="/resources/modAdmision/img/correo.png" style="vertical-align: middle;" />
+												<s:label for="correoElectronico" value="#{messages.correoElectronico}:" />
+												<br></br>
+												<h:inputText styleClass="inputText" validator="#{validator.validarEmail}"
+															 value="#{controlador.persona.correoElectronico}" id="correoElectronico"
+															required="#{!empty param['idForm:aceptar'] and controlador.correoRequired}"  
+															title="#{invalid ? facesMessages.getCurrentMessagesForControl('correoElectronico').get(0).getDetail() : ''}"/>													 
+											</span>
+										</s:decorate>
+									</td>	
+								</tr>
+								<tr>									
+									<td class="colSepGran">	
+										<s:decorate>
+											<s:label styleClass="#{invalid?'labelErrors':''}">
+												#{messages.sexo}:
+												<s:span styleClass="required" title="#{messages['javax.faces.component.UIInput.REQUIRED']}">*</s:span>
+											</s:label>
+											 <br></br>
+											<span class=" #{invalid?'errors':''}" 
+	  												title="#{(invalid) ? facesMessages.getCurrentMessagesForControl('sexo').get(0).getDetail() : ''}">
+												<rich:comboBox suggestionValues="#{controlador.listarSexo}"
+				  								   value="#{controlador.sexo}" defaultLabel="#{messages.seleccione}"
+				  								   id="sexo" required="#{!empty param['idForm:aceptar'] and controlador.sexoRequired}" width="152px" enableManualInput="false" >
+												</rich:comboBox>
+											</span>
+										</s:decorate>
+									</td>																
+								</tr>		
+							</table>									
+						</td>
+					</tr>
+				</table>
+				</a:region>
+			</rich:simpleTogglePanel>
+			<rich:hotKey key="return" handler="#{rich:component('advertencia_modal')}.show()"/>
+			</s:div>

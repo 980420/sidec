@@ -1,0 +1,31 @@
+#created on: 08-jun-2011
+package cantMedicamentos
+
+#list any import classes here.
+import gehos.comun.util.reglasMedicamentos.MedicamentosPermitidos;
+
+
+#declare any global variables here
+
+
+
+
+rule "entidad1"
+	
+	when
+		MedicamentosPermitidos(entidad=="1")
+		$med: MedicamentosPermitidos()
+	then 
+		$med.setNumMedicamentos(2);
+		
+end
+
+rule "entidad2"
+	
+	when
+		MedicamentosPermitidos(entidad=="2")
+		$med: MedicamentosPermitidos()
+	then 
+		$med.setNumMedicamentos(10);
+		
+end

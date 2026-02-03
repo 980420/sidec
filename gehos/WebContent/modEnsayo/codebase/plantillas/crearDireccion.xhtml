@@ -1,0 +1,218 @@
+<!-- 
+Recibe un controlador que hereda de CrearDireccion y un validador que hereda de Validators_admision
+
+ -->
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+
+	<rich:simpleTogglePanel id="Datos" opened="true" switchType="client"
+						label="#{messages.datosDeDireccion}">
+				<a:region id="datosGeneralesRegion">
+				<table width="100%" cellpadding="0" cellspacing="0">					
+					<tr>
+						<td class="margenSupIzq">		
+							<table  cellpadding="0" cellspacing="0">
+								<tr class="filSepGranRA">
+									<td class="colSepGran">	
+										<s:decorate  template="/modAdmision/admision/codebase/plantillas/decorateInput.xhtml">	
+											<ui:define name="label">#{messages.pais}:</ui:define>							
+											<rich:comboBox id="pais" enableManualInput="false" value="#{controlador.pais}" defaultLabel="#{messages.seleccione}"
+						   								   width="152px" suggestionValues="#{controlador.listarPais}" directInputSuggestions="true"
+						   								   disabled="#{empty controlador.listarPais}" required="#{controlador.paisRequired}" >
+						   								   <a:support event="onselect" reRender="estado, municipio, parroquia"  ajaxSingle="true"  eventsQueue="cola" limitToList="true"/>
+						   								   <a:support event="onchange" reRender="estado, municipio, parroquia"  ajaxSingle="true"  eventsQueue="cola" limitToList="true"/>					   								   
+											</rich:comboBox>
+											<ui:param name="forControl" value="pais" />
+										</s:decorate>
+									</td>									
+									<td class="colSepGran">	
+										<s:decorate  template="/modAdmision/admision/codebase/plantillas/decorateInput.xhtml">	
+											<ui:define name="label">#{messages.estado}:</ui:define>							
+											<rich:comboBox id="estado" enableManualInput="false" directInputSuggestions="true" disabled="#{empty controlador.listarEstado}"
+						   							   	   value="#{controlador.estado}" defaultLabel="#{messages.seleccione}"
+						   							   	    width="152px" suggestionValues="#{controlador.listarEstado}" required="#{controlador.estadoRequired}">
+						   							   	    <a:support event="onselect" reRender="municipio, parroquia"  ajaxSingle="true"  eventsQueue="cola" limitToList="true"/>
+						   								   <a:support event="onchange" reRender="municipio, parroquia"  ajaxSingle="true"  eventsQueue="cola" limitToList="true"/>					   							   	    
+											</rich:comboBox>
+											<ui:param name="forControl" value="estado" />
+										</s:decorate>
+									</td>											
+									<td class="colSepGran">
+										<s:decorate  template="/modAdmision/admision/codebase/plantillas/decorateInput.xhtml">
+											<ui:define name="label">#{messages.municipio}:</ui:define>									
+											<rich:comboBox suggestionValues="#{controlador.listarMunicipio}" required="#{controlador.municipioRequired}"
+						  								   value="#{controlador.municipio}" defaultLabel="#{messages.seleccione}"
+						  								   id="municipio" width="152px" enableManualInput="false" disabled="#{empty controlador.listarMunicipio}">
+						  								   <a:support event="onselect" reRender="parroquia"  ajaxSingle="true"  eventsQueue="cola" limitToList="true"/>
+						   								   <a:support event="onchange" reRender="parroquia"  ajaxSingle="true"  eventsQueue="cola" limitToList="true"/>
+											</rich:comboBox>
+											<ui:param name="forControl" value="municipio" />
+										</s:decorate>									
+									</td>	
+									<td rowspan="2">
+									    <ui:include src="/modAdmision/admision/codebase/plantillas/statusCargando.xhtml">
+									    	<ui:param name="forComponent" value="datosGeneralesRegion" />
+									    	<ui:param name="idStatus" value="datosGeneralesStatus" />
+									    </ui:include>
+									</td>										
+								</tr>
+								<tr class="filSepGranRA">
+									<td class="colSepGran">
+										<s:decorate  template="/modAdmision/admision/codebase/plantillas/decorateInput.xhtml">
+											<ui:define name="label">#{messages.localidad}:</ui:define>
+											<rich:comboBox suggestionValues="#{controlador.listarParroquia}" disabled="#{empty controlador.listarParroquia}"
+						  								   value="#{controlador.parroquia}" defaultLabel="#{messages.seleccione}"
+						  								   id="parroquia" required="#{controlador.parroquiaRequired}" width="152px" enableManualInput="false">
+											</rich:comboBox>
+											<ui:param name="forControl" value="parroquia" />
+										</s:decorate>
+									</td>
+									<td class="colSepGran">
+										<s:decorate  template="/modAdmision/admision/codebase/plantillas/decorateInput.xhtml">
+											<ui:define name="label">#{messages.local}:</ui:define>
+											<h:inputText styleClass="inputText" style="width:152px" required="#{controlador.localRequired}"
+														 value="#{controlador.direccion.localidad_1}" id="local"  />
+											 <ui:param name="forControl" value="local" />		
+										 </s:decorate>										 
+									</td>	
+									<td class="colSepGran">
+										<s:decorate  template="/modAdmision/admision/codebase/plantillas/decorateInput.xhtml">
+											<ui:define name="label">#{messages.codigoPostal}:</ui:define>
+											<h:inputText styleClass="inputText" style="width:152px" required="#{controlador.codigoPostalRequired}"
+														 value="#{controlador.direccion.codigoPostal}" id="codigoPostal"  />
+										  	<ui:param name="forControl" value="codigoPostal" />	
+										</s:decorate>
+									</td>									
+								</tr>								
+								<tr class="filSepPeq">									
+									<td class="colSepGran">
+										<h:outputText	value="#{messages.tipoZona}:" style="margin:0px;"/>
+										<ui:include src="/modAdmision/admision/codebase/plantillas/messagesValidation.xhtml" >
+											<ui:param name="forComponent" value="tipoZona" />
+											<ui:param name="title" value="#{facesMessages.getCurrentMessagesForControl('tipoZona').get(0).getDetail()}" />
+										</ui:include>										
+									</td>	
+									<td class="colSepGran">
+										<h:outputText	value="#{messages.tipoVia}:" style="margin:0px;"/>
+										<ui:include src="/modAdmision/admision/codebase/plantillas/messagesValidation.xhtml" >
+											<ui:param name="forComponent" value="tipoVia" />
+											<ui:param name="title" value="#{facesMessages.getCurrentMessagesForControl('tipoVia').get(0).getDetail()}" />
+										</ui:include>										
+									</td>
+									<td class="colSepGran">
+										<h:outputText	value="#{messages.tipoEdificacion}:" style="margin:0px;"/>
+										<ui:include src="/modAdmision/admision/codebase/plantillas/messagesValidation.xhtml" >
+											<ui:param name="forComponent" value="tipoEdificacion" />
+											<ui:param name="title" value="#{facesMessages.getCurrentMessagesForControl('tipoEdificacion').get(0).getDetail()}" />
+										</ui:include>										
+									</td>								
+								</tr>	
+								<tr class="filSepGranRA">									
+									<td class="colSepGran">										
+										<rich:comboBox suggestionValues="#{controlador.listarTipoZona}"
+					  								   value="#{controlador.tipoZona}" defaultLabel="#{messages.seleccione}"
+					  								   id="tipoZona" required="#{controlador.tipoZonaRequired}" width="152px" enableManualInput="false">
+										</rich:comboBox>
+									</td>	
+									<td class="colSepGran">										
+										<rich:comboBox suggestionValues="#{controlador.listarTipoVia}"
+					  								   value="#{controlador.tipoVia}" defaultLabel="#{messages.seleccione}"
+					  								   id="tipoVia" required="#{controlador.tipoViaRequired}" width="152px" enableManualInput="false">
+										</rich:comboBox>
+									</td>
+									<td class="colSepGran">										
+										<rich:comboBox suggestionValues="#{controlador.listarTipoEdificacion}"
+					  								   value="#{controlador.tipoEdificacion}" defaultLabel="#{messages.seleccione}"
+					  								   id="tipoEdificacion" required="#{controlador.tipoEdificacionRequired}" width="152px" enableManualInput="false">
+										</rich:comboBox>
+									</td>															
+								</tr>
+								<tr class="filSepPeq">
+									<td class="colSepGran">
+										<h:outputText	value="#{messages.nombreZona}:" style="margin:0px;"/>
+										<ui:include src="/modAdmision/admision/codebase/plantillas/messagesValidation.xhtml" >
+											<ui:param name="forComponent" value="nombreZona" />
+											<ui:param name="title" value="#{facesMessages.getCurrentMessagesForControl('nombreZona').get(0).getDetail()}" />
+										</ui:include>										
+									</td>
+									<td class="colSepGran">
+										<h:outputText	value="#{messages.nombreVia}:" style="margin:0px;"/>
+										<ui:include src="/modAdmision/admision/codebase/plantillas/messagesValidation.xhtml" >
+											<ui:param name="forComponent" value="nombreVia" />
+											<ui:param name="title" value="#{facesMessages.getCurrentMessagesForControl('nombreVia').get(0).getDetail()}" />
+										</ui:include>										
+									</td>	
+									<td class="colSepGran">
+										<h:outputText	value="#{messages.nombreEdificacion}:" style="margin:0px;"/>
+										<ui:include src="/modAdmision/admision/codebase/plantillas/messagesValidation.xhtml" >
+											<ui:param name="forComponent" value="nombreEdificacion" />
+											<ui:param name="title" value="#{facesMessages.getCurrentMessagesForControl('nombreEdificacion').get(0).getDetail()}" />
+										</ui:include>										
+									</td>									
+								</tr>	
+								<tr class="filSepGranRA">
+									<td class="colSepGran">										
+										<h:inputText styleClass="inputText" style="width:152px" required="#{controlador.nombreZonaRequired}"
+													 value="#{controlador.direccion.nombreZona}" id="nombreZona"
+													  />
+									</td>
+									<td class="colSepGran">										
+										<h:inputText styleClass="inputText" style="width:152px" required="#{controlador.nombreViaRequired}"
+													 value="#{controlador.direccion.nombreVia}" id="nombreVia"
+													  />
+									</td>	
+									<td class="colSepGran">										
+										<h:inputText styleClass="inputText" style="width:152px" required="#{controlador.nombreEdificacionRequired}"
+													 value="#{controlador.direccion.nombreEdificacion}" id="nombreEdificacion"  />
+									</td>														
+								</tr>	
+								<tr class="filSepPeq">									
+									<td class="colSepGran">
+									<h:outputText	value="#{messages.puntoReferencia}:"	style="margin:0px;" />
+										<ui:include src="/modAdmision/admision/codebase/plantillas/messagesValidation.xhtml" >
+											<ui:param name="forComponent" value="correoElectronico" />
+											<ui:param name="title" value="#{facesMessages.getCurrentMessagesForControl('correoElectronico').get(0).getDetail()}" />
+										</ui:include>																			
+									</td>	
+									<td class="colSepGran">
+										<h:outputText	value="#{messages.numero}:" style="margin:0px;"/>
+										<ui:include src="/modAdmision/admision/codebase/plantillas/messagesValidation.xhtml" >
+											<ui:param name="forComponent" value="numero" />
+											<ui:param name="title" value="#{facesMessages.getCurrentMessagesForControl('numero').get(0).getDetail()}" />
+										</ui:include>										
+									</td>	
+									<td class="colSepGran">
+										<h:outputText	value="#{messages.piso}:" style="margin:0px;"/>
+										<ui:include src="/modAdmision/admision/codebase/plantillas/messagesValidation.xhtml" >
+											<ui:param name="forComponent" value="piso" />
+											<ui:param name="title" value="#{facesMessages.getCurrentMessagesForControl('piso').get(0).getDetail()}" />
+										</ui:include>										
+									</td>																						
+								</tr>	
+								<tr>		
+									<td class="colSepGran">		
+									<h:inputText styleClass="inputText" 
+													value="#{controlador.direccion.puntoReferencia}"  id="puntoReferencia"
+													required="#{controlador.puntoReferenciaRequired}"  />
+									</td>									
+									<td class="colSepGran">										
+										<h:inputText styleClass="inputText" style="width:152px" required="#{controlador.numeroRequired}"
+													 value="#{controlador.direccion.numero}" id="numero"  />
+									</td>	
+									<td class="colSepGran">										
+										<h:inputText styleClass="inputText" style="width:152px" required="#{controlador.pisoRequired}"
+													 value="#{controlador.direccion.piso}" id="piso"  />
+									</td>																															
+								</tr>
+							</table>									
+						</td>
+					</tr>
+				</table>
+				</a:region>
+			</rich:simpleTogglePanel>
+			</s:div>

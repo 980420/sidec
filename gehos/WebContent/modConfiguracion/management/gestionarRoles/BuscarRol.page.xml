@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<action execute="#{rolBuscarControlador.begin()}" />
+	
+	<!-- Crear -->
+	<navigation from-action="#{rolCrearControlador.begin()}" evaluate="#{rolCrearControlador.error}">	
+		<rule if-outcome="0">	
+			<redirect view-id="/modConfiguracion/management/gestionarRoles/CrearRol.xhtml" />
+		</rule>
+	</navigation>
+	
+	<!-- Detalles -->
+	<navigation from-action="#{rolBuscarControlador.seleccionarVer()}" evaluate="#{rolBuscarControlador.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarRoles/VerDetallesRol.xhtml">
+				<param name="rolId" value="#{rolBuscarControlador.idRolEliminar}"/>
+				<param name="from" value="listar" />
+			</redirect>
+		</rule>
+	</navigation>
+	
+	<!-- Modificar -->
+	<navigation from-action="#{rolBuscarControlador.seleccionarModificar()}" evaluate="#{rolBuscarControlador.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarRoles/ModificarRol.xhtml">
+			<param name="rolId" value="#{rolBuscarControlador.idRolEliminar}"/>		
+			</redirect>
+		</rule>
+	</navigation>
+</page>

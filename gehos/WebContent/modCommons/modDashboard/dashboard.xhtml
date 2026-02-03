@@ -1,0 +1,98 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+<head>
+<link
+	href="#{request.contextPath}/resources/modDashBoard/css/dashboard.css"
+	rel="stylesheet" type="text/css" />
+</head>
+
+
+
+<s:div>
+
+	<param name="entityid" value="#{modSelectorController.selectedEntityId}" />
+
+	<rich:simpleTogglePanel styleClass="rich-table-dash"
+		switchType="client" label="Información General del Sitio Clínico">
+
+		<rich:dataGrid value="entrada" var="item" >
+
+			<rich:column styleClass="columna-dashboard" style="width:20%;">
+				<f:facet name="header">Estudios en desarrollo</f:facet>
+				<div style="display: flex;">
+					<h:graphicImage styleClass="icono-svg"
+						value="/resources/modDashBoard/image/flask-solid.svg" />
+					<div style="margin-left: 10px;">
+						<h:outputText value="Estudios en desarrollo" />
+						<br /> <br /> <br />
+						<h:outputText
+							value="#{verEstudioControlador.totalEstudiosActivos}" />
+					</div>
+				</div>
+			</rich:column>
+
+			<rich:column styleClass="columna-dashboard" style="width:20%;">
+				<f:facet name="header">Sujetos en estudios</f:facet>
+				<div style="display: flex;">
+					<h:graphicImage styleClass="icono-svg"
+						value="/resources/modDashBoard/image/group-profile-users.svg" />
+					<div style="margin-left: 10px;">
+						<h:outputText value="Sujetos en estudios" />
+						<br /> <br /> <br />
+						<h:outputText value="#{verEstudioControlador.totalSujetosEnsayo}" />
+					</div>
+				</div>
+			</rich:column>
+
+			<rich:column styleClass="columna-dashboard" style="width:20%;">
+				<f:facet name="header">Promotores vinculados</f:facet>
+				<div style="display: flex;">
+					<h:graphicImage styleClass="icono-svg"
+						value="/resources/modDashBoard/image/user-tie-solid.svg" />
+					<div style="margin-left: 10px;">
+						<h:outputText value="Promotores vinculados" />
+						<br /> <br /> <br />
+						<h:outputText
+							value="#{verEstudioControlador.totalUsuarioPromotor}" />
+					</div>
+				</div>
+			</rich:column>
+
+			<rich:column styleClass="columna-dashboard" style="width:20%;">
+				<f:facet name="header">Investigadores participando</f:facet>
+				<div style="display: flex;">
+					<h:graphicImage styleClass="icono-svg"
+						value="/resources/modDashBoard/image/microscope-solid.svg" />
+					<div style="margin-left: 10px;">
+						<h:outputText value="Investigadores participando" />
+						<br /> <br /> <br />
+						<h:outputText value="#{verEstudioControlador.totalInvestigadores}" />
+					</div>
+				</div>
+			</rich:column>
+
+			<rich:column  style="width:20%;">
+				<f:facet name="header">Monitores asociados</f:facet>
+				<div style="display: flex;">
+					<h:graphicImage styleClass="icono-svg"
+						value="/resources/modDashBoard/image/magnifying-glass-solid.svg" />
+					<div style="margin-left: 10px;">
+						<h:outputText value="Monitores asociados" />
+						<br /> <br /> <br />
+						<h:outputText value="#{verEstudioControlador.totalMonitores}" />
+					</div>
+				</div>
+			</rich:column>
+
+		</rich:dataGrid>
+
+	</rich:simpleTogglePanel>
+
+</s:div>
+</html>

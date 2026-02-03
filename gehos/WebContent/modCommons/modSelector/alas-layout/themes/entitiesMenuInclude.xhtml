@@ -1,0 +1,119 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+<h:form>
+
+<s:div rendered="#{modSelectorController.selectDefaultEntity(entities)}"/>
+
+<s:div rendered="#{viewSelectorBuilder.entitiesModules().size() == -1}}"/>
+
+<c:set var="index" value="0"></c:set>
+	<c:forEach items="#{entities}" var="ent">
+	
+	<c:set var="conc" value="/resources/modCommon/entidades_logos/#{theme.name}/#{theme.color}/#{ent.logo}"></c:set>
+		<s:div rendered="#{ent.class.simpleName == 'Entidad_configuracion' and ent.id==modSelectorController.selectedEntityId}">
+ 			     
+                  <input id="entity#{index}" type="hidden" value="#{ent.nombre}"/>
+ 			 <h:commandLink action="#{viewSelectorBuilder.selectEntity(ent.id)}" style="text-decoration: none !important;">
+ 			    <f:param name="idFuncionalidad" value=""/>
+ 			    <f:param name="idEntidad" value=""/>
+					<div id="entity#{index}" class="panelEntityFocused">
+					
+					
+					<table cellpadding="0" cellspacing="0">
+						<tr>
+							<td>
+							<div class="hospPhoto">
+							   
+							    
+							    
+							    	<h:graphicImage alt="" value="#{conc}" height="44px" width="44px" rendered="#{viewSelectorBuilder.existFile(conc)}" style="border:0px"/>
+							    
+							    
+							    	<h:graphicImage alt="" value="/resources/modCommon/entidades_logos/#{theme.name}/#{theme.color}/generic.png" height="44px" width="44px" rendered="#{not viewSelectorBuilder.existFile(conc)}" style="border:0px"/>
+							    
+								
+							</div>
+							</td>
+							<td valign="top">
+
+							<div class="hospName">
+								<table cellpadding="0" cellspacing="0" style="height: 23px;">
+									<tr>
+										<td >#{ent.nombre}</td>
+									</tr>
+								</table>
+							</div>
+
+							<div class="desHosp"  style="text-decoration: none !important;">
+								#{ent.direccion}, #{ent.municipio.valor}, #{ent.estado.valor}, #{ent.estado.nacion.valor}.
+							</div>
+						
+							</td>
+						</tr>
+			</table>
+			</div>
+			</h:commandLink>
+		</s:div>
+		
+		   
+				<s:div rendered="#{ent.class.simpleName == 'Entidad_configuracion' and ent.id!=modSelectorController.selectedEntityId}">
+                 
+                  <input id="entity#{index}" type="hidden" value="#{ent.nombre}"/>
+                   
+                  <h:commandLink action="#{viewSelectorBuilder.selectEntity(ent.id)}" style="text-decoration: none !important;">
+                   <f:param name="idFuncionalidad" value=""/>
+ 			       <f:param name="idEntidad" value=""/>
+					<div id="entity#{index}d" class="panelEntityUnfocused">
+					 <c:set var="index" value="#{index+1}"></c:set>
+					
+					<table cellpadding="0" cellspacing="0">
+						<tr>
+							<td>
+							<div class="hospPhoto">
+								
+							    	<h:graphicImage alt="" value="#{conc}" height="44px" width="44px" rendered="#{viewSelectorBuilder.existFile(conc)}" style="border:0px"/>
+							    
+							
+							    	<h:graphicImage alt="" value="/resources/modCommon/entidades_logos/#{theme.name}/#{theme.color}/generic.png" height="44px" width="44px" rendered="#{not viewSelectorBuilder.existFile(conc)}" style="border:0px"/>
+							    
+							</div>
+							</td>
+							<td valign="top">
+
+							<div class="hospName">
+								<table cellpadding="0" cellspacing="0" style="height: 23px;">
+									<tr>
+										<td  style="text-decoration: none !important;">#{ent.nombre}</td>
+									</tr>
+								</table>
+							</div>
+
+							<div class="desHosp"  style="text-decoration: none !important;">
+								#{ent.direccion}, #{ent.municipio.valor}, #{ent.estado.valor}, #{ent.estado.nacion.valor}.
+							</div>
+						
+							</td>
+						</tr>
+			</table>
+			</div>
+			</h:commandLink>
+		</s:div>
+		
+	</c:forEach>
+		
+			<a:outputPanel rendered="#{entities.size() == 1}">
+			<div  align="center">
+				<h:outputText value="#{messages.noConfigEntities}" />
+				
+			</div>
+			</a:outputPanel>
+		
+	</h:form>
+</s:div>

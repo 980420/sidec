@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+      
+	<param name="idFuncionalidad" value="#{funSelectorController.idFuncionalidad}" />
+	<param name="idancestors" value="#{funSelectorController.listaAncestros}" /> 
+	<param name="moduleName" value="#{activeModule.activeModuleName}" />
+	
+    <navigation evaluate="#{activeModule.activeModule.activo}">
+    	<rule if-outcome="false">
+    		<redirect view-id="#{activeModule.activeModule.funcionalidadPadre.codebase.substring(0, activeModule.activeModule.funcionalidadPadre.codebase.indexOf('codebase'))}config/home.xhtml"></redirect>
+    	</rule>
+    </navigation>    
+	
+	<navigation from-action="goto">
+		<redirect view-id="/index.html"></redirect>
+	</navigation>
+</page>

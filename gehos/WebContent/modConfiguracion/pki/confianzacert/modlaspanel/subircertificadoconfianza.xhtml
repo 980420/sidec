@@ -1,0 +1,86 @@
+<rich:modalPanel id="subirCert" width="349" height="115"
+	resizeable="false" style="white-space: nowrap"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a="http://richfaces.org/a4j">
+
+	<f:facet name="header">
+		<h:panelGroup>
+			<h:outputText value="#{messages.adicionar}"></h:outputText>
+		</h:panelGroup>
+	</f:facet>
+	<f:facet name="controls">
+		<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+			style="cursor:pointer; position:relative; top:1px;"
+			onclick="Richfaces.hideModalPanel('subirCert')" />
+	</f:facet>
+	<h:form enctype="multipart/form-data">
+
+		<rich:panel bodyClass="info" style="width:98%;">
+
+
+
+			<table cellpadding="0" cellspacing="0" border="0">
+
+				<tr>
+					<td style="height: 13px;" colspan="2"></td>
+				</tr>
+				<tr>
+					<td><rich:spacer width="8px" /></td>
+					<td><h:outputLabel
+						value="#{messages.certificado}:"></h:outputLabel> <rich:message for="certificado"
+									showDetail="false" tooltip="true"
+									style="color:red;cursor:pointer;">
+									<f:facet name="errorMarker">
+										<h:outputText value="*"
+											title="#{facesMessages.getCurrentMessagesForControl('certificado').get(0).getDetail()}" />
+									</f:facet>
+								</rich:message> <br />
+					<s:fileUpload  accept="cer,pem,zip" tabindex="6" id="certificado"
+					required="true" requiredMessage="#{messages.valorRequerido}"
+					contentType="#{fileUploadBean.contenType}"
+						data="#{fileUploadBean.certFiles.data}"
+						fileName="#{fileUploadBean.certFiles.name}" /></td>
+
+				</tr>
+				<tr>
+					<td style="height: 8px;" colspan="2"></td>
+				</tr>
+
+			</table>
+
+
+
+		</rich:panel>
+
+
+
+
+		<rich:spacer height="8px" style="display: block"></rich:spacer>
+		<div align="right">
+		<table cellpadding="0" cellspacing="0" border="0">
+			<tr>
+				<td><h:commandButton id="buttonAceptar"
+					value="#{messages.aceptar}" action="#{fileUploadBean.saveCerts()}"
+					oncomplete="#{fileUploadBean.onImportarComplete('subirCert')}"
+					style="margin-bottom: 0px; margin-right: 5px; margin-left: 0px; margin-top: 0px">
+				</h:commandButton></td>
+				<td><a4j:commandButton immediate="true"
+					value="#{messages.cancelar}" action="cancelarmodalpanel"
+					oncomplete="Richfaces.hideModalPanel('subirCert')"
+					ajaxSingle="true"
+					style="margin-bottom: 0px; margin-right: 0px; margin-left: 5px; margin-top: 0px">
+				</a4j:commandButton></td>
+				<td><rich:spacer width="4px" /></td>
+			</tr>
+		</table>
+		</div>
+	</h:form>
+
+</rich:modalPanel>

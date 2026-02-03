@@ -1,0 +1,90 @@
+
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" xmlns:a4j="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle('#{messages.reanudarInclusion}')</script>
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css"
+		rel="stylesheet" type="text/css" />
+
+
+
+	<h:form id="idForm" enctype="multipart/form-data">
+
+		<rich:panel
+			rendered="#{reanudarInclusion.seguridadEstudio.estudioEntidadActivo.estudio.estadoEstudio.codigo == 8}"
+			id="idInterrumpir" opened="true" switchType="client">
+			<f:facet name="header">
+				<h:panelGroup>
+					<div>
+						<div align="left">#{messages.reanudarInclusion}</div>
+					</div>
+				</h:panelGroup>
+			</f:facet>
+			<table width="100%" cellpadding="0px" cellspacing="0px">
+				<tr>
+					<td><s:label styleClass="#{invalid?'labelErrors':''}"
+							value="#{messages.causa}:">
+							<rich:message for="causa" showDetail="false">
+								<f:facet name="errorMarker">
+									<h:outputText style="color: red;cursor: pointer !important;"
+										title="#{facesMessages.getCurrentMessagesForControl('causa').get(0).getDetail()}"
+										value="*" />
+								</f:facet>
+							</rich:message>
+						</s:label><br /> <h:inputTextarea id="causa"
+							value="#{reanudarInclusion.causa}"
+							validator="#{validations_sujeto.causaEnBlanco}"
+							style="width:100%;resize: vertical"
+							required="#{!empty param['idForm:aceptarr'] and reanudarInclusion.causaRequired}">
+						</h:inputTextarea></td>
+				</tr>
+			</table>
+		</rich:panel>
+
+		<rich:panel
+			rendered="#{reanudarInclusion.seguridadEstudio.estudioEntidadActivo.estudio.estadoEstudio.codigo != 8}"
+			id="idInterrumpir1" opened="true" switchType="client">
+			<f:facet name="header">
+				<h:panelGroup>
+					<div>
+						<div align="left">#{messages.reanudarInclusion}</div>
+					</div>
+				</h:panelGroup>
+			</f:facet>
+
+			<table class="Tabla">
+				<tr>
+					<td><h:outputText value="#{messages.noEjecucionCierre}" /></td>
+				</tr>
+			</table>
+
+
+		</rich:panel>
+
+
+		<div align="right">
+			<br />
+			<a:commandButton rendered="#{reanudarInclusion.seguridadEstudio.estudioEntidadActivo.estudio.estadoEstudio.codigo == 8}" style="margin:0px;" id="aceptarr"
+				value="#{messages.aceptar}"
+				oncomplete="#{reanudarInclusion.validarCampo()}" />
+			<rich:spacer width="10" />
+			<a:commandButton rendered="#{reanudarInclusion.seguridadEstudio.estudioEntidadActivo.estudio.estadoEstudio.codigo == 8}" value="#{messages.cancelar}" style="margin:0px;"
+				action="cancelar" immediate="true" />
+				<a:commandButton rendered="#{reanudarInclusion.seguridadEstudio.estudioEntidadActivo.estudio.estadoEstudio.codigo != 8}" value="#{messages.Salir}" style="margin:0px;"
+				action="cancelar" immediate="true" />
+		</div>
+
+
+
+	</h:form>
+	<ui:include
+		src="/modEnsayo/ensayo_conduccion/codebase/plantillas/AdvertenciaReanudarInclusion.xhtml">
+		<ui:param name="control" value="#{reanudarInclusion}" />
+	</ui:include>
+</s:div>

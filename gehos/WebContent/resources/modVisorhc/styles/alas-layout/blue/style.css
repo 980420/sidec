@@ -1,0 +1,491 @@
+/*Prueba Vladimir: esta es una prueba para montar estilos a partir del xsl*/
+body {
+	padding: 0px;
+	margin: 0px;
+	spacing: 0px;
+}
+
+/*
+ *Estilos para Panel
+ */
+.panel {
+    -moz-border-radius: 4px 4px 4px 4px;
+    -webkit-border-radius: 4px 4px 4px 4px;
+    border-radius: 4px 4px 4px 4px;
+    
+    -moz-box-shadow: 0px 3px 5px #B1B1B1;
+    -webkit-box-shadow: 0px 3px 5px #B1B1B1;
+    box-shadow: 0px 3px 5px #B1B1B1;
+    border: 1px solid #aeaeae;
+    
+    
+}
+.panel2 {
+    -moz-border-radius: 4px 4px 4px 4px;
+    -webkit-border-radius: 4px 4px 4px 4px;
+    border-radius: 4px 4px 4px 4px;
+    
+    -moz-box-shadow: 0px 3px 5px #B1B1B1;
+    -webkit-box-shadow: 0px 3px 5px #B1B1B1;
+    box-shadow: 0px 3px 5px #B1B1B1;
+    border: 1px solid #aeaeae;
+    margin-top:13px;
+    
+    
+}
+.imgPatient
+{
+	    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    border-radius: 5px 5px 5px 5px;
+      border: 1px solid #b1b1b1;
+}
+
+/*Para presentar los headers de los paneles*/
+.panelHeader {
+    -moz-border-radius: 2px 2px 2px 2px;
+    background: url("../../../../modVisorhc/images/headerC2.png") repeat-x scroll 0 0 transparent;
+    border-bottom: 1px solid #CFCFCF;
+    color: #000000;
+    font-family: Verdana,Arial,sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 4px;
+    text-align: left;
+}
+
+.panelContent {
+	padding: 13px 8px 8px;
+	border: 0px;
+	spacing: 0px;
+	margin: 0px;
+}
+.panelContent2 {
+	padding: 5px 8px 8px;
+	border: 0px;
+	spacing: 0px;
+	margin: 0px;
+}
+
+
+/*
+ *Estilos para los textos
+*/
+.dataText {
+	font-family: Verdana !important;
+	font-size: 10px !important;
+	color: #5c5c5c !important;
+	padding: 0px;
+	margin: 0px;
+	white-space: nowrap;
+}
+
+.dataText2 {
+	font-family: Verdana !important;
+	font-size: 10px !important;
+	color: #5c5c5c !important;
+	padding: 0px;
+	margin: 0px;
+}
+.normalText {
+	font-family: Verdana,sans-serif;
+	font-size: 10px !important;
+	color: #000000 !important;
+	padding: 0px;
+	margin: 0px;
+	white-space: nowrap;
+}
+.normalText2 {
+	font-family: Verdana,sans-serif;
+	font-size: 10px !important;
+	color: #000000 !important;
+	padding: 0px;
+	margin: 0px;
+}
+
+.title {
+	font-family: Verdana !important;
+	font-weight: bold;
+	font-size: 11px;
+}
+
+/*
+ *Contenedores de texto
+*/
+textarea {
+	border: 1px solid #BBBBBB;
+	font-size: 10px;
+	font-family: Verdana, sans-serif;
+	background: #ffffff;
+	color: black;
+}
+
+/*
+*Estilos para la construccion de las listas
+*/
+
+.listTable {
+	width: 100%;
+	border-top: 1px solid #C0C0C0;
+	border-left: 1px solid #C0C0C0;
+	cellspacing: 0px;
+	cellpadding: 0px;
+	padding: 0px;
+}
+
+.listHeader {
+	background:
+		url(../../../../modVisorhc/images/headerC2.png)
+		repeat-x;
+	font-family: Verdana !important;
+	background-color:#e4e3e3;
+	font-weight: bold;
+	font-size: 11px;
+	text-align: left;
+	border: 0px;
+}
+
+.list_td_Header {
+	border: 1px solid #C0C0C0;
+	padding: 4px;
+}
+.list_th_Header {background-color:#f3f3f3;}
+.dr-table-row:hover {
+    background-color: #FDEAA1;
+    background-image: url(../../../../modVisorhc/images/tableHover.png);
+    background-repeat: repeat-x;
+}
+.list_td_First {
+	border-right: 1px solid #C0C0C0;
+	border-left: 1px solid #C0C0C0;
+	border-bottom: 1px solid #C0C0C0;
+	padding: 4px;
+}
+
+.list_td {
+	border-right: 1px solid #C0C0C0;
+	border-bottom: 1px solid #C0C0C0;
+	padding: 4px;
+}
+
+list_tr {
+	cursor: pointer;
+}
+
+/*
+ *Estilos para tablas
+*/
+.table {
+	padding: 0px;
+	cellspacing: 0px;
+	cellpadding: 0px;
+	border: 0px;
+}
+
+.tableInt {
+	padding: 0px;
+	cellspacing: 0px;
+	cellpadding: 0px;
+	border: 0px;
+}
+
+.cdaTable {
+	width: 100%;
+}
+
+.td {
+	vertical-align: bottom;
+}
+
+.tr {
+	vertical-align: bottom;
+}
+
+
+
+/*Para poner un espacio despues de una etiqueta
+en un par etiqueta-componente donde cada uno esta
+en una columna 
+*/
+.tdSepGran {
+	padding: 0px 24px 3px 0px;
+	margin: 0px !important;
+	spacing: 0px !important;
+}
+
+/*Para poner un espacio despues de un
+componente que a continuacion lleva un par
+etiqueta-componente
+*/
+.tdSepPeq {
+	padding: 0px 0px 3px 0px;
+	margin: 0px !important;
+}
+
+/*Para el td de la imagen*/
+.tdImagen {
+	padding: 4px 7px 0px 1px !important;
+	margin-left:  1px;
+	
+}
+
+/*Termina prueba Vladimir*/
+	/*************************************************************/
+	/*General para las tablas*/
+.Tabla {
+	border: 0px;
+	vertical-align: top;
+	text-align: left;
+	padding: 0px;
+	spacing: 0px;
+}
+
+/*Para el margen*/
+.margenSupIzq {
+	padding-right: 8px;
+	padding-top: 11px;
+	padding-bottom: 13px;
+	padding-left: 8px;
+}
+
+/*Para poner un espacio pequenno entre filas
+recomendado para cuando se pone una etiqueta
+y debajo un componente de entrada de datos
+*/
+.filSepPeq {
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+.filSepPeq1 {
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+.filSepPeq td {
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+/*Para poner un espacio despues de una etiqueta
+en un par etiqueta-componente donde cada uno esta
+en una columna 
+*/
+.colSepGran {
+	padding-right: 25px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+/*Para poner un espacio despues de un
+componente que a continuacion lleva un par
+etiqueta-componente
+*/
+.colSepPeq {
+	padding-right: 7px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	spacing: 0px;
+}
+
+.colSepPeq1 {
+	padding-right: 9px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: top;
+	spacing: 0px;
+}
+
+.colSepImg {
+	padding-right: 6px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+/*Para poner un espacio grande entre filas
+*/
+.filSepGran td {
+	padding-bottom: 5px;
+	vertical-align: top;
+}
+
+.filSepGranRA td {
+	padding-bottom: 4px;
+	vertical-align: top;
+}
+
+/*Para alinear a la derecha, útil
+en los facet footer 
+*/
+.alineacionDerecha {
+	text-align: right;
+	align: right;
+}
+
+.alineacionCentrada {
+	text-align: center;
+	align: center;
+}
+
+/*Estilos para suprimir los espaciados
+ en los simpleTogglePanel */
+.rich-stglpanel {
+	padding: 0px;
+	margin: 0px;
+	spacing: 0px;
+}
+
+.rich-stglpanel-body {
+	padding: 0px;
+	margin: 0px;
+	spacing: 0px;
+	border: 0px;
+}
+
+.rich-panel {
+	padding: 0px;
+	margin: 0px;
+	spacing: 0px;
+}
+
+.rich-panel-body {
+	padding: 0px;
+	margin: 0px;
+	spacing: 0px;
+}
+
+.panel-reporte {
+	padding: 0px;
+	margin: 0px;
+	spacing: 0px;
+}
+
+.cuerpo-panel-reporte {
+	padding: 0px;
+	margin: 0px;
+	spacing: 0px;
+	border: 0px;
+}
+
+.rich-calendar-button {
+	width: 16px;
+	height: 16px;
+}
+
+.rich-calendar-input {
+	margin: 0px 0px 0px 0px;
+	border: 0px 0px 0px 0px;
+	spacing: 0px 0px 0px 0px;
+}
+
+.anchoColHora {
+	width: 60px;
+}
+
+.selectOneRadio {
+	padding: 0px;
+	margin: 0px;
+	spacing: 0px;
+	border: 0px;
+}
+
+/*
+Para eliminar los espacios del Modal panel
+*/
+.rich-modalpanel {
+	padding: 0px;
+	margin: 0px;
+	spacing: 0px;
+}
+
+.rich-mpnl-body {
+	padding: 0px;
+	margin: 0px;
+	spacing: 0px;
+}
+
+/*Estilos para suprimir los espaciados
+ en los tabPanel */
+.dr-tbpnl.cntnt {
+	padding: 0px;
+	margin: 0px;
+	spacing: 0px;
+}
+
+.rich-tabpanel-content {
+	padding: 0px;
+	margin: 0px;
+	spacing: 0px;
+}
+a{
+    color: #185187;
+    font-family: verdana !important;
+    font-size: 10px !important;
+    text-decoration: none;
+	
+}
+a:hover{
+    color: #0f73d0;
+    font-weight: bold;
+	
+}
+.span1
+{
+	color: #000000;
+	cursor: default;
+	display: inline-block;
+	margin: 2px;
+	padding: 0 1px;
+	vertical-align: top;
+	min-width:200px;
+	border-radius:5px 5px 5px 5px;
+	background-color:#f4f4f4;
+	border: 1px solid #E9E9E9;
+	
+	
+}
+.span2
+{
+	display: inline-block;
+	padding: 0px 2px 7px 5px;	
+}
+h1
+{
+	font-size:11px;
+	font-family:Verdana;
+	margin-bottom: 0;
+	margin-top: 5px;
+}
+p
+{	margin-bottom: 0;
+	margin-top: 0;
+	font-size:11px;
+	font-family:Verdana;
+}

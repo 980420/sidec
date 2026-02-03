@@ -1,0 +1,491 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+      xmlns:a="http://richfaces.org/a4j"
+      template="#{theme.template}"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:c="http://java.sun.com/jstl/core" >
+                
+<ui:define name="body" >
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+	<style type="text/css">.rich-stglpanel-body{padding:0px}</style>
+	<style type="text/css">.rich-panel-body{padding:0px}</style>
+	<style>
+		.functpanelbody{padding:0px;}
+		.functpanelbody2{padding:5px;}
+		.dr-mpnl-pnl-b{
+			padding:1px; 
+		}
+		.dr-mpnl-pnl{
+	   		border: 1px !important; 
+	   		border-style :solid !important; 
+	   		border-color: #BED6F8 !important;
+		}
+		.custom-error {
+			border: 1px solid #FFCC00;
+			padding: 5px;
+			background-color: #F0F8FF;
+			font-size: 10px;
+			font-family: "Verdana";
+			position: relative;	left: 5px; top: 5px; 
+			margin-right: 10px;
+		}	
+		</style>
+	<script type="text/javascript" language="javascript">
+	// <![CDATA[
+		function saveActionActive(active){
+	        if(active == false){
+		        document.getElementById("salvarAnchor").style.color = "#ACA899";
+		        document.getElementById("salvarAnchor").onclick = function() {  
+			  		return false;
+		      	}
+	        }
+	        else{
+		        document.getElementById("salvarAnchor").style.color = "";
+		        document.getElementById("salvarAnchor").onclick = function() {  
+		        	changes = frames["camasFrame"].getChanges(true);
+		        	changeImages();
+		        	saveCamasDistribution(changes);
+		        	changeIframeVisibilityWithoutHiding(true);
+		        	window.setTimeout(changeBack, 500);
+		        	return false;
+	            }
+			}
+	    }
+	    function changeImages(){
+        	document.getElementById("camasForm:stopimg").style.display="none";
+        	document.getElementById("camasForm:startimg").style.display="block";
+	    }
+	    function changeBack(){
+			document.getElementById("camasForm:stopimg").style.display="block";
+        	document.getElementById("camasForm:startimg").style.display="none";
+	        document.getElementById("salvarAnchor").style.color = "#ACA899";
+	        document.getElementById("salvarAnchor").onclick = function() {  
+		  		return false;
+	      	}
+	    }
+	    function changeIframeVisibilityWithoutHiding(visible){
+			if(visible){
+				frames["camasFrame"].updateWithoutHiding();
+				document.getElementById('iframediv').style.display='block';
+			}		  
+			else{
+				document.getElementById('iframediv').style.display='none';
+			}  
+	    }	
+	    function changeIframeVisibility(visible){
+			if(visible){
+				frames["camasFrame"].update();
+				document.getElementById('iframediv').style.display='block';
+			}		  
+			else{
+				document.getElementById('iframediv').style.display='none';
+			}  
+	    }	
+	    function initialVisibility(){
+			if(document.getElementById("selectedItemDiv").innerHTML == "ubicacion"){
+				document.getElementById('iframediv').style.display='block';
+			}		    
+	    }    
+	// ]]>
+	</script>
+	
+	<rich:hotKey key="esc" handler="changeIframeVisibility(false); subir()"/>
+
+	<a:form>
+	</a:form>
+		
+	<h:form id="camasForm">
+	<a:jsFunction name="subir" ajaxSingle="true" status="funcSelectedStatus"
+		reRender="settingsdiv, detailspanelheader, 
+				  errorOutputPanel, modalpanelsdiv" 
+		data="#{camasManager.showMapa()}"
+		onbeforedomupdate="changeIframeVisibility(data)"
+		action="#{camasManager.subir()}">
+	</a:jsFunction>
+	
+	<a:outputPanel ajaxRendered="true" id="errorOutputPanel">
+		<s:div style="height:30px;width:100%"
+			rendered="#{facesMessages.getCurrentMessagesForControl('error').size() > 0 }">
+			<div class="custom-error">
+				<rich:message for="error"></rich:message>
+			</div>	
+		</s:div>
+	</a:outputPanel>
+	
+	<a:status id="blockingStatus" rendered="false"
+			  onstart="document.body.style.cursor='wait'; 
+			  			Richfaces.showModalPanel('ajaxLoadingModalBox',{left:1, top:-15});" 
+ 			  onstop="document.body.style.cursor='default'; 
+ 			  			Richfaces.hideModalPanel('ajaxLoadingModalBox');">
+	</a:status>
+	
+	<rich:modalPanel id="ajaxLoadingModalBox" minHeight="10" minWidth="10" 
+	        height="10" width="10" zindex="2000" >
+	</rich:modalPanel> 	
+		
+	<a:jsFunction name="saveCamasDistribution" ajaxSingle="true" limitToList="true"
+		action="#{camasManager.saveCamasDistribution()}">
+		<a:actionparam name="changes" assignTo="#{camasManager.camasDistributionChanges}" />
+	</a:jsFunction>
+	
+	<a:keepAlive beanName="camasManager" />
+	
+	
+	<table width="100%" cellpadding="5px" cellspacing="0px" style="vertical-align: top;">
+		<tr>
+
+		<td style="vertical-align: top; width: 40%;">
+			<rich:panel  bodyClass="functpanelbody2">
+				<f:facet name="header" >
+					<a:status stopText="#{messages.ubiccamas}" for="functsstree"
+							  startText="#{messages.start}" id="funcstatus"></a:status>
+				</f:facet>
+				<div style="border: 1px;" > 
+				<a:region id="functsstree" >
+				<a:outputPanel ajaxRendered="true">
+				
+				<rich:dragIndicator id="treeDragIndicator">
+			        <f:facet name="single">
+			        	<h:panelGrid columns="2">
+				            <h:graphicImage  styleClass="indicatorPicture" value="/{iconname}" />
+				            <h:outputLabel value="{label}" />
+			        	</h:panelGrid>
+			        </f:facet>
+				</rich:dragIndicator>
+				<div style="position: relative; top:-2px;">
+				<s:div style="margin-left:1px; ">
+					<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+						<h:graphicImage
+							value="/resources/funcionalidadesIcons/configuracion/camas.png"
+							height="18" />
+						<a:commandLink
+							action="#{camasManager.setSelectedItem(null, null)}"
+							value="Camas por ubicaciones" style="margin-left:1px;"
+							status="funcSelectedStatus" ajaxSingle="true"
+							reRender="settingsdiv, errorOutputPanel, detailspanelheader" 
+							eventsQueue="camasqueue"
+							onmouseup="changeIframeVisibility(false)" 
+							timeout="2000" />
+					</h:panelGrid>
+				</s:div>
+				
+				<rich:tree  changeExpandListener="#{camasManager.treeBuilder.OnNodeCollapseExpand}"
+							value="#{camasManager.treeBuilder.treeData}"
+							switchType="ajax" preserveModel="state" preserveDataInRequest="true"
+							treeNodeVar="treenode"     dragIndicator="treeDragIndicator"
+							style="width:200px"        nodeFace="#{node.toString()}"
+							var="node" id="functree"   dropListener="#{camasManager.processDrop}"
+							componentState="#{treeStateController.camasTreeState}" >
+					
+						<rich:treeNode type="entidad"
+							icon="#{modulosPorEntidadManager.entidadIcon(node.value)}"
+							iconLeaf="#{modulosPorEntidadManager.entidadIcon(node.value)}">
+								<a:commandLink value="#{node.value.nombre}"
+									status="funcSelectedStatus" 
+									limitToList="true"
+									ajaxSingle="true" immediate="true"
+									event="onclick" eventsQueue="camasqueue"
+									action="#{camasManager.setSelectedItem(node, treenode)}"
+									reRender="settingsdiv, detailspanelheader, 
+											  errorOutputPanel, modalpanelsdiv" 
+									onmouseup="changeIframeVisibility(false)"  
+									timeout="2000">
+								</a:commandLink>
+						</rich:treeNode>
+						
+						<rich:treeNode type="ubicacion" acceptedTypes="cama"
+							icon="/resources/modCommon/ubicacionesimages/#{node.value.tipoUbicacion.icono}"
+							iconLeaf="/resources/modCommon/ubicacionesimages/#{node.value.tipoUbicacion.icono}"	>
+								<a:commandLink value="#{node.value.tipoUbicacion.descripcion} #{node.value.identificador}"
+									status="funcSelectedStatus" 
+									limitToList="true"
+									ajaxSingle="true" immediate="true"
+									event="onclick" eventsQueue="camasqueue"
+									action="#{camasManager.setSelectedItem(node, treenode)}"
+									reRender="settingsdiv, detailspanelheader, 
+											  errorOutputPanel, modalpanelsdiv" 
+									onmouseup="changeIframeVisibility(false)" 
+									data="#{camasManager.showMapa()}"
+									onbeforedomupdate="changeIframeVisibility(data)" 
+									timeout="2000">
+								</a:commandLink>
+								<rich:dndParam name="label" type="drag" value="#{node.value.tipoUbicacion.descripcion} #{node.value.identificador}" />
+								<rich:dndParam name="iconname" type="drag" value="#{node.value.tipoUbicacion.icono}" />
+						</rich:treeNode>
+
+						<rich:treeNode dragType="cama" type="cama"
+							icon="/resources/modConfiguracion/camas.png"
+							iconLeaf="/resources/modConfiguracion/camas.png">
+								<a:commandLink rendered="true" timeout="2000"
+									action="#{camasManager.putCamaToModify(node.value)}"
+									oncomplete="modifySeletedCama()" ajaxSingle="true"
+									view="/modConfiguracion/departamentos/clinicos/home.xhtml"
+									style="cursor:pointer;" 
+									onclick="this.style.cursor='wait'">
+									C#{node.value.tipoCama.codigo}#{node.value.descripcion}								
+								</a:commandLink>
+								<rich:dndParam name="label" type="drag" value="C#{node.value.tipoCama.codigo}#{node.value.descripcion}" />
+								<rich:dndParam name="iconname" type="drag" value="resources/modConfiguracion/camas.png" />
+						</rich:treeNode>
+
+				</rich:tree>
+				</div>
+				</a:outputPanel>
+				</a:region>
+				</div>
+			</rich:panel>	
+		</td>
+	
+		<td style="vertical-align: top; width: 60%;">
+			<a:region >
+			<a:outputPanel >
+			<rich:panel bodyClass="functpanelbody" id="childfuncspanel">
+				<f:facet name="header">
+					<s:div id="detailspanelheader">
+						<s:div rendered="#{camasManager.selectedItem == null}">
+							#{messages.entidades}
+						</s:div>
+						<s:div rendered="#{camasManager.selectedItem.toString() == 'entidad'}">
+							<h:panelGrid columns="3" cellpadding="0" cellspacing="0">
+								<h:graphicImage
+									value="#{modulosPorEntidadManager.entidadIcon(camasManager.selectedItem.value)}"
+									height="16" width="16" />
+								<rich:spacer width="1"/>	
+								<h:outputLabel 
+									value="#{camasManager.selectedItem.value.nombre}" />
+							</h:panelGrid>					
+						</s:div>
+						<s:div rendered="#{camasManager.selectedItem.toString() == 'ubicacion'}">
+							<h:panelGrid columns="3" cellpadding="0" cellspacing="0">
+								<h:graphicImage
+									value="/resources/modCommon/ubicacionesimages/#{camasManager.selectedItem.value.tipoUbicacion.icono}"
+									height="16" width="16" />
+								<rich:spacer width="3"/>	
+								<h:outputLabel 
+									value="#{camasManager.getIdfromRules(camasManager.selectedItem)}" />
+							</h:panelGrid>					
+						</s:div>
+					</s:div>
+				</f:facet>
+				
+				<a:status id="funcSelectedStatus" forceId="true" 
+					  onstart="Richfaces.showModalPanel('ajaxLoadingModalBox',{left:1, top:-15});
+					  		   javascript:document.getElementById('camasForm:settsdiv').style.display = 'none';
+					  		   javascript:document.getElementById('camasForm:loadingdiv').style.display = ''"
+					  onstop="Richfaces.hideModalPanel('ajaxLoadingModalBox');
+					  		  javascript:document.getElementById('camasForm:loadingdiv').style.display = 'none';
+					  		  javascript:document.getElementById('camasForm:settsdiv').style.display = ''">
+				  <f:facet name="start">
+				  </f:facet>
+			    </a:status>
+			    <s:div id="loadingdiv" style="text-align: center; width: 100%; display:none;">
+				  <br/>
+					 <h:graphicImage url="/resources/icons/default/acciones/loading_small.gif" />
+				  <br/><br/>	 
+				</s:div>	 
+				<s:div id="settsdiv">
+			    <s:div id="settingsdiv" style="display: inline;">
+					<s:div rendered="#{camasManager.selectedItem == null}">
+						<h:dataTable value="#{camasManager.entidades()}"
+							var="entidad" border="1" columnClasses="strech, nostrech"
+							style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+							cellspacing="0" cellpadding="0"
+							rowClasses="dr-table-firstrow2">											
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">#{messages.nombreSinDosPuntos}</div>
+								</f:facet>
+								<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+									<h:graphicImage
+										value="#{modulosPorEntidadManager.entidadIcon(entidad)}"
+										height="16" width="16" style="margin: 2px 2px 2px 2px;"  />
+									<a:commandLink 
+										ajaxSingle="true"
+										reRender="settingsdiv, detailspanelheader" limitToList="true"
+										value="#{entidad.nombre}" status="funcSelectedStatus"
+										action="#{camasManager.setSelectedItem(entidad)}"
+										style="color: #0F5FB9;" 
+										timeout="2000" />
+								</h:panelGrid>
+							</h:column>
+						</h:dataTable>
+					
+					</s:div>
+					
+					<s:div rendered="#{camasManager.selectedItem.toString() == 'ubicacion' and not camasManager.showMapa()}">
+					<div align="right"><table style="width: 100%; vertical-align: top;"><tr valign="top"><td align="right">
+						<h:panelGrid columns="2" cellpadding="0" cellspacing="0" >
+							<h:graphicImage height="12" width="12"
+								value="/resources/icons/default/acciones/adicionar.png" />
+							<h:outputLink value="#" 
+								style="margin-left: 2px; margin-bottom: 4px; margin-top: 2px;">
+								Adicionar cama
+								<a:support event="onclick" limitToList="true"
+									ajaxSingle="true"
+									reRender="modalpanelsdiv"
+									oncomplete="javascript:Richfaces.showModalPanel('agregar_cama', {width: '166px', height: '96px', 'departamento': '#{departamentosYServiciosManager.selectedItem.value.nombre}' } )" />
+							</h:outputLink>
+						</h:panelGrid>
+					  </td></tr></table></div>
+					</s:div>
+					
+					<s:div rendered="#{camasManager.selectedItem.toString() == 'entidad'}">
+						<h:dataTable value="#{camasManager.ubicacionesDeEntidadSeleccionada()}"
+							var="ubic" border="1" columnClasses="strech, nostrech"
+							style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+							cellspacing="0" cellpadding="0"
+							rowClasses="dr-table-firstrow2">											
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">#{messages.ubiccamas}</div>
+								</f:facet>
+								<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+									<h:graphicImage
+										value="/resources/modCommon/ubicacionesimages/#{ubic.tipoUbicacion.icono}"
+										height="16" width="16" style="margin: 2px 2px 2px 2px;" />
+									<a:commandLink 
+										ajaxSingle="true"
+										reRender="settingsdiv, detailspanelheader" limitToList="true"
+										value="#{ubic.tipoUbicacion.descripcion} #{ubic.identificador}" 
+										status="funcSelectedStatus"
+										action="#{camasManager.setSelectedItem(ubic)}"
+										style="color: #0F5FB9;" 
+										onmouseup="changeIframeVisibility(false)" 
+										data="#{camasManager.showMapa()}"
+										onbeforedomupdate="changeIframeVisibility(data)" 
+										timeout="2000" />
+								</h:panelGrid>
+							</h:column>
+						</h:dataTable>
+					</s:div>	
+					<div id="selectedItemDiv" style="display: none;">#{camasManager.selectedItem.toString()}</div>
+					<s:div rendered="#{camasManager.selectedItem.toString() == 'ubicacion'}">
+						<c:set var="ubicHijas" value="#{camasManager.ubicacionesHijasDeUbicacionSeleccionada()}" />
+						
+						<h:dataTable value="#{ubicHijas}" rendered="#{ubicHijas.size() > 0}"
+							var="ubic" border="1" columnClasses="strech, nostrech"
+							style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+							cellspacing="0" cellpadding="0"
+							rowClasses="dr-table-firstrow2">											
+							<h:column>
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">#{messages.ubiccamashijas}</div>
+								</f:facet>
+								<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+									<h:graphicImage
+										value="/resources/modCommon/ubicacionesimages/#{ubic.tipoUbicacion.icono}"
+										height="16" width="16" style="margin: 2px 2px 2px 2px;" />
+									<a:commandLink 
+										ajaxSingle="true"
+										reRender="settingsdiv, detailspanelheader" limitToList="true"
+										value="#{ubic.tipoUbicacion.descripcion} #{ubic.identificador}" 
+										status="funcSelectedStatus"
+										action="#{camasManager.setSelectedItem(ubic)}"
+										style="color: #0F5FB9;" 
+										onmouseup="changeIframeVisibility(false)" 
+										data="#{camasManager.showMapa()}"
+										onbeforedomupdate="changeIframeVisibility(data)" 										
+										timeout="2000"/>
+								</h:panelGrid>
+							</h:column>
+						</h:dataTable>
+					</s:div>		
+			    </s:div>
+			    
+				<div id="iframediv" style="display: none;">
+					<div align="right">
+					  <table style="width: 100%; vertical-align: top;"><tr valign="top"><td align="right">
+						<h:panelGrid columns="3" cellpadding="0" cellspacing="0">		
+							<s:div  >
+								<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+									<h:graphicImage height="12" width="12"
+										value="/resources/icons/default/acciones/adicionar.png" />
+									
+									<h:outputLink value="#" 
+										style="margin-left: 2px; margin-bottom: 4px; margin-top: 2px;">
+										Adicionar cama
+										<a:support event="onclick" limitToList="true"
+											ajaxSingle="true"
+											reRender="modalpanelsdiv"
+											oncomplete="javascript:Richfaces.showModalPanel('agregar_cama', {width: '166px', height: '96px', 'departamento': '#{departamentosYServiciosManager.selectedItem.value.nombre}' } )" />
+									</h:outputLink>							
+								</h:panelGrid>
+							</s:div>
+						
+							<s:div style="margin-left: 8px;">
+								<h:graphicImage id="stopimg" height="12" width="12"
+									style="position:relative; top:0px;"
+									value="/resources/modConfiguracion/filesave.png" />
+								<h:graphicImage id="startimg" style="display:none;"
+									url="/resources/icons/default/acciones/loading_small.gif" />
+							</s:div>
+							<a href="#" id="salvarAnchor"
+								style="color:#ACA899; margin-left: 2px; margin-bottom: 4px; margin-top: 2px;"
+								onclick="">
+								#{messages.salvardistro} 
+							</a>								
+						</h:panelGrid>
+					  </td></tr></table>
+					</div>
+					<div style="background-color: ##{theme.headercolor}; cursor: default; border: 1px solid #d0d7e5;">
+						<strong>#{messages.mapacamas}</strong>
+					</div>
+					<iframe id="camasFrame" name="camasFrame" 
+						src="#{facesContext.externalContext.requestContextPath}/modConfiguracion/camas/camas_por_entidad/camas_map.gehos?#{manager.conversationIdParameter}=#{conversation.id}"
+						style="border: 0px; width: 100%; height: 500px; padding: 0px;">
+					</iframe>
+				</div>
+			    </s:div>
+			</rich:panel>
+			</a:outputPanel>
+			</a:region>
+		</td>
+		</tr>
+	</table>
+	
+	<a:jsFunction name="showModalPanelEditarCama" reRender="modalpanelsdiv" 
+			limitToList="true" ajaxSingle="true" immediate="true" 
+			oncomplete="Richfaces.showModalPanel('editar_cama');">
+	</a:jsFunction>
+	</h:form>
+
+	<script type="text/javascript" language="javascript">
+	// <![CDATA[
+		function deleteSeletedCama(){
+			Richfaces.showModalPanel('eliminar_cama_panel');
+		}
+		function modifySeletedCama(){
+			showModalPanelEditarCama();
+		}
+	// ]]>
+	</script>
+	
+	<s:div id="modalpanelsdiv" >
+	
+		<ui:include src="/modConfiguracion/camas/camas_por_entidad/modalpanels/agregar_camas.xhtml" />
+	
+		<ui:include src="/modConfiguracion/camas/camas_por_entidad/modalpanels/editar_camas.xhtml" />
+	
+		<ui:include src="/modConfiguracion/camas/camas_por_entidad/modalpanels/confirmar_eliminar_cama.xhtml" />
+	
+	</s:div>
+	
+	<script type="text/javascript" language="javascript">
+	// <![CDATA[
+		initialVisibility();
+	// ]]>
+	</script>
+	
+	<s:span id="error"></s:span>
+</ui:define>
+
+</ui:composition>
+
+
+

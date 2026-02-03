@@ -1,0 +1,303 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j" 
+                template="#{theme.template}">
+                
+<ui:define name="body" >
+    <script type="text/javascript">setContentTitle('Crear usuario')</script>
+    <style type="text/css">
+        .rich-panel-body{padding-top:11px; padding-left:6px; padding-bottom:4px !important;}
+        .table{border:0px; padding:0px !important; margin:0px;}
+    </style>
+	<h:form>
+	    <rich:panel with="100%">
+	        <f:facet name="header"><h:outputLabel value="Datos como funcionario"/></f:facet>
+	        <table>
+	            <tr>
+	                <td>
+	                    <h:outputLabel value="Nombre: "/>
+	                </td>
+	                <td width="25px;"></td>
+	                <td>
+	                    <h:outputLabel value="Primer apellido: "/>
+	                </td>
+	            </tr>
+	            <tr>
+	                <td>
+	                    <h:inputText id="nombre" value=""/>
+	                </td>
+	                <td width="25px;"></td>
+	                <td>
+	                    <h:inputText id="primer_apellido" value=""/>
+	                </td>
+	            </tr>
+	            <tr>
+	                <td>
+	                    <h:outputLabel value="Segundo apellido: "/>
+	                </td>
+	                <td width="25px;"></td>
+	                <td>
+	                    <h:outputLabel value="Fecha de nacimiento: "/>
+	                </td>
+	            </tr>
+	            <tr>
+	                <td>
+	                    <h:inputText id="segundo_apellido" value=""/>
+	                </td>
+	                <td width="25px;"></td>
+	                <td>
+	                    <rich:calendar></rich:calendar>
+	                </td>
+	            </tr>
+	            <tr>
+	                <td>
+	                    <h:outputLabel value="C&#233;dula: "/>
+	                </td>
+	                <td width="25px;"></td>
+	                <td>
+	                    <h:outputLabel value="Tipo de c&#233;dula: "/>
+	                </td>
+	            </tr>
+	            <tr>
+	                <td>
+	                    <h:inputText id="cedula" value=""/>
+	                </td>
+	                <td width="25px;"></td>
+	                <td>
+	                    <h:selectOneMenu value="">
+	                        <f:selectItem itemValue="1" itemLabel="&lt;Seleccione&gt;" />
+	                        <f:selectItem itemValue="2" itemLabel="Venezolana" />
+	                        <f:selectItem itemValue="3" itemLabel="Extranjera" />
+	                    </h:selectOneMenu>
+	                </td>
+	            </tr>
+	            <tr>
+	                <td>
+	                    <h:outputLabel value="Pasaporte: "/>
+	                </td>
+	                <td width="25px;"></td>
+	                <td>
+	                    <h:outputLabel value="T&#233;lefono: "/>
+	                </td>
+	            </tr>
+	            <tr>
+	                <td>
+	                    <h:inputText id="direccion" value=""/>
+	                </td>
+	                <td width="25px;"></td>
+	                <td>
+	                    <h:inputText id="telefono" value=""/>
+	                </td>
+	            </tr>
+	            <tr>
+	                <td>
+	                    <h:outputLabel value="Cargo: "/>
+	                </td>
+	                <td width="25px;"></td>
+	                <td>
+	                    <h:outputLabel value="Direcci&#243;n particular: "/>
+	                </td>
+	            </tr>
+	            <tr>
+	                <td>
+	                    <h:inputText id="cargo" value=""/>
+	                </td>
+	                <td width="25px;"></td>
+	                <td>
+	                    <h:inputText id="passport" value=""/>
+	                </td>
+	                
+	            </tr>
+	            <tr>
+	                <td>
+	                  <h:outputLabel value="Foto: "/>
+	                </td>
+	                <td width="25px;"></td>
+	                <td>
+	                    <h:outputLabel value="Tipo de funcionario: "/>
+	                </td>
+	            </tr>
+	            <tr>
+	                <td>
+	                    <s:fileUpload data="Buscar" />
+	                </td>
+	                <td width="25px;"></td>
+	                <td>
+	                    <h:selectOneMenu value="">
+	                        <f:selectItem itemValue="1" itemLabel="&lt;Seleccione&gt;" />
+	                        <f:selectItem itemValue="2" itemLabel="M&#233;dico" />
+	                        <f:selectItem itemValue="3" itemLabel="Enfermero" />
+	                        <f:selectItem itemValue="4" itemLabel="Bioanalista" />
+	                        <f:selectItem itemValue="5" itemLabel="Otro" />
+	                    </h:selectOneMenu>
+	                </td>
+	            </tr>
+	            <tr>
+	                <td colspan="3">
+	                    <rich:listShuttle sourceValue="#{roleList_security.resultList}"
+
+				            var="linea"  sourceCaptionLabel="Servicios del hospital" 
+				            targetCaptionLabel="Servicios del funcionario"
+				            
+				           	showButtonLabels="false"
+				           	fastOrderControlsVisible="false"
+				           	orderControlsVisible="false"
+				           	
+				           	topControlLabel="Primero" 
+				            copyAllControlLabel="Copiar Todos"
+				            copyControlLabel="Copiar"
+				            downControlLabel="Bajar"
+				            upControlLabel="Subir"
+				            removeAllControlLabel="Eliminar Todos"
+				            removeControlLabel="Eliminar"
+				            bottomControlLabel="&#218;ltimo">
+				            <rich:column>
+				                <h:outputText value="#{linea}"/>
+				            </rich:column>
+	                    </rich:listShuttle>
+	                </td>	              
+	            </tr>
+	        </table>
+	    </rich:panel>
+	    <rich:panel with="100%">
+	        <f:facet name="header"><h:outputLabel value="Datos como usuario"/></f:facet>
+	        <table>
+	            <tr>
+	                <td>
+	                    <table>
+	                        <tr>
+				                <td colspan="3">
+				                    <h:outputLabel value="Usuario: "/>
+				                </td>
+				            </tr>
+				            <tr>
+				                <td>
+				                    <h:inputText id="usuario" value=""/>
+				                </td>
+				                <td width="25px;"></td>
+				                <td>
+				                    <a href="#">Verificar nombre</a>
+				                </td>
+				            </tr>
+				            <tr>
+				                <td>
+				                    <h:outputLabel value="Contrase&#241;a: "/>
+				                </td>
+				                <td width="25px;"></td>
+				                <td>
+				                    <h:outputLabel value="Repetir contrase&#241;a: "/>
+				                </td>
+				            </tr>
+				            <tr>
+				                <td>
+				                    <h:inputSecret value=""></h:inputSecret>
+				                </td>
+				                <td width="25px;"></td>
+				                <td>
+				                    <h:inputSecret value=""></h:inputSecret>
+				                </td>
+				            </tr>
+				            <tr>
+				                <td colspan="3" valign="middle">
+				                    <h:selectBooleanCheckbox/><h:outputLabel value="Cuenta deshabilitada"/>
+				                </td>
+				            </tr>
+	                    </table>
+	                </td>
+	            </tr>
+	            <tr>
+	                <td colspan="3">
+	                    <rich:listShuttle sourceValue="#{roleList_security.resultList}"
+
+				            var="linea"  sourceCaptionLabel="Roles del sistema" 
+				            targetCaptionLabel="Roles del usuario"
+				            
+				           	showButtonLabels="false"
+				           	fastOrderControlsVisible="false"
+				           	orderControlsVisible="false"
+				           	
+				           	topControlLabel="Primero" 
+				            copyAllControlLabel="Copiar Todos"
+				            copyControlLabel="Copiar"
+				            downControlLabel="Bajar"
+				            upControlLabel="Subir"
+				            removeAllControlLabel="Eliminar Todos"
+				            removeControlLabel="Eliminar"
+				            bottomControlLabel="&#218;ltimo">
+				           <rich:column>
+				                <h:outputText value="#{linea}"/>
+				           </rich:column>
+	                    </rich:listShuttle>
+	                </td>
+	            </tr>
+	            <tr>
+	                <td colspan="3">
+	                    <a href="#">Adicionar role</a>
+	                </td>
+	            </tr>
+	        </table>
+	    </rich:panel>
+	    <rich:panel>
+	        <f:facet name="header"><h:outputLabel value="Datos como m&#233;dico"/></f:facet>
+	        <table>
+	            <tr>
+	                <td>
+	                    <h:outputLabel value="Mat. MPPS: "/>
+	                </td>
+	                <td width="25px;"></td>
+	                <td>
+	                    <h:outputLabel value="Mat. CM: "/>
+	                </td>
+	            </tr>
+	            <tr>
+	                <td>
+	                    <h:inputText id="registro" value=""/>
+	                </td>
+	                <td width="25px;"></td>
+	                <td>
+	                    <h:inputText />
+	                </td>
+	            </tr>
+	            <tr>
+	                <td>
+	                    <h:outputLabel value="Especialidad: "/>
+	                </td>
+	                <td width="25px;"></td>
+	                <td>
+	                    <h:outputLabel value="Fecha de graduaci&#243;n: "/>
+	                </td>
+	            </tr>
+	            <tr>
+	                <td>
+	                    <h:selectOneMenu value="">
+	                        <f:selectItem itemValue="1" itemLabel="&lt;Seleccione&gt;" />
+	                        <f:selectItem itemValue="2" itemLabel="Cardiologo" />
+	                        <f:selectItem itemValue="3" itemLabel="Urologo" />
+	                        <f:selectItem itemValue="4" itemLabel="Anestesista" />
+	                        <f:selectItem itemValue="5" itemLabel="Otro" />
+	                    </h:selectOneMenu>
+	                </td>
+	                <td width="25px;"></td>
+	                <td>
+	                    <rich:calendar></rich:calendar>
+	                </td>
+	            </tr>
+	        </table>
+	    </rich:panel>
+	    <table width="100%">
+	        <tr>
+			    <td align="right">
+				    <h:commandButton action="access" value="Aceptar"></h:commandButton>
+				    <a4j:commandButton value="Cancelar" onclick="history.back()"></a4j:commandButton>
+				</td>
+			</tr>
+	    </table>
+	</h:form>
+</ui:define>
+</ui:composition>

@@ -1,0 +1,608 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+	<script>
+                 function searchKeyPress(e) {
+                	  if (window.event) { e = window.event; }
+                	  if (e.keyCode == 13) {
+						  e.preventDefault();
+                		  buscarEnf();
+						  return false;
+                	  }
+                	}
+                	                 
+                 </script>
+	<a4j:region id="diagnosticoR">
+		<a4j:outputPanel id="diagnosticoOP">
+			<a4j:jsFunction name="cambiar"
+				action="#{modificarControlador.cieConsList_custom.cambiarBusqueda()}"
+				ajaxSingle="true" status="statSimple"
+				reRender="sugGrup, sugCat, sugSub, grupSug, CatSug, subSug, imgGrup, imgCat, imgSub">
+				<a4j:actionparam name="codigo"
+					assignTo="#{modificarControlador.cieConsList_custom.codigo}" />
+				<a4j:actionparam name="descripcion"
+					assignTo="#{modificarControlador.cieConsList_custom.descripcion}" />
+			</a4j:jsFunction>
+			<table cellpadding="0" cellspacing="0" width="100%">
+				<tr>
+					<td><script type="text/javascript">
+		    					function cambiarBA() {
+									var cod = document.getElementById("idForm:codBS").value;
+									var desc = document.getElementById("idForm:descBS").value;
+									document.getElementById("idForm:codBA").value = cod;
+									document.getElementById("idForm:descBA").value = desc;
+									cambiar(cod,desc);
+								}
+		    					function cambiarBS() {
+									var cod = document.getElementById("idForm:codBA").value;
+									var desc = document.getElementById("idForm:descBA").value;
+									document.getElementById("idForm:codBS").value = cod;
+									document.getElementById("idForm:descBS").value = desc;
+									cambiar(cod,desc);
+								}
+		    				</script> <a4j:region id="busquedaSimpleR">
+							<s:div id="busquedaSimple"
+								style="#{modificarControlador.cieConsList_custom.displayBN}">
+								<table cellpadding="0px" cellspacing="0px">
+									<tr class="row">
+										<td><h:outputText value="#{messages.lbl_codigo_ce}"
+												styleClass="normalText" /><br /> <h:inputText
+												onkeypress="searchKeyPress(event)" id="codBS"
+												styleClass="tbx"
+												value="#{modificarControlador.cieConsList_custom.codigo}" />
+										</td>
+										<td style="padding-left: 25px;"><h:outputText
+												value="#{messages.descripcionCES}" styleClass="normalText" /><br />
+											<h:inputText onkeypress="searchKeyPress(event)" id="descBS"
+												styleClass="tbx"
+												value="#{modificarControlador.cieConsList_custom.descripcion}" />
+										</td>
+										<td style="padding-left: 25px;" valign="top" width="150px">
+											<h:outputText value="#{messages.lbl_estructura_ce}"
+												styleClass="normalText" /><br /> <rich:comboBox
+												styleClass="cbx" enableManualInput="false"
+												value="#{modificarControlador.cieConsList_custom.estructura}"
+												suggestionValues="#{modificarControlador.cieConsList_custom.tiposCie}"
+												defaultLabel="#{messages.msg_seleccione}">
+											</rich:comboBox>
+										</td>
+										<td style="padding-left: 25px;" align="right" valign="bottom">
+
+										</td>
+									</tr>
+									<tr>
+										<td colspan="3" align="right"><rich:spacer height="3"
+												style="display:block" /> <a4j:jsFunction name="buscarEnf"
+												action="#{modificarControlador.cieConsList_custom.setSimpleSearch()}"
+												status="statSimple"
+												reRender="resultadoCie, listaCie, paginadoCie">
+											</a4j:jsFunction> <a4j:commandButton id="botonBS"
+												value="#{messages.searchBttnTitle_CE}"
+												action="#{modificarControlador.cieConsList_custom.setSimpleSearch()}"
+												status="statSimple"
+												reRender="resultadoCie, listaCie, paginadoCie"
+												style="margin-left:0px;margin-right:0px;margin-bottom:0px;" />
+											<rich:spacer height="2" style="display:block" /> <a
+											href="javascript:void(0);"
+											onclick="document.getElementById('idForm:busquedaAvanzada').style.display = 'block';document.getElementById('idForm:busquedaSimple').style.display = 'none';cambiarBA();">
+												<img
+												src="#{facesContext.externalContext.requestContextPath}/resources/icons/default/acciones/buscar.png"
+												border="0" height="12px" width="12px" /> <rich:spacer
+													width="2px" style="border:0px;" /> <h:outputText
+													value="#{messages.btn_bavanzada_ce}" />
+										</a></td>
+									</tr>
+								</table>
+							</s:div>
+						</a4j:region> <a4j:region id="busquedaAvanzadaR">
+							<a4j:outputPanel id="busquedaAvanzadaOP">
+								<s:div id="busquedaAvanzada"
+									style="#{modificarControlador.cieConsList_custom.displayBA}">
+									<a4j:jsFunction name="clearFields" reRender="busquedaAvanzada"
+										status="statSimple" />
+									<script type="text/javascript">
+					       				function disableFields() {
+										 	document.getElementById('idForm:botonBA').disabled = true;
+											document.getElementById('idForm:botonBS').disabled = true;									
+										}
+										
+										function enableFields() {
+											document.getElementById('idForm:botonBA').disabled = false;
+											document.getElementById('idForm:botonBS').disabled = false;		
+										}
+					       			</script>
+									<table cellpadding="0px" cellspacing="0px" id="paramsCie">
+										<tr>
+											<td style="padding-bottom: 8px" id="paramCapitulo"><h:outputText
+													value="#{messages.lbl_capitulo_ce}" styleClass="normalText" /><br />
+												<table border="0" cellpadding="0" cellspacing="0">
+													<tr>
+														<td><h:inputText styleClass="tbx" id="sugCap"
+																value="#{modificarControlador.cieConsList_custom.codCapitulo}">
+																<a4j:support event="onchange"
+																	action="#{modificarControlador.cieConsList_custom.buscarGrupos()}"
+																	status="statSimple"
+																	reRender="sugGrup, sugCat, sugSub, grupSug, CatSug, subSug, imgGrup, imgCat, imgSub" />
+															</h:inputText> <h:graphicImage
+																value="/resources/icons/default/acciones/searchInput.png"
+																onclick="#{rich:component('capSug')}.callSuggestion(true)"
+																style="cursor:pointer; padding-left:4px" alt=""
+																title="#{messages.searchBttnTitle_CE}" /> <rich:suggestionbox
+																height="200" width="400" status="statSimple"
+																suggestionAction="#{modificarControlador.cieConsList_custom.obtenerCapitulos}"
+																var="cap" id="capSug" for="sugCap"
+																fetchValue="#{cap.descripcion}"
+																nothingLabel="#{messages.notFound}">
+																<h:column>
+																	<h:outputText value="#{cap.descripcion}" />
+																</h:column>
+																<a4j:support event="onselect"
+																	action="#{modificarControlador.cieConsList_custom.buscarGrupos()}"
+																	reRender="sugGrup, sugCat, sugSub, grupSug,  CatSug, subSug, imgGrup, imgCat, imgSub" />
+															</rich:suggestionbox></td>
+													</tr>
+												</table></td>
+											<td valign="top"
+												style="padding-bottom: 8px; padding-left: 25px;"
+												id="paramGrupo"><h:outputText
+													value="#{messages.lbl_grupo_ce}" styleClass="normalText" /><br />
+												<table border="0" cellpadding="0" cellspacing="0">
+													<tr>
+														<td><h:inputText styleClass="tbx" id="sugGrup"
+																value="#{modificarControlador.cieConsList_custom.codGrupo}"
+																disabled="#{(empty modificarControlador.cieConsList_custom.codCapitulo or empty modificarControlador.cieConsList_custom.grupos) and empty modificarControlador.cieConsList_custom.codGrupo}">
+																<a4j:support event="onchange"
+																	action="#{modificarControlador.cieConsList_custom.buscarCategorias}"
+																	status="statSimple"
+																	reRender="sugCat, sugSub, CatSug, subSug, imgCat, imgSub" />
+															</h:inputText> <a4j:outputPanel id="imgGrup">
+																<h:graphicImage
+																	value="/resources/icons/default/acciones/searchInput.png"
+																	rendered="#{not empty modificarControlador.cieConsList_custom.codCapitulo and not empty modificarControlador.cieConsList_custom.grupos}"
+																	onclick="#{rich:component('grupSug')}.callSuggestion(true)"
+																	style="cursor:pointer; padding-left:4px"
+																	title="#{messages.searchBttnTitle_CE}" />
+																<h:graphicImage
+																	value="/resources/icons/default/acciones/searchInput.png"
+																	rendered="#{empty modificarControlador.cieConsList_custom.codCapitulo or empty modificarControlador.cieConsList_custom.grupos}"
+																	style="padding-left:4px; filter:alpha(opacity=50); -moz-opacity:0.5;-khtml-opacity: 0.5; opacity: 0.5;" />
+															</a4j:outputPanel> <rich:suggestionbox height="200" id="grupSug"
+																width="400" var="grup" fetchValue="#{grup.descripcion}"
+																suggestionAction="#{modificarControlador.cieConsList_custom.obtenerGrupos}"
+																for="sugGrup" onselect="grupSelect()"
+																status="statSimple" nothingLabel="#{messages.notFound}">
+																<h:column>
+																	<h:outputText value="#{grup.descripcion}" />
+																</h:column>
+															</rich:suggestionbox> <a4j:jsFunction name="grupSelect"
+																action="#{modificarControlador.cieConsList_custom.buscarCategorias()}"
+																reRender="sugCat, sugSub, CatSug, subSug,  imgCat, imgSub">
+															</a4j:jsFunction></td>
+													</tr>
+												</table></td>
+											<td valign="top"
+												style="padding-bottom: 8px; padding-left: 25px;"
+												id="paramCategoria"><h:outputText
+													value="#{messages.lbl_categoria_ce}"
+													styleClass="normalText" /><br />
+												<table border="0" cellpadding="0" cellspacing="0">
+													<tr>
+														<td><h:inputText styleClass="tbx" id="sugCat"
+																value="#{modificarControlador.cieConsList_custom.codCategoria}"
+																disabled="#{(empty modificarControlador.cieConsList_custom.codGrupo or empty modificarControlador.cieConsList_custom.categorias) and empty modificarControlador.cieConsList_custom.codCategoria}">
+																<a4j:support event="onchange"
+																	action="#{modificarControlador.cieConsList_custom.buscarSubcategorias}"
+																	status="statSimple" reRender="sugSub, subSug, imgSub" />
+															</h:inputText> <a4j:outputPanel id="imgCat">
+																<h:graphicImage
+																	value="/resources/icons/default/acciones/searchInput.png"
+																	rendered="#{not empty modificarControlador.cieConsList_custom.codGrupo and not empty modificarControlador.cieConsList_custom.categorias}"
+																	onclick="#{rich:component('CatSug')}.callSuggestion(true)"
+																	style="cursor:pointer; padding-left:4px" alt=""
+																	title="#{messages.searchBttnTitle_CE}" />
+																<h:graphicImage
+																	value="/resources/icons/default/acciones/searchInput.png"
+																	rendered="#{empty modificarControlador.cieConsList_custom.codGrupo or empty modificarControlador.cieConsList_custom.categorias}"
+																	style="padding-left:4px; filter:alpha(opacity=50); -moz-opacity:0.5;-khtml-opacity: 0.5; opacity: 0.5;" />
+															</a4j:outputPanel> <rich:suggestionbox height="200" width="400" id="CatSug"
+																for="sugCat" var="cat" fetchValue="#{cat.descripcion}"
+																suggestionAction="#{modificarControlador.cieConsList_custom.obtenerCategorias}"
+																onselect="cateSelect()" status="statSimple"
+																nothingLabel="#{messages.notFound}">
+																<h:column>
+																	<h:outputText value="#{cat.descripcion}" />
+																</h:column>
+															</rich:suggestionbox> <a4j:jsFunction name="cateSelect"
+																action="#{modificarControlador.cieConsList_custom.buscarSubcategorias()}"
+																reRender="sugSub, subSug, imgSub">
+															</a4j:jsFunction></td>
+													</tr>
+												</table></td>
+										</tr>
+										<tr class="row">
+											<td id="paramSubcategoria"><h:outputText
+													value="#{messages.lbl_subcategoria_ce}"
+													styleClass="normalText" /><br />
+												<table border="0" cellpadding="0" cellspacing="0">
+													<tr>
+														<td><h:inputText styleClass="tbx" id="sugSub"
+																value="#{modificarControlador.cieConsList_custom.codSubcategoria}"
+																disabled="#{(empty modificarControlador.cieConsList_custom.codCategoria or empty modificarControlador.cieConsList_custom.subcategorias) and empty modificarControlador.cieConsList_custom.codSubcategoria}" />
+															<a4j:outputPanel id="imgSub">
+																<h:graphicImage
+																	value="/resources/icons/default/acciones/searchInput.png"
+																	rendered="#{not empty modificarControlador.cieConsList_custom.codCategoria and not empty modificarControlador.cieConsList_custom.subcategorias}"
+																	onclick="#{rich:component('subSug')}.callSuggestion(true)"
+																	style="cursor:pointer; padding-left:4px" alt=""
+																	title="#{messages.searchBttnTitle_CE}" />
+																<h:graphicImage
+																	value="/resources/icons/default/acciones/searchInput.png"
+																	rendered="#{empty modificarControlador.cieConsList_custom.codCategoria or empty modificarControlador.cieConsList_custom.subcategorias}"
+																	style="padding-left:4px; filter:alpha(opacity=50); -moz-opacity:0.5;-khtml-opacity: 0.5; opacity: 0.5;" />
+															</a4j:outputPanel> <rich:suggestionbox height="200" width="400" id="subSug"
+																for="sugSub" var="sub" fetchValue="#{sub.descripcion}"
+																nothingLabel="#{messages.notFound}"
+																suggestionAction="#{modificarControlador.cieConsList_custom.obtenerSubcategorias}"
+																status="statSimple">
+																<h:column>
+																	<h:outputText value="#{sub.descripcion}" />
+																</h:column>
+															</rich:suggestionbox></td>
+													</tr>
+												</table></td>
+											<td style="padding-left: 25px;" valign="top"><h:outputText
+													value="#{messages.lbl_codigo_ce}" styleClass="normalText" /><br />
+												<h:inputText onkeypress="searchKeyPress(event)" id="codBA"
+													styleClass="tbx"
+													value="#{modificarControlador.cieConsList_custom.codigo}" />
+											</td>
+											<td style="padding-left: 25px;" valign="top"><h:outputText
+													value="#{messages.descripcionCES}" styleClass="normalText" /><br />
+												<h:inputText onkeypress="searchKeyPress(event)" id="descBA"
+													styleClass="tbx"
+													value="#{modificarControlador.cieConsList_custom.descripcion}" />
+											</td>
+										</tr>
+										<tr>
+											<td colspan="3" align="right"><rich:spacer height="3"
+													style="display:block" /> <a4j:commandButton id="botonBA"
+													value="#{messages.searchBttnTitle_CE}" status="statSimple"
+													action="#{modificarControlador.cieConsList_custom.setAdvancedSearchRestrictions()}"
+													reRender="resultadoCie, listaCie, paginadoCie"
+													style="margin-left:0px;margin-right:0px;margin-bottom:0px;" />
+												<rich:spacer height="2" style="display:block" /></td>
+										</tr>
+										<tr align="right">
+											<td colspan="3"><a href="javascript:void(0);"
+												onclick="document.getElementById('idForm:busquedaAvanzada').style.display = 'none';document.getElementById('idForm:busquedaSimple').style.display = 'block';cambiarBS();">
+													<img
+													src="#{facesContext.externalContext.requestContextPath}/resources/icons/default/acciones/buscar.png"
+													border="0" height="12px" width="12px" /> <rich:spacer
+														width="2px" style="border:0px;" /> <h:outputText
+														value="#{messages.lbl_bsimple_ce}" />
+											</a></td>
+										</tr>
+									</table>
+								</s:div>
+							</a4j:outputPanel>
+						</a4j:region></td>
+					<td style="padding-left: 25px;" valign="top"><a4j:status
+							id="statSimple" onstart="disableFields()" onstop="enableFields()">
+							<f:facet name="start">
+								<s:div>
+									<div align="right" style="width: 100%">
+										<h:graphicImage
+											value="/resources/icons/default/acciones/loading_small.gif" />
+										<rich:spacer width="4" />
+										<h:outputText value="#{messages.cargando}"
+											styleClass="normalText" />
+									</div>
+								</s:div>
+							</f:facet>
+						</a4j:status></td>
+				</tr>
+			</table>
+			<rich:spacer height="8px" />
+			<rich:separator lineType="solid" height="4" />
+			<br />
+			<a4j:region id="resultadoCieR">
+				<a4j:outputPanel id="resultadoCie">
+					<a4j:jsFunction name="selectEnfermedad" ajaxSingle="true"
+						action="#{modificarControlador.seleccionarEnfermedad()}"
+						status="statEnf"
+						reRender="resultadoCie, marked, unmarked, tablaEnf">
+						<a4j:actionparam name="id"
+							assignTo="#{modificarControlador.idEnfSelect}" />
+					</a4j:jsFunction>
+					<s:div
+						rendered="#{empty modificarControlador.cieConsList_custom.resultList}">
+						<rich:panel>
+							<f:facet name="header">
+								<h:outputText value="#{messages.lbl_clenfermedades_ce}" />
+							</f:facet>
+							<h:outputText value="#{messages.notFoundDiag_consulta}" />
+						</rich:panel>
+						<br />
+					</s:div>
+					<rich:dataTable id="listaCie" width="100%"
+						rendered="#{not empty modificarControlador.cieConsList_custom.resultList}"
+						value="#{modificarControlador.cieConsList_custom.resultList}"
+						var="enf">
+						<f:facet name="header">
+							<h:outputText value="#{messages.lbl_clenfermedades_ce}" />
+						</f:facet>
+						<rich:column width="10">
+							<s:div
+								rendered="#{modificarControlador.enfSelected.containsKey(enf.id)}">
+								<input type="checkbox" style="margin: 0px 0px 0px 0px;"
+									checked="true" onclick="selectEnfermedad(#{enf.id})" />
+							</s:div>
+							<s:div
+								rendered="#{not modificarControlador.enfSelected.containsKey(enf.id)}">
+								<input type="checkbox" style="margin: 0px 0px 0px 0px;"
+									onclick="selectEnfermedad(#{enf.id})" />
+							</s:div>
+						</rich:column>
+						<rich:column width="100">
+							<f:facet name="header">
+								<s:div>
+									<s:div style="float: left; valign: bottom;">
+										<h:outputText value="#{messages.lbl_codigo_ce}" />
+									</s:div>
+									<s:div style="float: right;">
+										<h:graphicImage
+											rendered="#{not modificarControlador.cieConsList_custom.order.equals('cie.codigo asc') and not modificarControlador.cieConsList_custom.order.equals('cie.codigo desc')}"
+											style="cursor:pointer;"
+											value="/resources/icons/default/filtro/default.png">
+											<rich:componentControl event="onclick"
+												for="codCIEcontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{modificarControlador.cieConsList_custom.order.equals('cie.codigo asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="codCIEcontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{modificarControlador.cieConsList_custom.order.equals('cie.codigo desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="codCIEcontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</s:div>
+							</f:facet>
+							<h:outputText value="#{enf.codigo}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<s:div>
+									<s:div style="float: left; valign: bottom;">
+										<h:outputText value="#{messages.descripcionCES}" />
+									</s:div>
+									<s:div style="float: right;">
+										<h:graphicImage
+											rendered="#{not modificarControlador.cieConsList_custom.order.equals('cie.descripcion asc') and not modificarControlador.cieConsList_custom.order.equals('cie.descripcion desc')}"
+											style="cursor:pointer;"
+											value="/resources/icons/default/filtro/default.png">
+											<rich:componentControl event="onclick"
+												for="descCIEcontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{modificarControlador.cieConsList_custom.order.equals('cie.descripcion asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="descCIEcontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{modificarControlador.cieConsList_custom.order.equals('cie.descripcion desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="descCIEcontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</s:div>
+							</f:facet>
+							<h:outputText value="#{enf.descripcion}" />
+						</rich:column>
+						<rich:column width="80">
+							<f:facet name="header">
+								<s:div>
+									<s:div style="float: left; valign: bottom;">
+										<h:outputText value="#{messages.lbl_estructura_ce}" />
+									</s:div>
+									<s:div style="float: right;">
+										<h:graphicImage
+											rendered="#{not modificarControlador.cieConsList_custom.order.equals('cie.tipoCie.valor asc') and not modificarControlador.cieConsList_custom.order.equals('cie.tipoCie.valor desc')}"
+											style="cursor:pointer;"
+											value="/resources/icons/default/filtro/default.png">
+											<rich:componentControl event="onclick"
+												for="estructCIEcontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{modificarControlador.cieConsList_custom.order.equals('cie.tipoCie.valor asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="estructCIEcontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{modificarControlador.cieConsList_custom.order.equals('cie.tipoCie.valor desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="estructCIEcontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</s:div>
+							</f:facet>
+							<h:outputText value="#{enf.tipoCie.valor}" />
+						</rich:column>
+					</rich:dataTable>
+					<s:div
+						rendered="#{not empty modificarControlador.cieConsList_custom.resultList}"
+						id="paginadoCie">
+						<br />
+						<div align="center" style="width: 100%">
+							<h:graphicImage
+								rendered="#{not modificarControlador.cieConsList_custom.previousExists}"
+								value="/resources/icons/default/paginado/iniciod.png"
+								style=" width : 16px;"></h:graphicImage>
+							<a4j:commandLink status="statSimple" ajaxSingle="true"
+								rendered="#{modificarControlador.cieConsList_custom.previousExists}"
+								action="#{modificarControlador.cieConsList_custom.first}"
+								reRender="listaCie, paginadoCie">
+								<h:graphicImage title="#{messages.lbl_primera_ce}"
+									style="cursor:pointer;border:0px;"
+									value="/resources/icons/default/paginado/#{theme.color}/inicio.png"></h:graphicImage>
+							</a4j:commandLink>
+							<h:graphicImage
+								rendered="#{not modificarControlador.cieConsList_custom.previousExists}"
+								value="/resources/icons/default/paginado/anteriord.png"></h:graphicImage>
+							<a4j:commandLink ajaxSingle="true" status="statSimple"
+								rendered="#{modificarControlador.cieConsList_custom.previousExists}"
+								action="#{modificarControlador.cieConsList_custom.previous}"
+								reRender="listaCie, paginadoCie">
+								<h:graphicImage title="#{messages.lbl_anterior_ce}"
+									style="cursor:pointer;border:0px;"
+									value="/resources/icons/default/paginado/#{theme.color}/anterior.png"></h:graphicImage>
+							</a4j:commandLink>
+							<h:graphicImage
+								rendered="#{not modificarControlador.cieConsList_custom.nextExists}"
+								value="/resources/icons/default/paginado/siguiented.png"></h:graphicImage>
+							<a4j:commandLink ajaxSingle="true" status="statSimple"
+								rendered="#{modificarControlador.cieConsList_custom.nextExists}"
+								action="#{modificarControlador.cieConsList_custom.next}"
+								reRender="listaCie, paginadoCie">
+								<h:graphicImage title="#{messages.lbl_siguiente_ce}"
+									style="cursor:pointer;border:0px;"
+									value="/resources/icons/default/paginado/#{theme.color}/siguiente.png"></h:graphicImage>
+							</a4j:commandLink>
+							<h:graphicImage
+								rendered="#{not modificarControlador.cieConsList_custom.nextExists}"
+								value="/resources/icons/default/paginado/find.png"></h:graphicImage>
+							<a4j:commandLink ajaxSingle="true" status="statSimple"
+								rendered="#{modificarControlador.cieConsList_custom.nextExists}"
+								action="#{modificarControlador.cieConsList_custom.last}"
+								reRender="listaCie, paginadoCie">
+								<h:graphicImage title="#{messages.lbl_ultima_ce}"
+									style="cursor:pointer;border:0px;"
+									value="/resources/icons/default/paginado/#{theme.color}/fin.png"></h:graphicImage>
+							</a4j:commandLink>
+						</div>
+
+					</s:div>
+					<table width="100%" cellpadding="0" cellspacing="0">
+						<tr>
+							<td align="right"><a4j:status id="statEnf">
+									<f:facet name="start">
+										<s:div>
+											<div align="right" style="width: 100%">
+												<h:graphicImage
+													value="/resources/icons/default/acciones/loading_small.gif" />
+												<rich:spacer width="4" />
+												<h:outputText value="#{messages.cargando}"
+													styleClass="normalText" />
+											</div>
+										</s:div>
+									</f:facet>
+								</a4j:status></td>
+						</tr>
+					</table>
+					<s:div
+						rendered="#{not empty modificarControlador.enfermedadesSeleccionadas}">
+						<br />
+						<rich:dataTable width="100%" rowKeyVar="rowKey" id="tablaEnf"
+							value="#{modificarControlador.enfermedadesSeleccionadas}"
+							var="enf">
+							<f:facet name="header">
+								<h:outputText value="#{messages.diagnostico_CE}" />
+							</f:facet>
+							<rich:column width="20">
+								<f:facet name="header">
+									<h:outputText value="#{messages.lbl_codigo_ce}" />
+								</f:facet>
+								<h:outputText value="#{enf.codigoEnfermedad}" />
+							</rich:column>
+							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="#{messages.descripcionCES}" />
+								</f:facet>
+								<h:outputText value="#{enf.descripcionEnfermedad}" />
+							</rich:column>
+							<rich:column width="10">
+								<a4j:commandLink
+									action="#{modificarControlador.eliminarEnfermedad(rowKey)}"
+									status="statEnf" ajaxSingle="true"
+									reRender="resultadoCie, marked, unmarked, tablaEnf">
+									<h:graphicImage title="#{messages.lbl_eliminar_ce}"
+										value="/resources/icons/default/acciones/eliminar.png"
+										style="cursor:pointer; border: 0px;" />
+								</a4j:commandLink>
+							</rich:column>
+						</rich:dataTable>
+					</s:div>
+				</a4j:outputPanel>
+			</a4j:region>
+		</a4j:outputPanel>
+	</a4j:region>
+
+
+	<rich:contextMenu attached="false" id="codCIEcontextmenu"
+		submitMode="ajax">
+		<rich:menuItem value="#{messages.lbl_ordenD_ce}" ajaxSingle="true"
+			icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+			action="#{modificarControlador.cieConsList_custom.setOrder('cie.codigo desc')}"
+			reRender="diagnosticoOP, listaCieHeader, listaCie">
+		</rich:menuItem>
+		<rich:menuItem value="#{messages.lbl_ordenA_ce}" ajaxSingle="true"
+			icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+			action="#{modificarControlador.cieConsList_custom.setOrder('cie.codigo asc')}"
+			reRender="diagnosticoOP, listaCieHeader, listaCie">
+		</rich:menuItem>
+	</rich:contextMenu>
+
+	<rich:contextMenu attached="false" id="descCIEcontextmenu"
+		submitMode="ajax">
+		<rich:menuItem value="#{messages.lbl_ordenD_ce}" ajaxSingle="true"
+			icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+			action="#{modificarControlador.cieConsList_custom.setOrder('cie.descripcion desc')}"
+			reRender="diagnosticoOP, listaCieHeader, listaCie">
+		</rich:menuItem>
+		<rich:menuItem value="#{messages.lbl_ordenA_ce}" ajaxSingle="true"
+			icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+			action="#{modificarControlador.cieConsList_custom.setOrder('cie.descripcion asc')}"
+			reRender="diagnosticoOP, listaCieHeader, listaCie">
+		</rich:menuItem>
+	</rich:contextMenu>
+	<rich:contextMenu attached="false" id="estructCIEcontextmenu"
+		submitMode="ajax">
+		<rich:menuItem value="#{messages.lbl_ordenD_ce}" ajaxSingle="true"
+			icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+			action="#{modificarControlador.cieConsList_custom.setOrder('cie.tipoCie.valor desc')}"
+			reRender="resultadoCie, listaCie">
+		</rich:menuItem>
+		<rich:menuItem value="#{messages.lbl_ordenA_ce}" ajaxSingle="true"
+			icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+			action="#{modificarControlador.cieConsList_custom.setOrder('cie.tipoCie.valor asc')}"
+			reRender="resultadoCie, listaCie">
+		</rich:menuItem>
+	</rich:contextMenu>
+</s:div>

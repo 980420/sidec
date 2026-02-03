@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<param name="entityid" value="#{modSelectorController.selectedEntityId}"/>
+	
+	<navigation evaluate="#{entities.size()}">
+		<rule if-outcome="2">
+			<redirect view-id="#{theme.modSelector}" >
+				<param name="entityid" value="#{modSelectorController.setSelectedEntityId(entities.get(0).id)}" />
+			</redirect>
+		</rule>
+	</navigation>
+     
+	<navigation from-action="gotomodselector">
+		<redirect view-id="#{theme.modSelector}" />
+	</navigation>
+	
+	<navigation from-action="#{modSelectorController.selectEntity(entidad.id)}">
+		<redirect view-id="#{theme.modSelector}"></redirect>
+	</navigation>
+	
+    <param name="idFuncionalidad" />
+	<param name="idancestors"   /> 
+	<param name="moduleName"   /> 		
+	<navigation from-action="gotomodhome">
+		<redirect view-id="/modCommons/modHome/home.xhtml">
+		    <param name="idFuncionalidad" value="#{idFuncionalidad}" />
+			<param name="idancestors" value="#{idancestors}" /> 
+			<param name="moduleName" value="#{moduleName}" /> 		
+		</redirect>
+	</navigation>
+	    
+</page>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE server PUBLIC "-//JBoss//DTD MBean Service 4.2//EN" "http://www.jboss.org/j2ee/dtd/jboss-service_4_2.dtd" >
+<server>
+    <mbean code="org.jboss.varia.scheduler.Scheduler" name="gehos.comun.util:type=DummyService">
+        <attribute name="StartAtStartup">false</attribute>
+    </mbean>
+</server>

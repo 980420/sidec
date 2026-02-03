@@ -1,0 +1,175 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" xmlns:a4j="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+		type='text/css' />
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css'
+		type='text/css' />
+
+	<a4j:outputPanel ajaxRendered="true">
+		<s:div
+			rendered="#{facesMessages.getCurrentMessagesForControl('listOfGruposujetos').size() > 0 }"
+			styleClass="custom-error">
+			<div>
+				<rich:message for="idForm" />
+			</div>
+		</s:div>
+	</a4j:outputPanel>
+
+	<h:form id="idForm" enctype="multipart/form-data">
+		<table class="Tabla" width="100%" cellpadding="0" cellspacing="0">
+
+			<tr>
+				<td><rich:panel >
+						<f:facet name="header">
+							<h:panelGroup>
+								<div>
+									<div align="left">#{messages.datosSujeto}</div>
+								</div>
+							</h:panelGroup>
+						</f:facet>
+						<table class="Tabla" cellspacing="0" cellpadding="0" width="100%">
+							<tr>
+								<td>
+									<table cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td>
+												<table cellpadding="0" cellspacing="0">
+													<tr>
+														<td class="">
+															<table cellpadding="0" cellspacing="0">
+																<tr class="filSepGranRA">
+																	<td class="colSepPeq"><h:outputText
+																			value="#{messages.iniciales}:"
+																			style="margin:0px; padding:0px;" /></td>
+																	<td class="colSepGran"><h:outputText
+																			styleClass="dataText"
+																			value="#{(not empty eliminarCronogramaEspecifico.sujeto.inicialesPaciente) ? eliminarCronogramaEspecifico.sujeto.inicialesPaciente : messages.vacio}"
+																			style="margin:0px; padding:0px;" /></td>
+																	<td class="colSepPeq"><h:outputText
+																			value="#{messages.numinclusion}:"
+																			style="margin:0px; padding:0px;" /></td>
+																	<td class="colSepGran"><h:outputText
+																			styleClass="dataText"
+																			value="#{(not empty eliminarCronogramaEspecifico.sujeto.numeroInclucion) ? eliminarCronogramaEspecifico.sujeto.numeroInclucion : messages.vacio}"
+																			style="margin:0px; padding:0px;" /></td>
+																	<td class="colSepPeq"><h:outputText
+																			value="#{messages.estadoInclusion}:"
+																			style="margin:0px; padding:0px;" /></td>
+																	<td class="colSepGran"><h:outputText
+																			styleClass="dataText"
+																			value="#{(not empty eliminarCronogramaEspecifico.sujeto.estadoInclusion.nombre) ? eliminarCronogramaEspecifico.sujeto.estadoInclusion.nombre : messages.vacio}"
+																			style="margin:0px; padding:0px;" /></td>
+																</tr>
+																<tr class="filSepGranRA">
+																	<td class="colSepPeq"><h:outputText
+																			value="#{messages.inicialesCentro}:"
+																			style="margin:0px; padding:0px;" /></td>
+																	<td class="colSepGran"><h:outputText
+																			styleClass="dataText"
+																			value="#{(not empty eliminarCronogramaEspecifico.sujeto.inicialesCentro) ? eliminarCronogramaEspecifico.sujeto.inicialesCentro : messages.vacio}"
+																			style="margin:0px; padding:0px;" /></td>
+																	<td class="colSepPeq"><h:outputText
+																			value="#{messages.codigoSuj}:"
+																			style="margin:0px; padding:0px;" /></td>
+																	<td class="colSepGran"><h:outputText
+																			styleClass="dataText"
+																			value="#{(not empty eliminarCronogramaEspecifico.sujeto.codigoPaciente) ? eliminarCronogramaEspecifico.sujeto.codigoPaciente : messages.vacio}"
+																			style="margin:0px; padding:0px;" /></td>
+																	<td class="colSepPeq"><h:outputText
+																			value="#{messages.grupodelSujeto}:"
+																			style="margin:0px; padding:0px;" /></td>
+
+																	<td class="colSepGran"><h:outputText
+																			styleClass="dataText"
+																			value="#{(not empty eliminarCronogramaEspecifico.sujeto.grupoSujetos.nombreGrupo) ? eliminarCronogramaEspecifico.sujeto.grupoSujetos.nombreGrupo : messages.vacio}"
+																			style="margin:0px; padding:0px;" /></td>
+
+																</tr>
+																<tr>
+																	<td class="colSepPeq"><h:outputText
+																			value="#{messages.fechaInclusion}:"
+																			style="margin:0px; padding:0px;" /></td>
+																	<td class="colSepGran"><h:outputText
+																			styleClass="dataText"
+																			value="#{(not empty eliminarCronogramaEspecifico.sujeto.fechaInclucion) ? eliminarCronogramaEspecifico.sujeto.fechaInclucion : messages.vacio}"
+																			style="margin:0px; padding:0px;">
+																			<s:convertDateTime pattern="#{messages.patronFecha}">
+																			</s:convertDateTime>
+																		</h:outputText></td>
+																</tr>
+															</table>
+														</td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</rich:panel></td>
+			</tr>
+			<tr>
+				<td><br /></td>
+			</tr>
+			<tr>
+				<td><rich:panel id="idInterrumpir" opened="true"
+						switchType="client">
+						<f:facet name="header">
+							<h:panelGroup>
+								<div>
+									<div align="left">#{messages.causaEliminar}</div>
+								</div>
+							</h:panelGroup>
+						</f:facet>
+						<table width="100%" cellpadding="0" cellspacing="0">
+							<tr class="filSepGranRA">
+								<td><h:outputText value="#{messages.causa}:"
+										styleClass="normalText" /> <rich:message for="causa"
+										showDetail="false" tooltip="true" style="color:red;">
+										<f:facet name="errorMarker">
+											<h:outputText value="*"
+												title="#{facesMessages.getCurrentMessagesForControl('causa').get(0).getDetail()}" />
+										</f:facet>
+									</rich:message> <rich:spacer style="display:block" /> <h:inputTextarea
+										id='causa' style='width:100%'
+										value='#{eliminarCronogramaEspecifico.causa}' validator="#{validations_sujeto.causaEnBlanco}"
+										required="#{!empty param['idForm:aceptarr']}"
+										 /></td>
+							</tr>
+
+						</table>
+					</rich:panel></td>
+			</tr>
+			<tr>
+				<td>
+					<div align="right">
+						<br></br>
+						<a:commandButton id="aceptarr" value="#{messages.aceptar}"
+							oncomplete="#{eliminarCronogramaEspecifico.validarCausa()}" />
+
+						<rich:spacer width="10" />
+						<a:commandButton value="#{messages.cancelar}" style="margin:0px;"
+							action="cancelar" immediate="true" />
+					</div>
+				</td>
+			</tr>
+
+		</table>
+	</h:form>
+	<ui:include
+		src="/modEnsayo/ensayo_conduccion/codebase/plantillas/AdvertenciaEliminarCronogramaEsp.xhtml">
+		<ui:param name="control" value="#{eliminarCronogramaEspecifico}" />
+		<!--  <ui:param name="listaIdElementos" value="tb2" />-->
+
+	</ui:include>
+</s:div>

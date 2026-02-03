@@ -1,0 +1,72 @@
+<rich:modalPanel id="agregar_centro" onhide="" autosized="true"
+	resizeable="false" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" onshow="">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<f:facet name="header">
+		<h:panelGroup id="agregar_centro_header">
+			<h:outputText value="#{messages.msg_addEnt_ensClin}" />
+		</h:panelGroup>
+	</f:facet>
+
+	<f:facet name="controls">
+		<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+			style="cursor:pointer; position:relative; top:2px;"
+			onclick="Richfaces.hideModalPanel('agregar_centro')" />
+	</f:facet>
+
+	<a:outputPanel id="agregar_centro_panel">
+
+		<h:form id="agregar_centro_form">			
+				<rich:dataTable id="entidadEnsayoList_Table" style="min-width:450px; width: 100%;" styleClass="whitespace" var="entidad" value="#{centroEstudioController.buscarControler.resultList}">
+						<f:facet name="header">
+							#{messages.msg_listCentros_ensClin}
+						</f:facet>
+						
+						<h:column>
+							<f:facet name="header">
+									#{messages.msg_logo_ensClin}
+							</f:facet>
+							<center>
+								<h:graphicImage height="20" width="20"
+									url="#{centroEstudioController.entidadIcon(entidad)}">
+								</h:graphicImage>
+							</center>
+						</h:column>
+						
+						<h:column>
+							<f:facet name="header">
+									#{messages.msg_nombreEntidad_ensClin}
+							</f:facet>
+								#{entidad.nombre}
+						</h:column>
+						
+						<h:column style="text-align:center;">
+						
+								<f:facet name="header">#{messages.msg_selccionar_ensClin}</f:facet>
+
+								<a:commandLink rendered="true" id="acpbtn"
+									action="#{centroEstudioController.crearRelacionEntidadEstudio(entidad)}"
+									reRender="treePanel, studioTree, studioPanel, infoDataStudioPanel, errorOutputPanel"
+									oncomplete="#{centroEstudioController.onComplete('agregar_centro')}">
+									<h:graphicImage height="16"
+										style="position: relative;  margin:2px 2px 2px 2px ;"
+										value="/resources/icons/default/acciones/seleccionar_uno.png"
+										title="#{messages.msg_selccionar_ensClin}">
+									</h:graphicImage>
+								</a:commandLink>
+
+						</h:column>
+			
+				</rich:dataTable>
+		</h:form>
+
+	</a:outputPanel>
+
+</rich:modalPanel>

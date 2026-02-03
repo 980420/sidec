@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<page    xmlns               ="http://jboss.com/products/seam/pages"  
+         xmlns:xsi           ="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">  
+           
+  	<begin-conversation flush-mode="manual" join="true"/>    
+  	
+	
+	 <action if="#{verDetallesConjuntoDatosPes.inicioConversacion==false}" execute="#{verDetallesConjuntoDatosPes.inicializarConjuntoDatos()}" />
+   <param name="idConjuntoDatos" value="#{verDetallesConjuntoDatosPes.idConjuntoDatos}" />				
+	<param name="from" value="#{verDetallesConjuntoDatosPes.from}" />
+	<navigation from-action="modificar">	
+		
+			<end-conversation before-redirect="true"/>  		
+			<redirect view-id="/modEnsayo/ensayo_extraccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarConjuntoDatos/modificarConjuntoDatosPes/modificarConjuntoDatosPes.gehos">
+			<param name="idConjuntoDatos" value="#{verDetallesConjuntoDatosPes.idConjuntoDatos}" />				
+			<param name="from" value="ver" />
+			
+			</redirect>
+		
+	</navigation>
+	
+	<navigation from-action="cancelar">	
+		
+			<end-conversation before-redirect="true"/>  		
+			<redirect view-id="/modEnsayo/ensayo_extraccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarConjuntoDatos/buscarConjuntoDatos/buscarConjuntoDatos.gehos">
+			
+			
+			</redirect>
+		
+	</navigation>
+	<navigation from-action="#{verDetallesConjuntoDatosPes.eliminar()}">	
+		
+			<end-conversation before-redirect="true"/>  		
+			<redirect view-id="/modEnsayo/ensayo_extraccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarConjuntoDatos/buscarConjuntoDatos/buscarConjuntoDatos.gehos">
+					
+			</redirect>
+		
+	</navigation>
+	
+	
+	
+	
+</page>

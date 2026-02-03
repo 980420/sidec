@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+	
+	<param name="camaId" value="#{camaVerDetallesControlador.idCama}" />
+	<param name="from" value="#{camaVerDetallesControlador.from}" />
+	<param name="firstResult" />
+	<param name="searchMode" />
+	<param name="order" />
+	<param name="state" />
+	<param name="critB1" />
+	<param name="critB2" />
+	<param name="critB3" />
+	<param name="critB4" />
+	<param name="critB5" />
+	
+	<!-- validation -->	
+	<navigation>
+		<rule if="#{camaVerDetallesControlador.idCama == null or camaVerDetallesControlador.idCama == '' or camaVerDetallesControlador.errorLoadData == true}">
+			<redirect view-id="/modConfiguracion/management/gestionarCama/BuscarCama.xhtml">
+				<param name="firstResult" value="#{firstResult}" />
+				<param name="searchMode" value="#{searchMode}"/>
+				<param name="order" value="#{order}"/>
+				<param name="state" value="#{state}"/>
+				<param name="critB1" value="#{critB1}"/>
+				<param name="critB2" value="#{critB2}"/>
+				<param name="critB3" value="#{critB3}"/>
+				<param name="critB4" value="#{critB4}"/>
+				<param name="critB5" value="#{critB5}"/>		
+			</redirect>			
+		</rule>					
+	</navigation>
+
+	<!-- go to modify -->
+	<navigation from-action="#{camaModificarControlador.setIdCama(camaVerDetallesControlador.idCama)}">
+			<redirect view-id="/modConfiguracion/management/gestionarCama/ModificarCama.xhtml">
+				<param name="camaId" value="#{camaVerDetallesControlador.cama.id}" />
+				<param name="firstResult" value="#{firstResult}" />
+				<param name="searchMode" value="#{searchMode}"/>
+				<param name="order" value="#{order}"/>
+				<param name="state" value="#{state}"/>
+				<param name="critB1" value="#{critB1}"/>
+				<param name="critB2" value="#{critB2}"/>
+				<param name="critB3" value="#{critB3}"/>
+				<param name="critB4" value="#{critB4}"/>
+				<param name="critB5" value="#{critB5}"/>
+			</redirect>
+	</navigation>
+
+	<!-- cancel go to search -->
+	<navigation from-action="salir">
+		<redirect view-id="/modConfiguracion/management/gestionarCama/BuscarCama.xhtml">
+				<param name="firstResult" value="#{firstResult}" />
+				<param name="searchMode" value="#{searchMode}"/>
+				<param name="order" value="#{order}"/>
+				<param name="state" value="#{state}"/>
+				<param name="critB1" value="#{critB1}"/>
+				<param name="critB2" value="#{critB2}"/>
+				<param name="critB3" value="#{critB3}"/>
+				<param name="critB4" value="#{critB4}"/>
+				<param name="critB5" value="#{critB5}"/>
+			</redirect>
+			<end-conversation before-redirect="true" />
+	</navigation>
+
+	<!-- remove and go to search -->
+	<navigation from-action="#{camaVerDetallesControlador.eliminar()}" evaluate="#{camaVerDetallesControlador.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarCama/BuscarCama.xhtml">
+				<param name="firstResult" value="#{firstResult}" />
+				<param name="searchMode" value="#{searchMode}"/>
+				<param name="order" value="#{order}"/>
+				<param name="state" value="#{state}"/>
+				<param name="critB1" value="#{critB1}"/>
+				<param name="critB2" value="#{critB2}"/>
+				<param name="critB3" value="#{critB3}"/>
+				<param name="critB4" value="#{critB4}"/>
+				<param name="critB5" value="#{critB5}"/>
+			</redirect>
+			<end-conversation before-redirect="true" />
+		</rule>
+	</navigation>
+</page>

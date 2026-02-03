@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<!-- validation -->
+	<navigation evaluate="#{servicioNoClinicoModificarControlador.errorLoadData}">
+		<rule if-outcome="true">
+			<redirect view-id="/modConfiguracion/management/gestionarServiciosNoClinicos/BuscarServiciosNoClinicos.gehos">
+				<param name="state" value="#{state}" />
+				<param name="firstResult" value="#{firstResult}" />
+				<param name="order" value="#{order}" />
+				<param name="critB1" value="#{critB1}" />
+				<param name="critB2" value="#{critB2}" />
+				<param name="critB3" value="#{critB3}" />
+				<param name="critB4" value="#{critB4}" />
+				<param name="critB5" value="#{critB5}" />
+			</redirect>
+			<end-conversation before-redirect="true" />
+		</rule>
+		<rule if="#{servicioNoClinicoModificarControlador.servicioId == null or servicioNoClinicoModificarControlador.servicioId == ''}">
+			<redirect view-id="/modConfiguracion/management/gestionarServiciosNoClinicos/BuscarServiciosNoClinicos.gehos">
+				<param name="state" value="true" />
+				<param name="firstResult" value="0" />
+				<param name="order" value="servicio.id desc" />
+				<param name="critB1" value="" />
+				<param name="critB2" value="" />
+				<param name="critB3" value="" />
+				<param name="critB4" value="" />
+				<param name="critB5" value="" />
+			</redirect>
+			<end-conversation before-redirect="true" />
+		</rule>
+	</navigation>
+
+	<!-- load parameters -->	
+	<param name="servicioId" value="#{servicioNoClinicoModificarControlador.servicioId}" />
+	<param name="state" />
+	<param name="firstResult" />
+	<param name="order" />
+	<param name="critB1" />
+	<param name="critB2" />
+	<param name="critB3" />
+	<param name="critB4" />
+	<param name="critB5" />
+
+	<!-- modify and go to view details -->
+	<navigation from-action="#{servicioNoClinicoModificarControlador.modificar()}" evaluate="#{servicioNoClinicoModificarControlador.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarServiciosNoClinicos/VerDetallesServiciosNoClinicos.xhtml">
+				<param name="servicioId" value="#{servicioNoClinicoModificarControlador.servicio.id}" />
+				<param name="state" value="#{state}" />
+				<param name="firstResult" value="#{firstResult}" />
+				<param name="order" value="#{order}" />
+				<param name="critB1" value="#{critB1}" />
+				<param name="critB2" value="#{critB2}" />
+				<param name="critB3" value="#{critB3}" />
+				<param name="critB4" value="#{critB4}" />
+				<param name="critB5" value="#{critB5}" />
+				<param name="from" value="modificar" />
+			</redirect>
+			<end-conversation before-redirect="true" />
+		</rule>
+	</navigation>
+
+	<!-- cancel and go to view list -->
+	<navigation from-action="cancelar">
+		<redirect view-id="/modConfiguracion/management/gestionarServiciosNoClinicos/BuscarServiciosNoClinicos.gehos">
+			<param name="state" value="#{state}" />
+			<param name="firstResult" value="#{firstResult}" />
+			<param name="order" value="#{order}" />
+			<param name="critB1" value="#{critB1}" />
+			<param name="critB2" value="#{critB2}" />
+			<param name="critB3" value="#{critB3}" />
+			<param name="critB4" value="#{critB4}" />
+			<param name="critB5" value="#{critB5}" />
+		</redirect>
+		<end-conversation before-redirect="true" />
+	</navigation>
+</page>

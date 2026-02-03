@@ -1,0 +1,379 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+      xmlns:a4j="http://richfaces.org/a4j"
+      template="#{theme.template}"
+                xmlns:rich="http://richfaces.org/rich">
+                
+<ui:define name="body" >
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+	<style type="text/css">.rich-stglpanel-body{padding:0px}</style>
+	<style type="text/css">.rich-panel-body{padding:0px}</style>
+	<script type="text/javascript">setContentTitle('Configurar datos del hospital')</script>
+	<h:form>
+	<a4j:keepAlive beanName="hospitalData2"></a4j:keepAlive>
+	
+		<div align="right">
+			<a style="margin-top: 0px;" href="#"
+					onclick="window.open('#{facesContext.externalContext.requestContextPath}/modConfiguracion/hospital/cedula_hospitalaria.gehos')" >
+				Generar cédula hospitalaria
+			</a>		
+		</div>
+		<rich:panel switchType="client" >
+		<f:facet name="header">Datos del hospital</f:facet>
+		<table cellpadding="0px" cellspacing="0px" border="0px" >
+			<tr>
+				<td style="height: 10px;" colspan="6">
+				</td>
+			</tr>
+			<tr style="vertical-align: top;">
+				<td style="width: 7px;"></td>
+				<td>
+	                <h:outputLabel value="Nombre:"></h:outputLabel><br></br>
+	                <h:inputText id="name" value="" style="width:150px;"/>
+	                
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+		           	<h:outputLabel value="Estado:"></h:outputLabel><br></br>
+	                <rich:comboBox defaultLabel="&lt;Seleccione&gt;" width="152" 
+	                	suggestionValues="#{hospitalData2.allEstados()}" 
+	                	value="#{hospitalData2.selectedEstado}" >
+	                	<a4j:support event="onselect" limitToList="true"  ajaxSingle="true"
+	                		reRender="mncpocbx,localidadcbx">
+	                	</a4j:support>
+	                </rich:comboBox> 
+
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+		           	<h:outputLabel value="Dirección:"></h:outputLabel><br></br>
+	                <h:inputText  value="" style="width:150px;"/>
+
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+		           	<h:outputLabel value="Correo:"></h:outputLabel><br></br>
+	                <h:inputText  value="" style="width:150px;"/>
+				</td>
+				<td style="width: 25px"></td>
+				<td>
+	                <h:outputLabel value="Tipo:"></h:outputLabel><br></br>
+	                <rich:comboBox defaultLabel="&lt;Seleccione&gt;" width="152" >
+	                        <f:selectItem  itemValue="Pediátrico" />
+	                        <f:selectItem  itemValue="Otro" />
+	                </rich:comboBox>
+	                
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+	                <h:outputLabel value="Municipio:"></h:outputLabel><br></br>
+	                <rich:comboBox defaultLabel="&lt;Seleccione&gt;" width="152" id="mncpocbx"
+	                	suggestionValues="#{hospitalData2.allMunicipios()}"
+	                	value="#{hospitalData2.selectedMunicipio}" >
+	                	<a4j:support event="onselect" limitToList="true"  ajaxSingle="true"
+	                		reRender="localidadcbx">
+	                	</a4j:support>
+	                </rich:comboBox>
+
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+
+	                <h:outputLabel value="Teléfonos:"></h:outputLabel><br></br>
+	                <h:inputText  value="" style="width:150px;"/>
+
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+
+	                <h:outputLabel value="Años de servicio:"></h:outputLabel><br></br>
+	                <h:inputText  value="" style="width:150px;"/>
+				</td>
+				<td style="width: 25px"></td>
+				<td valign="top">
+	                <h:outputLabel value="Área de influencia:"></h:outputLabel><br></br>
+	                <h:inputText  value="" style="width:150px;"/>
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	               
+	                
+	                <h:outputLabel value="Parroquia:"></h:outputLabel><br></br>
+	                <rich:comboBox defaultLabel="&lt;Seleccione&gt;" width="152" id="localidadcbx"
+	                	suggestionValues="#{hospitalData2.allLocalidad()}"
+	                	value="#{hospitalData2.selectedParroquia}">
+	                </rich:comboBox>
+
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+
+	                <h:outputLabel value="Fax:"></h:outputLabel><br></br>
+	                <h:inputText  value="" style="width:150px;"/>
+
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+
+	                <h:outputLabel value="Fecha de apertura:"></h:outputLabel><br></br>
+	                <rich:calendar datePattern="dd/MM/yyyy"></rich:calendar>
+				</td>
+			</tr>
+			
+			<tr>
+				<td style="width: 7px;"></td>
+				<td colspan="6"><br/></td>	
+			</tr>
+		</table>
+	</rich:panel>
+	<br/>
+	<rich:panel switchType="client" >
+		<f:facet name="header">Número de camas</f:facet>
+		<table cellpadding="0px" cellspacing="0px" border="0px" >
+			<tr>
+				<td style="height: 10px;" colspan="6">
+				</td>
+			</tr>
+			<tr style="vertical-align: top;">
+				<td style="width: 7px;"></td>
+				<td>
+					<h:outputLabel value="Arquitectónica:"></h:outputLabel><br></br>
+	                <h:inputText  value="" style="width:150px;" />
+
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+				</td>
+				<td style="width: 25px"></td>
+				<td>
+					<h:outputLabel value="Presupuestada:"></h:outputLabel><br></br>
+	                <h:inputText  value="" style="width:150px;" />
+
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+				</td>
+
+				<td  style="width: 25px">
+				</td>
+				<td>
+	
+				</td>
+			</tr>
+		</table>
+	</rich:panel>		
+	<br/>
+	<rich:panel>
+		<f:facet name="header">Área de influencia</f:facet>
+		<table cellpadding="0px" cellspacing="0px" border="0px" width="100%">
+			<tr>
+				<td style="height: 11px;" colspan="6">
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 7px;"></td>
+				
+				<td colspan="5">
+					
+					Población del área de influencia:
+					<rich:spacer width="7" ></rich:spacer>
+					<h:inputText style="width:150px;" />
+				</td>
+			</tr>			
+
+			
+			<tr>
+				<td style="width: 7px;"></td>
+				
+				<td colspan="5">
+					<div align="right">
+						
+					    <table cellpadding="1px" cellspacing="0px" >
+					    	<tr>
+					    		<td>
+							    	<h:graphicImage height="12" width="12" value="/resources/icons/default/acciones/adicionar.png"/>
+					    		</td>
+					    		<td style="vertical-align: middle;">
+								    <s:link  value="Adicionar establecimiento" 
+								    		view="/modConfiguracion/hospital/adicionar_establecimiento.xhtml">  </s:link>
+					    		</td>
+					    	</tr>
+					    </table>
+					</div>
+					<rich:dataTable value="#{hospitalData.establecimientosAreaInfluencia()}" 
+									var="est" width="100%" columnsWidth="90%, 30%, 0*, 0*">
+						<f:facet name="header">Listado de establecimientos en el área de influencia</f:facet>
+						<rich:column>
+							<f:facet name="header">Tipo de establecimiento</f:facet>
+							#{est.tipo}
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">Cantidad</f:facet>
+							<div align="right">#{est.cantidad}</div>
+							
+						</rich:column>
+						<rich:column >
+							<div align="center">
+								<s:link view="/modConfiguracion/hospital/establecimiento_list.xhtml" >
+					                   <h:graphicImage title="Ver" style="border: 0px;"
+					                   		value="/resources/icons/default/acciones/ver.png"/>
+					               
+					            </s:link>
+							</div>
+				        </rich:column>
+
+					</rich:dataTable>
+				</td>
+				<td style="width: 7px;"></td>
+			</tr>	
+		</table>
+		<br/>
+		</rich:panel>
+		<br/>
+		<rich:panel>
+		  <f:facet name="header">Asignaciones financieras</f:facet>
+		  <table cellpadding="0px" cellspacing="0px" border="0px" width="100%">
+			<tr>
+				<td style="height: 11px;" colspan="6">
+				</td>
+			</tr>	
+			<tr>
+				<td style="width: 7px;"></td>
+				<td>
+				Total de asignaciones financieras:<rich:spacer width="8"></rich:spacer>
+				<h:outputLabel value="#{hospitalData.totalAsignacionesFinancieras().toString()}"></h:outputLabel>
+				<div align="right">
+				
+			    <table cellpadding="1px" cellspacing="0px" >
+			    	<tr>
+			    		<td>
+					    	<h:graphicImage height="12" width="12" value="/resources/icons/default/acciones/adicionar.png"/>
+			    		</td>
+			    		<td style="vertical-align: middle;">
+						    <s:link  value="Adicionar partida presupuestaria"
+						    		view="/modConfiguracion/hospital/adicionar_partida_presupuestaria.xhtml">  </s:link>
+			    		</td>
+			    	</tr>
+			    </table>
+				</div>
+			<rich:dataTable value="#{hospitalData.partidasPresupuestariasMPPS()}"
+							var="par" width="100%" columnsWidth="88%, 12%, 0*, 0*">
+				<f:facet name="header">Listado de partidas presupuestarias</f:facet>
+				<rich:column>
+					<f:facet name="header">Destino</f:facet>
+					#{par.destinoPresupuesto}
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Cantidad</f:facet>
+					<div align="right">#{par.cantidad}</div>
+					
+				</rich:column>
+
+				<rich:column >
+					<div align="center">
+						<s:link view="/modConfiguracion/hospital/partida_presupuestaria_list.xhtml">
+			                   <h:graphicImage title="Ver" style="border: 0px;"
+			                   		value="/resources/icons/default/acciones/ver.png"/>
+			               
+			            </s:link>
+					</div>
+		        </rich:column>
+
+	
+			</rich:dataTable>
+			</td>
+			<td style="width: 7px;"></td>
+			</tr>		
+			<tr>
+			
+				<td style="width: 7px;"></td>
+				<td>
+				<div align="right">
+				<rich:spacer height="6" style="display:block"></rich:spacer>
+			    <table cellpadding="1px" cellspacing="0px" >
+			    	<tr>
+			    		<td>
+					    	<h:graphicImage height="12" width="12" value="/resources/icons/default/acciones/adicionar.png"/>
+			    		</td>
+			    		<td style="vertical-align: middle;">
+						    <s:link  value="Adicionar asignación financiera" 
+						    	view="/modConfiguracion/hospital/adicionar_asignacion_financiera.xhtml">  </s:link>
+			    		</td>
+			    	</tr>
+			    </table>
+				</div>
+			<rich:dataTable value="#{hospitalData.asignacionesFinancieras()}"
+							var="par" width="100%" columnsWidth="88%, 12%,  0*, 0*">
+				<f:facet name="header">Listado de asignaciones financieras</f:facet>
+				<rich:column>
+					<f:facet name="header">Origen de las finanzas</f:facet>
+					#{par.origenFinanzas}
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Cantidad</f:facet>
+					<div align="right">#{par.cantidad}</div>
+					
+				</rich:column>
+
+				<rich:column >
+					<div align="center">
+						<s:link view="/modConfiguracion/hospital/asignacion_financiera_list.xhtml" >
+			                   <h:graphicImage title="Ver" style="border: 0px;"
+			                   		value="/resources/icons/default/acciones/ver.png"/>
+			               
+			            </s:link>
+					</div>
+		        </rich:column>
+
+
+			</rich:dataTable>
+			</td>
+			<td style="width: 7px;"></td>
+			</tr>	
+			
+			
+			
+			
+				
+			</table>
+			<br></br>
+		    
+
+	</rich:panel>
+	<br/>
+	<rich:panel>
+		  <f:facet name="header">Actividades investigativas y docencia</f:facet>
+		  <table cellpadding="0px" cellspacing="0px" border="0px" width="100%">
+		
+			<tr>
+				<td style="width: 7px;"></td>
+				
+				<td colspan="5">
+					<div align="right">
+						<rich:spacer height="6" style="display:block"></rich:spacer>
+					    <table cellpadding="1px" cellspacing="0px" >
+					    	<tr>
+					    		<td>
+							    	<h:graphicImage height="12" width="12" value="/resources/icons/default/acciones/modificar.png"/>
+					    		</td>
+					    		<td style="vertical-align: middle;">
+								    <s:link view="/modConfiguracion/hospital/listado_actividades.xhtml"
+								    	value="Modificar listado de actividades">  
+								    </s:link>
+					    		</td>
+					    	</tr>
+					    </table>
+					</div>
+					<rich:dataTable value="#{hospitalData.actividadesInvestigativas()}" 
+									var="act" width="100%" >
+						<f:facet name="header">Listado de actividades</f:facet>
+						<rich:column>
+							#{act}
+						</rich:column>
+
+					</rich:dataTable>
+					
+				</td>
+				<td style="width: 7px;"></td>
+			</tr>	
+			</table>
+			<br/>
+		</rich:panel>
+		<div align="right">
+			<h:commandButton value="Aceptar" />
+			<h:commandButton value="Cancelar" style="margin-right:0px;" />
+		</div>
+	<br/>
+	
+	
+	</h:form>
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,285 @@
+package cantDiasDespacho
+
+#list any import classes here.
+import gehos.comun.manuales.ManualData;
+
+rule "modulo BS"
+	salience 2
+	when
+		ManualData(submodule=="banco_sangre_general")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Banco_de_Sangre.pdf");
+		$manual.setPagina(1);
+
+end
+rule "modulo Admision"
+	salience 2
+	when
+		ManualData(submodule=="tipo_admision")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Admision.pdf");
+		$manual.setPagina(1);
+
+end
+rule "modulo Consulta"
+	salience 2
+	when
+		ManualData(submodule=="consulta_general")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Consulta_Externa.pdf");
+		$manual.setPagina(1);
+
+end
+rule "modulo Estadisticas"
+	salience 2
+	when
+		ManualData(submodule=="general")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Estadisticas.pdf");
+		$manual.setPagina(1);
+
+end
+rule "modulo Laboratorio"
+	salience 2
+	when
+		ManualData(submodule=="tipo_laboratorio")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Laboratorio.pdf");
+		$manual.setPagina(1);
+
+end
+rule "modulo Quirofano"
+	salience 2
+	when
+		ManualData(submodule=="quirofano_general")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Bloque_Quirurgico.pdf");
+		$manual.setPagina(1);
+
+end
+rule "modulo Configuracion"
+	salience 2
+	when
+		ManualData(submodule=="tipo_modulo_alas_his")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Configuracion.pdf");
+		$manual.setPagina(1);
+
+end
+rule "modulo Emergencias"
+	salience 2
+	when
+		ManualData(submodule=="emergenciaGeneral")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Emergencias.pdf");
+		$manual.setPagina(1);
+
+end
+rule "modulo Hospitalizacion"
+	salience 2
+	when
+		ManualData(submodule=="hospitalizacion_servicio")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Hospitalizacion.pdf");
+		$manual.setPagina(1);
+
+end
+rule "modulo Epidemiologia"
+	salience 2
+	when
+		ManualData(submodule=="tipo_epidemiologia")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Epidemiologia.pdf");
+		$manual.setPagina(1);
+
+end
+rule "modulo Anatomia Patologica"
+	salience 2
+	when
+		ManualData(submodule=="anatomia_general")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Anatomia_Patologica.pdf");
+		$manual.setPagina(1);
+
+end
+rule "modulo Citas"
+	salience 2
+	when
+		ManualData(submodule=="citas_general")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Citas.pdf");
+		$manual.setPagina(1);
+
+end
+rule "modulo Visor HC"
+	salience 2
+	when
+		ManualData(submodule=="tipo_visorhc")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Visor_de_Historias_Clinicas.pdf");
+		$manual.setPagina(1);
+
+end
+rule "modulo Farmacia Central"
+	salience 2
+	when
+		ManualData(submodule=="farmacia_central")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Farmacia.pdf");
+		$manual.setPagina(1);
+
+end
+rule "modulo Farmacia Unidosis"
+	salience 2
+	when
+		ManualData(submodule=="dosis_unitaria")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Farmacia.pdf");
+		$manual.setPagina(20);
+
+end
+rule "modulo Almacen Admon"
+	salience 2
+	when
+		ManualData(submodule=="c_admon")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Almacen.pdf");
+		$manual.setPagina(1);
+
+end
+rule "modulo Almacen Comite Licitacion"
+	salience 2
+	when
+		ManualData(submodule=="c_licitacion")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Almacen.pdf");
+		$manual.setPagina(2);
+
+end
+rule "modulo Almacen Control Perceptivo"
+	salience 2
+	when
+		ManualData(submodule=="c_perceptivo")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Almacen.pdf");
+		$manual.setPagina(1);
+
+end
+rule "modulo Almacen Configuracion"
+	salience 2
+	when
+		ManualData(submodule=="config_almacen")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Almacen.pdf");
+		$manual.setPagina(1);
+
+end
+rule "modulo Almacen Compras"
+	salience 2
+	when
+		ManualData(submodule=="c_compras")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Almacen.pdf");
+		$manual.setPagina(1);
+
+end
+rule "modulo Almacen normal"
+	salience 2
+	when
+		ManualData(submodule=="c_almacen")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Almacen.pdf");
+		$manual.setPagina(1);
+
+end
+rule "modulo Almacen Central"
+	salience 2
+	when
+		ManualData(submodule=="cc_almacen")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Almacen.pdf");
+		$manual.setPagina(1);
+
+end
+rule "modulo Almacen Unitario"
+	salience 2
+	when
+		ManualData(submodule=="c_stock")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Almacen.pdf");
+		$manual.setPagina(1);
+
+end
+rule "modulo Enfermeria emergencia"
+	salience 2
+	when
+		ManualData(submodule=="enfermeria_emergencias")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Enfermeria.pdf");
+		$manual.setPagina(1);
+
+end
+rule "modulo Enfermeria servicio"
+	salience 2
+	when
+		ManualData(submodule=="enfermeria_servicio")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Enfermeria.pdf");
+		$manual.setPagina(1);
+
+end
+rule "modulo Enfermeria consulta"
+	salience 2
+	when
+		ManualData(submodule=="enfermeria_consulta")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Enfermeria.pdf");
+		$manual.setPagina(1);
+
+end
+rule "modulo Enfermeria posoperatorio"
+	salience 2
+	when
+		ManualData(submodule=="enfermeria_postoperatorio")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Enfermeria.pdf");
+		$manual.setPagina(1);
+
+end
+rule "modulo Salud Ocupacional"
+	salience 2
+	when
+		ManualData(submodule=="saludOcupacional_Padre")
+		$manual: ManualData()
+	then
+		$manual.setManual("alas_HIS_Manual_de_Usuario_Modulo_Salud_Ocupacional.pdf");
+		$manual.setPagina(1);
+
+end

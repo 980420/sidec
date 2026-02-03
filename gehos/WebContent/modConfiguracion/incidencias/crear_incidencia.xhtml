@@ -1,0 +1,77 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j ="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core"
+	template="#{theme.template}" >
+
+	<ui:define name="body" >
+    	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    	<script type="text/javascript">setContentTitle('#{messages.label}')</script>
+    	<h:form id="idForm">
+    		<rich:panel style="width:100%;">
+                <f:facet name="header">
+                     <h:outputText value="#{messages.datosIncidencia}"/>           
+                </f:facet>
+           		<table cellpadding="0px" cellspacing="0px">
+                  	<tr>
+						<td>
+							#{messages.tema}:
+							<rich:message for="tema" showDetail="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputLabel value="*" title="#{facesMessages.getCurrentMessagesForControl('tema').get(0).detail}" />
+								</f:facet>
+							</rich:message>
+						</td>
+						<td width="25px"></td>
+						<td>
+							#{messages.componente}:
+							<rich:message for="comp" showDetail="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputLabel value="*" title="#{facesMessages.getCurrentMessagesForControl('comp').get(0).detail}" />
+								</f:facet>
+							</rich:message>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:inputText value="#{gestionarIncidencia.incidencia.tema}" id="tema">
+								<f:validateLength maximum="25"/>
+							</h:inputText>
+						</td>
+						<td width="25px"></td>
+						<td>
+							<rich:comboBox enableManualInput = "false" suggestionValues="#{gestionarIncidencia.componentes}"
+      								defaultLabel="#{messages.seleccione}" required="#{!empty param['form1:aceptarB']}"
+       								value="#{gestionarIncidencia.componenteSelected}" style="width: 152px;" id="comp">
+ 							</rich:comboBox>
+						</td>
+					</tr>
+					<tr>
+						<td height="8px"></td>
+					</tr>
+				</table>
+				<table cellpadding="0px" cellspacing="0px" width="100%">
+					<tr>
+						<td width="100%">
+							<h:outputLabel value="#{messages.descripcion}:"/>
+                            <rich:spacer height="0px" style="display: block"></rich:spacer>
+                            <h:inputTextarea value="#{gestionarIncidencia.incidencia.descripcion}" style=" width : 100%;">
+						
+					        </h:inputTextarea>
+						</td>
+					</tr>
+				</table>
+				<br />
+				<div align="right">
+					<h:commandButton value="#{messages.aceptar}" style="margin: 0px" action="#{gestionarIncidencia.insertar()}"/>
+					<h:commandButton value="#{messages.cancelar}" style="margin: 0px; margin-left: 10px;" action="cancelar"
+						rendered="#{not empty misIncidencias.resultList}"/>
+				</div>				
+			</rich:panel>
+    	</h:form>
+    </ui:define>
+</ui:composition>

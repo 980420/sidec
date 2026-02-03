@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+      
+   <action execute="#{servicioClinicoBuscarControlador.begin()}" />
+   <param name="state" value="#{servicioClinicoBuscarControlador.state}" />
+   <param name="order" value="#{servicioClinicoBuscarControlador.order}" />     
+   <param name="firstResult" value="#{servicioClinicoBuscarControlador.firstResult}"/>	
+   <param name="critB1" value="#{servicioClinicoBuscarControlador.codigo}"/>
+   <param name="critB2" value="#{servicioClinicoBuscarControlador.nombre}"/>   
+   <param name="critB3" value="#{servicioClinicoBuscarControlador.departamentoSeleccionado}"/>
+   <param name="critB4" value="#{servicioClinicoBuscarControlador.categoriaSeleccionada}"/>
+   <param name="critB5" value="#{servicioClinicoBuscarControlador.subCateogoriaSeleccionada}"/>
+   <param name="from" value="#{servicioClinicoBuscarControlador.from}"/>
+   
+   <!-- go to create -->
+   <navigation from-action="#{servicioClinicoCrearControlador.begin()}">		
+		<redirect view-id="/modConfiguracion/management/gestionarServiciosClinicos/CrearServiciosClinicos.gehos">
+			<param name="state" value="#{servicioClinicoBuscarControlador.state}" />
+			<param name="firstResult" value="#{servicioClinicoBuscarControlador.firstResult}"/>
+			<param name="order" value="#{parameters.encodec(servicioClinicoBuscarControlador.order)}" /> 
+			<param name="critB1" value="#{parameters.encodec(servicioClinicoBuscarControlador.codigo)}"/>
+			<param name="critB2" value="#{parameters.encodec(servicioClinicoBuscarControlador.nombre)}"/>   
+			<param name="critB3" value="#{parameters.encodec(servicioClinicoBuscarControlador.departamentoSeleccionado)}"/>
+		    <param name="critB4" value="#{parameters.encodec(servicioClinicoBuscarControlador.categoriaSeleccionada)}"/>
+			<param name="critB5" value="#{parameters.encodec(servicioClinicoBuscarControlador.subCateogoriaSeleccionada)}"/>	
+		</redirect> 		
+	</navigation>
+	
+	<!-- go to view details -->
+	<navigation from-action="#{servicioClinicoBuscarControlador.seleccionarVer()}" evaluate="#{servicioClinicoBuscarControlador.error}">
+		<rule if-outcome="0">		
+		<redirect view-id="/modConfiguracion/management/gestionarServiciosClinicos/VerDetallesServiciosClinicos.xhtml">
+			<param name="servicioId" value="#{servicioClinicoBuscarControlador.servicioClinicoEliminarId}" />
+			<param name="state" value="#{servicioClinicoBuscarControlador.state}" />
+			<param name="order" value="#{servicioClinicoBuscarControlador.order}" />
+			<param name="firstResult" value="#{servicioClinicoBuscarControlador.firstResult}" />
+			<param name="critB1" value="#{parameters.encodec(servicioClinicoBuscarControlador.codigo)}" />
+			<param name="critB2" value="#{parameters.encodec(servicioClinicoBuscarControlador.nombre)}" />
+			<param name="critB3" value="#{parameters.encodec(servicioClinicoBuscarControlador.departamentoSeleccionado)}" />
+			<param name="critB4" value="#{parameters.encodec(servicioClinicoBuscarControlador.categoriaSeleccionada)}" />
+			<param name="critB5" value="#{parameters.encodec(servicioClinicoBuscarControlador.subCateogoriaSeleccionada)}" />
+			<param name="from" value="listar" />
+		</redirect> 
+		</rule>		
+	</navigation>
+	
+	<!-- go to modify -->
+	<navigation from-action="#{servicioClinicoBuscarControlador.seleccionarModificar()}" evaluate="#{servicioClinicoBuscarControlador.error}">
+		<rule if-outcome="0">			
+		<redirect view-id="/modConfiguracion/management/gestionarServiciosClinicos/ModificarServiciosClinicos.xhtml">
+			<param name="servicioId" value="#{servicioClinicoBuscarControlador.servicioClinicoEliminarId}" />
+			<param name="state" value="#{servicioClinicoBuscarControlador.state}" />
+			<param name="order" value="#{servicioClinicoBuscarControlador.order}" />
+			<param name="firstResult" value="#{servicioClinicoBuscarControlador.firstResult}" />
+			<param name="critB1" value="#{parameters.encodec(servicioClinicoBuscarControlador.codigo)}" />
+		    <param name="critB2" value="#{parameters.encodec(servicioClinicoBuscarControlador.nombre)}" />
+		    <param name="critB3" value="#{parameters.encodec(servicioClinicoBuscarControlador.departamentoSeleccionado)}" />
+			<param name="critB4" value="#{parameters.encodec(servicioClinicoBuscarControlador.categoriaSeleccionada)}" />
+			<param name="critB5" value="#{parameters.encodec(servicioClinicoBuscarControlador.subCateogoriaSeleccionada)}" />
+		</redirect>
+		</rule>
+	</navigation>
+</page>

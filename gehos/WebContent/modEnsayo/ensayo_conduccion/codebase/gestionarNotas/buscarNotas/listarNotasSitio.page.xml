@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<page    xmlns               ="http://jboss.com/products/seam/pages"  
+         xmlns:xsi           ="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd"> 
+   
+     <begin-conversation flush-mode="manual" join="true"/>
+	<action execute="#{listarNotasSitio.refresh()}"/>
+	<param name="idNota"/>	
+	<param name="idGrupo" value="#{listarNotasSitio.idGrupo}"/>	
+	<param name="idSujeto" value="#{listarNotasSitio.idSujeto}"/>
+	
+	<navigation from-action="modificarNota">
+    <end-conversation before-redirect="true"/>
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/modificarNota/modificarNotaSitio.xhtml">
+		<param name="idNota" value="#{idNota}"/>
+		<param name="idSujeto" value="#{listarNotasSitio.idSujeto}"/>
+		<param name="idGrupo" value="#{listarNotasSitio.idGrupo}"/>	
+		</redirect>
+	</navigation>
+	
+	<navigation from-action="verDetalles">	
+    <end-conversation before-redirect="true"/>
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/verNota/verNotaSitioListado.xhtml">
+		<param name="idNota" value="#{idNota}"/>
+		<param name="idSujeto" value="#{listarNotasSitio.idSujeto}"/>
+		<param name="idGrupo" value="#{listarNotasSitio.idGrupo}"/>	
+		<param name="desde" value="listarNota"/>
+		</redirect>
+	</navigation>
+	
+	 <navigation from-action="cancelar">
+    <end-conversation before-redirect="true"/>
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/visualizarEstadoMonitoreo.xhtml">
+			 <param name="idGrupo" value="#{listarNotasSitio.idGrupo}"/>
+			 <param name="idFuncionalidad" value="#{activeModule.activeModule.id}" />
+   			 <param name="idancestors" value="#{activeModule.activeModule.id}a" />
+		</redirect>			
+	</navigation>
+	
+</page>

@@ -1,0 +1,295 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- eticEstilos -->
+		<!-- Estilo para simpleTogglePanel -->
+		<style type="text/css">
+.rich-stglpanel-body {
+	padding: 0px
+}
+</style>
+
+		<!-- Estilo para panel -->
+		<style type="text/css">
+.rich-panel-body {
+	padding: 0px
+}
+</style>
+
+		<script type="text/javascript">setContentTitle('#{messages.crearEnfermero}')</script>
+
+		<!-- eticJavaFuntion -->
+		<a4j:form>
+			<a4j:jsFunction action="createEnfermero" name="selected"
+				ignoreDupResponses="true">
+				<a4j:actionparam name="id"
+					assignTo="#{enfermeroUsuarioSelect_custom.idUsuario}" />
+			</a4j:jsFunction>
+		</a4j:form>
+
+		<!-- eticFormaPrincipal -->
+		<h:form id="formUserSelect" styleClass="edit">
+			<!-- eticBusqueda -->
+			<a4j:outputPanel id="usuario_list_id">
+				<rich:simpleTogglePanel id="usuarioBusqueda" switchType="client">
+					<f:facet name="header">#{messages.crit}</f:facet>
+					<table cellpadding="0px" cellspacing="0px" border="0px"
+						id="simplesearch">
+						<tr>
+							<td style="height: 10px;" colspan="6" />
+						</tr>
+						<tr style="vertical-align: top;">
+							<td style="width: 7px;" />
+							<td>
+							#{messages.param2}<br />
+							<h:inputText id="username"
+								value="#{enfermeroUsuarioSelect_custom.user.username}"
+								style="width:148px;" />
+							<td style="width: 25px" /></td>
+							<td>#{messages.param1}<br />
+							<h:inputText id="name"
+								value="#{enfermeroUsuarioSelect_custom.user.nombre}"
+								style="width:148px;" /></td>
+							
+							<td style="width: 25px" />
+							<td style="vertical-align: bottom;"><a4j:commandButton
+								id="search" value="#{messages.buscar}"
+								action="#{enfermeroUsuarioSelect_custom.Buscar()}"
+								reRender="usuariosList, search"
+								style="margin-left: 0px; margin-right: 10px; margin-bottom: 0px;">
+								<s:defaultAction />
+							</a4j:commandButton> <h:commandButton value="#{messages.cancelar}" action="cancelar"
+								style="margin-right: 0px; margin-left: 0px; margin-bottom: 0px;" /></td>
+						</tr>
+					</table>
+					<rich:spacer height="7px" style="display: block" />
+				</rich:simpleTogglePanel>
+
+				<!-- eticBusquedaValidacion -->
+				<a4j:outputPanel id="usuariosList">
+					<rich:spacer height="9px" style="display: block" />
+					<rich:panel id="usuarioBusquedaValidacion"
+						rendered="#{empty enfermeroUsuarioSelect_custom.resultList}">
+						<f:facet name="header">#{messages.listadoUsuarios}</f:facet>
+						<rich:spacer height="11px" style="display: block" />
+						<div class="results" id="userList"><rich:spacer width="6px" />
+						<h:outputText
+							value="#{messages.noSeEncontro}" />
+						</div>
+						<rich:spacer height="4px" style="display: block" />
+					</rich:panel>
+
+					<!-- eticListadoUsuarios -->
+					<rich:dataTable id="usuarioListado" style="width: 100%;" var="user"
+						value="#{enfermeroUsuarioSelect_custom.resultList}"
+						rendered="#{not empty enfermeroUsuarioSelect_custom.resultList}"
+						columnsWidth="1%, 30%, 70%,0*">
+						<f:facet name="header">#{messages.listadoUsuarios}</f:facet>
+
+						<h:column>
+							<f:facet name="header">
+					#{messages.colum1}
+	            </f:facet>
+
+							<h:graphicImage height="25" width="25"
+								rendered="#{userTools.userImageExist(user.username)}"
+								url="/resources/modCommon/userphotos/#{user.username}.png">
+							</h:graphicImage>
+							<h:graphicImage height="25" width="25"
+								rendered="#{not userTools.userImageExist(user.username)}"
+								value="/resources/modCommon/unknown/soto-layout/generico/desconocido.png">
+
+							</h:graphicImage>
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.colum3}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not enfermeroUsuarioSelect_custom.order.equals('username asc') and not enfermeroUsuarioSelect_custom.order.equals('username desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="usercontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{enfermeroUsuarioSelect_custom.order.equals('username asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="usercontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{enfermeroUsuarioSelect_custom.order.equals('username desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="usercontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+	            #{user.username}
+	        </h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.colum2}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not enfermeroUsuarioSelect_custom.order.equals('nombre asc') and not enfermeroUsuarioSelect_custom.order.equals('nombre desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="nombrecontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{enfermeroUsuarioSelect_custom.order.equals('nombre asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="nombrecontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{enfermeroUsuarioSelect_custom.order.equals('nombre desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="nombrecontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+	            #{user.nombre}
+	        </h:column>
+
+
+
+
+						<h:column>
+							<div align="center"><h:graphicImage title="#{messages.seleccionar}"
+								onclick="selected('#{user.id}');"
+								style="border: 0px; cursor:pointer;"
+								value="/resources/icons/default/acciones/seleccionar_uno.png">
+							</h:graphicImage></div>
+						</h:column>
+					</rich:dataTable>
+					<br />
+
+					<!-- eticPaginado -->
+					<s:div
+						rendered="#{not empty enfermeroUsuarioSelect_custom.resultList}"
+						id="pagingcontrols" styleClass="tableControl"
+						style="width: 100%; text-align:center" align="center">
+
+						<h:graphicImage
+							value="/resources/icons/default/paginado/iniciod.png"
+							rendered="#{!enfermeroUsuarioSelect_custom.previousExists}" />
+
+						<h:graphicImage title="#{messages.primera}"
+							style="cursor:pointer; border: 0px;"
+							rendered="#{enfermeroUsuarioSelect_custom.previousExists}"
+							value="/resources/icons/default/paginado/#{theme.color}/inicio.png">
+							<a4j:support ajaxSingle="true" event="onclick"
+								action="#{enfermeroUsuarioSelect_custom.setFirstResult(0)}"
+								reRender="usuariosList" />
+						</h:graphicImage>
+
+						<h:graphicImage
+							value="/resources/icons/default/paginado/anteriord.png"
+							rendered="#{!enfermeroUsuarioSelect_custom.previousExists}" />
+
+						<h:graphicImage title="#{messages.anterior}"
+							style="cursor:pointer; border: 0px;"
+							rendered="#{enfermeroUsuarioSelect_custom.previousExists}"
+							value="/resources/icons/default/paginado/#{theme.color}/anterior.png">
+							<a4j:support ajaxSingle="true" event="onclick"
+								action="#{enfermeroUsuarioSelect_custom.setFirstResult(enfermeroUsuarioSelect_custom.previousFirstResult)}"
+								reRender="usuariosList" />
+						</h:graphicImage>
+
+						<h:graphicImage
+							value="/resources/icons/default/paginado/siguiented.png"
+							rendered="#{!enfermeroUsuarioSelect_custom.nextExists}" />
+
+						<h:graphicImage title="#{messages.siguiente}"
+							style="cursor:pointer; border: 0px;"
+							rendered="#{enfermeroUsuarioSelect_custom.nextExists}"
+							value="/resources/icons/default/paginado/#{theme.color}/siguiente.png">
+							<a4j:support ajaxSingle="true" event="onclick"
+								action="#{enfermeroUsuarioSelect_custom.setFirstResult(enfermeroUsuarioSelect_custom.nextFirstResult)}"
+								reRender="usuariosList" />
+						</h:graphicImage>
+
+						<h:graphicImage value="/resources/icons/default/paginado/find.png"
+							rendered="#{!enfermeroUsuarioSelect_custom.nextExists}" />
+
+						<h:graphicImage title="#{messages.ultima}"
+							style="cursor:pointer; border: 0px;"
+							rendered="#{enfermeroUsuarioSelect_custom.nextExists}"
+							value="/resources/icons/default/paginado/#{theme.color}/fin.png">
+							<a4j:support ajaxSingle="true" event="onclick"
+								action="#{enfermeroUsuarioSelect_custom.setFirstResult(enfermeroUsuarioSelect_custom.lastFirstResult)}"
+								reRender="usuariosList" />
+						</h:graphicImage>
+					</s:div>
+				</a4j:outputPanel>
+
+				<!-- eticBotones -->
+
+			</a4j:outputPanel>
+
+			<!-- eticFiltro -->
+			<rich:contextMenu attached="false" id="nombrecontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.ordMenorMayor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{enfermeroUsuarioSelect_custom.setOrder('nombre asc')}"
+					reRender="usuarioListado">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.ordMayorMenor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{enfermeroUsuarioSelect_custom.setOrder('nombre desc')}"
+					reRender="usuarioListado">
+				</rich:menuItem>
+				
+			</rich:contextMenu>
+			<rich:contextMenu attached="false" id="usercontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.ordMenorMayor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{enfermeroUsuarioSelect_custom.setOrder('username asc')}"
+					reRender="usuarioListado">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.ordMayorMenor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{enfermeroUsuarioSelect_custom.setOrder('username desc')}"
+					reRender="usuarioListado">
+				</rich:menuItem>
+				
+			</rich:contextMenu>
+		</h:form>
+	</ui:define>
+</ui:composition>

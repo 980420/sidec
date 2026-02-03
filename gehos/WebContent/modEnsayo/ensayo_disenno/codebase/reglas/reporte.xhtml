@@ -1,0 +1,432 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+<ui:composition>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('#{messages.tituloR}')</script>
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css'
+		type='text/css' />
+	<style>
+	.borderless-panel-grid > tbody > tr > td.dr-table-cell
+	{
+	  border-bottom: none;
+	}
+	</style>	
+	<script>
+		function hideOverflow()
+		{
+			jQuery("html").css('overflow','hidden');
+		}
+		function showOverflow()
+		{
+			jQuery("html").css('overflow','auto');
+		}
+	</script>
+<!-- 	<a4j:outputPanel ajaxRendered="true">
+		<s:div
+			rendered="#{facesMessages.getCurrentMessagesForControl('listOfGruposujetoss').size() > 0 }"
+			styleClass="custom-error">
+			<div>
+				<rich:message for="listOfGruposujetoss" />
+			</div>
+		</s:div>
+	</a4j:outputPanel> -->	
+	<!--BEGIN delete rule modal panel-->			
+		<c:set var="modalDeleteRuleId" value="${'modal_eliminar_regla'}" />
+		<c:set var="modalDeleteRuleJsFuncName" value="${'selectItemForDeletion'}" />
+		<ui:include src="/modEnsayo/codebase/generic_components/yesNoModal/genericYesNoModal.xhtml">
+			<ui:param name="modalId" value="#{modalDeleteRuleId}" />
+			<ui:param name="modalHeader" value="#{messages.eliminar_regla_titulo}" />
+			<ui:param name="modalBody" value="#{messages.eliminar_regla_cuerpo}" />
+			<ui:param name="onYesRerender" value="busquedas" />
+			<ui:param name="controller" value="#{ReglasControlador}" />
+			<ui:param name="jsFuncName" value="#{modalDeleteRuleJsFuncName}" />			
+		</ui:include>			
+	<!--END -->	
+	
+	<!--BEGIN complete rule modal panel-->			
+		<c:set var="modalCompleteRuleId" value="${'modal_completar_regla'}" />
+		<c:set var="modalCompleteRuleJsFuncName" value="${'selectRuleComplete'}" />
+		<ui:include src="/modEnsayo/codebase/generic_components/yesNoModal/genericYesNoModal.xhtml">
+			<ui:param name="modalId" value="#{modalCompleteRuleId}" />
+			<ui:param name="modalHeader" value="#{messages.completar_regla_titulo}" />
+			<ui:param name="modalBody" value="#{messages.completar_regla_cuerpo}" />
+			<ui:param name="onYesRerender" value="selectedVariableContainer" />
+			<ui:param name="controller" value="#{ReglasControlador}" />
+			<ui:param name="jsFuncName" value="#{modalCompleteRuleJsFuncName}" />			
+		</ui:include>			
+	<!--END -->
+	
+	<!--BEGIN descomplete rule modal panel-->			
+		<c:set var="modalDesCompleteRuleId" value="${'modal_descompletar_regla'}" />
+		<c:set var="modalDesCompleteRuleJsFuncName" value="${'selectRuleDesComplete'}" />
+		<ui:include src="/modEnsayo/codebase/generic_components/yesNoModal/genericYesNoModal.xhtml">
+			<ui:param name="modalId" value="#{modalDesCompleteRuleId}" />
+			<ui:param name="modalHeader" value="#{messages.descompletar_regla_titulo}" />
+			<ui:param name="modalBody" value="#{messages.descompletar_regla_cuerpo}" />
+			<ui:param name="onYesRerender" value="selectedVariableContainer" />
+			<ui:param name="controller" value="#{ReglasControlador}" />
+			<ui:param name="jsFuncName" value="#{modalDesCompleteRuleJsFuncName}" />			
+		</ui:include>			
+	<!--END -->
+	
+	<rich:modalPanel id="cristalR"
+		style="background:transient !important;border: 0px !important;background-color: transparent;position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+		<h:graphicImage value="/resources/icons/default/acciones/loading.gif"
+			style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);width: 42px;height: 42px;" />
+	</rich:modalPanel>
+	
+	<a4j:form id="busquedasForm">
+		<rich:simpleTogglePanel switchType="client" style="margin-top:5px;"
+			bodyClass="simpleTogPanel">
+			<f:facet name="header">
+				<h:outputLabel value="#{messages.criterios}" style="cursor:pointer;" />
+			</f:facet>
+			<a4j:outputPanel id="busquedas">
+				<h:panelGrid columns="2" class="borderless-panel-grid">
+					<rich:column style="vertical-align: top;" width="10%">
+						<ui:include
+							src="/modEnsayo/ensayo_disenno/codebase/reglas/dependencies/studyGenericTree.xhtml">
+							<ui:param name="estudio" value="#{ReglasControlador.estudio}" />
+							<ui:param name="reRender" value="selectedVariableContainer" />
+							<ui:param name="bean"
+								value="#{yEL.GetELMethodCall(ReglasControlador,'setVarMon','variable,mhojaCrd')}" />
+							<ui:param name="treeHeight" value="500" />
+							
+							<ui:param name="actionSelectGrupo" value="#{yEL.GetELMethodCall(ReglasControlador,'setGrupoSujetosSeleccionado','grupoSujeto')}" />
+							<ui:param name="actionSelectMomento" value="#{yEL.GetELMethodCall(ReglasControlador,'setMomentoGeneralSeleccionado','momentoGeneral')}" />
+							<ui:param name="actionSelectHojaCRD" value="#{yEL.GetELMethodCall(ReglasControlador,'setMomentoGenHojaCrd','mhojaCrd')}" />
+							<ui:param name="actionReglasSize" value="#{yEL.GetELMethodCall(ReglasControlador,'ReglasSize','variable.id')}" />						
+							
+						</ui:include>
+					</rich:column>
+					<rich:column
+						style="vertical-align: top;padding-left: 20px;"
+						width="90%">
+						<a4j:outputPanel id="selectedVariableContainer">
+						<c:set var="CanManageRules" value="#{ReglasControlador.IsCompletedRules()}"/>
+							<s:div rendered="#{ReglasControlador.variableSeleccionada!=null}">
+								<fieldset>
+									<legend>Variable seleccionada</legend>
+
+									<s:div>
+										<ui:include
+											src="/modEnsayo/ensayo_disenno/codebase/reglas/template_variable.xhtml">
+											<ui:param name="variable"
+												value="#{ReglasControlador.variableSeleccionada}" />											
+										</ui:include>
+									</s:div>
+
+								</fieldset>
+								<rich:spacer styleClass="espacio_vertical"></rich:spacer>
+							</s:div>
+							<s:div id="completeRulesDiv"
+									rendered="#{ReglasControlador.ShowRuleCompletionButton()}" style="margin-right:2px">
+									<div align="right">
+										<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+											<h:graphicImage height="12" width="12"
+												value="/resources/modEnsayo/img/iconos/complete-rule.png"
+												style="margin: 0 2px;" />
+											<a4j:commandLink value="Completar reglas"
+												onclick="#{modalCompleteRuleJsFuncName}('#{ReglasControlador.grupoSujetosSeleccionado.id}')"												
+												limitToList="true"												
+												style="vertical-align: -webkit-baseline-middle;">
+											</a4j:commandLink>
+										</h:panelGrid>
+									</div>
+								</s:div>
+							<s:div id="descompleteRulesDiv"
+								rendered="#{ReglasControlador.ShowRuleDesCompletionButton()}"
+								style="margin-right:2px">
+								<div align="right">
+									<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+										<h:graphicImage height="12" width="12"
+											value="/resources/modEnsayo/img/iconos/cancel-action.png"
+											style="margin: 0 2px;" />
+										<a4j:commandLink value="Descompletar reglas"
+											onclick="#{modalDesCompleteRuleJsFuncName}('#{ReglasControlador.grupoSujetosSeleccionado.id}')"
+											limitToList="true"
+											style="vertical-align: -webkit-baseline-middle;">
+										</a4j:commandLink>
+									</h:panelGrid>
+								</div>
+							</s:div>
+
+							<fieldset>
+								<legend>#{messages.fieldset_reglas}</legend>
+
+								<s:div id="selvardep"
+									rendered="#{ReglasControlador.variableSeleccionada!=null and CanManageRules}">
+
+									<div align="right">
+										<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+											<h:graphicImage height="12" width="12"
+												value="/resources/icons/default/acciones/adicionar.png"
+												style="margin: 2px 2px 2px 2px;" />
+											<a4j:commandLink value="Adicionar regla"
+												action="#{ReglasControlador.PrepareModalForNewRule()}"
+												onclick="#{rich:component('cristalR')}.show()"
+												reRender="ruleCreationHeaderText,opRuleCreationMeta,opRuleCreationActions,ruleform,opValues,readableConds,interpret"
+												limitToList="true"
+												oncomplete="hideOverflow();Richfaces.showModalPanel('ruleCreation');#{rich:component('cristalR')}.hide();"
+												style="margin-left: 0px; margin-bottom: 4px; margin-top: 2px;">
+
+											</a4j:commandLink>
+										</h:panelGrid>
+									</div>
+								</s:div><a4j:commandLink id="exportarReglas" 
+										title="Exportar" 
+										action="#{ReglasControlador.generarListaReglasExport()}" 
+										onclick="javascript:Richfaces.showModalPanel('exportPanel');" 
+										style="border: 0px; cursor:pointer;float: right;" 
+										status="statusGeneral" ignoreDupResponses="true"
+										rendered="#{not empty ReglasControlador.listadoReglas.resultList}"> 
+										<h:graphicImage title="#{messages.exportar}" height="12"
+									width="12" style="cursor: pointer"
+									value="/resources/icons/default/acciones/imprimir_pdf.png" />
+										Exportar
+									</a4j:commandLink>	 						
+								<rich:panel rendered="#{empty ReglasControlador.listadoReglas.resultList}">
+									<f:facet name="header">
+										<h:outputLabel value="#{messages.listado_reglas}" />
+									</f:facet>
+									<h:outputText value="#{messages.msg_listaVacia_ens}" />
+								</rich:panel>
+								<rich:dataTable id="richRules"
+									rendered="#{not empty ReglasControlador.listadoReglas.resultList}" width="100%"
+									value="#{ReglasControlador.listadoReglas.resultList}" var="var">
+									<f:facet name="header">
+										<h:outputLabel value="#{messages.listado_reglas}" />
+									</f:facet>
+									
+										<rich:column rendered="#{not empty ReglasControlador.grupoSujetosSeleccionado}">
+											<f:facet name="header">
+												<h:outputLabel value="Grupo" />
+											</f:facet>
+											<h:outputLabel value="#{var.grupo.nombreGrupo}" rendered="#{var.grupo!=null}"/>
+										</rich:column>
+									
+										<rich:column rendered="#{not empty ReglasControlador.grupoSujetosSeleccionado or not empty ReglasControlador.momentoGeneralSeleccionado}">
+											<f:facet name="header">
+												<h:outputLabel value="Momento" />
+											</f:facet>
+											<h:outputLabel value="#{var.momento.nombre}" rendered="#{var.momento!=null}"/>
+										</rich:column>
+										<rich:column rendered="#{not empty ReglasControlador.grupoSujetosSeleccionado or not empty ReglasControlador.momentoGeneralSeleccionado or not empty ReglasControlador.momentoGenHojaCrd}">
+											<f:facet name="header">
+												<h:outputLabel value="Hoja" />
+											</f:facet>
+											<h:outputLabel value="#{var.hoja.nombreHoja}" rendered="#{var.hoja!=null}"/>
+										</rich:column>									
+									
+									<rich:column>
+										<f:facet name="header">
+											<h:outputLabel value="Variable" />
+										</f:facet>
+										<h:outputLabel value="#{var.regla.variable.nombreVariable}" />
+									</rich:column>
+									
+									<rich:column>
+										<f:facet name="header">
+											<h:outputLabel value="Nombre" />
+										</f:facet>
+										<h:outputLabel value="#{var.regla.nombre}" />
+									</rich:column>
+
+									<rich:column>
+										<f:facet name="header">
+											<h:outputLabel value="Ejecución" />
+										</f:facet>
+										<h:outputLabel
+											value="#{ReglasControlador.describeRuleExec(var.regla)}"
+											/>
+									</rich:column>
+
+									<rich:column>
+										<f:facet name="header">
+											<h:outputLabel value="Acciones" />
+										</f:facet>
+										<h:outputLabel
+											value='#{ReglasControlador.describeRuleActions(var.regla)}' />
+									</rich:column>
+									<rich:column width="1px">
+										<div align="center">
+											<a4j:commandButton title="Ver interpretación"
+												action="#{ReglasControlador.Interpret(var.regla)}"												
+												image="/resources/modEnsayo/img/ver.png"
+												reRender="interpret" ajaxSingle="true">
+											</a4j:commandButton>
+										</div>
+									</rich:column>
+									<c:if test="#{CanManageRules}">
+									<rich:column width="1px">
+										<div align="center">
+											<a4j:commandButton title="Modificar"
+												action="#{ReglasControlador.LoadRule(var.regla,var.regla.variable)}"
+												oncomplete="Richfaces.showModalPanel('ruleCreation')"
+												image="/resources/modEnsayo/img/modificar.png"
+												reRender="opRuleCreationMeta,ruleCreationHeaderText,opRuleCreationActions,ruleform,opValues,readableConds,interpret">
+											</a4j:commandButton>
+										</div>
+									</rich:column>
+
+									<rich:column width="1px">
+										<div align="center">
+											<a4j:commandLink ajaxSingle="true"
+												onclick="#{modalDeleteRuleJsFuncName}('#{var.regla.id}')"
+												status="showModalStatus">
+												<h:graphicImage title="#{messages.eliminar}"
+													style="border: 0px; cursor:pointer;"
+													value="/resources/icons/default/acciones/eliminar.png">
+												</h:graphicImage>
+											</a4j:commandLink>
+										</div>
+										<div align="center">										
+											<a4j:commandLink title="#{messages.eliminar}"
+												onclick="Richfaces.showModalPanel('eliminar_usuario_panel')"												
+												image="/resources/icons/default/acciones/eliminar.png"
+												>
+											</a4j:commandLink>
+										</div>
+									</rich:column>
+									</c:if>
+								</rich:dataTable>
+								<ui:include src="/modEnsayo/codebase/plantillas/paginado_tabla_inferior_generico.xhtml/" >
+									<ui:param name="vzPaginado" value="#{ReglasControlador.listadoReglas.resultCount>10}"/>
+									<ui:param name="nomControladorList" value="#{ReglasControlador.listadoReglas}" />
+									<ui:param name="idListado" value="richRules" />
+								</ui:include>
+								
+								<s:div id="interpret">
+								<s:div rendered="#{not empty ReglasControlador.interpretedRule}">
+									<rich:simpleTogglePanel switchType="client">
+										<f:facet name="header">Interpretación de la regla '#{ReglasControlador.interpretedRule.nombre}'</f:facet>										
+											<ui:include
+												src="/modEnsayo/ensayo_disenno/codebase/reglas/rule_interpretation.xhtml">
+												<ui:param name="if"
+													value="#{ReglasControlador.ifPart}" />
+												<ui:param name="then" value="#{ReglasControlador.thenPart}" />
+												<ui:param name="else" value="#{ReglasControlador.elsePart}" />
+											</ui:include>										
+									</rich:simpleTogglePanel>
+								</s:div>
+								</s:div>
+							</fieldset>
+						</a4j:outputPanel>
+						<rich:spacer height="10px"></rich:spacer>
+
+
+						<div id="divSelectedVar"></div>
+					</rich:column>
+
+
+				</h:panelGrid>
+
+			</a4j:outputPanel>
+		</rich:simpleTogglePanel>
+	</a4j:form>
+		
+	
+	
+	<rich:spacer height="11px" width="100%" />
+
+	<s:div>
+		<ui:include
+			src="/modEnsayo/ensayo_disenno/codebase/reglas/conditionstree/conditions_includedmodals.xhtml" />			
+		<ui:include
+			src="/modEnsayo/ensayo_disenno/codebase/reglas/modals/ruleCreation.xhtml" />
+		<ui:include 
+				src="/modEnsayo/codebase/plantillas/exportModalPanel.xhtml"> 
+				<link rel='stylesheet' 
+					href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css' 
+					type='text/css' /> 
+				<link rel='stylesheet' 
+					href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css' 
+					type='text/css' /> 
+				<ui:param name="controlador" value="#{ReglasControlador}" /> 
+			</ui:include> 	
+	</s:div>
+	
+
+
+	<script
+		src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/reglas/vendor/jquery1.9.js"
+		type="text/javascript"></script>
+	<script
+		src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/jquery-inputmask/jquery.inputmask.bundle.min.js"
+		type="text/javascript"></script>
+	<script>
+		var $j = jQuery.noConflict(true);		
+	</script>
+
+	<script>
+jQuery(document).ready(function(){
+	(function($)
+	{
+	var modals = ModalPanel.panels;
+	for (var i=0; i &lt; modals.length;i++) 
+	{
+		var m = modals[i];
+		if(m.cdiv=="cristalCDiv")//this check can be done in several ways
+			continue;
+		
+		var funcBS = m.options['onbeforeshow'];		
+		m.options['onbeforeshow'] = function(event){
+			$('.contentAllL').css('filter','blur(2px)');
+			$('.contentAllL').css('-webkit-filter','blur(2px)');	
+			hideOverflow();		
+			if(funcBS)
+			{
+			    funcBS();
+			}
+			$(document).trigger("yoandry:modalopen",[m]);
+		};	
+		var funcBH = m.options['onbeforehide'];		
+		m.options['onbeforehide'] = function(event){			
+			$('.contentAllL').css('filter','');
+			$('.contentAllL').css('-webkit-filter','');
+			var openModalsCount = countOpenModals();
+			if(openModalsCount==1)//all this happens before the panel is actually hidden, so the value is 1 instead of 0
+				showOverflow();		
+			if(funcBH)
+			{
+				funcBH();
+			}
+			$(document).trigger("yoandry:modalclose",[m]);
+		};		
+	}
+	function countOpenModals()
+	{
+		var modals = ModalPanel.panels;
+		var cont = 0;
+		for (var i=0; i &lt; modals.length;i++) 
+		{
+			var m = modals[i];
+			if(m.shown)
+				cont++;
+		}
+		return cont;
+	}
+	}
+	)($j);
+	
+	$j(document).on("yoandry:modalopen", function(event, modal){
+		console.log('Modal opened: ' + modal.cdiv);
+	});
+	
+	$j(document).on("yoandry:modalclose", function(event, modal){
+		console.log('Modal closed: '+ modal.cdiv);
+	});
+});
+</script>
+</ui:composition>
+
+</html>

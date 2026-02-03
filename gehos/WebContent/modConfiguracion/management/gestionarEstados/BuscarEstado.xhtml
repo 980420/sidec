@@ -1,0 +1,358 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- CSS -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/style/stylesheet.css"
+			rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+		<h:form id="form">
+			<rich:messages id="message" styleClass="message" ajaxRendered="true"
+				for="message" />
+			<a4j:queue ignoreDupResponses="true" />
+
+			<rich:simpleTogglePanel opened="#{estadoBuscarControlador.state}"
+				switchType="client" bodyClass="simpleTogglePanel">
+				<f:facet name="header">#{messages.criterios}</f:facet>
+
+				<a4j:support event="oncollapse" ajaxSingle="true"
+					action="#{estadoBuscarControlador.changeSimpleTogglePanelState()}" />
+				<a4j:support event="onexpand" ajaxSingle="true"
+					action="#{estadoBuscarControlador.changeSimpleTogglePanelState()}" />
+
+				<table cellpadding="0px" cellspacing="0px"
+					class="tabla lh-sint lv-comp-l lh-comp-b lv-comp-r">
+					<tr>
+						<td class="lvg-bet-comp">#{messages.crit1}:<br />
+						<h:inputText id="codigo" value="#{estadoBuscarControlador.codigo}"
+							styleClass="imputText" /></td>
+
+						<td class="lvg-bet-comp">#{messages.crit2}: <br />
+						<h:inputText id="valor" value="#{estadoBuscarControlador.valor}"
+							styleClass="imputText" /></td>
+
+
+
+						<td valign="top">#{messages.crit3}: <br />
+						<rich:comboBox id="estado"
+							suggestionValues="#{estadoBuscarControlador.listNaciones()}"
+							value="#{estadoBuscarControlador.nacion}"
+							defaultLabel="#{messages.seleccione}" enableManualInput="false"
+							tabindex="2" /></td>
+					</tr>
+					<tr>
+						<td align="right" colspan="3">
+						<table cellpadding="0" cellspacing="0" class="tabla">
+							<tr>
+								<td class="lv-bet-botton"><h:commandButton styleClass="botton"
+									 value="#{messages.buscar}"
+									action="#{estadoBuscarControlador.buscar()}">
+									<s:defaultAction />
+								</h:commandButton></td>
+								<td><s:button value="#{messages.cancelar}" styleClass="botton"
+									 view="/modCommons/modHome/home.gehos">  
+									<f:param name="idFuncionalidad"
+										value="#{activeModule.activeModule.id}" />
+									<f:param name="idancestors"
+										value="#{activeModule.activeModule.id}a" />
+									<f:param name="moduleName"
+										value="#{activeModule.activeModuleName}" />
+								</s:button></td>
+							</tr>
+						</table>
+						</td>
+					</tr>
+				</table>
+			</rich:simpleTogglePanel>
+
+			<br />
+<div align="right">
+			<table class="tablaLinkAdd" cellpadding="0" cellspacing="0">
+				<tr>
+					<td><h:graphicImage title="#{messages.adicionarIcon}"
+						height="12" width="12"
+						value="/resources/icons/default/acciones/adicionar.png" /></td>
+					<td valign="middle" class="lv-link-add"><h:commandLink
+						action="#{estadoCrearControlador.begin()}" tabindex="4"
+						value=" #{messages.adicionar}" /></td>
+				</tr>
+			</table>
+			</div>
+			<a4j:outputPanel id="tablas_id">
+				<rich:panel
+					rendered="#{empty estadoBuscarControlador.resultList and (estadoBuscarControlador.codigo != '' || estadoBuscarControlador.valor != '' || estadoBuscarControlador.nacion != '')}">
+					<f:facet name="header">	#{messages.listado} </f:facet>
+					<div class="lh-cont lv-text-l lh-conb lv-text-r"><h:outputText
+						value="#{messages.noInf2}" /></div>
+				</rich:panel>
+
+				<rich:panel
+					rendered="#{estadoBuscarControlador.resultList.size() == 0 and estadoBuscarControlador.codigo == '' and estadoBuscarControlador.valor == '' and estadoBuscarControlador.nacion == ''}">
+					<f:facet name="header">	#{messages.listado} </f:facet>
+					<div class="lh-cont lv-text-l lh-sinb lv-text-r"><h:outputText
+						value="#{messages.noInf}" /></div>
+				</rich:panel>
+
+				<rich:dataTable id="departamentoList_Table"
+					value="#{estadoBuscarControlador.resultList}" var="estado"
+					columnsWidth="30%, 30%, 30%, 1%, 1%, 1%" width="100%"
+					rendered="#{not empty estadoBuscarControlador.resultList}">
+					<f:facet name="header">#{messages.listado}</f:facet>
+
+					<rich:column>
+						<f:facet name="header">
+							<h:panelGrid columns="2"
+								style="width: 100%; padding:0px; margin:0px;" border="0"
+								cellpadding="0" cellspacing="0">
+								<div style="float: left;">#{messages.crit1}</div>
+								<s:div style="text-align: right; padding-left:3px;">
+									<h:graphicImage
+										value="/resources/icons/default/filtro/default.png" width="17"
+										height="17" styleClass="select"
+										rendered="#{not estadoBuscarControlador.order.equals('estado.codigo asc') and not estadoBuscarControlador.order.equals('estado.codigo desc')}">
+										<rich:componentControl event="onclick" for="codigocontextmenu"
+											operation="show" />
+									</h:graphicImage>
+
+									<h:graphicImage
+										rendered="#{estadoBuscarControlador.order.equals('estado.codigo asc')}"
+										value="/resources/icons/default/filtro/asc_sort.png"
+										width="17" height="17" styleClass="select">
+										<rich:componentControl event="onclick" for="codigocontextmenu"
+											operation="show" />
+									</h:graphicImage>
+
+									<h:graphicImage
+										rendered="#{estadoBuscarControlador.order.equals('estado.codigo desc')}"
+										value="/resources/icons/default/filtro/des_sort.png"
+										width="17" height="17" styleClass="select">
+										<rich:componentControl event="onclick" for="codigocontextmenu"
+											operation="show" />
+									</h:graphicImage>
+								</s:div>
+							</h:panelGrid>
+						</f:facet>
+	            		#{estado.codigo}
+	        		</rich:column>
+
+					<rich:column>
+						<f:facet name="header">
+							<h:panelGrid columns="2"
+								style="width: 100%; padding:0px; margin:0px;" border="0"
+								cellpadding="0" cellspacing="0">
+								<div style="float: left;">#{messages.crit2}</div>
+								<s:div style="text-align: right; padding-left:3px;">
+									<h:graphicImage
+										rendered="#{not estadoBuscarControlador.order.equals('estado.valor asc') and not estadoBuscarControlador.order.equals('estado.valor desc')}"
+										value="/resources/icons/default/filtro/default.png" width="17"
+										height="17" styleClass="select">
+										<rich:componentControl event="onclick" for="valorcontextmenu"
+											operation="show" />
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{estadoBuscarControlador.order.equals('estado.valor asc')}"
+										value="/resources/icons/default/filtro/asc_sort.png"
+										width="17" height="17" styleClass="select">
+										<rich:componentControl event="onclick" for="valorcontextmenu"
+											operation="show" />
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{estadoBuscarControlador.order.equals('estado.valor desc')}"
+										value="/resources/icons/default/filtro/des_sort.png"
+										width="17" height="17" styleClass="select">
+										<rich:componentControl event="onclick" for="valorcontextmenu"
+											operation="show" />
+									</h:graphicImage>
+								</s:div>
+							</h:panelGrid>
+						</f:facet>
+		            	#{estado.valor}
+		        	</rich:column>
+
+					<rich:column>
+						<f:facet name="header">
+							<h:panelGrid columns="2"
+								style="width: 100%; padding:0px; margin:0px;" border="0"
+								cellpadding="0" cellspacing="0">
+								<div style="float: left;">#{messages.crit3}</div>
+								<s:div style="text-align: right; padding-left:3px;">
+									<h:graphicImage
+										rendered="#{not estadoBuscarControlador.order.equals('estado.nacion.valor asc') and not estadoBuscarControlador.order.equals('estado.nacion.valor desc')}"
+										value="/resources/icons/default/filtro/default.png" width="17"
+										height="17" styleClass="select">
+										<rich:componentControl event="onclick" for="nacioncontextmenu"
+											operation="show" />
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{estadoBuscarControlador.order.equals('estado.nacion.valor asc')}"
+										value="/resources/icons/default/filtro/asc_sort.png"
+										width="17" height="17" styleClass="select">
+										<rich:componentControl event="onclick" for="nacioncontextmenu"
+											operation="show" />
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{estadoBuscarControlador.order.equals('estado.nacion.valor desc')}"
+										value="/resources/icons/default/filtro/des_sort.png"
+										width="17" height="17" styleClass="select">
+										<rich:componentControl event="onclick" for="nacioncontextmenu"
+											operation="show" />
+									</h:graphicImage>
+								</s:div>
+							</h:panelGrid>
+						</f:facet>
+		            	#{estado.nacion.valor}
+		        	</rich:column>
+
+					<rich:column>
+						<center><h:commandLink
+							action="#{estadoVerDetallesControlador.setId(estado.id)}">
+							<h:graphicImage value="/resources/icons/default/acciones/ver.png"
+								title="#{messages.ver}" styleClass="select" />
+						</h:commandLink></center>
+					</rich:column>
+
+					<rich:column>
+						<center><h:commandLink
+							action="#{estadoModificarControlador.setId(estado.id)}">
+							<h:graphicImage
+								value="/resources/icons/default/acciones/modificar.png"
+								title="#{messages.modificar}" styleClass="select" />
+						</h:commandLink></center>
+					</rich:column>
+
+					<rich:column>
+						<center><a4j:commandLink
+							oncomplete="Richfaces.showModalPanel('panelEliminar')"
+							action="#{estadoBuscarControlador.seleccionar(estado.id)}">
+							<h:graphicImage
+								value="/resources/icons/default/acciones/eliminar.png"
+								title="#{messages.eliminar}" styleClass="select" />
+						</a4j:commandLink></center>
+					</rich:column>
+
+					<rich:column>
+						<center><h:graphicImage
+							value="/resources/modConfiguracion/visible.png"
+							rendered="#{not estado.eliminado}" width="14" height="14"
+							styleClass="select" title="#{messages.visibilidad}">
+							<a4j:support event="onclick"
+								action="#{estadoBuscarControlador.cambiarVisibilidad(estado.id)}"
+								ajaxSingle="true" reRender="tablas_id,departamentoList_Table" />
+						</h:graphicImage> <h:graphicImage
+							value="/resources/modConfiguracion/not-visible.png"
+							rendered="#{estado.eliminado}" width="14" height="14"
+							styleClass="select" title="#{messages.visibilidad}">
+							<a4j:support event="onclick"
+								action="#{estadoBuscarControlador.cambiarVisibilidad(estado.id)}"
+								ajaxSingle="true" reRender="departamentoList_Table" />
+						</h:graphicImage></center>
+					</rich:column>
+				</rich:dataTable>
+
+				<br />
+
+				<s:div id="pagingcontrols"
+					rendered="#{not empty estadoBuscarControlador.resultList}"
+					styleClass="tableControl" style="width: 100%; text-align:center"
+					align="center">
+
+					<h:graphicImage
+						value="/resources/icons/default/paginado/iniciod.png"
+						rendered="#{!estadoBuscarControlador.previousExists}" />
+					<h:commandLink
+						action="#{estadoBuscarControlador.setFirstResult(0)}"
+						rendered="#{estadoBuscarControlador.previousExists}">
+						<h:graphicImage
+							value="/resources/icons/default/paginado/#{theme.color}/inicio.png"
+							title="#{messages.pag1}" styleClass="select" />
+					</h:commandLink>
+
+					<h:graphicImage
+						value="/resources/icons/default/paginado/anteriord.png"
+						rendered="#{!estadoBuscarControlador.previousExists}" />
+					<h:commandLink
+						action="#{estadoBuscarControlador.setFirstResult(estadoBuscarControlador.previousFirstResult)}"
+						rendered="#{estadoBuscarControlador.previousExists}">
+						<h:graphicImage
+							value="/resources/icons/default/paginado/#{theme.color}/anterior.png"
+							title="#{messages.pag2}" styleClass="select" />
+					</h:commandLink>
+
+					<h:graphicImage
+						value="/resources/icons/default/paginado/siguiented.png"
+						rendered="#{!estadoBuscarControlador.nextExists}" />
+					<h:commandLink
+						action="#{estadoBuscarControlador.setFirstResult(estadoBuscarControlador.nextFirstResult)}"
+						rendered="#{estadoBuscarControlador.nextExists}">
+						<h:graphicImage
+							value="/resources/icons/default/paginado/#{theme.color}/siguiente.png"
+							title="#{messages.pag3}" styleClass="select" />
+					</h:commandLink>
+
+					<h:graphicImage value="/resources/icons/default/paginado/find.png"
+						rendered="#{!estadoBuscarControlador.nextExists}" />
+					<h:commandLink
+						action="#{estadoBuscarControlador.setFirstResult(estadoBuscarControlador.lastFirstResult)}"
+						rendered="#{estadoBuscarControlador.nextExists}">
+						<h:graphicImage
+							value="/resources/icons/default/paginado/#{theme.color}/fin.png"
+							title="#{messages.pag4}" styleClass="select" />
+					</h:commandLink>
+				</s:div>
+			</a4j:outputPanel>
+
+			<rich:contextMenu id="codigocontextmenu" attached="false"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{estadoBuscarControlador.setOrder('estado.codigo desc')}"
+					reRender="departamentoList_Table" />
+
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{estadoBuscarControlador.setOrder('estado.codigo asc')}"
+					reRender="departamentoList_Table" />
+			</rich:contextMenu>
+
+			<rich:contextMenu attached="false" id="valorcontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{estadoBuscarControlador.setOrder('estado.valor desc')}"
+					reRender="departamentoList_Table" />
+
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{estadoBuscarControlador.setOrder('estado.valor asc')}"
+					reRender="departamentoList_Table" />
+			</rich:contextMenu>
+			<rich:contextMenu attached="false" id="nacioncontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{estadoBuscarControlador.setOrder('estado.nacion.valor desc')}"
+					reRender="departamentoList_Table" />
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{estadoBuscarControlador.setOrder('estado.nacion.valor asc')}"
+					reRender="departamentoList_Table" />
+			</rich:contextMenu>
+		</h:form>
+
+		<ui:include
+			src="/modConfiguracion/management/gestionarEstados/modalspanel/ConfirmarEliminarEstadoBuscar.xhtml" />
+
+	</ui:define>
+</ui:composition>

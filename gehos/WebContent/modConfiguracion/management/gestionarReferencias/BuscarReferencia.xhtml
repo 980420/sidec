@@ -1,0 +1,524 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css">
+.rich-stglpanel-body {
+	padding: 0px
+}
+</style>
+		<style type="text/css">
+.rich-panel-body {
+	padding: 0px
+}
+</style>
+		<style type="text/css">
+.dr-mpnl-pnl-b {
+	padding: 1px;
+}
+
+.table {
+	border: 0px;
+	padding: 0px !important;
+	margin: 0px;
+}
+
+.dr-mpnl-pnl {
+	border: 1px !important;
+	border-style: solid !important;
+	border-color: #BED6F8 !important;
+}
+
+.custom-error {
+	border: 1px solid #FFCC00;
+	padding: 5px;
+	background-color: #F0F8FF;
+	font-size: 10px;
+	font-family: "Verdana";
+	position: relative;
+	
+	top: 5px;
+	margin-right: 10px;
+}
+</style>
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+		<h:form id="userSearch" styleClass="edit">
+
+			<rich:messages ajaxRendered="true" styleClass="message" id="message"
+				for="message" />  
+
+			<a4j:outputPanel ajaxRendered="true" id="errorOutputPanel">
+				<div style="height:30px;width:100%; display: none;" id="noselecentidaderror">
+					<div class="custom-error">#{messages.error1}</div>
+				</div>
+			</a4j:outputPanel>
+			<a4j:outputPanel ajaxRendered="true" id="errorOutputPanel2">
+				<div style="height:30px;width:100%; display: none;" id="noselecentidaderror2">
+					<div class="custom-error">#{messages.error2}</div>
+				</div>
+			</a4j:outputPanel>
+
+
+			<rich:spacer height="6" />
+			<a4j:outputPanel id="etiquetas">
+				<s:div>
+					<table cellpadding="0" cellspacing="0" border="0" width="100%">
+						<tr>
+							<td width="300px"></td>
+							<td width="25px"></td>
+							<td width="300px" align="right"><h:panelGrid columns="4">
+								<h:graphicImage title="#{messages.asociarRef}"
+									style="border: 0px;cursor: pointer;" height="14" width="14"
+									value="/resources/icons/default/acciones/asociar.png">
+									<a4j:support event="onclick"
+										disabled="#{referenciaBuscarControlador.mostrarEntityReferenciadas()}"
+										action="#{seleccionarEntidades.setId(referenciaBuscarControlador.entidadOrigen.id)}"
+										reRender="panelServicios">
+									</a4j:support>
+								</h:graphicImage>
+								<a4j:commandLink value="#{messages.AsociarReferencia}"
+									title="#{messages.asociarRef}"
+									disabled="#{referenciaBuscarControlador.mostrarEntityReferenciadas()}"
+									action="#{seleccionarEntidades.setId(referenciaBuscarControlador.entidadOrigen.id)}"  
+									reRender="panelServicios" style="cursor: pointer"
+									onmousedown="var dis = #{referenciaBuscarControlador.mostrarEntityReferenciadas()}; if(dis) document.getElementById('noselecentidaderror').style.display = 'block';">
+								</a4j:commandLink>
+								<rich:spacer width="10px"
+									rendered="#{referenciaBuscarControlador.entidadOrigen == null}" />
+								<rich:spacer width="10px"
+									rendered="#{referenciaBuscarControlador.entidadOrigen != null}" />
+
+							</h:panelGrid></td>
+							<td width="25px"></td>
+							<td width="283px" align="right"><h:panelGrid columns="2">
+								<h:graphicImage title="Seleccionar servicios"
+									style="border: 0px; cursor: pointer;" height="12" width="12"
+									value="/resources/icons/default/acciones/adicionar.png">
+									<a4j:support event="onclick"
+										disabled="#{referenciaBuscarControlador.mostrarServicios()}"
+										action="#{seleccionarServicios.cargarDatos(referenciaBuscarControlador.entidadOrigen.id, referenciaBuscarControlador.entidadDestino.id)}"
+										reRender="panelServicios">
+									</a4j:support>
+								</h:graphicImage>
+								<a4j:commandLink value="#{messages.SeleccionarServicios}"
+									title="Seleccionar servicios"
+									disabled="#{referenciaBuscarControlador.mostrarServicios()}"
+									action="#{seleccionarServicios.cargarDatos(referenciaBuscarControlador.entidadOrigen.id, referenciaBuscarControlador.entidadDestino.id)}"
+									reRender="panelServicios"
+									onmousedown="var dis2 = #{referenciaBuscarControlador.mostrarServicios()}; if(dis2) document.getElementById('noselecentidaderror2').style.display = 'block';">
+								</a4j:commandLink>
+							</h:panelGrid></td>
+						</tr>
+					</table>
+				</s:div>
+			</a4j:outputPanel>
+			<table cellpadding="0" cellspacing="0" border="0" width="100%">
+				<tr>
+					<td width="300px" valign="top"><a4j:outputPanel
+						id="entidadesSistema" ajaxRendered="true">
+						<rich:panel style="white-space:nowrap; height : 271px;"
+							height="300px">
+							<f:facet name="header">#{messages.EntidadesSistema} </f:facet>
+							<s:div id="panelEntityOrigenRhio"
+								rendered="#{referenciaBuscarControlador.entidadesOrigen.size()==0}">
+								<rich:spacer height="20px" />
+								<rich:spacer width="6px" />
+								<h:outputText value="#{messages.notInfotoShow}" />
+								<table cellpadding="0" cellspacing="0" border="0">
+									<tr>
+										<td><rich:spacer height="4px" /></td>
+									</tr>
+								</table>
+							</s:div>
+							<s:div id="panelEntityOrigenRhiomostrar"
+								rendered="#{referenciaBuscarControlador.entidadesOrigen.size()!=0}">
+								<rich:dataTable cellpadding="0" cellspacing="0" border="0"
+									value="#{referenciaBuscarControlador.listaControlerEntityOrigen.resultList}"
+									var="entityO" id="tablaEntidades" width="100%">
+
+									<rich:column>
+										<table cellpadding="0" cellspacing="0" border="0">
+											<tr>
+												<td><h:graphicImage
+													value="/resources/modCommon/entidades_logos/#{theme.name}/#{theme.color}/#{entityO.logo}"
+													height="16" /></td>
+												<td width="2px"></td>
+												<td valign="middle"><a4j:commandLink
+													value="#{entityO.nombre}"
+													action="#{referenciaBuscarControlador.seleccionEntity(entityO.id)}"
+													reRender="panelReferenciado,panelServicios,etiquetas, errorOutputPanel"
+													status="entityDestinoStatus">
+												</a4j:commandLink></td>
+											</tr>
+										</table>
+
+
+
+
+
+
+									</rich:column>
+								</rich:dataTable>
+							</s:div>
+						</rich:panel>
+
+					</a4j:outputPanel> <br />
+					<a4j:outputPanel ajaxRendered="true">
+						<s:div
+							rendered="#{not empty referenciaBuscarControlador.listaControlerEntityOrigen.resultList}"
+							styleClass="tableControl" style="width: 100%; text-align:center"
+							align="center">
+
+							<a4j:commandButton
+								action="#{referenciaBuscarControlador.listaControlerEntityOrigen.first()}"
+								image="/resources/icons/default/paginado/#{theme.color}/inicio.png"
+								title="#{messages.primera}"
+								rendered="#{referenciaBuscarControlador.listaControlerEntityOrigen.previousExists}"
+								reRender="entidadesSistema,tablaEntidades" style="border: 0px;" />
+							<h:graphicImage value="/resources/modBancoSangre/iniciod.png"
+								rendered="#{not referenciaBuscarControlador.listaControlerEntityOrigen.previousExists}"
+								style=" width : 16px;" />
+
+							<a4j:commandButton
+								action="#{referenciaBuscarControlador.listaControlerEntityOrigen.previous()}"
+								image="/resources/icons/default/paginado/#{theme.color}/anterior.png"
+								rendered="#{referenciaBuscarControlador.listaControlerEntityOrigen.previousExists}"
+								reRender="entidadesSistema,tablaEntidades" title="#{messages.anterior}"
+								style="border: 0px;" />
+							<h:graphicImage value="/resources/modBancoSangre/anteriord.png"
+								rendered="#{not referenciaBuscarControlador.listaControlerEntityOrigen.previousExists}" />
+
+							<a4j:commandButton
+								action="#{referenciaBuscarControlador.listaControlerEntityOrigen.next()}"
+								image="/resources/icons/default/paginado/#{theme.color}/siguiente.png"
+								rendered="#{referenciaBuscarControlador.listaControlerEntityOrigen.nextExists}"
+								ajaxSingle="true" reRender="entidadesSistema,tablaEntidades"
+								title="#{messages.siguiente}" style="border: 0px;" />
+							<h:graphicImage value="/resources/modBancoSangre/siguiented.png"
+								rendered="#{not referenciaBuscarControlador.listaControlerEntityOrigen.nextExists}" />
+
+							<a4j:commandButton
+								action="#{referenciaBuscarControlador.listaControlerEntityOrigen.last()}"
+								image="/resources/icons/default/paginado/#{theme.color}/fin.png"
+								title="#{messages.ultima}"
+								rendered="#{referenciaBuscarControlador.listaControlerEntityOrigen.nextExists}"
+								reRender="entidadesSistema,tablaEntidades" style="border: 0px;" />
+							<h:graphicImage value="/resources/modBancoSangre/find.png"
+								rendered="#{not referenciaBuscarControlador.listaControlerEntityOrigen.nextExists}" />
+
+						</s:div>
+
+
+					</a4j:outputPanel></td>
+					<td width="39px"></td>
+					<td width="300px" valign="top" height="300px"><s:div>
+						<a4j:region id="regionentityDestino">
+							<a4j:outputPanel id="panelReferenciado" ajaxRendered="true"
+								height="300px">
+								<rich:panel style="white-space:nowrap; height : 271px;"
+									height="300px">
+									<f:facet name="header">
+										<s:div>
+											<table cellpadding="0" cellspacing="0" border="0">
+												<tr>
+													<td align="left"><h:outputText
+														value="#{messages.EntidadesReferenciadas}" /></td>
+													<td align="right"><rich:spacer width="2px"
+														rendered="#{referenciaBuscarControlador.entidadOrigen != null}" />
+													<h:outputText value="a: "
+														rendered="#{referenciaBuscarControlador.entidadOrigen != null}" />
+													<h:outputText
+														value="#{referenciaBuscarControlador.entidadOrigen.nombre}"
+														rendered="#{referenciaBuscarControlador.entidadOrigen != null}" />
+													</td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<a4j:status id="entityDestinoStatus" forceId="true"
+										for="regionentityDestino">
+										<f:facet name="stop">
+											<s:div id="settingsdiv" style="display: inline;">
+												<s:div id="panelEntityDestino"
+													rendered="#{referenciaBuscarControlador.entidadesReferenciadas.size()==0}">
+													<rich:spacer height="20px" />
+													<rich:spacer width="6px" />
+													<h:outputText value="#{messages.notInfotoShow}" />
+													<table cellpadding="0" cellspacing="0" border="0">
+														<tr>
+															<td><rich:spacer height="4px" /></td>
+														</tr>
+													</table>
+												</s:div>
+												<s:div id="panelEntityOrigen"
+													rendered="#{referenciaBuscarControlador.entidadesReferenciadas.size()!=0}">
+
+													<rich:dataTable cellpadding="0" cellspacing="0" border="0"
+														value="#{referenciaBuscarControlador.listadoControlerEntityDestino.resultList}"
+														var="entityR" columnsWidth="99%,1%">
+														<h:column>
+
+															<table cellpadding="0" cellspacing="0" border="0">
+																<tr>
+																	<td><h:graphicImage
+																		value="/resources/modCommon/entidades_logos/#{theme.name}/#{theme.color}/#{entityR.logo}"
+																		height="16" /></td>
+																	<td width="2px"></td>
+																	<td valign="middle"><a4j:commandLink
+																		value="#{entityR.nombre}"
+																		action="#{referenciaBuscarControlador.seleccionServices(entityR.id)}"
+																		reRender="panelReferenciado,panelServicios,etiquetas, errorOutputPanel2"
+																		status="serviciosStatus">
+																	</a4j:commandLink></td>
+																</tr>
+															</table>
+														</h:column>
+
+														<h:column>
+															<div align="center"><a4j:commandLink
+																oncomplete="Richfaces.showModalPanel('eliminarEntityReferenciada')"
+																action="#{referenciaBuscarControlador.seleccionarRef(entityR.id)}">
+
+																<h:graphicImage title="#{messages.eliminar}"
+																	style="border: 0px; cursor:pointer;"
+																	value="/resources/icons/default/acciones/eliminar.png">
+																</h:graphicImage>
+															</a4j:commandLink></div>
+														</h:column>
+													</rich:dataTable>
+												</s:div>
+											</s:div>
+										</f:facet>
+										<f:facet name="start">
+											<s:div id="loadingdiv"
+												style="text-align: center; width: 100%;">
+												<br />
+												<br />
+												<table cellpadding="0" border="0" cellspacing="0">
+													<tr>
+														<td><rich:spacer width="50px" /></td>
+														<td><h:graphicImage
+															url="/resources/icons/default/acciones/loading_small.gif" />
+														</td>
+														<td width="10px"></td>
+														<td valign="middle"><h:outputText
+															value="#{messages.actualizando}..." /></td>
+													</tr>
+												</table>
+												<br />
+												<br />
+												<br />
+											</s:div>
+										</f:facet>
+									</a4j:status>
+
+
+								</rich:panel>
+							</a4j:outputPanel>
+						</a4j:region>
+					</s:div> <br />
+					<a4j:outputPanel ajaxRendered="true">
+						<s:div
+							rendered="#{not empty referenciaBuscarControlador.listadoControlerEntityDestino.resultList}"
+							styleClass="tableControl" style="width: 100%; text-align:center"
+							align="center">
+
+							<a4j:commandButton
+								action="#{referenciaBuscarControlador.listadoControlerEntityDestino.first()}"
+								image="/resources/icons/default/paginado/#{theme.color}/inicio.png"
+								rendered="#{referenciaBuscarControlador.listadoControlerEntityDestino.previousExists}"
+								reRender="panelReferenciado" title="#{messages.primera}"
+								style="border: 0px;" />
+							<h:graphicImage value="/resources/modBancoSangre/iniciod.png"
+								rendered="#{not referenciaBuscarControlador.listadoControlerEntityDestino.previousExists}"
+								style=" width : 16px;" />
+
+							<a4j:commandButton
+								action="#{referenciaBuscarControlador.listadoControlerEntityDestino.previous()}"
+								image="/resources/icons/default/paginado/#{theme.color}/anterior.png"
+								rendered="#{referenciaBuscarControlador.listadoControlerEntityDestino.previousExists}"
+								reRender="panelReferenciado" title="#{messages.anterior}"
+								style="border: 0px;" />
+							<h:graphicImage value="/resources/modBancoSangre/anteriord.png"
+								rendered="#{not referenciaBuscarControlador.listadoControlerEntityDestino.previousExists}" />
+
+							<a4j:commandButton
+								action="#{referenciaBuscarControlador.listadoControlerEntityDestino.next()}"
+								image="/resources/icons/default/paginado/#{theme.color}/siguiente.png"
+								rendered="#{referenciaBuscarControlador.listadoControlerEntityDestino.nextExists}"
+								ajaxSingle="true" reRender="panelReferenciado" title="#{messages.siguiente}"
+								style="border: 0px;" />
+							<h:graphicImage value="/resources/modBancoSangre/siguiented.png"
+								rendered="#{not referenciaBuscarControlador.listadoControlerEntityDestino.nextExists}" />
+
+							<a4j:commandButton
+								action="#{referenciaBuscarControlador.listadoControlerEntityDestino.last()}"
+								image="/resources/icons/default/paginado/#{theme.color}/fin.png"
+								rendered="#{referenciaBuscarControlador.listadoControlerEntityDestino.nextExists}"
+								reRender="panelReferenciado" title="#{messages.ultima}"
+								style="border: 0px;" />
+							<h:graphicImage value="/resources/modBancoSangre/find.png"
+								rendered="#{not referenciaBuscarControlador.listadoControlerEntityDestino.nextExists}" />
+
+						</s:div>
+					</a4j:outputPanel></td>
+					<td width="39px"></td>
+					<td width="300px" valign="top"><a4j:region id="regionServicio">
+						<a4j:outputPanel id="panelServicios">
+							<rich:panel style="white-space:nowrap; height : 271px;"
+								height="300px">
+								<f:facet name="header">
+									<s:div>
+										<table cellpadding="0" cellspacing="0" border="0">
+											<tr>
+												<td align="left"><h:outputText
+													value="#{messages.Servicios}" /></td>
+												<td align="right"><rich:spacer width="2px"
+													rendered="#{referenciaBuscarControlador.entidadDestino != null}" />
+												<h:outputText value="de: "
+													rendered="#{referenciaBuscarControlador.entidadDestino != null}" />
+												<h:outputText
+													value="#{referenciaBuscarControlador.entidadDestino.nombre}"
+													rendered="#{referenciaBuscarControlador.entidadDestino != null}" />
+												</td>
+											</tr>
+										</table>
+									</s:div>
+								</f:facet>
+
+								<a4j:status id="serviciosStatus" forceId="true"
+									for="regionServicio">
+									<f:facet name="stop">
+										<s:div>
+											<s:div id="panelServiciosDiv"
+												rendered="#{referenciaBuscarControlador.listaServicios.size()==0}">
+												<rich:spacer height="20px" />
+												<rich:spacer width="6px" />
+												<h:outputText value="#{messages.notInfotoShow}" />
+												<table cellpadding="0" cellspacing="0" border="0">
+													<tr>
+														<td><rich:spacer height="4px" /></td>
+													</tr>
+												</table>
+											</s:div>
+
+											<s:div id="services"
+												rendered="#{referenciaBuscarControlador.listaServicios.size()!=0}">
+
+												<rich:dataTable cellpadding="0" cellspacing="0" border="0"
+													columnsWidth="99%,1%"
+													value="#{referenciaBuscarControlador.listadoControlerServicio.resultList}"
+													var="servicios">
+													<rich:column>
+														<h:outputText value="#{servicios.nombre}" />
+													</rich:column>
+													<rich:column>
+														<div align="center"><a4j:commandLink
+															oncomplete="Richfaces.showModalPanel('eliminarServicio')"
+															action="#{referenciaBuscarControlador.seleccionarServicio(servicios.id)}"
+															reRender="panelServicios">
+
+															<h:graphicImage title="#{messages.eliminar}"
+																style="border: 0px; cursor:pointer;"
+																value="/resources/icons/default/acciones/eliminar.png">
+															</h:graphicImage>
+														</a4j:commandLink></div>
+													</rich:column>
+												</rich:dataTable>
+											</s:div>
+										</s:div>
+									</f:facet>
+
+									<f:facet name="start">
+										<s:div id="loadingdivsatrt"
+											style="text-align: center; width: 100%;">
+											<br />
+											<br />
+											<table cellpadding="0" border="0" cellspacing="0">
+												<tr>
+													<td><rich:spacer width="50px" /></td>
+													<td><h:graphicImage
+														url="/resources/icons/default/acciones/loading_small.gif" />
+													</td>
+													<td width="10px"></td>
+													<td valign="middle"><h:outputText
+														value="#{messages.actualizando}..." /></td>
+												</tr>
+											</table>
+											<br />
+											<br />
+											<br />
+										</s:div>
+									</f:facet>
+								</a4j:status>
+
+							</rich:panel>
+						</a4j:outputPanel>
+					</a4j:region> <br />
+					<a4j:outputPanel ajaxRendered="true">
+						<s:div
+							rendered="#{not empty referenciaBuscarControlador.listadoControlerServicio.resultList}"
+							styleClass="tableControl" style="width: 100%; text-align:center"
+							align="center">
+
+							<a4j:commandButton
+								action="#{referenciaBuscarControlador.listadoControlerServicio.first()}"
+								image="/resources/icons/default/paginado/#{theme.color}/inicio.png"
+								rendered="#{referenciaBuscarControlador.listadoControlerServicio.previousExists}"
+								reRender="panelServicios" title="#{messages.primera}" style="border: 0px;" />
+							<h:graphicImage value="/resources/modBancoSangre/iniciod.png"
+								rendered="#{not referenciaBuscarControlador.listadoControlerServicio.previousExists}"
+								style=" width : 16px;" />
+
+							<a4j:commandButton
+								action="#{referenciaBuscarControlador.listadoControlerServicio.previous()}"
+								image="/resources/icons/default/paginado/#{theme.color}/anterior.png"
+								rendered="#{referenciaBuscarControlador.listadoControlerServicio.previousExists}"
+								reRender="panelServicios" title="#{messages.anterior}" style="border: 0px;" />
+							<h:graphicImage value="/resources/modBancoSangre/anteriord.png"
+								rendered="#{not referenciaBuscarControlador.listadoControlerServicio.previousExists}" />
+
+							<a4j:commandButton
+								action="#{referenciaBuscarControlador.listadoControlerServicio.next()}"
+								image="/resources/icons/default/paginado/#{theme.color}/siguiente.png"
+								rendered="#{referenciaBuscarControlador.listadoControlerServicio.nextExists}"
+								ajaxSingle="true" reRender="panelServicios" title="#{messages.siguiente}"
+								style="border: 0px;" />
+							<h:graphicImage value="/resources/modBancoSangre/siguiented.png"
+								rendered="#{not referenciaBuscarControlador.listadoControlerServicio.nextExists}" />
+
+							<a4j:commandButton
+								action="#{referenciaBuscarControlador.listadoControlerServicio.last()}"
+								image="/resources/icons/default/paginado/#{theme.color}/fin.png"
+								rendered="#{referenciaBuscarControlador.listadoControlerServicio.nextExists}"
+								reRender="panelServicios" title="#{messages.ultima}"
+								style="border: 0px;" />
+							<h:graphicImage value="/resources/modBancoSangre/find.png"
+								rendered="#{not referenciaBuscarControlador.listadoControlerServicio.nextExists}" />
+
+						</s:div>
+					</a4j:outputPanel></td>
+				</tr>
+			</table>
+
+
+
+		</h:form>
+
+		<ui:include
+			src="/modConfiguracion/management/gestionarReferencias/modalPanels/eliminarEntityReferenciada.xhtml" />
+		<ui:include
+			src="/modConfiguracion/management/gestionarReferencias/modalPanels/eliminarServiceReferenciada.xhtml" />
+	</ui:define>
+
+</ui:composition>
+

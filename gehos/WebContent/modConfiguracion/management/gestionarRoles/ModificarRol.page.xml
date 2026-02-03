@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<param name="rolId" value="#{rolModificarControlador.id}" />
+	
+
+	<!-- modify and go to view details -->
+	<navigation from-action="#{rolModificarControlador.modificar()}" evaluate="#{rolModificarControlador.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarRoles/VerDetallesRol.xhtml">
+				<param name="rolId" value="#{rolModificarControlador.rol.id}" />				
+				<param name="from" value="modificar" />
+			</redirect>		
+			<end-conversation before-redirect="true" />	
+		</rule>
+	</navigation>
+
+	<!-- cancel and go to view list -->
+	<navigation from-action="cancelar">		
+		<redirect view-id="/modConfiguracion/management/gestionarRoles/BuscarRol.xhtml" />
+		<end-conversation before-redirect="true" />		
+	</navigation>
+</page>

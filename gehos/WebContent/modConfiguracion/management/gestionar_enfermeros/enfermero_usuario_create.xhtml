@@ -1,0 +1,735 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<!-- eticEstilos -->
+		<!-- estilos para panel -->
+		<style type="text/css">
+.rich-panel-body {
+	padding: 0px
+}
+</style>
+		<!-- Estilo para el modalPanel -->
+		<style type="text/css">
+.dr-mpnl-pnl-b {
+	padding: 1px;
+}
+
+.noAvailable {
+	color: red;
+	text-decoration: line-through;
+}
+
+.dr-mpnl-pnl {
+	border: 1px !important;
+	border-style: solid !important;
+	border-color: #BED6F8 !important;
+}
+</style>
+		<!-- estilos para tabPanel -->
+		<style type="text/css">
+.dr-tbpnl-cntnt,.rich-tabpanel-content {
+	/*arriba, derecha ,abajo ,izquierda*/
+	padding: 8px 0px 7px 8px;
+}
+</style>
+
+		<script type="text/javascript">setContentTitle('#{messages.adicionarEnfermero})
+		
+		var curDt = new Date();
+			var calDt=null;
+
+			 function previousDate(date){
+				calDt = date;
+			 }
+
+			 function disablementFunction(day){
+				if (curDt.getTime() - day.date.getTime() &#62; 0) return true; else return false;  
+			 }
+
+			 function disabledClassesProv(day){
+				if (curDt.getTime() - day.date.getTime() &#60; 0)
+					return 'noAvailable';
+				else 
+					return '';
+			 }
+
+			 function resetSecondDate(first,second) {
+				 var firstDate = first.getSelectedDate().getTime();
+				 var secondDate = second.getSelectedDate().getTime();
+
+				 if(firstDate - secondDate &#62; 0)
+					 second.resetSelectedDate();
+			 }
+	  		 
+			 function disablementFunctionPreviousEx(day){
+				if(calDt == null){
+					if (curDt.getTime() - day.date.getTime() &#62; 0) return true; else return false;
+				}
+				if ((curDt.getTime() - day.date.getTime() &#62; 0) &#38;&#38; (calDt.getTime() - day.date.getTime() &#60;= 0)){
+					return true;
+				}
+				else 
+					return false;
+			  }
+
+			function disabledClassesProvPreviousEx(day){
+				if(calDt == null){
+					if (curDt.getTime() - day.date.getTime() &#60; 0)
+						return 'noAvailable';
+					else 
+						return '';
+				}
+				if ((curDt.getTime() - day.date.getTime() &#60; 0) || (calDt.getTime() - day.date.getTime() &#62; 0))
+					return 'noAvailable';
+				else 
+					return '';
+			}
+		
+		</script>
+
+		<!-- eticErroresGlobales -->
+
+		<!-- eticFormaPrincipal -->
+		<h:form id="formEnfermero" styleClass="edit">
+			<s:validateAll>
+				<rich:tabPanel switchType="client" style="white-space:nowrap"
+					selectedTab="#{enfermeroUsuarioCrear_custom.tabSelect}">
+					<rich:tab label="#{messages.datosComoUsuario}" name="usuario">
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+							<tr height="1px" />
+							<tr>
+								<td><h:graphicImage
+									url="/resources/modCommon/unknown/#{theme.name}/generico/desconocido.png"
+									border="0" style="width: 74px; height: 74px;"
+									rendered="#{not userTools.userImageExist(usuarioCrearControlador.usuario.username)}" />
+								<h:graphicImage
+									url="/resources/modCommon/userphotos/#{usuarioCrearControlador.usuario.username}.png"
+									rendered="#{userTools.userImageExist(usuarioCrearControlador.usuario.username)}"
+									border="0" style="width: 74px; height: 74px;" /></td>
+								<td><rich:spacer width="7px" /></td>
+								<td>
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr style="vertical-align: top;">
+										<td valign="top"><h:outputLabel
+											value="#{messages.atributo1}" /><h:outputText value="*"
+											style="color:red; cursor:pointer;"
+											title="#{messages.usuarioCreadoPreviamente}"
+											rendered="#{enfermeroUsuarioCrear_custom.userExist}" /> <rich:message
+											for="userName" showDetail="false" tooltip="true"
+											style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('userName').get(0).getDetail()}"
+													style="color:red;cursor:pointer;" />
+											</f:facet>
+										</rich:message><br />
+										<h:inputText value="#{enfermeroUsuarioCrear_custom.nick}"
+											id="userName" tabindex="1" style="width:148px;" /></td>
+										<td style="width: 25px"></td>
+										<td valign="top"><h:outputLabel
+											value="#{messages.atributo2}"></h:outputLabel> <rich:message
+											for="password" showDetail="false" tooltip="true"
+											style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('password').get(0).getDetail()}"
+													style="color:red;cursor:pointer;" />
+											</f:facet>
+										</rich:message> <br />
+										<h:inputSecret
+											value="#{enfermeroUsuarioCrear_custom.contrasenna}"
+											redisplay="true" id="password" style=" width : 148px;"
+											tabindex="2" /></td>
+										<td style="width: 25px"></td>
+										<td valign="top"><h:outputLabel
+											value="#{messages.atributo3}"></h:outputLabel> <h:outputLabel
+											value="*" style="color:red; cursor:pointer;"
+											title="#{messages.pass_desigual}"
+											rendered="#{not enfermeroUsuarioCrear_custom.pass_desigual}" />
+										<rich:message for="repitPassword" showDetail="false"
+											tooltip="true" style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('repitPassword').get(0).getDetail()}"
+													style="color:red;cursor:pointer;" />
+											</f:facet>
+										</rich:message><br />
+										<h:inputSecret id="repitPassword" tabindex="3"
+											redisplay="true"
+											value="#{enfermeroUsuarioCrear_custom.verificarPassword}"
+											style="width:148px;" /></td>
+									</tr>
+									<tr style="vertical-align: top;">
+										<td valign="top"><h:outputLabel
+											value="#{messages.atributo4}"></h:outputLabel> <rich:message
+											for="cultura" showDetail="false" tooltip="true"
+											style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('cultura').get(0).getDetail()}"
+													style="color:red;cursor:pointer;" />
+											</f:facet>
+										</rich:message><rich:comboBox id="cultura" enableManualInput="false"
+											width="150px" tabindex="4"
+											defaultLabel="#{messages.seleccione}"
+											suggestionValues="#{enfermeroUsuarioCrear_custom.cultura()}"
+											value="#{enfermeroUsuarioCrear_custom.culturaSelec}">
+										</rich:comboBox></td>
+										<td style="width: 25px"></td>
+										<td valign="top">
+										<table cellpadding="0" cellspacing="0" border="0"
+											style="vertical-align: middle;">
+											<tr>
+												<td valign="middle"><br />
+												<h:outputLabel value="#{messages.atributo5}"></h:outputLabel>
+												<rich:spacer width="7"></rich:spacer></td>
+												<td valign="middle"><br />
+												<h:selectBooleanCheckbox style="margin: 0px;" tabindex="5"
+													value="#{enfermeroUsuarioCrear_custom.usuario.cuentaHabilitada}">
+												</h:selectBooleanCheckbox></td>
+											</tr>
+
+										</table>
+										</td>
+										<td style="width: 25px"></td>
+										<td></td>
+									</tr>
+								</table>
+								<rich:spacer height="5px" /></td>
+							</tr>
+						</table>
+
+						<rich:spacer height="7px"></rich:spacer>
+						<table cellpadding="0px" cellspacing="0px" border="0px"
+							width="100%">
+							<tr>
+								<td><rich:panel>
+									<f:facet name="header">#{messages.fotoUser}</f:facet>
+									<table cellpadding="0" cellspacing="0" border="0">
+										<tr>
+											<td height="11px"></td>
+										</tr>
+										<tr>
+											<td width="7px" />
+											<td><h:outputLabel value="#{messages.atributo6}"></h:outputLabel><br />
+											<s:fileUpload id="addPhoto" accept="*.*" tabindex="6"
+												data="#{enfermeroUsuarioCrear_custom.data}"
+												fileName="#{enfermeroUsuarioCrear_custom.nombrePhoto}" /></td>
+										</tr>
+									</table>
+
+									<rich:spacer height="6px" style="display: block" />
+								</rich:panel> <br />
+								<rich:panel>
+									<f:facet name="header">#{messages.otrosDatosUser}</f:facet>
+									<table cellpadding="0px" cellspacing="0px" border="0px">
+										<tr>
+											<td height="11px" />
+										</tr>
+										<tr>
+											<td width="7px" />
+											<td><h:outputLabel value="#{messages.atributo7}"></h:outputLabel>
+											<rich:message for="name" showDetail="false" tooltip="true"
+												style="color:red;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('name').get(0).getDetail()}"
+														style="color:red;cursor:pointer;" />
+												</f:facet>
+											</rich:message> <br />
+											<h:inputText id="name" tabindex="7"
+												value="#{enfermeroUsuarioCrear_custom.nombre}"
+												style="width:148px;" /> <rich:spacer height="6"
+												style="display:block"></rich:spacer></td>
+											<td style="width: 25px"></td>
+
+											<td><h:outputLabel value="#{messages.atributo8}"></h:outputLabel>
+											<rich:message for="primerApellido" showDetail="false"
+												tooltip="true" style="color:red;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('primerApellido').get(0).getDetail()}"
+														style="color:red;cursor:pointer;" />
+												</f:facet>
+											</rich:message><br />
+											<h:inputText tabindex="8" id="primerApellido"
+												value="#{enfermeroUsuarioCrear_custom.primerApellido}"
+												style="width:148px;" /> <rich:spacer height="6"
+												style="display:block"></rich:spacer></td>
+
+											<td style="width: 25px"></td>
+
+											<td><h:outputLabel value="#{messages.atributo9}"></h:outputLabel>
+											<rich:message for="segundoApellido" showDetail="false"
+												tooltip="true" style="color:red;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('segundoApellido').get(0).getDetail()}"
+														style="color:red;cursor:pointer;" />
+												</f:facet>
+											</rich:message><br />
+											<h:inputText tabindex="9" id="segundoApellido"
+												value="#{enfermeroUsuarioCrear_custom.segundoApellido}"
+												style="width:148px;" /> <rich:spacer height="6"
+												style="display:block"></rich:spacer></td>
+										</tr>
+
+										<tr>
+											<td width="7px" />
+											<td><h:outputLabel value="#{messages.atributo10}"></h:outputLabel>
+											<rich:message for="cedula" showDetail="false" tooltip="true"
+												style="color:red;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('cedula').get(0).getDetail()}"
+														style="color:red;cursor:pointer;" />
+												</f:facet>
+											</rich:message><br />
+											<h:inputText id="cedula" tabindex="10"
+												value="#{enfermeroUsuarioCrear_custom.cedula}"
+												style="width:148px;" /> <rich:spacer height="6"
+												style="display:block"></rich:spacer></td>
+
+											<td style="width: 25px"></td>
+
+											<td><h:outputLabel value="#{messages.atributo11}"></h:outputLabel>
+											<rich:message for="pasaporte" showDetail="false"
+												tooltip="true" style="color:red;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('pasaporte').get(0).getDetail()}"
+														style="color:red;cursor:pointer;" />
+												</f:facet>
+											</rich:message><br />
+											<h:inputText tabindex="11" id="pasaporte"
+												value="#{enfermeroUsuarioCrear_custom.pasaporte}"
+												style="width:148px;" /> <rich:spacer height="6"
+												style="display:block"></rich:spacer></td>
+
+											<td style="width: 25px"></td>
+
+											<td><h:outputLabel value="#{messages.atributo12}"></h:outputLabel>
+											<rich:message for="fecha" showDetail="false" tooltip="true"
+												style="color:red;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('fecha').get(0).getDetail()}"
+														style="color:red;cursor:pointer;" />
+												</f:facet>
+											</rich:message> <br />
+											<rich:calendar styleClass="normalText" id="fecha"
+												datePattern="dd/MM/yyyy" tabindex="12"
+												value="#{enfermeroUsuarioCrear_custom.fechaNacimiento}"
+												isDayEnabled="disablementFunction"
+												dayStyleClass="disabledClassesProv">
+												<s:convertDateTime />
+											</rich:calendar> <rich:spacer height="6" style="display:block"></rich:spacer></td>
+										</tr>
+
+										<tr>
+											<td width="7px" />
+
+											<td><h:outputLabel value="#{messages.atributo14}"></h:outputLabel>
+											<rich:message for="telefono" showDetail="false"
+												tooltip="true" style="color:red;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('telefono').get(0).getDetail()}"
+														style="color:red;cursor:pointer;" />
+												</f:facet>
+											</rich:message> <br />
+											<h:inputText tabindex="14" id="telefono"
+												value="#{enfermeroUsuarioCrear_custom.telefono}"
+												style="width:148px;" /> <rich:spacer height="3"
+												style="display:block"></rich:spacer></td>
+
+
+											<td style="width: 25px"></td>
+
+											<td><h:outputLabel value="#{messages.atributo13}"></h:outputLabel>
+											<rich:message for="direccionParticular" showDetail="false"
+												tooltip="true" style="color:red;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('direccionParticular').get(0).getDetail()}"
+														style="color:red;cursor:pointer;" />
+												</f:facet>
+											</rich:message><br />
+											<h:inputText tabindex="13" id="direccionParticular"
+												value="#{enfermeroUsuarioCrear_custom.direccionParticular}"
+												style="width:148px;" /> <rich:spacer height="3"
+												style="display:block" /></td>
+
+
+											<td style="width: 25px"></td>
+
+											<td><rich:spacer height="3" style="display:block"></rich:spacer></td>
+										</tr>
+									</table>
+
+									<rich:spacer height="4px" style="display: block" />
+								</rich:panel></td>
+								<td width="8px"></td>
+							</tr>
+						</table>
+
+						<rich:spacer height="1px" />
+					</rich:tab>
+					<rich:tab label="#{messages.datosComoEnf}">
+						<table cellpadding="0" cellspacing="0">
+							<tr height="2px" />
+							<tr>
+								<td>#{messages.atributo15} <h:outputLabel value="*"
+									style="color:red; cursor:pointer;" title="#{messages.matriculaRepetida}"
+									rendered="#{enfermeroUsuarioCrear_custom.matriculaNotUnic}" />
+								<rich:message for="matricula" showDetail="false" tooltip="true"
+									style="color:red;">
+									<f:facet name="errorMarker">
+										<h:outputText value="*"
+											title="#{facesMessages.getCurrentMessagesForControl('matricula').get(0).getDetail()}"
+											style="color:red;cursor:pointer;" />
+									</f:facet>
+								</rich:message> <br />
+								<h:inputText id="matricula" style=" width : 150px;"
+									value="#{enfermeroUsuarioCrear_custom.matriculaColegioEnfermeria}"
+									tabindex="15" /></td>
+							</tr>
+							<tr height="1px" />
+						</table>
+					</rich:tab>
+					<rich:tab label="Roles asignados">
+
+						<table border="0" cellpadding="0" cellspacing="0">
+							<tr height="3px" />
+							<tr valign="top">
+								<td width="8px" />
+								<td><a4j:outputPanel id="listaRoles_source">
+
+									<rich:listShuttle id="lista" listsHeight="290"
+										sourceListWidth="330px" tabindex="15" targetListWidth="330px"
+										sourceValue="#{enfermeroUsuarioCrear_custom.rolsSource}"
+										targetValue="#{enfermeroUsuarioCrear_custom.rolsTarget}"
+										var="rol" sourceCaptionLabel="#{messages.roles}:"
+										targetCaptionLabel="#{messages.rolesSeleccionados}:"
+										showButtonLabels="false" fastOrderControlsVisible="false"
+										orderControlsVisible="false" topControlLabel="#{messages.primero}"
+										copyAllControlLabel="#{messages.copiarTodos}" copyControlLabel="#{messages.copiar}"
+										downControlLabel="#{messages.bajar}" upControlLabel="#{messages.subir}"
+										removeAllControlLabel="#{messages.eliminarTodos}"
+										removeControlLabel="#{messages.eliminar}" bottomControlLabel="#{messages.ultimo}">
+										<s:convertEntity />
+										<rich:column>
+											<f:facet name="header">
+												<h:panelGrid columns="2"
+													style="width: 100%; padding:0px; margin:0px;" border="0"
+													cellpadding="0" cellspacing="0">
+													<s:div style="float: left;">#{messages.headerListshuttle}</s:div>
+												</h:panelGrid>
+											</f:facet>
+											<h:outputText style="vertical-align: 25%; margin-left: 2px; "
+												value="#{rol.name}">
+
+											</h:outputText>
+										</rich:column>
+
+
+									</rich:listShuttle>
+
+								</a4j:outputPanel></td>
+							</tr>
+							<tr height="1px" />
+						</table>
+					</rich:tab>
+
+					<rich:tab label="#{messages.tiposFuncionariosCargos}">
+
+						<table border="0" cellpadding="0" cellspacing="0">
+							<tr height="3px" />
+							<tr valign="top">
+								<td width="8px" />
+								<td><a4j:outputPanel id="tabla_tipofunc_Source">
+
+									<rich:listShuttle id="ListShuttleTipoFuncionario"
+										sourceListWidth="330px" targetListWidth="330px"
+										sourceValue="#{enfermeroUsuarioCrear_custom.tipoFuncionarioSource}"
+										targetValue="#{enfermeroUsuarioCrear_custom.tipoFuncionarioTarget}"
+										var="tipoFunc"
+										sourceCaptionLabel="#{messages.tipoFuncionario}:"
+										targetCaptionLabel="#{messages.tiposFuncionariosSeleccionados}:"
+										showButtonLabels="false" fastOrderControlsVisible="false"
+										orderControlsVisible="false" topControlLabel="#{messages.primero}"
+										copyAllControlLabel="#{messages.copiarTodos}" copyControlLabel="#{messages.copiar}"
+										downControlLabel="#{messages.bajar}" upControlLabel="#{messages.subir}"
+										removeAllControlLabel="#{messages.eliminarTodos}"
+										removeControlLabel="#{messages.eliminar}" bottomControlLabel="#{messages.ultimo}">
+										<a4j:support event="onlistchanged" ajaxSingle="true"
+											action="#{enfermeroUsuarioCrear_custom.listaCargosPosibles()}"
+											reRender="cargos_posibles" />
+										<s:convertEntity />
+										<rich:column>
+											<f:facet name="header">
+												<h:panelGrid columns="2"
+													style="width: 100%; padding:0px; margin:0px;" border="0"
+													cellpadding="0" cellspacing="0">
+													<s:div style="float: left;">#{messages.headerListshuttle}</s:div>
+												</h:panelGrid>
+											</f:facet>
+											<h:outputText style="vertical-align: 25%; margin-left: 2px; "
+												value="#{tipoFunc.valor}">
+
+											</h:outputText>
+										</rich:column>
+
+									</rich:listShuttle>
+
+								</a4j:outputPanel></td>
+
+							</tr>
+							<tr>
+								<td height="5px" />
+							</tr>
+							<tr>
+								<td style="width: 7px;" />
+								<td><a4j:outputPanel id="cargos_posibles">
+									<rich:listShuttle id="ListShuttleCargos"
+										sourceListWidth="330px" targetListWidth="330px"
+										sourceValue="#{enfermeroUsuarioCrear_custom.cargoSource}"
+										targetValue="#{enfermeroUsuarioCrear_custom.cargoTarget}"
+										var="cargo" sourceCaptionLabel="#{messages.cargos}:"
+										targetCaptionLabel="Cargos seleccionados"
+										showButtonLabels="false" fastOrderControlsVisible="false"
+										orderControlsVisible="false" topControlLabel="#{messages.primero}"
+										copyAllControlLabel="#{messages.copiarTodos}" copyControlLabel="#{messages.copiar}"
+										downControlLabel="#{messages.bajar}" upControlLabel="#{messages.subir}"
+										removeAllControlLabel="#{messages.eliminarTodos}"
+										removeControlLabel="#{messages.eliminar}" bottomControlLabel="#{messages.ultimo}">
+										<a4j:support event="onlistchanged" ajaxSingle="true"
+											action="#{enfermeroUsuarioCrear_custom.verificarCargos()}"
+											reRender="cargos_posibles" />
+										<s:convertEntity />
+										<rich:column>
+											<f:facet name="header">
+												<h:panelGrid columns="2"
+													style="width: 100%; padding:0px; margin:0px;" border="0"
+													cellpadding="0" cellspacing="0">
+													<s:div style="float: left;">#{messages.headerListshuttle}</s:div>
+												</h:panelGrid>
+											</f:facet>
+											<h:outputText style="vertical-align: 25%; margin-left: 2px; "
+												value="#{cargo.valor}">
+
+											</h:outputText>
+										</rich:column>
+
+									</rich:listShuttle>
+
+
+
+								</a4j:outputPanel></td>
+
+
+							</tr>
+							<tr height="1px" />
+
+						</table>
+
+					</rich:tab>
+
+					<rich:tab label="#{messages.serviciosAsignados}" name="servicios">
+						<a4j:outputPanel id="tablaServicios">
+							<a4j:status id="serviciosStatus" forceId="true"
+								onstart="javascript:document.getElementById('formEnfermero:divServicios').style.visibility = 'hidden'"
+								onstop="javascript:document.getElementById('formEnfermero:divServicios').style.visibility = 'visible'">
+								<f:facet name="start">
+									<s:div style="text-align: center;width: 656px; height:0px;">
+										<br />
+										<br />
+										<h:graphicImage
+											url="/resources/icons/default/acciones/loading_big.gif"
+											width="50px" height="50px" />
+									</s:div>
+								</f:facet>
+							</a4j:status>
+
+							<s:div id="divServicios">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr height="3px" />
+									<tr>
+										<td width="8px"></td>
+										<td><rich:listShuttle id="ListShuttleEntidades"
+											style="pa" sourceListWidth="330px" targetListWidth="330px"
+											sourceValue="#{enfermeroUsuarioCrear_custom.listaEntidadSource}"
+											targetValue="#{enfermeroUsuarioCrear_custom.listaEntidadTarget}"
+											var="entidad" sourceCaptionLabel="#{messages.entidades}:"
+											targetCaptionLabel="#{messages.entidadesSeleccionadas}:"
+											showButtonLabels="false" fastOrderControlsVisible="false"
+											orderControlsVisible="false" topControlLabel="#{messages.primero}"
+											copyAllControlLabel="#{messages.copiarTodos}" copyControlLabel="#{messages.copiar}"
+											downControlLabel="#{messages.bajar}" upControlLabel="#{messages.subir}"
+											removeAllControlLabel="#{messages.eliminarTodos}"
+											removeControlLabel="#{messages.eliminar}"
+											bottomControlLabel="#{messages.ultimo}">
+											<a4j:support event="onlistchanged" ajaxSingle="true"
+												action="#{enfermeroUsuarioCrear_custom.departamentos()}"
+												reRender="tablaServicios" />
+											<s:convertEntity />
+											<rich:column>
+												<f:facet name="header">
+													<h:panelGrid columns="2"
+														style="width: 100%; padding:0px; margin:0px;" border="0"
+														cellpadding="0" cellspacing="0">
+														<s:div style="float: left;">#{messages.headerListshuttle}</s:div>
+													</h:panelGrid>
+												</f:facet>
+												<h:outputText
+													style="vertical-align: 25%; margin-left: 2px; "
+													value="#{entidad.nombre}" />
+
+											</rich:column>
+										</rich:listShuttle></td>
+									</tr>
+									<tr height="5px" />
+									<tr>
+										<td width="8px"></td>
+										<td><rich:listShuttle id="ListShuttleDepartamentos"
+											sourceListWidth="330px" targetListWidth="330px"
+											sourceValue="#{enfermeroUsuarioCrear_custom.listaDepartamentoSource}"
+											targetValue="#{enfermeroUsuarioCrear_custom.listaDepartamentoTarget}"
+											var="departamento" sourceCaptionLabel="#{messages.departamentos}:"
+											targetCaptionLabel="#{messages.departamentosSeleccionados}:"
+											showButtonLabels="false" fastOrderControlsVisible="false"
+											orderControlsVisible="false" topControlLabel="#{messages.primero}"
+											copyAllControlLabel="#{messages.copiarTodos}" copyControlLabel="#{messages.copiar}"
+											downControlLabel="#{messages.bajar}" upControlLabel="#{messages.subir}"
+											removeAllControlLabel="#{messages.eliminarTodos}"
+											removeControlLabel="#{messages.eliminar}"
+											bottomControlLabel="#{messages.ultimo}">
+											<a4j:support event="onlistchanged" ajaxSingle="true"
+												action="#{enfermeroUsuarioCrear_custom.servicios()}"
+												reRender="ListShuttleServicios2,ListShuttleDepartamentos" />
+											<s:convertEntity />
+
+											<rich:column>
+												<f:facet name="header">
+													<h:panelGrid columns="2"
+														style="width: 100%; padding:0px; margin:0px;" border="0"
+														cellpadding="0" cellspacing="0">
+														<s:div style="float: left;">#{messages.headerListshuttle}</s:div>
+													</h:panelGrid>
+												</f:facet>
+												<h:outputText
+													style="vertical-align: 25%; margin-left: 2px; "
+													value="#{departamento.departamento.nombre}">
+												</h:outputText>
+											</rich:column>
+											<rich:column>
+												<f:facet name="header">
+													<h:panelGrid columns="2"
+														style="width: 100%; padding:0px; margin:0px;" border="0"
+														cellpadding="0" cellspacing="0">
+														<s:div style="float: left;">#{messages.headerListshuttleEntidad}</s:div>
+													</h:panelGrid>
+												</f:facet>
+												<h:outputText
+													style="vertical-align: 25%; margin-left: 2px; "
+													value="#{departamento.entidad.nombre}">
+												</h:outputText>
+											</rich:column>
+										</rich:listShuttle></td>
+									</tr>
+									<tr height="5px" />
+									<tr>
+										<td width="8px"></td>
+										<td><rich:listShuttle id="ListShuttleServicios2"
+											sourceListWidth="330px" targetListWidth="330px"
+											sourceValue="#{enfermeroUsuarioCrear_custom.listaServicioInEntidadSource}"
+											targetValue="#{enfermeroUsuarioCrear_custom.listaServicioInEntidadTarget}"
+											var="servicio" sourceCaptionLabel="#{messages.servicios}:"
+											targetCaptionLabel="#{messages.serviciosSeleccionados}:"
+											showButtonLabels="false" fastOrderControlsVisible="false"
+											orderControlsVisible="false" topControlLabel="#{messages.primero}"
+											copyAllControlLabel="#{messages.copiarTodos}" copyControlLabel="#{messages.copiar}"
+											downControlLabel="#{messages.bajar}" upControlLabel="#{messages.subir}"
+											removeAllControlLabel="#{messages.eliminarTodos}"
+											removeControlLabel="#{messages.eliminar}"
+											bottomControlLabel="#{messages.ultimo}"
+											style="padding: 0px 0px 0px 0px">
+											<s:convertEntity />
+											<a4j:support event="onlistchanged" ajaxSingle="true"
+												action="#{enfermeroUsuarioCrear_custom.subirServicios()}" />
+											<rich:column>
+												<f:facet name="header">
+													<h:panelGrid columns="2"
+														style="width: 100%; padding:0px; margin:0px;" border="0"
+														cellpadding="0" cellspacing="0">
+														<s:div style="float: left;">#{messages.headerListshuttle}</s:div>
+													</h:panelGrid>
+												</f:facet>
+												<h:outputText
+													style="vertical-align: 25%; margin-left: 2px; "
+													value="#{servicio.servicio.nombre}">
+												</h:outputText>
+											</rich:column>
+											<rich:column>
+												<f:facet name="header">
+													<h:panelGrid columns="2"
+														style="width: 100%; padding:0px; margin:0px;" border="0"
+														cellpadding="0" cellspacing="0">
+														<s:div style="float: left;">#{messages.headerListshuttleDepartamento}</s:div>
+													</h:panelGrid>
+												</f:facet>
+												<h:outputText
+													style="vertical-align: 25%; margin-left: 2px; "
+													value="#{servicio.servicio.departamento.nombre}">
+												</h:outputText>
+											</rich:column>
+											<rich:column>
+												<f:facet name="header">
+													<h:panelGrid columns="2"
+														style="width: 100%; padding:0px; margin:0px;" border="0"
+														cellpadding="0" cellspacing="0">
+														<s:div style="float: left;">#{messages.headerListshuttleEntidad}</s:div>
+													</h:panelGrid>
+												</f:facet>
+												<h:outputText
+													style="vertical-align: 25%; margin-left: 2px; "
+													value="#{servicio.entidad.nombre}">
+												</h:outputText>
+											</rich:column>
+										</rich:listShuttle></td>
+									</tr>
+
+									<tr height="1px" />
+								</table>
+							</s:div>
+						</a4j:outputPanel>
+
+					</rich:tab>
+				</rich:tabPanel>
+			</s:validateAll>
+			<!-- eticBotones -->
+			<s:div styleClass="actionButtons" rendered="#{empty from}"
+				style="text-align: right">
+				<div align="right"><h:commandButton id="cbuttomAceptar"
+					tabindex="16" value="#{messages.aceptar}"
+					action="#{enfermeroUsuarioCrear_custom.crear()}"
+					style="margin-bottom: 0px;margin-top: 7px;">
+				</h:commandButton> <a4j:commandButton value="#{messages.cancelar}" action="cancelar"
+					ajaxSingle="true" tabindex="17"
+					style="margin-right: 0px; margin-bottom: 0px; margin-top: 7px; width : 79px;" /><rich:spacer
+					height="8px" style="display: block"></rich:spacer></div>
+			</s:div>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

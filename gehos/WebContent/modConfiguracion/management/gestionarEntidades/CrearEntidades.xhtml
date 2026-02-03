@@ -1,0 +1,433 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript">
+  		setContentTitle("#{messages['Buscar orden m&#233;dica']}");
+  		function makeVisible()
+  		{
+  			document.getElementById('resultado').style.display='';
+  		}
+
+  		var curDt = new Date();
+		 var calDt=null;
+
+		 function previousDate(date){
+			calDt = date;
+		 }
+
+		 function disablementFunction(day){
+			if (curDt.getTime() - day.date.getTime() &#62; 0) return true; else return false;  
+		 }
+
+		 function disabledClassesProv(day){
+			if (curDt.getTime() - day.date.getTime() &#60; 0)
+				return 'noAvailable';
+			else 
+				return '';
+		 }
+
+		 function resetSecondDate(first,second) {
+			 var firstDate = first.getSelectedDate().getTime();
+			 var secondDate = second.getSelectedDate().getTime();
+
+			 if(firstDate - secondDate &#62; 0)
+				 second.resetSelectedDate();
+		 }
+ 		 
+		 function disablementFunctionPreviousEx(day){
+			if(calDt == null){
+				if (curDt.getTime() - day.date.getTime() &#62; 0) return true; else return false;
+			}
+			if ((curDt.getTime() - day.date.getTime() &#62; 0) &#38;&#38; (calDt.getTime() - day.date.getTime() &#60;= 0)){
+				return true;
+			}
+			else 
+				return false;
+		  }
+
+		function disabledClassesProvPreviousEx(day){
+			if(calDt == null){
+				if (curDt.getTime() - day.date.getTime() &#60; 0)
+					return 'noAvailable';
+				else 
+					return '';
+			}
+			if ((curDt.getTime() - day.date.getTime() &#60; 0) || (calDt.getTime() - day.date.getTime() &#62; 0))
+				return 'noAvailable';
+			else 
+				return '';
+		}
+  	</script>
+  	
+  	<style type="">
+  	.custom-error {
+	border: 1px solid #FFCC00;
+	padding: 5px;
+	background-color: #F0F8FF;
+	font-size: 10px;
+	font-family: "Verdana";
+	position: relative;
+	left: 5px;
+	top: 5px;
+	margin-right: 10px;
+}
+  	</style>
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+		
+		<a4j:outputPanel ajaxRendered="true" id="errorOutputPanel">
+			<s:div style="height:30px;width:100%"
+				rendered="#{facesMessages.getCurrentMessagesForControl('buttonAceptar').size() > 0 }">
+				<div class="custom-error">
+					<rich:message for="buttonAceptar"></rich:message>
+				</div>
+			</s:div>
+		</a4j:outputPanel>
+		
+		<h:form id="form" styleClass="edit">
+
+			<s:validateAll>
+				<rich:panel style="white-space:nowrap">
+					<f:facet name="header">#{messages.datos}</f:facet>
+
+					<table cellpadding="0px" cellspacing="0px" border="0px"
+						width="100%">
+						<tr>
+							<td height="13px" />
+						</tr>
+						<tr>
+							<td><rich:spacer width="7px" /></td>
+							<td>
+							<table cellpadding="0px" cellspacing="0px" border="0px">
+								<tr>
+									<td>#{messages.nombre} <rich:message for="nombre"
+										showDetail="false" tooltip="true"
+										style="color:red;cursor:pointer;">
+										<f:facet name="errorMarker">
+											<h:outputText value="*"
+												title="#{facesMessages.getCurrentMessagesForControl('nombre').get(0).getDetail()}" />
+										</f:facet>
+									</rich:message><br />
+									<h:inputText id="nombre" style=" width : 148px;" tabindex="1"
+										value="#{entidadCrearControlador.nombre}" /></td>
+									<td><rich:spacer width="25px" /></td>
+									<td>#{messages.direccion} <rich:message for="direccion"
+										showDetail="false" tooltip="true"
+										style="color:red;cursor:pointer;">
+										<f:facet name="errorMarker">
+											<h:outputText value="*"
+												title="#{facesMessages.getCurrentMessagesForControl('direccion').get(0).getDetail()}" />
+										</f:facet>
+									</rich:message> <br />
+									<h:inputText id="direccion" style=" width : 148px;"
+										tabindex="2" value="#{entidadCrearControlador.direccion}" /></td>
+									<td><rich:spacer width="25px" /></td>
+									<td>#{messages.area} <rich:message for="areaInfluencia"
+										showDetail="false" tooltip="true"
+										style="color:red;cursor:pointer;">
+										<f:facet name="errorMarker">
+											<h:outputText value="*"
+												title="#{facesMessages.getCurrentMessagesForControl('areaInfluencia').get(0).getDetail()}" />
+										</f:facet>
+									</rich:message><br />
+									<h:inputText id="areaInfluencia"
+										style=" width : 148px; text-align: right" tabindex="3"
+										value="#{entidadCrearControlador.poblacion}" /></td>
+									<td><rich:spacer width="7px" /></td>
+								</tr>
+								<tr>
+									<td height="8px" />
+								</tr>
+								<tr>
+									<td>#{messages.correo} <rich:message for="correo"
+										showDetail="false" tooltip="true"
+										style="color:red;cursor:pointer;">
+										<f:facet name="errorMarker">
+											<h:outputText value="*"
+												title="#{facesMessages.getCurrentMessagesForControl('correo').get(0).getDetail()}" />
+										</f:facet>
+									</rich:message><br />
+									<h:inputText id="correo" style=" width : 148px;" tabindex="4"
+										value="#{entidadCrearControlador.correo}" /></td>
+									<td style="width: 25px"></td>
+									<td>#{messages.telefono} <rich:message for="telefonos"
+										showDetail="false" tooltip="true"
+										style="color:red;cursor:pointer;">
+										<f:facet name="errorMarker">
+											<h:outputText value="*"
+												title="#{facesMessages.getCurrentMessagesForControl('telefonos').get(0).getDetail()}" />
+										</f:facet>
+									</rich:message> <br />
+									<h:inputText id="telefonos" style=" width : 148px;"
+										tabindex="5" value="#{entidadCrearControlador.telefonos}" /></td>
+									<td style="width: 25px"></td>
+									<td>#{messages.fax} <rich:message for="fax"
+										showDetail="false" tooltip="true"
+										style="color:red;cursor:pointer;">
+										<f:facet name="errorMarker">
+											<h:outputText value="*"
+												title="#{facesMessages.getCurrentMessagesForControl('fax').get(0).getDetail()}" />
+										</f:facet>
+									</rich:message> <br />
+									<h:inputText id="fax" style=" width : 148px;" tabindex="6"
+										value="#{entidadCrearControlador.fax}" /></td>
+
+								</tr>
+							</table>
+							</td>
+							<td width="7px" />
+						</tr>
+						<tr>
+							<td><rich:spacer height="8px" style="display: block" /></td>
+						</tr>
+						<tr>
+							<td width="7px" />
+							<td><rich:panel>
+								<f:facet name="header">#{messages.datos2}</f:facet>
+								<table cellpadding="0px" cellspacing="0px" border="0px">
+									<tr>
+										<td style="height: 13px;" colspan="6"></td>
+									</tr>
+
+									<tr style="vertical-align: top;">
+										<td><rich:spacer width="7px" /></td>
+										<td>#{messages.tipoEntidad} <rich:message
+											for="tipoEntidad" showDetail="false" tooltip="true"
+											style="color:red;cursor:pointer;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('tipoEntidad').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message> <br />
+										<a4j:outputPanel id="aTipoEntidad">
+											<rich:comboBox style=" width : 150px;" id="tipoEntidad"
+												enableManualInput="false"
+												defaultLabel="&#60;Seleccione&#62;" tabindex="7"
+												suggestionValues="#{entidadCrearControlador.tiposEntidades()}"
+												value="#{entidadCrearControlador.tipoEntidad}">
+											</rich:comboBox>
+										</a4j:outputPanel><rich:spacer height="10px" style="display: block"></rich:spacer>
+										</td>
+										<td><rich:spacer width="25px" /></td>
+
+										<td>#{messages.fechaApertura} <rich:message for="fecha"
+											showDetail="false" tooltip="true"
+											style="color:red;cursor:pointer;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('fecha').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message><br />
+										<rich:calendar styleClass="normalText" id="fecha"
+											datePattern="dd/MM/yyyy" tabindex="8"
+											value="#{entidadCrearControlador.fechaApertura}"
+											isDayEnabled="disablementFunctionPreviousEx"
+											dayStyleClass="disabledClassesProvPreviousEx">
+											<s:convertDateTime />
+										</rich:calendar> <rich:spacer height="5px" style="display: block"></rich:spacer>
+										</td>
+										<td><rich:spacer width="25px" /></td>
+										<td valign="top" style="width: 1px;">#{messages.caracter}
+										<rich:message for="caracter" showDetail="false" tooltip="true"
+											style="color:red;cursor:pointer;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('caracter').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message><br />
+										<rich:comboBox id="caracter" enableManualInput="false"
+											tabindex="9" defaultLabel="#{messages.seleccione}"
+											value="#{entidadCrearControlador.caracter}">
+											<f:selectItem itemValue="#{messages.caracter2}" />
+											<f:selectItem itemValue="#{messages.caracter1}" />
+										</rich:comboBox></td>
+										<td><rich:spacer width="7px" /></td>
+									</tr>
+									<tr style="vertical-align: top;">
+										<td style="width: 7px;"></td>
+										<td>#{messages.camasArquitectonicas} <rich:message
+											for="camasArquitectonicas" showDetail="false" tooltip="true"
+											style="color:red;cursor:pointer;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('camasArquitectonicas').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message><br />
+										<h:inputText style=" width : 148px; text-align: right"
+											id="camasArquitectonicas" tabindex="10"
+											value="#{entidadCrearControlador.camasArquitectonicas}" /> <rich:spacer
+											height="8px" style="display: block"></rich:spacer></td>
+										<td style="width: 25px"></td>
+										<td>#{messages.camasPresupuestadas} <rich:message
+											for="camasPresupuestadas" showDetail="false" tooltip="true"
+											style="color:red;cursor:pointer;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('camasPresupuestadas').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message><br />
+										<h:inputText style=" width : 148px; text-align: right"
+											id="camasPresupuestadas" tabindex="11"
+											value="#{entidadCrearControlador.camasPresupuestadas}" /> <rich:spacer
+											height="5px" style="display: block"></rich:spacer></td>
+										<td style="width: 24px"></td>
+										<td>#{messages.pais} <rich:message for="nacion"
+											showDetail="false" tooltip="true"
+											style="color:red;cursor:pointer;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('nacion').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message><br />
+										<rich:comboBox style=" width : 150px;" id="nacion"
+											enableManualInput="false"
+											defaultLabel="#{messages.seleccione}" tabindex="12"
+											var="valor"
+											suggestionValues="#{entidadCrearControlador.naciones()}"
+											value="#{entidadCrearControlador.nacion}">
+											<a4j:support ajaxSingle="true" event="onselect"
+												limitToList="true"
+												reRender="estadoId, municipioId, localidadId" />
+										</rich:comboBox> <rich:spacer height="5px" style="display: block"></rich:spacer>
+										</td>
+									</tr>
+									<tr style="vertical-align: top;">
+										<td style="width: 7px;"></td>
+										<td><a4j:outputPanel id="estadoId">
+											<h:outputText value="#{messages.provincia}" />
+											<!--											<h:outputText-->
+											<!--												value="#{entidadCrearControlador.provinciaEtic}"-->
+											<!--												rendered="#{not entidadCrearControlador.nacion.equals('')}" />-->
+											<rich:message for="estado" showDetail="false" tooltip="true"
+												style="color:red;cursor:pointer;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('estado').get(0).getDetail()}" />
+												</f:facet>
+											</rich:message>
+											<br />
+
+											<rich:comboBox style=" width : 150px;" id="estado"
+												enableManualInput="false"
+												defaultLabel="#{messages.seleccione}" tabindex="13"
+												var="valor" disabled="#{entidadCrearControlador.estados().size() == 0}"
+												suggestionValues="#{entidadCrearControlador.estados()}"
+												value="#{entidadCrearControlador.estado}">
+												<a4j:support ajaxSingle="true" event="onselect"
+													reRender="municipioId, localidadId" limitToList="true" />
+											</rich:comboBox>
+										</a4j:outputPanel><rich:spacer height="9px" style="display: block"></rich:spacer>
+										</td>
+										<td style="width: 25px"></td>
+										<td><a4j:outputPanel id="municipioId">
+											<h:outputText value="#{messages.municipio}"
+												 />
+											<!--											<h:outputText-->
+											<!--												value="#{entidadCrearControlador.municipioEtic}"-->
+											<!--												rendered="#{not entidadCrearControlador.nacion.equals('')}" />-->
+											<rich:message for="municipio" showDetail="false"
+												tooltip="true" style="color:red;cursor:pointer;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('municipio').get(0).getDetail()}" />
+												</f:facet>
+											</rich:message>
+											<br />
+
+											<rich:comboBox style=" width : 150px;" id="municipio"
+												enableManualInput="false"
+												defaultLabel="#{messages.seleccione}" tabindex="14"
+												suggestionValues="#{entidadCrearControlador.municipios()}"
+												disabled="#{entidadCrearControlador.municipios().size() == 0}"
+												value="#{entidadCrearControlador.municipio}">
+												<a4j:support ajaxSingle="true" event="onselect"
+													reRender="localidadId" limitToList="true" />
+											</rich:comboBox>
+										</a4j:outputPanel> <rich:spacer height="8px" style="display: block"></rich:spacer>
+										</td>
+										<td style="width: 25px"></td>
+										<td><a4j:outputPanel id="localidadId">
+											<h:outputText value="#{messages.localidad}"
+												 />
+											<!--											<h:outputText-->
+											<!--												value="#{entidadCrearControlador.localidadEtic}"-->
+											<!--												rendered="#{not entidadCrearControlador.nacion.equals('')}" />-->
+											<rich:message for="localidad" showDetail="false"
+												tooltip="true" style="color:red;cursor:pointer;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('localidad').get(0).getDetail()}" />
+												</f:facet>
+											</rich:message>
+											<br />
+
+											<rich:comboBox style=" width : 150px;" id="localidad"
+												enableManualInput="false"
+												defaultLabel="#{messages.seleccione}" tabindex="15"
+												disabled="#{entidadCrearControlador.localidades().size()==0}"
+												suggestionValues="#{entidadCrearControlador.localidades()}"
+												value="#{entidadCrearControlador.localidad}">
+											</rich:comboBox>
+										</a4j:outputPanel> <rich:spacer height="8px" style="display: block"></rich:spacer>
+										</td>
+									</tr>
+								</table>
+							</rich:panel></td>
+							<td><rich:spacer width="7px" /></td>
+						</tr>
+						<tr>
+							<td><rich:spacer height="7px" style="display: block" /></td>
+						</tr>
+					</table>
+
+				</rich:panel>
+
+
+
+				<rich:spacer height="1px" />
+
+
+				<div align="right">
+				<table cellpadding="0" cellspacing="0" border="0">
+					<tr>
+						<td><h:commandButton value="#{messages.aceptar}"
+							id="buttonAceptar" tabindex="16"
+							style="margin-right: 0px;margin-bottom: 0px; margin-left: 0px; margin-top: 7px"
+							action="#{entidadCrearControlador.crear()}">
+						</h:commandButton></td>
+						<td><rich:spacer width="10px" /></td>
+						<td><h:commandButton value="#{messages.cancelar}"
+							tabindex="17"
+							style="margin-right: 0px;margin-bottom: 0px; margin-left: 0px; margin-top: 7px"
+							immediate="true" action="cancelar" propagation="end" /></td>
+					</tr>
+				</table>
+				</div>
+
+			</s:validateAll>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+

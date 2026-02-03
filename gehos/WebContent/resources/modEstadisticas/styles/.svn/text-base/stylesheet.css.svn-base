@@ -1,0 +1,260 @@
+/*Mensaje de error*/
+.error_asterisco {
+	color:#FF0000 ; 
+	offset:0px ; 
+	margin:0px ; 
+	width:10px
+}
+/*para tabPanel*/
+.tabPanelContent {
+   padding: 0px 0px 0px 0px;
+}
+
+/*padding: 13px 8px 8px 8px;*/
+.rich-tabpanel-content {
+	padding: 0px 0px 0px 0px;
+}
+
+/*General para las tablas*/
+.Tabla{
+	border:0px;
+	vertical-align:top;
+	text-align:left;
+	padding:0px;
+	spacing:0px;	
+}
+
+.rich-panel-body{
+	padding-top:11px;
+	padding-left:6px;
+	padding-bottom:4px !important;
+	}
+	
+/*Para el margen*/
+.margenSupIzq{
+	padding-right:8px;
+	padding-top:11px;
+	padding-bottom:13px;
+	padding-left:8px;
+}
+
+/*Para poner un espacio pequenno entre filas
+recomendado para cuando se pone una etiqueta
+y debajo un componente de entrada de datos
+*/
+.filSepPeq{
+	padding-right:0px;      
+	padding-top:0px;		
+	padding-bottom:0px;		
+	padding-left:0px;		
+	margin:0px;				
+	vertical-align: bottom; 
+	spacing:0px; 			
+}
+
+.filSepPeq td{
+	padding-right:0px;
+	padding-top:0px;
+	padding-bottom:0px;
+	padding-left:0px;
+	margin:0px;
+	vertical-align: bottom;
+	spacing:0px; 	
+}
+
+/*Para poner un espacio despues de una etiqueta
+en un par etiqueta-componente donde cada uno esta
+en una columna 
+*/
+.colSepGran{
+	padding-right:25px;
+	padding-top:0px;
+	padding-bottom:0px;
+	padding-left:0px;
+	margin:0px;
+	vertical-align: bottom;
+	spacing:0px; 
+}
+
+/*Para poner un espacio despues de un
+componente que a continuacion lleva un par
+etiqueta-componente
+*/
+.colSepPeq{
+	padding-right:9px;
+	padding-top:0px;
+	padding-bottom:0px;
+	padding-left:0px;
+	margin:0px;
+	vertical-align: bottom;
+	spacing:0px; 
+}
+
+.colSepImg{
+	padding-right:6px;
+	padding-top:0px;
+	padding-bottom:0px;
+	padding-left:0px;
+	margin:0px;
+	vertical-align: bottom;
+	spacing:0px;
+}
+
+/*Para poner un espacio grande entre filas
+*/
+.filSepGran td{
+	padding-bottom:8px;
+	vertical-align:top;
+}
+.filSepGranRA td{
+	/*padding-bottom:10px; inicialmente yo lo cambie por 8*/
+	padding-bottom:8px;
+	vertical-align:top;
+}
+/*Para alinear a la derecha, �til
+en los facet footer 
+*/
+.alineacionDerecha{
+	text-align:right;
+	align:right;
+}
+
+.alineacionCentrada{
+	text-align:center;
+	align:center;
+}
+
+/*Estilos para suprimir los espaciados
+ en los simpleTogglePanel */
+.rich-stglpanel{
+	margin:0px;
+	spacing:0px;
+}
+
+.rich-stglpanel-body{
+	padding:0px;
+	margin:0px;
+	spacing:0px;
+	border:0px;
+}
+
+.rich-panel{
+	padding:0px;
+	margin:0px;
+	spacing:0px;
+}
+
+.rich-panel-body{
+	padding:0px;
+	margin:0px;
+	spacing:0px;	
+}
+
+.panel-reporte{
+	padding:0px;
+	margin:0px;
+	spacing:0px;
+}
+
+.cuerpo-panel-reporte{
+	padding:0px;
+	margin:0px;
+	spacing:0px;
+	border:0px;	
+}
+
+.rich-calendar-button{
+	width: 16px;
+	height: 16px;
+}
+.rich-calendar-input{
+	margin: 0px 0px 0px 0px;	
+	border: 0px 0px 0px 0px;
+	spacing: 0px 0px 0px 0px;
+	width: 134px;	
+}
+
+.anchoColHora{
+	width: 60px;
+}
+
+.selectOneRadio{
+	padding:0px;
+	margin:0px;
+	spacing:0px;
+	border:0px;	
+}
+/*Para poner al listshuttle en pauta*/
+.rich-list-shuttle-caption
+{
+	 font-size: 10px ;	 
+	 padding:0px; 
+}
+
+.rich-shuttle-source-caption,
+.rich-shuttle-target-caption
+{
+	font-weight: normal ; 
+      font-family: Verdana,sans-serif ;
+      font-size: 10px ;
+      
+     padding:0px 0px 0px 0px;
+}
+
+
+.rich-shuttle-source-items,
+.rich-shuttle-target-items
+{
+	margin:0px 0px 0px 0px;
+}
+
+
+.rich-shuttle-source-cell
+{
+	font-weight: normal;
+      font-family: Verdana,sans-serif;
+      font-size: 10px;
+      cursor: pointer;
+}
+
+.rich-shuttle-source-cell-selected,.rich-shuttle-target-cell-selected
+{
+	font-weight: normal;
+      font-family: Verdana,sans-serif;
+      font-size: 10px;
+      font-style:italic;
+      cursor: pointer;
+}
+
+/*Modal panel*/
+.dr-mpnl-pnl-text,.dr-mpnl-pnl-h,.rich-mpnl-text,.rich-mpnl-header
+{
+	font-family: Verdana,sans-serif;
+      font-size: 11px;
+}
+
+.dr-mpnl-pnl-b,.rich-mpnl-body
+{
+	padding:0px;
+      margin:0px;
+      spacing:0px;	
+}
+
+/*
+Para eliminar los espacios del Modal panel
+*/
+.rich-modalpanel{
+	padding:0px;
+	margin:0px;
+	spacing:0px;
+}
+
+.rich-mpnl-body{
+	padding:0px;
+	margin:0px;
+	spacing:0px;
+}
+.sinEspaciosAlrededor{
+margin:0px;
+padding:0px;
+}

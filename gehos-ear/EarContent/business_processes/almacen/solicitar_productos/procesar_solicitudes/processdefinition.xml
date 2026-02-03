@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition xmlns="" name="procesar_solicitudes">
+
+
+	<start-state name="inicio">
+		<transition to="procesar_ofertas"></transition>
+	</start-state>
+
+	<task-node name="procesar_ofertas">
+		<task name="procesar_ofertas">
+			<description>
+				Solicitud realizada por
+				#{datosSolicitud.solicitud.almacen.nombre}
+			</description>
+			<assignment
+				pooled-actors="admin,#{datosSolicitud.solicitud.almacen.funcionalidad.nombre}"></assignment>
+		</task>
+		<transition to="aprobar_adjudicacion" name="to_aprobar_adjudicacion"></transition>
+	</task-node>
+	
+	<task-node name="aprobar_adjudicacion">
+		<task name="aprobar_adjudicacion">
+			<description>
+				Solicitud realizada por #{datosSolicitud.solicitud.almacen.nombre}
+			</description>
+			<assignment pooled-actors="comite_de_licitacion_1"></assignment>
+		</task>
+		<transition to="fork1"></transition>
+	</task-node>
+	
+	<fork name="fork1">
+		<transition to="crear_contrato" name="to_crear_contrato"></transition>
+		<transition to="crear_orden_de_compra" name="to_crear_orden_de_compra"></transition>
+	</fork>
+	
+	<task-node name="crear_orden_de_compra" create-tasks = "false">
+		<task name="crear_orden_de_compra">
+			<description>
+				Solicitud realizada por #{datosSolicitud.solicitud.almacen.nombre}
+			</description>
+			<assignment pooled-actors="compras_1"></assignment>
+		</task>
+		<event type="node-enter">
+			<action class="gehos.almacen.session.solicitarProducto.crearContrato.CrearContratoTaskActionHandler"></action>
+		</event>
+		<transition to="join1"></transition>
+	</task-node>
+	
+	<task-node name="crear_contrato" create-tasks = "false">
+		<task name="crear_contrato">
+			<description>
+				Solicitud realizada por #{datosSolicitud.solicitud.almacen.nombre}
+			</description>
+			<assignment pooled-actors="comite_de_licitacion_1"></assignment>
+		</task>
+		<event type="node-enter">
+			<action class="gehos.almacen.session.solicitarProducto.crearContrato.CrearContratoTaskActionHandler"></action>
+		</event>
+		<transition to="join1"></transition>
+	</task-node>
+	
+	<join name="join1">
+		<transition to="crear_cronograma_de_entrega" name="to_crear_cronograma_de_entrega"></transition>
+	</join>
+	
+	<task-node name="crear_cronograma_de_entrega">
+		<task name="crear_cronograma_de_entrega">
+			<description>
+				Cronograma de solicitud realizada
+			</description>
+			<assignment pooled-actors="admin,#{datosSolicitud.solicitud.almacen.funcionalidad.nombre}"></assignment>
+		</task>
+		<transition to="administrar_cronograma"></transition>
+	</task-node>
+
+	<task-node name="administrar_cronograma">
+		<task name="administrar_cronogrmas">
+			<description>
+				Cronograma de solicitud realizada
+			</description>
+			<assignment actor-id="#{identity.username}"></assignment>
+		</task>
+		<transition to="fin"></transition>
+	</task-node>
+	
+
+
+	<end-state name="fin"></end-state>
+
+
+</process-definition>

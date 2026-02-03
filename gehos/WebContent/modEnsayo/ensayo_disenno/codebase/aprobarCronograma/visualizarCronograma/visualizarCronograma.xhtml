@@ -1,0 +1,320 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:a="http://richfaces.org/a4j">
+<s:div>
+	<script type="text/javascript">setContentTitle('#{messages.lbl_tituloGeneral_ens}')</script>
+	<ui:include src="/modEnsayo/codebase/plantillas/exportModalPanel.xhtml">
+		<link rel='stylesheet'
+			href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+			type='text/css' />
+		<link rel='stylesheet'
+			href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css'
+			type='text/css' />
+		<ui:param name="controlador" value="#{visualizarCronograma}" />
+	</ui:include>
+	<ui:include
+		src="/modEnsayo/ensayo_disenno/codebase/aprobarCronograma/visualizarCronograma/AdvertenciaDescompletarCronograma.xhtml">
+		<ui:param name="control" value="#{visualizarCronograma}" />
+		<ui:param name="listaIdElementos" value="estetios,hacorg2,lista" />
+
+	</ui:include>
+	<h:form>
+		<rich:panel>
+			<f:facet name="header">#{messages.lbl_cronograma_ens}</f:facet>
+
+
+			<rich:simpleTogglePanel switchType="client" styleClass="whitespace">
+				<f:facet name="header">#{messages.lbl_criterios_ens}</f:facet>
+				<a4j:outputPanel id="busquedas_programados">
+					<a4j:outputPanel>
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+
+							<tr style="vertical-align: top;">
+
+								<td>#{messages.lbl_nombre_ens}:<br /> <h:inputText
+										tabindex="6"
+										value="#{momentosAprobarCronogramaCustomList.nombre}"
+										style="width:148px;" />
+
+								</td>
+
+
+								<td><rich:spacer width="25px" /></td>
+								<td><br /> <a4j:commandButton
+										value="#{messages.btn_buscar_ens}" tabindex="10"
+										action="#{momentosNoProgramadosAprobarCronogramaCustomList.buscar(momentosAprobarCronogramaCustomList.nombre)}"
+										style="margin-left: 0px; margin-bottom:  0px; margin-top: 0px;"
+										reRender="tablas_programados,tabla_listado_programados,tablas_noProgramados,tabla_listado_noProgramados">
+										<s:defaultAction />
+									</a4j:commandButton></td>
+								<td><br /></td>
+							</tr>
+
+
+						</table>
+					</a4j:outputPanel>
+				</a4j:outputPanel>
+			</rich:simpleTogglePanel>
+
+			<rich:spacer height="11px" />
+			<div align="right">
+				<a4j:commandLink rendered="#{visualizarCronograma.Completar()}"
+					ajaxSingle="true" limitToList="true"
+					reRender="estetios,hacorg2,lista" action="a"
+					oncomplete="Richfaces.showModalPanel('completarcronograma')">
+					<h:graphicImage value="/resources/modConfiguracion/visible.png"
+						width="14" height="14" style="border:0px; height : 14px;"
+						title="#{messages.completarcronograma}" />
+															#{messages.completarcronograma}
+													</a4j:commandLink>
+			</div>										
+			<div align="right">
+				<a4j:commandLink rendered="#{visualizarCronograma.DesCompletar()}"
+					oncomplete="Richfaces.showModalPanel('descompletarcronograma')">
+					<h:graphicImage value="/resources/modConfiguracion/visible-disable.png"
+						width="14" height="14" style="border:0px; height : 14px;"
+						title="#{messages.descompletarcronograma}" />
+															#{messages.descompletarcronograma}
+													</a4j:commandLink>
+			</div>
+			<a4j:outputPanel id="tablas_programados">
+
+				<rich:panel
+					rendered="#{momentosAprobarCronogramaCustomList.resultList.size() == 0 and momentosAprobarCronogramaCustomList.nombre != ''}">
+					<f:facet name="header">#{messages.lbl_listadoProgramados_ens}</f:facet>
+
+					<div class="results" id="roleList">
+						<h:outputText value="#{messages.msg_noResultados_ens}" />
+					</div>
+
+				</rich:panel>
+				<s:div style="margin-left:1px;margin-top:1px"
+					rendered="#{not empty momentosAprobarCronogramaCustomList.resultList}">
+					<rich:dataTable id="tabla_listado_programados" style="width: 100%;"
+						var="msProgramado"
+						value="#{momentosAprobarCronogramaCustomList.resultList}"
+						columnsWidth="30%, 10%, 30%, 30%, 0*">
+						<f:facet name="header">
+							<div>#{messages.lbl_listadoProgramados_ens}</div>
+						</f:facet>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_nombre_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{msProgramado.nombre}
+	        			</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_evaluacion_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{visualizarCronograma.diasEtapa("evaluacion",msProgramado.dia)}
+	        			</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_tratamiento_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{visualizarCronograma.diasEtapa("tratamiento",msProgramado.dia)}
+	            			
+	        			</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_seguimiento_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{visualizarCronograma.diasEtapa("seguimiento",msProgramado.dia)}
+	        			</h:column>
+						<h:column>
+							<div align="center">
+								<s:link
+									view="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/aprobarCronograma/listadoHojasCRD/listadoHojasCRD.gehos">
+									<h:graphicImage title="#{messages.lbl_verHojas_ens}"
+										style="border: 0px;" value="/resources/modEnsayo/img/ver.png" />
+									<f:param name="idMs" value="#{msProgramado.id}" />
+									<f:param name="idCronograma"
+										value="#{momentosAprobarCronogramaCustomList.idCronograma}" />
+
+
+
+								</s:link>
+
+							</div>
+						</h:column>
+
+					</rich:dataTable>
+				</s:div>
+
+			</a4j:outputPanel>
+			<rich:spacer height="11px"></rich:spacer>
+			<a4j:outputPanel id="tablas_noProgramados">
+				<rich:panel
+					rendered="#{momentosNoProgramadosAprobarCronogramaCustomList.resultList.size() == 0 and momentosNoProgramadosAprobarCronogramaCustomList.nombre == ''}">
+					<f:facet name="header">
+						<h:outputText value="#{messages.lbl_listadoNoProgramados_ens}" />
+					</f:facet>
+					<h:outputText value="#{messages.msg_listaVacia_ens}" />
+				</rich:panel>
+				<rich:panel
+					rendered="#{momentosNoProgramadosAprobarCronogramaCustomList.resultList.size() == 0 and momentosNoProgramadosAprobarCronogramaCustomList.nombre != ''}">
+					<f:facet name="header">
+						<h:outputText value="#{messages.lbl_listadoNoProgramados_ens}" />
+					</f:facet>
+
+					<div class="results" id="roleList">
+						<h:outputText value="#{messages.msg_noResultados_ens}" />
+					</div>
+
+				</rich:panel>
+				<s:div style="margin-left:1px;margin-top:1px"
+					rendered="#{not empty momentosNoProgramadosAprobarCronogramaCustomList.resultList}">
+					<rich:dataTable id="tabla_listado_noProgramados"
+						style="width: 100%;" var="msNoProgramado"
+						value="#{momentosNoProgramadosAprobarCronogramaCustomList.resultList}"
+						columnsWidth="40%, 60%, 0*">
+						<f:facet name="header">
+							<div>#{messages.lbl_listadoNoProgramados_ens}</div>
+						</f:facet>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_nombre_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{msNoProgramado.nombre}
+	        			</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_ocurre_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{msNoProgramado.descripcion}
+	        			</h:column>
+
+						<h:column>
+							<div align="center">
+								<s:link
+									view="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/aprobarCronograma/listadoHojasCRD/listadoHojasCRD.gehos">
+									<h:graphicImage title="#{messages.lbl_verHojas_ens}"
+										style="border: 0px;" value="/resources/modEnsayo/img/ver.png" />
+									<f:param name="idMs" value="#{msNoProgramado.id}" />
+									<f:param name="idCronograma"
+										value="#{momentosAprobarCronogramaCustomList.idCronograma}" />
+
+								</s:link>
+
+							</div>
+						</h:column>
+
+					</rich:dataTable>
+				</s:div>
+
+			</a4j:outputPanel>
+
+		</rich:panel>
+		<br />
+		<div align="right">
+
+			<a4j:commandButton id="aceptarBtn" action="exportar"
+				onclick="javascript:Richfaces.showModalPanel('exportPanel');"
+				value="#{messages.btn_exportar_ens}" style="margin-right:10px">
+			</a4j:commandButton>
+
+
+			<a4j:commandButton action="cancelar"
+				value="#{messages.btn_salir_ens}"
+				style="margin-right:0px;margin-bottom:  0px; margin-top: 0px;"
+				tabindex="4">
+			</a4j:commandButton>
+		</div>
+		<rich:modalPanel id="completarcronograma" autosized="true"
+			resizeable="false" style="white-space: nowrap">
+			<f:facet name="header" id="panelcompletarHeader">
+				<h:outputText value="#{messages.completarcronograma}" />
+			</f:facet>
+			<f:facet name="controls">
+				<h:panelGroup>
+					<h:graphicImage
+						value="/resources/icons/default/acciones/cerrar.gif"
+						style="cursor:pointer" id="hidelinkch" />
+					<rich:componentControl for="completarcronograma"
+						attachTo="hidelinkch" operation="hide" event="onclick" />
+				</h:panelGroup>
+			</f:facet>
+			<h:form id="deshabilitar_gs_panel_form">
+
+				<table cellpadding="0px" cellspacing="0px" border="0px"
+					id="container" title="">
+					<tr style="vertical-align: top;">
+						<td><rich:spacer width="6px" /></td>
+						<td valign="top">
+							<table cellpadding="0px" cellspacing="0px" border="0">
+								<tr valign="top">
+									<td><h:graphicImage
+											value="/resources/icons/default/acciones/advertencia.png" /></td>
+									<td><rich:spacer width="6px" /></td>
+									<td><h:outputText style="margin: 0px; padding: 0px"
+											value="#{messages.completar1}"></h:outputText><br /> <h:outputText
+											style="margin: 0px; padding: 0px"
+											value="#{messages.completar2}"></h:outputText></td>
+								</tr>
+							</table>
+						</td>
+						<td><rich:spacer width="6px" /></td>
+					</tr>
+					<tr>
+						<td style="height: 7px;" colspan="6"></td>
+					</tr>
+					<tr>
+						<td colspan="3">
+
+							<div align="center">
+								<h:commandButton
+									action="#{visualizarCronograma.Completarcronograma()}"
+									value="#{messages.btn_si_ens}"
+									onclick="Richfaces.hideModalPanel('completarcronograma')">
+								</h:commandButton>
+								<input type="button" value="#{messages.btn_no_ens}"
+									style="margin-left: 3px;"
+									onclick="Richfaces.hideModalPanel('completarcronograma')" />
+							</div>
+						</td>
+					</tr>
+				</table>
+			</h:form>
+		</rich:modalPanel>
+		
+	</h:form>
+
+</s:div>
+</html>

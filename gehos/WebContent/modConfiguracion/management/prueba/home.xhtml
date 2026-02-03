@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript">setContentTitle('Configuraciones personales')</script>
+		<style type="text/css">
+.rich-stglpanel-body {
+	padding: 0px
+}
+</style>
+		<style type="text/css">
+.rich-panel-body {
+	padding: 0px
+}
+</style>
+
+		<h:form enctype="multipart/form-data">
+			<s:validateAll>
+				<a4j:outputPanel ajaxRendered="true">
+					<rich:messages styleClass="message" ajaxRendered="true"
+						for="aceptar" />
+				</a4j:outputPanel>
+				<rich:panel>
+					<f:facet name="header">#{messages.contrasena}</f:facet>
+
+					<table cellpadding="0" cellspacing="0" border="0">
+
+						<tr>
+							<td><rich:spacer width="7px" /></td>
+							<td valign="middle"><br />
+							<h:outputLabel value="#{messages.mantener}"></h:outputLabel> <rich:spacer
+								width="7"></rich:spacer></td>
+							<td valign="middle"><br />
+
+							<h:selectBooleanCheckbox style="margin: 0px;" tabindex="5"
+								value="#{preference.render}">
+								<a4j:support event="onclick" ajaxSingle="true"
+									reRender="changepass" />
+							</h:selectBooleanCheckbox></td>
+
+						</tr>
+						<tr height="6px" />
+					</table>
+
+					<a4j:outputPanel id="changepass">
+						<s:div id="divPassword" rendered="#{!preference.render}">
+							<table cellpadding="0px" cellspacing="0px" border="0px">
+
+								<tr>
+
+									<td><rich:spacer width="7px" /></td>
+									<td>
+									<table cellpadding="0px" cellspacing="0px" border="0px">
+
+										<tr style="vertical-align: top;">
+											<td style="width: 0px;"></td>
+											<td><h:outputLabel value="#{messages.passAnterior}" />
+											<h:outputText value="*" style="color:red;cursor:pointer;"
+												title="#{messages.error_pass}"
+												rendered="#{preference.pass_error}" /> <rich:message
+												for="passwordOld" showDetail="false" tooltip="true"
+												style="color:red;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('passwordOld').get(0).getDetail()}" style="color:red;cursor:pointer;"/>
+												</f:facet>
+											</rich:message> <br />
+											<h:inputSecret value="#{preference.passOld}" redisplay="true"
+												label="password" id="passwordOld" required="true"
+												requiredMessage="Valor requerido" tabindex="2"
+												style=" width : 148px;" /> <br />
+
+											<table cellpadding="0" cellspacing="0" border="0"
+												style="vertical-align: middle;">
+
+
+											</table>
+
+											</td>
+											<td style="width: 25px"></td>
+
+											<td><h:outputLabel value="#{messages.newPass}"></h:outputLabel>
+											<rich:message for="passwordNew" showDetail="false"
+												tooltip="true" style="color:red;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('passwordNew').get(0).getDetail()}" style="color:red;cursor:pointer;"/>
+												</f:facet>
+											</rich:message><br />
+											<h:inputSecret value="#{preference.passNew}" redisplay="true"
+												label="password" id="passwordNew" required="true"
+												requiredMessage="Valor requerido" tabindex="2"
+												style=" width : 148px;" />
+
+											<table cellpadding="0" cellspacing="0" border="0"
+												style="vertical-align: middle;">
+
+											</table>
+
+											</td>
+
+											<td style="width: 24px"></td>
+											<td><h:outputLabel value="#{messages.confirmarPass}"></h:outputLabel>
+											<h:outputText value="*" style="color:red;cursor:pointer;"
+												title="#{messages.error_pass_desigual}"
+												rendered="#{not preference.pass_desigual}" /> <rich:message
+												for="passwordVerf" showDetail="false" tooltip="true"
+												style="color:red;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('passwordVerf').get(0).getDetail()}" style="color:red;cursor:pointer;"/>
+												</f:facet>
+											</rich:message><br />
+											<h:inputSecret value="#{preference.confPass}"
+												redisplay="true" label="password" id="passwordVerf"
+												required="true" requiredMessage="Valor requerido"
+												tabindex="2" style=" width : 148px;" />
+
+											<table cellpadding="0" cellspacing="0" border="0"
+												style="vertical-align: middle;">
+
+											</table>
+
+											</td>
+										</tr>
+									</table>
+									</td>
+								</tr>
+								<tr height="7px" />
+							</table>
+						</s:div>
+					</a4j:outputPanel>
+
+
+
+
+
+
+
+
+				</rich:panel>
+
+				<br />
+
+
+				<rich:panel>
+					<f:facet name="header">#{messages.foto}</f:facet>
+					<table cellpadding="0" cellspacing="0" border="0">
+						<tr>
+							<td height="10px"></td>
+						</tr>
+						<tr>
+							<td width="7px" />
+							<td><h:outputLabel value="#{messages.labelFoto}"></h:outputLabel><br />
+							<s:fileUpload id="addPhoto1" accept="*.*" tabindex="6"
+								data="#{preference.data}" fileName="#{preference.nombrePhoto}" /></td>
+							<td style="width: 24px"></td>
+
+						</tr>
+					</table>
+
+					<rich:spacer height="6px" style="display: block" />
+				</rich:panel>
+				<br />
+
+
+
+
+
+
+				<rich:panel>
+					<f:facet name="header">#{messages.confTemaIdioma}</f:facet>
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr>
+							<td style="height: 11px;" colspan="6"></td>
+						</tr>
+						<tr style="vertical-align: top;">
+							<td style="width: 7px;"></td>
+							<td><h:outputLabel value="#{messages.tema}"></h:outputLabel><br />
+
+
+							<rich:comboBox id="tema" enableManualInput="false" width="150px"
+								tabindex="4" suggestionValues="#{preference.temas}"
+								value="#{preference.theme}" defaultLabel="#{preference.theme}">
+
+							</rich:comboBox></td>
+							<td style="width: 25px"></td>
+							<td><h:outputLabel value="#{messages.idioma}"></h:outputLabel><br />
+
+
+							<rich:comboBox id="cultura" enableManualInput="false"
+								width="150px" tabindex="4"
+								suggestionValues="#{preference.cultura()}"
+								value="#{preference.culturaSelec}"
+								defaultLabel="#{preference.culturaSelec}">
+
+							</rich:comboBox></td>
+							<td style="width: 25px"></td>
+
+						</tr>
+					</table>
+					<rich:spacer height="8px" />
+				</rich:panel>
+				<br />
+
+
+				<rich:panel>
+					<f:facet name="header">#{messages.confMenu}</f:facet>
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr>
+							<td style="height: 11px;" colspan="6"></td>
+						</tr>
+						<tr style="vertical-align: top;">
+							<td style="width: 7px;"></td>
+							<td style="vertical-align: top; padding: 0px;">
+							#{messages.menuArbol} <rich:spacer height="8px"></rich:spacer></td>
+							<td style="vertical-align: top; padding: 0px;"><h:selectBooleanCheckbox
+								value="#{preference.treeLikeMenu}"
+								style="margin-top: 0px; margin-right: 0px;">
+							</h:selectBooleanCheckbox></td>
+							<td style="width: 25px"></td>
+
+						</tr>
+					</table>
+					<rich:spacer height="4px" />
+				</rich:panel>
+				<rich:spacer height="3px" />
+				<table cellpadding="0" cellspacing="0" border="0" align="right">
+					<tr>
+						<td valign="bottom"><h:commandButton id="aceptar"
+							value="#{messages.aceptar}" action="#{preference.cambiar()}"
+							style="margin-left: 0px; margin-top: 0px; margin-bottom: 0px;" />
+						</td>
+						<td valign="top"><s:button view="/modCommons/modHome/home.gehos" value="#{messages.cancelar}" style="margin-right:0px;margin-bottom: 0px;">						     
+										<f:param name="idFuncionalidad" value="#{activeModule.activeModule.id}" />
+										<f:param name="idancestors" value="#{activeModule.activeModule.id}a" />
+							      		<f:param name="moduleName" value="#{activeModule.activeModuleName}" />		
+		 								</s:button></td>
+					</tr>
+				</table>
+				<br />
+
+
+
+
+
+			</s:validateAll>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

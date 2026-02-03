@@ -1,0 +1,58 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                template="#{theme.template}">
+                       
+<ui:define name="body">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style type="text/css">.rich-stglpanel-body{padding:0px}</style>
+	<style type="text/css">.rich-panel-body{padding:0px}</style>
+    <script type="text/javascript">setContentTitle('Detalles del rol')</script>
+    <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
+    
+    <h:form id="camaSearch" styleClass="edit">
+    
+    <rich:panel switchType="client" >
+		<f:facet name="header">Datos del rol</f:facet>
+		<table cellpadding="0px" cellspacing="0px" border="0px" >
+			<tr>
+				<td style="height: 11px;" colspan="3">
+				</td>
+			</tr>
+			<tr style="vertical-align: top;">
+				<td style="width: 6px;"></td>
+				<td>
+					Nombre:
+					<rich:spacer width="6px"></rich:spacer>
+					<rich:spacer height="6px" style="display: block"></rich:spacer>
+      			</td>
+				<td>
+					<h:outputLabel styleClass="dataText" value="#{rolesDetails_common.rol.name}"></h:outputLabel>
+					<rich:spacer height="6px" style="display: block"></rich:spacer>
+				</td>
+			</tr>
+		</table>
+	</rich:panel>
+	<div align="right">
+		<s:button value="Modificar" view="/modConfiguracion/roles/RoleEdit.xhtml">
+			<f:param name="rolId" value="#{rolesDetails_common.rol.id}" />	
+		</s:button>
+		<s:button value="Salir" view="/modConfiguracion/roles/RoleList.xhtml" 
+			style="margin-right: 0px"></s:button>
+	</div>
+    </h:form>
+    
+    
+    <br/>
+    
+</ui:define>
+
+</ui:composition>
+

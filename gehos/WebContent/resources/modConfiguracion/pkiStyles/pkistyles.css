@@ -1,0 +1,332 @@
+.sinEspaciosAlrededor {
+	margin: 0px;
+	padding: 0px;
+}
+
+/*Para el margen*/ /*.margenSupIzq{
+	padding-right:8px;
+	padding-top:13px;
+	padding-bottom:8px;
+	padding-left:8px;
+}*/ /*Para poner un espacio pequenno entre filas
+recomendado para cuando se pone una etiqueta
+y debajo un componente de entrada de datos
+*/
+.filSepPeq {
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px; 
+}
+
+.filSepPeq td {
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+/*Para poner un espacio despues de una etiqueta
+en un par etiqueta-componente donde cada uno esta
+en una columna 
+*/
+.colSepGran {
+	padding-right: 25px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+/*Para poner un espacio despues de un
+componente que a continuacion lleva un par
+etiqueta-componente
+*/
+.colSepPeq {
+	padding-right: 9px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+.colSepImg {
+	padding-right: 6px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+/*Para poner un espacio grande entre filas
+*/
+.filSepGran td {
+	padding-bottom: 8px;
+	vertical-align: top;
+}
+
+.filSepGranRA td {
+	/*padding-bottom:10px; inicialmente yo lo cambie por 8*/
+	padding-bottom: 8px;
+	vertical-align: top;
+}
+
+/*Para alinear a la derecha, �til
+en los facet footer 
+*/
+.alineacionDerecha {
+	text-align: right;
+	align: right;
+}
+
+.alineacionCentrada {
+	text-align: center;
+	align: center;
+}
+
+input[type="radio"] {
+	margin: 0;
+	padding: 0
+}
+
+/**********************************************************************************************/
+.dr-mpnl-pnl-b {
+	padding: 1px;
+}
+
+.dr-mpnl-pnl {
+	border: 1px !important;
+	border-style: solid !important;
+	border-color: #BED6F8 !important;
+}
+
+.rich-stglpanel-body-custom {
+	padding-top: 13px !Important;
+	padding-bottom: 8px !Important;
+	padding-left: 8px !Important;
+	padding-right: 8px !Important;
+	
+}
+
+.rich-panel-body-custom {
+	padding-bottom: 8px !Important;
+	padding-top: 13px !Important;
+	padding-left: 8px !Important;
+	padding-right: 8px !Important;
+}
+
+.rich-tabpanel-content-custom {
+	padding-bottom: 7px !Important;
+	padding-top: 13px !Important;
+	padding-left: 6px !Important;
+	padding-right: 8px !Important;
+}
+
+.input-text-area {
+	width: 100% !Important;
+	margin-top: 0px !Important;
+	margin-bottom: 0px !Important;
+}
+
+.input-number-spinner {
+	width: 130px !Important;
+}
+
+.rich-calendar-input {
+	width: 132px !Important;
+	margin: 0px;
+}
+
+/*
+separar los numeros y los campos de numero de las unidades de medida
+*/
+.v-spacer-amedida {
+	width: 2px;
+	display: block;
+}
+
+/*
+	Clase para separar la propiedad del valor de forma horizontal, 
+	a una distancia espec�fica
+	Valor nominal: 	 8px
+	Valor real:		10px
+*/
+.h-spacer-between-p-and-v {
+	width: 8px;
+}
+
+/*
+	Clase para separar dos conjuntos de componentes de forma horizontal, 
+	a una distancia espec�fica
+	Valor nominal: 	25px
+	Valor real:		26px
+*/
+.h-spacer-between-2c {
+	width: 25px;
+}
+
+/*
+	Clase para separar dos conjuntos de componentes de forma vertical, 
+	a una distancia espec�fica
+	Valor nominal: 	 
+	Valor real:		
+*/
+.v-spacer-between-2l {
+	height: 8px;
+	width: 8px;
+	display: block;
+}
+
+/*
+	Clase para separar verticalmente los botenes de las búsquedas y
+	el conjunto de la imagen y el hipervínculo.
+	Valor nominal: 1px
+	Valor real: 2px  
+*/
+.v-spacer-asearch {
+	height: 2px;
+	display: block;
+}
+
+/*
+	Clase para separar dos conjuntos de componentes de forma vertical, 
+	a una distancia espec�fica en los 'Datos generales del paciente'
+	Valor nominal: 	12px
+	Valor real:		15px 
+*/
+.v-spacer-between-2l-patientPersonalData {
+	height: 12px;
+	display: block;
+}
+
+/*
+	Clase para separar la foto de la primera columna de datos, 
+	a una distancia espec�fica en los 'Datos generales del paciente'.
+	Valor nominal: 	 5px
+	Valor real:		13px 
+*/
+.h-spacer-between-picture-and-data-patientPersonalData {
+	width: 5px;
+}
+
+/*
+	Valor nominal: 	13px
+	Valor real:		13px 
+*/
+.top-spacer-patientPersonalData {
+	height: 13px;
+}
+
+/*
+	Valor nominal: 	 8px
+	Valor real:		10px 
+*/
+.left-spacer-patientPersonalData {
+	width: 8px;
+}
+
+/*
+	Clase para darle la alineaci�n a los datos num�ricos correspondientes a:
+	-C�digos
+	-Identificadores 
+	Aplicado a: los valores de las columnas de las tablas.
+*/
+.code-align {
+	text-align: left;
+}
+
+/*
+	Clase para darle la alineaci�n a los datos num�ricos correspondientes a:
+	-Numeros
+	-Cantidades 
+	Aplicado a: los valores de las columnas de las tablas.
+*/
+.number-align {
+	text-align: right;
+}
+
+.patientPersonalData {
+	padding: 0px;
+	padding-bottom: 13px;
+}
+
+/*PARA LOS MENSAJES DE ELIMINAR*/
+.message-align {
+	text-align: left;
+}
+
+/*PARA LA IMAGEN DE LAS ACCIONES EN LAS TABLAS*/
+.img-table-actions {
+	border: 0px;
+}
+
+/*PARA LOS MENSAJES DE ERRORES DE VALIDACIÓN*/
+.error-marker {
+	margin-left: 2px;
+	color: Red;
+	cursor: default; 
+}
+/*
+	PARA LOS CONTROLES H:IMPUTTEXT
+	Valor nominal: 148px 
+	Valor real: 150px
+*/
+.h-input-text {
+	width: 148px;
+}
+
+
+
+/* 
+	ELIMINAR EL MARGEN DE LOS BOTONES
+*/
+.btn {
+	margin: 0px 0px 0px 0px !Important;
+}
+.btn-v-spacer {
+	height: 8px !Important;
+	display: block;
+}
+.btn-h-spacer {
+	width: 10px !Important;
+}
+
+/*Para deshabilitar fechas en los calendarios*/
+.dateDisabled {
+	color: red;
+	text-decoration: line-through;
+}
+
+.radioButton td {
+	padding-right: 9px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	padding-top: 0px;
+	vertical-align: top;
+	text-align: top;
+}
+
+.radioButton input[type='radio'] {
+	margin: 0px;
+}
+
+.radioButton label {
+	vertical-align: bottom;
+}
+
+.noAvailable {
+	color: red;
+	text-decoration: line-through;
+}

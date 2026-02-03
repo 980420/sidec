@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition 
+		xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:s="http://jboss.com/products/seam/taglib"
+		xmlns:rich="http://richfaces.org/rich"
+		xmlns:a="http://richfaces.org/a4j" 
+		xmlns:c="http://java.sun.com/jstl/core" 
+		 template="#{theme.template}" >
+
+<ui:define name="body" >		
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('#{messages.notificacion}')</script>
+	<link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/modCommons/notifications/styles/dialog.css" media="screen" />
+	
+	<s:div id="notificationspanelsdiv">
+		<ui:repeat value="#{notificationManager.notificationsByModule()}" var="notification" >
+		<a:form>
+		<a:outputPanel ajaxRendered="true">
+		<s:div id="notificationspanelsdiv_#{notification.id}"
+			rendered="#{notificationManager.notificationsByUserAndType(notification.codigo).size() > 0 }" >
+			<div class="dialog" style="float: left; margin-right: 5px; color: #15428b;" >
+				<div class="content" >
+					<div class="t"></div>
+					<div style="padding-right: 4px; " >
+						<table  cellpadding="0" cellspacing="0" border="0" style="padding-top: 6px;">
+							<tr> 
+							<td><h:graphicImage value="/modCommons/modHome/styles/panelAc.png"/></td>
+							<td>
+								<span style="padding-left: 4px; font-size: 12px; font-weight: bold;">
+								#{notification.descripcion}
+								</span>
+							</td>
+							<td> 
+								<a:status >
+									<f:facet name="start">  
+										<h:graphicImage url="/resources/icons/default/acciones/loading_small.gif" 
+											style="padding-left:4px;"/>
+									</f:facet>
+								</a:status> 
+							</td> 
+							</tr>
+						</table>
+						
+						<s:div rendered="false" style="background-image: url('#{facesContext.externalContext.requestContextPath}/modCommons/notifications/styles/split3.png');
+								 width:100%; height:2px; margin-left:1px; position: relative; top: -16;">
+						</s:div>
+						<div style="padding-top: 2px;" >
+							<table border="0" cellpadding="1" cellspacing="1">
+							<a:repeat
+								var="notificationinuser" 
+								value="#{notificationManager.notificationsByUserAndType(notification.codigo)}" 
+								>
+								<tr class="dr-table-firstrow2">
+								<td>
+									<s:link view="#{notificationinuser.notificacion.tipoNotificacion.url}"
+										style="font-weight: bold; color: black; cursor: pointer " 
+										rendered="#{not notificationinuser.leida}" 
+										onmouseover="javascript:this.style.color='#15428b'" 
+										onmouseout="javascript:this.style.color='#000000'"
+										>
+										<f:param name="param" value="#{notificationinuser.notificacion.paramValue}" />
+										<a:support event="onclick" ajaxSingle="false"
+											reRender="notificationspanelsdiv, notificationscountslink"
+										   	action="#{notificationManager.markNotificationAsReaded(notificationinuser.id)}" />
+										#{notificationinuser.notificacion.tipoNotificacion.descripcion}
+										- #{messages.de}: 
+										#{notificationinuser.notificacion.usuario.username}
+										- #{messages.creada}: 
+										#{notificationinuser.notificacion.fecha}
+										/
+										#{notificationinuser.notificacion.hora}
+									</s:link>
+									<s:link view="#{notificationinuser.notificacion.tipoNotificacion.url}"
+										style="color: black; cursor: pointer"
+										rendered="#{notificationinuser.leida}" 
+										onmouseover="javascript:this.style.color='#15428b'" 
+										onmouseout="javascript:this.style.color='#000000'">
+										<f:param name="param" value="#{notificationinuser.notificacion.paramValue}" />
+										#{notificationinuser.notificacion.tipoNotificacion.descripcion}
+										- #{messages.de}: 
+										#{notificationinuser.notificacion.usuario.username}
+										- #{messages.creada}: 
+										#{notificationinuser.notificacion.fecha}
+										/
+										#{notificationinuser.notificacion.hora}
+									</s:link>
+								</td>
+								<td>
+									<h:graphicImage value="/modCommons/notifications/styles/unread.png"
+										width="13" height="13" 
+										style="padding-left: 4px; cursor: pointer" 
+										rendered="#{not notificationinuser.leida}" 
+										title="#{messages.leida}" >
+										<a:support event="onclick" ajaxSingle="false" 
+											reRender="notificationspanelsdiv, notificationscountslink"
+										   	action="#{notificationManager.markNotificationAsReaded(notificationinuser.id)}" />
+									</h:graphicImage>	
+																		
+									<h:graphicImage value="/modCommons/notifications/styles/read.png"
+										width="13" height="13" 
+										style="padding-left: 4px; cursor: pointer" 
+										rendered="#{notificationinuser.leida}" 
+										title="#{messages.noleida}" >
+										<a:support event="onclick" ajaxSingle="false"
+											reRender="notificationspanelsdiv, notificationscountslink"
+										   	action="#{notificationManager.markNotificationAsReaded(notificationinuser.id)}" />
+									</h:graphicImage>	
+									
+								</td>
+								<td>
+									<h:graphicImage value="/modCommons/notifications/styles/important.png"
+										rendered="#{notificationinuser.notificacion.importante}"
+										height="13"  
+									/>									
+								</td>
+								<td>
+									<h:commandLink action="#{notificationManager.eliminar(notificationinuser.id)}">
+										<h:graphicImage value="/resources/icons/default/acciones/eliminar.png"
+										    style="border: 0px;"></h:graphicImage>
+									</h:commandLink>
+								</td>
+							</tr>		
+							</a:repeat> 			
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="b">
+				<div></div>
+				</div>
+			</div>
+		</s:div>	
+		</a:outputPanel>
+		</a:form>
+		</ui:repeat>		
+	</s:div>
+
+	
+</ui:define>		
+</ui:composition>
+

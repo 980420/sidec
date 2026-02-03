@@ -1,0 +1,117 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" 
+	template="#{theme.template}"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<ui:define name="body" >
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css">.rich-mpnl-body{padding:0px}</style>
+		<script>
+			function updateSrc(module){
+				return "#{facesContext.externalContext.requestContextPath}/modConfiguracion/funcionalidades_2.0/modalpnl_addcattomod.gehos?modulename=" + module;
+			}
+			function closeModuloAgregarCatPanel(){
+				Richfaces.hideModalPanel('modulo_agregar_cat');
+			}
+		</script>
+		<script type="text/javascript">setContentTitle('Configurar funcionalidades 2.0')</script>
+		<h:messages globalOnly="true" styleClass="message" />
+
+		<h:form id="funcionalidadesControllerForm2">
+		<rich:panel>
+			<f:facet name="header">
+				<a:status stopText="Funcionalidades" startText="Actualizando..." id="funcstatus"></a:status>
+			</f:facet>
+			<a:outputPanel>
+			<rich:tree  changeExpandListener="#{funcionalidadesYCategoriasEditController.OnNodeCollapseExpand}"
+						style="width:150px" value="#{funcionalidadesYCategoriasEditController.treeData}"
+						switchType="ajax" preserveModel="state" treeNodeVar="treenode"
+						var="node" id="functree">
+				
+					<rich:treeNode rendered="#{node.toString().equals('modulo')}" 
+						icon="/resources/modCommon/moduleimages/#{theme.name}/#{theme.color}/#{node.value.imagen}"
+						iconLeaf="/resources/modCommon/moduleimages/#{theme.name}/#{theme.color}/#{node.value.imagen}">
+							#{node.value.label}
+							<rich:contextMenu id="moduloMenu" submitMode="none">
+								<rich:menuItem 
+									value="agregar categoria"
+	   							    >
+									<a:support event="onclick"
+											action="#{funcionalidadesYCategoriasEditController.setSelectedNode(treenode)}"
+											oncomplete="javascript:Richfaces.showModalPanel('modulo_agregar_cat', {width: '200px', height: '300px', modulename: '#{node.value.nombre}' } )">
+									</a:support>   							    
+								</rich:menuItem> 
+								<rich:menuItem value="agregar funcionalidad"></rich:menuItem>
+							</rich:contextMenu>
+							<rich:toolTip id="moduloTooltip" rendered="false"
+								followMouse="true" showDelay="600" style="padding: 1">
+								<h:graphicImage 
+									url="/resources/modCommon/moduleimages/#{theme.name}/#{theme.color}/#{node.value.imagen}" />
+							</rich:toolTip>
+					</rich:treeNode>
+					
+					<rich:treeNode rendered="#{node.toString().equals('categoria')}"
+						icon="/resources/funcionalidadesIcons/#{node.value.modulo.nombre}/#{node.value.imagen}"
+						iconLeaf="/resources/funcionalidadesIcons/#{node.value.modulo.nombre}/#{node.value.imagen}">
+							#{node.value.label}
+							<rich:toolTip 
+								followMouse="true" showDelay="600" style="padding: 1">
+								<h:graphicImage 
+									url="/resources/funcionalidadesIcons/#{node.value.modulo.nombre}/#{node.value.imagen}" />
+							</rich:toolTip>
+					</rich:treeNode>
+					
+					<rich:treeNode rendered="#{node.toString().equals('funcionalidad')}"
+						icon="/resources/funcionalidadesIcons/#{node.value.modulo.nombre}/#{node.value.imagen}"
+						iconLeaf="/resources/funcionalidadesIcons/#{node.value.modulo.nombre}/#{node.value.imagen}">
+							#{node.value.label}
+							<rich:toolTip 
+								followMouse="true" showDelay="600" style="padding: 1">
+								<h:graphicImage 
+									url="/resources/funcionalidadesIcons/#{node.value.modulo.nombre}/#{node.value.imagen}" />
+							</rich:toolTip>
+					</rich:treeNode>
+					
+				
+			</rich:tree>
+			</a:outputPanel>
+		</rich:panel>
+		</h:form>
+		
+		<a:form>
+	        <a:jsFunction name="updateNode" status="funcstatus" 
+	        			action="#{funcionalidadesYCategoriasEditController.updateNode()}"
+	        			reRender="functree">               
+	        </a:jsFunction>
+	    </a:form>
+		
+		<rich:modalPanel id="modulo_agregar_cat" 
+						onshow="document.getElementById('iframekaka').src = updateSrc(event.parameters.modulename)"
+						onhide="updateNode()">
+			<f:facet name="header">
+				<h:panelGroup id="modulo_agregar_cat_header">
+					<h:outputText value="Adicionar categoría" />
+				</h:panelGroup>
+			</f:facet>
+			<f:facet name="controls">
+				<h:graphicImage 
+					value="/resources/icons/default/acciones/cerrar.gif" 
+					style="cursor:pointer"
+					onclick="Richfaces.hideModalPanel('modulo_agregar_cat')" />
+			</f:facet>
+				<iframe id="iframekaka" width="200px" height="270px" 
+						style="border-width: 0px; margin-top: 0px"
+						src="" />
+		</rich:modalPanel>
+
+	</ui:define>
+
+
+</ui:composition>

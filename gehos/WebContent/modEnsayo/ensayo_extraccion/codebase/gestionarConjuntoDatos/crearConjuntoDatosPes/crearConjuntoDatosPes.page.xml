@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<page    xmlns               ="http://jboss.com/products/seam/pages"  
+         xmlns:xsi           ="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">  
+           
+  	<begin-conversation flush-mode="manual" join="true"/>    
+  	
+
+	 <action if="#{crearConjuntoDatosPes.inicioConversacion==false}" execute="#{crearConjuntoDatosPes.inicializarConjuntoDatos()}" />
+   	
+	
+	<navigation from-action="#{crearConjuntoDatosPes.insertarConjuntoDatos()}">	
+		<rule if-outcome="ok">
+			<end-conversation before-redirect="true"/>  		
+			<redirect view-id="/modEnsayo/ensayo_extraccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarConjuntoDatos/verDetallesConjuntoDatosPes/verDetallesConjuntoDatosPes.gehos">
+				<param name="idConjuntoDatos" value="#{crearConjuntoDatosPes.conjuntoDatos.id}" />				
+				<param name="from" value="crear" />
+			</redirect>
+		</rule>
+	</navigation>
+	<navigation from-action="cancelar">	
+		
+			<end-conversation before-redirect="true"/>  		
+			<redirect view-id="/modEnsayo/ensayo_extraccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarConjuntoDatos/buscarConjuntoDatos/buscarConjuntoDatos.gehos">
+			
+			
+			</redirect>
+		
+	</navigation>
+	
+	
+	
+	
+</page>

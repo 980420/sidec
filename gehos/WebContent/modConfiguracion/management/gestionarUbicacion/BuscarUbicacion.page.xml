@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<action execute="#{ubicacionBuscarControlador.begin()}" />
+
+	<param name="state" value="#{ubicacionBuscarControlador.state}" />
+	<param name="order" value="#{ubicacionBuscarControlador.order}" />
+	<param name="firstResult" value="#{ubicacionBuscarControlador.firstResult}" />
+	<param name="critB1" value="#{ubicacionBuscarControlador.identificador}" />
+	<param name="critB2" value="#{ubicacionBuscarControlador.entidad}" />
+	<param name="critB3" value="#{ubicacionBuscarControlador.tipoUbicacion}" />
+	<param name="searchMode" value="#{ubicacionBuscarControlador.searchMode}" />
+
+	<!-- go to create ubication -->
+	<navigation from-action="#{ubicacionCrearControlador.begin()}">
+		<redirect view-id="/modConfiguracion/management/gestionarUbicacion/CrearUbicacion.xhtml">
+			<param name="state" value="#{ubicacionBuscarControlador.state}" />
+			<param name="order" value="#{ubicacionBuscarControlador.order}" />
+			<param name="firstResult" value="#{ubicacionBuscarControlador.firstResult}" />
+			<param name="critB1" value="#{parameters.encodec(ubicacionBuscarControlador.identificador)}" />
+			<param name="critB2" value="#{parameters.encodec(ubicacionBuscarControlador.entidad)}" />
+			<param name="critB3" value="#{parameters.encodec(ubicacionBuscarControlador.tipoUbicacion)}" />
+			<param name="searchMode" value="#{ubicacionBuscarControlador.searchMode}" />
+		</redirect>
+	</navigation>
+
+	<!-- go to view details -->
+	<navigation from-action="#{ubicacionBuscarControlador.seleccionarVer()}" evaluate="#{ubicacionBuscarControlador.error}">
+		<rule if-outcome="0">
+		<redirect view-id="/modConfiguracion/management/gestionarUbicacion/VerDetallesUbicacion.gehos">
+			<param name="ubicacionId" value="#{ubicacionBuscarControlador.idElimimar}" />
+			<param name="state" value="#{ubicacionBuscarControlador.state}" />
+			<param name="order" value="#{ubicacionBuscarControlador.order}" />
+			<param name="firstResult" value="#{ubicacionBuscarControlador.firstResult}" />
+			<param name="critB1" value="#{parameters.encodec(ubicacionBuscarControlador.identificador)}" />
+			<param name="critB2" value="#{parameters.encodec(ubicacionBuscarControlador.entidad)}" />
+			<param name="critB3" value="#{parameters.encodec(ubicacionBuscarControlador.tipoUbicacion)}" />
+			<param name="searchMode" value="#{ubicacionBuscarControlador.searchMode}" />
+			<param name="from" value="listar" />
+		</redirect>
+		</rule>
+	</navigation>
+	
+	<!--go to modify -->
+	<navigation from-action="#{ubicacionBuscarControlador.seleccionarModificar()}" evaluate="#{ubicacionBuscarControlador.error}">
+		<rule if-outcome="0">
+		<redirect view-id="/modConfiguracion/management/gestionarUbicacion/ModificarUbicacion.gehos">
+			<param name="ubicacionId" value="#{ubicacionBuscarControlador.idElimimar}" />
+			<param name="state" value="#{ubicacionBuscarControlador.state}" />
+			<param name="order" value="#{ubicacionBuscarControlador.order}" />
+			<param name="firstResult" value="#{ubicacionBuscarControlador.firstResult}" />
+			<param name="critB1" value="#{parameters.encodec(ubicacionBuscarControlador.identificador)}" />
+			<param name="critB2" value="#{parameters.encodec(ubicacionBuscarControlador.entidad)}" />
+			<param name="critB3" value="#{parameters.encodec(ubicacionBuscarControlador.tipoUbicacion)}" />
+			<param name="searchMode" value="#{ubicacionBuscarControlador.searchMode}" />			
+		</redirect>
+		</rule>
+	</navigation>	
+</page>

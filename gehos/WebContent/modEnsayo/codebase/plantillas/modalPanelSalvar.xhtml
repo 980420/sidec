@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+<ui:composition>
+	<!-- Modal Panel para la confirmacion de adicionar, como parametros estan el id
+	 y el metodo de adicionar -->
+	<rich:modalPanel id="#{id}" width="350" height="85" resizeable="false">
+		<f:facet name="header">
+			<h:outputLabel value="#{messages.titulo}" />
+		</f:facet>
+
+		<f:facet name="controls">
+			<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+				style="cursor:pointer;">
+				<rich:componentControl operation="hide" event="onclick" for="#{id}" />
+			</h:graphicImage>
+		</f:facet>
+
+		<table cellpadding="0" cellspacing="0" border="0" align="center">
+			<tr>
+				<td rowspan="2"><h:graphicImage
+					value="/resources/icons/default/acciones/advertencia.png" /> <rich:spacer
+					width="8px" /></td>
+			</tr>
+			<tr>
+				<td><h:outputLabel value="#{messages.modInfo}" /></td>
+			</tr>
+
+			<tr>
+				<td colspan="2"><rich:spacer height="8px" /></td>
+			</tr>
+
+			<tr>
+				<td colspan="2" align="center"><a4j:commandButton
+					style="margin:0px" action="#{controlador.adicionar()}" value="#{messages.si}">
+					<rich:componentControl event="oncomplete" operation="hide"
+						for="#{id}" />
+				</a4j:commandButton> <rich:spacer width="8px" /> <a4j:commandButton style="margin:0px"
+					value="#{messages.no}">
+					<rich:componentControl operation="hide" event="onclick" for="#{id}" />
+				</a4j:commandButton></td>
+			</tr>
+		</table>
+
+	</rich:modalPanel>
+	<!-- Modal Panel para la confirmacion de adicionar -->
+</ui:composition>
+
+</html>

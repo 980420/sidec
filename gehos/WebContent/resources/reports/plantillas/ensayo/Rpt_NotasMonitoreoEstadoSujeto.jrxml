@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="0" rightMargin="2" topMargin="2" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<parameter name="P_TITULO" class="java.lang.String"/>
+	<parameter name="P_SUBTITULO" class="java.lang.String"/>
+	<parameter name="LOGO_URL" class="java.lang.String"/>
+	<parameter name="PAGINA" class="java.lang.String"/>
+	<parameter name="SEPARADOR" class="java.lang.String"/>
+	<parameter name="INF_TIPO_INSTITUCION" class="java.lang.String"/>
+	<parameter name="INF_NOMBRE_INSTITUCION" class="java.lang.String"/>
+	<parameter name="INF_SERVICIO" class="java.lang.String"/>
+	<parameter name="DATE_TODAY" class="java.lang.String"/>
+	<parameter name="CROSSTABHEADERCELLVALUER" class="java.lang.String"/>
+	<field name="rowBucketValue" class="java.lang.String"/>
+	<field name="columnBucketValue" class="java.lang.String"/>
+	<field name="measureValueMeasure" class="java.lang.Long"/>
+	<field name="columnHeaderValue" class="java.lang.String"/>
+	<background>
+		<band height="1" splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="150" splitType="Stretch">
+			<image isUsingCache="true">
+				<reportElement stretchType="RelativeToTallestObject" x="501" y="1" width="89" height="59"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO_URL}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="48" y="0" width="447" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Verdana" size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{INF_TIPO_INSTITUCION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="48" y="21" width="447" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Verdana" size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{INF_NOMBRE_INSTITUCION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="48" y="42" width="447" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Verdana" size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{INF_SERVICIO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="64" width="588" height="18"/>
+				<textElement>
+					<font fontName="Verdana" size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_TITULO}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line" x="18" y="146" width="550" height="1"/>
+			</line>
+			<textField isStretchWithOverflow="true">
+				<reportElement key="textField" x="2" y="84" width="588" height="38"/>
+				<textElement>
+					<font fontName="Verdana" size="11" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_SUBTITULO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="textField" x="237" y="124" width="349" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Verdana" size="12" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{DATE_TODAY}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="4" splitType="Stretch"/>
+	</columnHeader>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<rectangle>
+				<reportElement key="rectangle" x="2" y="5" width="555" height="25"/>
+			</rectangle>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="245" y="10" width="20" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Verdana" size="11"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="287" y="10" width="43" height="20"/>
+				<textElement>
+					<font fontName="Verdana" size="11"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="178" y="10" width="67" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Verdana" size="11"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{PAGINA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="265" y="10" width="22" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana" size="11"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{SEPARADOR}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="150" splitType="Stretch">
+			<crosstab>
+				<reportElement x="3" y="7" width="565" height="110"/>
+				<crosstabParameter name="CROSSTABHEADERCELLVALUE">
+					<parameterValueExpression><![CDATA[$P{CROSSTABHEADERCELLVALUER}]]></parameterValueExpression>
+				</crosstabParameter>
+				<crosstabHeaderCell>
+					<cellContents>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="70" height="60"/>
+							<textElement/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$P{CROSSTABHEADERCELLVALUE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabHeaderCell>
+				<rowGroup name="rowBucketValue" width="70" totalPosition="End">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{rowBucketValue}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="70" height="25"/>
+								<textElement/>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{rowBucketValue}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#BFE1FF">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="70" height="25"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[Total]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="columnHeaderValue" height="30">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{columnHeaderValue}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="30"/>
+								<textElement verticalAlignment="Middle"/>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{columnHeaderValue}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents/>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<columnGroup name="columnBucketValue" height="30">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{columnBucketValue}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="30"/>
+								<textElement verticalAlignment="Middle"/>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{columnBucketValue}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents/>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="measureValueMeasure" class="java.lang.Long" calculation="Count">
+					<measureExpression><![CDATA[$F{measureValueMeasure}]]></measureExpression>
+				</measure>
+				<crosstabCell width="50" height="25">
+					<cellContents>
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25"/>
+							<textElement/>
+							<textFieldExpression class="java.lang.Long"><![CDATA[$V{measureValueMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell height="25" rowTotalGroup="rowBucketValue">
+					<cellContents backcolor="#BFE1FF">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25"/>
+							<textElement/>
+							<textFieldExpression class="java.lang.Long"><![CDATA[$V{measureValueMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="50" columnTotalGroup="columnHeaderValue">
+					<cellContents backcolor="#005FB3">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" forecolor="#FFFFFF"/>
+							<textElement/>
+							<textFieldExpression class="java.lang.Long"><![CDATA[$V{measureValueMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="rowBucketValue" columnTotalGroup="columnHeaderValue">
+					<cellContents backcolor="#005FB3">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" forecolor="#FFFFFF"/>
+							<textElement/>
+							<textFieldExpression class="java.lang.Long"><![CDATA[$V{measureValueMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="50" columnTotalGroup="columnBucketValue">
+					<cellContents backcolor="#BFE1FF">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25"/>
+							<textElement/>
+							<textFieldExpression class="java.lang.Long"><![CDATA[$V{measureValueMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="rowBucketValue" columnTotalGroup="columnBucketValue">
+					<cellContents backcolor="#BFE1FF">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25"/>
+							<textElement/>
+							<textFieldExpression class="java.lang.Long"><![CDATA[$V{measureValueMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

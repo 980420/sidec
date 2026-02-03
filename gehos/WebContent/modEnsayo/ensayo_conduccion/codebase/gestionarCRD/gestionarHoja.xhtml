@@ -1,0 +1,1153 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<s:div>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript">setContentTitle("#{messages.msg_titulo_modCond}")</script>
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css"
+			rel="stylesheet" type="text/css" />
+		<link rel='stylesheet'
+			href='#{facesContext.externalContext.requestContextPath}/modEnsayo/ensayo_disenno/codebase/reglas/style/richfileupload.css'
+			type='text/css' />
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/toastr/toastr.min.css"
+			rel="stylesheet" type="text/css" />
+		<script
+			src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/reglas/vendor/jquery1.9.js"
+			type="text/javascript" />
+		<script
+			src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/toastr/toastr.min.js"
+			type="text/javascript" />
+		<script type="text/javascript" language="javascript"
+			src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/jquery-inputmask/jquery.inputmask.bundle.js" />
+		<script>
+			var $j = jQuery.noConflict(true);
+			$j(document).ready(function()
+			{   	   
+				applyDateMask();
+				installrules();
+			});	
+			function applyDateMask()
+			{
+				var allInputsLikeDate = $j(".likedate");
+				allInputsLikeDate.inputmask("y/[m]/[d]", { "placeholder": "*", greedy:false });	
+				allInputsLikeDate.attr("placeholder","aaaa/mm/dd");
+			}
+			function disableField(id,bool)
+			{
+				var el = jQuery('#'+id);
+				if(bool)
+				{	
+					el.attr('disabled','disabled');
+					el.parent().addClass("file-disabled");
+				}
+				else
+				{
+					el.parent().removeClass("file-disabled");
+				}
+			}
+			function cambiarStyle(id,size)
+	  		{
+		  		var size2=''+size+'px';
+		  		var n=new String(id);
+		  		var idN=n.replace('combobox','list');
+		  		
+		  		var com=document.getElementById(idN);
+		  		var parent=com.parentNode;
+		  		var gran=parent.parentNode;
+		  		parent.style.width=size2;
+		  		gran.style.width=size2;
+		  		com.style.width=size2;
+	  		}
+			toastr.options = {
+			  "closeButton": true,
+			  "debug": false,
+			  "newestOnTop": true,
+			  "progressBar": true,
+			  "positionClass": "toast-bottom-right",
+			  "preventDuplicates": false,
+			  "onclick": null,
+			  "showDuration": "300",
+			  "hideDuration": "100000",
+			  "timeOut": "50000",
+			  "extendedTimeOut": "1000",
+			  "showEasing": "swing",
+			  "hideEasing": "linear",
+			  "showMethod": "fadeIn",
+			  "hideMethod": "fadeOut"
+			}
+			/*jQuery(document).ready(function()
+			{
+				//installrules();
+			});*/		
+			function onSave(data)
+			{	
+				data = JSON.parse(data);
+				data.each(function(v,i){
+					var func = new Function(v);
+					func();
+				});
+			}		
+			function uiNotify(message, type)
+			{
+				//TODO call the method in dinamically way to avoid code repetition
+				if(type===0)
+					toastr.error(message);	
+				else
+					toastr.warning(message);		
+			}
+			function removeFile(el)
+			{
+				var jEl = $j(el);
+				var fileDetailsEl = jEl.parent().parent();
+				updateFileData(false,fileDetailsEl);
+			}
+			function pickFileData(fileInput)
+			{
+				var inputHidden = jQuery(fileInput).parent().parent().prev();//jQuery("#"+hidden);
+				var strin;
+				var fileDetailsEl = inputHidden.siblings('.file-holder').find('div.file-details');
+				if(fileInput.files.length>0)
+				{
+					var f = fileInput.files[0];
+					var json = {'name':f.name, 'size':f.size, 'type':f.type}
+					//alert(json);
+					strin = JSON.stringify(json);						
+					updateFileData(true, fileDetailsEl, json);										
+				}
+				else
+				{	
+					strin = "";
+					updateFileData(false, fileDetailsEl, json);
+				}
+				
+				inputHidden.val(strin);	
+				return true;
+			}
+			function updateFileData(show,fileDetailsEl,data)
+			{
+				if(show===true)
+				{
+					var fileNameEl= fileDetailsEl.children('.file-name');
+					var fileSizeEl= fileDetailsEl.children('.file-size');
+					fileNameEl[0].textContent = data.name;
+					fileSizeEl[0].textContent = convertBytesToHighest(data.size);
+					fileDetailsEl.css('display','inline-block');
+				}
+				else
+				{
+					fileDetailsEl.css('display','none');
+				}
+			}
+			function convertBytesToHighest(bytes)
+			{
+				var unit = "B";
+				var divisor = 1024;
+				if(bytes>divisor)
+				{	
+					bytes = bytes/divisor;
+					unit = "KB";
+				}
+				if(bytes>divisor)
+				{	
+					bytes = bytes/divisor;
+					unit = "MB";
+				}
+				if(bytes>divisor)
+				{	
+					bytes = bytes/divisor;
+					unit = "GB";
+				}
+				return Math.round(bytes * 10)/10+unit;
+					
+			}
+			function processupload(event)
+			{
+				var div = event.target;
+				var fileUploader = FileUploadEntry.getComponent(div);
+				var entries = fileUploader.entries;
+				if(entries.length==1)
+				{
+					var entry = entries[0];
+					entry.uploadObject.deleteFrame();
+					entry.state==FileUploadEntry.READY
+					entry.uploadObject.upload();
+				}
+				else if(entries.length>1)
+				{
+					for(var i=0; i &lt; entries.length-1;i++)
+					{
+						//var entry = FileUploadEntry.getComponent(entries[0]); 
+						var entry = entries[i];
+						entry.uploadObject.clear(entry);
+						entry.uploadObject.deleteFrame();
+					}
+					var entry = entries[entries.length-1];
+					entry.state==FileUploadEntry.READY
+					entry.uploadObject.deleteFrame();
+					entry.uploadObject.upload();
+				}					
+			}
+			var curDtN = new Date();
+			 var calDtN=null;
+			 function disablementFunction(day){
+				 if(calDtN == null){
+					 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+							return true; 
+						else 
+							return false; 
+				 }
+				 else {
+					 if (calDtN.getTime() - day.date.getTime() &#62;= 0 ) 
+							return true; 
+						else 
+							return false;
+				 }					 
+			 }
+
+			 function disabledClassesProv(day){
+				 if(calDtN == null){
+					 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+							return ''; 
+						else 
+							return 'noavailable'; 
+				 }
+				 else {
+					 if (calDtN.getTime() - day.date.getTime() &#62;= 0) 
+							return ''; 
+						else 
+							return 'noavailable';
+				 }				
+			 }
+		</script>
+		<s:div id="loadingdiv" style="width: 100%; display:none;">
+			<h:graphicImage
+				url="/resources/icons/default/acciones/loading_small.gif" />
+			<span style="vertical-align: super;">Instalando reglas</span>
+		</s:div>
+		<h:form id="idForm" enctype="multipart/form-data">
+			<a4j:jsFunction id="installrules" name="installrules"
+				action="#{ruleManager.installRules()}" status="installRulesStatus"
+				ajaxSingle="true" reRender="opForm" />
+			<a4j:jsFunction name="installRafa" ajaxSingle="true"
+				action="#{notificacion.limpiar()}" limitToList="true" />
+			<a4j:jsFunction id="pullJsCode" name="pullJsCode" ajaxSingle="true"
+				data="#{ruleManager.clientData}" oncomplete="onSave(data)" />
+			<a4j:status id="installRulesStatus" forceId="true"
+				onstart="javascript:document.getElementById('loadingdiv').style.display = ''; #{rich:component('bloqueo')}.show()"
+				onstop="javascript:document.getElementById('loadingdiv').style.display = 'none'; #{rich:component('bloqueo')}.hide()" />
+			<rich:modalPanel id="bloqueo" width="0" height="0" top="0" left="0"
+				style="opacity: -10000" shadowOpacity="-10000" />
+			<a4j:outputPanel id="tb">
+				<s:validateAll>
+					<a4j:outputPanel ajaxRendered="true" id="errorOutputPanel">
+						<s:div style="height:35px;"
+							rendered="#{facesMessages.getCurrentMessagesForControl('idForm').size() > 0 }">
+							<div class="custom-error">
+								<rich:message for="idForm"></rich:message>
+							</div>
+						</s:div>
+					</a4j:outputPanel>
+					<rich:panel>
+						<f:facet name="header">
+							<h:outputText value="#{messages.msg_datosHoja_modCond}" />
+						</f:facet>
+						<table width="100%" border="0" cellpadding="0" cellspacing="0">
+							<tr class="filSepGranRA">
+								<td rowspan="15" class="espacio_corto_h" />
+								<td class="colSepPeq"><h:outputText
+										value="#{messages.msg_nombreHoja_modCond}:"
+										style="margin:0px; padding:0px;" /></td>
+								<td class="colSepGran"><h:outputText styleClass="dataText"
+										value="#{gestionarHoja.hoja.hojaCrd.nombreHoja}"
+										style="margin:0px; padding:0px;" /> <h:graphicImage
+										title="#{gestionarHoja.hoja.estadoHojaCrd.nombre}" height="16"
+										style="position: relative; vertical-align: middle;"
+										value="#{gestionarHoja.estadoIcon(gestionarHoja.hoja.estadoHojaCrd)}" />
+								</td>
+								<td class="colSepPeq"><h:outputText
+										value="#{messages.identificadorSujeto}:"
+										style="margin:0px; padding:0px;" /></td>
+								<td class="colSepGran"><h:outputText styleClass="dataText"
+										value="#{gestionarHoja.hoja.momentoSeguimientoEspecifico.sujeto.codigoPaciente}"
+										style="margin:0px; padding:0px;" /></td>
+								<td class="colSepPeq"><h:outputText
+										value="#{messages.notasDiscrepancia}:"
+										style="margin:0px; padding:0px;" /></td>
+								<td class="colSepGran"><h:outputText style="color:red;"
+										value="#{gestionarHoja.cantidadNotasDiscrepancias().get(0)} Nuevas," />
+									<h:outputText style="color:gray; margin-left:5px;"
+										value="#{gestionarHoja.cantidadNotasDiscrepancias().get(1)} Actualizadas," />
+									<h:outputText style="color:green; margin-left:5px;"
+										value="#{gestionarHoja.cantidadNotasDiscrepancias().get(2)} Resueltas," />
+									<h:outputText style="font-weight: bold; margin-left:5px;"
+										value="#{gestionarHoja.cantidadNotasDiscrepancias().get(3)} Cerradas" />
+								</td>
+							</tr>
+							<tr class="filSepGranRA">
+								<td class="colSepPeq"><h:outputText
+										value="#{messages.momentoSeguimiento}:"
+										style="margin:0px; padding:0px;" /></td>
+								<td class="colSepGran"><h:outputText styleClass="dataText"
+										value="#{gestionarHoja.hoja.momentoSeguimientoEspecifico.momentoSeguimientoGeneral.nombre}"
+										style="margin:0px; padding:0px;" /></td>
+								<td class="colSepPeq"><h:outputText
+										value="#{messages.nombreEntidad}:"
+										style="margin:0px; padding:0px;" /></td>
+								<td class="colSepGran"><h:outputText styleClass="dataText"
+										value="#{gestionarHoja.hoja.momentoSeguimientoEspecifico.sujeto.entidad.nombre}"
+										style="margin:0px; padding:0px;" /></td>
+							</tr>
+						</table>
+						<a4j:outputPanel id="op_monitoring"
+							rendered="#{gestionarHoja.monitor}">
+							<table>
+								<tr>
+									<td><s:div
+											rendered="#{gestionarHoja.hoja.estadoHojaCrd.codigo == 3 and !gestionarHoja.monitoringCompleted}"
+											style="padding-top: 13px;">
+											<table>
+												<tr>
+													<td style="margin-left: 6px;" />
+													<td><h:outputText
+															value="#{messages.iniciarMonitoreo}:"
+															styleClass="normalText" /></td>
+													<td style="margin-left: 6px;" />
+													<td><s:link id="inicMon"
+															action="#{gestionarHoja.iniciarMonitoreo()}"
+															style="border: 0px; cursor:pointer;"
+															title="#{messages.iniciarMonitoreo}"
+															rendered="#{gestionarHoja.monitoringNotStarted}">
+															<h:graphicImage style="border:0px; cursor: pointer;"
+																title="#{messages.iniciarMonitoreo}"
+																url="/resources/modAdmision/img/unchecked.PNG" />
+														</s:link> <h:graphicImage style="border:0px; opacity: 0.5;"
+															url="/resources/modAdmision/img/checked.PNG"
+															rendered="#{!gestionarHoja.monitoringNotStarted}" /></td>
+												</tr>
+											</table>
+										</s:div></td>
+									<rich:spacer width="2" />
+									<td><s:div
+											rendered="#{(gestionarHoja.estanResueltasOCerradasNotas() and gestionarHoja.hoja.estadoHojaCrd.codigo == 3)}"
+											style="padding-top: 13px;">
+											<table>
+												<tr>
+													<td style="margin-left: 6px;" />
+													<td><h:outputText
+															rendered="#{!gestionarHoja.monitoringCompleted}"
+															value="#{messages.completarMonitoreo}:"
+															styleClass="normalText" /> <h:outputText
+															rendered="#{gestionarHoja.monitoringCompleted}"
+															value="#{messages.descompletar}:" styleClass="normalText" />
+													</td>
+													<td style="margin-left: 6px;" />
+													<td><a4j:commandLink id="completarLink"
+															action="#{gestionarHoja.desdeCompletar()}"
+															oncomplete="Richfaces.showModalPanel('mpAdvertenciaCompletarMon')"
+															rendered="#{!gestionarHoja.monitoringCompleted}"
+															title="#{messages.completarMonitoreo}">
+															<h:graphicImage style="border:0px; cursor: pointer;"
+																title="#{messages.completarMonitoreo}"
+																url="/resources/modAdmision/img/unchecked.PNG" />
+														</a4j:commandLink></td>
+													<td><s:link id="descompletarLink"
+															action="#{gestionarHoja.SeleccionarInstanciaHoja(gestionarHoja.hoja)}"
+															style="border: 0px; cursor:pointer;"
+															rendered="#{gestionarHoja.monitoringCompleted}"
+															title="#{messages.descompletar}">
+															<h:graphicImage style="border:0px; cursor: pointer;"
+																title="#{messages.descompletar}"
+																url="/resources/modAdmision/img/checked.PNG" />
+														</s:link></td>
+												</tr>
+											</table>
+										</s:div></td>
+								</tr>
+							</table>
+						</a4j:outputPanel>
+						<rich:panel style="margin-left:6px;margin-right:6px">
+							<f:facet name="header">
+								<div>#{messages.msg_seciones_modCond}</div>
+							</f:facet>
+							<div class="espacio_corto_h" width="1px" />
+							<a4j:status id="statusGeneral"
+								onstart="#{rich:component('mpBloqueo')}.show()"
+								onstop="#{rich:component('mpBloqueo')}.hide()">
+								<f:facet name="start">
+									<s:div>
+										<div align="center" style="width: 100%; height: 100%;">
+											<table border="0" cellpadding="0" cellspacing="0">
+												<tr>
+													<td style="padding-right: 4px;"><h:graphicImage
+															value="/resources/icons/default/acciones/loading_small.gif" />
+													</td>
+													<td><h:outputText value="#{messages.procesando}"
+															styleClass="normalText" /></td>
+												</tr>
+											</table>
+										</div>
+									</s:div>
+								</f:facet>
+							</a4j:status>
+							<a4j:outputPanel id="opForm">
+								<rich:tabPanel switchType="client" width="100%"
+									selectedTab="#{gestionarHoja.selectedTab}">
+									<c:forEach items="#{gestionarHoja.secciones}" var="seccion">
+										<rich:tab id="id_#{seccion.id}" switchType="client">
+											<a4j:support event="ontabenter"
+												action="#{gestionarHoja.cambiarTab(seccion.id)}" />
+											<f:facet name="label">
+												<s:div>
+													<h:outputText value="#{seccion.tituloSeccion}" />
+													<a4j:outputPanel ajaxRendered="true">
+														<h:outputText value="*" style="color:red;"
+															styleClass="errorLabel"
+															rendered="#{gestionarHoja.seccioRequerida(seccion.id)}" />
+													</a4j:outputPanel>
+												</s:div>
+											</f:facet>
+											<table border="0" cellpadding="0" cellspacing="0"
+												width="100%">
+												<tr>
+													<td width="100%"><rich:panel>
+															<f:facet name="header">
+																<h:outputText value="#{messages.lblPanelVariable}" />
+															</f:facet>
+															<s:div
+																rendered="#{empty gestionarHoja.loadVariables(seccion.id)}">
+																<table border="0" cellpadding="0" cellspacing="0"
+																	width="100%">
+																	<tr>
+																		<td align="left"><h:outputText
+																				value="#{messages.msg_noInformacion_ens}" /></td>
+																	</tr>
+																</table>
+															</s:div>
+															<s:div
+																rendered="#{not empty gestionarHoja.loadVariables(seccion.id)}">
+																<table border="0" cellpadding="0" cellspacing="0"
+																	width="100%">
+																	<tr>
+																		<c:set var="cuenta" value="${0}" />
+																		<c:forEach
+																			items="#{gestionarHoja.loadVariables(seccion.id)}"
+																			var="v" varStatus="cont">
+																			<c:set var="columna" value="${v.numeroColumna}" />
+																			<c:if
+																				test="#{cuenta != 0 and (columna == 1 || columna == null)}">
+																				<tr />
+																			</c:if>
+																			<td><c:set var="varParentOP"
+																					value="parentopFor#{idUtil.For(v)}" /> <c:set
+																					var="varChildOP" value="opFor#{idUtil.For(v)}" />
+																				<a4j:outputPanel id="#{varParentOP}">
+																					<a4j:outputPanel id="opFor#{idUtil.For(v)}">
+																						<c:set var="varDisabled"
+																							value="#{ruleManager.giveVarState(v, 'disabled')}" />
+																						<c:set var="varRendered"
+																							value="#{ruleManager.giveVarState(v, 'rendered')}" />
+
+
+
+																						<table>
+																							<tr>
+																								<td><h:outputText
+																										rendered="#{not empty v.encabezadoVariable}"
+																										value="#{v.encabezadoVariable}" /></td>
+																								<td></td>
+																								<td></td>
+																								<td></td>
+																								<td></td>
+																							</tr>
+																							<tr>
+																								<td><h:outputText
+																										rendered="#{not empty v.subencabezadoVariable}"
+																										value="#{v.subencabezadoVariable}" /></td>
+																								<td></td>
+																								<td></td>
+																								<td></td>
+																								<td></td>
+																							</tr>
+																							<tr>
+																								<td>
+																									<table>
+
+																										<tr>
+																											<td><h:outputText
+																													value="#{v.numeroPregunta}"
+																													style="margin-left:8px;margin-right:10px;" />
+																												<h:outputText
+																													rendered="#{not empty v.textoIzquierdaVariable}"
+																													value="#{v.textoIzquierdaVariable}"
+																													style="margin-right:4px;" /> <rich:message
+																													for="#{idUtil.For(v)}" showDetail="false"
+																													tooltip="true" style="color:red;">
+																													<f:facet name="errorMarker">
+																														<h:outputText value="*"
+																															title="#{facesMessages.getCurrentMessagesForControl(idUtil.For(v)).get(0).getDetail()}" />
+																													</f:facet>
+																												</rich:message> 
+																												<!--Mostrar asteriscos de variables obligatorias-->
+																												<a4j:outputPanel ajaxRendered="true">
+																													<h:outputText style="color:red;"
+																														rendered="#{v.requerido and facesMessages.getCurrentMessagesForControl(idUtil.For(v)).size()==0}"
+																														value="*" title="Valor requerido" />
+																												</a4j:outputPanel></td>
+																											<td><c:if
+																													test="#{v.presentacionFormulario.nombre == 'text' and v.tipoDato.codigo == 'ST'}">
+																													<h:inputText id="#{idUtil.For(v)}"
+																														value="#{gestionarHoja.mapWD.get(seccion.id).data.get(v.id).value}"
+																														required="#{v.requerido and !gestionarHoja.monitor and (!empty param['idForm:aceptarr'])}"
+																														validator="#{validations_sujeto.text2}"
+																														disabled="#{varDisabled or gestionarHoja.monitor or (gestionarHoja.hoja.estadoMonitoreo.codigo == 3) or (gestionarHoja.hoja.estadoHojaCrd.codigo == 4)}"
+																														rendered="#{varRendered}" />
+																												</c:if> <c:if
+																													test="#{v.presentacionFormulario.nombre == 'text' and v.tipoDato.codigo == 'INT'}">
+																													<h:inputText id="#{idUtil.For(v)}"
+																														value="#{gestionarHoja.mapWD.get(seccion.id).data.get(v.id).value}"
+																														required="#{v.requerido and !gestionarHoja.monitor and (!empty param['idForm:aceptarr'])}"
+																														validator="#{validations_sujeto.number20Cifras}"
+																														disabled="#{varDisabled or gestionarHoja.monitor or (gestionarHoja.hoja.estadoMonitoreo.codigo == 3) or (gestionarHoja.hoja.estadoHojaCrd.codigo == 4)}"
+																														rendered="#{varRendered}" />
+																												</c:if> <c:if
+																													test="#{v.presentacionFormulario.nombre == 'text' and v.tipoDato.codigo == 'REAL'}">
+																													<h:inputText id="#{idUtil.For(v)}"
+																														value="#{gestionarHoja.mapWD.get(seccion.id).data.get(v.id).value}"
+																														required="#{v.requerido and !gestionarHoja.monitor and (!empty param['idForm:aceptarr'])}"
+																														validator="#{validations_sujeto.validarDouble}"
+																														disabled="#{varDisabled or gestionarHoja.monitor or (gestionarHoja.hoja.estadoMonitoreo.codigo == 3) or (gestionarHoja.hoja.estadoHojaCrd.codigo == 4)}"
+																														rendered="#{varRendered}" />
+																												</c:if> <c:if
+																													test="#{(v.presentacionFormulario.nombre == 'checkbox' or v.presentacionFormulario.nombre == 'multi-select') and v.tipoDato.codigo == 'NOM'}">
+																													<h:selectManyCheckbox
+																														layout="#{v.ubicacionRespuesta == 'HORIZONTAL' ? 'lineDirection' : 'pageDirection'}"
+																														required="#{variable.requerido and !gestionarHoja.monitor and (!empty param['idForm:aceptarr'])}"
+																														id="#{idUtil.For(v)}"
+																														value="#{gestionarHoja.mapWD.get(seccion.id).data.get(v.id).values}"
+																														disabled="#{varDisabled or gestionarHoja.monitor or (gestionarHoja.hoja.estadoMonitoreo.codigo == 3) or (gestionarHoja.hoja.estadoHojaCrd.codigo == 4)}"
+																														rendered="#{varRendered}">
+																														<f:selectItems
+																															value="#{gestionarHoja.valoresRadio(v.nomenclador.id)}" />
+																													</h:selectManyCheckbox>
+																												</c:if> <c:if
+																													test="#{v.presentacionFormulario.nombre == 'checkbox' and v.tipoDato.codigo == 'BL'}">
+																													<h:selectBooleanCheckbox
+																														required="#{v.requerido and !gestionarHoja.monitor and (!empty param['idForm:aceptarr'])}"
+																														id="#{idUtil.For(v)}"
+																														value="#{gestionarHoja.mapWD.get(seccion.id).data.get(v.id).value}"
+																														disabled="#{varDisabled or gestionarHoja.monitor or (gestionarHoja.hoja.estadoMonitoreo.codigo == 3) or (gestionarHoja.hoja.estadoHojaCrd.codigo == 4)}"
+																														rendered="#{varRendered}" />
+																												</c:if> <c:if
+																													test="#{v.presentacionFormulario.nombre == 'file'}">
+																													<a4j:jsFunction name="js#{idUtil.For(v)}"
+																														reRender="#{ruleManager.executeForFile(v)}"
+																														action="someac" ajaxSingle="true" />
+																													<c:set var="fileVarWrap"
+																														value="#{ruleManager.wrapperForFile(v)}" />
+																													<s:div
+																														rendered="#{gestionarHoja.mapWD.get(seccion.id).data.get(v.id).fileName == null or empty gestionarHoja.mapWD.get(seccion.id).data.get(v.id).fileName}">
+																														<rich:fileUpload
+																															required="#{v.requerido and !gestionarHoja.monitor and (!empty param['idForm:aceptarr'])}"
+																															fileUploadListener="#{ruleFileUpload.listener}"
+																															id="#{idUtil.For(v)}"
+																															maxFilesQuantity="100"
+																															immediateUpload="true" ajaxSingle="true"
+																															listHeight="63px" listWidth="292px"
+																															acceptedTypes="*"
+																															disabled="#{varDisabled or gestionarHoja.monitor or (gestionarHoja.hoja.estadoMonitoreo.codigo == 3) or (gestionarHoja.hoja.estadoHojaCrd.codigo == 4)}"
+																															rendered="#{varRendered}">
+																															<a4j:support event="onuploadcomplete"
+																																ajaxSingle="true" limitToList="true"
+																																oncomplete="js#{idUtil.For(v)}();"
+																																reRender="#{varParentOP}" />
+																														</rich:fileUpload>
+																													</s:div>
+																													<s:div
+																														rendered="#{gestionarHoja.mapWD.get(seccion.id).data.get(v.id).fileName != null and not empty gestionarHoja.mapWD.get(seccion.id).data.get(v.id).fileName}">
+																														<div class="file-details">
+																															<div class="file-name">#{gestionarHoja.mapWD.get(seccion.id).data.get(v.id).cleanFileName()}</div>
+																															<span class="file-size">#{gestionarHoja.mapWD.get(seccion.id).data.get(v.id).fileSizeString}</span>
+																															<span> <a4j:commandLink
+																																	ajaxSingle="true"
+																																	action="#{gestionarHoja.clearSelectedFile(v)}"
+																																	reRender="#{varParentOP}, aceptarr"
+																																	limitToList="true"
+																																	rendered="#{!gestionarHoja.monitor and (gestionarHoja.hoja.estadoMonitoreo.codigo != 3) and (gestionarHoja.hoja.estadoHojaCrd.codigo != 4)}">
+																																	<h:graphicImage
+																																		title="#{messages.eliminar}"
+																																		style="border: 0px; cursor:pointer;"
+																																		value="/resources/modEnsayo/img/iconos/remove-cross.png"
+																																		styleClass="remove-file" />
+																																</a4j:commandLink> <h:graphicImage
+																																	title="#{messages.eliminar}"
+																																	style="border: 0px; opacity:0.5;"
+																																	value="/resources/modEnsayo/img/iconos/remove-cross.png"
+																																	styleClass="remove-file"
+																																	rendered="#{gestionarHoja.monitor or (gestionarHoja.hoja.estadoMonitoreo.codigo == 3) or (gestionarHoja.hoja.estadoHojaCrd.codigo == 4)}" />
+																															</span>
+																														</div>
+																													</s:div>
+																													<h:inputHidden id="fu_#{idUtil.For(v)}" />
+																												</c:if> <c:if
+																													test="#{v.presentacionFormulario.nombre == 'textarea'}">
+																													<h:inputTextarea
+																														required="#{v.requerido and !gestionarHoja.monitor and (!empty param['idForm:aceptarr'])}"
+																														value="#{gestionarHoja.mapWD.get(seccion.id).data.get(v.id).value}"
+																														id="#{idUtil.For(v)}"
+																														validator="#{validations_sujeto.textnumber250}"
+																														disabled="#{varDisabled or gestionarHoja.monitor or (gestionarHoja.hoja.estadoMonitoreo.codigo == 3) or (gestionarHoja.hoja.estadoHojaCrd.codigo == 4)}"
+																														rendered="#{varRendered}" />
+																												</c:if> <c:if
+																													test="#{v.presentacionFormulario.nombre == 'radio' and v.tipoDato.codigo == 'NOM'}">
+																													<h:selectOneRadio
+																														required="#{v.requerido and !gestionarHoja.monitor and (!empty param['idForm:aceptarr'])}"
+																														layout="#{v.ubicacionRespuesta == 'HORIZONTAL' ? 'lineDirection' : 'pageDirection'}"
+																														id="#{idUtil.For(v)}"
+																														disabled="#{varDisabled or gestionarHoja.monitor or (gestionarHoja.hoja.estadoMonitoreo.codigo == 3) or (gestionarHoja.hoja.estadoHojaCrd.codigo == 4)}"
+																														rendered="#{varRendered}"
+																														value="#{gestionarHoja.mapWD.get(seccion.id).data.get(v.id).value}">
+																														<f:selectItems
+																															value="#{gestionarHoja.valoresRadio(v.nomenclador.id)}" />
+																													</h:selectOneRadio>
+																												</c:if> <c:if
+																													test="#{v.presentacionFormulario.nombre == 'single-select' and v.tipoDato.codigo == 'NOM'}">
+																													<rich:comboBox
+																														required="#{!varDisabled and !gestionarHoja.monitor and v.requerido and (!empty param['idForm:aceptarr'])}"
+																														defaultLabel="#{messages.msg_seleccione_ensCond}"
+																														id="#{idUtil.For(v)}"
+																														value="#{gestionarHoja.mapWD.get(seccion.id).data.get(v.id).value}"
+																														onclick="cambiarStyle(this.id,#{gestionarHoja.sizeMaxString(gestionarHoja.valores(v.nomenclador.id))})"
+																														suggestionValues="#{gestionarHoja.valores(v.nomenclador.id)}"
+																														enableManualInput="false"
+																														disabled="#{varDisabled or ((v.descripcionVariable == 'Resultados Pesquisaje' or v.descripcionVariable == 'Grupo de sujetos') and !gestionarHoja.monitor and gestionarHoja.hoja.momentoSeguimientoEspecifico.sujeto.estadoInclusion.codigo == 4) or gestionarHoja.monitor or (gestionarHoja.hoja.estadoMonitoreo.codigo == 3) or (gestionarHoja.hoja.estadoHojaCrd.codigo == 4)}"
+																														rendered="#{varRendered}" />
+																												</c:if> <c:if
+																													test="#{(v.presentacionFormulario.nombre == 'text' and v.tipoDato.codigo == 'DATE')}">
+																													<h:inputText id="#{idUtil.For(v)}"
+																														disabled="#{varDisabled or gestionarHoja.monitor or (gestionarHoja.hoja.estadoMonitoreo.codigo == 3) or (gestionarHoja.hoja.estadoHojaCrd.codigo == 4)}"
+																														rendered="#{varRendered}"			
+																														value="#{gestionarHoja.mapWD.get(seccion.id).data.get(v.id).value}"
+																														required="#{v.requerido and !gestionarHoja.monitor and (!empty param['idForm:aceptarr'])}"
+																														styleClass="likedate" />
+																													<script>
+																														applyDateMask();
+																													</script>
+																												</c:if> <c:if
+																													test="#{v.presentacionFormulario.nombre == 'calendar' and v.tipoDato.codigo == 'DATE'}">
+																													<rich:calendar id="#{idUtil.For(v)}"
+																														disabled="#{varDisabled or (v.descripcionVariable == (messages.fechaInclusion) and gestionarHoja.hoja.momentoSeguimientoEspecifico.sujeto.cronogramaEspecifico) or gestionarHoja.monitor or (gestionarHoja.hoja.estadoMonitoreo.codigo == 3) or (gestionarHoja.hoja.estadoHojaCrd.codigo == 4)}"
+																														rendered="#{varRendered}"
+																														value="#{gestionarHoja.mapWD.get(seccion.id).data.get(v.id).value}"
+																														required="#{!varDisabled and !gestionarHoja.monitor and v.requerido and (!empty param['idForm:aceptarr'])}"
+																														enableManualInput="false"																																																									
+																														isDayEnabled='disablementFunction'
+																														dayStyleClass='disabledClassesProv'
+																														datePattern="#{messages.lbl_patronFecha_modConfig}"
+																														requiredMessage="#{messages.msg_requerido_ens}" />
+																												</c:if> <c:set value="${cuenta + 1}" var="cuenta" />
+																											</td>
+																											<td><h:outputText
+																													rendered="#{not empty v.unidadesVariable}"
+																													value="#{v.unidadesVariable}"
+																													style="margin-left:8px;" /></td>
+																											<td><h:outputText
+																													rendered="#{not empty v.textoDerechaVariable}"
+																													value="#{v.textoDerechaVariable}"
+																													style="margin-left:8px;" /></td>
+
+
+																											<td>
+																												<table border="0" cellpadding="0"
+																													cellspacing="0">
+																													<tr>
+																														<td><a4j:commandLink
+																																action="#{crearNota.assignValuesSite(gestionarHoja.mapWD.get(seccion.id).data.get(v.id).section.id, gestionarHoja.mapWD.get(seccion.id).data.get(v.id).variable.id)}"
+																																rendered="#{(gestionarHoja.rolLogueado.getCodigo() == 'ecCord' or gestionarHoja.rolLogueado.getCodigo() == 'ecInv') and (!gestionarHoja.mapWD.get(seccion.id).data.get(v.id).hasNoteSite()) and ((gestionarHoja.mapWD.get(seccion.id).data.get(v.id).variableData == null) or ((gestionarHoja.mapWD.get(seccion.id).data.get(v.id).variableData != null and gestionarHoja.longitud(gestionarHoja.mapWD.get(seccion.id).data.get(v.id).variableData.id) == 19))) and gestionarHoja.hoja.estadoMonitoreo.codigo != 3}"
+																																title="#{messages.crearNotaSitio}"
+																																status="statusGeneral"
+																																ignoreDupResponses="true">
+																																<h:graphicImage width="14px"
+																																	height="14px"
+																																	value="/resources/funcionalidadesIcons/ensayo/crearNotaSitio.gif"
+																																	style="border:0;" />
+																															</a4j:commandLink> <a4j:commandLink
+																																action="#{verNotaSitio.assignValues(gestionarHoja.mapWD.get(seccion.id).data.get(v.id).section.id, gestionarHoja.mapWD.get(seccion.id).data.get(v.id).variable.id)}"
+																																rendered="#{(gestionarHoja.rolLogueado.getCodigo() == 'ecCord' or gestionarHoja.rolLogueado.getCodigo() == 'ecInv' or gestionarHoja.monitor) and (gestionarHoja.mapWD.get(seccion.id).data.get(v.id).hasNoteSite())}"
+																																title="#{messages.verNotaSitio}"
+																																status="statusGeneral"
+																																ignoreDupResponses="true">
+																																<h:graphicImage width="14px"
+																																	height="14px"
+																																	value="/resources/funcionalidadesIcons/ensayo/adicionar_nota_sitio1.gif"
+																																	style="border:0;" />
+																															</a4j:commandLink></td>
+																														<td><a4j:commandLink
+																																action="#{crearNota.assignValuesMonitoring(gestionarHoja.mapWD.get(seccion.id).data.get(v.id).section.id, gestionarHoja.mapWD.get(seccion.id).data.get(v.id).variable.id)}"
+																																rendered="#{gestionarHoja.monitor and (!gestionarHoja.mapWD.get(seccion.id).data.get(v.id).hasNoteMonitoring()) and ((gestionarHoja.mapWD.get(seccion.id).data.get(v.id).variableData == null) or ((gestionarHoja.mapWD.get(seccion.id).data.get(v.id).variableData != null and gestionarHoja.longitud(gestionarHoja.mapWD.get(seccion.id).data.get(v.id).variableData.id) == 19))) and gestionarHoja.hoja.estadoHojaCrd.id == 3 and !gestionarHoja.monitoringCompleted}"
+																																title="#{messages.crearNotaMonitoreo}"
+																																status="statusGeneral"
+																																ignoreDupResponses="true">
+																																<h:graphicImage width="14px"
+																																	height="14px"
+																																	value="/resources/funcionalidadesIcons/ensayo/crear.png"
+																																	style="border:0;" />
+																															</a4j:commandLink> <a4j:commandLink
+																																action="#{verNotaMonitoreo.assignValues(gestionarHoja.mapWD.get(seccion.id).data.get(v.id).section.id, gestionarHoja.mapWD.get(seccion.id).data.get(v.id).variable.id)}"
+																																rendered="#{(gestionarHoja.rolLogueado.getCodigo() == 'ecCord' or gestionarHoja.rolLogueado.getCodigo() == 'ecInv' or gestionarHoja.monitor) and (gestionarHoja.mapWD.get(seccion.id).data.get(v.id).hasNoteMonitoring())}"
+																																title="#{messages.notaMonitoreo}"
+																																status="statusGeneral"
+																																ignoreDupResponses="true">
+																																<h:graphicImage
+																																	rendered="#{gestionarHoja.mapWD.get(seccion.id).data.get(v.id).noteMonitoring.estadoNota.codigo == 1}"
+																																	width="14px" height="14px"
+																																	value="/resources/funcionalidadesIcons/ensayo/nueva.png"
+																																	style="border:0;" />
+																																<h:graphicImage
+																																	rendered="#{gestionarHoja.mapWD.get(seccion.id).data.get(v.id).noteMonitoring.estadoNota.codigo == 2}"
+																																	width="14px" height="14px"
+																																	value="/resources/funcionalidadesIcons/ensayo/actualizada.png"
+																																	style="border:0;" />
+																																<h:graphicImage
+																																	rendered="#{gestionarHoja.mapWD.get(seccion.id).data.get(v.id).noteMonitoring.estadoNota.codigo == 3}"
+																																	width="14px" height="14px"
+																																	value="/resources/funcionalidadesIcons/ensayo/resuelta.png"
+																																	style="border:0;" />
+																																<h:graphicImage
+																																	rendered="#{gestionarHoja.mapWD.get(seccion.id).data.get(v.id).noteMonitoring.estadoNota.codigo == 4}"
+																																	width="14px" height="14px"
+																																	value="/resources/funcionalidadesIcons/ensayo/cerrada.png"
+																																	style="border:0;" />
+																															</a4j:commandLink></td>
+																													</tr>
+																												</table>
+
+																											</td>
+																										</tr>
+
+
+																									</table>
+																								</td>
+																							</tr>
+
+																						</table>
+																					</a4j:outputPanel>
+																				</a4j:outputPanel></td>
+																			<td class="colSepGran" />
+																		</c:forEach>
+																	</tr>
+																	<tr>
+																		<td colspan="6" class="espacio_final" />
+																	</tr>
+																</table>
+															</s:div>
+														</rich:panel></td>
+												</tr>
+												<tr>
+													<td class="espacio_corto_v" />
+												</tr>
+											</table>
+											<table border="0" cellpadding="0" cellspacing="0"
+												width="100%">
+												<tr>
+													<td width="100%"><rich:panel
+															rendered="#{empty gestionarHoja.groupsFromSection(seccion.id)}">
+															<f:facet name="header">
+																<h:outputText value="#{messages.lblPanelGrupoVariable}" />
+															</f:facet>
+															<table border="0" cellpadding="0" cellspacing="0">
+																<tr>
+																	<td align="left"><h:outputText
+																			value="#{messages.msg_noInformacion_ens}" /></td>
+																</tr>
+															</table>
+														</rich:panel> <rich:panel
+															rendered="#{not empty gestionarHoja.groupsFromSection(seccion.id)}">
+															<f:facet name="header">
+																<h:outputText value="#{messages.lblPanelGrupoVariable}" />
+															</f:facet>
+															<table border="0" cellpadding="0" cellspacing="0"
+																width="100%">
+																<c:set var="groupsCount" value="${0}" />
+																<c:forEach
+																	items="#{gestionarHoja.groupsFromSection(seccion.id)}"
+																	var="group">
+																	<c:if test="#{groupsCount != 0}">
+																		<tr>
+																			<td class="espacio_corto_v" />
+																		</tr>
+																	</c:if>
+																	<tr style="vertical-align: top;">
+																		<td align="right">
+																			<div align="right" style="width: 100%">
+																				<s:div
+																					rendered="#{gestionarHoja.completeEnabled() and gestionarHoja.showGroup(seccion.id, group.id) and gestionarHoja.hoja.estadoMonitoreo.codigo != 3 and gestionarHoja.hoja.estadoHojaCrd.codigo != 4}">
+																					<h:graphicImage
+																						value="/resources/icons/default/acciones/adicionar.png"
+																						style="border:0; cursor: pointer;"
+																						title="#{messages.adicionarGrupo}" />
+																					<a4j:commandLink
+																						action="#{gestionarHojaGrupoControlador_ec.assignValues(seccion.id, group.id, null)}"
+																						value="#{messages.adicionarGrupo}"
+																						title="#{messages.adicionarGrupo}"
+																						style="border: 0px; cursor:pointer;"
+																						ignoreDupResponses="true" status="statusGeneral"
+																						reRender="aceptarr" />
+																				</s:div>
+																				<s:div
+																					rendered="#{!gestionarHoja.completeEnabled() or !gestionarHoja.showGroup(seccion.id, group.id) or (gestionarHoja.hoja.estadoMonitoreo.codigo == 3) or (gestionarHoja.hoja.estadoHojaCrd.codigo == 4)}">
+																					<h:graphicImage
+																						value="/resources/icons/default/acciones/adicionar.png"
+																						style="border:0; opacity: 0.5;" />
+																					<h:outputText value="#{messages.adicionarGrupo}"
+																						styleClass="dataText" />
+																				</s:div>
+																			</div>
+																		</td>
+																	</tr>
+																	<tr>
+																		<td width="100%"><a4j:outputPanel
+																				id="opgv#{gestionarHoja.concatenarId(seccion.id, group.id)}"
+																				layout="block">
+																				<a4j:region
+																					id="reg#{gestionarHoja.concatenarId(seccion.id, group.id)}">
+																					<rich:panel
+																						rendered="#{!gestionarHoja.variablesGroups(seccion.id, group.id)}">
+																						<f:facet name="header">
+																							<h:outputText
+																								value="#{messages.lblGrupo} #{group.encabezado}" />
+																						</f:facet>
+																						<table border="0" cellpadding="0" cellspacing="0"
+																							width="100%">
+																							<tr>
+																								<td><h:outputText
+																										value="#{messages.msg_noInformacion_ens}" />
+																								</td>
+																							</tr>
+																						</table>
+																					</rich:panel>
+																					<rich:dataTable
+																						id="tbn#{gestionarHoja.concatenarId(seccion.id, group.id)}"
+																						rendered="#{gestionarHoja.variablesGroups(seccion.id, group.id)}"
+																						value="#{gestionarHoja.mapWGD.get(gestionarHoja.convertKey(seccion.id, group.id))}"
+																						var="wgd" width="100%">
+																						<f:facet name="header">
+																							<h:outputText
+																								value="#{messages.lblGrupo} #{group.encabezado}" />
+																						</f:facet>
+																						<c:forEach
+																							items="#{gestionarHoja.loadVariables(seccion.id, group.id)}"
+																							var="v">
+																							<rich:column>
+																								<f:facet name="header">
+																									<h:outputText
+																										value="#{(v.encabezadoVariable != null and not empty v.encabezadoVariable) ? v.encabezadoVariable : ((v.descripcionVariable != null and not empty v.descripcionVariable) ? v.descripcionVariable : v.nombreVariable)}" />
+																								</f:facet>
+																								<table border="0" cellpadding="0"
+																									cellspacing="0">
+																									<tr style="vertical-align: top;">
+																										<s:div
+																											rendered="#{(wgd.data.get(v.id).value != null and not empty wgd.data.get(v.id).value) or (wgd.data.get(v.id).values != null and not empty wgd.data.get(v.id).values)}">
+																											<td><h:outputText
+																													value="#{wgd.data.get(v.id).value}"
+																													rendered="#{wgd.data.get(v.id).value != null and not empty wgd.data.get(v.id).value and !wgd.data.get(v.id).checkBox}" />
+																												<h:selectBooleanCheckbox
+																													value="#{wgd.data.get(v.id).value}"
+																													rendered="#{wgd.data.get(v.id).value != null and not empty wgd.data.get(v.id).value and wgd.data.get(v.id).checkBox}"
+																													disabled="true" /> <h:selectManyCheckbox
+																													value="#{wgd.data.get(v.id).values}"
+																													rendered="#{wgd.data.get(v.id).values != null and not empty wgd.data.get(v.id).values}"
+																													disabled="true">
+																													<f:selectItems
+																														value="#{gestionarHoja.valoresRadio(v.nomenclador.id)}" />
+																												</h:selectManyCheckbox></td>
+																										</s:div>
+																										<s:div
+																											rendered="#{(wgd.data.get(v.id).value == null or empty wgd.data.get(v.id).value) and (wgd.data.get(v.id).values == null or empty wgd.data.get(v.id).values)}">
+																											<td align="center"><h:outputText
+																													value="#{messages.vacio}"
+																													style="text-align: center" /></td>
+																										</s:div>
+																										<s:div
+																											rendered="#{v.unidadesVariable != null and not empty v.unidadesVariable}">
+																											<td class="espacio_mediano" />
+																											<td><h:outputText
+																													value="#{v.unidadesVariable}" /></td>
+																										</s:div>
+																										<td class="espacio_mediano" />
+																										<td><a4j:commandLink
+																												action="#{crearNota.assignValuesSite(wgd.data.get(v.id).section.id, wgd.data.get(v.id).group.id, wgd.data.get(v.id).repetition, wgd.data.get(v.id).variable.id)}"
+																												rendered="#{(gestionarHoja.rolLogueado.getCodigo() == 'ecCord' or gestionarHoja.rolLogueado.getCodigo() == 'ecInv') and (!wgd.data.get(v.id).hasNoteSite()) and ((wgd.data.get(v.id).variableData == null) or ((wgd.data.get(v.id).variableData != null and gestionarHoja.longitud(wgd.data.get(v.id).variableData.id) == 19))) and gestionarHoja.hoja.estadoMonitoreo.codigo != 3}"
+																												title="#{messages.crearNotaSitio}"
+																												status="statusGeneral"
+																												ignoreDupResponses="true">
+																												<h:graphicImage width="14px" height="14px"
+																													value="/resources/funcionalidadesIcons/ensayo/crearNotaSitio.gif"
+																													style="border:0;" />
+																											</a4j:commandLink> <a4j:commandLink
+																												action="#{verNotaSitio.assignValues(wgd.data.get(v.id).section.id, wgd.data.get(v.id).group.id, wgd.data.get(v.id).repetition, wgd.data.get(v.id).variable.id)}"
+																												rendered="#{(gestionarHoja.rolLogueado.getCodigo() == 'ecCord' or gestionarHoja.rolLogueado.getCodigo() == 'ecInv' or gestionarHoja.monitor) and (wgd.data.get(v.id).hasNoteSite())}"
+																												title="#{messages.verNotaSitio}"
+																												status="statusGeneral"
+																												ignoreDupResponses="true">
+																												<h:graphicImage width="14px" height="14px"
+																													value="/resources/funcionalidadesIcons/ensayo/adicionar_nota_sitio1.gif"
+																													style="border:0;" />
+																											</a4j:commandLink></td>
+																										<td class="espacio_mediano" />
+																										<td><a4j:commandLink
+																												action="#{crearNota.assignValuesMonitoring(wgd.data.get(v.id).section.id, wgd.data.get(v.id).group.id, wgd.data.get(v.id).repetition, wgd.data.get(v.id).variable.id)}"
+																												rendered="#{gestionarHoja.monitor and (!wgd.data.get(v.id).hasNoteMonitoring()) and ((wgd.data.get(v.id).variableData == null) or ((wgd.data.get(v.id).variableData != null and gestionarHoja.longitud(wgd.data.get(v.id).variableData.id) == 19))) and gestionarHoja.hoja.estadoHojaCrd.id == 3 and !gestionarHoja.monitoringCompleted}"
+																												title="#{messages.crearNotaMonitoreo}"
+																												status="statusGeneral"
+																												ignoreDupResponses="true">
+																												<h:graphicImage width="14px" height="14px"
+																													value="/resources/funcionalidadesIcons/ensayo/crear.png"
+																													style="border:0;" />
+																											</a4j:commandLink> <a4j:commandLink
+																												action="#{verNotaMonitoreo.assignValues(wgd.data.get(v.id).section.id, wgd.data.get(v.id).group.id, wgd.data.get(v.id).repetition, wgd.data.get(v.id).variable.id)}"
+																												rendered="#{(gestionarHoja.rolLogueado.getCodigo() == 'ecCord' or gestionarHoja.rolLogueado.getCodigo() == 'ecInv' or gestionarHoja.monitor) and (wgd.data.get(v.id).hasNoteMonitoring())}"
+																												title="#{messages.notaMonitoreo}"
+																												status="statusGeneral"
+																												ignoreDupResponses="true">
+																												<h:graphicImage
+																													rendered="#{wgd.data.get(v.id).noteMonitoring.estadoNota.codigo == 1}"
+																													width="14px" height="14px"
+																													value="/resources/funcionalidadesIcons/ensayo/nueva.png"
+																													style="border:0;" />
+																												<h:graphicImage
+																													rendered="#{wgd.data.get(v.id).noteMonitoring.estadoNota.codigo == 2}"
+																													width="14px" height="14px"
+																													value="/resources/funcionalidadesIcons/ensayo/actualizada.png"
+																													style="border:0;" />
+																												<h:graphicImage
+																													rendered="#{wgd.data.get(v.id).noteMonitoring.estadoNota.codigo == 3}"
+																													width="14px" height="14px"
+																													value="/resources/funcionalidadesIcons/ensayo/resuelta.png"
+																													style="border:0;" />
+																												<h:graphicImage
+																													rendered="#{wgd.data.get(v.id).noteMonitoring.estadoNota.codigo == 4}"
+																													width="14px" height="14px"
+																													value="/resources/funcionalidadesIcons/ensayo/cerrada.png"
+																													style="border:0;" />
+																											</a4j:commandLink></td>
+																									</tr>
+																								</table>
+																							</rich:column>
+																						</c:forEach>
+																						<rich:column width="10"
+																							styleClass="alineacionCentrada"
+																							title="#{messages.modificar}">
+																							<a4j:commandLink
+																								action="#{gestionarHojaGrupoControlador_ec.assignValues(wgd.section.id, wgd.group.id, wgd.repetition)}"
+																								style="border: 0px; cursor:pointer;"
+																								title="#{messages.modificar}"
+																								status="statusGeneral" ignoreDupResponses="true"
+																								rendered="#{!gestionarHoja.monitor and gestionarHoja.hoja.estadoMonitoreo.codigo != 3 and gestionarHoja.hoja.estadoHojaCrd.codigo != 4}">
+																								<h:graphicImage
+																									value="/resources/icons/default/acciones/modificar.png"
+																									style="border:0;" title="#{messages.modificar}" />
+																							</a4j:commandLink>
+																							<h:graphicImage
+																								value="/resources/icons/default/acciones/modificar.png"
+																								style="border:0; opacity: 0.5;"
+																								title="#{messages.modificar}"
+																								rendered="#{gestionarHoja.monitor or (gestionarHoja.hoja.estadoMonitoreo.codigo == 3) or (gestionarHoja.hoja.estadoHojaCrd.codigo == 4)}" />
+																						</rich:column>
+																						<rich:column width="10"
+																							rendered="#{gestionarHoja.hoja.hojaCrd.nombreHoja == 'Eventos Adversos' or gestionarHoja.hoja.hojaCrd.nombreHoja == 'Evento Adverso'}"
+																							styleClass="alineacionCentrada">
+																							<a4j:commandLink id="crearReporteExped"
+																								title="#{messages.crearReporteE}"
+																								action="#{crearReporteExpedito.assignValues(wgd.section.id, wgd.group.id, wgd.repetition)}"
+																								rendered="#{!wgd.hasReport() and !gestionarHoja.monitor and gestionarHoja.hoja.estadoMonitoreo.codigo != 3 and gestionarHoja.hoja.estadoHojaCrd.codigo != 4}"
+																								style="border: 0px; cursor:pointer;"
+																								ignoreDupResponses="true" status="statusGeneral">
+																								<h:graphicImage height="18" width="15"
+																									value="/resources/funcionalidadesIcons/ensayo/adicionar_nota_general.png"
+																									style="border:0;"
+																									title="#{messages.crearReporteE}" />
+																							</a4j:commandLink>
+																							<h:graphicImage height="18" width="15"
+																								value="/resources/funcionalidadesIcons/ensayo/adicionar_nota_general.png"
+																								style="border:0; opacity: 0.5;"
+																								title="#{messages.crearReporteE}"
+																								rendered="#{!wgd.hasReport() and (gestionarHoja.monitor or (gestionarHoja.hoja.estadoMonitoreo.codigo == 3) or (gestionarHoja.hoja.estadoHojaCrd.codigo == 4))}" />
+																							<a4j:commandLink id="modificarReporteExped"
+																								title="#{messages.Modificar}"
+																								action="#{crearReporteExpedito.assignValues(wgd.section.id, wgd.group.id, wgd.repetition)}"
+																								rendered="#{wgd.hasReport() and !gestionarHoja.monitor and gestionarHoja.hoja.estadoMonitoreo.codigo != 3 and gestionarHoja.hoja.estadoHojaCrd.codigo != 4}"
+																								style="border: 0px; cursor:pointer;"
+																								ignoreDupResponses="true" status="statusGeneral">
+																								<h:graphicImage
+																									value="/resources/icons/default/acciones/modificar.png"
+																									style="border:0;" title="#{messages.Modificar}" />
+																							</a4j:commandLink>
+																							<h:graphicImage
+																								value="/resources/icons/default/acciones/modificar.png"
+																								style="border:0; opacity: 0.5;"
+																								title="#{messages.Modificar}"
+																								rendered="#{wgd.hasReport() and (gestionarHoja.monitor or (gestionarHoja.hoja.estadoMonitoreo.codigo == 3) or (gestionarHoja.hoja.estadoHojaCrd.codigo == 4))}" />
+																						</rich:column>
+																						<rich:column width="10"
+																							rendered="#{gestionarHoja.hoja.hojaCrd.nombreHoja == 'Eventos Adversos' or gestionarHoja.hoja.hojaCrd.nombreHoja == 'Evento Adverso'}"
+																							styleClass="alineacionCentrada">
+																							<a4j:commandButton id="exportarReporte"
+																								image="/resources/icons/default/acciones/imprimir_pdf.png"
+																								title="#{messages.exportar}"
+																								rendered="#{wgd.hasReport()}"
+																								action="#{gestionarHoja.exportReportExpedito(wgd.section.id, wgd.group.id, wgd.repetition)}"
+																								oncomplete="{window.open('#{facesContext.externalContext.requestContextPath}#{gestionarHoja.pathExportedReport}')}"
+																								style="border: 0px; cursor:pointer;"
+																								ignoreDupResponses="true" status="statusGeneral" />
+																							<h:graphicImage rendered="#{!wgd.hasReport()}"
+																								style="border:0px; opacity: 0.4;"
+																								value="/resources/icons/default/acciones/imprimir_pdf.png" />
+																						</rich:column>
+																						<rich:column width="10"
+																							rendered="#{gestionarHoja.hoja.hojaCrd.nombreHoja == 'Eventos Adversos' or gestionarHoja.hoja.hojaCrd.nombreHoja == 'Evento Adverso'}"
+																							styleClass="alineacionCentrada">
+																							<a4j:commandLink id="exportarNotificacion"
+																								title="#{messages.exportaNoti}"
+																								action="#{gestionarHoja.exportNotificacion(wgd.section.id, wgd.group.id, wgd.repetition)}"
+																								rendered="#{wgd.hasNotification()}"
+																								onclick="javascript:Richfaces.showModalPanel('exportPanel');"
+																								style="border: 0px; cursor:pointer;"
+																								status="statusGeneral" ignoreDupResponses="true">
+																								<h:graphicImage height="18" width="15"
+																									value="/resources/icons/default/acciones/exportarNotificacion.png"
+																									style="border:0;" />
+																							</a4j:commandLink>
+																							<h:graphicImage height="18" width="15"
+																								rendered="#{!wgd.hasNotification()}"
+																								style="border:0; opacity: 0.4;"
+																								value="/resources/icons/default/acciones/exportarNotificacion.png" />
+																						</rich:column>
+																						<rich:column width="10"
+																							styleClass="alineacionCentrada"
+																							title="#{messages.eliminar}">
+																							<h:commandLink
+																								action="#{gestionarHoja.deleteRow(wgd.section.id, wgd.group.id, wgd.repetition)}"
+																								style="border: 0px; cursor:pointer;"
+																								title="#{messages.eliminar}"
+																								rendered="#{!gestionarHoja.monitor and gestionarHoja.hoja.estadoMonitoreo.codigo != 3 and gestionarHoja.hoja.estadoHojaCrd.codigo != 4}">
+																								<h:graphicImage
+																									value="/resources/icons/default/acciones/eliminar.png"
+																									style="border:0; cursor:pointer;"
+																									title="#{messages.eliminar}" />
+																							</h:commandLink>
+																							<h:graphicImage
+																								value="/resources/icons/default/acciones/eliminar.png"
+																								style="border:0; opacity:0.5;"
+																								title="#{messages.eliminar}"
+																								rendered="#{gestionarHoja.monitor or (gestionarHoja.hoja.estadoMonitoreo.codigo == 3) or (gestionarHoja.hoja.estadoHojaCrd.codigo == 4)}" />
+																						</rich:column>
+																					</rich:dataTable>
+																				</a4j:region>
+																			</a4j:outputPanel></td>
+																	</tr>
+																	<c:set value="${groupsCount + 1}" var="groupsCount" />
+																</c:forEach>
+															</table>
+														</rich:panel></td>
+												</tr>
+											</table>
+										</rich:tab>
+									</c:forEach>
+								</rich:tabPanel>
+							</a4j:outputPanel>
+							<div class="espacio_corto_h" width="1px" />
+						</rich:panel>
+					</rich:panel>
+				</s:validateAll>
+				<div align="right"
+					rendered="#{(gestionarHoja.rolLogueado.getCodigo() == 'ecCord' or gestionarHoja.rolLogueado.getCodigo() == 'ecInv' or gestionarHoja.rolLogueado.getCodigo() == 'ecMon') and (gestionarHoja.hoja.getEstadoHojaCrd().getCodigo() != 4)}"
+					style="padding-top: 13px;">
+					<a4j:outputPanel id="op_completed">
+						<table>
+							<tr>
+								<td style="margin-left: 6px;" />
+								<td><h:outputText
+										rendered="#{(gestionarHoja.hoja.getEstadoHojaCrd().getCodigo() != 4)}"
+										value="#{messages.completarHoja}:" styleClass="normalText" />
+								</td>
+								<td align="center"><h:selectBooleanCheckbox
+										style="margin: 0px;" tabindex="5"
+										rendered="#{gestionarHoja.hoja.getEstadoHojaCrd().getCodigo() != 4}"
+										value="#{gestionarHoja.completada}"
+										disabled="#{gestionarHoja.monitor or gestionarHoja.hoja.estadoMonitoreo.codigo == 3}" />
+								</td>
+							</tr>
+						</table>
+					</a4j:outputPanel>
+				</div>
+				<rich:spacer height="8px;" width="100%" />
+				<div align="right" style="width: 100%">
+					<a4j:commandButton id="descompletar"
+						rendered="${gestionarHoja.mostrarDescompletar()}"
+						onclick="Richfaces.showModalPanel('mpAdvertenciaDescompletarHoja')"
+						value="Descompletar" 
+						style="margin-bottom: 0px; margin-top: 0px; margin-left: 0px; margin-right: 10px;"/>
+					<a4j:commandButton id="resetear"
+						rendered="${gestionarHoja.mostrarReiniciar()}" 
+						onclick="Richfaces.showModalPanel('mpAdvertenciaRestablecerHoja')"
+						value="Resetear" 
+						style="margin-bottom: 0px; margin-top: 0px; margin-left: 0px; margin-right: 10px;"/>
+					<a4j:commandButton id="aceptarr"
+						onclick="#{rich:component('ajaxLoadingModalBox')}.show()"
+						value="#{messages.btn_aceptar_modCond}"
+						action="#{ruleManager.save()}"
+						oncomplete="#{rich:component('ajaxLoadingModalBox')}.hide(),#{gestionarHoja.esEvento()}"
+						data="#{ruleManager.clientData}"
+						reRender="aceptarHoja,#{gestionarHoja.esEventoReRender()}"
+						style="margin-bottom: 0px; margin-left: 0px; margin-top: 0px;" />
+					<h:commandButton value="#{messages.btn_cancelar_modCond}"
+						style="margin-bottom: 0px; margin-top: 0px; margin-right: 0px;"
+						action="cancelar" immediate="true" />
+				</div>
+			</a4j:outputPanel>
+			<rich:modalPanel id="mpBloqueo" width="0" height="0" top="0" left="0"
+				style="opacity: -10000" shadowOpacity="-10000" />
+		</h:form>
+		<s:div id="modalContainerDiv">
+			<ui:include
+				src="/modEnsayo/ensayo_disenno/codebase/reglas/modals/modalContainer.xhtml">
+				<ui:param name="action" value="#{ruleManager.lastUserInputAction}" />
+			</ui:include>
+		</s:div>
+		<s:div id="modalCompletar">
+			<ui:include
+				src="/modEnsayo/ensayo_conduccion/codebase/plantillas/AdvertenciaCompletarMonitoreo.xhtml">
+				<ui:param name="control" value="#{gestionarHoja}" />
+				<ui:param name="listaIdElementos" value="op_monitoring, opForm" />
+			</ui:include>
+			<ui:include
+				src="/modEnsayo/codebase/plantillas/exportModalPanel.xhtml">
+				<link rel='stylesheet'
+					href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+					type='text/css' />
+				<link rel='stylesheet'
+					href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css'
+					type='text/css' />
+				<ui:param name="controlador" value="#{gestionarHoja}" />
+			</ui:include>
+			<ui:include
+				src="/modEnsayo/ensayo_conduccion/codebase/plantillas/modalPanelSalvandoHoja.xhtml" />
+			<ui:include
+			src="/modEnsayo/ensayo_conduccion/codebase/plantillas/AdvertenciaRestablecerHoja.xhtml">
+				<ui:param name="control" value="#{gestionarHoja}" />
+			</ui:include>
+			<ui:include
+			src="/modEnsayo/ensayo_conduccion/codebase/plantillas/AdvertenciaDescompletarHoja.xhtml">
+				<ui:param name="control" value="#{gestionarHoja}" />
+			</ui:include>
+		</s:div>
+	</s:div>
+</s:div>

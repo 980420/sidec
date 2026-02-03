@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+ 	
+ 	<param name="direccion" value="#{seleccionarEstudio.dirredirect}"/>
+ 	<param name="trazasD" value="#{seleccionarEstudio.trazasD}" />
+ 	<param name="trazasC" value="#{seleccionarEstudio.trazasC}" />
+ 	<param name="cMsXS" value="#{seleccionarEstudio.cantMS}" />
+ 	<param name="conjDatos" value="#{seleccionarEstudio.cDatos}" />
+	<action if="#{!seleccionarEstudio.inicializado}" execute="#{seleccionarEstudio.begin()}" />
+	
+	<navigation from-action="#{seguridadEstudio.PonerActivo(est)}">
+		<redirect view-id="#{seleccionarEstudio.dirredirect}"></redirect>
+	</navigation>
+		
+</page>

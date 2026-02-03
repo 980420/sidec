@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.1.xsd">
+
+	<param name="desde" value="#{modificarGruposujetos.desde}" />
+	<param name="gruposujetosId" value="#{modificarGruposujetos.idGruposujetos}" />
+	<action execute="#{modificarGruposujetos.cargarGruposujetos()}" />
+
+	<!-- Aceptar -->
+	<navigation from-action="#{modificarGruposujetos.adicionarGruposujetos()}"
+		evaluate="#{modificarGruposujetos.error}">
+		<rule if-outcome="0">
+			<!--Ver detalles -->
+			<redirect
+				view-id="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarGruposujetos/VerDetallesGruposujetos.xhtml">
+				<param name="gruposujetosId" value="#{modificarGruposujetos.idGruposujetos}" />
+				<param name="desde" value="modificar" />
+			</redirect>
+			<end-conversation before-redirect="true" />
+		</rule>
+	</navigation>
+
+	<!-- Cancelar -->
+	<navigation from-action="cancelar" evaluate="#{modificarGruposujetos.desde}">
+		<!--Buscar -->
+		<rule if-outcome="listar">
+			<redirect
+				view-id="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarGruposujetos/BuscarGruposujetos.xhtml"></redirect>
+		</rule>
+		<rule if-outcome="adicionar">
+			<redirect
+				view-id="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarGruposujetos/BuscarGruposujetos.xhtml"></redirect>
+		</rule>
+		<rule if-outcome="modificar">
+			<redirect
+				view-id="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarGruposujetos/BuscarGruposujetos.xhtml"></redirect>
+		</rule>
+	</navigation>
+</page>

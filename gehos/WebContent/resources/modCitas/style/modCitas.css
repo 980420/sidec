@@ -1,0 +1,310 @@
+.rich-calendar-button{
+	width: 16px;
+	height: 16px;
+}
+.rich-calendar-input{
+	padding-right:0px;
+	border: 0px 0px 0px 0px;
+	spacing: 0px 0px 0px 0px;
+	width: 134px;	
+}
+
+.tbx
+{
+	width: 148px;
+	font-size: 10px;
+	font-family: Verdana;
+}
+.cbx
+{
+	width: 154px;
+	font-size: 10px;
+	font-family: Verdana;
+}
+.spaceFoto
+{
+	
+	padding-top:2px;
+	padding-right: 6px; 
+	padding-left: 6px;
+}
+.verticalSpacer
+{
+	width: 7px; 
+}
+.horizontalSpacer
+{
+	height: 10px; 
+}
+.divData
+{
+	padding-left:13px;
+	padding-top:8px;
+}
+.spaceData
+{
+ 	padding-right:25px !important;
+ 	vertical-align: top !important;
+		
+}
+.spaceLabel
+{
+ padding-right:6px !important;
+ vertical-align: top !important;
+		
+}
+.espaceLabel
+{
+	padding-right:8px;
+}
+
+/*Este es para el encabezado de las celdas de los subtables*/
+.dr-subtable-headercell
+{
+	text-align: left;
+	font-family: Verdana;
+	font-size: 10px;
+}
+
+/*Este es para las celdas de las subtablas*/
+.dr-subtable-cell
+{
+	font-family: Verdana;
+	font-size: 10px;
+}
+
+/*Este es para el contenido de los simpletooglepanel*/
+.rich-stglpanel-body
+{
+	  padding-left: 0px;
+      padding-top: 0px;
+      padding-bottom: 0px;
+}
+/*para el encabezado del agrupamiento en las subtablas*/
+.serviciobuscar
+{
+	  font-family: Verdana;
+     
+      background-color:#B0B0B0;
+      padding-left: 5px;
+}
+.especialidadbuscar
+{
+	font-family: Verdana,sans-serif;
+     
+      background-color:#E0E0E0;
+      padding-left: 15px;
+}
+.medicobuscar
+{
+	font-family: Verdana,sans-serif;
+     
+      background-color:#F4F4F4;
+       padding-left: 25px;
+}
+.tipocitabuscar
+{
+	font-family: Verdana,sans-serif;
+     
+      background-color:#ECF4FE;
+       padding-left: 25px;
+}
+
+
+/*clase para los selectonemenu*/
+.select
+{
+	font-family: Verdana;
+	font-size: 10px;
+	width: 112px;
+}
+
+
+/*
+Dias normales
+*/
+.noavailableSunday
+{
+	
+	color: red !important;
+	text-decoration: line-through;
+}
+.noavailable
+{
+	
+	color: red !important;
+	text-decoration: line-through;
+}
+.normal
+{
+	background-color:white;
+	color: #000000 !important;
+	text-decoration: none;
+}
+
+/*dias del calendario que esten a menos de la mitad, dias pasados*/
+.underhalfpast
+{
+	
+	color: #000000 !important;
+	 background-image:url("../images/underhalfpast.jpg");
+	 background-repeat:repeat-x;
+}
+
+/*dias del calendario que esten a menos de la mitad, futuros*/
+.underhalffuture
+{
+	
+	color: #000000 !important;
+	background-image:url("../images/underhalffuture.jpg");
+	background-repeat:repeat-x;
+}
+
+/*dias del calendario que esten por encima de la mitad, dias pasados*/
+.abovehalfpast
+{
+	
+	color: #000000 !important;
+	background-image:url("../images/abovehalfpast.jpg");
+	background-repeat:repeat-x;
+}
+
+/*dias del calendario que esten por encima de la mitad, futuros*/
+.abovehalffuture
+{
+	
+	color: #000000 !important;
+	background-image:url("../images/abovehalffuture.jpg");
+	background-repeat:repeat-x;
+}
+
+/*dias del calendario que esten a medias, dias pasados*/
+.halfpast
+{
+	
+	color: #000000 !important;
+	background-image:url("../images/halfpast.jpg");
+	background-repeat:repeat-x;
+}
+
+/*dias del calendario que esten a medias, futuros*/
+.halffuture
+{
+	
+	color: #000000 !important;
+	background-image:url("../images/halffuture.jpg");
+	background-repeat:repeat-x;
+}
+
+/*
+dias que estan a full
+*/
+
+/*dias que estan a full, dias pasados*/
+.fullpast
+{
+	
+	color: #000000 !important;
+	background-image:url("../images/fullpast.jpg");
+	background-repeat:repeat-x;
+}
+
+/*dias que estan a full, futuros*/
+.fullfuture
+{
+	
+	color: #000000 !important;
+	background-image:url("../images/fullfuture.jpg");
+	background-repeat:repeat-x;
+}
+
+/*HOVER*/
+.normal:hover
+{
+	width:20px;
+	height:18px;
+	color: #000000 !important;
+	background-image:none;
+	background-color:#FFE0A3;
+}
+
+/*dias del calendario que esten a menos de la mitad, dias pasados*/
+.underhalfpast:hover
+{
+	
+	color: #000000 !important;
+	background-image:none;
+	 background-color:#FFE0A3;
+}
+
+/*dias del calendario que esten a menos de la mitad, futuros*/
+.underhalffuture:hover
+{
+	
+	color: #000000 !important;
+	background-image:none;
+	background-color:#FFE0A3;
+}
+
+/*dias del calendario que esten por encima de la mitad, dias pasados*/
+.abovehalfpast:hover
+{
+	
+	color: #000000 !important;
+	background-image:none;
+	background-color:#FFE0A3;
+}
+
+/*dias del calendario que esten por encima de la mitad, futuros*/
+.abovehalffuture:hover
+{
+	
+	color: #000000 !important;
+	background-image:none;
+	background-color:#FFE0A3;
+}
+
+/*dias del calendario que esten a medias, dias pasados*/
+.halfpast:hover
+{
+	
+	color: #000000 !important;
+	background-image:none;
+	background-color:#FFE0A3;
+}
+
+/*dias del calendario que esten a medias, futuros*/
+.halffuture:hover
+{
+	
+	color: #FFFFFF !important;
+	background-image:none;
+	background-color:#FF7800;
+}
+
+/*
+dias que estan a full
+*/
+
+/*dias que estan a full, dias pasados*/
+.fullpast:hover
+{
+	
+	color: #000000 !important;
+	background-image:none;
+	background-color:#FFE0A3;
+}
+
+/*dias que estan a full, futuros*/
+.fullfuture:hover
+{
+	
+	color: #000000 !important;
+	background-image:none;
+	background-color:#FFE0A3;
+}
+
+.cupoextra
+{
+	background-color: #FFE0A3;
+}

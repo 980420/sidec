@@ -1,0 +1,28 @@
+<rich:modalPanel id="ruleCreation" resizeable="false" autosized="true" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" onshow="" width="800">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<f:facet name="header">
+		<h:panelGroup>
+			<a4j:outputPanel id="ruleCreationHeaderText">
+				<h:outputText value="#{ReglasControlador.modifiyingRule ? messages.modificar : messages.adicionar} #{messages.regla_lower}"></h:outputText>
+			</a4j:outputPanel>
+		</h:panelGroup>
+	</f:facet>
+	<f:facet name="controls">
+		<h:panelGroup>
+			<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+				styleClass="hidelink" id="rchidelink" />
+			<rich:componentControl for="ruleCreation" attachTo="rchidelink"
+				operation="hide" event="onclick" />
+		</h:panelGroup>
+	</f:facet>
+	<ui:include src="/modEnsayo/ensayo_disenno/codebase/reglas/modals/ruleCreationContent.xhtml" />
+</rich:modalPanel>

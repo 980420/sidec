@@ -1,0 +1,656 @@
+<!-- CU 10 Visualizar MS por sujeto. Pemite visualizar lo momentos de seguimi (Programados y No progamados)-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" xmlns:a4j="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle('#{messages.listadoMS}')</script>
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+		type='text/css' />
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css'
+		type='text/css' />
+
+	<script type="text/javascript">			
+	var curDtN = new Date();
+	 var calDtN=null;
+
+	 function previousDate(date){
+		calDtN = date;
+	 }
+
+	 function disablementFunction(day){
+		 if(calDtN == null){
+			 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+					return true; 
+				else 
+					return false; 
+		 }
+		 else {
+			 if (calDtN.getTime() - day.date.getTime() &#62;= 0 ) 
+					return true; 
+				else 
+					return false;
+		 }					 
+	 }
+
+	 function disabledClassesProv(day){
+		 if(calDtN == null){
+			 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+					return ''; 
+				else 
+					return 'noavailable'; 
+		 }
+		 else {
+			 if (calDtN.getTime() - day.date.getTime() &#62;= 0) 
+					return ''; 
+				else 
+					return 'noavailable';
+		 }				
+	 }
+
+	 function resetSecondDate(first,second) {
+		 var firstDate = first.getSelectedDate().getTime();
+		 var secondDate = second.getSelectedDate().getTime();
+
+		 if(firstDate - secondDate &#62; 0)
+			 second.resetSelectedDate();
+	 }
+	 
+	 function disablementFunctionPreviousEx(day){
+		if(calDtN == null){
+			if (curDtN.getTime() - day.date.getTime() &#62; 0) return true; else return false;
+		}
+		if ((curDtN.getTime() - day.date.getTime() &#62; 0) &#38;&#38; (calDtN.getTime() - day.date.getTime() &#60;= 0)){
+			return true;
+		}
+		else 
+			return false;
+	  }
+
+	function disabledClassesProvPreviousEx(day){
+		if(calDtN == null){
+			if (curDtN.getTime() - day.date.getTime() &#60; 0)
+				return 'noavailable';
+			else 
+				return '';
+		}
+		if ((curDtN.getTime() - day.date.getTime() &#60; 0) || (calDtN.getTime() - day.date.getTime() &#62; 0))
+			return 'noavailable';
+		else 
+			return '';
+	}
+</script>
+	<table class="Tabla" width="100%" cellpadding="0" cellspacing="0">
+
+		<tr>
+			<td><rich:panel>
+					<f:facet name="header">
+						<h:panelGroup>
+							<div>
+								<div align="left">#{messages.datosSujeto}</div>
+							</div>
+						</h:panelGroup>
+					</f:facet>
+					<table class="Tabla" cellspacing="0" cellpadding="0" width="100%">
+						<tr>
+							<td>
+								<table cellpadding="0" cellspacing="0" width="100%">
+									<tr>
+										<td>
+											<table cellpadding="0" cellspacing="0">
+												<tr>
+													<td class="">
+														<table cellpadding="0" cellspacing="0">
+															<tr class="filSepGranRA">
+																<td class="colSepPeq"><h:outputText
+																		value="#{messages.iniciales}:"
+																		style="margin:0px; padding:0px;" /></td>
+																<td class="colSepGran"><h:outputText
+																		styleClass="dataText"
+																		value="#{(not empty listarMSP.ObtenerSujeto().inicialesPaciente) ? listarMSP.ObtenerSujeto().inicialesPaciente : messages.vacio}"
+																		style="margin:0px; padding:0px;" /></td>
+																<td class="colSepPeq"><h:outputText
+																		value="#{messages.numinclusion}:"
+																		style="margin:0px; padding:0px;" /></td>
+																<td class="colSepGran"><h:outputText
+																		styleClass="dataText"
+																		value="#{(not empty listarMSP.ObtenerSujeto().numeroInclucion) ? listarMSP.ObtenerSujeto().numeroInclucion : messages.vacio}"
+																		style="margin:0px; padding:0px;" /></td>
+																<td class="colSepPeq"><h:outputText
+																		value="#{messages.estadoInclusion}:"
+																		style="margin:0px; padding:0px;" /></td>
+																<td class="colSepGran"><h:outputText
+																		styleClass="dataText"
+																		value="#{(not empty listarMSP.ObtenerSujeto().estadoInclusion.nombre) ? listarMSP.ObtenerSujeto().estadoInclusion.nombre : messages.vacio}"
+																		style="margin:0px; padding:0px;" /></td>
+															</tr>
+															<tr class="filSepGranRA">
+																<td class="colSepPeq"><h:outputText
+																		value="#{messages.inicialesCentro}:"
+																		style="margin:0px; padding:0px;" /></td>
+																<td class="colSepGran"><h:outputText
+																		styleClass="dataText"
+																		value="#{(not empty listarMSP.ObtenerSujeto().inicialesCentro) ? listarMSP.ObtenerSujeto().inicialesCentro : messages.vacio}"
+																		style="margin:0px; padding:0px;" /></td>
+																<td class="colSepPeq"><h:outputText
+																		value="#{messages.codigoSuj}:"
+																		style="margin:0px; padding:0px;" /></td>
+																<td class="colSepGran"><h:outputText
+																		styleClass="dataText"
+																		value="#{(not empty listarMSP.ObtenerSujeto().codigoPaciente) ? listarMSP.ObtenerSujeto().codigoPaciente : messages.vacio}"
+																		style="margin:0px; padding:0px;" /></td>
+																<td class="colSepPeq"><h:outputText
+																		value="#{messages.grupodelSujeto}:"
+																		style="margin:0px; padding:0px;" /></td>
+
+																<td class="colSepGran"><h:outputText
+																		styleClass="dataText"
+																		value="#{(not empty listarMSP.ObtenerSujeto().grupoSujetos.nombreGrupo) ? listarMSP.ObtenerSujeto().grupoSujetos.nombreGrupo : messages.vacio}"
+																		style="margin:0px; padding:0px;" /></td>
+															</tr>
+															<tr>
+																<td class="colSepPeq"><h:outputText
+																		value="#{messages.fechaInclusion}:"
+																		style="margin:0px; padding:0px;" /></td>
+																<td class="colSepGran"><h:outputText
+																		styleClass="dataText"
+																		value="#{(not empty listarMSP.ObtenerSujeto().getFechaInclucion()) ? listarMSP.ObtenerSujeto().getFechaInclucion() : messages.vacio}"
+																		style="margin:0px; padding:0px;">
+																	</h:outputText></td>
+																<td class="colSepPeq"><h:outputText
+																		value="#{messages.estadoTratamiento}:"
+																		style="margin:0px; padding:0px;" /></td>
+																<td class="colSepGran"><h:outputText
+																		styleClass="dataText"
+																		value="#{(not empty listarMSP.ObtenerSujeto().estadoTratamiento.nombre) ? listarMSP.ObtenerSujeto().estadoTratamiento.nombre : messages.vacio}"
+																		style="margin:0px; padding:0px;" /></td>
+																<td class="colSepPeq"><h:outputText
+																		value="#{messages.nombreEntidad}:"
+																		style="margin:0px; padding:0px;" /></td>
+
+																<td class="colSepGran"><h:outputText
+																		styleClass="dataText"
+																		value="#{(not empty listarMSP.ObtenerSujeto().entidad) ? listarMSP.ObtenerSujeto().entidad.nombre : messages.vacio}"
+																		style="margin:0px; padding:0px;" /></td>
+															</tr>
+														</table>
+													</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</rich:panel></td>
+		</tr>
+		<tr>
+			<td><h:form>
+					<a:outputPanel id="tb1">
+						<rich:panel rendered="#{empty listarMSP.resultList}">
+							<f:facet name="header">#{messages.listadoMSProg}</f:facet>
+							<table class="Tabla">
+								<tr>
+									<td><h:outputText value="#{messages.noMSProg}" /></td>
+								</tr>
+							</table>
+						</rich:panel>
+						<div style="margin-left: 1px; margin-top: 8px">
+							<rich:dataTable id="tb" value="#{listarMSP.resultList}"
+								var="MomSegProg" width="100%"
+								rendered="#{not empty listarMSP.resultList}">
+								<f:facet name="header">
+									<h:outputText value="#{messages.listadoMSProg}" />
+								</f:facet>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.nombre}" styleClass="label" /></td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList" value="#{listarMSP}" />
+															<ui:param name="columna"
+																value="ms.momentoSeguimientoGeneral.nombre" />
+															<ui:param name="nombreMenu" value="ordenarNombresMenu" />
+															<ui:param name="tablaRender" value="tb1" />
+														</ui:include></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText
+										value="#{MomSegProg.momentoSeguimientoGeneral.nombre}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.plazo}" styleClass="label" /></td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList" value="#{listarMSP}" />
+															<ui:param name="columna"
+																value="ms.momentoSeguimientoGeneral.tiempoLlenado" />
+															<ui:param name="nombreMenu" value="ordenarPapellidoMenu" />
+															<ui:param name="tablaRender" value="tb1" />
+														</ui:include></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText
+										value="#{MomSegProg.sujeto.estadoTratamiento.id == 4 ? '' : MomSegProg.momentoSeguimientoGeneral.tiempoLlenado}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.fechaI}" styleClass="label" /></td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList" value="#{listarMSP}" />
+															<ui:param name="columna" value="ms.fechaInicio" />
+															<ui:param name="nombreMenu" value="ordenarFechaInicioPMenu" />
+															<ui:param name="tablaRender" value="tb1" />
+														</ui:include></td>
+
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<table width="100%">
+										<tr>
+											<td align="left"><h:outputText
+													value="#{MomSegProg.fechaInicio}">
+													<s:convertDateTime pattern="#{messages.patronFecha}"></s:convertDateTime>
+												</h:outputText></td>
+										</tr>
+									</table>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.estado}" styleClass="label" /></td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList" value="#{listarMSP}" />
+															<ui:param name="columna"
+																value="ms.estadoMomentoSeguimiento.nombre" />
+															<ui:param name="nombreMenu" value="ordenarestaM" />
+															<ui:param name="tablaRender" value="tb1" />
+														</ui:include></td>
+
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:graphicImage
+										title="#{MomSegProg.estadoMomentoSeguimiento.nombre}"
+										height="16"
+										style="position: relative; vertical-align: middle;"
+										value="#{visualizarEstadoMonitoreo.estadoIconMomento(MomSegProg.estadoMomentoSeguimiento)}" />
+									<rich:spacer width="4px" />
+									<h:outputText
+										value="#{MomSegProg.estadoMomentoSeguimiento.nombre}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.estadoMonitoreo}" styleClass="label" /></td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList" value="#{listarMSP}" />
+															<ui:param name="columna"
+																value="ms.estadoMonitoreo.nombre" />
+															<ui:param name="nombreMenu"
+																value="ordenarEstadoMonitoreo2" />
+															<ui:param name="tablaRender" value="tb1" />
+														</ui:include></td>
+
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:graphicImage title="#{MomSegProg.estadoMonitoreo.nombre}"
+										height="16"
+										style="position: relative; vertical-align: middle;"
+										value="#{visualizarEstadoMonitoreo.estadoMomentoMonitoreo(MomSegProg.estadoMonitoreo)}" />
+									<rich:spacer width="4px" />
+									<h:outputText value="#{MomSegProg.estadoMonitoreo.nombre}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.notas}" styleClass="label" /></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText
+										value="#{listarMSP.CantidadNotasMActNuevas(MomSegProg.id)}" />
+								</rich:column>
+								<rich:column width="1px" styleClass="alineacionCentrada">
+									<h:commandLink action="gestionar" title="#{messages.gestionar}"
+										style="border: 0px; cursor:pointer;">
+										<h:graphicImage
+											value="/resources/modEnsayo/img/bt_EnterData.png"
+											style="border:0;" />
+										<f:param name="idMS" value="#{MomSegProg.id}" />
+									</h:commandLink>
+								</rich:column>
+							</rich:dataTable>
+						</div>
+					</a:outputPanel>
+				</h:form></td>
+		</tr>
+
+		<tr>
+			<td align="center"><h:form>
+					<a:outputPanel id="paginado1" ajaxRendered="true">
+						<ui:include
+							src="/modEnsayo/codebase/plantillas/paginado_tabla_inferior_generico.xhtml/">
+							<ui:param name="vzPaginado" value="#{listarMSP.resultCount>10}" />
+							<ui:param name="nomControladorList" value="#{listarMSP}" />
+							<ui:param name="idListado" value="tb1" />
+						</ui:include>
+					</a:outputPanel>
+				</h:form></td>
+		</tr>
+
+		<tr>
+			<td><h:form>
+					<a:outputPanel rendered="#{listarMSNP.DevolverRol().codigo != 'ecLab'}" id="tb2">
+						<table width="100%" cellpadding="0" cellspacing="0"
+							style="margin: 0px; padding: 0px;">
+							<tr>
+								<td width="100%"><s:div style="float: right;"
+										rendered="#{!listarMSNP.monitor and (listarMSNP.NombreSujetoById().estadoInclusion.id == 4 or listarMSNP.NombreSujetoById().estadoInclusion.id == 2 )}">
+										<h:commandLink action="crearMSNoProg"
+											style="border: 0px; cursor:pointer;">
+											<h:panelGrid columns="2">
+												<h:graphicImage
+													value="/resources/icons/default/acciones/adicionar.png"
+													style="border:0;" />
+												<h:outputText value="#{messages.crearMSNp}" />
+											</h:panelGrid>
+										</h:commandLink>
+									</s:div></td>
+							</tr>
+						</table>
+						<rich:panel rendered="#{empty listarMSNP.resultList}">
+							<f:facet name="header">#{messages.listadoMSNoProg}</f:facet>
+							<table class="Tabla">
+								<tr>
+									<td><h:outputText value="#{messages.noMSNoProg}" /></td>
+								</tr>
+							</table>
+						</rich:panel>
+						<div style="margin-left: 1px">
+							<rich:dataTable id="tbNP" value="#{listarMSNP.resultList}"
+								var="MomSegNoProg" width="100%"
+								rendered="#{not empty listarMSNP.resultList}">
+								<f:facet name="header">
+									<h:outputText value="#{messages.listadoMSNoProg}" />
+								</f:facet>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.nombre}" styleClass="label" /></td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList" value="#{listarMSNP}" />
+															<ui:param name="columna"
+																value="ms.momentoSeguimientoGeneral.nombre" />
+															<ui:param name="nombreMenu" value="ordenarNombresMenu1" />
+															<ui:param name="tablaRender" value="tbNP" />
+														</ui:include></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText
+										value="#{MomSegNoProg.momentoSeguimientoGeneral.nombre}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.fechaI}" styleClass="label" /></td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList" value="#{listarMSNP}" />
+															<ui:param name="columna" value="ms.fechaInicio" />
+															<ui:param name="nombreMenu"
+																value="ordenarFechaNacimientoMenu1" />
+															<ui:param name="tablaRender" value="tbNP" />
+														</ui:include></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<table width="100%">
+										<tr>
+											<td align="left"><h:outputText
+													value="#{MomSegNoProg.fechaInicio}">
+													<s:convertDateTime pattern="#{messages.patronFecha}"></s:convertDateTime>
+												</h:outputText></td>
+										</tr>
+									</table>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.estado}" styleClass="label" /></td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList" value="#{listarMSNP}" />
+															<ui:param name="columna"
+																value="ms.estadoMomentoSeguimiento.nombre" />
+															<ui:param name="nombreMenu" value="ordenarSapellidoMenu1" />
+															<ui:param name="tablaRender" value="tbNP" />
+														</ui:include></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:graphicImage
+										title="#{MomSegNoProg.estadoMomentoSeguimiento.nombre}"
+										height="16"
+										style="position: relative; vertical-align: middle;"
+										value="#{visualizarEstadoMonitoreo.estadoIconMomento(MomSegNoProg.estadoMomentoSeguimiento)}" />
+									<rich:spacer width="4px" />
+
+									<h:outputText
+										value="#{MomSegNoProg.estadoMomentoSeguimiento.nombre}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.estadoMonitoreo}" styleClass="label" /></td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList" value="#{listarMSNP}" />
+															<ui:param name="columna"
+																value="ms.estadoMonitoreo.nombre" />
+															<ui:param name="nombreMenu"
+																value="ordenarEstadoMonitoreo1" />
+															<ui:param name="tablaRender" value="tbNP" />
+														</ui:include></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:graphicImage title="#{MomSegNoProg.estadoMonitoreo.nombre}"
+										height="16"
+										style="position: relative; vertical-align: middle;"
+										value="#{visualizarEstadoMonitoreo.estadoMomentoMonitoreo(MomSegNoProg.estadoMonitoreo)}" />
+									<rich:spacer width="4px" />
+									<h:outputText value="#{MomSegNoProg.estadoMonitoreo.nombre}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.notas}" styleClass="label" /></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText
+										value="#{listarMSP.CantidadNotasMActNuevas(MomSegNoProg.id)}" />
+								</rich:column>
+								<rich:column width="1px" styleClass="alineacionCentrada">
+									<h:commandLink action="gestionar"
+										rendered="#{listarMSNP.gestionar}"
+										title="#{messages.gestionar}"
+										style="border: 0px; cursor:pointer;">
+										<h:graphicImage
+											value="/resources/modEnsayo/img/bt_EnterData.png"
+											style="border:0;" />
+										<f:param name="idMS" value="#{MomSegNoProg.id}" />
+									</h:commandLink>
+								</rich:column>
+								<rich:column width="1px" styleClass="alineacionCentrada">
+									<a:commandLink
+										rendered="#{MomSegNoProg.estadoMomentoSeguimiento.id == 2 and !listarMSNP.monitor}"
+										id="eliminarCommandLink"
+										action="#{listarMSNP.SeleccionarInstanciaSuj(MomSegNoProg.id)}"
+										oncomplete="Richfaces.showModalPanel('mpAdvertenciaEliminarMSNP')">
+										<h:graphicImage style="border:0px; cursor: pointer "
+											title="#{messages.eliminar}"
+											url="/resources/icons/default/acciones/eliminar.png">
+										</h:graphicImage>
+									</a:commandLink>
+									<h:graphicImage
+										rendered="#{MomSegNoProg.estadoMomentoSeguimiento.id != 2 or listarMSNP.monitor}"
+										style="border:0px; opacity: 0.4; "
+										title="El momento debe estar atrasado"
+										url="/resources/icons/default/acciones/eliminar.png">
+									</h:graphicImage>
+								</rich:column>
+							</rich:dataTable>
+						</div>
+					</a:outputPanel>
+				</h:form></td>
+		</tr>
+
+		<tr>
+			<td align="center"><h:form>
+					<a:outputPanel id="paginado2" ajaxRendered="true">
+						<ui:include
+							src="/modEnsayo/codebase/plantillas/paginado_tabla_inferior_generico.xhtml/">
+							<ui:param name="vzPaginado" value="#{listarMSNP.resultCount>10}" />
+							<ui:param name="nomControladorList" value="#{listarMSNP}" />
+							<ui:param name="idListado" value="tb2" />
+						</ui:include>
+					</a:outputPanel>
+				</h:form></td>
+		</tr>
+		<tr>
+			<td><h:form id="form2">
+					<rich:panel id="idGenerar"
+						rendered="#{(!listarMSP.sujeto.cronogramaEspecifico) and crearCronogramaEspecifico.puedeCrearCronogramaEspecifico() and listarMSNP.DevolverRol().codigo != 'ecLab'}">
+						<f:facet name="header">
+							<h:panelGroup>
+								<div>
+									<div align="left">#{messages.crearCronogramaEspecifico}</div>
+								</div>
+							</h:panelGroup>
+						</f:facet>
+						<div>
+
+							<h:outputText value="#{messages.fechaInicioCronograma}:"
+								styleClass="normalText" />
+							<rich:message for="fechaHasta" showDetail="false" tooltip="true"
+								style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('fechaHasta').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message>
+							<rich:spacer style="display:block" />
+
+							<rich:calendar id="fechaHasta"
+								value="#{crearCronogramaEspecifico.fechainicio}"
+								enableManualInput="false"
+								isDayEnabled='disablementFunctionPreviousEx'
+								dayStyleClass='disabledClassesProvPreviousEx'
+								datePattern="#{messages.lbl_patronFecha_modConfig}"
+								required="true" requiredMessage="#{messages.msg_requerido_ens}"
+								onexpand="previousDate(document.getElementById('form2:fechaDesde').component.getSelectedDate());Richfaces.getComponent('calendar',this).nextMonth(); Richfaces.getComponent('calendar',this).prevMonth(); return true;">
+							</rich:calendar>
+							<div style="display: none;">
+								<h:outputLabel styleClass='normalText'
+									value='#{messages.desde}:' />
+								<br />
+								<rich:calendar
+									datePattern="#{messages.lbl_patronFecha_modConfig}"
+									tabindex="12"
+									value='#{crearCronogramaEspecifico.fechaInclusion}'
+									id='fechaDesde' isDayEnabled='disablementFunction'
+									dayStyleClass='disabledClassesProv'
+									onexpand="previousDate(document.getElementById('form2:fechaHasta').component.getSelectedDate());Richfaces.getComponent('calendar',this).nextMonth(); Richfaces.getComponent('calendar',this).prevMonth(); return true;" />
+							</div>
+							<rich:spacer width="8px" />
+							<a4j:commandButton id="generar" reRender="tb1" style="margin:0px"
+								action="#{crearCronogramaEspecifico.Cronograma_Especifico()}"
+								value="#{messages.generar}" />
+						</div>
+
+
+					</rich:panel>
+				</h:form></td>
+		</tr>
+		<tr>
+			<td><h:form>
+					<div align="right">
+						<br />
+						<h:commandButton value="#{messages.salir}" style="margin:0px;"
+							action="salir" immediate="true" />
+					</div>
+				</h:form></td>
+		</tr>
+
+	</table>
+	<ui:include
+		src="/modEnsayo/ensayo_conduccion/codebase/plantillas/AdvertenciaEliminarMSNP.xhtml">
+		<ui:param name="control" value="#{listarMSNP}" />
+		<ui:param name="listaIdElementos" value="tb2" />
+
+	</ui:include>
+</ui:composition>

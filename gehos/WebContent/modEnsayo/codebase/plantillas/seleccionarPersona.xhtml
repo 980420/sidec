@@ -1,0 +1,392 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+	<script type="text/javascript">setContentTitle('#{titulo}')</script>	
+    <link href="#{facesContext.externalContext.requestContextPath}/resources/modAdmision/styles/stylesheet.css"  rel="stylesheet" type="text/css" />
+	<a:form>
+   		 <a:jsFunction name="cambiar" action="#{controlador.cambiarBusqueda()}"></a:jsFunction>
+    </a:form>        
+       <rich:messages globalOnly="true" styleClass="message"  id="globalMessage" ajaxRendered="true"/>	           
+       <table class="Tabla"  width="100%"  cellpadding="0" cellspacing="0">       	  
+       		<tr>
+       			<td>       
+			       <rich:simpleTogglePanel switchType="client"   label="#{messages.criterioBusqueda}">			       		
+			       		<table width="100%"   cellpadding="0"    cellspacing="0">
+							<tr>
+								<td class="margenSupIzq">
+									<h:form id="form1">
+									<table class="Tabla"  id="buscarPacienteN" style="#{controlador.displayBN}"
+										   cellspacing="0"  cellpadding="0">										   
+											<tr id="A" class="filSepPeq"> 								
+											    <td id="A1" 
+											        class="colSepGran">											    	
+											        <h:outputText value="#{messages.cedula}:"   style="margin:0px; padding:0px; spacing:0px"/>
+											    </td>								    
+											</tr> 											   
+											<tr> 											
+												<td class="colSepGran">													 
+													 <h:inputText styleClass="inputText"   id="cedula1"
+													 			  value="#{controlador.persona.cedula}">													 																 	
+													 </h:inputText>															  
+												</td> 												  
+											    <td>								    				        
+											 		<h:commandButton  value="#{messages.buscar}"  action="#{controlador.buscar()}" style="margin:0px;"/>											 		                    
+											 		<rich:spacer width="10"/>											 		
+													<h:commandButton value="#{messages.cancelar}" action="cancelar" style="margin:0px;"/>								
+											 	</td>											 	
+											</tr>												
+											<tr class="filSepPeq">											
+												<td colspan="2"  align="right">
+												    <rich:spacer height="2px"/>
+												    <table cellpadding="0" cellspacing="0">
+													    <tr>
+														    <td>
+																<a href="javascript:void(0);" 
+																   onclick="document.getElementById('buscarPacienteA').style.display = 'block';document.getElementById('buscarPacienteN').style.display = 'none'; document.getElementById('form2:cedula2').value = document.getElementById('form1:cedula1').value; document.getElementById('form1:cedula1').value = '';cambiar()">
+																   <table cellpadding="0" cellspacing="0">
+																    <tr>
+																	    <td>
+															      			<img src="#{facesContext.externalContext.requestContextPath}/resources/icons/default/acciones/buscar.png" 
+															      				 border="0" height="12px" width="12px"/>
+															      		</td>
+															      		<td>
+															      			<rich:spacer width="2px"  style="border:0px;"/>															      			             
+															      			<h:outputText value="#{messages.busquedaAvanzada}"/>
+															      		</td>
+															      	</tr>
+															    </table>
+															    </a>
+															 </td>
+														</tr>
+													</table>
+												</td>												
+											</tr>		      
+									</table>
+									</h:form>									
+									<h:form id="form2">
+									<table class="Tabla" id="buscarPacienteA" cellpadding="0" cellspacing="0" style="#{controlador.displayBA}">									 
+						              	<tr class="filSepPeq">			              
+							               <td class="colSepGran">
+							               		 <h:outputText value="#{messages.cedula}:" style="margin:0px; padding:0px; spacing:0px"/>
+								           </td>								           
+								           <td class="colSepGran">
+								           		<h:outputText value="#{messages.nombre}:"  style="margin:0px;"/>
+								           </td>								           
+								           <td>
+								           		<h:outputText value="#{messages.pApellido}:" style="margin:0px;"/>
+								           </td>
+								        </tr>								        
+								        <tr class="filSepGranRA">
+								        	<td class="colSepGran">
+								        		<h:inputText styleClass="inputText"  id="cedula2" 													 			 
+													 		 value="#{controlador.persona.cedula}">													 																 	
+												</h:inputText>
+								        	</td>								        	
+								        	<td class="colSepGran">
+								        		<h:inputText styleClass="dataText"  id="nombre1" style="width:152px"
+								        					 value="#{controlador.persona.nombres}"/>
+								        	</td>
+								        	<td>
+								        		<h:inputText styleClass="inputText" id="apellido1" 
+								        					 value="#{controlador.persona.apellido1}"/>
+								        	</td>
+								        </tr>  								        
+								        <tr class="filSepPeq">									           
+								           <td>
+								           		<h:outputText value="#{messages.sApellido}:" style="margin:0px;"/>
+								           </td>
+								            <td class="colSepGran">
+							               		<h:outputText value="#{messages.fechaNacimiento}:" />
+								           </td>
+								            <td >
+								           		<h:outputText value="#{messages.sexo}:" />
+								           </td>
+								        </tr> 								        
+								        <tr class="filSepGranRA">								        								        	
+								        	<td class="colSepGran">								        		
+												<h:inputText styleClass="inputText"  id="apellido2" 
+								        					 value="#{controlador.persona.apellido2}"/>
+								        	</td>
+								        	<td class="colSepGran">
+								        		<rich:calendar popup="true" 
+								        		               styleClass="dataText" 
+								        		               datePattern="#{messages.patronFecha}" 
+								        		               style="margin-top:0px; padding:0px; spacing:0px;"
+								        					   value="#{controlador.persona.fechaNacimiento}"/>
+								        	</td>
+								        	<td>
+								        		 <rich:comboBox value="#{controlador.sexo}" defaultLabel="#{messages.seleccione}"
+								        		                width="152px" enableManualInput="false"
+								        		               suggestionValues="#{controlador.sexoList}">
+								        		</rich:comboBox>
+								        	</td>
+								        </tr>
+										<tr>
+										    <td colspan="3" align="right">
+										    	
+										    	<h:commandButton value="#{messages.buscar}"  action="#{controlador.buscar()}" style="margin:0px;"/>										 		
+										 		<rich:spacer width="10px" 
+										 		             style="border:0px;"/>										 		             
+												<h:commandButton value="#{messages.cancelar}" action="cancelar" style="margin:0px;"/>
+										   	</td>
+										</tr>										
+										<tr class="filSepPeq">										
+											<td colspan="3" 
+											    align="right"> 
+											      <rich:spacer height="2px"/>
+												    <table cellpadding="0" cellspacing="0">
+													    <tr>
+														    <td> 
+															    <a href="javascript:void(0);" 
+															       onclick="document.getElementById('buscarPacienteA').style.display = 'none';document.getElementById('buscarPacienteN').style.display = 'block'; document.getElementById('form1:cedula1').value = document.getElementById('form2:cedula2').value; document.getElementById('form2:cedula2').value = '';cambiar();">
+														      			<table cellpadding="0" cellspacing="0">
+																		    <tr>
+																			    <td> 
+																	      			<img src="#{facesContext.externalContext.requestContextPath}/resources/icons/default/acciones/buscar.png" 
+																	      			     border="0" height="12px" width="12px"/>
+																		      	</td>
+																		      	<td>
+																	      			<rich:spacer width="2px" style="border:0px;"/>
+																	      			<h:outputText value="#{messages.busquedaSimple}"/>
+																	      		</td>
+																	      	</tr>
+																	    </table>
+																</a>
+															</td>
+														</tr>
+													</table>	
+											</td>											
+										</tr>
+								 	</table> 
+									</h:form>
+								</td>
+							</tr>							
+			       		</table>					       		
+			       </rich:simpleTogglePanel>  
+       			   <br/>
+       			</td>
+       		</tr>	       			
+       		<tr>
+       			<td>
+       				<h:form>
+                     <a:outputPanel  id="tb" >
+                     <table width="100%" cellpadding="0" cellspacing="0" style="margin:0px; padding:0px;">  
+                     	<tr>  
+                     		<td width="100%">                     
+		                   		<div style="float: right;">
+			                     	<h:commandLink action="crearPersona" style="border: 0px; cursor:pointer;" rendered="#{controlador.puedeCrearPersona}">	
+			                   		 	<h:panelGrid columns="2">
+				       						<h:graphicImage value="/resources/icons/default/acciones/adicionar.png"	style="border:0;"/>				       				
+				       						<h:outputText value="#{messages.crearPersona}" />
+						       			</h:panelGrid>				       			
+					       			</h:commandLink>
+				       			</div>	
+		       				</td>
+		       			</tr>
+	       			</table>		       			
+                     <ui:include src="/modAdmision/admision/codebase/plantillas/noInformacion.xhtml">
+				    	<ui:param name="rendered" value="#{not controlador.existResultados}" />
+				    	<ui:param name="titulo" value="#{messages.listadoPersonas}" />
+				    </ui:include>                    
+                     <div style="margin-left: 1px">
+				       <rich:dataTable value="#{controlador.resultList}"
+       				                   var="persona"  width="100%"       				                         				                 
+       				                   rendered="#{not empty controlador.resultList}">				       		
+				       		<f:facet name="header">
+				       			<h:outputText value="#{messages.listadoPersonas}"/>
+				       		</f:facet>				       		
+				       		<rich:column styleClass="alineacionCentrada" width="1px">
+				       			<f:facet name="header">
+				       				<h:outputText value="#{messages.foto}"/>
+				       			</f:facet>
+				       			<h:graphicImage value="/resources/modCommon/patientphotos/#{persona.foto}"
+									            width="30"  height="30" />										            							
+				       		</rich:column>				       		
+				       		<rich:column>				       		
+				       			<f:facet name="header">
+									<s:div>
+										<table width="100%"   cellpadding="0"   cellspacing="0">
+											<tr>
+												<td align="left" width="40px">												    
+												    <h:outputText value="#{messages.nombre}"   styleClass="label" />
+												</td>				
+												<td align="right">
+												    <ui:include src="/modAdmision/admision/codebase/plantillas/ordenar.xhtml" >	
+								       					<ui:param name="customList" value="#{controlador}" />	
+								       					<ui:param name="columna" value="persona.nombres" />								       					
+								       					<ui:param name="nombreMenu" value="ordenarNombreMenu" />
+								       					<ui:param name="tablaRender" value="tb" />	
+													</ui:include>								
+											    </td>
+											</tr>
+										</table>
+									</s:div>
+								</f:facet>								
+								<h:outputText value="#{persona.nombres}"/>								
+				       		</rich:column>				       		
+				       		<rich:column>				       		
+				       			<f:facet name="header">
+									<s:div>
+										<table width="100%" cellpadding="0" cellspacing="0">
+											<tr>
+												<td align="left"  width="40px">												    
+												    <h:outputText value="#{messages.pApellido}"   styleClass="label"/>
+												</td>				
+												<td align="right">
+													<ui:include src="/modAdmision/admision/codebase/plantillas/ordenar.xhtml" >	
+								       					<ui:param name="customList" value="#{controlador}" />	
+								       					<ui:param name="columna" value="persona.apellido1" />								       					
+								       					<ui:param name="nombreMenu" value="ordenarPapellidoMenu" />
+								       					<ui:param name="tablaRender" value="tb" />	
+													</ui:include>
+											    </td>
+											</tr>
+										</table>
+									</s:div>
+								</f:facet>								
+								<h:outputText value="#{persona.apellido1}"/>								
+				       		</rich:column>				       		
+				       		<rich:column>				       		
+				       			<f:facet name="header">
+									<s:div>
+										<table width="100%" cellpadding="0" cellspacing="0">
+											<tr>
+												<td align="left"    width="40px">												    
+												    <h:outputText value="#{messages.sApellido}" styleClass="label" />
+												</td>				
+												<td align="right">
+													<ui:include src="/modAdmision/admision/codebase/plantillas/ordenar.xhtml" >	
+								       					<ui:param name="customList" value="#{controlador}" />	
+								       					<ui:param name="columna" value="persona.apellido2" />								       					
+								       					<ui:param name="nombreMenu" value="ordenarSapellidoMenu" />
+								       					<ui:param name="tablaRender" value="tb" />	
+													</ui:include>													
+											    </td>
+											</tr>
+										</table>
+									</s:div>
+								</f:facet>								
+								<h:outputText value="#{persona.apellido2}"/>								
+				       		</rich:column>				       		
+				       		<rich:column>				       		
+				       			<f:facet name="header">
+									<s:div>
+										<table width="100%"  cellpadding="0" cellspacing="0">
+											<tr>
+												<td align="left"   width="40px">												    
+												    <h:outputText value="#{messages.cedula}"   styleClass="label" />
+											    </td>				
+												<td align="right">
+													<ui:include src="/modAdmision/admision/codebase/plantillas/ordenar.xhtml" >	
+								       					<ui:param name="customList" value="#{controlador}" />	
+								       					<ui:param name="columna" value="persona.cedula" />								       					
+								       					<ui:param name="nombreMenu" value="ordenarCedulaMenu" />
+								       					<ui:param name="tablaRender" value="tb" />	
+													</ui:include>													
+											    </td>
+											</tr>
+										</table>
+									</s:div>
+								</f:facet>
+								<table width="100%">
+									<tr><td align="left" width="100%">
+										<h:outputText value="#{persona.cedula}"/>
+									</td></tr>
+								</table>
+				       		</rich:column>
+				       		<rich:column>				       		
+				       			<f:facet name="header">
+									<s:div>
+										<table width="100%" cellpadding="0" cellspacing="0">
+											<tr>
+												<td align="left"   width="40px">												    
+												    <h:outputText value="#{messages.fechaNacimiento}"  styleClass="label" />
+											    </td>				
+												<td align="right">
+													<ui:include src="/modAdmision/admision/codebase/plantillas/ordenar.xhtml" >	
+								       					<ui:param name="customList" value="#{controlador}" />	
+								       					<ui:param name="columna" value="persona.fechaNacimiento" />								       					
+								       					<ui:param name="nombreMenu" value="ordenarFechaMenu" />
+								       					<ui:param name="tablaRender" value="tb" />	
+													</ui:include>													
+											    </td>
+											</tr>
+										</table>
+									</s:div>
+								</f:facet>
+								<table width="100%">
+									<tr><td align="left">
+										<h:outputText value="#{persona.fechaNacimiento}">
+											<s:convertDateTime pattern="#{messages.patronFecha}"></s:convertDateTime>
+										</h:outputText>
+									</td></tr>
+								</table>
+				       		</rich:column>
+				       		<rich:column>				       		
+				       			<f:facet name="header">
+									<s:div>
+										<table width="100%" cellpadding="0"  cellspacing="0">
+											<tr>
+												<td align="left" width="40px">												    
+												    <h:outputText value="#{messages.sexo}"  styleClass="label" />
+											    </td>				
+												<td align="right">
+													<ui:include src="/modAdmision/admision/codebase/plantillas/ordenar.xhtml" >	
+								       					<ui:param name="customList" value="#{controlador}" />	
+								       					<ui:param name="columna" value="persona.sexo.valor" />								       					
+								       					<ui:param name="nombreMenu" value="ordenarSexoMenu" />
+								       					<ui:param name="tablaRender" value="tb" />	
+													</ui:include>													
+											    </td>
+											</tr>
+										</table>
+									</s:div>
+								</f:facet>								
+								<h:outputText value="#{persona.sexo.abreviatura}"/>								
+				       		</rich:column>	
+				       		<rich:column width="1px" styleClass="alineacionCentrada" title="#{messages.seleccionar}" rendered="#{controlador.confirmarSeleccion}">
+					       		<a:region id="regionPadre">
+						       		 <a:commandLink action="#{controlador.setPersonaSeleccionada(persona)}" style="border: 0px; cursor:pointer;" oncomplete="#{rich:component('advertencia_modal')}.show()"
+						       		 	ajaxSingle="true" immediate="true">				       				   
+					       				<a:status id="statusPadre" for="regionPadre">
+			       							<f:facet name="start">
+			       								<h:graphicImage value="/resources/icons/default/acciones/loading_small.gif" style="border: 0px;" />
+			       							</f:facet>
+			       							<f:facet name="stop">
+			       								<h:graphicImage value="/resources/icons/default/acciones/seleccionar_uno.png" style="border: 0px; cursor:pointer;">
+							       				 </h:graphicImage>
+			       							</f:facet>
+			       						</a:status>	
+						       		</a:commandLink>
+						       	</a:region>
+				       		</rich:column>
+				       		<rich:column width="1px" styleClass="alineacionCentrada" title="#{messages.seleccionar}" rendered="#{not controlador.confirmarSeleccion}">
+					       		 <h:commandLink action="#{controlador.setPersonaSeleccionada(persona)}" style="border: 0px; cursor:pointer;">				       				   
+					       				<h:graphicImage value="/resources/icons/default/acciones/seleccionar_uno.png"	style="border:0;"/>	
+					       		</h:commandLink>
+				       		</rich:column>
+				       </rich:dataTable>
+				       	</div>
+					</a:outputPanel>
+       				   <br/>
+       				</h:form>
+       			</td>
+       		</tr>       		
+       		<tr class="filSepGranRA">
+       			<td align="center">
+	       			<h:form> 
+	       				<a:outputPanel id="paginado" ajaxRendered="true">
+		       				<ui:include src="/modAdmision/admision/codebase/plantillas/paginado.xhtml" >	
+		       					<ui:param name="customList" value="#{controlador}" />		
+							</ui:include>			
+	      				</a:outputPanel>
+	      			</h:form> 
+       				<br/>
+       			</td>
+       		</tr>
+       	</table>
+</ui:composition>

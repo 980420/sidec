@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<OIDs>                    
+  <HIS                      oid="2.16.840.1.113883.3.299.1"/>
+  <InstitucionSanitaria     oid="2.16.840.1.113883.3.299.1.0"/>
+  <DocumentoClinico         oid="2.16.840.1.113883.3.299.1.0.1"/>              <!-- Espacio de nombres para los documentos clinicos -->
+  <DocumentoClinicoCDA      oid="2.16.840.1.113883.3.299.1.0.1.1"/>            <!-- Espacio de nombres para los documentos clinicos CDA-->
+  <NumeroDeHistoriaClinica  oid="2.16.840.1.113883.3.299.1.0.3"/>              <!-- Espacio de nombres para los números de HC -->
+  <NumeroDeHistoriaClinicaO oid="2.16.840.1.113883.3.299.1.0.3"/>              <!-- Espacio de nombres para los números de HCO -->
+  <NumeroDeHistoriaClinicaI oid="2.16.840.1.113883.3.299.1.0.3"/>              <!-- Espacio de nombres para los números de HCI -->
+  <NumeroDeHistoriaClinicaP oid="2.16.840.1.113883.3.299.1.0.3"/>              <!-- Espacio de nombres para los números de HCP -->
+  <PersonaInstitucional     oid="2.16.840.1.113883.3.299.1.0.4"/>              <!-- Espacio de nombres para el personal del Hospital -->
+  <TecnicoSanitario 		oid="94.6.27.27"/>								   <!-- Espacio de nombres para los tecnicos sanitarios -->
+</OIDs>

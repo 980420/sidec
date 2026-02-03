@@ -1,0 +1,257 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}">
+
+
+	<ui:define name="body">
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+		<style type="text/css">
+.rich-tabpanel {
+	white-space: nowrap !IMPORTANT;
+}
+
+.filSepPeq {
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+.filSepPeq td {
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+.colSepGran {
+	padding-right: 25px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+.colSepPeq {
+	padding-right: 9px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+.colSepImg {
+	padding-right: 6px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+filSepGran td {
+	padding-bottom: 8px;
+	vertical-align: top;
+}
+
+.filSepGranRA td {
+	padding-bottom: 8px;
+	vertical-align: top;
+}
+
+.Tabla {
+	border: 0px;
+	vertical-align: top;
+	text-align: left;
+	padding: 0px;
+	spacing: 0px;
+}
+
+.margenSupIzq {
+	padding-right: 7px;
+	padding-top: 10px;
+	padding-bottom: 8px;
+	padding-left: 8px;
+}
+
+.noAvailableDay {
+	color: red !important;
+	text-decoration: line-through;
+}
+</style>
+		<script type="text/javascript">setContentTitle('Modificar transformación')</script>
+		<s:div id="pagModificar" style="text-align: left;" rendered="true">
+			<rich:panel>
+				<f:facet name="header">
+					<h:panelGroup>
+						<h:outputText value="Modificar transformación '#{editTransf.transfSel.nombre}'"></h:outputText>
+					</h:panelGroup>
+				</f:facet>
+				<h:form id="editar" enctype="multipart/form-data">
+					<a4j:outputPanel ajaxRendered="true">
+						<rich:messages styleClass="message" for="buttonAceptar"
+							ajaxRendered="true" />
+						<h:messages globalOnly="true" styleClass="message"
+							id="globalMessages" />
+					</a4j:outputPanel>
+					<s:validateAll>
+						<table cellpadding="0px" cellspacing="0px" border="0px"
+							width="100%">
+							<tr>
+								<td width="8px"></td>
+								<td><rich:panel>
+										<f:facet name="header">Fichero origen</f:facet>
+										<table cellpadding="0" cellspacing="0" border="0">
+											<tr>
+												<td height="10px"></td>
+											</tr>
+											<tr>
+												<td><rich:spacer width="6px" /></td>
+												<td><h:outputLabel value="#{messages.lbl_direccion}"></h:outputLabel><rich:message
+														for="addExcel" showDetail="false" tooltip="true"
+														style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('addExcel').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message> <br />
+													<s:fileUpload id="addExcel" accept="*.*" tabindex="1"
+														data="#{editTransf.data}"
+														fileName="#{editTransf.forigen.nombre}" required="true"/></td>
+												<td><rich:spacer width="6px" /></td>
+											</tr>
+										</table>
+
+										<rich:spacer height="6px" style="display: block" />
+									</rich:panel> <rich:spacer height="13px" style="display: block" /> <rich:panel>
+										<f:facet name="header">#{messages.lbl_conexionBD}</f:facet>
+										<table cellpadding="0px" cellspacing="0px" border="0px">
+											<tr>
+												<td height="10px" />
+											</tr>
+											<tr>
+												<td><rich:spacer width="7px" /></td>
+												<td><h:outputLabel value="#{messages.lbl_dir_servidor}" />
+													<rich:message for="nameserver" showDetail="false"
+														tooltip="true" style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('nameserver').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message> <br /> <h:inputText id="nameserver" tabindex="2"
+														requiredMessage="Valor requerido" required="true"
+														value="#{editTransf.con.nombreServer}"
+														style="width:148px;" /> <rich:spacer height="6"
+														style="display:block"></rich:spacer></td>
+												<td><rich:spacer width="25px" /></td>
+
+												<td><h:outputLabel value="#{messages.lbl_puerto}"></h:outputLabel> <rich:message
+														for="puerto" showDetail="false" tooltip="true"
+														style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('puerto').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message><br /> <h:inputText tabindex="2" id="puerto" 
+														value="#{editTransf.con.puerto}" required="true"
+														requiredMessage="Valor requerido" style="width:148px;" />
+													<rich:spacer height="5" style="display:block"></rich:spacer></td>
+
+												<td><rich:spacer width="25px" /></td>
+
+												<td><h:outputLabel value="#{messages.lbl_nombreBD}"></h:outputLabel>
+													<rich:message for="nameBD" showDetail="false"
+														tooltip="true" style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('nameBD').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message><br /> <h:inputText tabindex="3" id="nameBD"
+														requiredMessage="Valor requerido" required="true"
+														value="#{editTransf.con.nombreBD}" style="width:148px;" />
+													<rich:spacer height="5" style="display:block"></rich:spacer></td>
+												<td><rich:spacer width="7px" /></td>
+											</tr>
+
+											<tr>
+												<td width="7px" />
+												<td><h:outputLabel value="#{messages.lbl_usuario}"></h:outputLabel> <rich:message
+														for="user" showDetail="false" tooltip="true"
+														style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('user').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message><br /> <h:inputText id="user" tabindex="4"
+														requiredMessage="Valor requerido" required="true"
+														value="#{editTransf.con.user}"
+														style="width:148px; display:block" /> <rich:spacer
+														height="6"></rich:spacer></td>
+
+												<td style="width: 25px"></td>
+
+												<td><h:outputLabel value="#{messages.lbl_contrasenna}"></h:outputLabel>
+													<rich:message for="passw" showDetail="false" tooltip="true"
+														style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('passw').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message><br /> <h:inputSecret tabindex="5" id="passw"
+														value="#{editTransf.con.pass}"
+														requiredMessage="Valor requerido" required="true"
+														style="width:148px;height: 10.9px;" /> <rich:spacer
+														height="5" style="display:block"></rich:spacer></td>
+												<td><rich:spacer height="3" style="display:block"></rich:spacer></td>
+											</tr>
+										</table>
+
+										<rich:spacer height="4px" style="display: block" />
+									</rich:panel></td>
+								<td width="8px"></td>
+							</tr>
+						</table>
+					</s:validateAll>
+					<!-- 					<rich:spacer height="10" style="display: block" /> -->
+					<table cellpadding="0" cellspacing="0" border="0" align="right"
+						style="margin-top: 17px; margin-right: 0px">
+						<tr>
+							<td><h:commandButton tabindex="5" value="#{messages.lbl_acpetar}"
+									id="buttonAceptar"
+									style="margin-bottom: 0px; margin-right: 10px; margin-left: 0px; margin-top: 8px"
+									action="#{editTransf.modificarTransf()}" /></td>
+							<td><h:commandButton value="#{messages.lbl_cancelar}" tabindex="6"
+									immediate="true"
+									style="margin-bottom: 0px; margin-right: 0px; margin-left: 0px; margin-top: 8px"
+									action="cancelar" propagation="end" /></td>
+						</tr>
+					</table>
+				</h:form>
+			</rich:panel>
+		</s:div>
+	</ui:define>
+</ui:composition>

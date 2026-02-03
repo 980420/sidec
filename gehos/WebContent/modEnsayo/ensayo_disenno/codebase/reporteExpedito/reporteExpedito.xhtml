@@ -1,0 +1,1452 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib">
+
+<h:head></h:head>
+<body>
+	<rich:simpleTogglePanel label="#{messages.lbl_informacion_general}"
+		switchType="client" opened="true">
+		<a4j:outputPanel id="combosfase">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td><h:outputText value="#{messages.lbl_protocolo_titulo}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{}"
+							style="resize: vertical; width : 259px;" disabled="true"></h:inputTextarea></td>
+						<td><rich:spacer width="25px"></rich:spacer></td>
+					<td><h:outputText value="#{messages.lbl_codigo_estudio}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{repor}" style="resize: vertical; width : 159px;"
+							disabled="true"></h:inputTextarea></td>
+						<td><rich:spacer width="25px"></rich:spacer></td>
+					<td><h:outputText value="#{messages.lbl_fase}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{repor}" style="resize: vertical; width : 100px;"
+							disabled="true"></h:inputTextarea></td>
+				</tr>
+
+			</table>
+		</a4j:outputPanel>
+
+		<a4j:outputPanel id="combosfase">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td><h:outputText value="#{messages.lbl_nombre_apellidosN}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{repor}" style="resize: vertical; width : 180px;"
+							disabled="true"></h:inputTextarea></td>
+						<td><rich:spacer width="25px"></rich:spacer></td>
+					<td><h:outputText value="#{messages.lbl_profesion}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{repor}" style="resize: vertical; width : 130px;"
+							disabled="true"></h:inputTextarea></td>
+						<td><rich:spacer width="25px"></rich:spacer></td>
+					<td><h:outputText value="#{messages.lbl_direccion_telefono}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{repor}" style="resize: vertical; width : 259px;"
+							disabled="true"></h:inputTextarea></td>
+						<td><rich:spacer width="25px"></rich:spacer></td>
+					<td><h:outputText value="#{messages.lbl_institucion}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{repor}" style="resize: vertical; width : 140px;"
+							disabled="true"></h:inputTextarea></td>
+						<td><rich:spacer width="25px"></rich:spacer></td>
+					<td><h:outputText value="#{messages.lbl_provincia}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{repor}" style="resize: vertical; width : 140px;"
+							disabled="true"></h:inputTextarea></td>
+				</tr>
+
+			</table>
+		</a4j:outputPanel>
+
+	</rich:simpleTogglePanel>
+	
+	<rich:simpleTogglePanel label="#{messages.lbl_informacion_paciente}"
+		switchType="client" opened="true">
+		<a4j:outputPanel id="combosfase">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td><h:outputText value="#{messages.lbl_iniciales_paciente}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{}"
+							style="resize: vertical; width : 170px;" disabled="true"></h:inputTextarea></td>
+						
+						<td><rich:spacer width="25px"></rich:spacer></td>
+						
+					<td><h:outputText value="#{messages.lbl_numero_inclusion}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{repor}" style="resize: vertical; width : 170px;"
+							disabled="true"></h:inputTextarea></td>
+						
+						<td><rich:spacer width="25px"></rich:spacer></td>
+						
+					<td><h:outputText value="#{messages.lbl_fecha_inclusion}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{repor}" style="resize: vertical; width : 170px;"
+							disabled="true"></h:inputTextarea></td>
+				</tr>
+
+			</table>
+		</a4j:outputPanel>
+
+		<a4j:outputPanel id="combosfase">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td><h:outputText value="#{messages.lbl_f_nacimiento}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{repor}" style="resize: vertical; width : 150px;"
+							disabled="true"></h:inputTextarea></td>
+						<td><rich:spacer width="25px"></rich:spacer></td>
+					<td><h:outputText value="#{messages.lbl_edad}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{repor}" style="resize: vertical; width : 140x;"
+							disabled="true"></h:inputTextarea></td>
+						<td><rich:spacer width="25px"></rich:spacer></td>
+					<td><h:outputText value="#{messages.lbl_sexo}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{repor}" style="resize: vertical; width : 140px;"
+							disabled="true"></h:inputTextarea></td>
+						<td><rich:spacer width="25px"></rich:spacer></td>
+					<td><h:outputText value="#{messages.lbl_peso}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{repor}" style="resize: vertical; width : 140px;"
+							disabled="true"></h:inputTextarea></td>
+						<td><rich:spacer width="25px"></rich:spacer></td>
+					<td><h:outputText value="#{messages.lbl_talla}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{repor}" style="resize: vertical; width : 140px;"
+							disabled="true"></h:inputTextarea></td>
+							<td><rich:spacer width="25px"></rich:spacer></td>
+					<td><h:outputText value="#{messages.lbl_raza}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{repor}" style="resize: vertical; width : 140px;"
+							disabled="true"></h:inputTextarea></td>
+				</tr>
+
+			</table>
+		</a4j:outputPanel>
+
+	</rich:simpleTogglePanel>
+	<rich:simpleTogglePanel label="#{messages.lbl_informacion_evento}"
+		switchType="client" opened="true">
+		<a4j:outputPanel id="combosfase">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td><h:outputText value="#{messages.lbl_evento_adverso}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{}"
+							style="resize: vertical; width : 260px;" disabled="true"></h:inputTextarea></td>
+						
+						<td><rich:spacer width="25px"></rich:spacer></td>
+						
+					<td><h:outputText value="#{messages.lbl_intensidad}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{repor}" style="resize: vertical; width : 140px;"
+							disabled="true"></h:inputTextarea></td>
+						
+						<td><rich:spacer width="25px"></rich:spacer></td>
+						
+					<td><h:outputText value="#{messages.lbl_consecuencias_paciente}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{repor}" style="resize: vertical; width : 260px;"
+							disabled="true"></h:inputTextarea></td>
+				</tr>
+
+			</table>
+		</a4j:outputPanel>
+
+		<a4j:outputPanel id="combosfase">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td><h:outputText value="#{messages.lbl_descripcion}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{repor}" style="resize: vertical; width : 500px;"
+							disabled="true"></h:inputTextarea></td>
+						<td><rich:spacer width="25px"></rich:spacer></td>
+					<td><h:outputText value="#{messages.lbl_relacion}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{repor}" style="resize: vertical; width : 210px;"
+							disabled="true"></h:inputTextarea></td>
+						
+					
+					
+					
+					
+				</tr>
+
+			</table>
+		</a4j:outputPanel>
+
+	</rich:simpleTogglePanel>
+	<rich:simpleTogglePanel label="#{messages.lbl_informacion_producto_estudio}"
+		switchType="client" opened="true">
+		<a4j:outputPanel id="combosfase">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td><h:outputText value="#{messages.lbl_prod_investigacion"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{}"
+							style="resize: vertical; width : 170px;" disabled="false"></h:inputTextarea></td>
+						
+						<td><rich:spacer width="25px"></rich:spacer></td>
+						
+					<td><h:outputText value="#{messages.lbl_lote}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{}" style="resize: vertical; width : 150px;"
+							disabled="false"></h:inputTextarea></td>
+						
+						<td><rich:spacer width="25px"></rich:spacer></td>
+						
+					<td><h:outputText value="#{messages.lbl_f_caducidad}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{}" style="resize: vertical; width : 150px;"
+							disabled="false"></h:inputTextarea></td>
+							
+					<td><rich:spacer width="25px"></rich:spacer></td>
+					
+					<td><h:outputText value="#{messages.lbl_i_tratamiento}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{}" style="resize: vertical; width : 150px;"
+							disabled="false"></h:inputTextarea></td>
+					
+					<td><rich:spacer width="25px"></rich:spacer></td>		
+							
+					<td><h:outputText value="#{messages.lbl_cant_dosisR"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{}" style="resize: vertical; width : 150px;"
+							disabled="false"></h:inputTextarea></td>		
+				</tr>
+
+			</table>
+		</a4j:outputPanel>
+
+		<a4j:outputPanel id="combosfase">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td><h:outputText value="#{messages.lbl_f_ulti_dosisR}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{}" style="resize: vertical; width : 150px;"
+							disabled="false"></h:inputTextarea></td>
+							
+						<td><rich:spacer width="25px"></rich:spacer></td>
+						
+					<td><h:outputText value="#{messages.lbl_dosis_Admin}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{}" style="resize: vertical; width : 150px;"
+							disabled="false"></h:inputTextarea></td>
+							
+					<td><rich:spacer width="25px"></rich:spacer></td>
+						
+					<td><h:outputText value="#{messages.lbl_via_Admin}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{}" style="resize: vertical; width : 150px;"
+							disabled="false"></h:inputTextarea></td>
+							
+					<td><rich:spacer width="25px"></rich:spacer></td>
+						
+					<td><h:outputText value="#{messages.lbl_evento}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{}" style="resize: vertical; width : 150px;"
+							disabled="false"></h:inputTextarea></td>
+							
+					<td><rich:spacer width="25px"></rich:spacer></td>
+						
+					<td><h:outputText value="#{messages.lbl_t_Aparicion}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{}" style="resize: vertical; width : 150px;"
+							disabled="false"></h:inputTextarea></td>
+						
+					
+					
+					
+					
+				</tr>
+
+			</table>
+		</a4j:outputPanel>
+		
+		<a4j:outputPanel id="combosfase">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td><h:outputText value="#{messages.lbl_conductaEAS}"
+							styleClass="normalText" /><br /> <rich:comboBox
+							suggestionValues="#{controladoraVariable.llenarUsers()}"
+							value="#{controladoraVariable.usuario}"
+							defaultLabel="#{messages.cbxSeleccionPorDefecto}" id="usuario">
+						</rich:comboBox></td>
+							
+						<td><rich:spacer width="25px"></rich:spacer></td>
+						
+					<td><h:outputText value="#{messages.lbl_modificacionI}"
+							styleClass="normalText" /><br /> <rich:comboBox
+							suggestionValues="#{controladoraVariable.llenarUsers()}"
+							value="#{controladoraVariable.usuario}"
+							defaultLabel="#{messages.cbxSeleccionPorDefecto}" id="usuario">
+						</rich:comboBox></td>
+							
+					<td><rich:spacer width="25px"></rich:spacer></td>
+						
+											
+					<td><h:outputText value="#{messages.lbl_EA_reaparecio}"
+							styleClass="normalText" /> <rich:comboBox
+							suggestionValues="#{controladoraVariable.llenarUsers()}"
+							value="#{controladoraVariable.usuario}"
+							defaultLabel="#{messages.cbxSeleccionPorDefecto}" id="usuario">
+						</rich:comboBox></td>
+				</tr>
+
+			</table>
+		</a4j:outputPanel>
+
+	</rich:simpleTogglePanel>
+	
+	<rich:simpleTogglePanel label="#{messages.lbl_resultado}"
+		switchType="client" opened="true">
+		<a4j:outputPanel id="combosfase">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td><h:outputText value="#{messages.lbl_secuela"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{}"
+							style="resize: vertical; width : 200px;" disabled="false"></h:inputTextarea></td>
+						
+						<td><rich:spacer width="25px"></rich:spacer></td>
+						
+					<td><h:outputText value="#{messages.lbl_tipo_resultado}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{}" style="resize: vertical; width : 150px;"
+							disabled="false"></h:inputTextarea></td>
+						
+						
+							
+							
+							
+							
+				</tr>
+
+			</table>
+		</a4j:outputPanel>
+
+		
+		
+		
+
+	</rich:simpleTogglePanel>
+	
+	<rich:simpleTogglePanel label="#{messages.lbl_medicacion_concamitante_usada}" switchType="client" opened="true" >
+						<a4j:outputPanel id="datos">					
+						<a4j:region id="hacorg2">				
+						
+						<table cellpadding="0px" cellspacing="0px" border="0px" id="entrada">
+						<tr>		
+							<td>
+							<h:outputText value="#{messages.lbl_medicamento}:" styleClass="normalText" />
+							 <rich:message for="nombreinter"
+									showDetail="false" tooltip="true" style="color:red;">
+									<f:facet name="errorMarker">
+										<h:outputText value="*"
+											title="#{facesMessages.getCurrentMessagesForControl('nombreinter').get(0).getDetail()}" />
+									</f:facet>
+									</rich:message>
+							
+							</td>
+							<td><rich:spacer width="25px" style="display: block" /></td>
+							 <td>
+							 <h:outputText value="#{messages.lbl_dosis}:" styleClass="normalText" />
+							 <rich:message for="Listaintervencion"
+								showDetail="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('Listaintervencion').get(0).getDetail()}" />
+								</f:facet>
+								</rich:message>
+							 </td>
+							 <td><rich:spacer width="25px" style="display: block" /></td>
+							 <td>
+							 <h:outputText value="#{messages.lbl_frecuencia}:" styleClass="normalText" />
+							 <rich:message for="Listaintervencion"
+								showDetail="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('Listaintervencion').get(0).getDetail()}" />
+								</f:facet>
+								</rich:message>
+							 </td>
+							 <td><rich:spacer width="25px" style="display: block" /></td>
+							 <td>
+							 <h:outputText value="#{messages.lbl_via_admon}:" styleClass="normalText" />
+							 <rich:message for="Listaintervencion"
+								showDetail="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('Listaintervencion').get(0).getDetail()}" />
+								</f:facet>
+								</rich:message>
+							 </td>
+							 <td><rich:spacer width="25px" style="display: block" /></td>
+							 <td>
+							 <h:outputText value="#{messages.lbl_fecha_ini}:" styleClass="normalText" />
+							 <rich:message for="Listaintervencion"
+								showDetail="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('Listaintervencion').get(0).getDetail()}" />
+								</f:facet>
+								</rich:message>
+							 </td>
+							 <td><rich:spacer width="25px" style="display: block" /></td>
+							 <td>
+							 <h:outputText value="#{messages.lbl_fecha_fin}:" styleClass="normalText" />
+							 <rich:message for="Listaintervencion"
+								showDetail="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('Listaintervencion').get(0).getDetail()}" />
+								</f:facet>
+								</rich:message>
+							 </td>
+							 <td><rich:spacer width="25px" style="display: block" /></td>
+							 <td>
+							 <h:outputText value="#{messages.lbl_indicacion}:" styleClass="normalText" />
+							 <rich:message for="Listaintervencion"
+								showDetail="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('Listaintervencion').get(0).getDetail()}" />
+								</f:facet>
+								</rich:message>
+							 </td>
+							 <td><rich:spacer width="25px" style="display: block" /></td>
+						</tr>
+						<tr>	
+							<td>
+							<h:inputText value="#{modificarEstudioControlador.nombreintervencion}" styleClass="dataText" id="nombreinter" required="#{!empty param['forma:addinverciones']}" />
+								
+							 </td>
+							<td><rich:spacer width="25px" style="display: block" /></td>		
+						
+						 
+							<td>
+							<h:inputText value="#{modificarEstudioControlador.nombreintervencion}" styleClass="dataText" id="nombreinter" required="#{!empty param['forma:addinverciones']}" />
+					
+							</td>
+							<td><rich:spacer width="25px" style="display: block" /></td>
+							<td>
+							<h:inputText value="#{modificarEstudioControlador.nombreintervencion}" styleClass="dataText" id="nombreinter" required="#{!empty param['forma:addinverciones']}" />
+					
+							</td>
+							<td><rich:spacer width="25px" style="display: block" /></td>
+							<td>
+							<h:inputText value="#{modificarEstudioControlador.nombreintervencion}" styleClass="dataText" id="nombreinter" required="#{!empty param['forma:addinverciones']}" />
+					
+							</td>
+							<td><rich:spacer width="25px" style="display: block" /></td>
+							<td>
+							<h:inputText value="#{modificarEstudioControlador.nombreintervencion}" styleClass="dataText" id="nombreinter" required="#{!empty param['forma:addinverciones']}" />
+					
+							</td>
+							<td><rich:spacer width="25px" style="display: block" /></td>
+							<td>
+							<h:inputText value="#{modificarEstudioControlador.nombreintervencion}" styleClass="dataText" id="nombreinter" required="#{!empty param['forma:addinverciones']}" />
+					
+							</td>
+							<td><rich:spacer width="25px" style="display: block" /></td>
+							<td>
+							<h:inputText value="#{modificarEstudioControlador.nombreintervencion}" styleClass="dataText" id="nombreinter" required="#{!empty param['forma:addinverciones']}" />
+					
+							</td>
+							
+						 
+						 </tr>
+						
+					</table>
+					
+					
+					<div align="right">
+								<a4j:commandButton id="addinverciones" value="#{messages.btn_adicionarIntervenciones_ens}" 
+												   action="#{modificarEstudioControlador.addintervencion()}" style="margin-bottom: 0px; margin-top:8px; margin-left:0px;" 
+												   reRender="interv2,esteprimos,lista,hacorg2,datos">
+								</a4j:commandButton>
+						</div>	
+						</a4j:region>
+						</a4j:outputPanel>
+					<rich:spacer height="5px" style="display: block" />	
+					<a4j:outputPanel id="esteprimos">
+		       		<rich:panel rendered="#{empty modificarEstudioControlador.ListaIntervencionSinEliminar()}">
+		       			<f:facet name="header"><h:outputText value="#{messages.lbl_listadoMedicacion}"/></f:facet>	
+						<h:outputText value="#{messages.msg_noInformacion_ens}"/>
+					</rich:panel>
+					<a4j:region id="interv2">
+						<rich:dataTable  rendered="#{not empty modificarEstudioControlador.ListaIntervencionSinEliminar()}" width="100%" id="lista"				   
+							value="#{modificarEstudioControlador.ListaIntervencionSinEliminar()}" var="result" columnsWidth="50%,50%,0*" rowKeyVar="row">
+							<f:facet name="header"><h:outputText value="#{messages.lbl_listadoIntervencion_ens}"/></f:facet>					
+									<h:column whidt="25%">
+							<f:facet name="header">
+								<s:div>
+									<s:div style="float: left; valign: bottom;">
+										<h:outputText value="#{lbl_medicamento}:" />
+									</s:div>
+									<s:div style="float: right;">
+
+
+
+									</s:div>
+								</s:div>
+							</f:facet>
+							<h:outputText value="#{result.nombre}">
+
+							</h:outputText>
+						</h:column>
+						<h:column whidt="25%">
+							<f:facet name="header">
+								<s:div>
+									<s:div style="float: left; valign: bottom;">
+										<h:outputText value="lbl_dosis" />
+									</s:div>
+									<s:div style="float: right;">
+
+
+
+									</s:div>
+								</s:div>
+							</f:facet>
+							<h:outputText value="#{result.ETipoIntervencion.nombre}">
+
+							</h:outputText>
+						</h:column>
+						<h:column whidt="25%">
+							<f:facet name="header">
+								<s:div>
+									<s:div style="float: left; valign: bottom;">
+										<h:outputText value="lbl_frecuencia" />
+									</s:div>
+									<s:div style="float: right;">
+
+
+
+									</s:div>
+								</s:div>
+							</f:facet>
+							<h:outputText value="#{result.ETipoIntervencion.nombre}">
+
+							</h:outputText>
+						</h:column>
+						<h:column whidt="25%">
+							<f:facet name="header">
+								<s:div>
+									<s:div style="float: left; valign: bottom;">
+										<h:outputText value="lbl_via_admon" />
+									</s:div>
+									<s:div style="float: right;">
+
+
+
+									</s:div>
+								</s:div>
+							</f:facet>
+							<h:outputText value="#{result.ETipoIntervencion.nombre}">
+
+							</h:outputText>
+						</h:column>
+						<h:column whidt="25%">
+							<f:facet name="header">
+								<s:div>
+									<s:div style="float: left; valign: bottom;">
+										<h:outputText value="lbl_fecha_ini" />
+									</s:div>
+									<s:div style="float: right;">
+
+
+
+									</s:div>
+								</s:div>
+							</f:facet>
+							<h:outputText value="#{result.ETipoIntervencion.nombre}">
+
+							</h:outputText>
+						</h:column>
+						<h:column whidt="25%">
+							<f:facet name="header">
+								<s:div>
+									<s:div style="float: left; valign: bottom;">
+										<h:outputText value="lbl_fecha_fin" />
+									</s:div>
+									<s:div style="float: right;">
+
+
+
+									</s:div>
+								</s:div>
+							</f:facet>
+							<h:outputText value="#{result.ETipoIntervencion.nombre}">
+
+							</h:outputText>
+						</h:column>
+						<h:column whidt="25%">
+							<f:facet name="header">
+								<s:div>
+									<s:div style="float: left; valign: bottom;">
+										<h:outputText value="lbl_indicacion" />
+									</s:div>
+									<s:div style="float: right;">
+
+
+
+									</s:div>
+								</s:div>
+							</f:facet>
+							<h:outputText value="#{result.ETipoIntervencion.nombre}">
+
+							</h:outputText>
+						</h:column>
+						<h:column >
+											<div align="center">
+												<a4j:commandLink action="#{modificarEstudioControlador.eliminarInterv(row)}" 
+													reRender="interv2,esteprimos,lista">
+													<h:graphicImage title="#{messages.eliminar}" 
+												   					value="/resources/icons/default/acciones/eliminar.png"
+												   				    style="border: 0px; cursor:pointer;">	
+															        											       								
+													</h:graphicImage>
+												</a4j:commandLink>
+											</div>
+									</h:column>
+									
+															
+			            </rich:dataTable>
+			            <br/>
+			          
+			             </a4j:region>
+			               <rich:modalPanel id="eliminarPanel" width="290" height="125">
+						<f:facet name="header" id="panelEliminarHeader" >
+								<h:outputText value="#{messages.eliminarheader}" />
+						</f:facet>
+						<f:facet name="controls">
+					     <h:panelGroup>
+					      <h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+					       style="cursor:pointer" id="hidelink" />
+					      <rich:componentControl for="eliminarPanel" attachTo="hidelink"
+					       operation="hide" event="onclick" />
+					     </h:panelGroup>
+					    </f:facet>
+						<s:div id="panelEliminarBody" >
+							<div align="left">
+								<h:graphicImage	value="/resources/icons/default/acciones/advertencia.png" /> 
+								<rich:spacer width="4px" /> 
+								<h:outputText value="#{messages.eliminar}" />
+								<br/>
+								<h:outputText value="#{messages.continuar}" />
+							</div>
+							<br />
+							<div align="center">
+								<h:commandButton action="#{modificarEstudioControlador.eliminarInterv()}" 
+								value="#{messages.si}" onclick="Richfaces.hideModalPanel('eliminarPanel')">
+								</h:commandButton>
+								
+								<input type="button" value="#{messages.no}" style="margin-left: 3px;"
+									onclick="Richfaces.hideModalPanel('eliminarPanel')"/>
+							</div>
+						</s:div>
+						
+					</rich:modalPanel>
+		     
+		       <br/>
+			   
+		       </a4j:outputPanel>
+			           	 
+					</rich:simpleTogglePanel>
+					
+			<rich:simpleTogglePanel label="#{messages.lbl_medicacion_concamitante_reciente}" switchType="client" opened="true" >
+						<a4j:outputPanel id="datos">					
+						<a4j:region id="hacorg2">				
+						
+						<table cellpadding="0px" cellspacing="0px" border="0px" id="entrada">
+						<tr>		
+							<td>
+							<h:outputText value="#{messages.lbl_medicamento}:" styleClass="normalText" />
+							 <rich:message for="nombreinter"
+									showDetail="false" tooltip="true" style="color:red;">
+									<f:facet name="errorMarker">
+										<h:outputText value="*"
+											title="#{facesMessages.getCurrentMessagesForControl('nombreinter').get(0).getDetail()}" />
+									</f:facet>
+									</rich:message>
+							
+							</td>
+							<td><rich:spacer width="25px" style="display: block" /></td>
+							 <td>
+							 <h:outputText value="#{messages.lbl_dosis}:" styleClass="normalText" />
+							 <rich:message for="Listaintervencion"
+								showDetail="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('Listaintervencion').get(0).getDetail()}" />
+								</f:facet>
+								</rich:message>
+							 </td>
+							 <td><rich:spacer width="25px" style="display: block" /></td>
+							 <td>
+							 <h:outputText value="#{messages.lbl_frecuencia}:" styleClass="normalText" />
+							 <rich:message for="Listaintervencion"
+								showDetail="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('Listaintervencion').get(0).getDetail()}" />
+								</f:facet>
+								</rich:message>
+							 </td>
+							 <td><rich:spacer width="25px" style="display: block" /></td>
+							 <td>
+							 <h:outputText value="#{messages.lbl_via_admon}:" styleClass="normalText" />
+							 <rich:message for="Listaintervencion"
+								showDetail="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('Listaintervencion').get(0).getDetail()}" />
+								</f:facet>
+								</rich:message>
+							 </td>
+							 <td><rich:spacer width="25px" style="display: block" /></td>
+							 <td>
+							 <h:outputText value="#{messages.lbl_fecha_ini}:" styleClass="normalText" />
+							 <rich:message for="Listaintervencion"
+								showDetail="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('Listaintervencion').get(0).getDetail()}" />
+								</f:facet>
+								</rich:message>
+							 </td>
+							 <td><rich:spacer width="25px" style="display: block" /></td>
+							 <td>
+							 <h:outputText value="#{messages.lbl_fecha_fin}:" styleClass="normalText" />
+							 <rich:message for="Listaintervencion"
+								showDetail="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('Listaintervencion').get(0).getDetail()}" />
+								</f:facet>
+								</rich:message>
+							 </td>
+							 <td><rich:spacer width="25px" style="display: block" /></td>
+							 <td>
+							 <h:outputText value="#{messages.lbl_indicacion}:" styleClass="normalText" />
+							 <rich:message for="Listaintervencion"
+								showDetail="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('Listaintervencion').get(0).getDetail()}" />
+								</f:facet>
+								</rich:message>
+							 </td>
+							 <td><rich:spacer width="25px" style="display: block" /></td>
+						</tr>
+						<tr>	
+							<td>
+							<h:inputText value="#{modificarEstudioControlador.nombreintervencion}" styleClass="dataText" id="nombreinter" required="#{!empty param['forma:addinverciones']}" />
+								
+							 </td>
+							<td><rich:spacer width="25px" style="display: block" /></td>		
+						
+						 
+							<td>
+							<h:inputText value="#{modificarEstudioControlador.nombreintervencion}" styleClass="dataText" id="nombreinter" required="#{!empty param['forma:addinverciones']}" />
+					
+							</td>
+							<td><rich:spacer width="25px" style="display: block" /></td>
+							<td>
+							<h:inputText value="#{modificarEstudioControlador.nombreintervencion}" styleClass="dataText" id="nombreinter" required="#{!empty param['forma:addinverciones']}" />
+					
+							</td>
+							<td><rich:spacer width="25px" style="display: block" /></td>
+							<td>
+							<h:inputText value="#{modificarEstudioControlador.nombreintervencion}" styleClass="dataText" id="nombreinter" required="#{!empty param['forma:addinverciones']}" />
+					
+							</td>
+							<td><rich:spacer width="25px" style="display: block" /></td>
+							<td>
+							<h:inputText value="#{modificarEstudioControlador.nombreintervencion}" styleClass="dataText" id="nombreinter" required="#{!empty param['forma:addinverciones']}" />
+					
+							</td>
+							<td><rich:spacer width="25px" style="display: block" /></td>
+							<td>
+							<h:inputText value="#{modificarEstudioControlador.nombreintervencion}" styleClass="dataText" id="nombreinter" required="#{!empty param['forma:addinverciones']}" />
+					
+							</td>
+							<td><rich:spacer width="25px" style="display: block" /></td>
+							<td>
+							<h:inputText value="#{modificarEstudioControlador.nombreintervencion}" styleClass="dataText" id="nombreinter" required="#{!empty param['forma:addinverciones']}" />
+					
+							</td>
+							
+						 
+						 </tr>
+						
+					</table>
+					
+					
+					<div align="right">
+								<a4j:commandButton id="addinverciones" value="#{messages.btn_adicionarIntervenciones_ens}" 
+												   action="#{modificarEstudioControlador.addintervencion()}" style="margin-bottom: 0px; margin-top:8px; margin-left:0px;" 
+												   reRender="interv2,esteprimos,lista,hacorg2,datos">
+								</a4j:commandButton>
+						</div>	
+						</a4j:region>
+						</a4j:outputPanel>
+					<rich:spacer height="5px" style="display: block" />	
+					<a4j:outputPanel id="esteprimos">
+		       		<rich:panel rendered="#{empty modificarEstudioControlador.ListaIntervencionSinEliminar()}">
+		       			<f:facet name="header"><h:outputText value="#{messages.lbl_listadoMedicacion}"/></f:facet>	
+						<h:outputText value="#{messages.msg_noInformacion_ens}"/>
+					</rich:panel>
+					<a4j:region id="interv2">
+						<rich:dataTable  rendered="#{not empty modificarEstudioControlador.ListaIntervencionSinEliminar()}" width="100%" id="lista"				   
+							value="#{modificarEstudioControlador.ListaIntervencionSinEliminar()}" var="result" columnsWidth="50%,50%,0*" rowKeyVar="row">
+							<f:facet name="header"><h:outputText value="#{messages.lbl_listadoIntervencion_ens}"/></f:facet>					
+									<h:column whidt="25%">
+							<f:facet name="header">
+								<s:div>
+									<s:div style="float: left; valign: bottom;">
+										<h:outputText value="#{lbl_medicamento}:" />
+									</s:div>
+									<s:div style="float: right;">
+
+
+
+									</s:div>
+								</s:div>
+							</f:facet>
+							<h:outputText value="#{result.nombre}">
+
+							</h:outputText>
+						</h:column>
+						<h:column whidt="25%">
+							<f:facet name="header">
+								<s:div>
+									<s:div style="float: left; valign: bottom;">
+										<h:outputText value="lbl_dosis" />
+									</s:div>
+									<s:div style="float: right;">
+
+
+
+									</s:div>
+								</s:div>
+							</f:facet>
+							<h:outputText value="#{result.ETipoIntervencion.nombre}">
+
+							</h:outputText>
+						</h:column>
+						<h:column whidt="25%">
+							<f:facet name="header">
+								<s:div>
+									<s:div style="float: left; valign: bottom;">
+										<h:outputText value="lbl_frecuencia" />
+									</s:div>
+									<s:div style="float: right;">
+
+
+
+									</s:div>
+								</s:div>
+							</f:facet>
+							<h:outputText value="#{result.ETipoIntervencion.nombre}">
+
+							</h:outputText>
+						</h:column>
+						<h:column whidt="25%">
+							<f:facet name="header">
+								<s:div>
+									<s:div style="float: left; valign: bottom;">
+										<h:outputText value="lbl_via_admon" />
+									</s:div>
+									<s:div style="float: right;">
+
+
+
+									</s:div>
+								</s:div>
+							</f:facet>
+							<h:outputText value="#{result.ETipoIntervencion.nombre}">
+
+							</h:outputText>
+						</h:column>
+						<h:column whidt="25%">
+							<f:facet name="header">
+								<s:div>
+									<s:div style="float: left; valign: bottom;">
+										<h:outputText value="lbl_fecha_ini" />
+									</s:div>
+									<s:div style="float: right;">
+
+
+
+									</s:div>
+								</s:div>
+							</f:facet>
+							<h:outputText value="#{result.ETipoIntervencion.nombre}">
+
+							</h:outputText>
+						</h:column>
+						<h:column whidt="25%">
+							<f:facet name="header">
+								<s:div>
+									<s:div style="float: left; valign: bottom;">
+										<h:outputText value="lbl_fecha_fin" />
+									</s:div>
+									<s:div style="float: right;">
+
+
+
+									</s:div>
+								</s:div>
+							</f:facet>
+							<h:outputText value="#{result.ETipoIntervencion.nombre}">
+
+							</h:outputText>
+						</h:column>
+						<h:column whidt="25%">
+							<f:facet name="header">
+								<s:div>
+									<s:div style="float: left; valign: bottom;">
+										<h:outputText value="lbl_indicacion" />
+									</s:div>
+									<s:div style="float: right;">
+
+
+
+									</s:div>
+								</s:div>
+							</f:facet>
+							<h:outputText value="#{result.ETipoIntervencion.nombre}">
+
+							</h:outputText>
+						</h:column>
+						<h:column >
+											<div align="center">
+												<a4j:commandLink action="#{modificarEstudioControlador.eliminarInterv(row)}" 
+													reRender="interv2,esteprimos,lista">
+													<h:graphicImage title="#{messages.eliminar}" 
+												   					value="/resources/icons/default/acciones/eliminar.png"
+												   				    style="border: 0px; cursor:pointer;">	
+															        											       								
+													</h:graphicImage>
+												</a4j:commandLink>
+											</div>
+									</h:column>
+									
+															
+			            </rich:dataTable>
+			            <br/>
+			          
+			             </a4j:region>
+			               <rich:modalPanel id="eliminarPanel" width="290" height="125">
+						<f:facet name="header" id="panelEliminarHeader" >
+								<h:outputText value="#{messages.eliminarheader}" />
+						</f:facet>
+						<f:facet name="controls">
+					     <h:panelGroup>
+					      <h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+					       style="cursor:pointer" id="hidelink" />
+					      <rich:componentControl for="eliminarPanel" attachTo="hidelink"
+					       operation="hide" event="onclick" />
+					     </h:panelGroup>
+					    </f:facet>
+						<s:div id="panelEliminarBody" >
+							<div align="left">
+								<h:graphicImage	value="/resources/icons/default/acciones/advertencia.png" /> 
+								<rich:spacer width="4px" /> 
+								<h:outputText value="#{messages.eliminar}" />
+								<br/>
+								<h:outputText value="#{messages.continuar}" />
+							</div>
+							<br />
+							<div align="center">
+								<h:commandButton action="#{modificarEstudioControlador.eliminarInterv()}" 
+								value="#{messages.si}" onclick="Richfaces.hideModalPanel('eliminarPanel')">
+								</h:commandButton>
+								
+								<input type="button" value="#{messages.no}" style="margin-left: 3px;"
+									onclick="Richfaces.hideModalPanel('eliminarPanel')"/>
+							</div>
+						</s:div>
+						
+					</rich:modalPanel>
+		     
+		       <br/>
+			   
+		       </a4j:outputPanel>
+			           	 
+					</rich:simpleTogglePanel>
+					
+			<rich:simpleTogglePanel label="#{messages.lbl_diagnostico_concomitante}"
+		switchType="client" opened="true">
+		<a4j:outputPanel id="combosfase">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td style="vertical-align: top; padding: 0px;">
+					#{messages.alergia}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>				
+				<td style="vertical-align: top; padding: 0px;">
+					
+					<h:selectBooleanCheckbox value="#{}" style="margin-top: 0px; margin-right: 0px;">
+					</h:selectBooleanCheckbox>
+				</td>
+				<td style="width: 25px"></td>
+				<td style="vertical-align: top; padding: 0px;">
+					#{messages.insu_respiratoria}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>				
+				<td style="vertical-align: top; padding: 0px;">
+					
+					<h:selectBooleanCheckbox value="#{}" style="margin-top: 0px; margin-right: 0px;">
+					</h:selectBooleanCheckbox>
+				</td>
+				<td style="width: 25px"></td>
+				<td style="vertical-align: top; padding: 0px;">
+					#{messages.insu_renal}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>				
+				<td style="vertical-align: top; padding: 0px;">
+					
+					<h:selectBooleanCheckbox value="#{}" style="margin-top: 0px; margin-right: 0px;">
+					</h:selectBooleanCheckbox>
+				</td>
+				
+				</tr>
+
+			</table>
+		</a4j:outputPanel>
+
+		<a4j:outputPanel id="combosfase">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td style="vertical-align: top; padding: 0px;">
+					#{messages.infecciones}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>				
+				<td style="vertical-align: top; padding: 0px;">
+					
+					<h:selectBooleanCheckbox value="#{}" style="margin-top: 0px; margin-right: 0px;">
+					</h:selectBooleanCheckbox>
+				</td>
+				<td style="width: 25px"></td>
+				<td style="vertical-align: top; padding: 0px;">
+					#{messages.insu_cardiovascular}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>				
+				<td style="vertical-align: top; padding: 0px;">
+					
+					<h:selectBooleanCheckbox value="#{}" style="margin-top: 0px; margin-right: 0px;">
+					</h:selectBooleanCheckbox>
+				</td>
+				<td style="width: 25px"></td>
+				<td style="vertical-align: top; padding: 0px;">
+					#{messages.transtornos_digestivos}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>				
+				<td style="vertical-align: top; padding: 0px;">
+					
+					<h:selectBooleanCheckbox value="#{}" style="margin-top: 0px; margin-right: 0px;">
+					</h:selectBooleanCheckbox>
+				</td>
+				</tr>
+
+			</table>
+		</a4j:outputPanel>
+		
+		<a4j:outputPanel id="combosfase">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td style="vertical-align: top; padding: 0px;">
+					#{messages.diabetes}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>				
+				<td style="vertical-align: top; padding: 0px;">
+					
+					<h:selectBooleanCheckbox value="#{}" style="margin-top: 0px; margin-right: 0px;">
+					</h:selectBooleanCheckbox>
+				</td>
+				<td style="width: 25px"></td>
+				<td style="vertical-align: top; padding: 0px;">
+					#{messages.hipertension}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>				
+				<td style="vertical-align: top; padding: 0px;">
+					
+					<h:selectBooleanCheckbox value="#{}" style="margin-top: 0px; margin-right: 0px;">
+					</h:selectBooleanCheckbox>
+				</td>
+				<td style="width: 25px"></td>
+				<td style="vertical-align: top; padding: 0px;">
+					#{messages.asma_bronquial}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>				
+				<td style="vertical-align: top; padding: 0px;">
+					
+					<h:selectBooleanCheckbox value="#{}" style="margin-top: 0px; margin-right: 0px;">
+					</h:selectBooleanCheckbox>
+				</td>
+				</tr>
+
+			</table>
+		</a4j:outputPanel>
+		
+		<a4j:outputPanel id="combosfase">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td style="vertical-align: top; padding: 0px;">
+					#{messages.otras} <h:inputTextarea
+							value="#{}"
+							style="resize: vertical; width : 259px;" disabled="true"></h:inputTextarea>
+					<rich:spacer height="8px" ></rich:spacer>
+					
+				</td>				
+				
+				</tr>
+
+			</table>
+		</a4j:outputPanel>
+
+	</rich:simpleTogglePanel>
+	
+	<rich:simpleTogglePanel label="#{messages.lbl_historia_medica}"
+		switchType="client" opened="true">
+		<a4j:outputPanel id="combosfase">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td style="vertical-align: top; padding: 0px;">
+					#{messages.alergia}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>				
+				<td style="vertical-align: top; padding: 0px;">
+					
+					<h:selectBooleanCheckbox value="#{}" style="margin-top: 0px; margin-right: 0px;">
+					</h:selectBooleanCheckbox>
+				</td>
+				<td style="width: 25px"></td>
+				<td style="vertical-align: top; padding: 0px;">
+					#{messages.insu_respiratoria}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>				
+				<td style="vertical-align: top; padding: 0px;">
+					
+					<h:selectBooleanCheckbox value="#{}" style="margin-top: 0px; margin-right: 0px;">
+					</h:selectBooleanCheckbox>
+				</td>
+				<td style="width: 25px"></td>
+				<td style="vertical-align: top; padding: 0px;">
+					#{messages.insu_renal}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>				
+				<td style="vertical-align: top; padding: 0px;">
+					
+					<h:selectBooleanCheckbox value="#{}" style="margin-top: 0px; margin-right: 0px;">
+					</h:selectBooleanCheckbox>
+				</td>
+				
+				</tr>
+
+			</table>
+		</a4j:outputPanel>
+
+		<a4j:outputPanel id="combosfase">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td style="vertical-align: top; padding: 0px;">
+					#{messages.infecciones}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>				
+				<td style="vertical-align: top; padding: 0px;">
+					
+					<h:selectBooleanCheckbox value="#{}" style="margin-top: 0px; margin-right: 0px;">
+					</h:selectBooleanCheckbox>
+				</td>
+				<td style="width: 25px"></td>
+				<td style="vertical-align: top; padding: 0px;">
+					#{messages.insu_cardiovascular}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>				
+				<td style="vertical-align: top; padding: 0px;">
+					
+					<h:selectBooleanCheckbox value="#{}" style="margin-top: 0px; margin-right: 0px;">
+					</h:selectBooleanCheckbox>
+				</td>
+				<td style="width: 25px"></td>
+				<td style="vertical-align: top; padding: 0px;">
+					#{messages.transtornos_digestivos}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>				
+				<td style="vertical-align: top; padding: 0px;">
+					
+					<h:selectBooleanCheckbox value="#{}" style="margin-top: 0px; margin-right: 0px;">
+					</h:selectBooleanCheckbox>
+				</td>
+				</tr>
+
+			</table>
+		</a4j:outputPanel>
+		
+		<a4j:outputPanel id="combosfase">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td style="vertical-align: top; padding: 0px;">
+					#{messages.diabetes}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>				
+				<td style="vertical-align: top; padding: 0px;">
+					
+					<h:selectBooleanCheckbox value="#{}" style="margin-top: 0px; margin-right: 0px;">
+					</h:selectBooleanCheckbox>
+				</td>
+				<td style="width: 25px"></td>
+				<td style="vertical-align: top; padding: 0px;">
+					#{messages.hipertension}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>				
+				<td style="vertical-align: top; padding: 0px;">
+					
+					<h:selectBooleanCheckbox value="#{}" style="margin-top: 0px; margin-right: 0px;">
+					</h:selectBooleanCheckbox>
+				</td>
+				<td style="width: 25px"></td>
+				<td style="vertical-align: top; padding: 0px;">
+					#{messages.asma_bronquial}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>				
+				<td style="vertical-align: top; padding: 0px;">
+					
+					<h:selectBooleanCheckbox value="#{}" style="margin-top: 0px; margin-right: 0px;">
+					</h:selectBooleanCheckbox>
+				</td>
+				</tr>
+
+			</table>
+		</a4j:outputPanel>
+		
+		<a4j:outputPanel id="combosfase">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td style="vertical-align: top; padding: 0px;">
+					#{messages.otras} <h:inputTextarea
+							value="#{}"
+							style="resize: vertical; width : 259px;" disabled="true"></h:inputTextarea>
+					<rich:spacer height="8px" ></rich:spacer>
+					
+				</td>				
+				
+				</tr>
+
+			</table>
+		</a4j:outputPanel>
+
+	</rich:simpleTogglePanel>
+	
+	<rich:simpleTogglePanel label="#{messages.lbl_otros_comentarios}"
+		switchType="client" opened="true">
+		<a4j:outputPanel id="combosfase">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+			<td style="vertical-align: top; padding: 0px;">
+					#{messages.anexan}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>	
+				<tr>
+					<td style="vertical-align: top; padding: 0px;">
+					#{messages.lbl_datos_lab}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>	
+				<td style="width: 25px"></td>
+				<td style="vertical-align: top; padding: 0px;">
+					#{messages.lbl_si}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>				
+				<td style="vertical-align: top; padding: 0px; ">
+					
+					<h:selectBooleanCheckbox value="#{}" style="margin-top: 0px; margin-right: 0px;">
+					</h:selectBooleanCheckbox>
+				</td>
+				<td style="width: 25px"></td>
+				<td style="vertical-align: top; padding: 0px;">
+					#{messages.lbl_no}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>
+				
+							
+				<td style="vertical-align: top; padding: 0px;">
+					
+					<h:selectBooleanCheckbox value="#{}" style="margin-top: 0px; margin-right: 0px;">
+					</h:selectBooleanCheckbox>
+				</td>
+				
+				</tr>
+
+			</table>
+		</a4j:outputPanel>
+
+		<a4j:outputPanel id="combosfase">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td style="vertical-align: top; padding: 0px;">
+					#{messages.lbl_copia_biopsia}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>
+				<td style="width: 25px"></td>
+				<td style="vertical-align: top; padding: 0px;">
+					#{messages.lbl_si}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>				
+				<td style="vertical-align: top; padding: 0px; ">
+					
+					<h:selectBooleanCheckbox value="#{}" style="margin-top: 0px; margin-right: 0px;">
+					</h:selectBooleanCheckbox>
+				</td>
+				<td style="width: 25px"></td>
+				<td style="vertical-align: top; padding: 0px;">
+					#{messages.lbl_no}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>
+				
+							
+				<td style="vertical-align: top; padding: 0px;">
+					
+					<h:selectBooleanCheckbox value="#{}" style="margin-top: 0px; margin-right: 0px;">
+					</h:selectBooleanCheckbox>
+				</td>				
+				
+				
+				</tr>
+
+			</table>
+		</a4j:outputPanel>
+		
+		<a4j:outputPanel id="combosfase">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td style="vertical-align: top; padding: 0px;">
+					#{messages.lbl_copia_autopsia}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>
+				<td style="width: 25px"></td>
+				<td style="vertical-align: top; padding: 0px;">
+					#{messages.lbl_si}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>				
+				<td style="vertical-align: top; padding: 0px; ">
+					
+					<h:selectBooleanCheckbox value="#{}" style="margin-top: 0px; margin-right: 0px;">
+					</h:selectBooleanCheckbox>
+				</td>
+				<td style="width: 25px"></td>
+				<td style="vertical-align: top; padding: 0px;">
+					#{messages.lbl_no}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>
+				
+							
+				<td style="vertical-align: top; padding: 0px;">
+					
+					<h:selectBooleanCheckbox value="#{}" style="margin-top: 0px; margin-right: 0px;">
+					</h:selectBooleanCheckbox>
+				</td>				
+				
+				
+				</tr>
+
+			</table>
+		</a4j:outputPanel>
+		
+		<a4j:outputPanel id="combosfase">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td><h:outputText value="#{messages.lbl_otras}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{}"
+							style="resize: vertical; width : 259px;" disabled="false"></h:inputTextarea></td>
+						<td>			
+				
+				</tr>
+
+			</table>
+		</a4j:outputPanel>
+
+	</rich:simpleTogglePanel>
+	
+	<rich:simpleTogglePanel label="#{messages.lbl_trazabilidad_report}"
+		switchType="client" opened="true">
+		<a4j:outputPanel id="combosfase">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td><h:outputText value="#{messages.lbl_reportado_desde}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{}"
+							style="resize: vertical; width : 259px;" disabled="true"></h:inputTextarea></td>
+						<td><rich:spacer width="25px"></rich:spacer></td>
+					<td><h:outputText value="#{messages.lbl_responsabilidad_ocupa}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{repor}" style="resize: vertical; width : 259px;"
+							disabled="true"></h:inputTextarea></td>
+						<td><rich:spacer width="25px"></rich:spacer></td>
+					<td><h:outputText value="#{messages.lbl_fecha}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{repor}" style="resize: vertical; width : 259px;"
+							disabled="true"></h:inputTextarea></td>
+				</tr>
+
+			</table>
+		</a4j:outputPanel>
+		
+		<a4j:outputPanel id="combosfase">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td><h:outputText value="#{messages.lbl_revisado_dir}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{}"
+							style="resize: vertical; width : 259px;" disabled="true"></h:inputTextarea></td>
+						<td><rich:spacer width="25px"></rich:spacer></td>
+					<td><h:outputText value="#{messages.lbl_responsabilidad_ocupa}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{repor}" style="resize: vertical; width : 259px;"
+							disabled="true"></h:inputTextarea></td>
+						<td><rich:spacer width="25px"></rich:spacer></td>
+					<td><h:outputText value="#{messages.lbl_fecha}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{repor}" style="resize: vertical; width : 259px;"
+							disabled="true"></h:inputTextarea></td>
+				</tr>
+
+			</table>
+		</a4j:outputPanel>
+		
+		<a4j:outputPanel id="combosfase">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td><h:outputText value="#{messages.lbl_revisado_dpto}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{}"
+							style="resize: vertical; width : 259px;" disabled="true"></h:inputTextarea></td>
+						<td><rich:spacer width="25px"></rich:spacer></td>
+					<td><h:outputText value="#{messages.lbl_responsabilidad_ocupa}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{repor}" style="resize: vertical; width : 259px;"
+							disabled="true"></h:inputTextarea></td>
+						<td><rich:spacer width="25px"></rich:spacer></td>
+					<td><h:outputText value="#{messages.lbl_fecha}"
+							styleClass="normalText" /><br /> <h:inputTextarea
+							value="#{repor}" style="resize: vertical; width : 259px;"
+							disabled="true"></h:inputTextarea></td>
+				</tr>
+
+			</table>
+		</a4j:outputPanel>
+
+	</rich:simpleTogglePanel>
+	
+</body>
+</html>

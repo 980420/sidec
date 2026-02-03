@@ -1,0 +1,777 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+      xmlns:a="http://richfaces.org/a4j"
+      xmlns:c="http://java.sun.com/jstl/core"
+      template="#{theme.template}"
+                xmlns:rich="http://richfaces.org/rich">
+                
+<ui:define name="body" >
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+	<style type="text/css">.rich-stglpanel-body{padding:0px}</style>
+	<style type="text/css">.rich-panel-body{padding:0px}</style>
+	<style>
+		.functpanelbody{padding:0px;}.functpanelbody2{padding:3px;}
+		.dr-tree-h-text{padding:0px !important; }
+		.dr-mpnl-pnl-h {
+		 /*	border-color:#BED6F8 !important;
+			background-image: url("#{facesContext.externalContext.requestContextPath}/img/resaltaPanel2.png") !important;
+  			background-repeat: repeat-x;
+  			background-color:#ffe0a3 !important; */
+		}		
+		.dr-mpnl-pnl-b{
+			padding:1px; 
+		}
+		.dr-mpnl-pnl{
+    		border: 1px !important; 
+    		border-style :solid !important; 
+    		border-color: #BED6F8 !important;
+		}
+	</style>
+	<style>
+		.functpanelbody{padding:0px;}.functpanelbody2{padding:5px;}
+		.iconcell, .labelcell{padding:0px; border: 1px;}
+		.strech{
+			width:100%; padding-left:0px !important; padding-top:1px; padding-bottom:1px;
+		}
+		.nostrech{
+			width:1%; padding-left:0px !important; padding-right:0px !important;
+		}
+		.rich-message-label {
+			font-size: 10px; font-family: "Verdana";
+		}
+		.custom-error {
+			border: 1px solid #FFCC00;
+			padding: 5px;
+			background-color: #F0F8FF;
+			font-size: 10px;
+			font-family: "Verdana";
+			position: relative;	left: 5px; top: 5px; 
+			margin-right: 10px;
+		}	
+	</style>
+	
+	<rich:hotKey key="esc" handler="subir()"/>
+	
+	<a:form>
+		<a:jsFunction name="subir" ajaxSingle="true" status="funcSelectedStatus" 
+			action="#{departamentosYServiciosManager.subir()}"></a:jsFunction>
+	</a:form>
+			
+	<h:form id="ubicacionesForm">
+	
+	<a:outputPanel ajaxRendered="true" id="errorOutputPanel">
+		<s:div style="height:30px;width:100%"
+			rendered="#{facesMessages.getCurrentMessagesForControl('error').size() > 0 }">
+			<div class="custom-error">
+				<rich:message for="error"></rich:message>
+			</div>	
+		</s:div>
+	</a:outputPanel>
+	
+	<a:keepAlive beanName="departamentosYServiciosManager"  />
+
+	<table width="100%" cellpadding="5px" cellspacing="0px" style="vertical-align: top;">
+		<tr>
+
+		<td style="vertical-align: top; width: 45%;">
+			<rich:panel  bodyClass="functpanelbody2" id="error">
+				<f:facet name="header" >
+					<a:status stopText="Departamentos, servicios y especialidades" for="functsstree"
+							  startText="#{messages.actualizando}..." id="funcstatus"
+							  onstart="document.body.style.cursor='wait';" 
+     						  onstop="document.body.style.cursor='default';">
+					</a:status>
+				</f:facet>
+				<div style="border: 1px;" > 
+				<a:region id="functsstree" >
+				<a:outputPanel ajaxRendered="true">
+				
+				<rich:dragIndicator id="treeDragIndicator">
+			        <f:facet name="single">
+			        	<h:panelGrid columns="2">
+				            <h:graphicImage  styleClass="indicatorPicture" value="/{iconname}" />
+				            <h:outputLabel value="{label}" />
+			        	</h:panelGrid>
+			        </f:facet>
+				</rich:dragIndicator>
+				<s:div style="margin-left:2px;">
+					<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+						<h:graphicImage value="/resources/modCommon/ubicacionesimages/habitaciones.png" height="16" />
+						<a:commandLink action="#{departamentosYServiciosManager.setSelectedItem(null, null)}" 
+							value="#{messages.departamentos}" style="margin-left:2px;" status="funcSelectedStatus" 
+							reRender="detailspanelheader"/>
+					</h:panelGrid>				
+				</s:div>
+				<rich:tree  changeExpandListener="#{departamentosYServiciosManager.treeBuilder.OnNodeCollapseExpand}"
+							value="#{departamentosYServiciosManager.treeBuilder.treeData}"
+							switchType="ajax" preserveModel="state"
+							treeNodeVar="treenode"     dragIndicator="treeDragIndicator"
+							style="width:200px"        nodeFace="#{node.toString()}"
+							var="node" id="functree"   dropListener="#{departamentosYServiciosManager.processDrop}"
+							componentState="#{treeStateController.departamentosClinicos}" >
+					
+						<rich:treeNode type="departamento" acceptedTypes="servicio"
+							icon="/resources/modCommon/ubicacionesimages/habitaciones.png"
+							iconLeaf="/resources/modCommon/ubicacionesimages/habitaciones.png">
+								<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+									<a:commandLink value="#{node.value.nombre} "
+										status="funcSelectedStatus" 
+										limitToList="true"
+										ajaxSingle="true" immediate="true"
+										event="onclick" 
+										onclick="javascript:scroll(0,0)"
+										action="#{departamentosYServiciosManager.setSelectedItem(node, treenode)}"
+										reRender="errorOutputPanel, settingsdiv, detailspanelheader" >
+									</a:commandLink>
+								</h:panelGrid>
+						</rich:treeNode>
+						
+						<rich:treeNode type="servicio" dragType="servicio" acceptedTypes="servicio, especialidad"
+							icon="/resources/funcionalidadesIcons/configuracion/funcionalidades.png"
+							iconLeaf="/resources/funcionalidadesIcons/configuracion/funcionalidades.png">
+								<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+									<a:commandLink value="#{node.value.nombre} "
+										status="funcSelectedStatus" 
+										limitToList="true"
+										ajaxSingle="true" immediate="true"
+										event="onclick"
+										onclick="javascript:scroll(0,0)"
+										action="#{departamentosYServiciosManager.setSelectedItem(node, treenode)}"
+										reRender="errorOutputPanel, settingsdiv, detailspanelheader" >
+									</a:commandLink>
+								</h:panelGrid>
+								<rich:dndParam name="label" type="drag" value="#{node.value.nombre}" />
+								<c:set var="icono" value="resources/funcionalidadesIcons/configuracion/funcionalidades.png"></c:set>
+								<rich:dndParam name="iconname" type="drag" value="#{icono}" />								
+						</rich:treeNode>
+
+						<rich:treeNode type="especialidad" dragType="especialidad"
+							icon="/resources/funcionalidadesIcons/configuracion/servicios.png"
+							iconLeaf="/resources/funcionalidadesIcons/configuracion/servicios.png">
+								<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+									<a:commandLink value="#{node.value.nombre} "
+										status="funcSelectedStatus" 
+										limitToList="true"
+										ajaxSingle="true" immediate="true"
+										event="onclick"
+										onclick="javascript:scroll(0,0)"
+										action="#{departamentosYServiciosManager.setSelectedItem(node, treenode)}"
+										reRender="errorOutputPanel, settingsdiv, detailspanelheader" >
+									</a:commandLink>
+								</h:panelGrid>
+								<rich:dndParam name="label" type="drag" value="#{node.value.nombre}" />
+								<c:set var="icono" value="resources/funcionalidadesIcons/configuracion/servicios.png"></c:set>
+								<rich:dndParam name="iconname" type="drag" value="#{icono}" />								
+						</rich:treeNode>
+				</rich:tree>
+				</a:outputPanel>
+				</a:region>
+				</div>
+			</rich:panel>	
+		</td>
+	
+		<td style="vertical-align: top; width: 55%;">
+			<a:region >
+			<a:outputPanel ajaxRendered="true">
+			<rich:panel bodyClass="functpanelbody" id="childfuncspanel" rendered="true">
+				<f:facet name="header" >	
+				  <s:div id="detailspanelheader">
+				    <h:panelGrid columns="3" cellpadding="0" cellspacing="0" style="width:100%;"
+				    		columnClasses="nostrech, strech, strech">
+				    	<h:graphicImage value="/resources/modCommon/ubicacionesimages/habitaciones.png" height="16"
+				    		rendered="#{departamentosYServiciosManager.selectedItem.toString().equals('departamento')}" />
+				    	<h:graphicImage value="/resources/funcionalidadesIcons/configuracion/funcionalidades.png" height="16"
+				    		rendered="#{departamentosYServiciosManager.selectedItem.toString().equals('servicio')}" />
+				    	<h:graphicImage value="/resources/funcionalidadesIcons/configuracion/servicios.png" height="16"
+				    		rendered="#{departamentosYServiciosManager.selectedItem.toString().equals('especialidad')}" />
+						<h:outputLabel style="margin-left:2px;"
+							rendered="#{departamentosYServiciosManager.selectedItem != null}" 
+							value="#{departamentosYServiciosManager.selectedItem.value.nombre}" >
+						</h:outputLabel>
+				    	<h:graphicImage value="/resources/modCommon/ubicacionesimages/habitaciones.png" height="16"
+				    		rendered="#{departamentosYServiciosManager.selectedItem == null}" />
+						<h:outputLabel style="margin-left:2px;"
+							rendered="#{departamentosYServiciosManager.selectedItem == null}" 
+							value="#{messages.departamentos}" >
+						</h:outputLabel>
+						<s:div style="text-align: right">
+							<h:graphicImage title="#{messages.modf}" style="border: 0px; cursor: pointer;" 
+								value="/resources/icons/default/acciones/modificar.png"
+								rendered="#{departamentosYServiciosManager.selectedItem.toString().equals('departamento')}" >
+								<a:support event="onclick" limitToList="true" ajaxSingle="true"
+									action="#{departamentosYServiciosManager.editarDepartamentoSeleccionado()}"
+									reRender="departamento_editar_panel_ajaxoutput" status="showModalStatus"
+									oncomplete="javascript:Richfaces.showModalPanel('departamento_editar_panel', {width: '166px', height: '96px'} )">
+								</a:support>
+							</h:graphicImage>
+							<h:graphicImage title="#{messages.modf}" style="border: 0px; cursor: pointer;" 
+								value="/resources/icons/default/acciones/modificar.png"
+								rendered="#{departamentosYServiciosManager.selectedItem.toString().equals('servicio')}" >
+								<a:support event="onclick" limitToList="true" ajaxSingle="true"
+									action="#{departamentosYServiciosManager.editarServicioSeleccionado()}"
+									reRender="servicio_editar_panel_ajaxoutput" status="showModalStatus"
+									oncomplete="javascript:Richfaces.showModalPanel('servicio_editar_panel', {width: '166px', height: '96px'} )">
+								</a:support>
+							</h:graphicImage>
+							<h:graphicImage title="#{messages.modf}" style="border: 0px; cursor: pointer;" 
+								value="/resources/icons/default/acciones/modificar.png"
+								rendered="#{departamentosYServiciosManager.selectedItem.toString().equals('especialidad')}" >
+								<a:support event="onclick" limitToList="true" ajaxSingle="true"
+									action="#{departamentosYServiciosManager.editarEspecialidadSeleccionada()}"
+									reRender="especialidad_editar_panel_ajaxoutput" status="showModalStatus"
+									oncomplete="javascript:Richfaces.showModalPanel('especialidad_editar_panel', {width: '166px', height: '96px'} )">
+								</a:support>
+							</h:graphicImage>
+						</s:div>
+				    </h:panelGrid>
+				  </s:div>	
+				</f:facet>		
+				
+				<a:status id="funcSelectedStatus" forceId="true" 
+					  onstart="Richfaces.showModalPanel('ajaxLoadingModalBox',{left:1, top:-15});
+					  		   javascript:document.getElementById('ubicacionesForm:settsdiv').style.display = 'none';
+					  		   javascript:document.getElementById('ubicacionesForm:loadingdiv').style.display = ''"
+					  onstop="Richfaces.hideModalPanel('ajaxLoadingModalBox');
+					  		  javascript:document.getElementById('ubicacionesForm:loadingdiv').style.display = 'none';
+					  		  javascript:document.getElementById('ubicacionesForm:settsdiv').style.display = ''">
+				  <f:facet name="start">
+				  </f:facet>
+			    </a:status>
+			    <s:div id="loadingdiv" style="text-align: center; width: 100%; display:none;">
+				  <br/><br/>
+					 <h:graphicImage url="/resources/icons/default/acciones/loading_small.gif" />
+				  <br/><br/><br/>	 
+				</s:div>	 
+				<s:div id="settsdiv">
+					<s:div id="settingsdiv" style="display: inline;">
+					<h:outputLabel value="Seleccione un elemento" 
+						rendered="false">
+					</h:outputLabel>
+					
+					<a:status id="showModalStatus" forceId="true" 
+					  onstart="Richfaces.showModalPanel('ajaxLoadingModalBox',{left:1, top:-15});
+					  		   document.body.style.cursor='wait';"
+					  onstop="Richfaces.hideModalPanel('ajaxLoadingModalBox');
+					  		  document.body.style.cursor='default';">
+				    </a:status>
+					
+					<s:div rendered="#{departamentosYServiciosManager.selectedItem == null}">
+						<table  style="width:100%; vertical-align:top;" >
+							<tr valign="top">
+								<td align="right">
+									<h:panelGrid columns="3" cellpadding="0" cellspacing="0">
+										<h:graphicImage height="12" width="12" 
+											style="cursor:pointer;" title="#{messages.adddpto}"
+											value="/resources/icons/default/acciones/adicionar.png">
+											<a:support event="onclick" status="showModalStatus"
+												limitToList="true" reRender="departamento_agregar_clinico"
+												oncomplete="javascript:Richfaces.showModalPanel('departamento_agregar_clinico', {width: '166px', height: '96px', 'departamento': '#{departamentosYServiciosManager.selectedItem.value.nombre}' } )" >
+											</a:support>
+										</h:graphicImage> 
+										<a:commandLink value="#{messages.adddpto}" 
+											title="#{messages.adddpto}"
+											style="margin-left:2px;margin-bottom:4px;margin-top:2px;" 
+											limitToList="true" status="showModalStatus"
+											reRender="departamento_agregar_clinico" 
+										 	oncomplete="javascript:Richfaces.showModalPanel('departamento_agregar_clinico', {width: '166px', height: '96px', 'departamento': '#{departamentosYServiciosManager.selectedItem.value.nombre}' } )" />
+									</h:panelGrid>	
+								</td>
+							</tr>
+						</table>
+					</s:div>
+					
+					<s:div 
+						rendered="#{departamentosYServiciosManager.selectedItem == null}">
+							<h:dataTable value="#{departamentosYServiciosManager.departments()}" 
+								var="department" border="1" columnClasses="strech, nostrech, nostrech"
+								style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+								cellspacing="0" cellpadding="0" rowClasses="dr-table-firstrow2" >
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">#{messages.deptosClinicos}</div>
+								</f:facet>
+								<h:column>
+									<f:facet name="header">
+										<div style="background-color: ##{theme.headercolor}; cursor: default;">#{messages.nombreSinDosPuntos}</div>
+									</f:facet>
+									<h:panelGrid columns="2" cellpadding="0" cellspacing="0" >
+										<h:graphicImage 
+											value="/resources/modCommon/ubicacionesimages/habitaciones.png" 
+											height="16" width="16" >
+											<a:support event="onclick" 
+											ajaxSingle="true"
+											reRender="settingsdiv, detailspanelheader"
+											limitToList="true" value="#{department.nombre}"
+											status="funcSelectedStatus"
+											action="#{departamentosYServiciosManager.setSelectedItem(department.id)}"
+											style="color: ##{theme.linkscolor}; position:relative; left:2px;"											/>
+										</h:graphicImage>
+										<h:outputLabel value="#{department.nombre}" style="margin-left: 3px;" 
+											rendered="false" />
+										<a:commandLink
+											ajaxSingle="true"
+											reRender="settingsdiv, detailspanelheader"
+											limitToList="true" value="#{department.nombre}"
+											status="funcSelectedStatus"
+											action="#{departamentosYServiciosManager.setSelectedItem(department.id)}"
+											style="color: ##{theme.linkscolor}; position:relative; left:2px;" />
+										<s:div rendered="#{departamentosYServiciosManager.clearNuevoDepartamento()}" />
+										
+									</h:panelGrid>
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<div style="background-color: ##{theme.headercolor};">
+											<span style="margin-left: 2px; margin-right: 2px;">#{messages.eliminar}</span>
+										</div>
+									</f:facet>
+								    <div align="center" >
+								  	<a:commandLink rendered="true" 
+								  				action="#{departamentosYServiciosManager.setDepartamentoIdToRemove(department.id.toString())}"
+								  				oncomplete="Richfaces.showModalPanel('eliminar_departamento_panel')" 
+								  				view="/modConfiguracion/departamentos/clinicos/home.xhtml">
+								  		<h:graphicImage style="border:0px; cursor: pointer" title="#{messages.eliminar}" 
+											url="/resources/icons/default/acciones/eliminar.png" >
+										</h:graphicImage>
+								  	</a:commandLink>
+								 </div>			
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<div style="background-color: ##{theme.headercolor};">
+											<span style="margin-left: 2px; margin-right: 2px;">#{messages.visible}</span>
+										</div>
+									</f:facet>
+									<div align="center">
+										<a:commandLink status="funcstatus2"
+												rendered="#{not department.eliminado}"
+												action="#{departamentosYServiciosManager.changeDepartmentVisibility(department.id)}">
+												<h:graphicImage
+													value="/resources/modConfiguracion/visible.png"
+													width="14" height="14"
+													style="border:0px;" title="#{messages.cambvisible}" />
+										</a:commandLink> 
+										<a:commandLink status="funcstatus2"
+												rendered="#{department.eliminado}"
+												action="#{departamentosYServiciosManager.changeDepartmentVisibility(department.id)}">
+												<h:graphicImage
+													value="/resources/modConfiguracion/not-visible.png"
+													width="14" height="14"
+													style="border:0px;" title="#{messages.cambvisible}" />
+										</a:commandLink>
+									</div>
+								</h:column>
+							</h:dataTable>
+					</s:div>
+					
+					<s:div 
+						rendered="#{departamentosYServiciosManager.selectedItem.toString().equals('departamento')}" >
+						<table  style="width:100%; vertical-align:top;" >
+							<tr valign="top">
+								<td align="right">
+									<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+																					
+										<h:graphicImage height="12" width="12" style="cursor:pointer;"
+											title="#{messages.addservicio}"
+											value="/resources/icons/default/acciones/adicionar.png">
+											<a:support event="onclick" status="showModalStatus"
+												limitToList="true" reRender="departamento_agregar_servicio"
+												oncomplete="javascript:Richfaces.showModalPanel('departamento_agregar_servicio', {width: '166px', height: '96px', 'departamento': '#{departamentosYServiciosManager.selectedItem.value.nombre}' } )" >
+											</a:support>
+										</h:graphicImage> 
+										<a:commandLink value="#{messages.addservicio}" 
+											title="#{messages.addservicio}"
+											style="margin-left:2px;margin-bottom:4px;margin-top:2px;" 
+											limitToList="true" status="showModalStatus"
+											reRender="departamento_agregar_servicio" 
+										 	oncomplete="javascript:Richfaces.showModalPanel('departamento_agregar_servicio', {width: '166px', height: '96px', 'departamento': '#{departamentosYServiciosManager.selectedItem.value.nombre}' } )" />
+											
+									</h:panelGrid>	
+								</td>
+							</tr>
+						</table>
+					</s:div>
+					
+					<s:div 
+						rendered="#{departamentosYServiciosManager.selectedItem.toString().equals('departamento')}">
+							<h:dataTable value="#{departamentosYServiciosManager.services(departamentosYServiciosManager.selectedItem.id)}" 
+								var="service" border="1" columnClasses="strech, nostrech, nostrech"
+								style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+								cellspacing="0" cellpadding="0" rowClasses="dr-table-firstrow2" >
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">#{messages.servicio}</div>
+								</f:facet>
+								<h:column>
+									<f:facet name="header">
+										<s:div style="background-color: ##{theme.headercolor}; cursor: default;"
+											rendered="#{not (departamentosYServiciosManager.services(departamentosYServiciosManager.selectedItem.id).size() == 0)}">
+											#{messages.nombreSinDosPuntos}
+										</s:div>
+									</f:facet>
+									<h:panelGrid columns="2" cellpadding="0" cellspacing="0" >
+										<h:graphicImage value="/resources/funcionalidadesIcons/configuracion/funcionalidades.png" height="16" width="16" />
+										<a:commandLink
+											ajaxSingle="true"
+											reRender="settingsdiv, detailspanelheader"
+											limitToList="true" value="#{service.nombre}"
+											status="funcSelectedStatus"
+											action="#{departamentosYServiciosManager.setSelectedItem(service.id, 0)}"
+											style="color: ##{theme.linkscolor}; position:relative; left:2px;" />
+									</h:panelGrid>
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<s:div style="background-color: ##{theme.headercolor};"
+											rendered="#{not (departamentosYServiciosManager.services(departamentosYServiciosManager.selectedItem.id).size() == 0)}">
+											<span style="margin-left: 2px; margin-right: 2px;">#{messages.eliminar}</span>
+										</s:div>
+									</f:facet>
+								    <div align="center" >
+								  	<a:commandLink rendered="true" 
+								  				action="#{departamentosYServiciosManager.setServicioIdToRemove(service.id.toString())}"
+								  				oncomplete="Richfaces.showModalPanel('eliminarServicioPanel')" 
+								  				view="/modConfiguracion/departamentos/clinicos/home.xhtml">
+								  		<h:graphicImage style="border:0px; cursor: pointer" title="#{messages.eliminar}" 
+											url="/resources/icons/default/acciones/eliminar.png" >
+										</h:graphicImage>
+								  	</a:commandLink>
+								 </div>			
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<s:div style="background-color: ##{theme.headercolor};"
+											rendered="#{not (departamentosYServiciosManager.services(departamentosYServiciosManager.selectedItem.id).size() == 0)}">
+											<span style="margin-left: 2px; margin-right: 2px;">#{messages.visible}</span>
+										</s:div>
+									</f:facet>
+									<div align="center">
+										<a:commandLink status="funcstatus2"
+												rendered="#{not service.eliminado}"
+												action="#{departamentosYServiciosManager.changeServiceVisibility(service.id)}">
+												<h:graphicImage
+													value="/resources/modConfiguracion/visible.png"
+													width="14" height="14"
+													style="border:0px;" title="#{messages.cambvisible}" />
+										</a:commandLink> 
+										<a:commandLink status="funcstatus2"
+												rendered="#{service.eliminado}"
+												action="#{departamentosYServiciosManager.changeServiceVisibility(service.id)}">
+												<h:graphicImage
+													value="/resources/modConfiguracion/not-visible.png"
+													width="14" height="14"
+													style="border:0px;" title="#{messages.cambvisible}" />
+										</a:commandLink>
+									</div>
+								</h:column>
+							</h:dataTable>
+							<s:div style="border-left: 1px solid #d0d7e5;
+										  border-right: 1px solid #d0d7e5;
+										  border-bottom: 1px solid #d0d7e5;"
+								rendered="#{departamentosYServiciosManager.services(departamentosYServiciosManager.selectedItem.id).size() == 0}">
+								<rich:spacer height="10" style="display:block"/>
+								<h:outputLabel value="#{messages.noInf}" 
+								 	style="margin-left:7px;" />
+								<rich:spacer height="5" style="display:block"/>
+							</s:div>
+					</s:div>
+					
+					<s:div 
+						rendered="#{departamentosYServiciosManager.selectedItem.toString().equals('servicio')}" >
+						<table  style="width:100%; vertical-align:top;" >
+							<tr valign="top">
+								<td align="right">
+									<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+											
+										<h:graphicImage height="12" width="12" style="cursor:pointer;"
+											title="#{messages.addservicio}"
+											value="/resources/icons/default/acciones/adicionar.png">
+											<a:support event="onclick" status="showModalStatus"
+												limitToList="true" reRender="servicio_agregar_servicio"
+												oncomplete="javascript:Richfaces.showModalPanel('servicio_agregar_servicio', {width: '166px', height: '96px', 'departamento': '#{departamentosYServiciosManager.selectedItem.value.nombre}' } )" >
+											</a:support>
+										</h:graphicImage> 
+										<a:commandLink value="#{messages.addservicio}" 
+											title="#{messages.addservicio}"
+											style="margin-left:2px;margin-bottom:4px;margin-top:2px;" 
+											limitToList="true" status="showModalStatus"
+											reRender="servicio_agregar_servicio" 
+										 	oncomplete="javascript:Richfaces.showModalPanel('servicio_agregar_servicio', {width: '166px', height: '96px', 'departamento': '#{departamentosYServiciosManager.selectedItem.value.nombre}' } )" />
+											
+									</h:panelGrid>	
+								</td>
+
+							</tr>
+						</table>
+					</s:div>
+					
+					<s:div 
+						rendered="#{departamentosYServiciosManager.selectedItem.toString().equals('servicio')}">
+							<h:dataTable value="#{departamentosYServiciosManager.servicesOfServices(departamentosYServiciosManager.selectedItem.id)}" 
+								var="service" border="1" columnClasses="strech, nostrech"
+								style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+								cellspacing="0" cellpadding="0" rowClasses="dr-table-firstrow2" >
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">#{messages.servicio}</div>
+								</f:facet>
+								<h:column>
+									<f:facet name="header">
+										<s:div style="background-color: ##{theme.headercolor}; cursor: default;"
+											rendered="#{not (departamentosYServiciosManager.servicesOfServices(departamentosYServiciosManager.selectedItem.id).size() == 0)}">
+											#{messages.nombreSinDosPuntos}
+										</s:div>
+									</f:facet>
+									<h:panelGrid columns="2" cellpadding="0" cellspacing="0" >
+										<h:graphicImage value="/resources/funcionalidadesIcons/configuracion/funcionalidades.png" height="16" width="16" />
+										<a:commandLink
+											ajaxSingle="true"
+											reRender="settingsdiv, detailspanelheader"
+											limitToList="true" value="#{service.nombre}"
+											status="funcSelectedStatus"
+											action="#{departamentosYServiciosManager.setSelectedItem(service.id, 0)}"
+											style="color: ##{theme.linkscolor}; position:relative; left:2px;" />										
+									</h:panelGrid>
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<s:div style="background-color: ##{theme.headercolor};"
+											rendered="#{not (departamentosYServiciosManager.servicesOfServices(departamentosYServiciosManager.selectedItem.id).size() == 0)}">
+											<span style="margin-left: 2px; margin-right: 2px;">#{messages.eliminar}</span>
+										</s:div>
+									</f:facet>
+								    <div align="center" >
+									  	<a:commandLink rendered="true" 
+									  				action="#{departamentosYServiciosManager.setServicioIdToRemove(service.id.toString())}"
+									  				oncomplete="Richfaces.showModalPanel('eliminarServicioPanel')" 
+									  				view="/modConfiguracion/departamentos/clinicos/home.xhtml">
+									  		<h:graphicImage style="border:0px; cursor: pointer" title="#{messages.eliminar}" 
+												url="/resources/icons/default/acciones/eliminar.png" >
+											</h:graphicImage>
+									  	</a:commandLink>
+								 	</div>		
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<s:div style="background-color: ##{theme.headercolor};"
+											rendered="#{not (departamentosYServiciosManager.servicesOfServices(departamentosYServiciosManager.selectedItem.id).size() == 0)}">
+											<span style="margin-left: 2px; margin-right: 2px;">#{messages.visible}</span>
+										</s:div>
+									</f:facet>
+									<div align="center">
+										<a:commandLink status="funcstatus2"
+												rendered="#{not service.eliminado}"
+												action="#{departamentosYServiciosManager.changeServiceVisibility(service.id)}">
+												<h:graphicImage
+													value="/resources/modConfiguracion/visible.png"
+													width="14" height="14"
+													style="border:0px;" title="#{messages.cambvisible}" />
+										</a:commandLink> 
+										<a:commandLink status="funcstatus2"
+												rendered="#{service.eliminado}"
+												action="#{departamentosYServiciosManager.changeServiceVisibility(service.id)}">
+												<h:graphicImage
+													value="/resources/modConfiguracion/not-visible.png"
+													width="14" height="14"
+													style="border:0px;" title="#{messages.cambvisible}" />
+										</a:commandLink>
+									</div>
+								</h:column>
+							</h:dataTable>
+							
+							<s:div style="border-left: 1px solid #d0d7e5;
+										  border-right: 1px solid #d0d7e5;
+										  border-bottom: 1px solid #d0d7e5;"
+								rendered="#{departamentosYServiciosManager.servicesOfServices(departamentosYServiciosManager.selectedItem.id).size() == 0}">
+								<rich:spacer height="10" style="display:block"/>
+								<h:outputLabel value="#{messages.noInf}" 
+								 	style="margin-left:7px;" />
+								<rich:spacer height="5" style="display:block"/>
+							</s:div>
+							
+							<rich:spacer height="8" style="display:block;"></rich:spacer>
+							
+							<s:div 
+								rendered="#{departamentosYServiciosManager.selectedItem.toString().equals('servicio')}" >
+								<table  style="width:100%; vertical-align:top;" >
+									<tr valign="top"> 
+										<td align="right">
+											<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+																								
+												<h:graphicImage height="12" width="12" style="cursor:pointer;"
+													title="#{messages.addesp}"
+													value="/resources/icons/default/acciones/adicionar.png">
+													<a:support event="onclick" status="showModalStatus"
+														limitToList="true" reRender="servicio_agregar_especialidad"
+														oncomplete="javascript:Richfaces.showModalPanel('servicio_agregar_especialidad', {width: '166px', height: '96px', 'departamento': '#{departamentosYServiciosManager.selectedItem.value.nombre}' } )" >
+													</a:support>
+												</h:graphicImage> 
+												<a:commandLink value="#{messages.addesp}" 
+													title="#{messages.addesp}"
+													style="margin-left:2px;margin-bottom:4px;margin-top:2px;" 
+													limitToList="true" status="showModalStatus"
+													reRender="servicio_agregar_especialidad" 
+												 	oncomplete="javascript:Richfaces.showModalPanel('servicio_agregar_especialidad', {width: '166px', height: '96px', 'departamento': '#{departamentosYServiciosManager.selectedItem.value.nombre}' } )" />
+												
+											</h:panelGrid>	
+										</td>
+									</tr>
+								</table>
+								
+							</s:div>
+							
+							<h:dataTable value="#{departamentosYServiciosManager.especialties(departamentosYServiciosManager.selectedItem.id)}" 
+								var="especialty" border="1" columnClasses="strech, nostrech"
+								style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+								cellspacing="0" cellpadding="0" rowClasses="dr-table-firstrow2" >
+								<f:facet name="header">
+									<div style="background-color: ##{theme.headercolor}; cursor: default;">#{messages.espe}</div>
+								</f:facet>
+								<h:column>
+									<f:facet name="header" >
+										<s:div style="background-color: ##{theme.headercolor}; cursor: default;"
+											rendered="#{not (departamentosYServiciosManager.especialties(departamentosYServiciosManager.selectedItem.id).size() == 0)}" >
+											#{messages.nombreSinDosPuntos}
+										</s:div>
+									</f:facet>
+									<h:panelGrid columns="2" cellpadding="0" cellspacing="0" >
+										<h:graphicImage value="/resources/funcionalidadesIcons/configuracion/servicios.png" height="16" width="16" />
+										<h:outputLabel value="#{especialty.nombre}" style="margin-left: 3px;" rendered="false" />
+										<a:commandLink
+											ajaxSingle="true"
+											reRender="settingsdiv, detailspanelheader"
+											limitToList="true" value="#{especialty.nombre}"
+											status="funcSelectedStatus"
+											action="#{departamentosYServiciosManager.setSelectedItem(especialty.id, 0, 0)}"
+											style="color: ##{theme.linkscolor}; position:relative; left:2px;" />									</h:panelGrid>
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<s:div style="background-color: ##{theme.headercolor};"
+											rendered="#{not (departamentosYServiciosManager.especialties(departamentosYServiciosManager.selectedItem.id).size() == 0)}" >
+											<span style="margin-left: 2px; margin-right: 2px;">#{messages.eliminar}</span>
+										</s:div>
+									</f:facet>
+								    <div align="center" >
+									  	<a:commandLink rendered="true" 
+									  				action="#{departamentosYServiciosManager.setEspecialidadIdToRemove(especialty.id.toString())}"
+									  				oncomplete="Richfaces.showModalPanel('eliminarEspecialidadPanel')" 
+									  				view="/modConfiguracion/departamentos/clinicos/home.xhtml">
+									  		<h:graphicImage style="border:0px; cursor: pointer" title="#{messages.eliminar}" 
+												url="/resources/icons/default/acciones/eliminar.png" >
+											</h:graphicImage>
+									  	</a:commandLink>
+								 	</div>		
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<s:div style="background-color: ##{theme.headercolor};"
+											rendered="#{not (departamentosYServiciosManager.especialties(departamentosYServiciosManager.selectedItem.id).size() == 0)}">
+											<span style="margin-left: 2px; margin-right: 2px;">#{messages.visible}</span>
+										</s:div>
+									</f:facet>
+									<div align="center">
+										<a:commandLink status="funcstatus2"
+												rendered="#{not especialty.eliminado}"
+												action="#{departamentosYServiciosManager.changeEspecialtyVisibility(especialty.id)}">
+												<h:graphicImage
+													value="/resources/modConfiguracion/visible.png"
+													width="14" height="14"
+													style="border:0px;" title="#{messages.cambvisible}" />
+										</a:commandLink> 
+										<a:commandLink status="funcstatus2"
+												rendered="#{especialty.eliminado}"
+												action="#{departamentosYServiciosManager.changeEspecialtyVisibility(especialty.id)}">
+												<h:graphicImage
+													value="/resources/modConfiguracion/not-visible.png"
+													width="14" height="14"
+													style="border:0px;" title="#{messages.cambvisible}" />
+										</a:commandLink>
+									</div>
+								</h:column>
+							</h:dataTable>	
+							
+							<s:div style="border-left: 1px solid #d0d7e5;
+										  border-right: 1px solid #d0d7e5;
+										  border-bottom: 1px solid #d0d7e5;"
+								rendered="#{departamentosYServiciosManager.especialties(departamentosYServiciosManager.selectedItem.id).size() == 0}">
+								<rich:spacer height="10" style="display:block"/>
+								<h:outputLabel value="#{messages.noInf}" 
+								 	style="margin-left:7px;" />
+								<rich:spacer height="5" style="display:block"/>
+							</s:div>
+							<br />													
+					</s:div>
+					
+					<s:div style="border-left: 1px solid #d0d7e5;
+								  border-right: 1px solid #d0d7e5;
+								  border-bottom: 1px solid #d0d7e5;"
+						rendered="#{departamentosYServiciosManager.selectedItem.toString().equals('especialidad')}" >
+						<rich:spacer height="10" style="display:block"/>
+						<h:outputLabel value="Nombre: #{departamentosYServiciosManager.selectedItem.value.nombre}" 
+						 	style="margin-left:7px;" />
+						<rich:spacer height="5" style="display:block"/>
+					</s:div>
+			    </s:div>
+			    </s:div>
+			    </rich:panel>
+			    </a:outputPanel>
+			    </a:region>
+			    
+			
+			<s:div style="text-align: right;">
+				<s:button view="/modCommons/modHome/home.gehos" value="#{messages.salir}" style="margin-right:0px"
+							rendered="#{not identificadorManager.editing}">						     
+					<f:param name="idFuncionalidad" value="#{activeModule.activeModule.id}" />
+					<f:param name="idancestors" value="#{activeModule.activeModule.id}a" />
+		      		<f:param name="moduleName" value="#{activeModule.activeModuleName}" />		
+		 		</s:button>
+			</s:div>
+			
+		</td>
+		</tr>
+	</table>
+
+	</h:form>
+	
+
+	<s:div id="modalpanelsdiv" >
+	
+		<ui:include src="/modConfiguracion/departamentos/clinicos/modalpanels/departamento_agregar_servicio.xhtml" />
+	
+		<ui:include src="/modConfiguracion/departamentos/clinicos/modalpanels/departamento_agregar_clinico.xhtml" />
+	
+		<ui:include src="/modConfiguracion/departamentos/clinicos/modalpanels/servicio_agregar_servicio.xhtml" />
+	
+		<ui:include src="/modConfiguracion/departamentos/clinicos/modalpanels/servicio_agregar_especialidad.xhtml" />
+	
+		<ui:include src="/modConfiguracion/departamentos/clinicos/modalpanels/confirmar_eliminar_servicio.xhtml" />
+	
+		<ui:include src="/modConfiguracion/departamentos/clinicos/modalpanels/confirmar_eliminar_especialidad.xhtml" />
+	
+		<ui:include src="/modConfiguracion/departamentos/clinicos/modalpanels/confirmar_eliminar_departamento.xhtml" />
+	
+		<ui:include src="/modConfiguracion/departamentos/clinicos/modalpanels/editar_departamento.xhtml" />
+	
+		<ui:include src="/modConfiguracion/departamentos/clinicos/modalpanels/editar_servicio.xhtml" />
+	
+		<ui:include src="/modConfiguracion/departamentos/clinicos/modalpanels/editar_especialidad.xhtml" />
+	
+	</s:div>
+	
+	<rich:modalPanel id="ajaxLoadingModalBox" minHeight="10" minWidth="10" 
+	        height="10" width="10" zindex="2000">
+	     <s:div rendered="false">  
+	           <img id="favsloadingdiv" 
+	        	src="#{facesContext.externalContext.requestContextPath}/resources/icons/default/acciones/loading_small.gif"
+	        	style="position: absolute; top: 0px; left: 0px;" />
+	     </s:div>  
+	</rich:modalPanel> 	
+	
+</ui:define>
+
+</ui:composition>
+

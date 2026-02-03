@@ -1,0 +1,328 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j ="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core"
+	template="#{theme.template}" >
+
+	<ui:define name="body" >
+    	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    	<script type="text/javascript">setContentTitle('#{messages.label}')</script>
+    	<h:form id="idForm">
+    		<div align="right">							          		
+      			<table cellpadding="0px" cellspacing="0px" width="1%">
+      				<tr>
+      					<td>
+      						<h:commandLink action="crear">
+	      						<h:graphicImage url="/resources/icons/default/acciones/adicionar.png"
+	      							title="#{messages.adicionar}" style="border:0px; width: 14px; height: 14px;"/>
+      						</h:commandLink>
+      					</td>
+      					<td width="2px"></td>
+      					<td valign="middle">
+      						<h:commandLink action="crear">
+      							<h:outputLabel value="#{messages.crearInc}" style="cursor: pointer; white-space: nowrap"/>
+      						</h:commandLink>
+      					</td>
+      				</tr>
+      			</table> 
+      		</div>
+      		<rich:spacer height="6px" style="display: block"/>
+    		<rich:dataTable id="listadoIncidencias" var="inc" width="100%"
+				value="#{misIncidencias.resultList}" headerClass="barraOp2" align="center"
+				columnsWidth="30%,40%,10%,10%,10%,0*">
+				<f:facet name="header">
+					<div>#{messages.listadoInc}</div>
+				</f:facet>
+				<h:column>
+					<f:facet name="header">		
+						<s:div>
+							<div style="float: left; padding-left: 0px" >
+							<h:outputText value="#{messages.tema}" />
+							</div>
+							<div style="float: right">
+								<h:graphicImage rendered="#{not misIncidencias.order.equals('inc.tema asc') and not misIncidencias.order.equals('inc.tema desc')}"
+									value="/resources/icons/default/filtro/default.png" width="17" height="17">
+									<rich:componentControl 
+										event="onclick" 
+										for="filtro_tema"
+										operation="show">
+									</rich:componentControl>
+								</h:graphicImage>
+								<h:graphicImage rendered="#{misIncidencias.order.equals('inc.tema asc')}"
+									value="/resources/icons/default/filtro/asc_sort.png" width="17" height="17">
+									<rich:componentControl 
+										event="onclick" 
+										for="filtro_tema"
+										operation="show">
+									</rich:componentControl>
+								</h:graphicImage>
+								<h:graphicImage rendered="#{misIncidencias.order.equals('inc.tema desc')}"
+									value="/resources/icons/default/filtro/des_sort.png" width="17" height="17">
+									<rich:componentControl 
+										event="onclick" 
+										for="filtro_tema"
+										operation="show">
+									</rich:componentControl>
+								</h:graphicImage>
+							</div>
+						</s:div>
+					</f:facet>
+	           		#{inc.tema}
+	       		</h:column>
+	       		<h:column>
+					<f:facet name="header">		
+						<s:div>
+							<div style="float: left; padding-left: 0px" >
+							<h:outputText value="#{messages.componente}" />
+							</div>
+							<div style="float: right">
+								<h:graphicImage rendered="#{not misIncidencias.order.equals('inc.componente.valor asc') and not misIncidencias.order.equals('inc.componente.valor desc')}"
+									value="/resources/icons/default/filtro/default.png" width="17" height="17">
+									<rich:componentControl 
+										event="onclick" 
+										for="filtro_componente"
+										operation="show">
+									</rich:componentControl>
+								</h:graphicImage>
+								<h:graphicImage rendered="#{misIncidencias.order.equals('inc.componente.valor asc')}"
+									value="/resources/icons/default/filtro/asc_sort.png" width="17" height="17">
+									<rich:componentControl 
+										event="onclick" 
+										for="filtro_componente"
+										operation="show">
+									</rich:componentControl>
+								</h:graphicImage>
+								<h:graphicImage rendered="#{misIncidencias.order.equals('inc.componente.valor desc')}"
+									value="/resources/icons/default/filtro/des_sort.png" width="17" height="17">
+									<rich:componentControl 
+										event="onclick" 
+										for="filtro_componente"
+										operation="show">
+									</rich:componentControl>
+								</h:graphicImage>
+							</div>
+						</s:div>
+					</f:facet>
+	           		#{inc.componente.valor}
+	       		</h:column>
+	       		<h:column>
+					<f:facet name="header">		
+						<s:div>
+							<div style="float: left; padding-left: 0px" >
+							<h:outputText value="#{messages.creada}" />
+							</div>
+							<div style="float: right">
+								<h:graphicImage rendered="#{not misIncidencias.order.equals('inc.fechaInicio asc') and not misIncidencias.order.equals('inc.fechaInicio desc')}"
+									value="/resources/icons/default/filtro/default.png" width="17" height="17">
+									<rich:componentControl 
+										event="onclick" 
+										for="filtro_creada"
+										operation="show">
+									</rich:componentControl>
+								</h:graphicImage>
+								<h:graphicImage rendered="#{misIncidencias.order.equals('inc.fechaInicio asc')}"
+									value="/resources/icons/default/filtro/asc_sort.png" width="17" height="17">
+									<rich:componentControl 
+										event="onclick" 
+										for="filtro_creada"
+										operation="show">
+									</rich:componentControl>
+								</h:graphicImage>
+								<h:graphicImage rendered="#{misIncidencias.order.equals('inc.fechaInicio desc')}"
+									value="/resources/icons/default/filtro/des_sort.png" width="17" height="17">
+									<rich:componentControl 
+										event="onclick" 
+										for="filtro_creada"
+										operation="show">
+									</rich:componentControl>
+								</h:graphicImage>
+							</div>
+						</s:div>
+					</f:facet>
+					<h:outputText value="#{inc.fechaInicio}" >
+					 	<s:convertDateTime pattern="dd/MM/yyyy"/>
+					</h:outputText>	           		
+	       		</h:column>
+	       		<h:column>
+					<f:facet name="header">		
+						<s:div>
+							<div style="float: left; padding-left: 0px" >
+							<h:outputText value="#{messages.estado}" />
+							</div>
+							<div style="float: right">
+								<h:graphicImage rendered="#{not misIncidencias.order.equals('inc.estado.valor asc') and not misIncidencias.order.equals('inc.estado.valor desc')}"
+									value="/resources/icons/default/filtro/default.png" width="17" height="17">
+									<rich:componentControl 
+										event="onclick" 
+										for="filtro_estado"
+										operation="show">
+									</rich:componentControl>
+								</h:graphicImage>
+								<h:graphicImage rendered="#{misIncidencias.order.equals('inc.estado.valor asc')}"
+									value="/resources/icons/default/filtro/asc_sort.png" width="17" height="17">
+									<rich:componentControl 
+										event="onclick" 
+										for="filtro_estado"
+										operation="show">
+									</rich:componentControl>
+								</h:graphicImage>
+								<h:graphicImage rendered="#{misIncidencias.order.equals('inc.estado.valor desc')}"
+									value="/resources/icons/default/filtro/des_sort.png" width="17" height="17">
+									<rich:componentControl 
+										event="onclick" 
+										for="filtro_estado"
+										operation="show">
+									</rich:componentControl>
+								</h:graphicImage>
+							</div>
+						</s:div>
+					</f:facet>
+					#{inc.estado.valor}	           		
+	       		</h:column>
+	       		<h:column>
+					<f:facet name="header">		
+						<s:div>
+							<div style="float: left; padding-left: 0px" >
+							<h:outputText value="#{messages.porciento}" />
+							</div>
+							<div style="float: right">
+								<h:graphicImage rendered="#{not misIncidencias.order.equals('inc.prociento asc') and not misIncidencias.order.equals('inc.prociento desc')}"
+									value="/resources/icons/default/filtro/default.png" width="17" height="17">
+									<rich:componentControl 
+										event="onclick" 
+										for="filtro_porciento"
+										operation="show">
+									</rich:componentControl>
+								</h:graphicImage>
+								<h:graphicImage rendered="#{misIncidencias.order.equals('inc.prociento asc')}"
+									value="/resources/icons/default/filtro/asc_sort.png" width="17" height="17">
+									<rich:componentControl 
+										event="onclick" 
+										for="filtro_porciento"
+										operation="show">
+									</rich:componentControl>
+								</h:graphicImage>
+								<h:graphicImage rendered="#{misIncidencias.order.equals('inc.prociento desc')}"
+									value="/resources/icons/default/filtro/des_sort.png" width="17" height="17">
+									<rich:componentControl 
+										event="onclick" 
+										for="filtro_porciento"
+										operation="show">
+									</rich:componentControl>
+								</h:graphicImage>
+							</div>
+						</s:div>
+					</f:facet>
+					<div align="right">
+						#{inc.prociento}	
+					</div>           		
+	       		</h:column>
+	       		<h:column>
+				   <div align="center">
+				   		<h:commandLink action="Ver">
+				   			<h:graphicImage url="/resources/icons/default/acciones/ver.png"
+				   				style="border: 0px;" title="#{messages.ver}"/>
+				   			<f:param name="id" value="#{inc.id}"/>
+				   		</h:commandLink>        
+		           </div> 
+				</h:column>
+			</rich:dataTable>
+			<div align="center">
+			    <table cellpadding="0px" cellspacing="0px">
+			        <tr>
+			            <td>
+			            	<h:commandLink id="ini_bpCrearHcd"
+			            	rendered="#{misIncidencias.previousExists}">
+			                	<h:commandButton image="/resources/icons/default/paginado/#{theme.color}/inicio.png"  style="border: 0px;"/>
+			                	<f:param name="firstResult" value="0"/>
+			                </h:commandLink>
+							<h:graphicImage value="/resources/icons/iniciod.png" 
+			                    rendered="#{not misIncidencias.previousExists}"/>
+			            </td>
+			            <td>
+			            	<h:commandLink id="ant_bpCrearHcd"
+			            	rendered="#{misIncidencias.previousExists}">
+			                	<h:commandButton image="/resources/icons/default/paginado/#{theme.color}/anterior.png" style="border: 0px;"/>
+			            		<f:param name="firstResult" value="#{misIncidencias.previousFirstResult}"/>
+			            	</h:commandLink>
+							<h:graphicImage value="/resources/icons/anteriord.png" 
+			                    rendered="#{not misIncidencias.previousExists}"/>
+			            </td>
+			            <td>
+			            	<h:commandLink id="sig_bpCrearHcd"
+			            	rendered="#{misIncidencias.nextExists}">
+			                	<h:commandButton image="/resources/icons/default/paginado/#{theme.color}/siguiente.png" style="border: 0px;"/>
+			           			<f:param name="firstResult" value="#{misIncidencias.nextFirstResult}"/>
+			           		</h:commandLink>
+							<h:graphicImage value="/resources/icons/siguiented.png" 
+			                    rendered="#{not bpAsignarSerial.nextExists}"/>
+			            </td>
+			            <td>
+			            	<h:commandLink id="fin_bpAsignarSerial"
+			            	rendered="#{misIncidencias.nextExists}">
+			                	<h:commandButton image="/resources/icons/default/paginado/#{theme.color}/fin.png" style="border: 0px;"/>
+			            		<f:param name="firstResult" value="#{misIncidencias.lastFirstResult}"/>
+			            	</h:commandLink>
+							<h:graphicImage value="/resources/icons/find.png" 
+			                    rendered="#{not misIncidencias.nextExists}"/>
+			            </td>
+			        </tr>
+			    </table>
+			</div>
+			<rich:contextMenu attached="false" id="filtro_tema" submitMode="ajax">
+				<rich:menuItem value="Ordenar de mayor a menor" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png" 
+					action="#{misIncidencias.setOrder('inc.tema desc')}" reRender="listadoIncidencias">
+				</rich:menuItem>	
+				<rich:menuItem value="Ordenar de menor a mayor" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png" 
+					action="#{misIncidencias.setOrder('inc.tema asc')}" reRender="listadoIncidencias">
+				</rich:menuItem>			
+			</rich:contextMenu>
+			<rich:contextMenu attached="false" id="filtro_componente" submitMode="ajax">
+				<rich:menuItem value="Ordenar de mayor a menor" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png" 
+					action="#{misIncidencias.setOrder('inc.componente.valor desc')}" reRender="listadoIncidencias">
+				</rich:menuItem>	
+				<rich:menuItem value="Ordenar de menor a mayor" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png" 
+					action="#{misIncidencias.setOrder('inc.componente.valor asc')}" reRender="listadoIncidencias">
+				</rich:menuItem>			
+			</rich:contextMenu>
+			<rich:contextMenu attached="false" id="filtro_creada" submitMode="ajax">
+				<rich:menuItem value="Ordenar de mayor a menor" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png" 
+					action="#{misIncidencias.setOrder('inc.fechaInicio desc')}" reRender="listadoIncidencias">
+				</rich:menuItem>	
+				<rich:menuItem value="Ordenar de menor a mayor" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png" 
+					action="#{misIncidencias.setOrder('inc.fechaInicio asc')}" reRender="listadoIncidencias">
+				</rich:menuItem>			
+			</rich:contextMenu>
+			<rich:contextMenu attached="false" id="filtro_estado" submitMode="ajax">
+				<rich:menuItem value="Ordenar de mayor a menor" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png" 
+					action="#{misIncidencias.setOrder('inc.estado.valor desc')}" reRender="listadoIncidencias">
+				</rich:menuItem>	
+				<rich:menuItem value="Ordenar de menor a mayor" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png" 
+					action="#{misIncidencias.setOrder('inc.estado.valor asc')}" reRender="listadoIncidencias">
+				</rich:menuItem>			
+			</rich:contextMenu>
+			<rich:contextMenu attached="false" id="filtro_porciento" submitMode="ajax">
+				<rich:menuItem value="Ordenar de mayor a menor" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png" 
+					action="#{misIncidencias.setOrder('inc.prociento desc')}" reRender="listadoIncidencias">
+				</rich:menuItem>	
+				<rich:menuItem value="Ordenar de menor a mayor" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png" 
+					action="#{misIncidencias.setOrder('inc.prociento asc')}" reRender="listadoIncidencias">
+				</rich:menuItem>			
+			</rich:contextMenu>
+    	</h:form>
+    </ui:define>
+</ui:composition>

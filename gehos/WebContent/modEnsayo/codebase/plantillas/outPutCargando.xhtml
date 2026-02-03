@@ -1,0 +1,13 @@
+<a:outputPanel id="#{idOutPutLoading}"
+	xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"	xmlns:s="http://jboss.com/products/seam/taglib" xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" xmlns:c="http://java.sun.com/jstl/core">
+	<s:div rendered="#{not mostrarFormulario}" > 
+		<div align="center">
+			<h:panelGrid columns="2">
+				<h:graphicImage url="/resources/icons/default/acciones/loading_small.gif" />
+				<h:outputLabel value="#{messages.cargando}"  />
+			</h:panelGrid>
+		</div>
+	</s:div>
+</a:outputPanel>

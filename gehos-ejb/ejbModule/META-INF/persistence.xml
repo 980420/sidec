@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Persistence deployment descriptor for dev profile -->
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" 
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" 
+             version="1.0">
+             
+   <persistence-unit name="gehos">
+      <provider>org.hibernate.ejb.HibernatePersistence</provider>
+      <jta-data-source>java:/gehosDatasource</jta-data-source>
+      <properties>
+         <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+         <property name="hibernate.hbm2ddl.auto" value="validate"/>
+         <property name="hibernate.show_sql" value="true"/>
+         <property name="hibernate.format_sql" value="true"/>
+         <property name="hibernate.cache.use_second_level_cache" value="true"/>
+         <property name="hibernate.cache.provider_class" value="net.sf.ehcache.hibernate.EhCacheProvider"/>
+         <property name="jboss.entity.manager.factory.jndi.name" value="java:/gehosEntityManagerFactory"/>
+         
+         <property name="hibernate.ejb.interceptor" value="gehos.comun.util.TimerInterceptor" />
+         
+
+			
+      </properties>
+   </persistence-unit>
+   
+   
+    
+</persistence>

@@ -1,0 +1,906 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+		  		
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css">
+.rich-stglpanel-body {
+	padding: 0px
+}
+</style>
+		<style type="text/css">
+.rich-panel-body {
+	padding: 0px
+}
+.dr-tbpnl-cntnt, .rich-tabpanel-content{
+						/*arriba, derecha ,abajo ,izquierda*/
+				padding: 8px 0px 7px 8px;
+}
+.noAvailable {
+	color: red;
+	text-decoration: line-through;
+}			
+ .noAvailableDay
+{ color: red !important;
+text-decoration: line-through;
+}
+			
+</style>
+		<script type="text/javascript" src="js/valcalendar.js"></script>
+		<script type="text/javascript">setContentTitle('#{messages.crearMedico})
+		
+			var curDt = new Date();
+			var calDt=null;
+
+			 function previousDate(date){
+				calDt = date;
+			 }
+
+			 function disablementFunction(day){
+				if (curDt.getTime() - day.date.getTime() &#62; 0) return true; else return false;  
+			 }
+
+			 function disabledClassesProv(day){
+				if (curDt.getTime() - day.date.getTime() &#60; 0)
+					return 'noAvailable';
+				else 
+					return '';
+			 }
+
+			 function resetSecondDate(first,second) {
+				 var firstDate = first.getSelectedDate().getTime();
+				 var secondDate = second.getSelectedDate().getTime();
+
+				 if(firstDate - secondDate &#62; 0)
+					 second.resetSelectedDate();
+			 }
+	  		 
+			 function disablementFunctionPreviousEx(day){
+				if(calDt == null){
+					if (curDt.getTime() - day.date.getTime() &#62; 0) return true; else return false;
+				}
+				if ((curDt.getTime() - day.date.getTime() &#62; 0) &#38;&#38; (calDt.getTime() - day.date.getTime() &#60;= 0)){
+					return true;
+				}
+				else 
+					return false;
+			  }
+
+			function disabledClassesProvPreviousEx(day){
+				if(calDt == null){
+					if (curDt.getTime() - day.date.getTime() &#60; 0)
+						return 'noAvailable';
+					else 
+						return '';
+				}
+				if ((curDt.getTime() - day.date.getTime() &#60; 0) || (calDt.getTime() - day.date.getTime() &#62; 0))
+					return 'noAvailable';
+				else 
+					return '';
+			}
+		
+		</script>	
+		
+		<a4j:form>
+			<a4j:jsFunction action="#{crearUsuarioControlador.asignarCargos()}"
+				name="selected" ignoreDupResponses="true">
+				<a4j:actionparam name="id"
+					assignTo="#{crearUsuarioControlador.idCargo}" />
+			</a4j:jsFunction>
+		</a4j:form>
+			
+		<h:form id="userCreate" styleClass="create" enctype="multipart/form-data" >		
+		
+		
+		<s:validateAll>
+		<rich:tabPanel switchType="client" style="white-space:nowrap">
+		
+			
+		<rich:tab label="#{messages.datosComoUsuario}" >
+				 	<table cellpadding="0px" cellspacing="0px" border="0px">
+					<tr>
+				 		<td>
+				 			<rich:spacer height="3px"/>
+				 		</td>
+				 	</tr>
+					<tr style="vertical-align: top;">	
+						<td><h:graphicImage
+									url="/resources/modCommon/unknown/#{theme.name}/generico/desconocido.png" border="0"
+									style="width: 74px; height: 74px;"
+									rendered="#{not userTools.userImageExist(crearMedicoUserExist_Controlador.usuario_conf.username)}" />
+								<h:graphicImage
+									url="/resources/modCommon/userphotos/#{crearMedicoUserExist_Controlador.usuario_conf.username}.png"
+									rendered="#{userTools.userImageExist(crearMedicoUserExist_Controlador.usuario_conf.username)}"
+									border="0" style="width: 74px; height: 74px;" /></td>
+						<td><rich:spacer width="7px" /></td>
+						
+						<td valign="top">
+							<table cellpadding="0px" cellspacing="0px" border="0px">								
+								<tr style="vertical-align: top;" >
+									<td>
+										<h:outputLabel value="#{messages.param1}"></h:outputLabel> <h:outputLabel
+							value="*" style="color:red;cursor:default" title="#{messages.user_requerido}"
+							rendered="#{crearMedicoUserExist_Controlador.userRep}" /> 
+							<rich:message for="nick" showDetail="false"
+									showSummary="false" tooltip="true">
+									<f:facet name="errorMarker">
+										<h:outputText
+											title="#{facesMessages.getCurrentMessagesForControl('nick').get(0).getDetail()}"
+											style="color : red;cursor:pointer;" value="*" styleClass="nombre" />
+									</f:facet>
+							</rich:message>
+							 <br />
+						<h:inputText value="#{crearMedicoUserExist_Controlador.username}"
+							id="nick" tabindex="1"
+							 requiredMessage="#{messages.requerido}"
+							style="width:150px;" /> 
+									</td>
+									<td style="width: 25px"></td>
+									<td>
+										<h:outputLabel
+											value="#{messages.param4}"></h:outputLabel> <rich:message for="cultura"
+											showDetail="false" tooltip="true" style="color:red;cursor:pointer;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{messages.debeSelCultura}" />
+											</f:facet>
+										</rich:message><rich:comboBox id="cultura" 
+											enableManualInput="false" width="150px" tabindex="2"
+											defaultLabel="#{messages.seleccione}"
+											suggestionValues="#{crearMedicoUserExist_Controlador.cultura()}"
+											value="#{crearMedicoUserExist_Controlador.culturaSelec}">
+										</rich:comboBox>
+									</td>
+									<td style="width: 25px"></td>
+									<td>
+									<table cellpadding="0" cellspacing="0" border="0"
+							style="vertical-align: middle;">
+							<tr>
+								<rich:spacer height="11px"/>
+								<td valign="middle"><h:outputLabel
+									value="#{messages.param5} "></h:outputLabel> <rich:spacer
+									width="7"></rich:spacer></td>
+								<td valign="middle"><h:selectBooleanCheckbox
+									style="margin: 0px;" tabindex="3"
+									value="#{crearMedicoUserExist_Controlador.usuario_conf.cuentaHabilitada}">
+								</h:selectBooleanCheckbox></td>
+							</tr>
+						</table>
+									</td>
+								</tr>	
+								<tr>
+									<td> <rich:spacer height="6px"/></td>
+								</tr>								
+								<tr style="vertical-align: top;" >
+									<td>
+										<table cellpadding="0" cellspacing="0" border="0"
+													style="vertical-align: middle;">
+														
+													<tr>
+														<td valign="middle"><br />
+														<h:outputLabel value="#{messages.atributo16}"></h:outputLabel>
+														<rich:spacer width="7"></rich:spacer></td>
+														<td valign="middle"><br />
+														
+														<h:selectBooleanCheckbox style="margin: 0px;" tabindex="4"
+															value="#{crearMedicoUserExist_Controlador.keepPassword}">
+															<a4j:support event="onclick" ajaxSingle="true"										
+															reRender="aRepeatPassword,aPassword" />
+														</h:selectBooleanCheckbox></td>
+															
+													</tr>													
+												</table>
+									</td>
+									<td style="width: 25px"></td>
+									<td valign="top">
+									<a4j:outputPanel id="aPassword">
+										<s:div id="divPassword" rendered="#{!crearMedicoUserExist_Controlador.keepPassword}">
+										<h:outputLabel value="#{messages.param2}"></h:outputLabel>
+						<rich:message for="pass" showDetail="false"
+									showSummary="false" tooltip="true">
+									<f:facet name="errorMarker">
+										<h:outputText
+											title="#{facesMessages.getCurrentMessagesForControl('pass').get(0).getDetail()}"
+											style="color : red;cursor:pointer;" value="*" styleClass="nombre" />
+									</f:facet>
+							</rich:message>
+						  <br />
+						<h:inputSecret value="#{crearMedicoUserExist_Controlador.contrasennaString}"
+							id="pass" 	tabindex="5"						
+							style="width:150px;" redisplay="true"/>
+							</s:div>
+							</a4j:outputPanel>
+									</td>
+									<td style="width: 25px"></td>
+									<td valign="top">
+										<a4j:outputPanel id="aRepeatPassword">
+										<s:div id="divRepeatPassword" rendered="#{!crearMedicoUserExist_Controlador.keepPassword}">
+										<h:outputLabel value=" #{messages.param3}"></h:outputLabel>
+						<h:outputLabel value="*" style="color:red"
+							title="#{messages.pass_desigual}"
+							rendered="#{not crearMedicoUserExist_Controlador.desiguales}" /> 
+							<rich:message for="verfpass" showDetail="false"
+									showSummary="false" tooltip="true">
+									<f:facet name="errorMarker">
+										<h:outputText
+											title="#{facesMessages.getCurrentMessagesForControl('verfpass').get(0).getDetail()}"
+											style="color : red;cursor:pointer;" value="*" styleClass="nombre" />
+									</f:facet>
+							</rich:message>
+							 <br />
+						<h:inputSecret id="verfpass"
+							tabindex="5"
+							value="#{crearMedicoUserExist_Controlador.verfpass}" 
+							style="width:150px;" redisplay="true"/>
+							</s:div>
+							</a4j:outputPanel>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					
+				</table>
+				<rich:spacer height="8px"/>
+				
+				<rich:panel style="margin-right: 7px">
+									<f:facet name="header">#{messages.fotoUser}</f:facet>
+									<table cellpadding="0" cellspacing="0" border="0">
+										<tr>
+											<td height="11px"></td>
+										</tr>
+										<tr>
+											<td width="7px" />
+											<td><h:outputLabel value="#{messages.foto}"></h:outputLabel><br />
+											<s:fileUpload id="addPhoto" accept="*.*" tabindex="6"
+												data="#{crearMedicoUserExist_Controlador.data}"
+												fileName="#{crearMedicoUserExist_Controlador.nombrePhoto}" /></td>
+										</tr>
+									</table>
+
+									<rich:spacer height="6px" style="display: block" />
+				</rich:panel>				
+				<rich:spacer height="8px"/>
+				
+				<rich:panel style="margin-right: 7px">
+					<f:facet name="header">#{messages.otrosDatos}</f:facet>
+				<table cellpadding="0px" cellspacing="0px" border="0px">
+					<tr>
+						<td style="height: 12px;" colspan="6"></td>
+					</tr>
+					<tr style="vertical-align: top;">
+						<td style="width: 7px;"></td>
+						<td><h:outputLabel value="#{messages.param6}"></h:outputLabel> 
+						<rich:message for="name" showDetail="false"
+									showSummary="false" tooltip="true">
+									<f:facet name="errorMarker">
+										<h:outputText
+											title="#{facesMessages.getCurrentMessagesForControl('name').get(0).getDetail()}"
+											style="color : red;cursor:pointer;" value="*" styleClass="nombre" />
+									</f:facet>
+							</rich:message>
+						 <br />
+						<h:inputText id="name" 
+							required="true" requiredMessage="#{messages.requerido}"
+							value="#{crearMedicoUserExist_Controlador.name}" tabindex="7"
+							style="width:150px;" /> <rich:spacer height="1"
+							style="display:block"></rich:spacer> <rich:spacer height="6"
+							style="display:block; width : 1px; height : 6px;"></rich:spacer></td>
+						<td style="width: 25px"></td>
+						<td><h:outputLabel value="#{messages.param7}"></h:outputLabel>
+						<rich:message for="papellido" showDetail="false"
+									showSummary="false" tooltip="true">
+									<f:facet name="errorMarker">
+										<h:outputText
+											title="#{facesMessages.getCurrentMessagesForControl('papellido').get(0).getDetail()}"
+											style="color : red;cursor:pointer;" value="*" styleClass="nombre" />
+									</f:facet>
+							</rich:message>
+						<br />						
+						<h:inputText
+							value="#{crearMedicoUserExist_Controlador.usuario_conf.primerApellido}" tabindex="8"
+							style="width:150px;" id="papellido"/> <rich:spacer height="6"
+							style="display:block"></rich:spacer></td>
+						<td style="width: 25px"></td>
+						<td valign="top"><h:outputLabel value="#{messages.param8}"></h:outputLabel>
+						<rich:message for="sapellido" showDetail="false"
+									showSummary="false" tooltip="true">
+									<f:facet name="errorMarker">
+										<h:outputText
+											title="#{facesMessages.getCurrentMessagesForControl('sapellido').get(0).getDetail()}"
+											style="color : red;cursor:pointer;" value="*" styleClass="nombre" />
+									</f:facet>
+							</rich:message>
+						<br />						
+						<h:inputText
+							value="#{crearMedicoUserExist_Controlador.usuario_conf.segundoApellido}" tabindex="9"
+							style="width:150px;" id="sapellido"/> <rich:spacer height="6"
+							style="display:block"></rich:spacer></td>
+					</tr>
+
+				</table>
+				</rich:panel>
+				<rich:spacer height="1px"/>
+				 </rich:tab>
+				 
+				 <rich:tab label="#{messages.funcionario}" name="tabFuncionario" id="funcionario">
+
+								<table border="0" cellpadding="0" cellspacing="0"
+										style="FONT-SIZE: xx-small;">
+										<tr>
+				 		<td>
+				 			<rich:spacer height="3px"/>
+				 		</td>
+				 	</tr> 
+										<tr valign="top">
+											<td />
+											<td><a4j:outputPanel
+													id="tabla_tipofunc_Source">
+													<rich:listShuttle id="ListShuttleTipoFuncionario"
+														sourceListWidth="300"
+														targetListWidth="300"
+														sourceValue="#{crearMedicoUserExist_Controlador.tipoFuncionarioSource}"
+														targetValue="#{crearMedicoUserExist_Controlador.tipoFuncionarioTarget}"
+														var="tipoFuncionario" sourceCaptionLabel="#{messages.tipoFuncionario}:"
+														targetCaptionLabel="#{messages.tiposFuncionariosSeleccionados}:"
+														showButtonLabels="false" fastOrderControlsVisible="false"
+														orderControlsVisible="false" topControlLabel="#{messages.primero}"
+														copyAllControlLabel="#{messages.copiarTodos}"
+														copyControlLabel="#{messages.copiar}" downControlLabel="#{messages.bajar}"
+														upControlLabel="#{messages.subir}"
+														removeAllControlLabel="#{messages.eliminarTodos}"
+														removeControlLabel="#{messages.eliminar}"
+														bottomControlLabel="#{messages.ultimo}">
+														<a4j:support event="onlistchanged" ajaxSingle="true"
+															action="#{crearMedicoUserExist_Controlador.listaCargosPosibles()}"
+															reRender="cargos_posibles" />
+														<s:convertEntity />
+														<rich:column>
+															<f:facet name="header">
+																<h:panelGrid columns="2"
+																	style="width: 100%; padding:0px; margin:0px;"
+																	border="0" cellpadding="0" cellspacing="0">
+																	<s:div style="float: left;">#{messages.headerListshuttleNombre}</s:div>
+																</h:panelGrid>
+															</f:facet>
+															<h:outputText
+																style="vertical-align: 25%; margin-left: 2px; "
+																value="#{tipoFuncionario.valor}">
+
+															</h:outputText>
+														</rich:column>
+
+													</rich:listShuttle>
+
+												</a4j:outputPanel></td>
+											</tr>	
+									
+									<tr>
+										<td height="5px"></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td><a4j:outputPanel id="cargos_posibles">
+											<rich:listShuttle id="ListShuttleCargos"
+												sourceListWidth="300"
+												targetListWidth="300"
+												sourceValue="#{crearMedicoUserExist_Controlador.cargoSource}"
+												targetValue="#{crearMedicoUserExist_Controlador.cargoTarget}"
+												var="cargo" sourceCaptionLabel="#{messages.cargos}:"
+												targetCaptionLabel="#{messages.cargosSeleccionados}:"
+												showButtonLabels="false" fastOrderControlsVisible="false"
+												orderControlsVisible="false" topControlLabel="#{messages.primero}"
+												copyAllControlLabel="#{messages.copiarTodos}" copyControlLabel="#{messages.copiar}"
+												downControlLabel="#{messages.bajar}" upControlLabel="#{messages.subir}"
+												removeAllControlLabel="#{messages.eliminarTodos}"
+												removeControlLabel="#{messages.eliminar}"
+												bottomControlLabel="#{messages.ultimo}">
+												<a4j:support event="onlistchanged" ajaxSingle="true"
+													action="#{crearMedicoUserExist_Controlador.verificarCargos()}"
+													reRender="cargos_posibles" />
+												<s:convertEntity />
+												<rich:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.headerListshuttleNombre}</s:div>
+														</h:panelGrid>
+													</f:facet>
+													<h:outputText
+														style="vertical-align: 25%; margin-left: 2px; "
+														value="#{cargo.valor}">
+
+													</h:outputText>
+												</rich:column>
+
+											</rich:listShuttle>
+
+
+
+										</a4j:outputPanel></td>
+
+
+									</tr>
+									
+
+								</table>
+
+							</rich:tab>
+				 
+				 <rich:tab label="#{messages.roles}">
+
+						<table border="0" cellpadding="0" cellspacing="0">
+							<tr>
+				 		<td>
+				 			<rich:spacer height="3px"/>
+				 		</td>
+				 	</tr>
+							<tr valign="top">
+								<td/>
+								<td><a4j:outputPanel id="listRoles">
+
+									<rich:listShuttle id="roles" 
+										listsHeight="240px"
+										sourceListWidth="300"
+										targetListWidth="300"										
+										tabindex="15" 
+										sourceValue="#{crearMedicoUserExist_Controlador.rolsSource}"
+										targetValue="#{crearMedicoUserExist_Controlador.rolsTarget}" var="rol"
+										sourceCaptionLabel="#{messages.roles}:"
+										targetCaptionLabel="#{messages.rolesSeleccionados}:" showButtonLabels="false"
+										fastOrderControlsVisible="false" orderControlsVisible="false"
+										topControlLabel="#{messages.primero}" copyAllControlLabel="#{messages.copiarTodos}"
+										copyControlLabel="#{messages.copiar}" downControlLabel="#{messages.bajar}"
+										upControlLabel="#{messages.subir}" removeAllControlLabel="#{messages.eliminarTodos}"
+										removeControlLabel="#{messages.eliminar}" bottomControlLabel="#{messages.ultimo}">
+										<s:convertEntity />
+										<rich:column>
+											<f:facet name="header">
+												<h:panelGrid columns="2"
+													style="width: 100%; padding:0px; margin:0px;" border="0"
+													cellpadding="0" cellspacing="0">
+													<s:div style="float: left;">#{messages.headerListshuttleNombre}</s:div>
+												</h:panelGrid>
+											</f:facet>
+											<h:outputText style="vertical-align: 25%; margin-left: 2px; "
+												value="#{rol.name}">
+
+											</h:outputText>
+										</rich:column>
+
+
+									</rich:listShuttle>
+
+								</a4j:outputPanel></td>
+							</tr>							
+						</table>
+					</rich:tab>
+				 
+				<rich:tab label="#{messages.datosComoMedico}">
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+					<tr>
+				 		<td>
+				 			<rich:spacer height="3px"/>
+				 		</td>
+				 	</tr>
+					<tr style="vertical-align: top;">						
+						<td>#{messages.conf_matricula_ministerio}
+						<h:outputLabel value="*" style="color:red; cursor:pointer;"
+							title="#{messages.valorRep}"
+							rendered="#{crearMedicoUserExist_Controlador.mariculaMRep}" />
+						<rich:message for="matriculaMinisterio" showDetail="false"
+									showSummary="false" tooltip="true">
+									<f:facet name="errorMarker">
+										<h:outputText
+											title="#{facesMessages.getCurrentMessagesForControl('matriculaMinisterio').get(0).getDetail()}"
+											style="color : red;cursor:pointer;" value="*" styleClass="nombre" />
+									</f:facet>
+						</rich:message>
+							  <br />
+						<h:inputText id="matriculaMinisterio"	
+							 requiredMessage="#{messages.requerido}"						
+							value="#{crearMedicoUserExist_Controlador.matriculaMinisterio}"	tabindex="10"						
+							style="width:150px;" /> <rich:spacer height="2"></rich:spacer> </td>
+						<td style="width: 25px"></td>
+						<td>#{messages.conf_matricula_colegio}
+						<h:outputLabel value="*" style="color:red; cursor:pointer;"
+							title="#{messages.valorRep}"
+							rendered="#{crearMedicoUserExist_Controlador.matriculaCRep}" />
+						<rich:message for="matriculaColegio" showDetail="false"
+									showSummary="false" tooltip="true">
+									<f:facet name="errorMarker">
+										<h:outputText
+											title="#{facesMessages.getCurrentMessagesForControl('matriculaColegio').get(0).getDetail()}"
+											style="color : red;cursor:pointer;" value="*" styleClass="nombre" />
+									</f:facet>
+						</rich:message>
+							  <br />
+						<h:inputText id="matriculaColegio"	
+							 requiredMessage="#{messages.requerido}"						
+							value="#{crearMedicoUserExist_Controlador.matriculaColegio}" tabindex="11"
+							style="width:150px;" /> <rich:spacer height="2"></rich:spacer></td>
+						<td style="width: 25px"></td>
+						<td valign="top"><h:outputLabel value="#{messages.fechaGraduacion}"></h:outputLabel>
+						<rich:message for="fecha" showDetail="false"
+									showSummary="false" tooltip="true">
+									<f:facet name="errorMarker">
+										<h:outputText
+											title="#{facesMessages.getCurrentMessagesForControl('fecha').get(0).getDetail()}"
+											style="color : red;cursor:pointer;" value="*" styleClass="nombre" />
+									</f:facet>
+						</rich:message>
+						 <br />
+						<rich:calendar styleClass="normalText" id="fecha" datePattern="dd/MM/yyyy"	
+									 requiredMessage="#{messages.requerido}"											
+									value="#{crearMedicoUserExist_Controlador.fechaGraduacion}" tabindex="12"
+									 isDayEnabled="disableMayoresHoy" dayStyleClass="disableMayoresHoyClass">
+									<s:convertDateTime />
+						</rich:calendar> <rich:spacer height="2"></rich:spacer></td>
+					</tr>
+
+				</table>
+				</rich:tab>
+				 <rich:tab label="#{messages.especialidadesGraduacion}" >
+				 
+				   <table cellpadding="0px" cellspacing="0px" border="0px"
+								style="width: 100%">
+								<tr>
+				 					<td>
+				 						<rich:spacer height="3px"/>
+				 					</td>
+				 				</tr>
+								<tr>
+									<td style="width: 48.2%; vertical-align: top;"><a4j:outputPanel
+										id="lista">
+										
+										<rich:listShuttle id="listaEspec" 
+											listsHeight="240px"
+											sourceListWidth="300"
+											targetListWidth="300"
+											sourceValue="#{crearMedicoUserExist_Controlador.especialidades}"
+											targetValue="#{crearMedicoUserExist_Controlador.especialidadesTarget}" var="espec"
+											sourceCaptionLabel="#{messages.especialidadesGraduacion}:"
+											targetCaptionLabel="#{messages.especialidadesGraduacionSeleccionadas}:"
+											showButtonLabels="false" fastOrderControlsVisible="false"
+											orderControlsVisible="false" topControlLabel="#{messages.primero}"
+											copyAllControlLabel="#{messages.copiarTodos}" copyControlLabel="#{messages.copiar}"
+											downControlLabel="#{messages.bajar}" upControlLabel="#{messages.subir}"
+											removeAllControlLabel="#{messages.eliminarTodos}"
+											removeControlLabel="#{messages.eliminar}"
+											bottomControlLabel="#{messages.ultimo}" >																						
+											<s:convertEntity />
+											<a4j:support event="onlistchanged" ajaxSingle="true" action="#{crearMedicoUserExist_Controlador.CargarPosiblesEspecialidades()}"
+											reRender="especialidades_posibles"/>	
+											<rich:column>
+											<f:facet name="header">
+													<h:panelGrid columns="2"
+																	style="width: 100%; padding:0px; margin:0px;"
+																	border="0" cellpadding="0" cellspacing="0">
+																	<s:div style="float: left;">#{messages.headerListshuttleNombre}</s:div>
+													</h:panelGrid>
+												</f:facet>
+												<h:outputText
+													style="vertical-align: 25%; margin-left: 2px; "
+													value="#{espec.nombre}"></h:outputText>
+											</rich:column>
+										</rich:listShuttle>
+									</a4j:outputPanel></td>
+
+								
+
+									
+
+								</tr>
+							</table>
+				 
+				 	
+				 	</rich:tab>
+				 <rich:tab label="#{messages.serviciosEspecialidades}" >
+				 
+				 <table border="0px" cellpadding="0px" cellspacing="0px">
+				 	<tr>
+				 		<td>
+				 			<rich:spacer height="2px"/>
+				 		</td>
+				 	</tr>
+				 	<tr>
+				 		<td>
+				 			<a4j:outputPanel id="entidad">
+				 			<rich:listShuttle id="test"
+				 							sourceListWidth="300"
+											targetListWidth="300"
+											sourceValue="#{crearMedicoUserExist_Controlador.entidadesSource}"
+											targetValue="#{crearMedicoUserExist_Controlador.listaNomEntityUserSIE}" var="entity"
+											sourceCaptionLabel="#{messages.entidades}:"
+											targetCaptionLabel="#{messages.entidadesSeleccionadas}:"
+											showButtonLabels="false" fastOrderControlsVisible="false"
+											orderControlsVisible="false" topControlLabel="#{messages.primero}"
+											copyAllControlLabel="#{messages.copiarTodos}" copyControlLabel="#{messages.copiar}"
+											downControlLabel="#{messages.bajar}" upControlLabel="#{messages.subir}"
+											removeAllControlLabel="#{messages.eliminarTodos}"
+											removeControlLabel="#{messages.eliminar}"
+											bottomControlLabel="#{messages.ultimo}">
+											<a4j:support event="onlistchanged" ajaxSingle="true" action="#{crearMedicoUserExist_Controlador.cargarDepartamentos()}"
+													  	reRender="entidad,dep,tabla_serv_Source,especialidades_posibles" />											
+											<rich:column>
+												<f:facet name="header">
+													<h:panelGrid columns="2"
+																	style="width: 100%; padding:0px; margin:0px;"
+																	border="0" cellpadding="0" cellspacing="0">
+																	<s:div style="float: left;">#{messages.headerListshuttleNombre}</s:div>
+													</h:panelGrid>
+												</f:facet>
+												<h:outputText
+													style="vertical-align: 25%; margin-left: 2px; "
+													value="#{entity}"></h:outputText>
+											</rich:column>
+							</rich:listShuttle>										
+							</a4j:outputPanel>
+				 		</td>
+				 	</tr>
+				 	<tr>
+				 		<td>
+				 			<rich:spacer height="7px"/>
+				 		</td>				 		
+				 	</tr>
+				 	<tr>
+				 		<td>
+				 			<a4j:outputPanel id="dep">
+										<rich:listShuttle id="deptest"	
+											sourceListWidth="300"
+											targetListWidth="300"										
+											sourceValue="#{crearMedicoUserExist_Controlador.departamentoSorce}"
+											targetValue="#{crearMedicoUserExist_Controlador.departamentoTarget}" var="espec"
+											sourceCaptionLabel="#{messages.departamentos}:"
+											targetCaptionLabel="#{messages.departamentosSeleccionados}:"
+											showButtonLabels="false" fastOrderControlsVisible="false"
+											orderControlsVisible="false" topControlLabel="#{messages.primero}"
+											copyAllControlLabel="#{messages.copiarTodos}" copyControlLabel="#{messages.copiar}"
+											downControlLabel="#{messages.bajar}" upControlLabel="#{messages.subir}"
+											removeAllControlLabel="#{messages.eliminarTodos}"
+											removeControlLabel="#{messages.eliminar}"
+											bottomControlLabel="#{messages.ultimo}" style="FONT-FAMILY: 'AlArabiya';">
+											<s:convertEntity/>
+											<a4j:support event="onlistchanged" ajaxSingle="true" action="#{crearMedicoUserExist_Controlador.cargarServiciosSource()}"
+													  	reRender="tabla_serv_Source,especialidades_posibles" />	
+											<rich:column>
+											<f:facet name="header">
+													<h:panelGrid columns="2"
+																	style="width: 100%; padding:0px; margin:0px;"
+																	border="0" cellpadding="0" cellspacing="0">
+																	<s:div style="float: left;">#{messages.headerListshuttleNombre}</s:div>
+													</h:panelGrid>
+												</f:facet>
+												<h:outputText
+													style="vertical-align: 25%; margin-left: 2px; "
+													value="#{espec.departamento.nombre}"></h:outputText>
+											</rich:column>
+											<rich:column >	
+											<f:facet name="header">
+																<h:panelGrid columns="2"
+																	style="width: 100%; padding:0px; margin:0px;"
+																	border="0" cellpadding="0" cellspacing="0">
+																	<s:div style="float: left;">#{messages.headerListshuttleEntidad}</s:div>
+																</h:panelGrid>
+															</f:facet>										
+												<h:outputText 
+													style="vertical-align: 25%; margin-left: 2px; "
+													value="#{espec.entidad.nombre}">													
+													</h:outputText>
+											</rich:column>
+										</rich:listShuttle>
+				 			</a4j:outputPanel>
+				 		</td>
+				 	</tr>
+				 	<tr>
+				 		<td>
+				 			<rich:spacer height="7px"/>
+				 		</td>				 		
+				 	</tr>
+				 	<tr>
+				 		<td>
+				 			<a4j:outputPanel
+												id="tabla_serv_Source">
+												<rich:listShuttle id="ListShuttleServicios" 												
+											sourceListWidth="300"
+											targetListWidth="300"
+											sourceValue="#{crearMedicoUserExist_Controlador.listaServicioSource}"
+											targetValue="#{crearMedicoUserExist_Controlador.listaServicioTarget}" var="servicio"
+											sourceCaptionLabel="#{messages.servicios}:"
+											targetCaptionLabel="#{messages.serviciosSeleccionados}:"
+											showButtonLabels="false" fastOrderControlsVisible="false"
+											orderControlsVisible="false" topControlLabel="#{messages.primero}"
+											copyAllControlLabel="#{messages.copiarTodos}" copyControlLabel="#{messages.copiar}"
+											downControlLabel="#{messages.bajar}" upControlLabel="#{messages.subir}"
+											removeAllControlLabel="#{messages.eliminarTodos}"
+											removeControlLabel="#{messages.eliminar}"
+											bottomControlLabel="#{messages.ultimo}" >
+											<a4j:support event="onlistchanged" ajaxSingle="true" action="#{crearMedicoUserExist_Controlador.CargarPosiblesEspecialidades()}"
+													  	reRender="especialidades_posibles" />
+											<s:convertEntity />
+											<rich:column >	
+											<f:facet name="header">
+																<h:panelGrid columns="2"
+																	style="width: 100%; padding:0px; margin:0px;"
+																	border="0" cellpadding="0" cellspacing="0">
+																	<s:div style="float: left;">#{messages.headerListshuttleNombre}</s:div>
+																</h:panelGrid>
+															</f:facet>										
+												<h:outputText 
+													style="vertical-align: 25%; margin-left: 2px; "
+													value="#{servicio.servicio.nombre}">													
+													</h:outputText>
+											</rich:column>
+											<rich:column >	
+											<f:facet name="header">
+																<h:panelGrid columns="2"
+																	style="width: 100%; padding:0px; margin:0px;"
+																	border="0" cellpadding="0" cellspacing="0">
+																	<s:div style="float: left;">#{messages.headerListshuttleDepartamento}</s:div>
+																</h:panelGrid>
+															</f:facet>										
+												<h:outputText 
+													style="vertical-align: 25%; margin-left: 2px; "
+													value="#{servicio.servicio.departamento.nombre}">													
+													</h:outputText>
+											</rich:column>
+											<rich:column >	
+											<f:facet name="header">
+																<h:panelGrid columns="2"
+																	style="width: 100%; padding:0px; margin:0px;"
+																	border="0" cellpadding="0" cellspacing="0">
+																	<s:div style="float: left;">#{messages.headerListshuttleEntidad}</s:div>
+																</h:panelGrid>
+															</f:facet>										
+												<h:outputText 
+													style="vertical-align: 25%; margin-left: 2px; "
+													value="#{servicio.entidad.nombre}">													
+													</h:outputText>
+											</rich:column>
+											
+										</rich:listShuttle>	
+											</a4j:outputPanel>
+				 		</td>
+				 	</tr>
+				 	<tr>
+				 		<td>
+				 			<rich:spacer height="7px"/>
+				 		</td>				 		
+				 	</tr>
+				 	<tr>
+				 		<td>
+				 			<a4j:outputPanel
+													id="especialidades_posibles">
+
+
+										<rich:listShuttle id="ListShuttleEsp"
+											sourceListWidth="300"
+											targetListWidth="300"
+											sourceValue="#{crearMedicoUserExist_Controlador.resultado}"
+											targetValue="#{crearMedicoUserExist_Controlador.especialidadesSeleccionadas}" var="espec"
+											sourceCaptionLabel="#{messages.especialidadesPosibles}:"
+											targetCaptionLabel="#{messages.especialidadesPosiblesSeleccionadas}:"
+											showButtonLabels="false" fastOrderControlsVisible="false"
+											orderControlsVisible="false" topControlLabel="#{messages.primero}"
+											copyAllControlLabel="#{messages.copiarTodos}" copyControlLabel="#{messages.copiar}"
+											downControlLabel="#{messages.bajar}" upControlLabel="#{messages.subir}"
+											removeAllControlLabel="#{messages.eliminarTodos}"
+											removeControlLabel="#{messages.eliminar}"
+											bottomControlLabel="#{messages.ultimo}" >
+											<a4j:support event="onlistchanged" ajaxSingle="true" action="#{crearMedicoUserExist_Controlador.verificarEspecialidad()}"
+													  	reRender="cargos_posibles" />
+											<s:convertEntity />
+											<rich:column >
+											<f:facet name="header">
+																<h:panelGrid columns="2"
+																	style="width: 100%; padding:0px; margin:0px;"
+																	border="0" cellpadding="0" cellspacing="0">
+																	<s:div style="float: left;">#{messages.headerListshuttleNombre}</s:div>
+																</h:panelGrid>
+												</f:facet>
+												<h:outputText 
+													style="vertical-align: 25%; margin-left: 2px; "
+													value="#{espec.especialidad.nombre}">
+													
+													</h:outputText>
+											</rich:column>
+											<rich:column >	
+											<f:facet name="header">
+																<h:panelGrid columns="2"
+																	style="width: 100%; padding:0px; margin:0px;"
+																	border="0" cellpadding="0" cellspacing="0">
+																	<s:div style="float: left;">#{messages.headerListshuttleEntidad}</s:div>
+																</h:panelGrid>
+															</f:facet>										
+												<h:outputText 
+													style="vertical-align: 25%; margin-left: 2px; "
+													value="#{espec.entidad.nombre}">													
+													</h:outputText>
+											</rich:column>
+											
+										</rich:listShuttle>
+
+
+
+												</a4j:outputPanel>
+				 		</td>
+				 	</tr>
+				 </table>
+				 
+				
+				 
+				 				 
+				 </rich:tab>				 				
+			</rich:tabPanel>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+			
+			
+			<rich:spacer height="3px"/>
+			<s:div styleClass="actionButtons" rendered="#{empty from}"
+				style="text-align: right">
+
+				<div align="right"><h:commandButton value="#{messages.aceptar}" style="" tabindex="13" id="buttonCrear"
+					action="#{crearMedicoUserExist_Controlador.crear()}">
+				</h:commandButton> <h:commandButton tabindex="14"
+					value="#{messages.cancelar}" style="margin-right:0px;"	action="salir" propagation="end" immediate="true"/></div>
+			</s:div>
+		</s:validateAll>
+		</h:form>
+		<br />
+
+
+
+	</ui:define>
+
+</ui:composition>
+

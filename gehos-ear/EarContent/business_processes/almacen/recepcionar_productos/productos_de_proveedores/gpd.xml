@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="productos_de_proveedores" width="833" height="502">
+  <node name="inicio" x="150" y="11" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="-152" h1="2" w2="-183" h2="-371"/>
+      <bendpoint w1="-152" h1="89" w2="-161" h2="-2"/>
+    </edge>
+  </node>
+  <node name="informe_de_recepcion" x="144" y="102" width="163" height="36">
+    <edge>
+      <label x="-10" y="-24"/>
+      <bendpoint w1="133" h1="26" w2="-147" h2="20"/>
+    </edge>
+  </node>
+  <node name="aceptar_recepcion" x="148" y="288" width="147" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="editar_informe" x="433" y="207" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="-34" h1="-49" w2="-40" h2="50"/>
+    </edge>
+  </node>
+  <node name="detalles" x="431" y="107" width="132" height="36">
+    <edge>
+      <label x="-59" y="-20"/>
+      <bendpoint w1="-137" h1="-35" w2="143" h2="-29"/>
+    </edge>
+    <edge>
+      <label x="-35" y="117"/>
+      <bendpoint w1="74" h1="0" w2="358" h2="-180"/>
+      <bendpoint w1="77" h1="177" w2="361" h2="-3"/>
+    </edge>
+    <edge>
+      <label x="0" y="-23"/>
+      <bendpoint w1="42" h1="50" w2="48" h2="-49"/>
+    </edge>
+  </node>
+  <node name="entrada_producto" x="159" y="380" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="fin" x="29" y="454" width="132" height="38"/>
+</root-container>

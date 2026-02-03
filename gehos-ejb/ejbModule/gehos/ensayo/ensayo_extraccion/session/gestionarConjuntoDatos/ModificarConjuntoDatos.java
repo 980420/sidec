@@ -1,0 +1,729 @@
+package gehos.ensayo.ensayo_extraccion.session.gestionarConjuntoDatos;
+
+import gehos.autenticacion.entity.Usuario;
+import gehos.bitacora.session.traces.IBitacora;
+import gehos.ensayo.ensayo_configuracion.session.custom.SeguridadEstudio;
+import gehos.ensayo.entity.ConjuntoDatos_ensayo;
+import gehos.ensayo.entity.Cronograma_ensayo;
+import gehos.ensayo.entity.Entidad_ensayo;
+import gehos.ensayo.entity.Estudio_ensayo;
+import gehos.ensayo.entity.MomentoSeguimientoGeneralHojaCrd_ensayo;
+import gehos.ensayo.entity.MomentoSeguimientoGeneral_ensayo;
+import gehos.ensayo.entity.Seccion_ensayo;
+import gehos.ensayo.entity.Usuario_ensayo;
+import gehos.ensayo.entity.Variable_ensayo;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.ResourceBundle;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.swing.text.StyledEditorKit.BoldAction;
+
+import org.jboss.seam.ScopeType;
+import org.jboss.seam.annotations.In;
+import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.core.SeamResourceBundle;
+import org.jboss.seam.faces.FacesMessages;
+
+
+
+
+@Name("modificarConjuntoDatos")
+@Scope(ScopeType.CONVERSATION)
+public class ModificarConjuntoDatos
+{
+	@In
+	EntityManager entityManager;
+	@In
+	FacesMessages facesMessages;
+	@In
+	SeguridadEstudio seguridadEstudio;
+	@In
+	IBitacora bitacora;
+	@In
+	Usuario user;
+	FacesMessage facesMessage;
+	private boolean inicioConversacion = false;
+	private boolean seleccEstudio = true;
+	private boolean seleccCronograma = false;
+	private boolean seleccMomento = false;
+	private boolean seleccCRD = false;
+	private boolean seleccTodoEstudio = false;
+	private boolean seleccTodoCronograma = false;
+	private boolean seleccTodoMomento = false;
+	private boolean seleccTodoCRD = false;
+
+	private long cid;
+	private ConjuntoDatos_ensayo conjuntoDatos = new ConjuntoDatos_ensayo();
+	private Usuario_ensayo usuario = new Usuario_ensayo();
+	private List<Cronograma_ensayo> cronogramas = new ArrayList<Cronograma_ensayo>();
+	private ListadoControler_ensayo<VariableConjuntoDatos> listadoVariables;
+	private List<VariableConjuntoDatos> variables = new ArrayList<VariableConjuntoDatos>();
+	private List<VariableConjuntoDatos> listadoVariablesEstudio = new ArrayList<VariableConjuntoDatos>();
+	private Hashtable<Integer, VariableConjuntoDatos> variablesSeleccionadas = new Hashtable<Integer, VariableConjuntoDatos>();
+	private ListadoControler_ensayo<VariableConjuntoDatos> listadoVariablesConjuntoDatos;
+	private List<VariableConjuntoDatos> listadoVariablesSeleccionadas = new ArrayList<VariableConjuntoDatos>();
+
+	private int idVariable;
+
+	private List<MomentoSeguimientoGeneral_ensayo> momentos;
+
+	private Estudio_ensayo estudio;
+
+	private Cronograma_ensayo cronograma;
+	private MomentoSeguimientoGeneral_ensayo momento;
+	private MomentoSeguimientoGeneralHojaCrd_ensayo msHojaCRD;
+	private List<String> listadoIdMomentos = new ArrayList<String>();
+	private List<String> listadoIdVariables = new ArrayList<String>();
+
+	private long idConjuntoDatos;
+	private String nombreConjuntoDatos;
+	
+	private static final String CARACTERES_ESPECIALES = SeamResourceBundle.getBundle()
+			.getString("caracteresEspeciales");
+
+	public ModificarConjuntoDatos() {}
+
+	public void inicializarConjuntoDatos()
+	{
+		estudio = seguridadEstudio.EstudioActivo();
+		usuario = ((Usuario_ensayo)entityManager.find(Usuario_ensayo.class, user.getId()));
+		//Determinar si el conjunto de datos es de Pesquisaje 
+		ConjuntoDatos_ensayo pesquisaje = ((ConjuntoDatos_ensayo)entityManager.find(ConjuntoDatos_ensayo.class, Long.valueOf(idConjuntoDatos)));
+		
+		if(pesquisaje.getPesquisaje()){
+			String nombreGrupo = "Grupo Pesquisaje";
+			cronogramas = entityManager.createQuery("select distinct cronograma from Cronograma_ensayo cronograma "
+					+ "inner join cronograma.grupoSujetos grupoSujetos "
+					+ "inner join cronograma.momentoSeguimientoGenerals momentoSeguimientoGenerals "
+					+ "where grupoSujetos.estudio.id =:idEstudio and grupoSujetos.nombreGrupo =:nombreGrupo and cronograma.eliminado<>true and momentoSeguimientoGenerals.eliminado<>true")
+					.setParameter("idEstudio", Long.valueOf(estudio.getId()))
+					.setParameter("nombreGrupo", nombreGrupo).getResultList();
+		}		
+		else{
+		cronogramas = entityManager.createQuery("select distinct cronograma from Cronograma_ensayo cronograma inner join cronograma.grupoSujetos grupoSujetos inner join cronograma.momentoSeguimientoGenerals momentoSeguimientoGenerals where grupoSujetos.estudio.id =:idEstudio and cronograma.eliminado<>true and momentoSeguimientoGenerals.eliminado<>true")
+				.setParameter("idEstudio", Long.valueOf(estudio.getId())).getResultList();
+		}
+
+		List<Object> variables = entityManager.createQuery("select variable, momentoSeguimientoGeneral from Variable_ensayo variable inner join variable.seccion seccion inner join seccion.hojaCrd hojaCrd inner join hojaCrd.momentoSeguimientoGeneralHojaCrds momentoSeguimientoGeneralHojaCrds inner join momentoSeguimientoGeneralHojaCrds.momentoSeguimientoGeneral momentoSeguimientoGeneral inner join momentoSeguimientoGeneral.cronograma cronograma where variable.eliminado <> true and momentoSeguimientoGeneralHojaCrds.eliminado <> true and momentoSeguimientoGeneral.eliminado <> true and cronograma in (#{modificarConjuntoDatos.cronogramas}) ORDER BY variable.id")
+.getResultList();
+		for (int i = 0; i < variables.size(); i++) {
+			Variable_ensayo variable = (Variable_ensayo)((Object[])variables.get(i))[0];
+			MomentoSeguimientoGeneral_ensayo momentoSeguimientoGeneral = (MomentoSeguimientoGeneral_ensayo)((Object[])variables.get(i))[1];
+			VariableConjuntoDatos variableConjuntoDatos = new VariableConjuntoDatos(i, variable, momentoSeguimientoGeneral);
+			listadoVariablesEstudio.add(variableConjuntoDatos);
+		}
+
+		listadoVariables = new ListadoControler_ensayo<VariableConjuntoDatos>(listadoVariablesEstudio);
+
+		cargarConjuntoDatos();
+		inicioConversacion = true;
+	}
+
+	//add
+	//Metodo que devuelve los momentos de un cronograma ordenados
+	public List<MomentoSeguimientoGeneral_ensayo> momentosCronograma(Cronograma_ensayo cronograma) {
+		List<MomentoSeguimientoGeneral_ensayo> momentos = new ArrayList<MomentoSeguimientoGeneral_ensayo>();
+		momentos = entityManager.createQuery("select momento from MomentoSeguimientoGeneral_ensayo momento "
+				+ "where momento.eliminado<>true and momento.cronograma.id =:idCronograma "
+				+ "order by momento.id").setParameter("idCronograma", cronograma.getId()).getResultList();
+		return momentos;
+	}
+	//Metodo que devuelve las hojas crd de un momento ordenadas
+	public List<MomentoSeguimientoGeneralHojaCrd_ensayo> hojasMomentos(MomentoSeguimientoGeneral_ensayo momento) {
+		List<MomentoSeguimientoGeneralHojaCrd_ensayo> hojas = new ArrayList<MomentoSeguimientoGeneralHojaCrd_ensayo>();
+		hojas = entityManager.createQuery("select msHojaCrd from MomentoSeguimientoGeneralHojaCrd_ensayo msHojaCrd "
+				+ "where msHojaCrd.eliminado<>true and msHojaCrd.momentoSeguimientoGeneral.id =:idMomento "
+				+ "order by msHojaCrd.hojaCrd.nombreHoja").setParameter("idMomento", momento.getId()).getResultList();
+		return hojas;
+	}
+
+	public void cargarConjuntoDatos() {
+		conjuntoDatos = ((ConjuntoDatos_ensayo)entityManager.find(ConjuntoDatos_ensayo.class, Long.valueOf(idConjuntoDatos)));
+		nombreConjuntoDatos = conjuntoDatos.getNombre();
+		String hql = conjuntoDatos.getDeclaracionHql();
+		List<VariableMomento> variablePorMomento=new ArrayList<VariableMomento>();
+		boolean esHQLNuevo=UtilConjuntoDatos.esHQLNuevo(hql);
+		if(esHQLNuevo){
+			variablePorMomento= UtilConjuntoDatos.extraerDatosDeHQL(hql);
+	        for (VariableMomento variableMomento : variablePorMomento) {
+	        	listadoIdMomentos.add(String.valueOf(variableMomento.getIdMomento()));
+	        	listadoIdVariables.add(String.valueOf(variableMomento.getIdVariable()));
+			}
+	        
+	        for (VariableMomento variableMomento : variablePorMomento) {
+	        	for (int i = 0; i < listadoVariablesEstudio.size(); i++) {
+	        		if (String.valueOf(listadoVariablesEstudio.get(i).getVariable().getId()).equals(String.valueOf(variableMomento.getIdVariable())) && String.valueOf(listadoVariablesEstudio.get(i).getMomentoSeguimientoGeneral().getId()).equals(String.valueOf(variableMomento.getIdMomento()))) {
+	        			if(!seleccionada(variableMomento.getIdVariable(), variableMomento.getIdMomento())){
+							listadoVariablesSeleccionadas.add(listadoVariablesEstudio.get(i));
+							variablesSeleccionadas.put(Integer.valueOf(i), listadoVariablesEstudio.get(i));
+						}							
+					}
+				}	
+	       }
+
+		}else{			
+			String momentosConjuntoDatos = "";
+			String variablesConjuntoDatos = "";
+			boolean banderaMomentos = true;
+			while (hql.indexOf("(") > -1) {
+				if (banderaMomentos) {
+					momentosConjuntoDatos = hql.substring(hql.indexOf("(") + 1, hql.indexOf(")"));
+					hql = hql.substring(hql.indexOf(")") + 1, hql.length());
+				}
+				else {
+					variablesConjuntoDatos = hql.substring(hql.indexOf("(") + 1, hql.indexOf(")"));
+					hql = hql.substring(hql.indexOf(")") + 1, hql.length());
+				}
+				banderaMomentos = false;
+			}
+
+			listadoIdMomentos = Arrays.asList(momentosConjuntoDatos.split(","));
+			listadoIdVariables = Arrays.asList(variablesConjuntoDatos.split(","));			
+
+			List<Object> variablesAux = entityManager.createQuery("select variable, momentoSeguimientoGeneral from Variable_ensayo variable inner join variable.seccion seccion inner join seccion.hojaCrd hojaCrd inner join hojaCrd.momentoSeguimientoGeneralHojaCrds momentoSeguimientoGeneralHojaCrds inner join momentoSeguimientoGeneralHojaCrds.momentoSeguimientoGeneral momentoSeguimientoGeneral where momentoSeguimientoGeneralHojaCrds.eliminado <> true and str(variable.id) in (#{modificarConjuntoDatos.listadoIdVariables}) and str(momentoSeguimientoGeneral.id) in (#{modificarConjuntoDatos.listadoIdMomentos}) ORDER BY variable.id")
+					.getResultList();
+			for (int i = 0; i < listadoVariablesEstudio.size(); i++) {
+				for (int j = 0; j < variablesAux.size(); j++) {
+					Variable_ensayo variable = (Variable_ensayo)((Object[])variablesAux.get(j))[0];
+					MomentoSeguimientoGeneral_ensayo momentoSeguimientoGeneral = (MomentoSeguimientoGeneral_ensayo)((Object[])variablesAux.get(j))[1];
+					if ((((VariableConjuntoDatos)listadoVariablesEstudio.get(i)).getVariable().equals(variable)) && (((VariableConjuntoDatos)listadoVariablesEstudio.get(i)).getMomentoSeguimientoGeneral().equals(momentoSeguimientoGeneral))) {
+						VariableConjuntoDatos variableConjuntoDatos = new VariableConjuntoDatos(i, variable, momentoSeguimientoGeneral);
+						if(!seleccionada(variable.getId(), momentoSeguimientoGeneral.getId())){
+							listadoVariablesSeleccionadas.add(variableConjuntoDatos);
+							variablesSeleccionadas.put(Integer.valueOf(i), variableConjuntoDatos);
+						}
+							
+					}
+				}
+			}
+		}
+
+		listadoVariablesConjuntoDatos = new ListadoControler_ensayo<VariableConjuntoDatos>(listadoVariablesSeleccionadas);
+	}
+	
+	private MomentoSeguimientoGeneral_ensayo getMomentoPorIdVariable(Long idVariable){
+		for (String variable : listadoIdVariables) {
+			for (VariableConjuntoDatos vxEstudio : listadoVariablesEstudio) {
+				if(String.valueOf(vxEstudio.getVariable().getId()).equals(variable)){
+					for (String idMomento : listadoIdMomentos) {
+						if(String.valueOf(vxEstudio.getMomentoSeguimientoGeneral().getId()).equals(idMomento)){
+							return vxEstudio.getMomentoSeguimientoGeneral();
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	public boolean seleccionada(Long variableId, Long msGeneralId){
+		if(this.variablesSeleccionadas != null && !this.variablesSeleccionadas.isEmpty()){
+			for(VariableConjuntoDatos itemCD : this.variablesSeleccionadas.values()){
+				if(itemCD.getVariable() != null && itemCD.getVariable().getId() == variableId 
+						&& itemCD.getMomentoSeguimientoGeneral() != null && itemCD.getMomentoSeguimientoGeneral().getId() == msGeneralId)
+					return true;
+			}
+		}
+		return false;
+	}
+
+	public ListadoControler_ensayo<VariableConjuntoDatos> listadoVariables()
+	{
+		variables = new ArrayList<VariableConjuntoDatos>();
+		if (seleccEstudio) {
+			variables = listadoVariablesEstudio;
+
+		}
+		else if (seleccCronograma) {
+			for (int i = 0; i < listadoVariablesEstudio.size(); i++) {
+				if (((VariableConjuntoDatos)listadoVariablesEstudio.get(i)).getMomentoSeguimientoGeneral().getCronograma().equals(cronograma)) {
+					variables.add((VariableConjuntoDatos)listadoVariablesEstudio.get(i));
+				}
+			}
+		} else if (seleccMomento) {
+			for (int i = 0; i < listadoVariablesEstudio.size(); i++) {
+				if (((VariableConjuntoDatos)listadoVariablesEstudio.get(i)).getMomentoSeguimientoGeneral().equals(momento)) {
+					variables.add((VariableConjuntoDatos)listadoVariablesEstudio.get(i));
+				}
+			}
+		} else {
+			for (int i = 0; i < listadoVariablesEstudio.size(); i++) {
+				if ((((VariableConjuntoDatos)listadoVariablesEstudio.get(i)).getMomentoSeguimientoGeneral().equals(msHojaCRD.getMomentoSeguimientoGeneral())) && 
+						(((VariableConjuntoDatos)listadoVariablesEstudio.get(i)).getVariable().getSeccion().getHojaCrd().equals(msHojaCRD.getHojaCrd()))) {
+					variables.add((VariableConjuntoDatos)listadoVariablesEstudio.get(i));
+				}
+			}
+		}
+		listadoVariables.setElementos(variables);
+		return listadoVariables;
+	}
+
+	public void seleccionarEstudio()
+	{
+		seleccEstudio = true;
+		seleccCronograma = false;
+		seleccMomento = false;
+		seleccCRD = false;
+		listadoVariables.setFirstResult(Integer.valueOf(0));
+	}
+
+	public void seleccionarCronograma(Cronograma_ensayo cronograma) { this.cronograma = new Cronograma_ensayo();
+	this.cronograma = cronograma;
+	seleccEstudio = false;
+	seleccCronograma = true;
+	seleccMomento = false;
+	seleccCRD = false;
+	listadoVariables.setFirstResult(Integer.valueOf(0));
+	}
+
+	public void seleccionarMomento(MomentoSeguimientoGeneral_ensayo momento) { this.momento = new MomentoSeguimientoGeneral_ensayo();
+	this.momento = momento;
+	seleccEstudio = false;
+	seleccCronograma = false;
+	seleccMomento = true;
+	seleccCRD = false;
+	listadoVariables.setFirstResult(Integer.valueOf(0));
+	}
+
+	public void seleccionarHojaCRD(MomentoSeguimientoGeneralHojaCrd_ensayo msHojaCRD) { this.msHojaCRD = new MomentoSeguimientoGeneralHojaCrd_ensayo();
+	this.msHojaCRD = msHojaCRD;
+	seleccEstudio = false;
+	seleccCronograma = false;
+	seleccMomento = false;
+	seleccCRD = true;
+	listadoVariables.setFirstResult(Integer.valueOf(0));
+	}
+
+	public void seleccionarVariable()
+	{
+		try
+		{
+			if (!variablesSeleccionadas.containsKey(Integer.valueOf(idVariable))) {
+				VariableConjuntoDatos variable = (VariableConjuntoDatos)listadoVariablesEstudio.get(idVariable);
+				listadoVariablesSeleccionadas.add(variable);
+				listadoVariablesConjuntoDatos.setElementos(listadoVariablesSeleccionadas);
+				variablesSeleccionadas.put(Integer.valueOf(idVariable), variable);
+			}
+			else {
+				eliminarVariable(idVariable);
+			}
+		}
+		catch (Exception e) {
+			facesMessages.clear();
+			facesMessages.add(e.getMessage(), new Object[0]);
+		}
+	}
+
+	public void eliminarVariable(int idVariable) { VariableConjuntoDatos variable = (VariableConjuntoDatos)variablesSeleccionadas.get(Integer.valueOf(idVariable));
+	variablesSeleccionadas.remove(Integer.valueOf(idVariable));
+	listadoVariablesSeleccionadas.remove(variable);
+	listadoVariablesConjuntoDatos.setElementos(listadoVariablesSeleccionadas);
+	}
+
+	public boolean todoMarcado() {
+		for (int i = 0; i < variables.size(); i++) {
+			if (!variablesSeleccionadas.containsKey(Integer.valueOf(((VariableConjuntoDatos)variables.get(i)).getId()))) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public void marcarDesmarcarTodo()
+	{
+		if (!todoMarcado()) {
+			seleccionarTodoVariable();
+		} else
+			desseleccionarTodoVariable();
+	}
+
+	public void seleccionarTodoVariable() {
+		try {
+			for (int i = 0; i < variables.size(); i++) {
+				if (!variablesSeleccionadas.containsKey(Integer.valueOf(((VariableConjuntoDatos)variables.get(i)).getId()))) {
+					VariableConjuntoDatos variable = (VariableConjuntoDatos)variables.get(i);
+					listadoVariablesSeleccionadas.add(variable);
+					variablesSeleccionadas.put(Integer.valueOf(variable.getId()), variable);
+				}
+			}
+
+			listadoVariablesConjuntoDatos.setElementos(listadoVariablesSeleccionadas);
+		}
+		catch (Exception e) {
+			facesMessages.clear();
+			facesMessages.add(e.getMessage(), new Object[0]);
+		}
+	}
+
+	public void desseleccionarTodoVariable() {
+		try {
+			if(seleccEstudio){
+				variablesSeleccionadas = new Hashtable<Integer, VariableConjuntoDatos>();
+				listadoVariablesSeleccionadas = new ArrayList<VariableConjuntoDatos>();
+				listadoVariablesConjuntoDatos = new ListadoControler_ensayo<VariableConjuntoDatos>(listadoVariablesSeleccionadas);
+			}
+			else{				
+				for (int i = 0; i < variables.size(); i++) {
+					if (variablesSeleccionadas.containsKey(Integer.valueOf(((VariableConjuntoDatos)variables.get(i)).getId()))) {
+						VariableConjuntoDatos variable = (VariableConjuntoDatos)variables.get(i);						
+						eliminarVariable(variable.getId());					
+
+					}
+				}
+
+
+			}
+
+
+		}
+		catch (Exception e) {
+			facesMessages.clear();
+			facesMessages.add(e.getMessage(), new Object[0]);
+		}
+	}
+
+	public String modificarConjuntoDatos() {
+		try {
+			if (listadoVariablesSeleccionadas.size() == 0) {
+				facesMessages.clear();
+				facesMessages.addFromResourceBundle("msg_validacionVariableConjuntoDatos_ens", new Object[0]);
+				return "error";
+			}
+			if (!nombreConjuntoDatos.equals(conjuntoDatos.getNombre())) {
+				long count = ((Long)entityManager.createQuery("select count(cd) from ConjuntoDatos_ensayo cd where cd.eliminado <> true and cd.nombre = :nombre and cd.estudio.id = :idEstudio")
+
+
+
+						.setParameter("nombre", conjuntoDatos.getNombre())
+						.setParameter("idEstudio", Long.valueOf(estudio.getId()))
+						.getSingleResult()).longValue();
+
+
+
+
+
+
+				if (count > 0L) {
+					facesMessages.clear();
+					facesMessages.addFromResourceBundle("msg_validacionConjuntoDatos_ens", new Object[0]);
+					return "error";
+				}
+			}
+			if(conjuntoDatos.getFechaInicio()==null){
+				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+				conjuntoDatos.setFechaInicio(formatter.parse("01/01/2000"));
+			}
+			if(conjuntoDatos.getFechaFin()==null){
+				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+				conjuntoDatos.setFechaFin(formatter.parse("01/01/2000"));
+			}
+			
+			conjuntoDatos.setDeclaracionHql(UtilConjuntoDatos.declaracionHql(conjuntoDatos, estudio, listadoVariablesSeleccionadas));
+			conjuntoDatos.setFechaActualizacion(Calendar.getInstance().getTime());
+			cid = bitacora.registrarInicioDeAccion(SeamResourceBundle.getBundle().getString("prm_bitacoraModificar_ens")).longValue();
+			conjuntoDatos.setCid(Long.valueOf(cid));
+			entityManager.persist(conjuntoDatos);
+			entityManager.flush();
+
+			return "ok";
+		} catch (Exception e) {
+			facesMessages.clear();
+			facesMessages.add(e.getMessage(), new Object[0]); }
+		return "error";
+	}
+
+
+	public void textNumberGuionBajo(FacesContext context,
+			UIComponent component, Object value) {
+		if (!value.toString().equals("")) {
+			if (!value.toString().matches(
+					"^(\\s*[A-Za-z"+CARACTERES_ESPECIALES+"0-9_]+\\s*)++$")) {
+				this.facesMessage = new FacesMessage(SeamResourceBundle.getBundle()
+						.getString(
+
+								"msg_validacionNombreConjunto_ens"), null);
+				this.facesMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
+				throw new ValidatorException(facesMessage);
+
+			}
+		}
+		/*
+			if (value.toString().length() > 25 || value.toString()== " ") {
+				facesMessages.addToControlFromResourceBundle(componente,
+						Severity.ERROR, SeamResourceBundle.getBundle()
+								.getString("maximoCaracteres"));
+				return true;
+			}*/
+	}
+
+	public Long getCid() {
+		return Long.valueOf(cid);
+	}
+
+	public void setCid(Long cid) {
+		this.cid = cid.longValue();
+	}
+
+	public List<Cronograma_ensayo> getCronogramas()
+	{
+		return cronogramas;
+	}
+
+	public void setCronogramas(List<Cronograma_ensayo> cronogramas)
+	{
+		this.cronogramas = cronogramas;
+	}
+
+
+	public Estudio_ensayo getEstudio()
+	{
+		return estudio;
+	}
+
+	public void setEstudio(Estudio_ensayo estudio)
+	{
+		this.estudio = estudio;
+	}
+
+	public boolean isInicioConversacion()
+	{
+		return inicioConversacion;
+	}
+
+	public void setInicioConversacion(boolean inicioConversacion)
+	{
+		this.inicioConversacion = inicioConversacion;
+	}
+
+	public boolean isSeleccEstudio()
+	{
+		return seleccEstudio;
+	}
+
+	public void setSeleccEstudio(boolean seleccEstudio)
+	{
+		this.seleccEstudio = seleccEstudio;
+	}
+
+	public boolean isSeleccCronograma()
+	{
+		return seleccCronograma;
+	}
+
+	public void setSeleccCronograma(boolean seleccCronograma)
+	{
+		this.seleccCronograma = seleccCronograma;
+	}
+
+	public boolean isSeleccMomento()
+	{
+		return seleccMomento;
+	}
+
+	public void setSeleccMomento(boolean seleccMomento)
+	{
+		this.seleccMomento = seleccMomento;
+	}
+
+	public boolean isSeleccCRD()
+	{
+		return seleccCRD;
+	}
+
+	public void setSeleccCRD(boolean seleccCRD)
+	{
+		this.seleccCRD = seleccCRD;
+	}
+
+	public List<MomentoSeguimientoGeneral_ensayo> getMomentos()
+	{
+		return momentos;
+	}
+
+	public void setMomentos(List<MomentoSeguimientoGeneral_ensayo> momentos)
+	{
+		this.momentos = momentos;
+	}
+
+	public Cronograma_ensayo getCronograma()
+	{
+		return cronograma;
+	}
+
+	public void setCronograma(Cronograma_ensayo cronograma) {
+		this.cronograma = cronograma;
+	}
+
+	public MomentoSeguimientoGeneral_ensayo getMomento() {
+		return momento;
+	}
+
+	public void setMomento(MomentoSeguimientoGeneral_ensayo momento) {
+		this.momento = momento;
+	}
+
+
+	public MomentoSeguimientoGeneralHojaCrd_ensayo getMsHojaCRD()
+	{
+		return msHojaCRD;
+	}
+
+	public void setMsHojaCRD(MomentoSeguimientoGeneralHojaCrd_ensayo msHojaCRD) {
+		this.msHojaCRD = msHojaCRD;
+	}
+
+
+	public boolean isSeleccTodoEstudio()
+	{
+		return seleccTodoEstudio;
+	}
+
+	public void setSeleccTodoEstudio(boolean seleccTodoEstudio) {
+		this.seleccTodoEstudio = seleccTodoEstudio;
+	}
+
+	public boolean isSeleccTodoCronograma() {
+		return seleccTodoCronograma;
+	}
+
+	public void setSeleccTodoCronograma(boolean seleccTodoCronograma) {
+		this.seleccTodoCronograma = seleccTodoCronograma;
+	}
+
+	public boolean isSeleccTodoMomento() {
+		return seleccTodoMomento;
+	}
+
+	public void setSeleccTodoMomento(boolean seleccTodoMomento) {
+		this.seleccTodoMomento = seleccTodoMomento;
+	}
+
+	public boolean isSeleccTodoCRD() {
+		return seleccTodoCRD;
+	}
+
+	public void setSeleccTodoCRD(boolean seleccTodoCRD) {
+		this.seleccTodoCRD = seleccTodoCRD;
+	}
+
+	public ListadoControler_ensayo<VariableConjuntoDatos> getListadoVariables() {
+		return listadoVariables;
+	}
+
+	public void setListadoVariables(ListadoControler_ensayo<VariableConjuntoDatos> listadoVariables)
+	{
+		this.listadoVariables = listadoVariables;
+	}
+
+	public List<VariableConjuntoDatos> getVariables() {
+		return variables;
+	}
+
+	public void setVariables(List<VariableConjuntoDatos> variables) {
+		this.variables = variables;
+	}
+
+	public List<VariableConjuntoDatos> getListadoVariablesEstudio() {
+		return listadoVariablesEstudio;
+	}
+
+	public void setListadoVariablesEstudio(List<VariableConjuntoDatos> listadoVariablesEstudio)
+	{
+		this.listadoVariablesEstudio = listadoVariablesEstudio;
+	}
+
+	public Hashtable<Integer, VariableConjuntoDatos> getVariablesSeleccionadas() {
+		return variablesSeleccionadas;
+	}
+
+	public void setVariablesSeleccionadas(Hashtable<Integer, VariableConjuntoDatos> variablesSeleccionadas)
+	{
+		this.variablesSeleccionadas = variablesSeleccionadas;
+	}
+
+	public List<VariableConjuntoDatos> getListadoVariablesSeleccionadas() {
+		return listadoVariablesSeleccionadas;
+	}
+
+	public void setListadoVariablesSeleccionadas(List<VariableConjuntoDatos> listadoVariablesSeleccionadas)
+	{
+		this.listadoVariablesSeleccionadas = listadoVariablesSeleccionadas;
+	}
+
+	public ConjuntoDatos_ensayo getConjuntoDatos() {
+		return conjuntoDatos;
+	}
+
+	public void setConjuntoDatos(ConjuntoDatos_ensayo conjuntoDatos) {
+		this.conjuntoDatos = conjuntoDatos;
+	}
+
+	public int getIdVariable() {
+		return idVariable;
+	}
+
+	public void setIdVariable(int idVariable) {
+		this.idVariable = idVariable;
+	}
+
+	public ListadoControler_ensayo<VariableConjuntoDatos> getListadoVariablesConjuntoDatos() {
+		return listadoVariablesConjuntoDatos;
+	}
+
+	public void setListadoVariablesConjuntoDatos(ListadoControler_ensayo<VariableConjuntoDatos> listadoVariablesConjuntoDatos)
+	{
+		this.listadoVariablesConjuntoDatos = listadoVariablesConjuntoDatos;
+	}
+
+	public Usuario_ensayo getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario_ensayo usuario) {
+		this.usuario = usuario;
+	}
+
+	public List<String> getListadoIdMomentos() {
+		return listadoIdMomentos;
+	}
+
+	public void setListadoIdMomentos(List<String> listadoIdMomentos) {
+		this.listadoIdMomentos = listadoIdMomentos;
+	}
+
+	public List<String> getListadoIdVariables() {
+		return listadoIdVariables;
+	}
+
+	public void setListadoIdVariables(List<String> listadoIdVariables) {
+		this.listadoIdVariables = listadoIdVariables;
+	}
+
+	public long getIdConjuntoDatos() {
+		return idConjuntoDatos;
+	}
+
+	public void setIdConjuntoDatos(long idConjuntoDatos) {
+		this.idConjuntoDatos = idConjuntoDatos;
+	}
+
+	public String getNombreConjuntoDatos() {
+		return nombreConjuntoDatos;
+	}
+
+	public void setNombreConjuntoDatos(String nombreConjuntoDatos) {
+		this.nombreConjuntoDatos = nombreConjuntoDatos;
+	}
+}

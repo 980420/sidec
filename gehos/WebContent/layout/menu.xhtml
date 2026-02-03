@@ -1,0 +1,90 @@
+<rich:toolBar
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:rich="http://richfaces.org/rich">
+    <rich:toolBarGroup>
+        <h:outputText value="#{projectName}:"/>
+        <s:link view="/home.xhtml" value="Home" propagation="none"/>
+    </rich:toolBarGroup>
+    <s:link view="/EstadoLaboralList.xhtml"
+           value="EstadoLaboral List"
+includePageParams="false"
+     propagation="none"/>
+    <s:link view="/FormacionList.xhtml"
+           value="Formacion List"
+includePageParams="false"
+     propagation="none"/>
+    <s:link view="/PersonaList.xhtml"
+           value="Persona List"
+includePageParams="false"
+     propagation="none"/>
+    <s:link view="/TipoNominaList.xhtml"
+           value="TipoNomina List"
+includePageParams="false"
+     propagation="none"/>
+    <s:link view="/DatosLaboralesList.xhtml"
+           value="DatosLaborales List"
+includePageParams="false"
+     propagation="none"/>
+    <s:link view="/ManoDominanteList.xhtml"
+           value="ManoDominante List"
+includePageParams="false"
+     propagation="none"/>
+    <s:link view="/TitularBeneficiarioList.xhtml"
+           value="TitularBeneficiario List"
+includePageParams="false"
+     propagation="none"/>
+    <s:link view="/PosicionList.xhtml"
+           value="Posicion List"
+includePageParams="false"
+     propagation="none"/>
+    <s:link view="/SociedadList.xhtml"
+           value="Sociedad List"
+includePageParams="false"
+     propagation="none"/>
+    <s:link view="/GrupoPersonalList.xhtml"
+           value="GrupoPersonal List"
+includePageParams="false"
+     propagation="none"/>
+    <s:link view="/UnidadTiempoList.xhtml"
+           value="UnidadTiempo List"
+includePageParams="false"
+     propagation="none"/>
+    <s:link view="/DivisionPersonalList.xhtml"
+           value="DivisionPersonal List"
+includePageParams="false"
+     propagation="none"/>
+    <s:link view="/SubdivisionPersonalList.xhtml"
+           value="SubdivisionPersonal List"
+includePageParams="false"
+     propagation="none"/>
+    <s:link view="/DivisionList.xhtml"
+           value="Division List"
+includePageParams="false"
+     propagation="none"/>
+    <s:link view="/TipoZonaLaboralList.xhtml"
+           value="TipoZonaLaboral List"
+includePageParams="false"
+     propagation="none"/>
+    <s:link view="/StatusList.xhtml"
+           value="Status List"
+includePageParams="false"
+     propagation="none"/>
+    <s:link view="/UsuarioList.xhtml"
+           value="Usuario List"
+includePageParams="false"
+     propagation="none"/>
+    <s:link view="/UnidadOrganizativaList.xhtml"
+           value="UnidadOrganizativa List"
+includePageParams="false"
+     propagation="none"/>
+    <!-- @newMenuItem@ -->
+    <rich:toolBarGroup location="right">
+        <h:outputText value="signed in as: #{identity.username}" rendered="#{identity.loggedIn}"/>
+        <s:link view="/login.xhtml" value="Login" rendered="#{not identity.loggedIn}" propagation="none"/>
+        <s:link view="/home.xhtml" action="#{identity.logout}" value="Logout" rendered="#{identity.loggedIn}" propagation="none"/>
+    </rich:toolBarGroup>
+</rich:toolBar>

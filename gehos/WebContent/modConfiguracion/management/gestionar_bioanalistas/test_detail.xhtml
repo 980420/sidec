@@ -1,0 +1,157 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" template="#{theme.template}">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css">
+.rich-stglpanel-body {
+	padding: 0px
+}
+</style>
+		<style type="text/css">
+.rich-panel-body {
+	padding: 0px
+}
+</style>
+		<script type="text/javascript">setContentTitle('Detalles de usuario')</script>
+
+
+		<h:form id="userSearch" styleClass="edit">
+
+
+			<table cellpadding="0px" cellspacing="0px">
+				<rich:spacer height="11px" style="display: block"></rich:spacer>
+				<tr align="left">
+					<td width="5px;"></td>
+
+					<td style="vertical-align: top"><h:graphicImage
+						url="/resources/modCommon/userphotos/#{detallesUsuarioControlador.usuario_conf.username}.png"
+						border="0" style="width: 74px; height: 74px;"
+						rendered="#{userTools.userImageExist(detallesUsuarioControlador.usuario_conf.username)}" />
+					</td>
+					<td width="8px;"></td>
+
+					<td valign="middle"
+						style="border: 0px; padding: 0px !important; margin: 0px;">
+
+					<table cellpadding="0px" cellspacing="0px">
+						<tr>
+							<td>#{messages.nombre}</td>
+							<td width="8px"></td>
+							<td><h:outputText value="nameaaa" styleClass="dataText"></h:outputText>
+							</td>
+							<td width="25px"></td>
+							<td>#{messages.cedula}:</td>
+							<td width="8px"></td>
+							<td><h:outputText value="cedula" styleClass="dataText"></h:outputText>
+							</td>
+
+						</tr>
+						<tr>
+							<td height="8px"></td>
+						</tr>
+						<tr>
+
+							<td>#{messages.colum2}:</td>
+							<td width="8px"></td>
+							<td><h:outputText value="apellido1" styleClass="dataText"></h:outputText>
+							</td>
+							<td width="25px"></td>
+							<td>Pasaporte:</td>
+							<td width="8px"></td>
+							<td><h:outputText value="pasaporte" styleClass="dataText"></h:outputText>
+							</td>
+						</tr>
+						<tr>
+							<td height="8px"></td>
+						</tr>
+						<tr>
+							<td>#{messages.colum3}:</td>
+							<td width="8px"></td>
+							<td><h:outputText value="apellido2" styleClass="dataText"></h:outputText>
+							</td>
+							<td width="25px"></td>
+							<td>#{messages.telefono}:</td>
+							<td width="8px"></td>
+							<td><h:outputText value="telef" styleClass="dataText"
+								rendered="#{enfermeraDetails_custom.enfermera.usuario.pasaporte != null || enfermeraCrear_custom.enfermera.usuario.pasaporte != ''}"></h:outputText>
+							</td>
+						</tr>
+						<tr>
+							<td height="8px"></td>
+						</tr>
+						<tr>
+							<td>#{messages.fechaNacimiento}:</td>
+							<td width="8px"></td>
+							<td><h:outputText value="fecha" styleClass="dataText"></h:outputText>
+							</td>
+						</tr>
+					</table>
+					</td>
+
+				</tr>
+
+
+			</table>
+			<rich:spacer height="6px" style="display: block"></rich:spacer>
+
+			<rich:simpleTogglePanel>
+			<f:facet name="header">Otros datos de usuario</f:facet>
+				<table cellpadding="0px" cellspacing="0px">
+					<tr>
+						<td style="height: 15px;" colspan="6"></td>
+					</tr>					
+					<tr>
+						<td style="width: 8px;"></td>
+						<td>Pasaporte:</td>
+						<td width="8px"></td>
+						<td><h:outputText value="pasaporte" styleClass="dataText"></h:outputText>
+						</td>
+						<td width="25px"></td>
+						<td>#{messages.telefono}:</td>
+						<td width="8px"></td>
+						<td><h:outputText value="telefono" styleClass="dataText"></h:outputText>
+						</td>
+
+					</tr>
+					<tr>
+						<td height="8px"></td>
+					</tr>
+					<tr>
+						<td style="width: 8px;"></td>
+						<td>#{messages.fechaNacimiento}:</td>
+						<td width="8px"></td>
+						<td><h:outputText value="fecha" styleClass="dataText"></h:outputText>
+						</td>
+						<td width="25px"></td>
+
+					</tr>
+					<tr>
+						<td height="8px"></td>
+					</tr>
+
+					<tr>
+						<td height="8px"></td>
+					</tr>
+
+				</table>
+			</rich:simpleTogglePanel>
+
+
+		</h:form>
+
+
+
+	</ui:define>
+
+</ui:composition>
+

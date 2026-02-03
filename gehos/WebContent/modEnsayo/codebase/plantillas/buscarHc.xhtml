@@ -1,0 +1,598 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+	
+	<script type="text/javascript">setContentTitle('#{titulo}')</script>	
+    <link href="#{facesContext.externalContext.requestContextPath}/resources/modAdmision/styles/stylesheet.css"  rel="stylesheet" type="text/css" />
+     <a:form>
+   		 <a:jsFunction name="cambiar" action="#{controlador.cambiarBusqueda()}"></a:jsFunction>
+    </a:form>        
+       <rich:messages globalOnly="true" styleClass="message"  id="globalMessage" ajaxRendered="true"/>	           
+       <table class="Tabla"  width="100%"  cellpadding="0" cellspacing="0">       		  
+       		<tr>
+       			<td>       
+			       <rich:simpleTogglePanel switchType="client"   label="#{messages.criterioBusqueda}">			       		
+			       		<table width="100%"   cellpadding="0"    cellspacing="0">
+							<tr>
+								<td class="margenSupIzq">
+									<h:form id="form1">
+									<table class="Tabla"  id="buscarPacienteN" style="#{controlador.displayBN}"
+										   cellspacing="0"  cellpadding="0">										   
+											<tr id="A" class="filSepPeq"> 								
+											    <td id="A1" 
+											        class="colSepGran">											    	
+											        <h:outputText value="#{messages.cedula}:"   style="margin:0px; padding:0px; spacing:0px"/>
+											    </td>								    
+											</tr> 											   
+											<tr> 											
+												<td class="colSepGran">													 
+													 <h:inputText styleClass="inputText"   id="cedula1"
+													 			  value="#{controlador.hojaFrontal.personaById.cedula}">													 																 	
+													 </h:inputText>															  
+												</td> 												  
+											    <td>								    				        
+											 		<h:commandButton  value="#{messages.buscar}"  action="#{controlador.buscar()}" style="margin:0px;"/>											 		                    
+											 		<rich:spacer width="10"/>											 		
+													<h:commandButton value="#{messages.cancelar}" action="cancelar" style="margin:0px;"/>								
+											 	</td>											 	
+											</tr>												
+											<tr class="filSepPeq">											
+												<td colspan="2"  align="right">
+												    <rich:spacer height="2px"/>
+												    <table cellpadding="0" cellspacing="0">
+													    <tr>
+														    <td>
+																<a href="javascript:void(0);" 
+																   onclick="document.getElementById('buscarPacienteA').style.display = 'block';document.getElementById('buscarPacienteN').style.display = 'none'; document.getElementById('form2:cedula2').value = document.getElementById('form1:cedula1').value; document.getElementById('form1:cedula1').value = '';cambiar()">
+																   <table cellpadding="0" cellspacing="0">
+																    <tr>
+																	    <td>
+															      			<img src="#{facesContext.externalContext.requestContextPath}/resources/icons/default/acciones/buscar.png" 
+															      				 border="0" height="12px" width="12px"/>
+															      		</td>
+															      		<td>
+															      			<rich:spacer width="2px"  style="border:0px;"/>															      			             
+															      			<h:outputText value="#{messages.busquedaAvanzada}"/>
+															      		</td>
+															      	</tr>
+															    </table>
+															    </a>
+															 </td>
+														</tr>
+													</table>
+												</td>												
+											</tr>		      
+									</table>
+									</h:form>									
+									<h:form id="form2">
+									<table class="Tabla" id="buscarPacienteA" cellpadding="0" cellspacing="0" style="#{controlador.displayBA}">									 
+						              	<tr class="filSepPeq">			              
+							               <td class="colSepGran">
+							               		 <h:outputText value="#{messages.cedula}:" style="margin:0px; padding:0px; spacing:0px"/>
+								           </td>								           
+								           <td class="colSepGran">
+								           		<h:outputText value="#{messages.nombre}:"  style="margin:0px;"/>
+								           </td>								           
+								           <td>
+								           		<h:outputText value="#{messages.pApellido}:" style="margin:0px;"/>
+								           </td>
+								        </tr>								        
+								        <tr class="filSepGranRA">
+								        	<td class="colSepGran">
+								        		<h:inputText styleClass="inputText"  id="cedula2" 													 			 
+													 		 value="#{controlador.hojaFrontal.personaById.cedula}">													 																 	
+												</h:inputText>
+								        	</td>								        	
+								        	<td class="colSepGran">
+								        		<h:inputText styleClass="inputText"  id="nombre1" style="width:152px"
+								        					 value="#{controlador.hojaFrontal.personaById.nombres}"/>
+								        	</td>
+								        	<td>
+								        		<h:inputText styleClass="inputText" id="apellido1" 
+								        					 value="#{controlador.hojaFrontal.personaById.apellido1}"/>
+								        	</td>
+								        </tr>  								        
+								        <tr class="filSepPeq">									           
+								           <td>
+								           		<h:outputText value="#{messages.sApellido}:" style="margin:0px;"/>
+								           </td>
+								            <td class="colSepGran">
+							               		<h:outputText value="#{messages.fechaNac}" />
+								           </td>
+								             <td >
+								           		<h:outputText value="#{messages.sexo}:" />
+								           </td>
+								        </tr> 								        
+								        <tr class="filSepGranRA">								        								        	
+								        	<td class="colSepGran">								        		
+												<h:inputText styleClass="inputText"  id="apellido2" 
+								        					 value="#{controlador.hojaFrontal.personaById.apellido2}"/>
+								        	</td>
+								        	<td class="colSepGran">
+								        		<rich:calendar popup="true" 
+								        		               styleClass="dataText" 
+								        		               datePattern="#{messages.patronFecha}" 
+								        		               style="margin-top:0px; padding:0px; spacing:0px;"
+								        					   value="#{controlador.hojaFrontal.personaById.fechaNacimiento}"/>
+								        	</td>
+								        	<td>
+								        		 <rich:comboBox value="#{controlador.sexo}" defaultLabel="#{messages.seleccione}"
+								        		                width="152px" enableManualInput="false"
+								        		               suggestionValues="#{controlador.listSexo}">
+								        		</rich:comboBox>
+								        	</td>
+								        </tr>
+								        <tr class="filSepPeq">
+								        	<td><h:outputText value="#{messages.tipoHc}" /></td>
+								        	<td><h:outputText value="#{messages.statusDeHc}:" /></td>
+								        </tr>
+								        <tr class="filSepGranRA">
+								        	<td class="colSepGran">
+								        		<rich:comboBox value="#{controlador.tipoHf}" 
+								        		 				 width="152px" defaultLabel="#{messages.seleccione}" enableManualInput="false"
+								        		                suggestionValues="#{controlador.listTipoHojaFrontal}">
+								        		 </rich:comboBox>
+								        	</td>
+								        	<td class="colSepGran">
+								        		<rich:comboBox value="#{controlador.tipoPaciente}" 
+								        		 				 width="152px" defaultLabel="#{messages.seleccione}" enableManualInput="false"
+								        		                suggestionValues="#{controlador.listTipoPaciente}">
+								        		 </rich:comboBox>
+								        	</td>
+								        </tr>
+										<tr>
+										    <td colspan="3" align="right">
+										    	
+										    	<h:commandButton value="#{messages.buscar}"  action="#{controlador.buscar()}" style="margin:0px;"/>										 		
+										 		<rich:spacer width="10px" 
+										 		             style="border:0px;"/>										 		             
+												<h:commandButton value="#{messages.cancelar}" action="cancelar" style="margin:0px;"/>
+										   	</td>
+										</tr>										
+										<tr class="filSepPeq">										
+											<td colspan="3" 
+											    align="right"> 
+											      <rich:spacer height="2px"/>
+												    <table cellpadding="0" cellspacing="0">
+													    <tr>
+														    <td> 
+															    <a href="javascript:void(0);" 
+															       onclick="document.getElementById('buscarPacienteA').style.display = 'none';document.getElementById('buscarPacienteN').style.display = 'block'; document.getElementById('form1:cedula1').value = document.getElementById('form2:cedula2').value; document.getElementById('form2:cedula2').value = '';cambiar();">
+														      			<table cellpadding="0" cellspacing="0">
+																		    <tr>
+																			    <td> 
+																	      			<img src="#{facesContext.externalContext.requestContextPath}/resources/icons/default/acciones/buscar.png" 
+																	      			     border="0" height="12px" width="12px"/>
+																		      	</td>
+																		      	<td>
+																	      			<rich:spacer width="2px" style="border:0px;"/>
+																	      			<h:outputText value="#{messages.busquedaSimple}"/>
+																	      		</td>
+																	      	</tr>
+																	    </table>
+																</a>
+															</td>
+														</tr>
+													</table>	
+											</td>											
+										</tr>
+								 	</table> 
+									</h:form>
+								</td>
+							</tr>							
+			       		</table>					       		
+			       </rich:simpleTogglePanel>       
+       			   <br/>
+       			</td>
+       		</tr>	       			
+       		<tr>
+       			<td>
+       				<h:form>
+                     <a:outputPanel  id="tb" >  
+                     <table width="100%" cellpadding="0" cellspacing="0" style="margin:0px; padding:0px;">  
+                     	<tr>  
+                     		<td width="100%">           
+			                    <s:div style="float: right;" rendered="#{controlador.crear}">
+				                     <h:commandLink action="crearHc" style="border: 0px; cursor:pointer;">	
+				               		 	<h:panelGrid columns="2">
+				      						<h:graphicImage value="/resources/icons/default/acciones/adicionar.png"	style="border:0;"/>				       				
+				      						<h:outputText value="#{messages.crearHcElectronica}" />
+						       			</h:panelGrid>				       			
+					       			</h:commandLink>  
+				       			</s:div> 
+			       			</td>
+		       			</tr>
+	       			</table>
+	       			                
+                     <rich:panel rendered="#{not controlador.existResultados}">
+                     	<f:facet name="header">#{messages.listadoHistorias}</f:facet>
+                     		<table class="Tabla">
+								<tr><td class="margenSupIzq">
+                     				<h:outputText value="#{messages.noResults}"  />
+                     			</td></tr>
+                     		</table>
+                     </rich:panel>
+                     <div style="margin-left: 1px">
+				       <rich:dataTable value="#{controlador.resultList}"
+       				                   var="hoja"  width="100%"       				                         				                 
+       				                   rendered="#{not empty controlador.resultList and not controlador.tipoHojaFrontal.codigo.equals('indocumentado')}">				       		
+				       		<f:facet name="header">
+				       			<h:outputText value="#{messages.listadoHistorias}"/>
+				       		</f:facet>				       		
+				       		<rich:column styleClass="alineacionCentrada" width="1px">
+				       			<f:facet name="header">
+				       				<h:outputText value="#{messages.foto}"/>
+				       			</f:facet>
+				       			<h:graphicImage value="/resources/modCommon/patientphotos/#{hoja.personaById.foto}"
+									            width="30"  height="30" />										            							
+				       		</rich:column>				       		
+				       		<rich:column>				       		
+				       			<f:facet name="header">
+									<s:div>
+										<table width="100%"   cellpadding="0"   cellspacing="0">
+											<tr>
+												<td align="left" width="40px">												    
+												    <h:outputText value="#{messages.nombre}"   styleClass="label" />
+												</td>				
+												<td align="right">
+													<ui:include src="/modAdmision/admision/codebase/plantillas/ordenar.xhtml" >	
+								       					<ui:param name="customList" value="#{controlador}" />	
+								       					<ui:param name="columna" value="hojaFrontal.personaById.nombres" />								       					
+								       					<ui:param name="nombreMenu" value="ordenarNombresMenu" />
+								       					<ui:param name="tablaRender" value="tb" />	
+													</ui:include>
+											    </td>
+											</tr>
+										</table>
+									</s:div>
+								</f:facet>								
+								<h:outputText value="#{hoja.personaById.nombres}"/>								
+				       		</rich:column>				       		
+				       		<rich:column>				       		
+				       			<f:facet name="header">
+									<s:div>
+										<table width="100%" cellpadding="0" cellspacing="0">
+											<tr>
+												<td align="left"  width="40px">												    
+												    <h:outputText value="#{messages.pApellido}"   styleClass="label"/>
+												</td>				
+												<td align="right">
+													<ui:include src="/modAdmision/admision/codebase/plantillas/ordenar.xhtml" >	
+								       					<ui:param name="customList" value="#{controlador}" />	
+								       					<ui:param name="columna" value="hojaFrontal.personaById.apellido1" />								       					
+								       					<ui:param name="nombreMenu" value="ordenarPapellidoMenu" />
+								       					<ui:param name="tablaRender" value="tb" />	
+													</ui:include>
+											    </td>
+											</tr>
+										</table>
+									</s:div>
+								</f:facet>								
+								<h:outputText value="#{hoja.personaById.apellido1}"/>								
+				       		</rich:column>				       		
+				       		<rich:column>				       		
+				       			<f:facet name="header">
+									<s:div>
+										<table width="100%" cellpadding="0" cellspacing="0">
+											<tr>
+												<td align="left"    width="40px">												    
+												    <h:outputText value="#{messages.sApellido}" styleClass="label" />
+												</td>				
+												<td align="right">
+													<ui:include src="/modAdmision/admision/codebase/plantillas/ordenar.xhtml" >	
+								       					<ui:param name="customList" value="#{controlador}" />	
+								       					<ui:param name="columna" value="hojaFrontal.personaById.apellido2" />								       					
+								       					<ui:param name="nombreMenu" value="ordenarSapellidoMenu" />
+								       					<ui:param name="tablaRender" value="tb" />	
+													</ui:include>
+											    </td>
+											</tr>
+										</table>
+									</s:div>
+								</f:facet>								
+								<h:outputText value="#{hoja.personaById.apellido2}"/>								
+				       		</rich:column>				       		
+				       		<rich:column>				       		
+				       			<f:facet name="header">
+									<s:div>
+										<table width="100%"  cellpadding="0" cellspacing="0">
+											<tr>
+												<td align="left"   width="40px">												    
+												    <h:outputText value="#{messages.cedula}"   styleClass="label" />
+											    </td>				
+												<td align="right">
+													<ui:include src="/modAdmision/admision/codebase/plantillas/ordenar.xhtml" >	
+								       					<ui:param name="customList" value="#{controlador}" />	
+								       					<ui:param name="columna" value="hojaFrontal.personaById.cedula" />								       					
+								       					<ui:param name="nombreMenu" value="ordenarCedulaMenu" />
+								       					<ui:param name="tablaRender" value="tb" />	
+													</ui:include>
+											    </td>
+											</tr>
+										</table>
+									</s:div>
+								</f:facet>
+								<table width="100%">
+									<tr><td align="left" width="100%">
+										<h:outputText value="#{hoja.personaById.cedula}"/>
+									</td></tr>
+								</table>
+				       		</rich:column>
+				       		<rich:column>				       		
+				       			<f:facet name="header">
+									<s:div>
+										<table width="100%" cellpadding="0" cellspacing="0">
+											<tr>
+												<td align="left"   width="40px">												    
+												    <h:outputText value="#{messages.fechaNaco}"  styleClass="label" />
+											    </td>				
+												<td align="right">
+													<ui:include src="/modAdmision/admision/codebase/plantillas/ordenar.xhtml" >	
+								       					<ui:param name="customList" value="#{controlador}" />	
+								       					<ui:param name="columna" value="hojaFrontal.personaById.fechaNacimiento" />								       					
+								       					<ui:param name="nombreMenu" value="ordenarFechaNacimientoMenu" />
+								       					<ui:param name="tablaRender" value="tb" />	
+													</ui:include>
+											    </td>
+											</tr>
+										</table>
+									</s:div>
+								</f:facet>
+								<table width="100%">
+									<tr><td align="left">
+										<h:outputText value="#{hoja.personaById.fechaNacimiento}">
+											<s:convertDateTime pattern="#{messages.patronFecha}"></s:convertDateTime>
+										</h:outputText>
+									</td></tr>
+								</table>
+				       		</rich:column>
+				       		<rich:column>				       		
+				       			<f:facet name="header">
+									<s:div>
+										<table width="100%" cellpadding="0"  cellspacing="0">
+											<tr>
+												<td align="left" width="40px">												    
+												    <h:outputText value="#{messages.sexoo}"  styleClass="label" />
+											    </td>				
+												<td align="right">
+													<ui:include src="/modAdmision/admision/codebase/plantillas/ordenar.xhtml" >	
+								       					<ui:param name="customList" value="#{controlador}" />	
+								       					<ui:param name="columna" value="hojaFrontal.personaById.sexo.abreviatura" />								       					
+								       					<ui:param name="nombreMenu" value="ordenarSexoMenu" />
+								       					<ui:param name="tablaRender" value="tb" />	
+													</ui:include>
+											    </td>
+											</tr>
+										</table>
+									</s:div>
+								</f:facet>								
+								<h:outputText value="#{hoja.personaById.sexo.abreviatura}"/>								
+				       		</rich:column>	
+				       		<rich:column>				       		
+				       			<f:facet name="header">
+									<s:div>
+										<table width="100%" cellpadding="0"  cellspacing="0">
+											<tr>
+												<td align="left" width="40px">												    
+												    <h:outputText value="#{messages.statusDeHc}"  styleClass="label" />
+											    </td>				
+												<td align="right">
+													<ui:include src="/modAdmision/admision/codebase/plantillas/ordenar.xhtml" >	
+								       					<ui:param name="customList" value="#{controlador}" />	
+								       					<ui:param name="columna" value="hojaFrontal.status.valor" />								       					
+								       					<ui:param name="nombreMenu" value="ordenarStatusMenu" />
+								       					<ui:param name="tablaRender" value="tb" />	
+													</ui:include>
+											    </td>
+											</tr>
+										</table>
+									</s:div>
+								</f:facet>								
+								<h:outputText value="#{hoja.status.valor}"/>								
+				       		</rich:column> 
+				       		<rich:column width="1px" styleClass="alineacionCentrada"   title="#{messages.select}" rendered="#{controlador.seleccionar}">
+			       		          <h:commandLink action="seleccionar"  style="border: 0px; cursor:pointer;">				       				   
+					       				<h:graphicImage value="/resources/icons/default/acciones/seleccionar_uno.png"
+					       								style="border:0;"/>				       				
+					       				<f:param name="idHoja" value="#{hoja.id}"/>	                               
+			       			  	  </h:commandLink>  
+				       		</rich:column>
+				       		<rich:column width="1px" styleClass="alineacionCentrada" title="#{messages.verHc}" rendered="#{controlador.ver}">
+				       		 <h:commandLink action="ver" style="border: 0px; cursor:pointer;">				       				   
+				       				<h:graphicImage value="/resources/icons/default/acciones/ver.png"	style="border:0;"/>				       				
+				       				<f:param name="idHoja"  value="#{hoja.id}"/> 	
+				       		</h:commandLink>   
+				       		</rich:column>	
+				       		<rich:column width="1px" styleClass="alineacionCentrada" rendered="#{controlador.modificar}"
+				       		             title="#{messages.modHc}">
+				       		          <h:commandLink action="modificar"  style="border: 0px; cursor:pointer;">				       				   
+				       				<h:graphicImage value="/resources/icons/default/acciones/modificar.png"	style="border:0;"/>				       				
+				       				<f:param name="idHoja"   value="#{hoja.id}"/>	                               
+				       			  </h:commandLink>  
+				       		</rich:column>	
+				       </rich:dataTable>
+				       <rich:dataTable value="#{controlador.resultList}"
+       				                   var="ind"  width="100%"       				                         				                 
+       				                   rendered="#{not empty controlador.resultList and controlador.tipoHojaFrontal.codigo.equals('indocumentado')}">				       		
+				       		<f:facet name="header">				       		
+				       			<h:outputText value="#{messages.listadoHistorias}"/>				       			
+				       		</f:facet>
+				       		<rich:column>				       		
+				       			<f:facet name="header">
+									<s:div>
+										<table width="100%"  cellpadding="0" cellspacing="0">
+											<tr>
+												<td align="left"  width="40px">												    
+												    <h:outputText value="#{messages.numHc}"   styleClass="label" />
+												</td>				
+												<td align="right">
+													<ui:include src="/modAdmision/admision/codebase/plantillas/ordenar.xhtml" >	
+								       					<ui:param name="customList" value="#{controlador}" />	
+								       					<ui:param name="columna" value="hojaFrontal.numeroHc" />								       					
+								       					<ui:param name="nombreMenu" value="ordenarNumeroHcMenu" />
+								       					<ui:param name="tablaRender" value="tb" />	
+													</ui:include>
+											    </td>
+											</tr>
+										</table>
+									</s:div>
+								</f:facet>								
+								<h:outputText value="#{ind.numeroHc}"/>								
+				       		</rich:column>
+				       		<rich:column>				       		
+				       			<f:facet name="header">
+									<s:div>
+										<table width="100%" cellpadding="0" cellspacing="0">
+											<tr>
+												<td align="left"  width="40px">												    
+												    <h:outputText value="#{messages.sexo}"  styleClass="label" />
+												</td>				
+												<td align="right">
+													<ui:include src="/modAdmision/admision/codebase/plantillas/ordenar.xhtml" >	
+								       					<ui:param name="customList" value="#{controlador}" />	
+								       					<ui:param name="columna" value="hojaFrontal.personaById.sexo.abreviatura" />								       					
+								       					<ui:param name="nombreMenu" value="ordenarSexoMenu" />
+								       					<ui:param name="tablaRender" value="tb" />	
+													</ui:include>
+											    </td>
+											</tr>
+										</table>
+									</s:div>
+								</f:facet>								
+								<h:outputText value="#{ind.personaById.sexo.abreviatura}"/>								
+				       		</rich:column>
+				       		<rich:column>				       		
+				       			<f:facet name="header">
+									<s:div>
+										<table width="100%" cellpadding="0" cellspacing="0">
+											<tr>
+												<td align="left" width="40px">												    
+												    <h:outputText value="#{messages.desdes}"  styleClass="label" />
+												</td>				
+												<td align="right">
+													<ui:include src="/modAdmision/admision/codebase/plantillas/ordenar.xhtml" >	
+								       					<ui:param name="customList" value="#{controlador}" />	
+								       					<ui:param name="columna" value="hojaFrontal.descripcionDesconocido" />								       					
+								       					<ui:param name="nombreMenu" value="ordenarDescripcionMenu" />
+								       					<ui:param name="tablaRender" value="tb" />	
+													</ui:include>
+											    </td>
+											</tr>
+										</table>
+									</s:div>
+								</f:facet>								
+								<h:outputText value="#{ind.descripcionDesconocido}"/>								
+				       		</rich:column>
+				       		<rich:column width="1px" styleClass="alineacionCentrada" title="#{messages.verHc}">
+				       		 <h:commandLink action="ver" style="border: 0px; cursor:pointer;">				       				   
+				       				<h:graphicImage value="/resources/icons/default/acciones/ver.png"
+				       								style="border:0;"/>				       				
+				       				<f:param name="idHoja" 
+				       				         value="#{ind.id}"/> 	
+				       		</h:commandLink> 	
+				       		</rich:column>	
+				       		<rich:column width="1px" styleClass="alineacionCentrada"
+				       		             title="#{messages.modHc}">
+				       		          <h:commandLink action="modificar"  style="border: 0px; cursor:pointer;">				       				   
+				       				<h:graphicImage value="/resources/icons/default/acciones/modificar.png"
+				       								style="border:0;"/>				       				
+				       				<f:param name="idHoja" 
+				       				         value="#{ind.id}"/>	                               
+				       			  </h:commandLink>  
+				       		</rich:column>	<!--		       		
+				       		<rich:column width="1px" styleClass="alineacionCentrada"
+				       		             title="#{messages.eliminarAdmision}">
+				       				     <h:graphicImage id="elim" 
+					       					value="/resources/icons/default/acciones/eliminar.png"
+					       				    style="border: 0px; cursor:pointer;">	
+					       				    <a:support action="#{controlador.setIdHoja(ind.id)}"
+					       				     event="onclick" oncomplete="javascript:Richfaces.showModalPanel('panel');">
+					       				    </a:support>       											       								
+					       				</h:graphicImage>	   
+				       		</rich:column>-->
+				       	</rich:dataTable>
+				       	</div>
+					</a:outputPanel>
+       				   <br/>
+       				</h:form>
+       			</td>
+       		</tr>       		
+       		<tr class="filSepGranRA">
+       			<td align="center">
+       			<h:form> 
+       			<a:outputPanel id="paginado" ajaxRendered="true">
+       				<ui:include src="/modAdmision/admision/codebase/plantillas/paginado.xhtml" >	
+       					<ui:param name="customList" value="#{controlador}" />		
+					</ui:include>		
+   				</a:outputPanel>
+       				</h:form> 
+       				<br/>
+       			</td>
+       		</tr>
+       	</table>
+      
+     	<rich:modalPanel id="panel" 
+		                 width="300" 
+		                 height="110"
+		                 resizeable="false">		                  
+				<f:facet name="header">
+					<h:panelGroup id="este">
+						<h:outputText value="#{messages.advertencia}"></h:outputText>
+					</h:panelGroup>
+				</f:facet>				
+				<f:facet name="controls">
+					<h:panelGroup>
+						<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+							            style="cursor:pointer" 
+							            id="hidelink" 
+							            onclick="Richfaces.hideModalPanel('panel')"/>	
+					</h:panelGroup>
+				</f:facet>				
+				<h:form>
+				<table cellpadding="0" cellspacing="0" width="100%">					   
+					   <tr>
+					   		<td class="margenSupIzq">					   		
+					   			<table cellpadding="0" cellspacing="0">
+					   				<tr class="filSepGran">
+					   					<td class="colSepGran">
+					   						<h:graphicImage value="/resources/icons/default/acciones/advertencia.png"/>
+					   					</td>					   					
+					   					<td valign="top">
+				   							<h:outputText value="#{messages.m1}"></h:outputText>
+											<br />
+											
+											<h:outputText value="#{messages.m2}."></h:outputText>
+											<br /> 
+											
+											<h:outputText value="#{messages.m3}"></h:outputText>
+											<br />
+					   					</td>
+					   				</tr>					   				
+					   				<tr>
+					   					<td colspan="2">
+					   						<div align="center">					   						
+												<a:commandButton value="#{messages.si}" style="margin:0;"
+																 action="#{controlador.eliminar()}"
+																 oncomplete="#{rich:component('panel')}.hide()"
+																 reRender="tb, paginado">
+												</a:commandButton> 												
+												<rich:spacer width="10">
+												</rich:spacer>
+												<a:commandButton value="#{messages.no}" style="margin:0;"
+																   onclick="#{rich:component('panel')}.hide()" >
+												</a:commandButton>											
+											</div>	
+					   					</td>
+					   				</tr>
+					   			</table>
+					   		
+					   		</td>
+					   </tr>					   
+				</table>
+				</h:form>							
+		</rich:modalPanel>	
+</ui:composition>

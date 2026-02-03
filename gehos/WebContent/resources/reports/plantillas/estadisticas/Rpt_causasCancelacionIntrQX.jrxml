@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+
+<jasperReport name="template" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="540" leftMargin="43" rightMargin="29" topMargin="0" bottomMargin="29">
+	<style name="Crosstab Data Text" isDefault="false" hAlign="Center"/>
+	<parameter name="P_TITULO" class="java.lang.String"/>
+	<parameter name="P_SUBTITULO" class="java.lang.String"/>
+	<parameter name="LOGO_URL" class="java.lang.String"/>
+	<parameter name="SEPARADOR" class="java.lang.String"/>
+	<parameter name="AUTOR_RPT" class="java.lang.String"/>
+	<parameter name="DEPARTAMENTO" class="java.lang.String"/>
+	<parameter name="DATE_TODAY" class="java.lang.String"/>
+	<parameter name="PRODUCT_IMG" class="java.lang.String"/>
+	<parameter name="MESESINT" class="java.util.Map"/>
+	<parameter name="CROSSTABHEADERCELLVALUER" class="java.lang.String"/>
+	<parameter name="TOTALANUALR" class="java.lang.String"/>
+	<field name="rowHeaderValue" class="java.lang.String"/>
+	<field name="rowBucketValue" class="java.lang.String"/>
+	<field name="columnHeaderValue" class="java.lang.String"/>
+	<field name="columnBucketValue" class="java.lang.Integer"/>
+	<field name="measureValue" class="java.lang.Long"/>
+	<background>
+		<band height="1"/>
+	</background>
+	<pageHeader>
+		<band height="130">
+			<image hyperlinkType="None">
+				<reportElement x="0" y="14" width="147" height="43"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{PRODUCT_IMG}]]></imageExpression>
+			</image>
+			<image isUsingCache="true" hyperlinkType="None">
+				<reportElement stretchType="RelativeToTallestObject" x="158" y="14" width="147" height="43"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO_URL}]]></imageExpression>
+			</image>
+			<textField hyperlinkType="None">
+				<reportElement key="textField" x="312" y="43" width="227" height="14"/>
+				<textElement textAlignment="Right">
+					<font fontName="Myriad Pro" size="10" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{DATE_TODAY}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement x="312" y="14" width="227" height="14"/>
+				<textElement textAlignment="Right">
+					<font fontName="Myriad Pro" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{DEPARTAMENTO}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement x="312" y="28" width="226" height="14"/>
+				<textElement textAlignment="Right">
+					<font fontName="Myriad Pro" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{AUTOR_RPT}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement x="0" y="73" width="538" height="16"/>
+				<textElement>
+					<font fontName="Myriad Pro" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_TITULO}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement key="textField" x="0" y="92" width="538" height="26"/>
+				<textElement>
+					<font fontName="Myriad Pro" size="10" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_SUBTITULO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="4"/>
+	</columnHeader>
+	<pageFooter>
+		<band height="57">
+			<textField isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField" x="212" y="10" width="39" height="15"/>
+				<textElement textAlignment="Right">
+					<font fontName="Myriad Pro" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField" x="273" y="10" width="43" height="15"/>
+				<textElement>
+					<font fontName="Myriad Pro" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement x="251" y="10" width="22" height="15"/>
+				<textElement textAlignment="Center">
+					<font fontName="Myriad Pro" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{SEPARADOR}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="112">
+			<crosstab>
+				<reportElement x="0" y="0" width="586" height="110"/>
+				<crosstabParameter name="MESINT" class="java.util.Map">
+					<parameterValueExpression><![CDATA[$P{MESESINT}]]></parameterValueExpression>
+				</crosstabParameter>
+				<crosstabParameter name="CROSSTABHEADERCELLVALUE">
+					<parameterValueExpression><![CDATA[$P{CROSSTABHEADERCELLVALUER}]]></parameterValueExpression>
+				</crosstabParameter>
+				<crosstabParameter name="TOTALANUAL">
+					<parameterValueExpression><![CDATA[$P{TOTALANUALR}]]></parameterValueExpression>
+				</crosstabParameter>
+				<crosstabHeaderCell>
+					<cellContents>
+						<textField hyperlinkType="None">
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="133" height="60"/>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Myriad Pro" isBold="true" size="14"/>
+							</textElement>
+							<textFieldExpression class="java.lang.String"><![CDATA[$P{CROSSTABHEADERCELLVALUE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabHeaderCell>
+				<rowGroup name="rowBucket" width="133">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{rowBucketValue}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField hyperlinkType="None">
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="133" height="25"/>
+								<textElement textAlignment="Left">
+									<font fontName="Myriad Pro" size="12"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{rowBucket}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="columnHeader" height="30" totalPosition="End">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{columnHeaderValue}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField hyperlinkType="None">
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="103" height="30"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Myriad Pro" size="12"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{columnHeader}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents backcolor="#005FB3" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="49" height="60" forecolor="#FFFFFF"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Myriad Pro" size="12"/>
+								</textElement>
+								<text><![CDATA[Total]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<columnGroup name="columnBucket" height="30" totalPosition="End">
+					<bucket>
+						<bucketExpression class="java.lang.Integer"><![CDATA[$F{columnBucketValue}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField hyperlinkType="None">
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="30"/>
+								<textElement>
+									<font fontName="Myriad Pro" size="12"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA[String.valueOf($P{MESINT}.get("month_" + String.valueOf($V{columnBucket}.intValue()))).substring(0,3)]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField hyperlinkType="None">
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="53" height="30"/>
+								<textElement/>
+								<textFieldExpression class="java.lang.String"><![CDATA[$P{TOTALANUAL}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="columnBucketMeasure" class="java.lang.Long" calculation="Sum">
+					<measureExpression><![CDATA[$F{measureValue}]]></measureExpression>
+				</measure>
+				<crosstabCell width="50" height="27">
+					<cellContents>
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField hyperlinkType="None">
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25"/>
+							<textElement>
+								<font fontName="Myriad Pro" size="12"/>
+							</textElement>
+							<textFieldExpression class="java.lang.Long"><![CDATA[$V{columnBucketMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="49" height="27" columnTotalGroup="columnHeader">
+					<cellContents backcolor="#005FB3" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField hyperlinkType="None">
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="49" height="25" forecolor="#FFFFFF"/>
+							<textElement>
+								<font fontName="Myriad Pro" size="12"/>
+							</textElement>
+							<textFieldExpression class="java.lang.Long"><![CDATA[$V{columnBucketMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="53" height="27" columnTotalGroup="columnBucket">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField hyperlinkType="None">
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25"/>
+							<textElement>
+								<font fontName="Myriad Pro" size="12"/>
+							</textElement>
+							<textFieldExpression class="java.lang.Long"><![CDATA[$V{columnBucketMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

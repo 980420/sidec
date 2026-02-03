@@ -1,0 +1,189 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+		<a4j:outputPanel ajaxRendered="true">
+			<rich:messages id="error" styleClass="message" for="error"
+				ajaxRendered="true" />
+		</a4j:outputPanel>
+
+		<h:form id="form" styleClass="edit">
+
+			<s:validateAll>
+				<rich:panel>
+					<f:facet name="header">#{messages.datos}</f:facet>
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr>
+							<td style="height: 13px;" colspan="6"></td>
+						</tr>
+						<tr style="vertical-align: top;">
+							<td style="width: 7px;"></td>
+							<td>#{messages.codigo} <rich:message for="codigo"
+								showDetail="false" tooltip="true"
+								style="color:red;cursor:pointer;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('codigo').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message> <br />
+							<h:inputText id="codigo" required="true" style=" width : 148px"
+								validator="#{servicioNoClinicoValidarControlador.code}"
+								requiredMessage="#{messages.valorRequerido}"
+								value="#{servicioNoClinicoModificarControlador.codigo}" /></td>
+							<td style="width: 25px"></td>
+							<td>#{messages.nombre}<rich:message for="nombre"
+								showDetail="false" tooltip="true"
+								style="color:red;cursor:pointer;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('nombre').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message> <br />
+							<h:inputText id="nombre" style=" width : 148px;" required="true"
+								validator="#{servicioNoClinicoValidarControlador.name}"
+								requiredMessage="#{messages.valorRequerido}"
+								value="#{servicioNoClinicoModificarControlador.nombre}" /></td>
+
+
+							<td style="width: 25px"></td>
+							<td>
+							<table cellpadding="0" cellspacing="0" border="0"
+								style="vertical-align: middle;">
+								<tr>
+									<td valign="middle"><br />
+									<h:outputLabel value="#{messages.servicioFisico}"></h:outputLabel></td>
+									<td><rich:spacer width="8px"></rich:spacer></td>
+									<td valign="middle"><br />
+
+									<h:selectBooleanCheckbox
+										value="#{servicioNoClinicoModificarControlador.servicio.servicioFisico}"
+										style="margin-top: 0px; margin-right: 0px; margin-left: 0px; margin-bottom: 0px;" />
+
+
+									</td>
+
+								</tr>
+							</table>
+							</td>
+						</tr>
+						<tr>
+							<td height="8px" />
+						</tr>
+						<tr>
+							<td style="width: 7px;"></td>
+							<td>#{messages.departamentoClinico}<rich:message
+								for="categoria" showDetail="false" tooltip="true"
+								style="color:red;cursor:pointer;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('categoria').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message> <br />
+							<rich:comboBox id="categoria" required="true"
+								requiredMessage="#{messages.valorRequerido}"
+								suggestionValues="#{servicioNoClinicoModificarControlador.departamentos()}"
+								defaultLabel="#{messages.seleccione}" enableManualInput="false"
+								style=" width : 150px;"
+								value="#{servicioNoClinicoModificarControlador.departamentoSeleccionado}">
+								<a4j:support ajaxSingle="true" event="onselect"
+									limitToList="true"
+									action="#{servicioNoClinicoModificarControlador.filtrarDepartamento()}"
+									reRender="comboCategorias" />
+							</rich:comboBox> <rich:spacer height="9px" style="display: block" /></td>
+							<td style="width: 25px"></td>
+							<td><a4j:outputPanel id="comboCategorias">
+								<rich:spacer height="1px"
+									rendered="#{empty servicioNoClinicoModificarControlador.categorias()}" />
+								<rich:spacer
+									rendered="#{not empty servicioNoClinicoModificarControlador.categorias()}">
+				#{messages.servicioClinico}				
+				<br />
+									<rich:comboBox
+										suggestionValues="#{servicioNoClinicoModificarControlador.categorias()}"
+										style="width: 150px;" defaultLabel="#{messages.seleccione}"
+										value="#{servicioNoClinicoModificarControlador.categoriaSeleccionada}">
+										
+									</rich:comboBox>
+
+									<rich:spacer height="8px" style="display: block"></rich:spacer>
+								</rich:spacer>
+							</a4j:outputPanel></td>
+						</tr>
+						<tr>
+							<td style="width: 5px;"></td>
+							<td></td>
+							<td align="right" colspan="2">
+							
+<!--							<a4j:outputPanel-->
+<!--								id="subCategorias">-->
+<!--								-->
+<!--									<c:forEach varStatus="i"-->
+<!--										items="#{servicioNoClinicoModificarControlador.subCategorias}"-->
+<!--										var="sub_categoria">-->
+<!--										<s:div rendered="#{sub_categoria.categorias.size() > 1}">-->
+<!--										<rich:spacer height="1px" style="display: block" />-->
+<!--										<rich:comboBox suggestionValues="#{sub_categoria.categorias}"-->
+<!--											immediate="true" style=" width : 150px;"-->
+<!--											defaultLabel="#{messages.seleccione}"-->
+<!--											value="#{sub_categoria.padre}">-->
+<!--											<a4j:support event="onselect" ajaxSingle="true"-->
+<!--												limitToList="true"-->
+<!--												action="#{servicioNoClinicoModificarControlador.buscarSubCategorias('sub',sub_categoria.pos)}"-->
+<!--												reRender="subCategorias" />-->
+<!--										</rich:comboBox>-->
+<!--										<rich:spacer height="9px" style="display: block" />-->
+<!--											</s:div>-->
+<!--									</c:forEach>-->
+<!--							-->
+<!--							</a4j:outputPanel>-->
+<!--							-->
+							</td>
+						</tr>
+					</table>
+				</rich:panel>
+			</s:validateAll>
+			<rich:spacer height="8px" style="display: block"></rich:spacer>
+
+			<div align="right">
+			<table cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td><h:commandButton id="buttonAceptar"
+						value="#{messages.aceptar}"
+						action="#{servicioNoClinicoModificarControlador.modificar()}"
+						style="margin-bottom: 0px; margin-right: 5px; margin-left: 0px; margin-top: 0px">
+					</h:commandButton></td>
+					<td><h:commandButton value="#{messages.cancelar}"
+						immediate="true" action="cancelar"
+						style="margin-bottom: 0px; margin-right: 0px; margin-left: 5px; margin-top: 0px"
+						propagation="end"></h:commandButton></td>
+				</tr>
+			</table>
+			</div>
+
+		</h:form>
+
+
+		<br />
+	</ui:define>
+
+</ui:composition>
+

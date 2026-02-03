@@ -1,0 +1,140 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+<rich:panel label="#{messages.datosDeDireccion}" >
+		<f:facet name="header">#{messages.datosDeDireccion}</f:facet>
+    	<table class="Tabla" cellspacing="0" cellpadding="0">
+			<tr>
+				<td class="margenSupIzq">
+					<table cellpadding="0" cellspacing="0">
+						<tr>							
+							<td class="">
+								<table cellpadding="0" cellspacing="0">
+									<tr class="filSepGranRA">
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.nacionalidad}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText"
+											value="#{(not empty direccion.nacion.valor) ? direccion.nacion.valor : messages.vacio}"
+											style="margin:0px; padding:0px;" /></td>
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.estado}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText"
+											value="#{(not empty direccion.estado.valor) ? direccion.estado.valor : messages.vacio}"
+											style="margin:0px; padding:0px;" /></td>
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.municipio}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText" value="#{(not empty direccion.municipio.valor) ? direccion.municipio.valor : messages.vacio}"
+											style="margin:0px; padding:0px;" /></td>
+									</tr>
+									<tr class="filSepGranRA">
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.localidad}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText"
+											value="#{(not empty direccion.localidad.valor) ? direccion.localidad.valor : messages.vacio}"
+											style="margin:0px; padding:0px;" /></td>
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.local}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText"
+											value="#{(not empty direccion.localidad_1) ? direccion.localidad_1 : messages.vacio}"
+											style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.codigoPostal}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText styleClass="dataText"
+											value="#{(not empty direccion.codigoPostal) ? direccion.codigoPostal : messages.vacio}"
+											style="margin:0px; padding:0px;"/>												
+										</td>
+									</tr>
+									<tr class="filSepGranRA">
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.tipoZona}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText"
+											value="#{(not empty direccion.tipoZona.valor) ? direccion.tipoZona.valor : messages.vacio}"
+											style="margin:0px; padding:0px;" /></td>
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.tipoVia}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText"
+											value="#{(not empty direccion.tipoVia.valor) ? direccion.tipoVia.valor : messages.vacio}"
+											style="margin:0px; padding:0px;" /></td>
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.tipoEdificacion}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText" value="#{(not empty direccion.tipoEdificacion.valor) ? direccion.tipoEdificacion.valor : messages.vacio}"
+											style="margin:0px; padding:0px;" /></td>
+									</tr>
+									<tr class="filSepGranRA">
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.nombreZona}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText"
+											value="#{(not empty direccion.nombreZona) ? direccion.nombreZona : messages.vacio}"
+											style="margin:0px; padding:0px;" /></td>
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.nombreVia}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText" value="#{(not empty direccion.nombreVia) ? direccion.nombreVia : messages.vacio}"
+											style="margin:0px; padding:0px;" /></td>
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.nombreEdificacion}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText"
+											value="#{(not empty direccion.nombreEdificacion) ? direccion.nombreEdificacion : messages.vacio}"
+											style="margin:0px; padding:0px;" />
+										</td>
+									</tr>
+									<tr class="filSepGranRA">
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.puntoReferencia}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText" value="#{(not empty direccion.puntoReferencia) ? direccion.puntoReferencia : messages.vacio}"
+											style="margin:0px; padding:0px;" /></td>
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.numero}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText"
+											value="#{(not empty direccion.numero) ? direccion.numero : messages.vacio}"
+											style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepPeq"><h:outputText
+											value="#{messages.piso}:" style="margin:0px; padding:0px;" />
+										</td>
+										<td class="colSepGran"><h:outputText
+											styleClass="dataText"
+											value="#{(not empty direccion.piso) ? direccion.piso : messages.vacio}"
+											style="margin:0px; padding:0px;" />
+										</td>									
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>								
+    </rich:panel>
+    </s:div>

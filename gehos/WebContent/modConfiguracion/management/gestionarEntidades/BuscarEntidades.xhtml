@@ -1,0 +1,335 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+		<h:form id="userSearch" styleClass="edit">
+			<a4j:outputPanel ajaxRendered="true">
+				<rich:messages styleClass="message" ajaxRendered="true" for="btnSi" />
+				<rich:messages styleClass="message" globalOnly="true"
+					ajaxRendered="true" />
+			</a4j:outputPanel>
+
+			<rich:simpleTogglePanel switchType="client" styleClass="whitespace"
+				label="#{messages.criterios}"
+				opened="#{entidadBuscarControler.openSimpleTogglePanel}">
+				<a4j:support event="oncollapse" ajaxSingle="true"
+					action="#{entidadBuscarControler.cambiarEstadoSimpleTogglePanel()}"
+					reRender="tablas_id" />
+				<a4j:support event="onexpand" ajaxSingle="true"
+					action="#{entidadBuscarControler.cambiarEstadoSimpleTogglePanel()}"
+					reRender="tablas_id" />
+				<table cellpadding="0px" cellspacing="0px" border="0px"
+					id="simplesearch">
+
+					<tr>
+						<td style="height: 13px"></td>
+					</tr>
+					<tr style="vertical-align: top;">
+						<td style="width: 7px;"></td>
+						<td>
+						<table cellpadding="0" cellspacing="0" border="0">
+							<tr>
+								<td>#{messages.crit1}<br />
+								<h:inputText id="nombre" tabindex="1"
+									value="#{entidadBuscarControler.nombre}" style="width:150px;" /></td>
+								<td style="width: 25px;"></td>
+								<td style="vertical-align: bottom;"><h:commandButton
+									value="#{messages.buscar}" tabindex="2"
+									style="margin-left: 0px; margin-right: 5px; margin-top: 0px; margin-bottom: 0px;"
+									action="#{entidadBuscarControler.buscar()}">
+									<s:defaultAction />
+								</h:commandButton></td><td style="vertical-align: bottom;"> <s:button view="/modCommons/modHome/home.gehos"
+									value="#{messages.cancelar}" tabindex="3"
+									style="margin-right:0px;margin-bottom: 0px;margin-top: 0px;"
+									rendered="#{not identificadorManager.editing}">
+									<f:param name="idFuncionalidad"
+										value="#{activeModule.activeModule.id}" />
+									<f:param name="idancestors"
+										value="#{activeModule.activeModule.id}a" />
+									<f:param name="moduleName"
+										value="#{activeModule.activeModuleName}" />
+								</s:button></td>
+							</tr>
+						</table>
+						</td>
+						<td style="width: 7px;"></td>
+					</tr>
+				</table>
+				<rich:spacer height="7px" />
+			</rich:simpleTogglePanel>
+			<rich:spacer height="10px" />      
+
+			<div align="right"><h:panelGrid columns="2" cellpadding="1"
+				cellspacing="0" border="0">
+				<h:graphicImage style="border: 0px;" title="#{messages.adicionarT}"
+					height="12" width="12"
+					value="/resources/icons/default/acciones/adicionar.png" />
+				<h:commandLink value="#{messages.adicionar}" action="crear"
+					tabindex="4" styleClass="whitespace" />
+			</h:panelGrid></div>
+			<a4j:outputPanel id="tablas_id">
+				<rich:panel styleClass="whitespace"
+					rendered="#{empty entidadBuscarControler.resultList and entidadBuscarControler.nombre != ''}">
+					<f:facet name="header">#{messages.listado}</f:facet>
+					<div class="results" id="userList"><rich:spacer height="13px" /><br />
+					<rich:spacer width="7px" /> <h:outputText
+						value="#{messages.noInf2}" /></div>
+					<rich:spacer height="7px" />
+				</rich:panel>
+				<rich:panel styleClass="whitespace"
+					rendered="#{entidadBuscarControler.resultList.size() == 0 and entidadBuscarControler.nombre == ''}">
+					<f:facet name="header">#{messages.listado}</f:facet>
+					<div class="results" id="userList"><rich:spacer height="13px" /><br />
+					<rich:spacer width="7px" /> <h:outputText
+						value="#{messages.noInf}" /></div>
+					<rich:spacer height="7px" />
+				</rich:panel>
+				<s:div style="margin-left:1px;margin-top:1px"
+					rendered="#{not empty entidadBuscarControler.resultList}">
+					<rich:dataTable id="entidadList_Table" style="width: 100%;"
+						styleClass="whitespace" var="entidad"
+						value="#{entidadBuscarControler.resultList}"
+						columnsWidth="1%,90%, 1%, 1%, 1%">
+						<f:facet name="header">
+							#{messages.listado}
+					</f:facet>
+						<h:column>
+							<f:facet name="header">
+									#{messages.logotipoCol}
+						</f:facet>
+							<center><h:graphicImage height="25" width="25"
+								url="/resources/modCommon/entidades_logos/#{theme.name}/#{theme.color}/#{entidad.logo}">
+							</h:graphicImage></center>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.nombre}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not entidadBuscarControler.order.equals('entidad.nombre asc') and not entidadBuscarControler.order.equals('entidad.nombre desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="valorcontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{entidadBuscarControler.order.equals('entidad.nombre asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="valorcontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{entidadBuscarControler.order.equals('entidad.nombre desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="valorcontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+	            	#{entidad.nombre}
+	        	</h:column>
+
+						<h:column>
+							<div align="center"><s:link
+								view="/modConfiguracion/management/gestionarEntidades/VerDetallesEntidades.gehos">
+								<h:graphicImage title="#{messages.ver}" style="border: 0px;"
+									value="/resources/icons/default/acciones/ver.png" />
+								<f:param name="entidadId" value="#{entidad.id}" />
+								<f:param name="firstResult"
+									value="#{entidadBuscarControler.firstResult}" />
+								<f:param name="critB1"
+									value="#{entidadBuscarControler.parametros.encodec(entidadBuscarControler.nombre)}" />
+								<f:param name="order" value="#{entidadBuscarControler.order}" />
+								<f:param name="open"
+									value="#{entidadBuscarControler.openSimpleTogglePanel}" />
+								<f:param name="from" value="listar" />
+							</s:link></div>
+						</h:column>
+						<h:column>
+							<div align="center"><s:link
+								view="/modConfiguracion/management/gestionarEntidades/ModificarEntidades.gehos">
+								<h:graphicImage title="#{messages.modificar}"
+									style="border: 0px;"
+									value="/resources/icons/default/acciones/modificar.png" />
+								<f:param name="entidadId" value="#{entidad.id}" />
+								<f:param name="firstResult"
+									value="#{entidadBuscarControler.firstResult}" />
+								<f:param name="critB1"
+									value="#{entidadBuscarControler.parametros.encodec(entidadBuscarControler.nombre)}" />
+								<f:param name="order" value="#{entidadBuscarControler.order}" />
+								<f:param name="open"
+									value="#{entidadBuscarControler.openSimpleTogglePanel}" />
+								<f:param name="from" value="listar" />
+							</s:link></div>
+						</h:column>
+						<h:column>
+							<div align="center"><a4j:commandLink
+								oncomplete="Richfaces.showModalPanel('panelEliminar')"
+								action="#{entidadBuscarControler.seleccionarEliminar(entidad.id)}">
+
+								<h:graphicImage title="#{messages.eliminar}"
+									style="border: 0px; cursor:pointer;"
+									value="/resources/icons/default/acciones/eliminar.png">
+								</h:graphicImage>
+							</a4j:commandLink></div>
+						</h:column>
+						<h:column>
+							<div align="center"><h:graphicImage
+								rendered="#{not entidad.eliminado}"
+								value="/resources/modConfiguracion/visible.png" width="14"
+								height="14" style="border:0px; cursor:pointer"
+								title="#{messages.visibilidad}">
+								<a4j:support event="onclick" ajaxSingle="true"
+									action="#{entidadBuscarControler.cambiarVisibilidad(entidad.id)}"
+									reRender="tablas_id,entidadList_Table" />
+							</h:graphicImage> <h:graphicImage rendered="#{entidad.eliminado}"
+								value="/resources/modConfiguracion/not-visible.png" width="14"
+								height="14" style="border:0px; cursor:pointer; height : 14px;"
+								title="#{messages.visibilidad}">
+								<a4j:support event="onclick" ajaxSingle="true"
+									action="#{entidadBuscarControler.cambiarVisibilidad(entidad.id)}"
+									reRender="tablas_id,entidadList_Table" />
+							</h:graphicImage></div>
+						</h:column>
+
+					</rich:dataTable>
+				</s:div>
+				<rich:spacer height="11px" />
+				<s:div id="pagingcontrols" styleClass="tableControl"
+					style="width: 100%; text-align:center" align="center"
+					rendered="#{not empty entidadBuscarControler.resultList}">
+
+					<h:graphicImage
+						value="/resources/icons/default/paginado/iniciod.png"
+						rendered="#{!entidadBuscarControler.previousExists}" />
+
+					<s:link
+						view="/modConfiguracion/management/gestionarEntidades/BuscarEntidades.gehos"
+						rendered="#{entidadBuscarControler.previousExists}" id="firstPage">
+						<h:graphicImage title="#{messages.pag1}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/inicio.png" />
+						<f:param name="firstResult" value="0" />
+						<f:param name="critB1"
+							value="#{parameters.encodec(entidadBuscarControler.nombre)}" />
+						<f:param name="open"
+							value="#{entidadBuscarControler.openSimpleTogglePanel}" />
+						<f:param name="order" value="#{entidadBuscarControler.order}" />
+					</s:link>
+
+					<h:graphicImage
+						value="/resources/icons/default/paginado/anteriord.png"
+						rendered="#{!entidadBuscarControler.previousExists}" />
+
+
+					<s:link
+						view="/modConfiguracion/management/gestionarEntidades/BuscarEntidades.gehos"
+						rendered="#{entidadBuscarControler.previousExists}"
+						id="previousPage">
+						<h:graphicImage title="#{messages.pag2}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/anterior.png" />
+						<f:param name="firstResult"
+							value="#{entidadBuscarControler.previousFirstResult}" />
+						<f:param name="critB1"
+							value="#{parameters.encodec(entidadBuscarControler.nombre)}" />
+						<f:param name="open"
+							value="#{entidadBuscarControler.openSimpleTogglePanel}" />
+						<f:param name="order" value="#{entidadBuscarControler.order}" />
+					</s:link>
+
+
+					<h:graphicImage
+						value="/resources/icons/default/paginado/siguiented.png"
+						rendered="#{!entidadBuscarControler.nextExists}" />
+
+
+					<s:link
+						view="/modConfiguracion/management/gestionarEntidades/BuscarEntidades.gehos"
+						rendered="#{entidadBuscarControler.nextExists}" id="nextPage">
+						<h:graphicImage title="#{messages.pag3}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/siguiente.png" />
+						<f:param name="firstResult"
+							value="#{entidadBuscarControler.nextFirstResult}" />
+						<f:param name="critB1"
+							value="#{parameters.encodec(entidadBuscarControler.nombre)}" />
+						<f:param name="open"
+							value="#{entidadBuscarControler.openSimpleTogglePanel}" />
+						<f:param name="order" value="#{entidadBuscarControler.order}" />
+					</s:link>
+
+					<h:graphicImage value="/resources/icons/default/paginado/find.png"
+						rendered="#{!entidadBuscarControler.nextExists}" />
+
+
+					<s:link
+						view="/modConfiguracion/management/gestionarEntidades/BuscarEntidades.gehos"
+						rendered="#{entidadBuscarControler.nextExists}" id="lastPage">
+						<h:graphicImage title="#{messages.pag4}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/fin.png" />
+						<f:param name="firstResult"
+							value="#{entidadBuscarControler.lastFirstResult}" />
+						<f:param name="critB1"
+							value="#{parameters.encodec(entidadBuscarControler.nombre)}" />
+						<f:param name="open"
+							value="#{entidadBuscarControler.openSimpleTogglePanel}" />
+						<f:param name="order" value="#{entidadBuscarControler.order}" />
+					</s:link>
+				</s:div>
+			</a4j:outputPanel>
+
+
+		</h:form>
+
+
+		<h:form>
+			<rich:contextMenu attached="false" id="valorcontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{entidadBuscarControler.setOrder('entidad.nombre desc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{entidadBuscarControler.setOrder('entidad.nombre asc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+			</rich:contextMenu>
+
+		</h:form>
+		
+		<ui:include
+			src="/modConfiguracion/management/gestionarEntidades/modalspanel/confirmar_eliminar_entidad.xhtml" />
+
+	</ui:define>
+
+</ui:composition>
+

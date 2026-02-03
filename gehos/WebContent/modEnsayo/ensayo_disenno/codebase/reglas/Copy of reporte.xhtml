@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+<ui:composition>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/style/cssGenericas.css'
+		type='text/css' />
+
+
+	<h:form id="busquedasForm">
+		<a4j:outputPanel ajaxRendered="true">
+
+			<s:div
+				rendered="#{facesMessages.getCurrentMessagesForControl('listOfGruposujetoss').size() > 0 }"
+				styleClass="custom-error">
+				<div>
+					<rich:message for="listOfGruposujetoss" />
+				</div>
+			</s:div>
+		</a4j:outputPanel>
+qweqweqwe
+		<rich:simpleTogglePanel switchType="client" style="margin-top:5px;"
+			bodyClass="simpleTogPanel">
+			<f:facet name="header">
+				<h:outputLabel value="#{messages.criterios}" style="cursor:pointer;" />
+			</f:facet>
+			<a4j:outputPanel id="busquedas">
+				<h:panelGrid columns="2">
+					<rich:column style="vertical-align: top;" width="30px">
+						<s:div style="margin-left:2px;">
+							<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+								<h:graphicImage
+									value="/resources/modEnsayo/img/iconos/estudio.png" height="16" />
+								<a4j:commandLink
+									action="#{funcionalidadesManager.setSelectedFunctionality(null, null)}"
+									value="#{ReglasControlador.estudio.nombre}"
+									style="margin-left:1px;" status="funcSelectedStatus"
+									ajaxSingle="true" reRender="settingsdiv, detailspanelheader" />
+							</h:panelGrid>
+						</s:div>
+						<rich:tree>
+							<rich:treeNodesAdaptor
+								nodes="#{ReglasControlador.estudio.grupoSujetoses}"
+								var="grupoSujeto"
+								includedNode="#{not empty grupoSujeto.cronogramas}">
+								<rich:treeNode
+									icon="/resources/modEnsayo/img/iconos/gruposujetos.png">
+									<h:outputText value="#{grupoSujeto.nombreGrupo}" />
+								</rich:treeNode>
+								<rich:treeNodesAdaptor nodes="#{grupoSujeto.cronogramas}"
+									var="cronograma"
+									includedNode="#{not empty cronograma.momentoSeguimientoGenerals}">
+									<rich:treeNode
+										icon="/resources/modEnsayo/img/iconos/cronograma.png">
+										<h:outputText value="#{cronograma.descripcion}" />
+									</rich:treeNode>
+									<rich:treeNodesAdaptor
+										nodes="#{cronograma.momentoSeguimientoGenerals}"
+										var="momentoGeneral"
+										includedNode="#{not empty cronograma.momentoSeguimientoGenerals}">
+										<rich:treeNode
+											icon="/resources/modEnsayo/img/iconos/momento.png"
+											includedNode="#{not empty cronograma.momentoSeguimientoGenerals}">
+											<h:outputText value="#{momentoGeneral.nombre}" />
+										</rich:treeNode>
+										<rich:treeNodesAdaptor nodes="#{momentoGeneral.hojaCrds}"
+											var="hojaCrd">
+											<rich:treeNode
+												icon="/resources/modEnsayo/img/iconos/hojacrd.png">
+												<h:outputText value="#{hojaCrd.nombreHoja}" />
+											</rich:treeNode>
+											<rich:treeNodesAdaptor nodes="#{hojaCrd.seccions}"
+												var="seccion">
+												<rich:treeNode
+													icon="/resources/modEnsayo/img/iconos/seccion.png"
+													iconLeaf="/resources/modEnsayo/img/iconos/seccion.png">
+													<h:outputText value="#{seccion.tituloSeccion}" />
+												</rich:treeNode>
+												<rich:treeNodesAdaptor nodes="#{seccion.variables}"
+													var="variable"
+													includedNode="#{variable.grupoVariables==null}">
+													<rich:treeNode
+														icon="/resources/modEnsayo/img/iconos/variable.png"
+														iconLeaf="/resources/modEnsayo/img/iconos/variable.png">
+														<a4j:commandLink value="#{variable.nombreVariable}"
+															action="#{ReglasControlador.setVariableSeleccionada(variable)}"
+															reRender="selectedVariableContainer" limitToList="true"
+															oncomplete="selectVar(#{ReglasControlador.json(variable)}, this)"></a4j:commandLink>
+													</rich:treeNode>
+												</rich:treeNodesAdaptor>
+												<rich:treeNodesAdaptor nodes="#{seccion.grupoVariableses}"
+													var="grupoVariable">
+													<rich:treeNode
+														icon="/resources/modEnsayo/img/iconos/grupo-variable.png"
+														iconLeaf="/resources/modEnsayo/img/iconos/grupo-variable.png">
+														<h:outputText value="#{grupoVariable.etiquetaGrupo}" />
+													</rich:treeNode>
+													<rich:treeNodesAdaptor nodes="#{grupoVariable.variables}"
+														var="variable">
+														<rich:treeNode
+															icon="/resources/modEnsayo/img/iconos/variable.png"
+															iconLeaf="/resources/modEnsayo/img/iconos/variable.png">
+															<a4j:commandLink value="#{variable.nombreVariable}"
+																action="#{ReglasControlador.setVariableSeleccionada(variable)}"
+																reRender="selectedVariableContainer" limitToList="true"
+																oncomplete="selectVar(#{ReglasControlador.json(variable)}, this)"></a4j:commandLink>
+														</rich:treeNode>
+													</rich:treeNodesAdaptor>
+												</rich:treeNodesAdaptor>
+											</rich:treeNodesAdaptor>
+
+										</rich:treeNodesAdaptor>
+									</rich:treeNodesAdaptor>
+								</rich:treeNodesAdaptor>
+							</rich:treeNodesAdaptor>
+
+						</rich:tree>
+					</rich:column>
+					<rich:column
+						style="vertical-align: top;border-left: 1px solid rgb(78, 131, 88);padding-left: 20px;">
+						<a4j:commandButton action="#{ReglasControlador.ejecutarRegla()}"
+							value="Ejecutar Server">
+						</a4j:commandButton>
+						<p>Variable seleccionada:</p>
+						<a4j:outputPanel id="selectedVariableContainer">
+							<s:div rendered="#{ReglasControlador.variableSeleccionada!=null}">
+								<ui:include
+									src="/modEnsayo/ensayo_estadisticas/codebase/reglas/template_variable.xhtml">
+									<ui:param name="variable"
+										value="#{ReglasControlador.variableSeleccionada}" />
+								</ui:include>
+							</s:div>
+						</a4j:outputPanel>
+						<div id="divSelectedVar"></div>
+						<div id="divRuleCreation" style="display: none">
+							<a onclick="createRule()" href="#">Crear regla</a>
+							<button type="reset" id="submit2">Borrar regla</button>
+							<h3>Condiciones de la regla:</h3>
+							<div id="conditions"></div>
+							<h3>Acciones:</h3>
+							<div id="actions"></div>
+
+							<form id="demo-form">
+								<h3>Valores de prueba</h3>
+								<div>
+									<label>Variable: </label><input type="text" id="nameField" />
+								</div>
+								<!-- <div>
+									<label>Age</label><input type="text" id="ageField" size="2" />
+								</div>
+								<div>
+									<label>Occupation</label> <select id="occupationField"></select>
+								</div> -->
+								<div>
+									<button type="submit" id="submit">Ejecutar</button>
+									<button type="submit" id="saveRule">Guardar</button>
+								</div>
+							</form>
+						</div>
+					</rich:column>
+
+				</h:panelGrid>
+
+			</a4j:outputPanel>
+		</rich:simpleTogglePanel>
+		<a4j:jsFunction name="getactions"
+			action="#{ReglasControlador.actions()}"
+			oncomplete="putactions(event.data)"></a4j:jsFunction>
+	</h:form>
+
+	<rich:spacer height="11px" width="100%" />
+
+	<script>
+		var ooo = jQuery;
+		var b = $;
+	</script>
+
+	<script type="text/javascript" language="javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/dosCalendars.js"></script>
+	<script
+		src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/reglas/vendor/jquery1.9.js"
+		type="text/javascript"></script>
+	<script
+		src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/reglas/vendor/math.min.js"
+		type="text/javascript"></script>
+	<script>
+		var $j = jQuery.noConflict(true);		
+	</script>
+	<script
+		src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/reglas/business-rules/conditions-builder.js"
+		type="text/javascript"></script>
+	<script
+		src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/reglas/business-rules/actions-builder.js"
+		type="text/javascript"></script>
+	<script
+		src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/reglas/business-rules/rule-engine.js"
+		type="text/javascript"></script>
+	<script
+		src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/reglas/common-types.js"
+		type="text/javascript"></script>
+			<script
+		src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/reglas/dynamic/funcs.js"
+		type="text/javascript"></script>
+	<script
+		src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/reglas/demo.js"
+		type="text/javascript"></script>
+
+	<h:form>
+		<a4j:jsFunction name="getactions"
+			data="#{ReglasControlador.actions()}" oncomplete="putactions(data)"></a4j:jsFunction>
+		<a4j:jsFunction name="setinstance"
+			action="#{ReglasControlador.setInstance()}" reRender="mpanels"
+			data="#{ReglasControlador.idModal}" oncomplete="realShowModal(data)">
+			<a4j:actionparam name="itype" assignTo="#{ReglasControlador.itype}"></a4j:actionparam>
+		</a4j:jsFunction>
+		<a4j:jsFunction name="getmodalresponse"
+			data="#{ReglasControlador.modalResponse()}" 
+			oncomplete="setmodalresponse(data)">			
+		</a4j:jsFunction>
+		
+		<a4j:jsFunction name="saveRule"
+			action="#{ReglasControlador.saveRule()}"
+			data="#{ReglasControlador.idModal}">
+			<a4j:actionparam name="rule" assignTo="#{ReglasControlador.ruleToSave}"></a4j:actionparam>
+		</a4j:jsFunction>
+	</h:form>
+	<s:div id="mpanels">
+	<c:forEach items="#{ReglasControlador.modals()}" var="modal">
+		<f:view>
+			<ui:include src="#{modal}"/>
+		</f:view>		
+	</c:forEach>
+	</s:div>	
+	
+		
+	<script type="text/javascript">
+		getactions();		
+	</script>
+
+	<ui:repeat var="script" value="#{ReglasControlador.operators()}">
+		<script type="text/javascript"
+			src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/reglas/dynamic/operators/#{script}"></script>
+	</ui:repeat>
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/reglas/demo.css"
+		rel="stylesheet" type="text/css" />
+
+
+</ui:composition>
+
+</html>

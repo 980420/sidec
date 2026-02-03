@@ -1,0 +1,58 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" 
+	template="#{theme.template}"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<ui:define name="body" >
+		<script type="text/javascript">setContentTitle('Configurar funcionalidades')</script>
+		<h:messages globalOnly="true" styleClass="message" />
+
+		<h:form id="funcionalidadesControllerForm">
+		
+			<rich:panel style="width: 98%">
+				<f:facet name="header">M&#243;dulos</f:facet>	
+				
+				<table style="width: 100%; vertical-align: top;">
+					<tr>
+						<td style="vertical-align: top;">
+							<rich:tree 	ajaxSubmitSelection="true" 
+								switchType="client" 
+								style="width:200px" 
+								value="#{modulesTreeBuilder.treeData}" 
+								var="modulo">
+									<rich:treeNode 
+											iconLeaf="/img/minmod.png" 
+											icon="/img/folder_blue.png">
+									
+										<a	onclick="document.getElementById('funcionalidades_frame').src = '#{facesContext.externalContext.requestContextPath}/modConfiguracion/funcionalidades/list.gehos?moduleId=#{modulo.id}'"
+										 	
+											style="text-decoration: none; cursor: pointer">
+												#{modulo.nombre} 
+										</a>
+										
+									</rich:treeNode>
+							</rich:tree>	 
+						</td>
+						<td style="width: 100%; vertical-align: top;">
+							<iframe id="funcionalidades_frame" frameborder="0"
+								src="#{facesContext.externalContext.requestContextPath}/modConfiguracion/funcionalidades/list.gehos"
+								style="width:95%; border: none; height: 600px; " >				
+							</iframe>
+						</td>
+					</tr>
+				</table>
+				
+			</rich:panel>	
+			
+		</h:form>
+	</ui:define>
+
+
+</ui:composition>

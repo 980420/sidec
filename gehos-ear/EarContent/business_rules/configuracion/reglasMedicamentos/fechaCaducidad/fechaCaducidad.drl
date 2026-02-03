@@ -1,0 +1,75 @@
+#created on: 08-jun-2011
+package fechas
+
+#list any import classes here.
+import gehos.comun.util.reglasMedicamentos.FechaCaducidad;
+
+rule "normal"
+	
+	when
+		FechaCaducidad(codigoTipoRecipe == "normal")
+		$fechas : FechaCaducidad()
+	then 
+		$fechas.setDias(10);
+		
+end
+
+rule "cronicismo"
+	
+	when
+		FechaCaducidad(codigoTipoRecipe == "cronicismo")
+		$fechas : FechaCaducidad()
+	then 
+		$fechas.setDias(92);
+		
+end
+
+rule "antibioticos"
+	
+	when
+		FechaCaducidad(codigoTipoRecipe == "antibioticos")
+		$fechas : FechaCaducidad()
+	then 
+		$fechas.setDias(10);
+		
+end
+
+rule "morados"
+	
+	when
+		FechaCaducidad(codigoTipoRecipe == "morados")
+		$fechas : FechaCaducidad()
+	then 
+		$fechas.setDias(10);
+		
+end
+
+rule "psicotropicos"
+	
+	when
+		FechaCaducidad(codigoTipoRecipe == "psicotropicos")
+		$fechas : FechaCaducidad()
+	then 
+		$fechas.setDias(10);
+		
+end
+
+rule "insulina"
+	
+	when
+		FechaCaducidad(codigoTipoRecipe == "insulina")
+		$fechas : FechaCaducidad()
+	then 
+		$fechas.setDias(10);
+		
+end
+
+rule "otros"
+	
+	when eval(true)	
+		$fechas : FechaCaducidad()
+	then 
+		$fechas.setDias(15);
+		
+end
+

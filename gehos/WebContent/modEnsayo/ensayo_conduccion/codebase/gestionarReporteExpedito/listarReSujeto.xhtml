@@ -1,0 +1,227 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" xmlns:a4j="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle('#{messages.listadoMS1}')</script>
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+		type='text/css' />
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css'
+		type='text/css' />
+
+
+	<table class="Tabla" width="100%" cellpadding="0" cellspacing="0">
+
+
+		<tr>
+			<td><h:form>
+					<a:outputPanel id="tb1">
+						<rich:panel rendered="#{empty listarRe.resultList}">
+							<f:facet name="header">#{messages.listadoMSProg}</f:facet>
+							<table class="Tabla">
+								<tr>
+									<td><h:outputText value="#{messages.noMSProg}" /></td>
+								</tr>
+							</table>
+						</rich:panel>
+						<div style="margin-left: 1px; margin-top: 8px">
+						<a4j:status id="statusGeneral"
+								onstart="#{rich:component('mpBloqueo')}.show()"
+								onstop="#{rich:component('mpBloqueo')}.hide()">
+								<f:facet name="start">
+									<s:div>
+										<div align="center" style="width: 100%; height: 100%;">
+											<table border="0" cellpadding="0" cellspacing="0">
+												<tr>
+													<td style="padding-right: 4px;"><h:graphicImage
+															value="/resources/icons/default/acciones/loading_small.gif" />
+													</td>
+													<td><h:outputText value="#{messages.procesando}"
+															styleClass="normalText" /></td>
+												</tr>
+											</table>
+										</div>
+									</s:div>
+								</f:facet>
+							</a4j:status>
+							<rich:dataTable id="tb" value="#{listarRe.resultList}" var="re"
+								width="100%" rendered="#{not empty listarRe.resultList}">
+								<f:facet name="header">
+									<h:outputText value="#{messages.listadoMSProg1}" />
+								</f:facet>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.idSujeto}" styleClass="label" /></td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList" value="#{listarRe}" />
+															<ui:param name="columna" value="#{reT.idSujeto}" />
+															<ui:param name="nombreMenu" value="ordenarNombresMenu" />
+															<ui:param name="tablaRender" value="tb1" />
+														</ui:include></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText
+										value="#{re.crdEspecifico.momentoSeguimientoEspecifico.sujeto.codigoPaciente}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.estaMS}" styleClass="label" /></td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList" value="#{listarRe}" />
+															<ui:param name="columna"
+																value="reT.crdEspecifico.momentoSeguimientoEspecifico.estadoMomentoSeguimiento.nombre" />
+															<ui:param name="nombreMenu" value="ordenarPapellidoMenu" />
+															<ui:param name="tablaRender" value="tb1" />
+														</ui:include></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+
+									<h:outputText
+										value="#{listarRe.concaNombreMSEstado(re.crdEspecifico.momentoSeguimientoEspecifico.momentoSeguimientoGeneral.nombre, re.crdEspecifico.momentoSeguimientoEspecifico.estadoMomentoSeguimiento.nombre)}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.hoja}" styleClass="label" /></td>
+
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<table width="100%">
+										<tr>
+											<td align="left"><h:outputText
+													value="#{re.crdEspecifico.hojaCrd.nombreHoja}">
+
+												</h:outputText></td>
+										</tr>
+									</table>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.eventoA}" styleClass="label" /></td>
+
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<rich:spacer width="4px" />
+									<h:outputText
+										value="#{listarRe.evenetoAnombre(re.variableDato.cid)}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.fechaI}" styleClass="label" /></td>
+
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<rich:spacer width="4px" />
+									<h:outputText value="#{re.fechainicio}" />
+								</rich:column>
+								
+								<rich:column width="10"
+																							
+																							styleClass="alineacionCentrada">
+																							<!-- Exportar reporte expedito -->
+																							<a4j:commandButton id="exportarReporte"
+																								image="/resources/icons/default/acciones/imprimir_pdf.png"
+																								title="#{messages.exportar}"
+																								rendered="#{gestionarHoja.pathExportedReport != ''}"
+																								action="#{gestionarHoja.exportReportExpeditoEvento(re.id)}"
+																								oncomplete="{window.open('#{facesContext.externalContext.requestContextPath}#{gestionarHoja.pathExportedReport}')}"
+																								style="border: 0px; cursor:pointer;"
+																								ignoreDupResponses="true" status="statusGeneral" />
+																							<h:graphicImage rendered="#{gestionarHoja.pathExportedReport == ''}"
+																								style="border:0px; opacity: 0.4;"
+																								value="/resources/icons/default/acciones/imprimir_pdf.png" />
+																						</rich:column>
+								
+			
+			
+			
+			
+			
+			
+								
+                                
+								<rich:column width="1px" styleClass="alineacionCentrada">
+									<h:commandLink action="gestionar" title="#{messages.verRex}" style="border: 0px; cursor:pointer;">
+										<h:graphicImage rendered="#{(listarRe.obtainRole().getCodigo() == 'ecCord' or listarRe.obtainRole().getCodigo() 
+										== 'ecInv' or listarRe.obtainRole().getCodigo() == 'ecLab' or listarRe.obtainRole().getCodigo() == 'ecMon') and (
+										re.crdEspecifico.estadoMonitoreo.codigo != 3) and (re.crdEspecifico.estadoHojaCrd.codigo != 4)}" 
+										value="/resources/icons/default/acciones/ver.png" style="border:0;" />
+										<f:param name="idcrd" value="#{re.crdEspecifico.id}" />
+										<f:param name="idMS" value="#{re.crdEspecifico.momentoSeguimientoEspecifico.id}" />
+									</h:commandLink>
+									<h:graphicImage value="/resources/icons/default/acciones/ver.png" style="border:0; opacity: 0.5;" rendered="#{((listarRe.obtainRole().getCodigo() == 'ecCord' or listarRe.obtainRole().getCodigo() == 'ecInv' or listarRe.obtainRole().getCodigo() == 'ecLab' or listarRe.obtainRole().getCodigo() == 'ecMon') and (re.crdEspecifico.estadoMonitoreo.codigo == 3) and (re.crdEspecifico.estadoHojaCrd.codigo == 4))}" />
+									
+									
+									
+									
+									
+									
+								</rich:column>
+								
+							</rich:dataTable>
+						</div>
+					</a:outputPanel>
+				</h:form>
+			</td>
+		</tr>
+		<tr>
+			<td align="center"><h:form>
+					<a:outputPanel id="paginado1" ajaxRendered="true">
+						<ui:include
+							src="/modEnsayo/codebase/plantillas/paginado_tabla_inferior_generico.xhtml/">
+							<ui:param name="vzPaginado" value="#{listarRe.resultCount>10}" />
+							<ui:param name="nomControladorList" value="#{listarRe}" />
+							<ui:param name="idListado" value="tb1" />
+						</ui:include>
+					</a:outputPanel>
+				</h:form></td>
+		</tr>
+		
+		<tr>
+		  <td><h:form>
+					<div align="right">
+						<br />
+						<h:commandButton value="#{messages.salir}" style="margin:0px;"
+							action="salir" immediate="true" />
+					</div>
+				</h:form></td>
+		</tr>
+
+	</table>
+</ui:composition>

@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+      xmlns:a="http://richfaces.org/a4j"
+      xmlns:c="http://java.sun.com/jstl/core" 
+      template="#{theme.template}"
+                xmlns:rich="http://richfaces.org/rich">
+                
+<ui:define name="body" >
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('Listado por roles')</script>
+	<style type="text/css">.rich-stglpanel-body{padding:0px}</style>
+	<style type="text/css">.rich-panel-body{padding:0px}</style>
+	<style>
+		.functpanelbody{padding:0px;}.functpanelbody2{padding:0px;}
+		.rolescol1{padding: 0px; border: 0px; cursor: pointer; width:1px; vertical-align: top; text-align: center;} 
+		.rolescol2{padding: 0px; border: 0px; cursor: pointer; }
+		.rich-table-footercell{
+		    background-color:#ffffff; padding: 0px 0px 0px 0px; font-weight: normal;
+		}
+		.dr-table-cell:hover, .rich-table-cell:hover{  
+			  background-image: url("#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/images/resaltaPanel2.png");
+			  background-repeat: repeat-x;
+			  background-color:#ffe0a3;
+		}
+	</style>
+	
+
+	
+	<a:keepAlive beanName="usuariosPorRolController" />
+	
+	<h:form id="rolesForm">
+
+	<table width="100%" cellpadding="5px" cellspacing="0px" style="vertical-align: top;">
+		<tr>
+
+		<td style="vertical-align: top; width: 30%;">
+			<rich:panel  bodyClass="functpanelbody2">
+				<f:facet name="header" >
+					<a:status stopText="Roles" for="functsstree"
+							  startText="Actualizando..." id="funcstatus"></a:status>
+				</f:facet>
+				<div style="border: 1px;" > 
+				<a:region id="functsstree" >
+				<a:outputPanel ajaxRendered="true">
+				
+				<rich:dragIndicator id="treeDragIndicator">
+			        <f:facet name="single">
+			        	<h:panelGrid columns="2">
+				            <h:graphicImage  styleClass="indicatorPicture" value="/resources/modCommon/ubicacionesimages/{iconname}" />
+				            <h:outputLabel value="{label}" />
+			        	</h:panelGrid>
+			        </f:facet>
+				</rich:dragIndicator>
+
+				<rich:dataTable columnClasses="rolescol1, rolescol2" width="100%" 
+						style="border: 0px;" id="rolesdatatable" rows="10"
+						cellpadding="0" cellspacing="0"
+						value="#{usuariosPorRolController.roles}" var="role" 
+						onRowClick="selectRole(#{role.id}); " >
+					<h:column >
+						<h:graphicImage height="25" width="25" style="margin: 2px 2px 2px 2px"
+							value="/resources/modCommon/unknown/#{theme.name}/generico/desconocido.png"/>
+					</h:column>
+					<h:column>
+						#{role.name}
+					</h:column>
+				</rich:dataTable>
+				<br/>
+				<rich:datascroller for="rolesdatatable" />
+
+				</a:outputPanel>
+				</a:region>
+				</div>
+			</rich:panel>	
+		</td>
+	
+		<td style="vertical-align: top; width: 70%;">
+			<a:region >
+			<rich:panel bodyClass="functpanelbody" id="childfuncspanel">
+				<f:facet name="header">
+					<s:div id="detailspanelheader">
+						Detalles
+					</s:div>
+				</f:facet>
+				
+				<a:status id="funcSelectedStatus" forceId="true"
+					  onstart="javascript:document.getElementById('rolesForm:settingsdiv').style.visibility = 'hidden'"
+					  onstop="javascript:document.getElementById('rolesForm:settingsdiv').style.visibility = 'visible'">
+				  <f:facet name="start">
+					  <s:div style="text-align: center; width: 100%">
+					  <br/><br/>
+						 <h:graphicImage url="/resources/icons/default/acciones/loading_small.gif" />
+					  <br/><br/>	 
+					  </s:div>	 
+				  </f:facet>
+			    </a:status>
+			    
+				<s:div id="settingsdiv" style="display: inline;">
+		    		<table cellpadding="0" cellspacing="0" border="0" width="100%" style="text-align: left;">
+						<tr valign="top">
+							<td style="width: 100%">
+								<rich:dataGrid columns="4" style="width: 100%;" columnClasses="rolescol1" 
+										value="#{usuariosPorRolController.usuarios}" var="user"
+										id="usersdatagrid" elements="24" border="0px;"  
+										>
+								  <div onclick="selectUser(#{user.id})" >	
+						           	<h:graphicImage height="25" width="25" rendered="#{userTools.userImageExist(user.username)}" 
+						           		value="/resources/modCommon/userphotos/#{user.username}.png" 
+						           		style="margin: 2px 2px 2px 2px; padding-top:2px;" >
+						           	</h:graphicImage>
+						           	<h:graphicImage height="25" width="25" rendered="#{not userTools.userImageExist(user.username)}" 
+						           		value="/resources/modCommon/unknown/#{theme.name}/generico/desconocido.png"
+						           		style="margin: 2px 2px 2px 2px; padding-top:2px;" >
+						           	</h:graphicImage>										
+									<br/>	
+									#{user.nombre}
+								  </div>
+								</rich:dataGrid>
+								<br />
+								<rich:datascroller for="usersdatagrid"
+									rendered="#{usuariosPorRolController.usuarios.size() > 24}">
+								</rich:datascroller>
+							</td>
+							<td>
+	
+								<rich:panel style="width: 180px; height: 330px" id="userdetailpanel">
+									<f:facet name="header">Detalles del usuario</f:facet>
+
+									<a:status id="userSelectedStatus" forceId="true"
+										  onstart="javascript:document.getElementById('rolesForm:usersettingsdiv').style.visibility = 'hidden'"
+										  onstop="javascript:document.getElementById('rolesForm:usersettingsdiv').style.visibility = 'visible'">
+									  <f:facet name="start">
+										  <s:div style="text-align: center; width: 100%">
+										  <br/><br/>
+											 <h:graphicImage url="/resources/icons/default/acciones/loading_small.gif" />
+										  <br/><br/>	 
+										  </s:div>	 
+									  </f:facet>
+								    </a:status>	
+								    
+								    <s:div id="usersettingsdiv" style="display: inline;">
+							           	<h:graphicImage rendered="#{userTools.userImageExist(usuariosPorRolController.usuario.username)}" 
+							           		value="/resources/modCommon/userphotos/#{usuariosPorRolController.usuario.username}.png" 
+							           		style="margin: 2px 2px 2px 2px; padding-top:2px;" >
+							           	</h:graphicImage>
+							           	<h:graphicImage rendered="#{not userTools.userImageExist(usuariosPorRolController.usuario.username)}" 
+							           		value="/resources/modCommon/unknown/#{theme.name}/generico/desconocido.png"
+							           		style="margin: 2px 2px 2px 2px; padding-top:2px;" >
+							           	</h:graphicImage>										
+								    </s:div>
+								    
+								</rich:panel>
+
+							</td>
+						</tr>
+					</table>
+			    
+			    </s:div>
+			    
+			</rich:panel>
+
+			</a:region>
+		</td>
+		</tr>
+	</table>
+	
+	</h:form>
+	
+		
+	<a:form>
+		<a:jsFunction name="selectRole" ajaxSingle="true" limitToList="true"
+			reRender="childfuncspanel" status="funcSelectedStatus"	>
+			<a:actionparam name="roleid" assignTo="#{usuariosPorRolController.roleId}" />
+		</a:jsFunction>
+	</a:form>
+	<a:form>
+		<a:jsFunction name="selectUser" ajaxSingle="true" limitToList="true"
+			reRender="userdetailpanel" status="userSelectedStatus"	>
+			<a:actionparam name="userid" assignTo="#{usuariosPorRolController.userId}" />
+		</a:jsFunction>
+	</a:form>
+
+</ui:define>
+
+</ui:composition>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

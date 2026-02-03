@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:composition>
+	<!-- Paguinador generico ajax, se le pasa la custom list(controladorList) 
+	y el id del componente a renderizar(listado) -->
+			
+		<s:div>
+			<div align="center">
+				<h:graphicImage value="/resources/icons/default/paginado/iniciod.png"
+				rendered="#{not controladorList.previousExists}" /> 
+				
+				<a4j:commandButton action="#{controladorList.setFirstResult(0)}"
+				rendered="#{controladorList.previousExists}"
+				image="/resources/icons/default/paginado/#{theme.color}/inicio.png" 
+				title="#{messages.primera}" 
+				immediate="true"
+				reRender="#{listado}"
+				ajaxSingle="true"/>
+				
+				<h:graphicImage value="/resources/icons/default/paginado/anteriord.png"
+				rendered="#{not controladorList.previousExists}" /> 
+				
+				<a4j:commandButton title="#{messages.anterior}" 
+				rendered="#{controladorList.previousExists}"
+				action="#{controladorList.setFirstResult(controladorList.previousFirstResult)}"
+				image="/resources/icons/default/paginado/#{theme.color}/anterior.png" 
+				immediate="true"
+				reRender="#{listado}"
+				ajaxSingle="true"/> 
+				
+				<h:graphicImage	value="/resources/icons/default/paginado/siguiented.png"
+				rendered="#{not controladorList.nextExists}" /> 
+				
+				<a4j:commandButton rendered="#{controladorList.nextExists}" 
+				action="#{controladorList.setFirstResult(controladorList.nextFirstResult)}" 
+				image="/resources/icons/default/paginado/#{theme.color}/siguiente.png" 
+				title="#{messages.siguiente}"
+				immediate="true"
+				reRender="#{listado}"
+				ajaxSingle="true"/>				
+			
+			    <h:graphicImage value="/resources/icons/default/paginado/find.png"
+				rendered="#{not controladorList.nextExists}" /> 
+				
+				<a4j:commandButton title="#{messages.ultima}" 
+				action="#{controladorList.setFirstResult(controladorList.lastFirstResult)}" 
+				image="/resources/icons/default/paginado/#{theme.color}/fin.png" 
+				rendered="#{controladorList.nextExists}"
+				immediate="true"
+				reRender="#{listado}"
+				ajaxSingle="true"/>			
+			</div>
+		</s:div>		
+	</ui:composition>
+
+</html>

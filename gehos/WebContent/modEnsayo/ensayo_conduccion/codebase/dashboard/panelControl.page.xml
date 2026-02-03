@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+	
+	<navigation evaluate="#{seguridadEstudio.CanSeeThisFunctionalityNow()}">	
+		<rule if-outcome="not-selected">
+			<redirect view-id="/modEnsayo/codebase/seleccionar_estudio/seleccionarEstudio.xhtml">
+				<!-- Colocal el valor la direccion a la que se debe redireccionar al seleccionar el estudio -->
+				<param name="direccion" value="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/dashboard/panelControl.xhtml" />
+			</redirect>
+		</rule>
+		<rule if-outcome="not-authorized">
+			<redirect view-id="/error.xhtml">
+				<message>Su usuario no puede acceder a este recurso en el estudio activo actualmente</message>
+			</redirect>
+		</rule>		
+	</navigation> 
+
+	<param name="moduleName" value="#{activeModule.activeModuleName}" /> 
+	<begin-conversation flush-mode="manual" join="true"/>
+	<action execute="#{panelControlController.procesoCompletamientoDatosP()}"/>
+	
+
+</page>

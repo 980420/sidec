@@ -1,0 +1,231 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css">
+.rich-stglpanel-body {
+	padding: 0px
+}
+</style>
+		<style type="text/css">
+.rich-panel-body {
+	padding: 0px
+}
+</style>
+		<style type="text/css">
+.aliCh {
+	vertical-align: text-top !important;
+}
+</style>
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+		<h:form id="form" styleClass="edit">
+			<a4j:outputPanel ajaxRendered="true">
+				<rich:messages id="error" styleClass="message" for="error"
+					ajaxRendered="true" />
+			</a4j:outputPanel>
+			<s:validateAll>
+				<rich:panel>
+					<f:facet name="header">#{messages.datos}</f:facet>
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr>
+							<td style="height: 11px;" colspan="6"></td>
+						</tr>
+						<tr style="vertical-align: top;">
+							<td style="width: 7px;"></td>
+							<td>#{messages.descripcion} <rich:message for="nombre"
+								showDetail="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('nombre').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message> <br />
+							<h:inputText id="nombre" style=" width : 148px;"
+								validator="#{validations_configuracion.textnumber}"
+								required="#{!empty param['form:buttonAceptar']}"
+								requiredMessage="#{messages.valorRequerido}"
+								value="#{camaCrearControlador.descripcion}" tabindex="1" /></td>
+							<td style="width: 25px"></td>
+							<td>#{messages.estado} <rich:message for="estado"
+								showDetail="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('estado').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message> <br />
+							<rich:comboBox id="estado"
+								suggestionValues="#{camaCrearControlador.listadoEstados()}"
+								required="#{!empty param['form:buttonAceptar']}"
+								requiredMessage="#{messages.valorRequerido}"
+								defaultLabel="#{messages.seleccione}" enableManualInput="false"
+								style=" width : 150px;" tabindex="2"
+								value="#{camaCrearControlador.estadoSeleccionado}">
+							</rich:comboBox></td>
+							<td style="width: 25px"></td>
+							<td>#{messages.categoria} <rich:message for="categoriaa"
+								showDetail="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('categoriaa').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message> <br />
+							<rich:comboBox id="categoriaa"
+								required="#{!empty param['form:buttonAceptar']}"
+								requiredMessage="#{messages.valorRequerido}"
+								suggestionValues="#{camaCrearControlador.listadoCategorias()}"
+								defaultLabel="#{messages.seleccione}" enableManualInput="false"
+								style=" width : 150px;" tabindex="3"
+								value="#{camaCrearControlador.categoriaSeleccionada}">
+							</rich:comboBox></td>
+						</tr>
+						<tr>
+							<td height="6px" />
+						</tr>
+						<tr>
+							<td style="width: 7px;"></td>
+							<td>#{messages.entidad} <rich:message for="entidad"
+								showDetail="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('entidad').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message> <br />
+							<rich:comboBox id="entidad" tabindex="4"
+								suggestionValues="#{camaCrearControlador.listadoEntidades()}"
+								defaultLabel="#{messages.seleccione}" enableManualInput="false"
+								style=" width : 150px;"
+								required="#{!empty param['form:buttonAceptar']}"
+								requiredMessage="#{messages.valorRequerido}"
+								value="#{camaCrearControlador.entidadSeleccionada}">
+								<a4j:support ajaxSingle="true" event="onselect"
+									action="#{camaCrearControlador.serviciosPorEntidad()}"
+									limitToList="true" reRender="servicios,ubic,arbol" />
+							</rich:comboBox> <rich:spacer height="8px" style="display: block"></rich:spacer>
+							</td>
+							<td style="width: 25px"></td>
+							<td>
+							
+							#{messages.ubicacion}<a4j:outputPanel
+								id="ubicacionRequired">
+								<h:outputText value="*" style="color: red;" 
+									title="#{messages.valorRequerido}"
+									rendered="#{camaCrearControlador.locationSelected == '' and !empty param['form:buttonAceptar']}" />
+							</a4j:outputPanel> <rich:message for="ubicacionEnModificacionInput"
+								showDetail="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('ubicacionEnModificacionInput').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message> <br />
+							<a4j:outputPanel id="arbol">							
+								<h:panelGrid columns="3" cellpadding="0" cellspacing="0">
+									<h:inputText style="width: 114px;" readonly="true"
+										id="ubicacionEnModificacionInput" required="true"
+										value="#{camaCrearControlador.locationSelected}"
+										disabled="#{camaCrearControlador.entidadSeleccionada == '' || camaCrearControlador.entidadSeleccionada == null}"
+										tabindex="6" />
+									<rich:spacer width="5" />
+
+									<a4j:commandButton value="..."
+										style="width:29px; margin: 0px 0px 0px 0px; "
+										disabled="#{camaCrearControlador.entidadSeleccionada == '' || camaCrearControlador.entidadSeleccionada == null}"
+										immediate="true" limitToList="true"
+										onclick="Richfaces.showModalPanel('escoger_ubicacion_panel');"
+										tabindex="8">
+									</a4j:commandButton>
+
+								</h:panelGrid>
+								<rich:spacer height="8px" style="display: block"></rich:spacer>
+							</a4j:outputPanel>
+							
+							
+
+							</td>
+							<td style="width: 25px"></td>
+							<td>
+							
+							#{messages.servicio} <rich:message for="servicio"
+								showDetail="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('servicio').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message> <br />
+							<a4j:outputPanel id="servicios">
+								<rich:comboBox id="servicio"
+									disabled="#{camaCrearControlador.entidadSeleccionada == '' || 
+												camaCrearControlador.entidadSeleccionada == null || 
+												camaCrearControlador.locationSelected == '' || 
+												camaCrearControlador.locationSelected == null || camaCrearControlador.location.servicioInEntidads.size() == 0}"
+									suggestionValues="#{camaCrearControlador.serviciosDadaUbicacion()}"
+									defaultLabel="#{messages.seleccione}" enableManualInput="false"
+									style=" width : 150px;" tabindex="5"
+									required="#{!empty param['form:buttonAceptar']}"
+									requiredMessage="#{messages.valorRequerido}"
+									value="#{camaCrearControlador.servicioSeleccionado}">
+								</rich:comboBox>
+							</a4j:outputPanel> <rich:spacer height="8px" style="display: block"></rich:spacer>
+							
+						
+							
+							</td>
+
+						</tr>
+
+						<tr>
+							<td style="width: 7px;"></td>
+							<td>#{messages.tipoCama} <rich:message for="tipoCama"
+								showDetail="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('tipoCama').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message> <br />
+							<rich:comboBox id="tipoCama" enableManualInput="false"
+								tabindex="9" required="#{!empty param['form:buttonAceptar']}"
+								requiredMessage="#{messages.valorRequerido}"
+								suggestionValues="#{camaCrearControlador.listadoTipo()}"
+								style="width: 150px;" defaultLabel="#{messages.seleccione}"
+								value="#{camaCrearControlador.tipoSeleccionado}">
+							</rich:comboBox> <rich:spacer height="8px" style="display: block"></rich:spacer>
+
+							</td>
+
+						</tr>
+					</table>
+				</rich:panel>
+			</s:validateAll>
+			<rich:spacer height="8px" style="display: block"></rich:spacer>
+			<s:div styleClass="actionButtons" rendered="#{empty from}"
+				style="text-align: right">
+				<div align="right"><h:commandButton id="buttonAceptar"
+					tabindex="10" value="#{messages.aceptar}"
+					action="#{camaCrearControlador.crear()}"
+					style="margin-bottom: 0px; margin-right: 5px; margin-left: 0px; margin-top: 0px">
+				</h:commandButton> <h:commandButton immediate="true" value="#{messages.cancelar}"
+					action="cancelar" tabindex="11"
+					style="margin-bottom: 0px; margin-right: 0px; margin-left: 5px; margin-top: 0px"
+					propagation="end"></h:commandButton> <rich:spacer height="8px"
+					style="display: block"></rich:spacer></div>
+			</s:div>
+		</h:form>
+
+
+		<br />
+		<ui:include
+			src="/modConfiguracion/management/gestionarCama/modalspanel/SeleccionarUbicationCrear.xhtml" />
+	</ui:define>
+
+</ui:composition>
+

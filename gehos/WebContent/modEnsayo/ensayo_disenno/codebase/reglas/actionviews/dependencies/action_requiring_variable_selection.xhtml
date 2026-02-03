@@ -1,0 +1,24 @@
+<a4j:outputPanel
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+	
+	<s:div id="selvar">
+		<ui:include	src="/modEnsayo/ensayo_disenno/codebase/reglas/template_variable.xhtml">
+			<ui:param name="variable" value="#{action.variable}" />
+			<ui:param name="cssClass" value="style-one space-down space-up"/>
+		</ui:include>
+	</s:div>
+	
+	<ui:include src="/modEnsayo/ensayo_disenno/codebase/reglas/dependencies/studyGenericTree.xhtml">
+		<ui:param name="estudio" value="#{ReglasControlador.estudio}" />
+		<ui:param name="reRender" value="selvar" />
+		<ui:param name="bean" value="#{yEL.GetELMethodCall(action.getComponentName(),'setVariable','variable')}" />			
+		<ui:param name="treeHeight" value="100%" />					
+	</ui:include>
+
+</a4j:outputPanel>

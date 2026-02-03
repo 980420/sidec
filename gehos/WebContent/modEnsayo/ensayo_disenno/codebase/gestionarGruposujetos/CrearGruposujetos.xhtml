@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+<ui:composition>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+		type='text/css' />
+
+	<script type="text/javascript">
+  		function makeVisible()
+  		{
+  			document.getElementById('resultado').style.display='';
+  		}
+
+  		var curDt = new Date();
+		 var calDt=null;
+
+		 function previousDate(date){
+			calDt = date;
+		 }
+
+		 function disablementFunction(day){
+			 if(calDt == null){
+				 if (curDt.getTime() - day.date.getTime() &#62; 0) return true; else return false; 
+			 }
+			 else {
+				 if (calDt.getTime() - day.date.getTime() &#62;= 0 ) return true; else return false;
+			 }					 
+		 }
+
+		 function disabledClassesProv(day){
+			 if(calDt == null){
+				 if (curDt.getTime() - day.date.getTime() &#62; 0) return ''; else return 'noavailable'; 
+			 }
+			 else {
+				 if (calDt.getTime() - day.date.getTime() &#62;= 0) return ''; else return 'noavailable';
+			 }				
+		 }
+		 
+		 function resetSecondDate(first,second) {
+			 var firstDate = first.getSelectedDate().getTime();
+			 var secondDate = second.getSelectedDate().getTime();
+
+			 if(firstDate - secondDate &#62; 0)
+				 second.resetSelectedDate();
+		 }
+
+		 function disablementFunctionPreviousEx(day){
+			if(calDt == null){
+				if (curDt.getTime() - day.date.getTime() &#62; 0) return true; else return false;
+			}
+			if ((curDt.getTime() - day.date.getTime() &#62; 0) &#38;&#38; (calDt.getTime() - day.date.getTime() &#60;= 0)){
+				return true;
+			}
+			else 
+				return false;
+		  }
+
+		function disabledClassesProvPreviousEx(day){
+			if(calDt == null){
+				if (curDt.getTime() - day.date.getTime() &#60; 0)
+					return 'noavailable';
+				else 
+					return '';
+			}
+			if ((curDt.getTime() - day.date.getTime() &#60; 0) || (calDt.getTime() - day.date.getTime() &#62; 0))
+				return 'noavailable';
+			else 
+				return '';
+		}
+		//<![CDATA[
+	    function hideErrorSpans() {
+	        var errorSpans = document.getElementsByClassName('errorSpan');
+	        for(var i = 0; i < errorSpans.length; i++) {
+	            errorSpans[i].style.display = 'none';
+	        }
+	    }
+	//]]>
+	  //<![CDATA[
+	    function validarCamposVacios() {
+	        var campos = ['addGruposujetos:nombregrupo','addGruposujetos:descripcion']; // Añade aquí los IDs de todos los campos de entrada que quieres verificar
+	        for(var i = 0; i < campos.length; i++) {
+	            var input = document.getElementById(campos[i]);
+	            if(input.value == '') {
+	                input.style.border = '1px solid red';
+	            } else {
+	                input.style.border = '';
+	            }
+	        }
+	    }
+	 //]]>
+  	</script>
+	<rich:messages globalOnly="true" styleClass="message"
+		id="globalMessage" ajaxRendered="true" />
+	<s:validateAll>
+		<h:form id="addGruposujetos">
+
+			<a4j:outputPanel ajaxRendered="true" id="errorOutputPanel">
+				<s:div style="height:30px;"
+					rendered="#{facesMessages.getCurrentMessagesForControl('addGruposujetos').size() > 0 }">
+					<div class="custom-error">
+						<rich:message for="addGruposujetos"></rich:message>
+					</div>
+				</s:div>
+			</a4j:outputPanel>
+			<rich:panel style="margin-top:5px;">
+				<f:facet name="header">
+					<h:outputLabel value="#{messages.tituloPanel}" />
+				</f:facet>
+				<table cellpadding='0' cellspacing='0' border='0'>
+					<tr>
+						<td><h:outputLabel styleClass='normalText'
+								value='#{messages.nombre}:' /><span class="errorSpan" style="color:red;">*</span> <rich:message showDetail='false'
+								tooltip='true' style='color:red; font-size:10px;'
+								for='nombregrupo'>
+								<f:facet name='errorMarker'>
+									<h:outputLabel value='*' style='cursor:pointer'
+										title="#{facesMessages.getCurrentMessagesForControl('nombregrupo').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message> <br /> <h:inputText
+								value='#{adicionarGruposujetos.gruposujetos.nombreGrupo}'
+								id='nombregrupo' required='true'
+								validator="#{validations_ensayo.caracteresEsp255}" 
+								onblur="if(this.value == '') {this.style.border = '1px solid red';} else {this.style.border = '';}"/></td>
+						<td width='25px' />
+						<td><h:outputLabel styleClass='normalText'
+								value='#{messages.fechacreacion}' /> <rich:message
+								showDetail='false' tooltip='true'
+								style='color:red; font-size:10px;' for='fechacreacion'>
+								<f:facet name='errorMarker'>
+									<h:outputLabel value='*' style='cursor:pointer'
+										title="#{facesMessages.getCurrentMessagesForControl('fechacreacion').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message> <br /> <rich:calendar datePattern='dd/MM/yyyy'
+								value='#{adicionarGruposujetos.fechaCreacionGS}' required="true"
+								id='fechacreacion' isDayEnabled="disablementFunctionPreviousEx"
+								dayStyleClass="disabledClassesProvPreviousEx" /></td>
+					</tr>
+					<tr>
+						<td><rich:spacer height='8px' /></td>
+					</tr>
+					<tr>
+						<td colspan='5'><h:outputLabel styleClass='normalText'
+								value='#{messages.descripcion}:' /><span class="errorSpan" style="color:red;">*</span><rich:message
+								showDetail='false' tooltip='true'
+								style='color:red; font-size:10px;' for='descripcion'>
+								<f:facet name='errorMarker'>
+									<h:outputLabel value='*' style='cursor:pointer'
+										title="#{facesMessages.getCurrentMessagesForControl('descripcion').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message> <br /> <h:inputTextarea style='width:100%'
+								value='#{adicionarGruposujetos.gruposujetos.descripcion}'
+								rendered="true" id='descripcion' required='true'
+								validator="#{validations_ensayo.textnumber500}" 
+								onblur="if(this.value == '') {this.style.border = '1px solid red';} else {this.style.border = '';}"/></td>
+					</tr>
+				</table>
+			</rich:panel>
+
+			<s:div>
+				<div align="right">
+					<rich:spacer width="100%" height="8px" />
+				</div>
+			</s:div>
+
+			<s:div>
+				<div align="right">
+					<a4j:commandButton style="margin:0px" value="#{messages.btn_aceptar_ens}"
+						action="#{adicionarGruposujetos.adicionar()}"
+						onclick="hideErrorSpans();validarCamposVacios();" />
+					<rich:spacer width="8px" />
+					<h:commandButton value="#{messages.btn_cancelar_ens}" immediate="true"
+						action="cancelar" styleClass="botton" />
+				</div>
+			</s:div>
+		</h:form>
+	</s:validateAll>
+</ui:composition>
+
+</html>

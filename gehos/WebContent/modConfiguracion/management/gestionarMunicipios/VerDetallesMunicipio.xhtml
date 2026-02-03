@@ -1,0 +1,83 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- CSS -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/style/stylesheet.css"
+			rel="stylesheet" type="text/css" />
+
+		<!-- Se muestra cuando no vienes sel listar -->
+		<s:div
+			rendered="#{not municipioVerDetallesControlador.from.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.titulo1}')</script>
+		</s:div>
+
+		<!-- Se muestra cuando vienes sel listar -->
+		<s:div
+			rendered="#{municipioVerDetallesControlador.from.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+		</s:div>
+
+		<h:form id="form" enctype="multipart/form-data">
+			<rich:messages id="message" styleClass="message" ajaxRendered="true"
+				for="message" />
+			<rich:panel>
+				<f:facet name="header">#{messages.datos}</f:facet>
+				<table cellpadding="0px" cellspacing="0px"
+					class="tabla lh-cont lv-text-l lh-conb lv-text-r">
+					<tr>
+						<td class="lvp-bet-text"><h:outputLabel
+							value="#{messages.codigo}" /></td>
+						<td class="lvg-bet-text"><h:outputText id="codigo"
+							value="#{municipioVerDetallesControlador.municipio.codigo}"
+							styleClass="dataText" /></td>
+						<td class="lvp-bet-text"><h:outputLabel
+							value="#{messages.nombre}" /></td>
+						<td class="lvg-bet-text"><h:outputText id="valor"
+							value="#{municipioVerDetallesControlador.municipio.valor}"
+							styleClass="dataText" /></td>
+						<td class="lvp-bet-text"><h:outputLabel
+							value="#{messages.nacion}" /></td>
+						<td><h:outputText id="nacionalidad"
+							value="#{municipioVerDetallesControlador.municipio.estado.valor}"
+							styleClass="dataText" /></td>
+					</tr>
+				</table>
+			</rich:panel>
+
+			<div align="right">
+			<table cellpadding="0" cellspacing="0" class="tabla">
+				<tr>
+					<td class="lv-bet-botton"><h:commandButton
+						value="#{messages.modificar}"
+						action="#{municipioModificarControlador.setId(municipioVerDetallesControlador.municipio.id)}"
+						rendered="#{not municipioVerDetallesControlador.from.equals('listar')}"
+						styleClass="botton" propagation="end" /></td>
+					<td class="lv-bet-botton"><a4j:commandButton
+						value="#{messages.eliminar}"
+						onclick="Richfaces.showModalPanel('eliminar_municipio')"
+						rendered="#{not municipioVerDetallesControlador.from.equals('listar')}"
+						styleClass="botton" /></td>
+					<td><h:commandButton value="#{messages.salir}" action="salir"
+						styleClass="botton" propagation="end" /></td>
+				</tr>
+			</table>
+			</div>
+		</h:form>
+
+		<ui:include
+			src="/modConfiguracion/management/gestionarMunicipios/modalspanel/ConfirmarEliminarMunicipioVerDetalles.xhtml" />
+
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+	
+	<param name="idVariable" value="#{crearNota.idVariable}" />
+	<param name="posicion" value="#{crearNota.posicion}"/>
+	<param name="idcrd" value="#{crearNota.idHoja}" />
+	<param name="idMS" value="#{crearNota.idMS}" />
+	<param name="from" value="#{crearNota.from}"/>
+	<param name="idSujeto" value="#{crearNota.idSujeto}" />
+
+	<action if="#{!crearNota.inicializado}" execute="#{crearNota.inicializarNota()}" />
+
+	<navigation from-action="#{crearNota.crear()}">		
+		<rule if-outcome="access">
+			<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCRD/gestionarHoja.xhtml">
+				<param name="idMS" value="#{crearNota.idMS}" />
+				<param name="idSujeto" value="#{crearNota.idSujeto}" />
+				<param name="from" value="#{crearNota.from}"/>
+				<param name="idcrd" value="#{crearNota.idHoja}" />
+			</redirect>
+		</rule>
+	</navigation>
+
+	<navigation from-action="#{crearNota.cancelar()}">
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCRD/gestionarHoja.xhtml">
+			<param name="idMS" value="#{crearNota.idMS}" />
+			<param name="idSujeto" value="#{crearNota.idSujeto}" />
+			<param name="from" value="#{crearNota.from}"/>
+			<param name="idcrd" value="#{crearNota.idHoja}" />
+		</redirect>
+	</navigation>
+
+</page>

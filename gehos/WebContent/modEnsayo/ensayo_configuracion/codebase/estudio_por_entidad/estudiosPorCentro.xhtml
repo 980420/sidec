@@ -1,0 +1,496 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle("#{messages.msg_titulo_ensClin}")</script>
+
+	<rich:messages styleClass="message" globalOnly="true">
+
+	</rich:messages>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+		type='text/css' />
+
+	<h:form id="mainForm">
+
+		<a:outputPanel ajaxRendered="true" id="errorOutputPanel">
+			<s:div style="height:30px;width:100%"
+				rendered="#{facesMessages.getCurrentMessagesForControl('error').size() > 0 }">
+				<div class="custom-error">
+					<rich:message for="error"></rich:message>
+				</div>
+			</s:div>
+		</a:outputPanel>
+
+		<a:keepAlive beanName="centroEstudioController" />
+
+		<table
+			width="100%"
+			cellpadding="5px"
+			cellspacing="0px"
+			style="vertical-align: top;">
+			<tr>
+				<td style="vertical-align: top; width: 45%;">
+				
+					<rich:panel	id="treePanel">
+
+						<f:facet name="header">
+							<a:status
+								stopText="#{messages.msg_selectEstudio_ensClin}"
+								startText="#{messages.msg_actualizando_ensClin}"
+								for="studioTreePanel"
+								id="studiosTreeStatus">
+							</a:status>
+						</f:facet>
+
+						<div style="border: 1px; position: relative; left: -1px; top: 2px;">
+
+							<a:region id="studioTreePanel">
+								<a:outputPanel ajaxRendered="true">
+
+									<s:div style="margin-left:2px;">
+										<h:panelGrid
+											columns="2"
+											cellpadding="0"
+											cellspacing="0">
+											<h:graphicImage
+												value="/resources/modConfiguracion/hospital-icon.png"
+												height="16" />
+											<a:commandLink
+												ajaxSingle="true"
+												immediate="true"
+												event="onclick"
+												reRender="errorOutputPanel,usersPanel,dataStudioPanel"
+												action="#{centroEstudioController.setSelectedItem(null)}"
+												value="#{messages.msg_estActivos_ensClin}"
+												style="margin-left:1px;"/>
+										</h:panelGrid>
+									</s:div>
+
+									<div style="position: relative; left: 1px;">
+
+										<rich:tree
+											changeExpandListener="#{centroEstudioController.OnNodeCollapseExpand}"
+											style="width:200px"
+											value="#{centroEstudioController.treeRootData}"
+											switchType="ajax"
+											treeNodeVar="treenode"
+											var="node"
+											nodeFace="#{node.toString()}"
+											id="studioTree">
+
+											<rich:treeNode
+												type="estudio"
+												icon="/resources/modConfiguracion/hospital-icon.png"
+												iconLeaf="/resources/modConfiguracion/hospital-icon.png">
+												<a:commandLink
+													value="#{node.value.nombre}"
+													ajaxSingle="true"
+													immediate="true"
+													event="onclick"
+													action="#{centroEstudioController.setSelectedItem(node)}"
+													reRender="errorOutputPanel,usersPanel,dataStudioPanel">
+												</a:commandLink>
+											</rich:treeNode>
+
+											<rich:treeNode
+												type="centro"
+												icon="#{centroEstudioController.entidadIcon(node)}"
+												iconLeaf="#{centroEstudioController.entidadIcon(node)}">
+												<a:commandLink
+													value="#{node.value.entidad.nombre}"
+													ajaxSingle="true"
+													immediate="true"
+													event="onclick"
+													action="#{centroEstudioController.setEstudioCentroSelected(node.value.id,true)}"
+													reRender="errorOutputPanel,usersPanel,dataStudioPanel">
+												</a:commandLink>
+											</rich:treeNode>
+
+										</rich:tree>
+									</div>
+								</a:outputPanel>
+							</a:region>
+						</div>
+					</rich:panel>			
+				
+				</td>
+				
+				
+				<td style="vertical-align: top; width: 55%;">
+					<table
+						width="100%"
+						cellspacing="0px"
+						style="vertical-align: top;">
+						<tr>
+							<td>
+							
+								<a:region>
+										<a:outputPanel ajaxRendered="true">
+											<rich:panel id="studioPanel" rendered="#{centroEstudioController.selectedItem.toString() == 'estudio'}">
+											
+												<f:facet name="header">												
+													<s:div id="headerStudioPanel">
+														<a:status
+														id="statusHeaderStudioPanel"
+														onstart="document.body.style.cursor='wait'; Richfaces.showModalPanel('ajaxLoadingModalBox',{left:1, top:-15});"
+														onstop="document.body.style.cursor='default'; Richfaces.hideModalPanel('ajaxLoadingModalBox');">
+														</a:status>
+												
+														<s:div rendered="#{centroEstudioController.selectedItem == null}">
+															#{messages.msg_selectEstudio_ensClin}											
+														</s:div>
+												
+														<s:div rendered="#{centroEstudioController.selectedItem.toString() == 'estudio'}">
+															<h:panelGrid columns="3" cellpadding="0" cellspacing="0">
+																<rich:spacer width="3" />
+																<h:outputLabel value="#{centroEstudioController.selectedItem.value.nombre}" />
+															</h:panelGrid>
+														</s:div>
+												
+													</s:div>
+												</f:facet>
+												
+												<s:div id="dataStudioPanel">
+													<s:div id="infoDataStudioPanel" style="display: inline;">
+												
+														<s:div rendered="#{centroEstudioController.selectedItem == null}">
+															#{messages.msg_notData_ensClin}											
+														</s:div>
+												
+														<s:div rendered="#{centroEstudioController.selectedItem.toString() == 'estudio'}">
+															<div align="right">
+																<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+																	<h:graphicImage height="12" width="12"	value="/resources/icons/default/acciones/adicionar.png"	style="margin: 2px 2px 2px 2px;" />
+																	<h:outputLink value="#"	style="margin-left: 0px; margin-bottom: 4px; margin-top: 2px;">
+																		#{messages.btn_addEnt_ensClin}
+																		<a:support event="onclick" limitToList="true" ajaxSingle="true"	reRender="agregar_centro_panel" oncomplete="javascript:Richfaces.showModalPanel('agregar_centro')" />
+																	</h:outputLink>
+																</h:panelGrid>
+															</div>
+														</s:div>
+												
+														<s:div rendered="#{centroEstudioController.selectedItem.toString() == 'estudio'}" id="entidadesTable">
+												
+															<h:dataTable
+															value="#{centroEstudioController.EstudioEntidad()}"
+															var="centro"
+															border="1"
+															columnClasses="strech, nostrech"
+															style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+															cellspacing="0"
+															cellpadding="0"
+															rowClasses="dr-table-firstrow2">
+												
+																<f:facet name="header">
+																	<div style="background-color: ##{theme.headercolor}; cursor: default;">#{messages.msg_Centro_ensClin}</div>
+																</f:facet>
+												
+																<h:column rendered="#{centroEstudioController.EstudioEntidad().size() != 0}">
+																	<f:facet name="header">
+																		<div style="background-color: ##{theme.headercolor}; cursor: default;">
+																			#{messages.msg_nombre_ensClin}
+																		</div>
+																	</f:facet>
+																	
+																	<h:panelGrid columns="4" cellpadding="0" cellspacing="0">
+																	
+																	<h:graphicImage value="#{centroEstudioController.entidadIcon(centro)}"	height="16"	style="position: relative;  margin:2px 2px 2px 2px ;" rendered="true" />
+												
+												
+																	<s:div> 
+																		<a:commandLink rendered="true" action="#{centroEstudioController.setEstudioCentroSelected(centro.id,false)}" reRender="dataStudioPanel, usersPanel">
+																			#{centro.entidad.nombre}		
+																		</a:commandLink>
+																	</s:div>
+												
+																	</h:panelGrid>
+																</h:column>
+																
+																
+																
+																<h:column
+																rendered="#{centroEstudioController.EstudioEntidad().size() != 0}">
+																	<f:facet name="header">
+																		<div style="background-color: ##{theme.headercolor};">
+																			<span style="margin-left: 2px; margin-right: 2px;">#{messages.msg_eliminar_ensClin}</span>
+																		</div>
+																	</f:facet>
+												
+																	<div align="center"	style="cursor: default;">
+																		<a:commandLink rendered="true" action="#{centroEstudioController.setIdEntidadEstudioToRemove(centro.id)}" oncomplete="Richfaces.showModalPanel('eliminar_centro_panel')">
+																			<h:graphicImage style="border:0px; cursor: pointer" title="#{messages.msg_eliminar_ensClin}" rendered="true" url="/resources/icons/default/acciones/eliminar.png">
+																			</h:graphicImage>
+																		</a:commandLink>
+																	</div>
+																</h:column>
+															</h:dataTable>
+												
+												
+												
+															<s:div style="border-left: 1px solid #d0d7e5;border-right: 1px solid #d0d7e5; border-bottom: 1px solid #d0d7e5;" rendered="#{centroEstudioController.EstudioEntidad().size() == 0}">
+																<rich:spacer height="10" style="display:block" />
+																<h:outputLabel value="#{messages.msg_notData_ensClin}" style="margin-left:7px;" />
+																<rich:spacer height="5"	style="display:block" />
+															</s:div>
+												
+														</s:div>
+												
+													</s:div>
+												</s:div>
+
+											</rich:panel>										
+										</a:outputPanel>
+								</a:region>
+							
+							
+							</td>
+							
+						</tr>
+						
+						
+						<tr>
+							<td>
+								<a:region>
+									<a:outputPanel ajaxRendered="true">
+										<rich:panel id="usersPanel"
+											rendered="#{centroEstudioController.estudioCentroSelected != -11}">
+
+											<f:facet name="header">
+												<s:div id="userspanelheader">
+													
+													<a:status
+														id="usersStatus01"
+														onstart="document.body.style.cursor='wait'; Richfaces.showModalPanel('ajaxLoadingModalBox',{left:1, top:-15});"
+														onstop="document.body.style.cursor='default'; Richfaces.hideModalPanel('ajaxLoadingModalBox');">
+													</a:status>
+												
+													<s:div
+														rendered="#{centroEstudioController.estudioCentroSelected  != -11}">
+														<h:panelGrid
+															columns="3"
+															cellpadding="0"
+															cellspacing="0">
+															<rich:spacer width="3" />
+															<h:outputLabel
+																value="#{messages.msg_usuarioCentro_ensClin} #{centroEstudioController.NombreEstudioSelected()}" />
+														</h:panelGrid>
+													</s:div>
+
+												</s:div>
+											</f:facet>
+
+
+											<s:div	rendered="#{centroEstudioController.estudioCentroSelected  != -11}" id="usersAdd">
+
+												<table
+													cellpadding="0"
+													cellspacing="0"
+													border="0"
+													style="margin: 5px;">
+													<tr>
+														<td>
+															<div style="vertical-align: middle;">
+																#{messages.msg_rol_ensClin}<br />
+																<rich:comboBox
+																	suggestionValues="#{centroEstudioController.allRoles()}"
+																	defaultLabel="#{messages.lbl_select_ensClin}"
+																	selectFirstOnUpdate="true"																	
+																	style="width: 130px;"
+																	id="roles" 
+																	value="#{centroEstudioController.selectedRole}">
+																	<a:support event="onselect" limitToList="true"  
+																		ajaxSingle="true" reRender="users" />
+																</rich:comboBox>
+															</div>
+														</td>
+														<td><rich:spacer width="25"></rich:spacer></td>
+														<td>
+															<div style="vertical-align: middle;">
+																#{messages.msg_usuario_ensClin}<br />
+																<rich:comboBox
+																	suggestionValues="#{centroEstudioController.allUsers()}"
+																	defaultLabel="#{messages.lbl_select_ensClin}"
+																	selectFirstOnUpdate="true"
+																	id="users" 
+																	style="width: 130px;"
+																	value="#{centroEstudioController.selectedUser}">
+																
+																</rich:comboBox>
+															</div>
+														</td>
+														<td><rich:spacer width="25"></rich:spacer></td>
+														<td valign="bottom"><h:commandButton
+																style="margin-left:0px;"
+																action="#{centroEstudioController.provideAccessToUser()}"
+																value="#{messages.btn_permitir_ensClin}">
+															</h:commandButton>
+															</td>
+
+													</tr>
+												</table>
+
+											</s:div>
+
+												<s:div rendered="#{centroEstudioController.estudioCentroSelected  != -11}"
+													id="usersTable">
+
+													<h:dataTable
+														value="#{centroEstudioController.usuariosEstudio()}"
+														var="users"
+														border="1"
+														columnClasses="strech, nostrech"
+														style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+														cellspacing="0"
+														cellpadding="0"
+														rowClasses="dr-table-firstrow2">
+
+														<f:facet name="header">
+															<div style="background-color: ##{theme.headercolor}; cursor: default;">#{messages.msg_usuarioCentro_ensClin}</div>
+														</f:facet>
+														
+														<h:column
+															rendered="#{centroEstudioController.usuariosEstudio().size() != 0}">
+															<f:facet name="header">
+																<div style="background-color: ##{theme.headercolor}; cursor: default;">#{messages.msg_usuario_ensClin}</div>
+															</f:facet>
+															<h:panelGrid
+																columns="4"
+																cellpadding="0"
+																cellspacing="0">
+																<s:div>																		
+														   				 #{users.usuario.username}	
+																</s:div>
+
+															</h:panelGrid>
+														</h:column>
+
+														<h:column
+															rendered="#{centroEstudioController.usuariosEstudio().size() != 0}">
+															<f:facet name="header">
+																<div style="background-color: ##{theme.headercolor}; cursor: default;">#{messages.msg_nombre_ensClin}</div>
+															</f:facet>
+															<h:panelGrid
+																columns="4"
+																cellpadding="0"
+																cellspacing="0">
+																<s:div>																		
+														   				 #{users.usuario.nombre} #{users.usuario.primerApellido} #{users.usuario.segundoApellido}		
+																</s:div>
+
+															</h:panelGrid>
+														</h:column>
+														
+														
+														<h:column
+															rendered="#{centroEstudioController.usuariosEstudio().size() != 0}">
+															<f:facet name="header">
+																<div style="background-color: ##{theme.headercolor}; cursor: default;">#{messages.msg_rol_ensClin}</div>
+															</f:facet>
+															<h:panelGrid
+																columns="4"
+																cellpadding="0"
+																cellspacing="0">
+																<s:div>																		
+														   				 #{users.role.name}		
+																</s:div>
+
+															</h:panelGrid>
+														</h:column>
+														
+														
+														<h:column
+																rendered="#{centroEstudioController.usuariosEstudio().size() != 0}">
+																<f:facet name="header">
+																	<div style="background-color: ##{theme.headercolor};">
+																		<span style="margin-left: 2px; margin-right: 2px;">#{messages.msg_eliminar_ensClin}</span>
+																	</div>
+																</f:facet>
+
+																<div
+																	align="center"
+																	style="cursor: default;">
+																	<a:commandLink 
+																		action="#{centroEstudioController.setIdUsuarioToRemove(users.id)}" 
+																		rendered="true"
+																		oncomplete="Richfaces.showModalPanel('eliminar_user_panel')">
+																		<h:graphicImage
+																			style="border:0px; cursor: pointer"
+																			title="#{messages.msg_eliminar_ensClin}"
+																			rendered="true"
+																			url="/resources/icons/default/acciones/eliminar.png">
+																		</h:graphicImage>
+																	</a:commandLink>
+																</div>
+
+														</h:column>
+														
+
+													</h:dataTable>
+
+
+
+													<s:div
+														style="border-left: 1px solid #d0d7e5;
+														  border-right: 1px solid #d0d7e5;
+														  border-bottom: 1px solid #d0d7e5;"
+														rendered="#{centroEstudioController.usuariosEstudio().size() == 0}">
+														<rich:spacer
+															height="10"
+															style="display:block" />
+														<h:outputLabel
+															value="#{messages.msg_notData_ensClin}"
+															style="margin-left:7px;" />
+														<rich:spacer
+															height="5"
+															style="display:block" />
+													</s:div>
+
+												</s:div>
+										</rich:panel>
+									</a:outputPanel>
+
+								</a:region></td>
+
+
+						</tr>
+						
+					</table>
+				</td>
+			</tr>
+		</table>
+
+
+
+
+
+	</h:form>
+
+	<s:div>
+		<ui:include src="/modEnsayo/ensayo_configuracion/codebase/estudio_por_entidad/modalpanels/agregar_centroEstudiosPorCentro.xhtml">
+		</ui:include>
+		
+		<ui:include src="/modEnsayo/ensayo_configuracion/codebase/estudio_por_entidad/modalpanels/confirmar_eliminarEstudiosPorCentro.xhtml"/>
+		<ui:include src="/modEnsayo/ensayo_configuracion/codebase/estudio_por_entidad/modalpanels/confirmar_eliminarUsuarioPorCentro.xhtml">
+		</ui:include>
+	</s:div>
+
+
+
+	<rich:modalPanel id="ajaxLoadingModalBox" minHeight="10" minWidth="10"
+		height="10" width="10" zindex="2000">
+		<s:div rendered="false">
+			<img id="favsloadingdiv"
+				src="#{facesContext.externalContext.requestContextPath}/resources/icons/default/acciones/loading_small.gif"
+				style="position: absolute; top: 0px; left: 0px;" />
+		</s:div>
+	</rich:modalPanel>
+
+</s:div>

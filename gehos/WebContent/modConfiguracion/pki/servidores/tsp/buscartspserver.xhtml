@@ -1,0 +1,253 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/pkiStyles/pkistyles.css"
+			rel="stylesheet" type="text/css" />
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+		<h:form>
+			<a4j:outputPanel id="panel_busqueda">
+				<rich:simpleTogglePanel switchType="client"
+					bodyClass="rich-stglpanel-body-custom"
+					opened="#{buscarServidorTSPControlador.open}"
+					action="#{buscarServidorTSPControlador.abrirCerrar()}"
+					rendered="#{!buscarServidorTSPControlador.avanzada}">
+					<a4j:support event="oncollapse" ajaxSingle="true"
+						action="#{buscarServidorTSPControlador.abrirCerrar()}"
+						reRender="panel_busqueda" />
+					<a4j:support event="onexpand" ajaxSingle="true"
+						action="#{buscarServidorTSPControlador.abrirCerrar()}"
+						reRender="panel_busqueda" />
+					<f:facet name="header">#{messages.criterios}</f:facet>
+
+
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr style="vertical-align: top;">
+							<td>#{messages.url}:<br />
+							<h:inputText id="url1" tabindex="1"
+								value="#{buscarServidorTSPControlador.url}" style="FONT-FAMILY: 'Bitstream Charter'; width:148px;" /></td>
+							
+							<td><rich:spacer styleClass="h-spacer-between-2c" /></td>
+							<td>#{messages.activo}: <br />
+							<rich:comboBox id="activo"
+								suggestionValues="#{buscarServidorTSPControlador.activoList()}"
+								defaultLabel="#{messages.seleccione}" enableManualInput="false"
+								style=" width : 150px;"
+								value="#{buscarServidorTSPControlador.act}">
+
+							</rich:comboBox></td>
+							<td><rich:spacer styleClass="h-spacer-between-2c" /></td>
+							
+							<td style="vertical-align: bottom;"><h:commandButton id="search" value="#{messages.buscar}"
+										tabindex="3"
+										action="#{buscarServidorTSPControlador.buscar(false)}"
+										style="margin-left: 0px; margin-bottom:  0px; margin-top: 0px;">
+										<s:defaultAction />
+									</h:commandButton> <s:button view="/modCommons/modHome/home.gehos"
+										propagation="end" value="#{messages.cancelar}"
+										style="margin-right:0px;margin-bottom: 0px;">
+										<f:param name="idFuncionalidad"
+											value="#{activeModule.activeModule.id}" />
+										<f:param name="idancestors"
+											value="#{activeModule.activeModule.id}a" />
+										<f:param name="moduleName"
+											value="#{activeModule.activeModuleName}" />
+									</s:button></td>
+						</tr>
+						
+						
+
+
+					</table>
+
+
+
+				</rich:simpleTogglePanel>
+				
+			</a4j:outputPanel>
+
+		</h:form>
+		
+		<h:form>
+			<rich:spacer height="8px" />
+			<div align="right">
+			<table cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td><h:graphicImage title="#{messages.Adicionar}"
+						style="margin-right: 1px" height="12" width="12"
+						value="/resources/icons/default/acciones/adicionar.png" /></td>
+					<td><h:commandLink action="creatsp"
+						value="#{messages.adicionar}" style="cursor: pointer"
+						title="#{messages.adicionar}">
+
+					</h:commandLink></td>
+
+
+				</tr>
+			</table>
+			</div>
+		</h:form>
+		<h:form>
+			<a4j:outputPanel id="tablas_id">
+
+				<rich:panel
+					rendered="#{empty buscarServidorTSPControlador.resultList and (!buscarServidorTSPControlador.url.equals('') or 
+					!buscarServidorTSPControlador.act.equals(''))}">
+					<f:facet name="header">#{messages.listado}</f:facet>
+					<div class="results" id="userList"><rich:spacer height="22" />
+					<rich:spacer width="7px" /> <h:outputText
+						value="#{messages.info1}" /></div>
+					<rich:spacer height="5px" />
+				</rich:panel>
+				<rich:panel
+					rendered="#{empty buscarServidorTSPControlador.resultList and buscarServidorTSPControlador.url.equals('') and 
+					buscarServidorTSPControlador.act.equals('')}">
+					<f:facet name="header">	#{messages.listado} </f:facet>
+					<div class="results" id="camasList"><rich:spacer height="22" />
+					<rich:spacer width="8px" /> <h:outputText
+						value="#{messages.info2}" /></div>
+					<rich:spacer height="5px" />
+				</rich:panel>
+				<s:div style="margin-left:1px;margin-top:1px"
+					rendered="#{not empty buscarServidorTSPControlador.resultList}">
+					<rich:dataTable id="serverList_Table" style="width: 100%;"
+						var="server" value="#{buscarServidorTSPControlador.resultList}"
+						columnsWidth="80%, 20%, 0*, 0*">
+						<f:facet name="header">
+							#{messages.listado}
+					</f:facet>
+
+						<rich:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.url}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not buscarServidorTSPControlador.order.equals('server.url asc') and not buscarServidorTSPControlador.order.equals('server.url desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="dircontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{buscarServidorTSPControlador.order.equals('server.url asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="dircontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{buscarServidorTSPControlador.order.equals('server.url desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="dircontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+	            	#{server.url}
+	        	</rich:column>
+
+						<rich:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.activo}</s:div>
+
+								</h:panelGrid>
+							</f:facet>
+							<s:div rendered="#{server.activo}">
+								
+									#{messages.eliminar4}
+							</s:div>
+							<s:div rendered="#{!server.activo}">
+								
+									#{messages.eliminar5}
+							</s:div>
+						</rich:column>
+						<rich:column>
+							<div align="center"><s:link
+								view="/modConfiguracion/pki/servidores/tsp/verdetallestspserver.xhtml">
+								<h:graphicImage title="#{messages.ver}" style="border: 0px;"
+									value="/resources/icons/default/acciones/ver.png" />
+								<f:param name="id" value="#{server.id}" />
+								<f:param name="from" value="listatsp" />
+
+							</s:link></div>
+						</rich:column>
+						<rich:column>
+							<div align="center"><h:commandLink
+								action="#{modificarServidorTSPControlador.setId(server.id)}">
+								<h:graphicImage
+									value="/resources/icons/default/acciones/modificar.png"
+									title="#{messages.modificar}" style="border: 0px;" />
+
+							</h:commandLink></div>
+						</rich:column>
+						<rich:column>
+							<div align="center"><a4j:commandLink
+								oncomplete="Richfaces.showModalPanel('panelEliminarServer')"
+								action="#{buscarServidorTSPControlador.seleccionar(server.id)}">
+
+								<h:graphicImage title="#{messages.eliminar}"
+									style="border: 0px; cursor:pointer;"
+									value="/resources/icons/default/acciones/eliminar.png">
+								</h:graphicImage>
+							</a4j:commandLink></div>
+						</rich:column>
+
+					</rich:dataTable>
+				</s:div>
+
+				<rich:spacer height="11px" />
+				<ui:include src="/modEnsayo/codebase/plantillas/paginado_tabla_inferior_generico.xhtml/" >
+					<ui:param name="vzPaginado" value="#{buscarServidorTSPControlador.resultCount>10}"/>
+					<ui:param name="nomControladorList" value="#{buscarServidorTSPControlador}" />
+					<ui:param name="idListado" value="tablas_id" />
+					
+				</ui:include>				
+			</a4j:outputPanel>
+		</h:form>
+
+		<h:form>
+			<rich:contextMenu attached="false" id="dircontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.lbl_ordenDesc_modConfig}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{buscarServidorTSPControlador.setOrder('server.url desc')}"
+					reRender="serverList_Table">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.lbl_ordenAsc_modConfig}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{buscarServidorTSPControlador.setOrder('server.url asc')}"
+					reRender="serverList_Table">
+				</rich:menuItem>
+			</rich:contextMenu>
+
+		</h:form>
+
+		<ui:include
+			src="/modConfiguracion/pki/servidores/tsp/modalspanel/confirmareliminarservidortsp.xhtml" />
+
+
+	</ui:define>
+</ui:composition>

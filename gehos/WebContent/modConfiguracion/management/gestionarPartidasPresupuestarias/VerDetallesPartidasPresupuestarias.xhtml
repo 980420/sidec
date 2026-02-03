@@ -1,0 +1,114 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+		<h:form id="formPartidaPresupuestariaVerDetalles" styleClass="create"
+			enctype="multipart/form-data">
+			<a4j:outputPanel ajaxRendered="true">
+				<rich:messages styleClass="message" ajaxRendered="true" for="btnSi" />
+			</a4j:outputPanel>
+
+			<rich:panel styleClass="whitespace">
+				<f:facet name="header">#{messages.datos}</f:facet>
+
+				<table cellpadding="0px" cellspacing="0px" border="0px">
+					<tr>
+						<td style="height: 13px;" colspan="6"></td>
+					</tr>
+					<tr style="vertical-align: top;">
+						<td><rich:spacer width="7px" /></td>
+						<td><h:outputLabel value="#{messages.cantidad}"></h:outputLabel></td>
+						<td><rich:spacer width="9px" /></td>
+						<td><h:outputText
+							value="#{partidaPresupuestariaVerDetallesControlador.partidaPresupuestaria.cantidad}"
+							styleClass="dataText" style="width:150px;" /></td>
+						<td><rich:spacer width="25px" /></td>
+						<td><h:outputLabel value="#{messages.entidadOrganizacional}"></h:outputLabel></td>
+						<td><rich:spacer width="9px" /></td>
+						<td><h:outputText
+							value="#{partidaPresupuestariaVerDetallesControlador.partidaPresupuestaria.entidadOrganizacional.valor}"
+							styleClass="dataText" style="width:150px;" /></td>
+						<td><rich:spacer width="25px" /></td>
+						<td><h:outputLabel value="#{messages.departamentoClinico}"></h:outputLabel></td>
+						<td><rich:spacer width="9px" /></td>
+						<td><h:outputText
+							value="#{partidaPresupuestariaVerDetallesControlador.partidaPresupuestaria.departamento.nombre}"
+							rendered="#{!partidaPresupuestariaVerDetallesControlador.partidaPresupuestaria.departamento.nombre.equals('') and partidaPresupuestariaVerDetallesControlador.partidaPresupuestaria.departamento != null}"
+							styleClass="dataText" style="width:150px;" /> <h:outputText
+							rendered="#{partidaPresupuestariaVerDetallesControlador.partidaPresupuestaria.departamento.nombre.equals('') || partidaPresupuestariaVerDetallesControlador.partidaPresupuestaria.departamento == null}"
+							value="-" styleClass="dataText" style="width:150px;" /></td>
+						<td><rich:spacer width="6px" /></td>
+					</tr>
+					<tr>
+						<td height="8px" />
+					</tr>
+					<tr>
+						<td width="6px" />
+						<td><h:outputLabel value="#{messages.servicio}" /></td>
+						<td><rich:spacer width="6px" /></td>
+						<td><h:outputText
+							value="#{partidaPresupuestariaVerDetallesControlador.partidaPresupuestaria.servicio.nombre}"
+							rendered="#{!partidaPresupuestariaVerDetallesControlador.partidaPresupuestaria.servicio.nombre.equals('') and partidaPresupuestariaVerDetallesControlador.partidaPresupuestaria.servicio != null}"
+							styleClass="dataText" style="width:150px;" /> <h:outputText
+							rendered="#{partidaPresupuestariaVerDetallesControlador.partidaPresupuestaria.servicio.nombre.equals('') || partidaPresupuestariaVerDetallesControlador.partidaPresupuestaria.servicio == null}"
+							value="-" styleClass="dataText" style="width:150px;" /></td>
+
+					</tr>
+
+
+				</table>
+				<rich:spacer height="7px" />
+			</rich:panel>
+
+
+
+
+			<s:div styleClass="actionButtons" style="text-align: right">
+
+				<div align="right">
+				<table cellpadding="0" cellspacing="0" border="0">
+					<tr>
+						<td><h:commandButton value="#{messages.modificar}"
+							tabindex="2"
+							style="margin-bottom: 0px; margin-right: 10px; margin-top: 8px"
+							action="modificar" /></td>
+						<td><a4j:commandButton id="btnEliminar" tabindex="1"
+							onclick="Richfaces.showModalPanel('eliminarPartidaPresupuestaria')"
+							value="#{messages.eliminar}"
+							style="margin-bottom: 0px; margin-right: 10px; margin-left: 0px; margin-top: 8px"
+							rendered="#{not partidaPresupuestariaVerDetallesControlador.from.equals('listar')}">
+						</a4j:commandButton></td>
+						<td><h:commandButton value="#{messages.salir}" tabindex="3"
+							style="margin-bottom: 0px; margin-right: 0px; margin-left: 0px;margin-top: 8px"
+							action="salir" /></td>
+					</tr>
+				</table>
+				</div>
+			</s:div>
+
+		</h:form>
+		<ui:include
+			src="/modConfiguracion/management/gestionarPartidasPresupuestarias/modalPanels/ConfirmarEliminarPartidasPresupuestariasVerDetalles.xhtml" />
+
+	</ui:define>
+
+</ui:composition>
+

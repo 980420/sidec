@@ -1,0 +1,180 @@
+<rich:modalPanel id="gestTipoEntidad" onhide="" autosized="true"
+	rendered="#{entidadSistemaCrearControlador.gestionarTipoEntidad || entidadSistemaModificarControlador.gestionarTipoEntidad}"	
+	resizeable="false" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
+	<f:facet name="header" id="panelEliminarHeader">
+		<a4j:outputPanel id="gestionarTitleTipoEntidad">
+			<h:outputText value="#{messages.titulo51}"
+				rendered="#{entidadSistemaCrearControlador.estadoFuncionalidad.equals('crear')}" />
+			<h:outputText value="#{messages.titulo52}"
+				rendered="#{entidadSistemaCrearControlador.estadoFuncionalidad.equals('modificar')}" />
+			<h:outputText value="#{messages.titulo53}"
+				rendered="#{entidadSistemaCrearControlador.estadoFuncionalidad.equals('ver')}" />
+		</a4j:outputPanel>
+
+	</f:facet>
+
+
+
+	<f:facet name="controls">
+		<h:form>
+			<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+				style="cursor:pointer; position:relative; top:2px; right:2px"
+				onclick="cerrarCrearTipoEntidad()">
+			</h:graphicImage>
+		</h:form>
+	</f:facet>
+
+	<a4j:outputPanel id="gestionarTipoEntidad">
+		<h:form id="formGestionarTipoEntidad">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td><rich:spacer width="6px" /></td>
+					<td><s:div id="crear"
+						rendered="#{entidadSistemaCrearControlador.estadoFuncionalidad.equals('crear')}">
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+							<tr>
+								<td style="height: 10px;" colspan="6"></td>
+							</tr>
+							<tr style="vertical-align: top;">
+								<td style="width: 8px;"></td>
+
+								<td>#{messages.tipoEntidad} <rich:message
+									for="tipoEstableciminetoValor" showDetail="false"
+									showSummary="false" tooltip="true">
+									<f:facet name="errorMarker">
+										<h:outputText
+											title="#{facesMessages.getCurrentMessagesForControl('tipoEstableciminetoValor').get(0).getDetail()}"
+											style="color : red" value="*" styleClass="nombre" />
+									</f:facet>
+								</rich:message> <br />
+								<h:inputText id="tipoEstableciminetoValor" required="true"
+									style=" width : 148px;"
+									validator="#{entidadSistemaCrearControlador.validarTipoEntidadNombreCrear}"
+									value="#{entidadSistemaCrearControlador.valor}" /></td>
+								<td style="width: 6px;"></td>
+							</tr>
+							<tr>
+								<td height="6px" />
+							</tr>
+							<tr>
+								<td width="6px" />
+								<td>
+								<div align="left"><a4j:commandButton
+									value="#{messages.aceptar}" id="buttonCrearTipoEntidad"
+									action="#{entidadSistemaCrearControlador.crear()}"
+									style="margin-bottom: 0px; margin-right: 6px; margin-left: 0px;margin-top: 0px;"
+									reRender="gestionarTipoEntidad,gestionarTitleTipoEntidad">
+								</a4j:commandButton> <input type="button" value="#{messages.cancelar}"
+									style="margin-left: 1px; margin-right: 0px; margin-bottom: 0px; margin-top: 0px;"
+									onclick="Richfaces.hideModalPanel('gestTipoEntidad')" />
+								</div>
+								</td>
+							</tr>
+						</table>
+						<rich:spacer height="6px" style="display: block"></rich:spacer>
+
+					</s:div> <s:div id="ver"
+						rendered="#{entidadSistemaCrearControlador.estadoFuncionalidad.equals('ver')}">
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+							<tr>
+								<td style="height: 10px;" colspan="6"></td>
+							</tr>
+							<tr style="vertical-align: top;">
+
+								<td>#{messages.tipoEntidad}</td>
+								<td style="width: 6px;"></td>
+								<td><h:outputText
+									value="#{entidadSistemaCrearControlador.valor}" /></td>
+							</tr>
+						</table>
+
+						<div align="left">
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+							<tr>
+								<td><a4j:commandButton value="#{messages.eliminar}"
+									action="#{entidadSistemaCrearControlador.eliminar()}"
+									oncomplete="javascript:Richfaces.hideModalPanel('gestTipoEntidad');"
+									style="margin-bottom: 0px; margin-right: 5px; margin-top: 7px; margin-left: 0px">
+								</a4j:commandButton></td>
+								<td><a4j:commandButton value="#{messages.modificar}"
+									action="#{entidadSistemaCrearControlador.setEstadoFuncionalidad('modificar')}"
+									style="margin-bottom: 0px; margin-left: 5px; margin-right: 5px; margin-top: 7px"
+									reRender="gestionarTipoEntidad,gestionarTitleTipoEntidad" /></td>
+								<td><a4j:commandButton value="#{messages.salir}"
+									ajaxSingle="true"	
+									action="#{entidadSistemaCrearControlador.limpiarCampos()}"								
+									oncomplete="javascript:Richfaces.hideModalPanel('gestTipoEntidad');"
+									style="margin-right: 0px; margin-left: 5px; margin-bottom: 0px; margin-top: 7px"
+									reRender="aTipoEntidad" /></td>
+							</tr>
+						</table>
+
+
+
+						<rich:spacer height="6px" style="display: block"></rich:spacer></div>
+					</s:div> <s:div id="modificar"
+						rendered="#{entidadSistemaCrearControlador.estadoFuncionalidad.equals('modificar')}">
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+							<tr>
+								<td style="height: 8px;" colspan="6"></td>
+							</tr>
+							<tr style="vertical-align: top;">
+								<td style="width: 6px;"></td>
+								<td>#{messages.tipoEntidad} <rich:message
+									for="tipoEstableciminetoValorModificar" showDetail="false"
+									showSummary="false" tooltip="true">
+									<f:facet name="errorMarker">
+										<h:outputText
+											title="#{facesMessages.getCurrentMessagesForControl('tipoEstableciminetoValorModificar').get(0).getDetail()}"
+											style="color : red" value="*" styleClass="nombre" />
+									</f:facet>
+								</rich:message> <br />
+								<h:inputText id="tipoEstableciminetoValorModificar"
+									validator="#{entidadSistemaCrearControlador.validarTipoEntidadNombreModificar}"
+									required="true" style=" width : 148px;"
+									value="#{entidadSistemaCrearControlador.valor}" /></td>
+								<td style="width: 6px;"></td>
+							</tr>
+							<tr>
+								<td height="6px" />
+							</tr>
+							<tr>
+								<td width="6px" />
+								<td>
+								<div align="left"><a4j:commandButton
+									value="#{messages.aceptar}"
+									id="buttonModificarTipoEntidad"
+									action="#{entidadSistemaCrearControlador.modificar()}"
+									style="margin-bottom: 0px; margin-right: 6px;margin-top: 0px;margin-left: 0px"
+									reRender="gestionarTipoEntidad,gestionarTitleTipoEntidad">
+								</a4j:commandButton> <a4j:commandButton value="#{messages.cancelar}"
+									action="#{entidadSistemaCrearControlador.limpiarCampos()}"
+									oncomplete="Richfaces.hideModalPanel('gestTipoEntidad')"
+									style="margin-left: 1px; margin-right: 0px; margin-bottom: 0px; margin-top: 0px;"
+									reRender="idATipoEntidadCrear,crear_entidad_panel_form:idATipoEntidadModificar,tipoEntidad" />
+								<rich:spacer height="6px" style="display: block"></rich:spacer></div>
+								</td>
+								<td width="6px" />
+							</tr>
+						</table>
+
+
+					</s:div></td>
+					<td><rich:spacer width="6px" /></td>
+				</tr>
+			</table>
+		</h:form>
+	</a4j:outputPanel>
+
+	</rich:modalPanel>

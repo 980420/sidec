@@ -1,0 +1,73 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core">
+	<s:div>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript">setContentTitle('Testing area')</script>
+
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css"
+			rel="stylesheet" type="text/css" />
+		<link rel='stylesheet'
+			href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+			type='text/css' />
+
+		
+		<rich:panel>		
+					
+
+			<h:form id="parentForm">
+				<rich:inplaceInput></rich:inplaceInput>
+				<h:inputText value="as" id="inp1">
+					<a4j:support event="onblur" 
+						action="#{hardser.hide('hola')}" reRender="#{hardser.listIdsRerender}">						 
+						</a4j:support>
+				</h:inputText>
+				<h:inputText value="bes" id="inp2">
+				</h:inputText>
+				<a4j:commandButton action="#{hardser.method()}" value="Test1"
+					reRender="parentForm"></a4j:commandButton>
+					
+					<a4j:commandButton action="#{hardser.send()}" value="Send email"
+					></a4j:commandButton>
+					
+				<s:fileUpload id="fileInput" accept="*.*" tabindex="6" onchange="pickFileData(this)" data="#{preference.data}" fileName="#{preference.nombrePhoto}" required="true" >
+				</s:fileUpload>
+				
+			<script type="">
+				function pickFileData(fileInput)
+				{
+					if(fileInput.files.length>0)
+					{
+						alert(fileInput.files[0]);
+					}
+				}
+			</script>	
+			</h:form>		
+			     
+    
+    </rich:panel>
+    <h:inputText id="hola" class="likedate">
+	</h:inputText>
+		<ui:include
+			src="/modEnsayo/ensayo_disenno/codebase/reglas/conditionstree/conditions_includedmodals.xhtml" />		
+    <ui:include src="/modEnsayo/ensayo_disenno/codebase/reglas/conditionstree/conditions.xhtml">
+		<ui:param name="evalAction" value="#{yEL.GetELMethodCall(RuleConditionsManager,'Eval',null)}" />							
+		<ui:param name="if"   value="#{RuleConditionsManager.readableConditions}" />
+		<ui:param name="then" value="#{null}" />
+		<ui:param name="else" value="#{null}" />
+    </ui:include>	
+    <style type="text/css">
+    	input[type='file'] {
+  
+ 	width: 0%; 
+	height: 0%; }
+    </style>
+
+	</s:div>
+</s:div>

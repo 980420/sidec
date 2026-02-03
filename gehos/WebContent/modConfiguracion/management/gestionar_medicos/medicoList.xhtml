@@ -1,0 +1,688 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css">
+.rich-stglpanel-body {
+	padding: 0px
+}
+
+.whitespace {
+	white-space: nowrap;
+}
+</style>
+		<style type="text/css">
+.rich-panel-body {
+	padding: 0px
+}
+</style>
+		<style type="text/css">
+.dr-mpnl-pnl-b {
+	padding: 1px;
+}
+
+.dr-mpnl-pnl {
+	border: 1px !important;
+	border-style: solid !important;
+	border-color: #BED6F8 !important;
+}
+</style>
+
+<!-- Estilo para los mensajes -->
+		<style type="text/css">
+.custom-error {
+			border: 1px solid #FFCC00;
+			padding: 5px;
+			background-color: #F0F8FF;
+			font-size: 10px;
+			font-family: "Verdana";
+			position: relative;	left: 5px; top: 5px; 
+			margin-right: 10px;
+		}	
+</style>
+
+		<script type="text/javascript">setContentTitle('#{messages.administrarMedicos}')</script>
+		
+		<a4j:outputPanel ajaxRendered="true" id="errorOutputPanel">
+		<s:div style="height:30px;width:100%"
+			rendered="#{facesMessages.getCurrentMessagesForControl('userSearch').size() > 0 }">
+			<div class="custom-error">
+				<rich:message for="userSearch"></rich:message>
+			</div>	
+		</s:div>
+		</a4j:outputPanel>
+
+		<h:form id="userSearch" styleClass="edit">
+			<rich:simpleTogglePanel switchType="client"
+				opened="#{medicoList_configuracionCustom.open}">
+				<a4j:support event="oncollapse" ajaxSingle="true"
+					action="#{medicoList_configuracionCustom.abrirCerrar()}"
+					reRender="tablas_id" />
+				<a4j:support event="onexpand" ajaxSingle="true"
+					action="#{medicoList_configuracionCustom.abrirCerrar()}"
+					reRender="tablas_id" />
+				<f:facet name="header">#{messages.crit}</f:facet>
+				<a4j:outputPanel id="busquedas">
+					<a4j:outputPanel id="advancedsearch"
+						rendered="#{medicoList_configuracionCustom.avanzada == true}">
+						<table cellpadding="0px" cellspacing="0px" border="0px"
+							id="simplesearch">
+
+							<tr>
+								<td style="height: 6px"></td>
+							</tr>
+							<tr style="vertical-align: top;">
+								<td style="width: 7px;"></td>
+								<td>
+								<table cellpadding="0" cellspacing="0" border="0">
+									<tr>
+										<td><rich:spacer height="5px" /></td>
+									</tr>
+									<tr>
+										<td>#{messages.conf_matricula_ministerio} <br />
+										<h:inputText id="MMinisterio"
+											value="#{medicoList_configuracionCustom.matriculaMinisterio}"
+											style="width:150px;" /></td>
+										<td style="width: 25px;"></td>
+										<td>#{messages.nombre} <br />
+										<h:inputText id="nombre"
+											value="#{medicoList_configuracionCustom.nombre}"
+											style="width:150px;" /></td>
+										<td style="width: 25px;"></td>
+										<td>#{messages.pApellido} <br />
+										<h:inputText id="apellido"
+											value="#{medicoList_configuracionCustom.apellido}"
+											style="width:150px;" /></td>
+									</tr>
+									<tr height="6px"></tr>
+									<tr>
+										<td>#{messages.sApellido} <br />
+										<h:inputText id="MColegio"
+											value="#{medicoList_configuracionCustom.segundoapellido}"
+											style="width:150px;" /></td>
+										<td style="width: 25px;"></td>
+										<td>#{messages.conf_matricula_colegio} <br />
+										<h:inputText id="MColegio1"
+											value="#{medicoList_configuracionCustom.matriculaColegio}"
+											style="width:150px;" /></td>
+										<td style="width: 25px;"></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td height="3px"></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td style="width: 25px;"></td>
+										<td></td>
+										<td style="width: 25px;"></td>
+										<td style="vertical-align: bottom;" align="right"><h:commandButton
+											value="#{messages.buscar}"
+											style="margin-left: 0px; margin-bottom: 0px;"
+											action="#{medicoList_configuracionCustom.buscar(true)}">
+											<s:defaultAction />
+										</h:commandButton> <s:button view="/modCommons/modHome/home.gehos"
+											value="#{messages.cancelar}"
+											style="margin-right:0px;margin-bottom: 0px;">
+											<f:param name="idFuncionalidad"
+												value="#{activeModule.activeModule.id}" />
+											<f:param name="idancestors"
+												value="#{activeModule.activeModule.id}a" />
+											<f:param name="moduleName"
+												value="#{activeModule.activeModuleName}" />
+										</s:button></td>
+
+									</tr>
+									<tr>
+										<td style="width: 7px;"></td>
+										<td align="right" colspan="5"><h:panelGrid columns="2">
+
+										</h:panelGrid>
+										<table cellpadding="0" cellspacing="0" border="0">
+											<tr>
+												<td><h:graphicImage height="12"
+													style="margin-top:2px;margin-right:2px;"
+													value="/resources/icons/default/acciones/buscar.png" /></td>
+												<td><a4j:commandLink
+													style="margin-top:0px;"
+													action="#{medicoList_configuracionCustom.cambiar(false)}"
+													value="#{messages.bSimple}" reRender="busquedas,tablas_id">
+												</a4j:commandLink></td>
+											</tr>
+										</table>
+										</td>
+									</tr>
+								</table>
+								</td>
+								<td style="width: 7px;"></td>
+							</tr>
+						</table>
+					</a4j:outputPanel>
+
+
+					<a4j:outputPanel id="simplesearch"
+						rendered="#{!medicoList_configuracionCustom.avanzada}">
+						<table cellpadding="0px" cellspacing="0px" border="0px"
+							id="simplesearch">
+
+							<tr>
+								<td style="height: 10px"></td>
+							</tr>
+							<tr style="vertical-align: top;">
+								<td style="width: 7px;"></td>
+								<td>
+								<table cellpadding="0" cellspacing="0" border="0">
+									<tr>
+										<td style="height: 1px"></td>
+									</tr>
+									<tr>
+										<td>#{messages.conf_matricula_ministerio}<br />
+										<h:inputText id="name"
+											value="#{medicoList_configuracionCustom.matriculaMinisterio}"
+											style="width:150px;" /></td>
+										<td style="width: 25px;"></td>
+										<td>
+										<td valign="bottom" style="vertical-align: bottom"><h:commandButton
+											value="#{messages.buscar}"
+											style="margin-left: 0px; margin-bottom: 0px;"
+											action="#{medicoList_configuracionCustom.buscar(false)}">
+											<s:defaultAction />
+										</h:commandButton> <s:button view="/modCommons/modHome/home.gehos"
+											value="#{messages.cancelar}"
+											style="margin-right:0px;margin-bottom: 0px;">
+											<f:param name="idFuncionalidad"
+												value="#{activeModule.activeModule.id}" />
+											<f:param name="idancestors"
+												value="#{activeModule.activeModule.id}a" />
+											<f:param name="moduleName"
+												value="#{activeModule.activeModuleName}" />
+										</s:button></td>
+										</td>
+
+
+									</tr>
+									<tr>
+										<td style="width: 7px;"></td>
+										<td></td>
+										<td align="right" colspan="3"><h:panelGrid columns="2">
+
+										</h:panelGrid>
+										<table cellpadding="0" cellspacing="0" border="0">
+											<tr>
+												<td><h:graphicImage height="12"
+													style="margin-top:2px;margin-right:2px;"
+													value="/resources/icons/default/acciones/buscar.png" /></td>
+												<td><a4j:commandLink 
+													action="#{medicoList_configuracionCustom.cambiar(true)}"
+													value="#{messages.bAvanzada}"
+													reRender="busquedas,tablas_id">
+												</a4j:commandLink></td>
+											</tr>
+										</table>
+										</td>
+									</tr>
+								</table>
+								</td>
+								<td style="width: 7px;"></td>
+							</tr>
+						</table>
+					</a4j:outputPanel>
+				</a4j:outputPanel>
+
+				<rich:spacer height="7px" />
+			</rich:simpleTogglePanel>
+			<rich:spacer height="11px" />
+
+			<div align="right">
+			<table cellpadding="0" cellspacing="1" border="0">
+				<tr>
+					<td><a4j:commandLink action="adicionar" status="showModalStatus">
+						<h:graphicImage title="#{messages.addMedico}"
+						style="margin-right: 1px;cursor: pointer" height="12" width="12"
+						value="/resources/icons/default/acciones/adicionar.png" /></a4j:commandLink></td>
+					<td><a4j:commandLink action="adicionar"
+						value="#{messages.addMedico}" style="cursor: pointer"
+						title="#{messages.addMedico}" status="showModalStatus"/></td>
+					<td><a4j:commandLink action="asociar" status="showModalStatus">
+						<h:graphicImage title="#{messages.asociarUser}"
+						style="margin-right: 1px;cursor: pointer" height="14" width="14"
+						value="/resources/icons/default/acciones/asociar.png" /></a4j:commandLink></td>
+					<td><a4j:commandLink action="asociar"
+						value="#{messages.asociarUser}" style="cursor: pointer"
+						title="#{messages.asociarUser}" status="showModalStatus"/></td>
+				</tr>
+			</table>
+			<a4j:status id="showModalStatus" forceId="true" 
+					  onstart="Richfaces.showModalPanel('ajaxLoadingModalBox',{left:1, top:-15});
+					  		   document.body.style.cursor='wait';"
+					  onstop="Richfaces.hideModalPanel('ajaxLoadingModalBox');
+					  		  document.body.style.cursor='default';">
+			</a4j:status>
+			</div>
+
+
+			<a4j:outputPanel id="tablas_id">
+
+				<rich:panel
+					rendered="#{medicoList_configuracionCustom.resultList.size() == 0 and (medicoList_configuracionCustom.nombre != '' || medicoList_configuracionCustom.apellido != '' || medicoList_configuracionCustom.matriculaColegio != '' || medicoList_configuracionCustom.name != '' || medicoList_configuracionCustom.matriculaMinisterio != '')}">
+					<f:facet name="header">#{messages.listadoMedicos}</f:facet>
+					<div class="results" id="userList"><br />
+					<rich:spacer width="8px" /> <h:outputText
+						value="#{messages.noSeEncontro}" />
+					</div>
+					<rich:spacer height="7px" />
+				</rich:panel>
+
+				<rich:panel
+					rendered="#{medicoList_configuracionCustom.resultList.size() == 0 and medicoList_configuracionCustom.nombre == '' and medicoList_configuracionCustom.apellido == '' and medicoList_configuracionCustom.matriculaColegio == '' and medicoList_configuracionCustom.name == '' and medicoList_configuracionCustom.matriculaMinisterio == ''}">
+					<f:facet name="header">#{messages.listadoMedicos}</f:facet>
+					<div class="results" id="userList"><br />
+					<rich:spacer width="8px" /> <h:outputText
+						value="#{messages.noInf}" /></div>
+					<rich:spacer height="7px" />
+				</rich:panel>
+				<s:div style="margin-left:1px;margin-top:1px"
+					rendered="#{not empty medicoList_configuracionCustom.resultList}">
+					<rich:dataTable id="userList_security_datatable"
+						style="width: 100%;" var="medico"
+						value="#{medicoList_configuracionCustom.resultList}"
+						styleClass=" whitespace "
+						columnsWidth="1%, 20%, 50%, 30%, 1%, 1%,1%">
+						<f:facet name="header">#{messages.listadoMedicos}</f:facet>
+						<h:column>
+							<f:facet name="header">
+					#{messages.colum1}
+	            </f:facet>
+
+							<h:graphicImage height="25" width="25"
+								rendered="#{userTools.userImageExist(medico.usuario.username)}"
+								url="/resources/modCommon/userphotos/#{medico.usuario.username}.png">
+							</h:graphicImage>
+							<h:graphicImage height="25" width="25"
+								rendered="#{not userTools.userImageExist(medico.usuario.username)}"
+								value="/resources/modCommon/unknown/#{theme.name}/generico/desconocido.png">
+
+							</h:graphicImage>
+
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.colum4}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not medicoList_configuracionCustom.order.equals('matriculaMinisterio asc') and not medicoList_configuracionCustom.order.equals('matriculaMinisterio desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="matriculaMinisteriocontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{medicoList_configuracionCustom.order.equals('matriculaMinisterio asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="matriculaMinisteriocontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{medicoList_configuracionCustom.order.equals('matriculaMinisterio desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="matriculaMinisteriocontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+						#{medico.matriculaMinisterio}
+			</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.colum2}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not medicoList_configuracionCustom.order.equals('usuario.nombre asc') and not medicoList_configuracionCustom.order.equals('usuario.nombre desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="nombrecontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{medicoList_configuracionCustom.order.equals('usuario.nombre asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="nombrecontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{medicoList_configuracionCustom.order.equals('usuario.nombre desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="nombrecontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+	            #{medico.usuario.nombre}
+	            <h:outputLabel styleClass="dataText; font-weight: bold"
+								value="  #{medico.usuario.primerApellido}" />
+							<h:outputLabel styleClass="dataText; font-weight: bold"
+								value="  #{medico.usuario.segundoApellido}" />
+						</h:column>
+
+
+
+
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.colum3}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not medicoList_configuracionCustom.order.equals('matriculaColegioMedico asc') and not medicoList_configuracionCustom.order.equals('matriculaColegioMedico desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="matriculaColegiocontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{medicoList_configuracionCustom.order.equals('matriculaColegioMedico asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="matriculaColegiocontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{medicoList_configuracionCustom.order.equals('matriculaColegioMedico desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="matriculaColegiocontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+						#{medico.matriculaColegioMedico}
+			</h:column>
+
+						<h:column>
+							<div align="center" style="margin-top: 3px"><a4j:commandLink
+								status="showModalStatus"
+								onclick="SeleccionarVer('#{medico.id}')"
+								action="#{medicoList_configuracionCustom.seleccionarVer(medico.id)}">
+								<h:graphicImage title="#{messages.ver}"
+									style="border: 0px;margin-bottom: 3px;"
+									value="/resources/icons/default/acciones/ver.png" />								
+							</a4j:commandLink></div>
+						</h:column>
+						<h:column>
+							<div align="center"><a4j:commandLink								
+								status="showModalStatus" 
+								onclick="SeleccionarModif('#{medico.id}')">
+								<h:graphicImage title="#{messages.modf}" style="border: 0px;"
+									value="/resources/icons/default/acciones/modificar.png" />								
+							</a4j:commandLink></div>
+						</h:column>
+						<h:column>
+							<div align="center"><a4j:commandLink
+								onclick="SeleccionarStat('#{medico.id}')"
+								status="showModalStatus" ajaxSingle="true">								
+								<h:graphicImage title="#{messages.eliminar}"
+									style="border: 0px; cursor:pointer;"
+									value="/resources/icons/default/acciones/eliminar.png">
+								</h:graphicImage>
+							</a4j:commandLink></div>
+						</h:column>
+
+					</rich:dataTable>
+					<a4j:jsFunction name="SeleccionarStat" action="#{medicoList_configuracionCustom.seleccionar()}" 
+								oncomplete="Richfaces.showModalPanel('eliminarMedico')" ajaxSingle="true">
+					<a4j:actionparam name="pos" assignTo="#{medicoList_configuracionCustom.ideliminarMed}"/>
+				</a4j:jsFunction>
+				<a4j:jsFunction name="SeleccionarModif" action="#{medicoList_configuracionCustom.seleccionarModificar()}"
+								ajaxSingle="true">
+					<a4j:actionparam name="pos" assignTo="#{medicoList_configuracionCustom.idmedico}"/>
+				</a4j:jsFunction>
+				<a4j:jsFunction name="SeleccionarVer" action="#{medicoList_configuracionCustom.seleccionarVer()}"
+								ajaxSingle="true">
+					<a4j:actionparam name="pos" assignTo="#{medicoList_configuracionCustom.idmedico}"/>
+				</a4j:jsFunction>
+				</s:div>
+			
+			<rich:spacer height="11px" />
+			<s:div id="pagingcontrols" styleClass="tableControl"
+				style="width: 100%; text-align:center" align="center"
+				rendered="#{not empty medicoList_configuracionCustom.resultList}">
+
+				<h:graphicImage
+					value="/resources/icons/default/paginado/iniciod.png"
+					rendered="#{!medicoList_configuracionCustom.previousExists}" />
+
+				<s:link
+					view="/modConfiguracion/management/gestionar_medicos/medicoList.gehos"
+					rendered="#{medicoList_configuracionCustom.previousExists}"
+					id="firstPage">
+					<h:graphicImage title="#{messages.primera}" style="border: 0px;cursor:pointer;"
+						value="/resources/icons/default/paginado/#{theme.color}/inicio.png" />
+					<f:param name="firstResult" value="0" />
+
+					<f:param name="order"
+						value="#{medicoList_configuracionCustom.order}" />
+					<f:param name="avz"
+						value="#{medicoList_configuracionCustom.avanzada}" />
+					<f:param name="open" value="#{medicoList_configuracionCustom.open}" />
+					<f:param name="critB1"
+						value="#{parameters.encodec(medicoList_configuracionCustom.matriculaMinisterio)}" />
+					<f:param name="critB2"
+						value="#{parameters.encodec(medicoList_configuracionCustom.nombre)}" />
+					<f:param name="critB3"
+						value="#{parameters.encodec(medicoList_configuracionCustom.apellido)}" />
+					<f:param name="critB4"
+						value="#{parameters.encodec(medicoList_configuracionCustom.segundoapellido)}" />
+					<f:param name="critB5"
+						value="#{parameters.encodec(medicoList_configuracionCustom.matriculaColegio)}" />
+
+
+				</s:link>
+
+				<h:graphicImage
+					value="/resources/icons/default/paginado/anteriord.png"
+					rendered="#{!medicoList_configuracionCustom.previousExists}" />
+
+
+				<s:link
+					view="/modConfiguracion/management/gestionar_medicos/medicoList.gehos"
+					rendered="#{medicoList_configuracionCustom.previousExists}"
+					id="previousPage">
+					<h:graphicImage title="#{messages.anterior}"
+						style="border: 0px;cursor:pointer;"
+						value="/resources/icons/default/paginado/#{theme.color}/anterior.png" />
+					<f:param name="firstResult"
+						value="#{medicoList_configuracionCustom.previousFirstResult}" />
+					<f:param name="order"
+						value="#{medicoList_configuracionCustom.order}" />
+					<f:param name="avz"
+						value="#{medicoList_configuracionCustom.avanzada}" />
+					<f:param name="open" value="#{medicoList_configuracionCustom.open}" />
+					<f:param name="critB1"
+						value="#{parameters.encodec(medicoList_configuracionCustom.matriculaMinisterio)}" />
+					<f:param name="critB2"
+						value="#{parameters.encodec(medicoList_configuracionCustom.nombre)}" />
+					<f:param name="critB3"
+						value="#{parameters.encodec(medicoList_configuracionCustom.apellido)}" />
+					<f:param name="critB4"
+						value="#{parameters.encodec(medicoList_configuracionCustom.segundoapellido)}" />
+					<f:param name="critB5"
+						value="#{parameters.encodec(medicoList_configuracionCustom.matriculaColegio)}" />
+				</s:link>
+
+
+				<h:graphicImage
+					value="/resources/icons/default/paginado/siguiented.png"
+					rendered="#{!medicoList_configuracionCustom.nextExists}" />
+
+
+				<s:link
+					view="/modConfiguracion/management/gestionar_medicos/medicoList.gehos"
+					rendered="#{medicoList_configuracionCustom.nextExists}"
+					id="nextPage">
+					<h:graphicImage title="#{messages.siguiente}"
+						style="border: 0px;cursor:pointer;"
+						value="/resources/icons/default/paginado/#{theme.color}/siguiente.png" />
+
+					<f:param name="firstResult"
+						value="#{medicoList_configuracionCustom.nextFirstResult}" />
+					<f:param name="order"
+						value="#{medicoList_configuracionCustom.order}" />
+					<f:param name="avz"
+						value="#{medicoList_configuracionCustom.avanzada}" />
+					<f:param name="open" value="#{medicoList_configuracionCustom.open}" />
+					<f:param name="critB1"
+						value="#{parameters.encodec(medicoList_configuracionCustom.matriculaMinisterio)}" />
+					<f:param name="critB2"
+						value="#{parameters.encodec(medicoList_configuracionCustom.nombre)}" />
+					<f:param name="critB3"
+						value="#{parameters.encodec(medicoList_configuracionCustom.apellido)}" />
+					<f:param name="critB4"
+						value="#{parameters.encodec(medicoList_configuracionCustom.segundoapellido)}" />
+					<f:param name="critB5"
+						value="#{parameters.encodec(medicoList_configuracionCustom.matriculaColegio)}" />
+
+				</s:link>
+
+				<h:graphicImage value="/resources/icons/default/paginado/find.png"
+					rendered="#{!medicoList_configuracionCustom.nextExists}" />
+
+
+				<s:link
+					view="/modConfiguracion/management/gestionar_medicos/medicoList.gehos"
+					rendered="#{medicoList_configuracionCustom.nextExists}"
+					id="lastPage">
+					<h:graphicImage title="#{messages.ultima}"
+						style="border: 0px;cursor:pointer;"
+						value="/resources/icons/default/paginado/#{theme.color}/fin.png" />
+
+					<f:param name="firstResult"
+						value="#{medicoList_configuracionCustom.lastFirstResult}" />
+					<f:param name="order"
+						value="#{medicoList_configuracionCustom.order}" />
+					<f:param name="avz"
+						value="#{medicoList_configuracionCustom.avanzada}" />
+					<f:param name="open" value="#{medicoList_configuracionCustom.open}" />
+					<f:param name="critB1"
+						value="#{parameters.encodec(medicoList_configuracionCustom.matriculaMinisterio)}" />
+					<f:param name="critB2"
+						value="#{parameters.encodec(medicoList_configuracionCustom.nombre)}" />
+					<f:param name="critB3"
+						value="#{parameters.encodec(medicoList_configuracionCustom.apellido)}" />
+					<f:param name="critB4"
+						value="#{parameters.encodec(medicoList_configuracionCustom.segundoapellido)}" />
+					<f:param name="critB5"
+						value="#{parameters.encodec(medicoList_configuracionCustom.matriculaColegio)}" />
+				</s:link>
+
+
+
+			</s:div>
+			</a4j:outputPanel>
+		</h:form>
+
+		<h:form>
+			<rich:contextMenu attached="false" id="nombrecontextmenu"
+				submitMode="ajax">
+				
+				<rich:menuItem value="#{messages.ordMenorMayor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{medicoList_configuracionCustom.setOrder('usuario.nombre asc')}"
+					reRender="userList_security_datatable">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.ordMayorMenor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{medicoList_configuracionCustom.setOrder('usuario.nombre desc')}"
+					reRender="userList_security_datatable">
+				</rich:menuItem>
+				
+			</rich:contextMenu>
+			<rich:contextMenu attached="false" id="usercontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.ordMenorMayor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{medicoList_configuracionCustom.setOrder('usuario.primerApellido asc')}"
+					reRender="userList_security_datatable">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.ordMayorMenor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{medicoList_configuracionCustom.setOrder('usuario.primerApellido desc')}"
+					reRender="userList_security_datatable">
+				</rich:menuItem>
+				
+			</rich:contextMenu>
+			<rich:contextMenu attached="false" id="matriculaColegiocontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.ordMenorMayor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{medicoList_configuracionCustom.setOrder('matriculaColegioMedico asc')}"
+					reRender="userList_security_datatable">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.ordMayorMenor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{medicoList_configuracionCustom.setOrder('matriculaColegioMedico desc')}"
+					reRender="userList_security_datatable">
+				</rich:menuItem>				
+			</rich:contextMenu>
+			<rich:contextMenu attached="false"
+				id="matriculaMinisteriocontextmenu" submitMode="ajax">				
+				<rich:menuItem value="#{messages.ordMenorMayor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{medicoList_configuracionCustom.setOrder('matriculaMinisterio asc')}"
+					reRender="userList_security_datatable">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.ordMayorMenor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{medicoList_configuracionCustom.setOrder('matriculaMinisterio desc')}"
+					reRender="userList_security_datatable">
+				</rich:menuItem>
+			</rich:contextMenu>
+		</h:form>
+
+		<ui:include
+			src="/modConfiguracion/management/gestionar_medicos/modalspanel/eliminar_medico.xhtml" />
+		
+		<rich:modalPanel id="ajaxLoadingModalBox" minHeight="10" minWidth="10" 
+	        height="10" width="10" zindex="2000">
+	     <s:div rendered="false">  
+	           <img id="favsloadingdiv" 
+	        	src="#{facesContext.externalContext.requestContextPath}/resources/icons/default/acciones/loading_small.gif"
+	        	style="position: absolute; top: 0px; left: 0px;" />
+	     </s:div>  
+	</rich:modalPanel>
+		
+	</ui:define>
+
+</ui:composition>
+

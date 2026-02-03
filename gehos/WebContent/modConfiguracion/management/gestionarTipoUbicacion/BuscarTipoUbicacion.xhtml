@@ -1,0 +1,449 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+			
+		<!-- Estilo para los mensajes -->
+		<style type="text/css">
+		.custom-error {
+					border: 1px solid #FFCC00;
+					padding: 5px;
+					background-color: #F0F8FF;
+					font-size: 10px;
+					font-family: "Verdana";
+					position: relative;	left: 5px; top: 5px; 
+					margin-right: 10px;
+				}	
+		</style>
+
+		<h:form id="form">
+<!--			<a4j:outputPanel ajaxRendered="true" id="errorOutputPanel">-->
+<!--				<s:div style="height:30px;width:100%"-->
+<!--					rendered="#{facesMessages.getCurrentMessagesForControl('error').size() > 0 }">-->
+<!--					<div class="custom-error">-->
+<!--						<rich:message for="form"></rich:message>-->
+<!--					</div>	-->
+<!--				</s:div>-->
+<!--			</a4j:outputPanel>-->
+
+			<rich:simpleTogglePanel switchType="client"
+				opened="#{tipoUbicacionBuscarControlador.state}">
+				<a4j:support event="oncollapse" ajaxSingle="true"
+					action="#{tipoUbicacionBuscarControlador.cambiarEstadoSimpleTugglePanel()}"
+					reRender="tipo_tables" />
+				<a4j:support event="onexpand" ajaxSingle="true"
+					action="#{tipoUbicacionBuscarControlador.cambiarEstadoSimpleTugglePanel()}"
+					reRender="tipo_tables" />
+				<f:facet name="header">#{messages.criterios}</f:facet>
+				<table cellpadding="0px" cellspacing="0px" border="0px"
+					id="simplesearch">
+					<tr>
+						<td style="height: 13px"></td>
+					</tr>
+					<tr style="vertical-align: top;">
+						<td style="width: 7px;"></td>
+						<td>
+						<table cellpadding="0" cellspacing="0" border="0">
+							<tr>
+								<td>#{messages.crit1}<br />
+								<h:inputText id="codigo" tabindex="1"
+									value="#{tipoUbicacionBuscarControlador.codigo}"
+									style="width:147px;" /></td>
+								<td style="width: 25px;" />
+								<td>#{messages.crit2}<br />
+								<h:inputText id="descripción" tabindex="2"
+									value="#{tipoUbicacionBuscarControlador.descripcion}"
+									style="width:147px;" /></td>
+								<td style="width: 25px;"></td>
+								<td style="vertical-align: bottom;"><h:commandButton
+									action="#{tipoUbicacionBuscarControlador.buscar()}"
+									value="#{messages.buscar}" tabindex="3"
+									style="margin-left: 0px; margin-bottom: 0px;">
+									<s:defaultAction />
+								</h:commandButton></td>
+								<td style="vertical-align: bottom;"><s:button
+									view="/modCommons/modHome/home.gehos"
+									value="#{messages.cancelar}" tabindex="4"
+									style="margin-right: 0px; margin-bottom: 0px;"
+									rendered="#{not identificadorManager.editing}">
+									<f:param name="idFuncionalidad"
+										value="#{activeModule.activeModule.id}" />
+									<f:param name="idancestors"
+										value="#{activeModule.activeModule.id}a" />
+									<f:param name="moduleName"
+										value="#{activeModule.activeModuleName}" />
+								</s:button></td>
+							</tr>
+						</table>
+						</td>
+						<td style="width: 7px;"></td>
+					</tr>
+				</table>
+				<rich:spacer height="7px" style="display: block" />
+			</rich:simpleTogglePanel>
+			<rich:spacer height="11px" style="display: block" />
+			<div align="right"><h:panelGrid columns="2" cellpadding="1"
+				cellspacing="0" border="0">
+				<a4j:commandLink 
+					status="showModalStatus"
+					action="#{tipoUbicacionCrearControlador.begin()}" >
+				<h:graphicImage style="border: 0px;" height="12" width="12"
+					title="#{messages.adicionar}"
+					value="/resources/icons/default/acciones/adicionar.png" /></a4j:commandLink>
+				<a4j:commandLink value="#{messages.adicionar}" status="showModalStatus"
+					action="#{tipoUbicacionCrearControlador.begin()}" tabindex="5" title="#{messages.adicionar}"/>
+			</h:panelGrid>
+			<a4j:status id="showModalStatus" forceId="true" 
+					  onstart="Richfaces.showModalPanel('ajaxLoadingModalBox',{left:1, top:-15});
+					  		   document.body.style.cursor='wait';"
+					  onstop="Richfaces.hideModalPanel('ajaxLoadingModalBox');
+					  		  document.body.style.cursor='default';">
+			</a4j:status>
+			</div>
+			<a4j:outputPanel id="tipo_tables">
+				<rich:panel
+					rendered="#{tipoUbicacionBuscarControlador.resultList.size() == 0 and tipoUbicacionBuscarControlador.codigo == '' and tipoUbicacionBuscarControlador.descripcion == ''}">
+
+					<f:facet name="header">#{messages.listado}</f:facet>
+					<rich:spacer height="13px" style="display: block" />
+					<div class="results" id="roleList"><rich:spacer width="7px" />
+					<h:outputText value="#{messages.noInf}" /></div>
+					<rich:spacer height="7px" style="display: block" />
+				</rich:panel>
+				<rich:panel id="enfermeroNoInfEncontrada"
+					rendered="#{tipoUbicacionBuscarControlador.resultList.size() == 0 and (tipoUbicacionBuscarControlador.codigo != '' || tipoUbicacionBuscarControlador.descripcion != '')}">
+					<f:facet name="header">#{messages.listado}</f:facet>
+					<rich:spacer height="13px" style="display: block" />
+					<div class="results" id="userList"><rich:spacer width="7px" />
+					<h:outputText value="#{messages.noInf2}" /></div>
+					<rich:spacer height="7px" style="display: block" />
+				</rich:panel>
+
+				<s:div style="margin-left:1px;margin-top:1px" id="error"
+					rendered="#{not empty tipoUbicacionBuscarControlador.resultList}">
+					<rich:dataTable id="ubicaciones"
+						value="#{tipoUbicacionBuscarControlador.resultList}"
+						var="tipoubicacion" width="100%"
+						columnsWidth="0*, 40%, 60%, 0*, 0*, 0*">
+						<f:facet name="header">
+							<s:div>
+								<div style="float: left;">#{messages.listado}</div>
+							</s:div>
+						</f:facet>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.col1}</s:div>
+								</h:panelGrid>
+							</f:facet>
+							<div align="center"><h:graphicImage
+								rendered="#{tipoubicacion.icono != 'default.png'}"
+								value="/resources/modCommon/ubicacionesimages/#{tipoubicacion.icono}"
+								width="20" height="20" /> <h:graphicImage
+								rendered="#{tipoubicacion.icono == 'default.png'}"
+								value="/resources/modCommon/ubicacionesimages/default.png"
+								width="20" height="20" /></div>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.col2}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not tipoUbicacionBuscarControlador.order.equals('tipoUbicacion.codigo asc') and not tipoUbicacionBuscarControlador.order.equals('tipoUbicacion.codigo desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="nombrecontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{tipoUbicacionBuscarControlador.order.equals('tipoUbicacion.codigo asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="nombrecontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{tipoUbicacionBuscarControlador.order.equals('tipoUbicacion.codigo desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17" style=" width : 17px;">
+											<rich:componentControl event="onclick"
+												for="nombrecontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>					
+					#{tipoubicacion.codigo}
+				</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.col3}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not tipoUbicacionBuscarControlador.order.equals('tipoUbicacion.descripcion asc') and not tipoUbicacionBuscarControlador.order.equals('tipoUbicacion.descripcion desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="usercontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{tipoUbicacionBuscarControlador.order.equals('tipoUbicacion.descripcion asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="usercontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{tipoUbicacionBuscarControlador.order.equals('tipoUbicacion.descripcion desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="usercontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+					#{tipoubicacion.descripcion}
+				</h:column>
+
+						<h:column>
+							<div align="center"><a4j:commandLink
+								status="showModalStatus" 
+								ajaxSingle="true" immediate="true"
+								onclick="SeleccionarVer('#{tipoubicacion.id}')">
+								<h:graphicImage title="#{messages.ver}" style="border: 0px;"
+									value="/resources/icons/default/acciones/ver.png" />
+							</a4j:commandLink></div>
+						</h:column>
+						<h:column>
+							<div align="center"><a4j:commandLink 
+								onclick="SeleccionarModif('#{tipoubicacion.id}')"
+								status="showModalStatus">
+								<h:graphicImage title="#{messages.modificar}"
+									style="border: 0px;"
+									value="/resources/icons/default/acciones/modificar.png" />
+							</a4j:commandLink></div>
+						</h:column>
+						<h:column>
+							<div align="center"><a4j:commandLink
+								onclick="SeleccionarStat('#{tipoubicacion.id}')" 
+								status="showModalStatus">
+								<h:graphicImage title="#{messages.eliminar}"
+									style="border: 0px; cursor:pointer;"
+									value="/resources/icons/default/acciones/eliminar.png">
+								</h:graphicImage>
+							</a4j:commandLink></div>
+						</h:column>
+						<h:column>
+							<div align="center"><h:graphicImage
+								rendered="#{not tipoubicacion.eliminado}"
+								value="/resources/modConfiguracion/visible.png" width="14"
+								height="14" style="border:0px; cursor:pointer"
+								title="#{messages.visibilidad}">
+								<a4j:support event="onclick" ajaxSingle="true"
+									action="#{tipoUbicacionBuscarControlador.cambiarTipoUbicacionVisibilidad(tipoubicacion.id)}"
+									reRender="tipo_tables" status="showModalStatus"/>
+							</h:graphicImage> <h:graphicImage rendered="#{tipoubicacion.eliminado}"
+								value="/resources/modConfiguracion/not-visible.png" width="14"
+								height="14" style="border:0px; cursor:pointer"
+								title="#{messages.visibilidad}">
+								<a4j:support event="onclick" ajaxSingle="true"
+									action="#{tipoUbicacionBuscarControlador.cambiarTipoUbicacionVisibilidad(tipoubicacion.id)}"
+									reRender="tipo_tables" status="showModalStatus"/>
+							</h:graphicImage></div>
+						</h:column>
+					</rich:dataTable>
+					
+					<a4j:jsFunction name="SeleccionarStat" oncomplete="Richfaces.showModalPanel('eliminar_usuario_panel')"
+								action="#{tipoUbicacionBuscarControlador.seleccionarEliminar()}" ajaxSingle="true">
+						<a4j:actionparam name="pos" assignTo="#{tipoUbicacionBuscarControlador.idEliminar}"/>
+					</a4j:jsFunction>
+					
+					<a4j:jsFunction name="SeleccionarModif" action="#{tipoUbicacionBuscarControlador.seleccionarModificar()}" 
+									ajaxSingle="true">
+						<a4j:actionparam name="pos" assignTo="#{tipoUbicacionBuscarControlador.idEliminar}"/>
+					</a4j:jsFunction>
+					
+					<a4j:jsFunction name="SeleccionarVer" action="#{tipoUbicacionBuscarControlador.seleccionarVer()}" 
+									ajaxSingle="true">
+						<a4j:actionparam name="pos" assignTo="#{tipoUbicacionBuscarControlador.idEliminar}"/>
+					</a4j:jsFunction>
+					
+					
+					<rich:modalPanel id="ajaxLoadingModalBox" minHeight="10" minWidth="10" 
+					        height="10" width="10" zindex="2000">
+					     <s:div rendered="false">  
+					           <img id="favsloadingdiv" 
+					        	src="#{facesContext.externalContext.requestContextPath}/resources/icons/default/acciones/loading_small.gif"
+					        	style="position: absolute; top: 0px; left: 0px;" />
+					     </s:div>  
+					</rich:modalPanel>
+					
+				</s:div>
+				<rich:spacer height="11px" style="display: block" />
+				<s:div id="paging" styleClass="tableControl"
+					style="width: 100%; text-align:center" align="center">
+
+					<h:graphicImage
+						value="/resources/icons/default/paginado/iniciod.png"
+						rendered="#{!tipoUbicacionBuscarControlador.previousExists}" />
+
+					<s:link
+						view="/modConfiguracion/management/gestionarTipoUbicacion/BuscarTipoUbicacion.gehos"
+						rendered="#{tipoUbicacionBuscarControlador.previousExists}"
+						id="firstPage">
+						<h:graphicImage title="#{messages.pag1}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/inicio.png" />
+						<f:param name="firstResult" value="0" />
+						<f:param name="state"
+							value="#{tipoUbicacionBuscarControlador.state}" />
+						<f:param name="order"
+							value="#{tipoUbicacionBuscarControlador.order}" />
+						<f:param name="critB1"
+							value="#{tipoUbicacionBuscarControlador.codigo}" />
+						<f:param name="critB2"
+							value="#{tipoUbicacionBuscarControlador.descripcion}" />
+					</s:link>
+
+					<h:graphicImage
+						value="/resources/icons/default/paginado/anteriord.png"
+						rendered="#{!tipoUbicacionBuscarControlador.previousExists}" />
+
+
+					<s:link
+						view="/modConfiguracion/management/gestionarTipoUbicacion/BuscarTipoUbicacion.gehos"
+						rendered="#{tipoUbicacionBuscarControlador.previousExists}"
+						id="previousPage">
+						<h:graphicImage title="#{messages.pag2}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/anterior.png" />
+						<f:param name="firstResult"
+							value="#{tipoUbicacionBuscarControlador.previousFirstResult}" />
+						<f:param name="state"
+							value="#{tipoUbicacionBuscarControlador.state}" />
+						<f:param name="order"
+							value="#{tipoUbicacionBuscarControlador.order}" />
+						<f:param name="critB1"
+							value="#{tipoUbicacionBuscarControlador.codigo}" />
+						<f:param name="critB2"
+							value="#{tipoUbicacionBuscarControlador.descripcion}" />
+					</s:link>
+
+
+					<h:graphicImage
+						value="/resources/icons/default/paginado/siguiented.png"
+						rendered="#{!tipoUbicacionBuscarControlador.nextExists}" />
+
+
+					<s:link
+						view="/modConfiguracion/management/gestionarTipoUbicacion/BuscarTipoUbicacion.gehos"
+						rendered="#{tipoUbicacionBuscarControlador.nextExists}"
+						id="nextPage">
+						<h:graphicImage title="#{messages.pag3}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/siguiente.png" />
+						<f:param name="firstResult"
+							value="#{tipoUbicacionBuscarControlador.nextFirstResult}" />
+						<f:param name="state"
+							value="#{tipoUbicacionBuscarControlador.state}" />
+						<f:param name="order"
+							value="#{tipoUbicacionBuscarControlador.order}" />
+						<f:param name="critB1"
+							value="#{tipoUbicacionBuscarControlador.codigo}" />
+						<f:param name="critB2"
+							value="#{tipoUbicacionBuscarControlador.descripcion}" />
+					</s:link>
+
+					<h:graphicImage value="/resources/icons/default/paginado/find.png"
+						rendered="#{!tipoUbicacionBuscarControlador.nextExists}" />
+
+
+					<s:link
+						view="/modConfiguracion/management/gestionarTipoUbicacion/BuscarTipoUbicacion.gehos"
+						rendered="#{tipoUbicacionBuscarControlador.nextExists}"
+						id="lastPage">
+						<h:graphicImage title="#{messages.pag4}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/fin.png" />
+
+						<f:param name="firstResult"
+							value="#{tipoUbicacionBuscarControlador.lastFirstResult}" />
+						<f:param name="state"
+							value="#{tipoUbicacionBuscarControlador.state}" />
+						<f:param name="order"
+							value="#{tipoUbicacionBuscarControlador.order}" />
+						<f:param name="critB1"
+							value="#{tipoUbicacionBuscarControlador.codigo}" />
+						<f:param name="critB2"
+							value="#{tipoUbicacionBuscarControlador.descripcion}" />
+					</s:link>
+
+
+
+				</s:div>
+			</a4j:outputPanel>
+		</h:form>
+
+		<h:form>
+			<rich:contextMenu attached="false" id="nombrecontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{tipoUbicacionBuscarControlador.setOrder('tipoUbicacion.codigo asc')}"
+					reRender="ubicaciones, paging">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{tipoUbicacionBuscarControlador.setOrder('tipoUbicacion.codigo desc')}"
+					reRender="ubicaciones, paging">
+				</rich:menuItem>
+				
+			</rich:contextMenu>
+			<rich:contextMenu attached="false" id="usercontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{tipoUbicacionBuscarControlador.setOrder('tipoUbicacion.descripcion asc')}"
+					reRender="ubicaciones, paging">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{tipoUbicacionBuscarControlador.setOrder('tipoUbicacion.descripcion desc')}"
+					reRender="ubicaciones, paging">
+				</rich:menuItem>
+				
+			</rich:contextMenu>
+		</h:form>
+		<ui:include
+			src="/modConfiguracion/management/gestionarTipoUbicacion/modalspanel/ConfirmarEliminarTipoUbicacionBuscar.xhtml" />
+	</ui:define>
+
+</ui:composition>

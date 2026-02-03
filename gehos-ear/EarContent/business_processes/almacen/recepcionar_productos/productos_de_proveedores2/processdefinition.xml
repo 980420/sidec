@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition xmlns="" name="productos_de_proveedores">
+
+
+	<start-state name="inicio">
+		<transition to="recepcionar_producto"></transition>
+	</start-state>
+
+
+	<node name="recepcionar_producto">
+		<transition to="informe_de_recepcion"></transition>
+	</node>
+
+	<task-node name="informe_de_recepcion">
+		<task name="informe_de_recepcion" description="Crear informe para recepcion: #{recepcionId}">
+			<assignment pooled-actors="admin"></assignment>
+		</task>
+		<transition to="detalles" name="detalles"></transition>
+	</task-node>
+
+	<task-node name="aceptar_recepcion">
+		<task name="aceptar_recepcion" description="Aceptar recepcion: #{recepcionId}">
+			<assignment pooled-actors="admin"></assignment>
+		</task>
+		<transition to="entrada_producto" name="terminar"></transition>
+		<transition to="informe_de_recepcion" name="informe_de_recepcion"></transition>
+		<transition to="editar_informe" name="editar_informe"></transition>
+	</task-node>
+
+	<task-node name="editar_informe">
+		<task name="editar_informe" description="Editar informe de recepcion: #{recepcionId}">
+			<assignment pooled-actors="admin"></assignment>
+		</task>
+		<transition to="detalles"></transition>
+		<transition to="informe_de_recepcion" name="informe_de_recepcion"></transition>
+	</task-node>
+
+	<task-node name="detalles">
+		<task name="detalles" description="Detalles del informe de recepcion: #{recepcionId}">
+			<assignment pooled-actors="admin"></assignment>
+		</task>
+		<transition to="informe_de_recepcion" name="informe_de_recepcion"></transition>
+		<transition to="aceptar_recepcion" name="aceptar_recepcion"></transition>
+		<transition to="editar_informe" name="editar_informe"></transition>
+	</task-node>
+
+	<node name="entrada_producto">
+		<action class="gehos.almacen.session.recepcionarProductos.gestionarInformeDeRecepcion.InformeActionHandler" config-type="bean"></action>
+		<transition to="fin"></transition>
+	</node>
+
+
+	<end-state name="fin"></end-state>
+
+
+</process-definition>

@@ -1,0 +1,99 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+
+
+	<script type="text/javascript">setContentTitle("#{messages.msg_titulo_ensClin}")</script>
+
+		<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+		type='text/css' />
+	<rich:messages styleClass="message" globalOnly="true">
+
+	</rich:messages>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/modEnsayo/styles/stylesheet.css"
+		rel="stylesheet" type="text/css" />
+
+
+
+	<h:form id="mainForm">
+
+		<a:outputPanel ajaxRendered="true" id="errorOutputPanel">
+			<s:div style="height:30px;width:100%"
+				rendered="#{facesMessages.getCurrentMessagesForControl('error').size() > 0 }">
+				<div class="custom-error">
+					<rich:message for="error"></rich:message>
+				</div>
+			</s:div>
+		</a:outputPanel>
+
+
+
+		<rich:panel id="entidadesPanel">
+
+			<f:facet name="header">
+				#{messages.msg_seleccionar_ensClin} #{permisosEstudiosPorEntidadController.NombreEstudio()}
+			</f:facet>
+
+			
+
+			<a:outputPanel id="tablaEntidades">
+				<s:div id="divEntidades">
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tr valign="top">
+							<td>
+							<rich:listShuttle id="ListShuttleEntidades"
+									listsHeight="125" sourceListWidth="300px"
+									targetListWidth="300px"
+									sourceValue="#{permisosEstudiosPorEntidadController.listaEntidadSource}"
+									targetValue="#{permisosEstudiosPorEntidadController.listaEntidadTarget}"
+									var="enti"
+									sourceCaptionLabel="#{messages.msg_entidades_ensClin}"
+									targetCaptionLabel="#{messages.msg_entidadesSeleccionadas_ensClin}"
+									showButtonLabels="false" fastOrderControlsVisible="false"
+									orderControlsVisible="false">
+
+									<s:convertEntity />
+									<rich:column>
+
+										<f:facet name="header">
+											<h:panelGrid columns="2"
+												style="width: 100%; padding:0px; margin:0px;" border="0"
+												cellpadding="0" cellspacing="0">
+												<s:div style="float: left;">#{messages.msg_nombreEntidad_ensClin}</s:div>
+											</h:panelGrid>
+										</f:facet>
+
+										<h:outputText style="vertical-align: 25%; margin-left: 2px; "
+											value="#{enti.nombre}" />
+									</rich:column>
+								</rich:listShuttle></td>
+						</tr>
+					</table>
+				</s:div>
+			</a:outputPanel>
+		</rich:panel>
+		<table cellpadding="0" cellspacing="0" border="0" align="right"
+				style="margin: 5px;">
+				<tr>
+					<td><a:commandButton value="#{messages.btn_aceptar_ensClin}"
+							id="buttonAceptar"
+							style="margin-bottom: 0px; margin-right: 10px; margin-left: 0px; margin-top: 8px"
+							action="#{permisosEstudiosPorEntidadController.salvar()}" /></td>
+
+					<td><a:commandButton value="#{messages.btn_cancelar_ensClin}"
+							immediate="true"
+							style="margin-bottom: 0px; margin-right: 0px; margin-left: 0px; margin-top: 8px"
+							action="salir" /></td>
+				</tr>
+			</table>
+	</h:form>
+</s:div>

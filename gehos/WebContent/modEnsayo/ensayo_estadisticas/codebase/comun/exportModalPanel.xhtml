@@ -1,0 +1,69 @@
+<s:div   xmlns     ="http://www.w3.org/1999/xhtml" 
+ 			      xmlns:ui  ="http://java.sun.com/jsf/facelets" 
+      		      xmlns:h   ="http://java.sun.com/jsf/html" 
+			      xmlns:f   ="http://java.sun.com/jsf/core" 
+			      xmlns:s   ="http://jboss.com/products/seam/taglib" 
+			      xmlns:rich="http://richfaces.org/rich" 
+                  xmlns:a4j   ="http://richfaces.org/a4j"                  
+                  template  ="#{theme.template}">
+<s:div >
+
+<rich:modalPanel id="exportPanel"	width="350" height="71"  resizeable="false" autosized="true">
+		<f:facet name="header">
+            <h:outputText value="#{messages.seleccionarFormatoArchivo}"></h:outputText>
+        </f:facet>
+        <f:facet name="controls">
+            <h:graphicImage value="/resources/icons/default/acciones/cerrar.gif" onclick="#{rich:component('exportPanel')}.hide();" style="cursor: pointer;" id="hidelinkEx"/>
+        </f:facet>
+	    <h:form id="exportarReporteForm">	      
+	       <table cellpadding="0" cellspacing="0" id="tableOpcionesReporte">
+	       	  <tr>
+	       	  	<td height="11px" colspan="2"></td>
+	       	  </tr>
+	       	  <tr>
+	       	  	<td width="6px"></td>
+	       	  	  <td valign="top" width="150">
+	       	  	  	  <table cellpadding="0" cellspacing="0">
+	       	  	  	  	<tr>
+	       	  	  	  		<td>
+	       	  	  	  			<h:outputText value="Formato:" styleClass="normalText"/>
+	       	  	  	  		</td>
+	       	  	  	  		<td>
+	       	  	  	  			<rich:message for="comboExportarReporte" showDetail="false" showSummary="false" tooltip="true" style="color:red;" >
+			    					<f:facet name="errorMarker">
+				    					<h:outputText title="#{facesMessages.getCurrentMessagesForControl('comboExportarReporte').get(0).getDetail()}" value="*" style="cursor: default;" styleClass="errorLabel"/>
+				    				</f:facet>
+			    				</rich:message>
+	       	  	  	  		</td>
+	       	  	  	  	</tr>
+	       	  	  	  </table>
+	       	  	  	  <rich:comboBox defaultLabel="#{messages.seleccione}"
+	       	  	  	  				 id="comboExportarReporte" 
+	       	  	  	  				 width="150"
+	       	  	  	  				 buttonClass="comboModalPanel"
+	       	  	  	  				 buttonDisabledClass="comboModalPanel"
+	       	  	  	  				 buttonInactiveClass="comboModalPanel"
+	       	  	  	  				 required="true"
+	       	  	  	  				 suggestionValues="#{controlador.filesFormatCombo}"
+	       	  	  	  				 value="#{controlador.exportFormat}"
+	       	  	  	  				 directInputSuggestions="true"
+	       	  	  	  				 enableManualInput="false">	       	  	  	  
+	       	  	  	  </rich:comboBox>
+	       	  	  </td>
+	       	  	  <td width="10px"></td>
+	       	  	  <td valign="bottom">
+	       	  	  <br/>
+	       	  	  	  <a4j:commandButton id="buttonAceptar" action="#{controlador.exportReportToFileFormat()}" oncomplete="if(#{empty facesMessages.getCurrentMessagesForControl('comboExportarReporte')}) { window.open('#{facesContext.externalContext.requestContextPath}#{controlador.pathExportedReport}'); Richfaces.hideModalPanel('exportPanel');}" value="#{messages.aceptar}" style="margin: 0px 0px 0px 0px;" reRender="tableOpcionesReporte,buttonAceptar"/>
+	       	  	  	  <rich:spacer width="5"/>
+	       	  	  	  <a4j:commandButton onclick="#{rich:component('exportPanel')}.hide(); return false;" value="#{messages.cancelar}" style="margin: 0px 0px 0px 0px;"/>
+	       	  	  </td>
+	       	  </tr>
+	       	  <tr>
+	       	  	<td height="8"></td>
+	       	  </tr>
+	       </table>
+	       </h:form>
+		</rich:modalPanel>
+
+</s:div>
+</s:div>

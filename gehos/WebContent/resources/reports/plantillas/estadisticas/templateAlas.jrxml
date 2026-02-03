@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+
+<jasperReport name="template" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="540" leftMargin="43" rightMargin="29" topMargin="0" bottomMargin="29">
+	<parameter name="P_TITULO" class="java.lang.String"/>
+	<parameter name="P_SUBTITULO" class="java.lang.String"/>
+	<parameter name="LOGO_URL" class="java.lang.String"/>
+	<parameter name="SEPARADOR" class="java.lang.String"/>
+	<parameter name="AUTOR_RPT" class="java.lang.String"/>
+	<parameter name="DEPARTAMENTO" class="java.lang.String"/>
+	<parameter name="DATE_TODAY" class="java.lang.String"/>
+	<parameter name="PRODUCT_IMG" class="java.lang.String"/>
+	<background>
+		<band height="1"/>
+	</background>
+	<pageHeader>
+		<band height="130">
+			<image hyperlinkType="None">
+				<reportElement x="0" y="14" width="147" height="43"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{PRODUCT_IMG}]]></imageExpression>
+			</image>
+			<image isUsingCache="true" hyperlinkType="None">
+				<reportElement stretchType="RelativeToTallestObject" x="158" y="14" width="147" height="43"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO_URL}]]></imageExpression>
+			</image>
+			<textField hyperlinkType="None">
+				<reportElement key="textField" x="312" y="43" width="227" height="14"/>
+				<textElement textAlignment="Right">
+					<font fontName="Myriad Pro" size="10" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{DATE_TODAY}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement x="312" y="14" width="227" height="14"/>
+				<textElement textAlignment="Right">
+					<font fontName="Myriad Pro" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{DEPARTAMENTO}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement x="312" y="28" width="226" height="14"/>
+				<textElement textAlignment="Right">
+					<font fontName="Myriad Pro" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{AUTOR_RPT}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement x="0" y="73" width="538" height="16"/>
+				<textElement>
+					<font fontName="Myriad Pro" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_TITULO}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement key="textField" x="0" y="92" width="538" height="26"/>
+				<textElement>
+					<font fontName="Myriad Pro" size="10" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_SUBTITULO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20"/>
+	</columnHeader>
+	<detail>
+		<band height="15"/>
+	</detail>
+	<pageFooter>
+		<band height="57">
+			<textField isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField" x="212" y="10" width="39" height="15"/>
+				<textElement textAlignment="Right">
+					<font fontName="Myriad Pro" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField" x="273" y="10" width="43" height="15"/>
+				<textElement>
+					<font fontName="Myriad Pro" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement x="251" y="10" width="22" height="15"/>
+				<textElement textAlignment="Center">
+					<font fontName="Myriad Pro" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{SEPARADOR}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

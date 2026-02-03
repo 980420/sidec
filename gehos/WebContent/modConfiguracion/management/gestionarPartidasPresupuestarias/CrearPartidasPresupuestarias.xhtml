@@ -1,0 +1,154 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+
+		<a4j:form>
+			<a4j:jsFunction
+				oncomplete="Richfaces.hideModalPanel('gestionarEntidadOrganizacional')"
+				name="cerrarCrearEntidadOrganizacional" ignoreDupResponses="true"
+				reRender="entidadOrganizacional">
+			</a4j:jsFunction>
+		</a4j:form>
+
+		<h:form id="form" styleClass="edit">
+			<s:validateAll>
+				<rich:panel styleClass="whitespace">
+					<f:facet name="header">#{messages.datos}</f:facet>
+
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr>
+							<td style="height: 13px;" colspan="6"></td>
+						</tr>
+						<tr style="vertical-align: top;">
+							<td><rich:spacer width="7px" /></td>
+							<td><h:outputLabel value="#{messages.cantidad}"></h:outputLabel>
+							<rich:message for="cantidad" showDetail="false"
+								showSummary="false" tooltip="true">
+								<f:facet name="errorMarker">
+									<h:outputText
+										title="#{facesMessages.getCurrentMessagesForControl('cantidad').get(0).getDetail()}"
+										style="color : red;cursor:pointer;" value="*"
+										styleClass="nombre" />
+								</f:facet>
+							</rich:message><br />
+							<h:inputText id="cantidad"
+								value="#{partidaPresupuestariaCrearControlador.cantidad}"
+								required="true" validator="#{validations_configuracion.number}"
+								style="width:148px; text-align: right" /></td>
+							<td><rich:spacer width="25px" /></td>
+							<td><h:outputLabel value="#{messages.entidadOrganizacional}"></h:outputLabel>
+							<rich:message for="entidadOrganizacional" showDetail="false"
+								showSummary="false" tooltip="true">
+								<f:facet name="errorMarker">
+									<h:outputText
+										title="#{facesMessages.getCurrentMessagesForControl('entidadOrganizacional').get(0).getDetail()}"
+										style="color : red;cursor:pointer;" value="*"
+										styleClass="nombre" />
+								</f:facet>
+							</rich:message><br />
+							<rich:comboBox id="entidadOrganizacional" enableManualInput="false"
+								suggestionValues="#{partidaPresupuestariaCrearControlador.entidadOrganizacionalList()}"
+								style=" width: 150px;" defaultLabel="#{messages.seleccione}"
+								required="true"
+								value="#{partidaPresupuestariaCrearControlador.entidadOrganizacionalSeleccionada}">
+								<a4j:support ajaxSingle="true" event="onselect"
+									action="#{partidaPresupuestariaCrearControlador.nuevaEntidadOrganizacional()}"
+									reRender="modalPanelGestEntidadOrganizacional"
+									oncomplete="Richfaces.showModalPanel('gestionarEntidadOrganizacional')" />
+							</rich:comboBox></td>
+							<td><rich:spacer width="25px" /></td>
+							<td>#{messages.departamentoClinico}<rich:message
+								for="categoria" showDetail="false" tooltip="true"
+								style="color:red;cursor:pointer;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('categoria').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message> <br />
+							<rich:comboBox id="categoria" 
+								disabled="#{partidaPresupuestariaCrearControlador.departamentos().size() == 0}"
+								suggestionValues="#{partidaPresupuestariaCrearControlador.departamentos()}"
+								defaultLabel="#{messages.seleccione}" enableManualInput="false"
+								style=" width : 150px;"
+								value="#{partidaPresupuestariaCrearControlador.departamentoSeleccionado}">
+								<a4j:support ajaxSingle="true" event="onselect"
+									action="#{partidaPresupuestariaCrearControlador.setServicioFisicoSeleccionado('')}"
+									reRender="serviciosFisicos" />
+							</rich:comboBox></td>
+							<td><rich:spacer width="7px" /></td>
+						</tr>
+						<tr>
+							<td height="8px" />
+						</tr>
+						<tr>
+							<td style="width: 5px;"></td>
+							<td><a4j:outputPanel id="serviciosFisicos">							
+							#{messages.servicio}	<br />
+								<rich:comboBox enableManualInput="false"
+									suggestionValues="#{partidaPresupuestariaCrearControlador.serviciosFisicos()}"
+									style=" width: 150px;" defaultLabel="#{messages.seleccione}"
+									disabled="#{partidaPresupuestariaCrearControlador.serviciosFisicos().size() == 0}"
+									value="#{partidaPresupuestariaCrearControlador.servicioFisicoSeleccionado}">
+
+								</rich:comboBox>
+								<rich:spacer height="9px" style="display: block"></rich:spacer>
+							</a4j:outputPanel></td>
+
+
+
+						</tr>
+
+
+					</table>
+
+				</rich:panel>
+			</s:validateAll>
+			<rich:spacer height="8px" style="display: block"></rich:spacer>
+			<s:div styleClass="actionButtons" style="text-align: right">
+				<div align="right">
+				<table cellpadding="0" cellspacing="0" border="0">
+					<tr>
+						<td><h:commandButton id="buttonAceptar"
+							value="#{messages.aceptar}"
+							action="#{partidaPresupuestariaCrearControlador.crear()}"
+							style="margin-bottom: 0px; margin-right: 5px; margin-left: 0px; margin-top: 0px">
+						</h:commandButton></td>
+						<td><h:commandButton immediate="true"
+							value="#{messages.cancelar}"
+							action="#{partidaPresupuestariaCrearControlador.cancelar()}"
+							style="margin-bottom: 0px; margin-right: 0px; margin-left: 5px; margin-top: 0px"></h:commandButton></td>
+					</tr>
+				</table>
+				<rich:spacer height="8px" style="display: block"></rich:spacer></div>
+			</s:div>
+		</h:form>
+
+
+		<a4j:outputPanel id="modalPanelGestEntidadOrganizacional">
+			<ui:include
+				src="/modConfiguracion/management/gestionarPartidasPresupuestarias/modalPanels/CrearEntidadOrganizacional.xhtml" />
+		</a4j:outputPanel>
+	</ui:define>
+
+</ui:composition>
+

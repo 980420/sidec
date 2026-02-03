@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" >
+<head>
+	<link rel="shortcut icon"
+	href="#{facesContext.externalContext.requestContextPath}/img/gehos.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="pragma" content="no-cache" />
+	<title>Inicio</title>
+<link href="#{facesContext.externalContext.requestContextPath}/error/style/errorStyle.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<div style="text-align: center;">
+	<rich:messages styleClass="message" ajaxRendered="true" style="color:#ffffff !important"/>
+</div>
+    <table id="content">
+       <tr><td id="effect">
+        
+        <div id="login">
+         
+          <div id="contentData">
+          <h:form id="loginn"  >
+            
+             <table width="100%">
+                 
+                 <tr>
+                   <td style="text-align:center; ">
+                   
+                   #{messages.webXmlError}</td>
+                    
+                 </tr>
+                  <tr>
+                    <td style="text-align:center;">
+                       <div id="button2" >
+                
+                          <input type="button"  value="#{messages.salir}" class="button"
+                           onmouseup="document.getElementById('loading').style.display=''" onclick="history.go(-1)"/>
+                          
+                       </div>
+                    </td>
+                 </tr>
+             </table>
+               <div class="error">
+                 
+              </div>
+               </h:form>
+          </div>
+        
+          <div id="loading" style="display:none">
+              <img alt="" src="images/Loader3.gif"/>
+          </div>
+        </div> </td>
+</tr></table>    
+
+    <script type="text/javascript">
+    document.getElementById("loginn:username").focus();
+    </script>
+   
+</body>
+</html>

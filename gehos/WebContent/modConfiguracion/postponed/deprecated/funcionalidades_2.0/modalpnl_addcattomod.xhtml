@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+      xmlns:rich="http://richfaces.org/rich"
+	  xmlns:a="http://richfaces.org/a4j"
+	  >
+<head>   
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <title>list</title>
+  
+  	<link rel="shortcut icon" href="#{facesContext.externalContext.requestContextPath}/img/gehos.ico" />
+  	
+	<script type="text/javascript"   
+		language="javascript" 
+		src="#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/script/layout.js">
+	</script>
+
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/stylesheet/layout.css"
+		rel="stylesheet"
+		type="text/css" />
+		
+  	<style type="text/css">
+		html{background-image:url('kk.gif')}
+		body{background-image:url('kk.gif')}
+	</style> 
+</head>
+	<h:outputLabel value="Id: #{addCategoriaToModuleController.dateNow()}"></h:outputLabel><br/>
+	<h:outputLabel value="Módulo: #{addCategoriaToModuleController.modulo.label}"></h:outputLabel>
+  	
+  	<body>
+		<h:form id="modulo_agregar_cat_form" enctype="multipart/form-data">
+					
+				<h:graphicImage rendered="false" width="25" height="25"
+				url="/resources/modCommon/moduleimages/#{theme.name}/#{theme.color}/#{addCategoriaToModuleController.moduleName}.png" />
+				
+				<h:outputLabel>Label:</h:outputLabel><br/>
+				<h:inputText value="#{addCategoriaToModuleController.categoria.label}" />
+				<br/>
+				
+				<br/>
+				
+				<h:selectBooleanCheckbox value="#{addCategoriaToModuleController.existingIcon}" >
+					<a:support event="onchange" 
+							   reRender="kaka">
+					</a:support>
+				</h:selectBooleanCheckbox>
+				<h:outputText  value="Icono existente?"/><br/>
+				
+				<a:outputPanel id="kaka">
+					<s:fileUpload id="modulo_agregar_cat_fileUpload" data="#{addCategoriaToModuleController.icon}" accept="images/*" 
+								  fileName="#{addCategoriaToModuleController.iconFileName}"
+								  rendered="#{not addCategoriaToModuleController.existingIcon}" />
+								  
+					<s:div        id="modulo_agregar_cat_iconslist"
+								  rendered="#{addCategoriaToModuleController.existingIcon}">
+						
+							<div style="overflow: scroll; width: 170px; height: 120px">
+								<rich:dataGrid columns="3" value="#{addCategoriaToModuleController.getExistingIcons()}" 
+														   var="icon">
+									<input type="radio" onclick="updateIcon('#{icon}')"  name="musictype2"></input>
+									<h:graphicImage width="20" height="20" title="#{icon}"
+									   url="/resources/funcionalidadesIcons/#{addCategoriaToModuleController.moduleName}/#{icon}" />
+								</rich:dataGrid>
+							</div>
+
+						    ícono:
+						    <h:outputLabel  id="existingIconName_label"
+						    				value="#{addCategoriaToModuleController.existingIconName}"></h:outputLabel>
+						    
+							
+					</s:div>
+				</a:outputPanel>
+
+				<br/>
+				<a:commandButton value="Aceptar"
+								 action="#{addCategoriaToModuleController.uploadAndSave()}"
+								 oncomplete="window.parent.closeModuloAgregarCatPanel()">
+				</a:commandButton>
+				<input type="button" value="Cancelar"
+								 onclick="window.parent.closeModuloAgregarCatPanel()">
+				</input>
+					
+					
+		</h:form>
+		
+						
+		<a:form>
+	        <a:jsFunction name="updateIcon" reRender="existingIconName_label" >
+	            <a:actionparam name="param1" 
+	            	assignTo="#{addCategoriaToModuleController.existingIconName}"  />                  
+	        </a:jsFunction>
+	    </a:form>
+			    
+	</body>
+
+</html>
+

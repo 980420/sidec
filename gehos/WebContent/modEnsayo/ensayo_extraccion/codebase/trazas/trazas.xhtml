@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:a4j="http://richfaces.org/a4j" 
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+
+	
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<ui:include src="/modEnsayo/codebase/plantillas/exportModalPanel.xhtml">
+       
+   			<ui:param name="controlador" value="#{trazasControladora}" />
+		</ui:include>
+		<h:form>
+			<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+			
+			<rich:modalPanel id="bloqueo" width="0" height="0" top="0" left="0" style="opacity: -10000" shadowOpacity="-10000" />
+
+			<rich:simpleTogglePanel switchType="client" label="#{messages.lbl_trazas_sis}"
+				opened="true">
+
+				<table cellpadding="0px" cellspacing="0px" border="0px"
+					id="simplesearch">
+
+					
+						<td style="height: 8px" rowspan="9"></td>
+					
+					<tr>
+						<td>#{messages.anno}<br />
+						<rich:comboBox suggestionValues="#{trazasControladora.annos}"
+							value="#{trazasControladora.anno}"
+							defaultLabel="#{messages.seleccione}" id="anno">
+
+
+						</rich:comboBox></td>
+						<td><rich:spacer width="25px" /></td>
+						<td>#{messages.mes}<br />
+						<rich:comboBox suggestionValues="#{trazasControladora.mesesCombo()}"
+							value="#{trazasControladora.mesSeleccionado}"
+							defaultLabel="#{messages.seleccione}">
+
+							<a4j:support event="onselect"
+								action="#{trazasControladora.llenarDias()}" ajaxSingle="true"
+								reRender="panel,div" />
+						</rich:comboBox></td>
+						<td><rich:spacer width="25px" /></td>
+						<td>#{messages.dia}<br />
+						<a4j:outputPanel id="panel">
+							<div id="div"><rich:comboBox
+								suggestionValues="#{trazasControladora.dias}"
+								value="#{trazasControladora.dia}"
+								defaultLabel="#{messages.seleccione}" id="dia">
+
+
+							</rich:comboBox></div>
+						</a4j:outputPanel></td>
+
+					</tr>
+					<tr style="height: 8px;" />
+					<tr>
+						<td>#{messages.ip}<br />
+						<rich:comboBox suggestionValues="#{trazasControladora.ips}"
+							value="#{trazasControladora.ip}"
+							defaultLabel="#{messages.seleccione}" id="ip">
+						</rich:comboBox></td>
+						
+						<td><rich:spacer width="25px" /></td>
+						<td>#{messages.user}<br />
+						<rich:comboBox suggestionValues="#{trazasControladora.usuarios}"
+							value="#{trazasControladora.usuario}"
+							defaultLabel="#{messages.seleccione}" id="usuario">
+						</rich:comboBox></td>
+						<td><rich:spacer width="25px" /></td>
+						<td>#{messages.modulo}<br />
+						<rich:comboBox
+							suggestionValues="#{trazasControladora.listadoModulesNames}"
+							value="#{trazasControladora.modulo}"
+							defaultLabel="#{messages.seleccione}" id="modulo">
+
+						</rich:comboBox></td>
+					</tr>
+					
+					
+				</table>
+			</rich:simpleTogglePanel>
+			
+			<div align="right">  
+			<table  >
+			
+						<td colspan="9">
+						 <a4j:commandButton value="#{messages.generar}"
+							tabindex="3"
+							style="margin-right: 10px; margin-bottom: 0px;"
+							action="#{trazasControladora.Exportar()}" reRender="wrapperPanel1,wrapperPanel">
+						</a4j:commandButton>
+						<s:button view="/modCommons/modHome/home.gehos" value="#{messages.cancelar}"
+					style="margin-right:0px"
+					rendered="#{not identificadorManager.editing}">
+					<f:param name="idFuncionalidad"
+						value="#{activeModule.activeModule.id}" />
+					<f:param name="idancestors"
+						value="#{activeModule.activeModule.id}a" />
+					<f:param name="moduleName" value="#{activeModule.activeModuleName}" />
+				</s:button></td>
+									
+			</table>
+			</div>
+
+			<div align="right"><a4j:status id="status" onstart="#{rich:component('bloqueo')}.show()" onstop="#{rich:component('bloqueo')}.hide()">
+                        <f:facet name="start">
+                                <s:div>
+                                        <table>
+                                                <tr>
+                                                        <td><h:graphicImage width="12" height="12"
+                                                                value="/resources/icons/default/acciones/loading_big.gif" /></td>
+                                                        <td><h:outputText value="#{messages.lblProcesando_ap}" /></td>
+                                                </tr>
+                                        </table>
+                                </s:div>
+                        </f:facet>
+                </a4j:status></div>
+
+			<s:div>
+			<h:panelGroup id="wrapperPanel1">
+			<h:panelGroup id="noResultRenderPanel" rendered="true">
+			
+						<rich:panel  rendered="#{trazasControladora.flag2}">
+		<f:facet name="header">#{messages.titulo}</f:facet>
+			<table class="Tabla" width="100%" cellpadding="0" cellspacing="0">
+   				<tr><td class="margenSupIzq">
+					<h:outputText value="#{trazasControladora.noResult}"/>
+				</td></tr>
+			</table>
+	</rich:panel>
+	
+	</h:panelGroup>
+			</h:panelGroup>
+						</s:div>
+						
+						
+			
+			
+			<s:div >
+			<h:panelGroup id="wrapperPanel">
+			<h:panelGroup id="reportRenderPanel" rendered="true">
+			<rich:panel	rendered="#{trazasControladora.flag}">
+		<f:facet name="header">#{messages.titulo}</f:facet>
+		<iframe width="100%" height="800px" src="#{facesContext.externalContext.requestContextPath}#{trazasControladora.pathToReport}"></iframe>
+		<div align="right">			
+		<!-- Se implementa el requisito funcional 5: Permite exportar las trazas generadas en el sistema al formato WORD, EXCEL y PDF. -->
+			<rich:spacer height="8px" style="display: block" />
+			<input type="button" value="#{messages.exportar}" onclick="javascript:Richfaces.showModalPanel('exportPanel');"
+				title="#{messages.exportar}" style="text-align:center; margin-right: 10px;"
+				id="exportButton" action="export"/>						
+			<s:button view="/modCommons/modHome/home.gehos" value="#{messages.salir}"
+					style="margin-right:0px"
+					rendered="#{not identificadorManager.editing}">
+					<f:param name="idFuncionalidad"
+						value="#{activeModule.activeModule.id}" />
+					<f:param name="idancestors"
+						value="#{activeModule.activeModule.id}a" />
+					<f:param name="moduleName" value="#{activeModule.activeModuleName}" />
+				</s:button>
+		</div>
+	        </rich:panel>
+			</h:panelGroup>
+			    </h:panelGroup>
+			    </s:div>
+							
+	</h:form>
+	
+</s:div>

@@ -1,0 +1,11 @@
+package comun
+
+import gehos.autenticacion.session.custom.MaxFailedAccessAttempts;
+
+rule "Max"
+
+	when		
+		$limit: MaxFailedAccessAttempts()
+	then
+		$limit.setMaxFailedAccesAttempts(7);
+end

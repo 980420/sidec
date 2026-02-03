@@ -1,0 +1,163 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+		<a4j:outputPanel ajaxRendered="true">
+			<rich:messages id="error" styleClass="message" for="error"
+				ajaxRendered="true" />
+		</a4j:outputPanel>
+
+		<h:form id="form" styleClass="edit">
+			<s:validateAll>
+				<rich:panel>
+					<f:facet name="header">#{messages.datos}</f:facet>
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr>
+							<td style="height: 13px;" colspan="6"></td>
+						</tr>
+						<tr style="vertical-align: top;">
+							<td style="width: 7px;"></td>
+							<td>#{messages.codigo} <rich:message for="codigo"
+								showDetail="false" tooltip="true"
+								style="color:red;cursor:pointer;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('codigo').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message> <br />
+							<h:inputText id="codigo" required="true" style=" width : 148px"
+								validator="#{servicioClinicoValidarControlador.code}"
+								requiredMessage="#{messages.valorRequerido}"
+								value="#{servicioClinicoCrearControlador.codigo}" /></td>
+							<td style="width: 25px"></td>
+							<td>#{messages.nombre}<rich:message for="nombre"
+								showDetail="false" tooltip="true"
+								style="color:red;cursor:pointer;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('nombre').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message> <br />
+							<h:inputText id="nombre" style=" width : 148px;" required="true"
+								validator="#{servicioClinicoValidarControlador.name}"
+								requiredMessage="#{messages.valorRequerido}"
+								value="#{servicioClinicoCrearControlador.nombre}" /></td>
+							<td style="width: 25px"></td>
+							<td>
+							<table cellpadding="0" cellspacing="0" border="0"
+								style="vertical-align: middle;">
+								<tr>
+									<td valign="middle"><br />
+									<h:outputLabel value="#{messages.servicioFisico}"></h:outputLabel></td>
+									<td><rich:spacer width="8px"></rich:spacer></td>
+									<td valign="middle"><br />
+
+									<h:selectBooleanCheckbox
+										value="#{servicioClinicoCrearControlador.servicio.servicioFisico}"
+										style="margin-top: 0px; margin-right: 0px; margin-left: 0px; margin-bottom: 0px;" />
+
+
+									</td>
+
+								</tr>
+							</table>
+							</td>
+						</tr>
+						<tr>
+							<td height="8px" />
+						</tr>
+						<tr>
+							<td style="width: 7px;"></td>
+							<td>#{messages.departamentoClinico}<rich:message
+								for="categoria" showDetail="false" tooltip="true"
+								style="color:red;cursor:pointer;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('categoria').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message> <br />
+							<rich:comboBox id="categoria" required="true"
+								requiredMessage="#{messages.valorRequerido}"
+								suggestionValues="#{servicioClinicoCrearControlador.departamentos()}"
+								defaultLabel="#{messages.seleccione}" enableManualInput="false"
+								style=" width : 150px;"
+								value="#{servicioClinicoCrearControlador.departamentoSeleccionado}">
+								<a4j:support ajaxSingle="true" event="onselect"
+									limitToList="true"
+									action="#{servicioClinicoCrearControlador.filtrarDepartamento()}"
+									reRender="comboCategorias,subCategorias" />
+							</rich:comboBox> <rich:spacer height="9px" style="display: block" /></td>
+							<td style="width: 25px"></td>
+							<td><a4j:outputPanel id="comboCategorias">
+								<rich:spacer height="1px"
+									rendered="#{empty servicioClinicoCrearControlador.categorias()}" />
+								<rich:spacer
+									rendered="#{not empty servicioClinicoCrearControlador.categorias()}">
+				#{messages.servicioClinico}				
+				<br />
+									<rich:comboBox
+										suggestionValues="#{servicioClinicoCrearControlador.categorias()}"
+										style="width: 150px;" defaultLabel="#{messages.seleccione}"
+										value="#{servicioClinicoCrearControlador.categoriaSeleccionada}">
+									
+									</rich:comboBox>
+
+									<rich:spacer height="8px" style="display: block"></rich:spacer>
+								</rich:spacer>
+							</a4j:outputPanel></td>
+						</tr>
+						<tr>
+							<td style="width: 5px;"></td>
+							<td></td>
+							<td align="right" colspan="2">
+
+							</td>
+						</tr>
+					</table>
+				</rich:panel>
+			</s:validateAll>
+			<rich:spacer height="8px" style="display: block"></rich:spacer>
+
+			<div align="right">
+			<table cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td><h:commandButton id="buttonAceptar"
+						value="#{messages.aceptar}"
+						action="#{servicioClinicoCrearControlador.crear()}"
+						style="margin-bottom: 0px; margin-right: 5px; margin-left: 0px; margin-top: 0px">
+					</h:commandButton></td>
+					<td><h:commandButton immediate="true"
+						value="#{messages.cancelar}" action="cancelar"
+						style="margin-bottom: 0px; margin-right: 0px; margin-left: 5px; margin-top: 0px"
+						propagation="end"></h:commandButton></td>
+				</tr>
+			</table>
+			<rich:spacer height="8px" style="display: block"></rich:spacer></div>
+
+		</h:form>
+
+
+		<br />
+	</ui:define>
+
+</ui:composition>
+

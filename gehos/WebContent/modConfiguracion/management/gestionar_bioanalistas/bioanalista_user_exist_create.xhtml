@@ -1,0 +1,530 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css">
+.rich-stglpanel-body {
+	padding: 0px
+}
+</style>
+		<style type="text/css">
+.rich-panel-body {
+	padding: 0px
+}
+
+.dr-tbpnl-cntnt,.rich-tabpanel-content {
+	/*arriba, derecha ,abajo ,izquierda*/
+	padding: 8px 0px 7px 8px;
+}
+
+.noAvailable {
+	color: red;
+	text-decoration: line-through;
+}
+</style>
+		<script type="text/javascript">setContentTitle('#{messages.crearMedico})
+		
+			var curDt = new Date();
+			var calDt=null;
+
+			 function previousDate(date){
+				calDt = date;
+			 }
+
+			 function disablementFunction(day){
+				if (curDt.getTime() - day.date.getTime() &#62; 0) return true; else return false;  
+			 }
+
+			 function disabledClassesProv(day){
+				if (curDt.getTime() - day.date.getTime() &#60; 0)
+					return 'noAvailable';
+				else 
+					return '';
+			 }
+
+			 function resetSecondDate(first,second) {
+				 var firstDate = first.getSelectedDate().getTime();
+				 var secondDate = second.getSelectedDate().getTime();
+
+				 if(firstDate - secondDate &#62; 0)
+					 second.resetSelectedDate();
+			 }
+	  		 
+			 function disablementFunctionPreviousEx(day){
+				if(calDt == null){
+					if (curDt.getTime() - day.date.getTime() &#62; 0) return true; else return false;
+				}
+				if ((curDt.getTime() - day.date.getTime() &#62; 0) &#38;&#38; (calDt.getTime() - day.date.getTime() &#60;= 0)){
+					return true;
+				}
+				else 
+					return false;
+			  }
+
+			function disabledClassesProvPreviousEx(day){
+				if(calDt == null){
+					if (curDt.getTime() - day.date.getTime() &#60; 0)
+						return 'noAvailable';
+					else 
+						return '';
+				}
+				if ((curDt.getTime() - day.date.getTime() &#60; 0) || (calDt.getTime() - day.date.getTime() &#62; 0))
+					return 'noAvailable';
+				else 
+					return '';
+			}
+		
+		</script>
+
+		<a4j:form>
+			<a4j:jsFunction action="#{crearUsuarioControlador.asignarCargos()}"
+				name="selected" ignoreDupResponses="true">
+				<a4j:actionparam name="id"
+					assignTo="#{crearUsuarioControlador.idCargo}" />
+			</a4j:jsFunction>
+		</a4j:form>
+
+		<h:form id="userCreate" styleClass="create"
+			enctype="multipart/form-data">
+
+
+			<s:validateAll>
+				<rich:tabPanel switchType="client" style="white-space:nowrap">
+
+
+					<rich:tab label="#{messages.datosComoUsuario}">
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+							<tr>
+								<td><rich:spacer height="3px" /></td>
+							</tr>
+							<tr style="vertical-align: top;">
+								<td><h:graphicImage
+									url="/resources/modCommon/unknown/#{theme.name}/generico/desconocido.png"
+									border="0" style="width: 74px; height: 74px;"
+									rendered="#{not userTools.userImageExist(crearBioanalistaUserExist_Controlador.usuario_conf.username)}" />
+								<h:graphicImage
+									url="/resources/modCommon/userphotos/#{crearBioanalistaUserExist_Controlador.usuario_conf.username}.png"
+									rendered="#{userTools.userImageExist(crearBioanalistaUserExist_Controlador.usuario_conf.username)}"
+									border="0" style="width: 74px; height: 74px;" /></td>
+								<td><rich:spacer width="7px" /></td>
+
+								<td valign="top">
+								<table cellpadding="0px" cellspacing="0px" border="0px">
+									<tr style="vertical-align: top;">
+										<td><h:outputLabel value="#{messages.param1}"></h:outputLabel>
+										<h:outputLabel value="*" style="color:red;cursor:default"
+											title="#{messages.user_requerido}"
+											rendered="#{crearBioanalistaUserExist_Controlador.userRep}" /> <rich:message
+											for="nick" showDetail="false" showSummary="false"
+											tooltip="true">
+											<f:facet name="errorMarker">
+												<h:outputText
+													title="#{facesMessages.getCurrentMessagesForControl('nick').get(0).getDetail()}"
+													style="color : red;cursor:pointer;" value="*"
+													styleClass="nombre" />
+											</f:facet>
+										</rich:message> <br />
+										<h:inputText
+											value="#{crearBioanalistaUserExist_Controlador.username}"
+											id="nick" tabindex="1" requiredMessage="#{messages.requerido}"
+											style="width:150px;" /></td>
+										<td style="width: 25px"></td>
+										<td><h:outputLabel value="#{messages.param4}"></h:outputLabel>
+										<rich:message for="cultura" showDetail="false" tooltip="true"
+											style="color:red;cursor:pointer;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{messages.requerido}." />
+											</f:facet>
+										</rich:message><rich:comboBox id="cultura" enableManualInput="false"
+											width="150px" tabindex="2"
+											defaultLabel="#{messages.seleccione}"
+											suggestionValues="#{crearBioanalistaUserExist_Controlador.cultura()}"
+											value="#{crearBioanalistaUserExist_Controlador.culturaSelec}">
+										</rich:comboBox></td>
+										<td style="width: 25px"></td>
+										<td>
+										<table cellpadding="0" cellspacing="0" border="0"
+											style="vertical-align: middle;">
+											<tr>
+												<rich:spacer height="11px" />
+												<td valign="middle"><h:outputLabel
+													value="#{messages.param5} "></h:outputLabel> <rich:spacer
+													width="7"></rich:spacer></td>
+												<td valign="middle"><h:selectBooleanCheckbox
+													style="margin: 0px;" tabindex="3"
+													value="#{crearBioanalistaUserExist_Controlador.usuario_conf.cuentaHabilitada}">
+												</h:selectBooleanCheckbox></td>
+											</tr>
+										</table>
+										</td>
+									</tr>
+									<tr>
+										<td><rich:spacer height="6px" /></td>
+									</tr>
+									<tr style="vertical-align: top;">
+										<td>
+										<table cellpadding="0" cellspacing="0" border="0"
+											style="vertical-align: middle;">
+
+											<tr>
+												<td valign="middle"><br />
+												<h:outputLabel value="#{messages.atributo16}"></h:outputLabel>
+												<rich:spacer width="7"></rich:spacer></td>
+												<td valign="middle"><br />
+
+												<h:selectBooleanCheckbox style="margin: 0px;" tabindex="4"
+													value="#{crearBioanalistaUserExist_Controlador.keepPassword}">
+													<a4j:support event="onclick" ajaxSingle="true"
+														reRender="aRepeatPassword,aPassword" />
+												</h:selectBooleanCheckbox></td>
+
+											</tr>
+										</table>
+										</td>
+										<td style="width: 25px"></td>
+										<td valign="top"><a4j:outputPanel id="aPassword">
+											<s:div id="divPassword"
+												rendered="#{!crearBioanalistaUserExist_Controlador.keepPassword}">
+												<h:outputLabel value="#{messages.param2}"></h:outputLabel>
+												<rich:message for="pass" showDetail="false"
+													showSummary="false" tooltip="true">
+													<f:facet name="errorMarker">
+														<h:outputText
+															title="#{facesMessages.getCurrentMessagesForControl('pass').get(0).getDetail()}"
+															style="color : red;cursor:pointer;" value="*"
+															styleClass="nombre" />
+													</f:facet>
+												</rich:message>
+												<br />
+												<h:inputSecret
+													value="#{crearBioanalistaUserExist_Controlador.contrasennaString}"
+													id="pass" tabindex="5" style="width:150px;"
+													redisplay="true" />
+											</s:div>
+										</a4j:outputPanel></td>
+										<td style="width: 25px"></td>
+										<td valign="top"><a4j:outputPanel id="aRepeatPassword">
+											<s:div id="divRepeatPassword"
+												rendered="#{!crearBioanalistaUserExist_Controlador.keepPassword}">
+												<h:outputLabel value=" #{messages.param3}"></h:outputLabel>
+												<h:outputLabel value="*" style="color:red"
+													title="#{messages.pass_desigual}"
+													rendered="#{not crearBioanalistaUserExist_Controlador.desiguales}" />
+												<rich:message for="verfpass" showDetail="false"
+													showSummary="false" tooltip="true">
+													<f:facet name="errorMarker">
+														<h:outputText
+															title="#{facesMessages.getCurrentMessagesForControl('verfpass').get(0).getDetail()}"
+															style="color : red;cursor:pointer;" value="*"
+															styleClass="nombre" />
+													</f:facet>
+												</rich:message>
+												<br />
+												<h:inputSecret id="verfpass" tabindex="5"
+													value="#{crearBioanalistaUserExist_Controlador.verfpass}"
+													style="width:150px;" redisplay="true" />
+											</s:div>
+										</a4j:outputPanel></td>
+									</tr>
+								</table>
+								</td>
+							</tr>
+
+						</table>
+						<rich:spacer height="8px" />
+
+						<rich:panel style="margin-right: 7px">
+							<f:facet name="header">#{messages.fotoUser}</f:facet>
+							<table cellpadding="0" cellspacing="0" border="0">
+								<tr>
+									<td height="11px"></td>
+								</tr>
+								<tr>
+									<td width="7px" />
+									<td><h:outputLabel value="#{messages.foto}"></h:outputLabel><br />
+									<s:fileUpload id="addPhoto" accept="*.*" tabindex="6"
+										data="#{crearBioanalistaUserExist_Controlador.data}"
+										fileName="#{crearBioanalistaUserExist_Controlador.nombrePhoto}" /></td>
+								</tr>
+							</table>
+
+							<rich:spacer height="6px" style="display: block" />
+						</rich:panel>
+						<rich:spacer height="8px" />
+
+						<rich:panel style="margin-right: 7px">
+							<f:facet name="header">#{messages.otrosDatos}</f:facet>
+							<table cellpadding="0px" cellspacing="0px" border="0px">
+								<tr>
+									<td style="height: 12px;" colspan="6"></td>
+								</tr>
+								<tr style="vertical-align: top;">
+									<td style="width: 7px;"></td>
+									<td><h:outputLabel value="#{messages.param6}"></h:outputLabel>
+									<rich:message for="name" showDetail="false" showSummary="false"
+										tooltip="true">
+										<f:facet name="errorMarker">
+											<h:outputText
+												title="#{facesMessages.getCurrentMessagesForControl('name').get(0).getDetail()}"
+												style="color : red;cursor:pointer;" value="*"
+												styleClass="nombre" />
+										</f:facet>
+									</rich:message> <br />
+									<h:inputText id="name" required="true"
+										requiredMessage="#{messages.requerido}"
+										value="#{crearBioanalistaUserExist_Controlador.name}" tabindex="7"
+										style="width:150px;" /> <rich:spacer height="1"
+										style="display:block"></rich:spacer> <rich:spacer height="6"
+										style="display:block; width : 1px; height : 6px;"></rich:spacer></td>
+									<td style="width: 25px"></td>
+									<td><h:outputLabel value="#{messages.param7}"></h:outputLabel>
+									<rich:message for="papellido" showDetail="false"
+										showSummary="false" tooltip="true">
+										<f:facet name="errorMarker">
+											<h:outputText
+												title="#{facesMessages.getCurrentMessagesForControl('papellido').get(0).getDetail()}"
+												style="color : red;cursor:pointer;" value="*"
+												styleClass="nombre" />
+										</f:facet>
+									</rich:message> <br />
+									<h:inputText
+										value="#{crearBioanalistaUserExist_Controlador.usuario_conf.primerApellido}"
+										tabindex="8" style="width:150px;" id="papellido" /> <rich:spacer
+										height="6" style="display:block"></rich:spacer></td>
+									<td style="width: 25px"></td>
+									<td valign="top"><h:outputLabel value="#{messages.param8}"></h:outputLabel>
+									<rich:message for="sapellido" showDetail="false"
+										showSummary="false" tooltip="true">
+										<f:facet name="errorMarker">
+											<h:outputText
+												title="#{facesMessages.getCurrentMessagesForControl('sapellido').get(0).getDetail()}"
+												style="color : red;cursor:pointer;" value="*"
+												styleClass="nombre" />
+										</f:facet>
+									</rich:message> <br />
+									<h:inputText
+										value="#{crearBioanalistaUserExist_Controlador.usuario_conf.segundoApellido}"
+										tabindex="9" style="width:150px;" id="sapellido" /> <rich:spacer
+										height="6" style="display:block"></rich:spacer></td>
+								</tr>
+
+							</table>
+						</rich:panel>
+						<rich:spacer height="1px" />
+					</rich:tab>
+
+
+
+					<rich:tab label="#{messages.roles}">
+
+						<table border="0" cellpadding="0" cellspacing="0">
+							<tr>
+								<td><rich:spacer height="3px" /></td>
+							</tr>
+							<tr valign="top">
+								<td />
+								<td><a4j:outputPanel id="listRoles">
+
+									<rich:listShuttle id="roles" listsHeight="240px"
+										sourceListWidth="300" targetListWidth="300" tabindex="15"
+										sourceValue="#{crearBioanalistaUserExist_Controlador.rolsSource}"
+										targetValue="#{crearBioanalistaUserExist_Controlador.rolsTarget}"
+										var="rol" sourceCaptionLabel="#{messages.roles}:"
+										targetCaptionLabel="#{messages.rolesSeleccionados}:"
+										showButtonLabels="false" fastOrderControlsVisible="false"
+										orderControlsVisible="false" topControlLabel="#{messages.primero}"
+										copyAllControlLabel="#{messages.copiarTodos}" copyControlLabel="#{messages.copiar}"
+										downControlLabel="#{messages.bajar}" upControlLabel="#{messages.subir}"
+										removeAllControlLabel="#{messages.eliminarTodos}"
+										removeControlLabel="#{messages.eliminar}" bottomControlLabel="#{messages.ultimo}">
+										<s:convertEntity />
+										<rich:column>
+											<f:facet name="header">
+												<h:panelGrid columns="2"
+													style="width: 100%; padding:0px; margin:0px;" border="0"
+													cellpadding="0" cellspacing="0">
+													<s:div style="float: left;">#{messages.headerListshuttleNombre}</s:div>
+												</h:panelGrid>
+											</f:facet>
+											<h:outputText style="vertical-align: 25%; margin-left: 2px; "
+												value="#{rol.name}">
+
+											</h:outputText>
+										</rich:column>
+
+
+									</rich:listShuttle>
+
+								</a4j:outputPanel></td>
+							</tr>
+						</table>
+					</rich:tab>
+
+					<rich:tab label="#{messages.datosComoBio}">
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+							<tr>
+								<td><rich:spacer height="3px" /></td>
+							</tr>
+							<tr style="vertical-align: top;">
+								<td>#{messages.conf_matricula_colegio} <h:outputLabel
+									value="*" style="color:red; cursor:pointer;"
+									title="#{messages.valorRep}"
+									rendered="#{crearBioanalistaUserExist_Controlador.matriculaCRep}" />
+								<rich:message for="matriculaColegio" showDetail="false"
+									showSummary="false" tooltip="true">
+									<f:facet name="errorMarker">
+										<h:outputText
+											title="#{facesMessages.getCurrentMessagesForControl('matriculaColegio').get(0).getDetail()}"
+											style="color : red;cursor:pointer;" value="*"
+											styleClass="nombre" />
+									</f:facet>
+								</rich:message> <br />
+								<h:inputText id="matriculaColegio"
+									requiredMessage="#{messages.requerido}"
+									value="#{crearBioanalistaUserExist_Controlador.matriculaColegio}"
+									tabindex="11" style="width:150px;" /> <rich:spacer height="2"></rich:spacer></td>
+								<td style="width: 25px"></td>
+								
+								<td style="width: 25px"></td>
+								
+							</tr>
+
+						</table>
+					</rich:tab>
+					
+					<rich:tab label="#{messages.entidades}">
+
+						<table border="0px" cellpadding="0px" cellspacing="0px">
+							<tr>
+								<td><rich:spacer height="2px" /></td>
+							</tr>
+							<tr>
+								<td><a4j:outputPanel id="entidad">
+									<rich:listShuttle id="test" sourceListWidth="300"
+										targetListWidth="300"
+										sourceValue="#{crearBioanalistaUserExist_Controlador.entidadesSource}"
+										targetValue="#{crearBioanalistaUserExist_Controlador.entidadesTarget}"
+										var="entity" sourceCaptionLabel="#{messages.entidades}:"
+										targetCaptionLabel="#{messages.entidadesSeleccionadas}:"
+										showButtonLabels="false" fastOrderControlsVisible="false"
+										orderControlsVisible="false" topControlLabel="#{messages.primero}"
+										copyAllControlLabel="#{messages.copiarTodos}" copyControlLabel="#{messages.copiar}"
+										downControlLabel="#{messages.bajar}" upControlLabel="#{messages.subir}"
+										removeAllControlLabel="#{messages.eliminarTodos}"
+										removeControlLabel="#{messages.eliminar}" bottomControlLabel="#{messages.ultimo}">
+										<s:convertEntity></s:convertEntity>
+										<rich:column>
+											<f:facet name="header">
+												<h:panelGrid columns="2"
+													style="width: 100%; padding:0px; margin:0px;" border="0"
+													cellpadding="0" cellspacing="0">
+													<s:div style="float: left;">#{messages.headerListshuttleNombre}</s:div>
+												</h:panelGrid>
+											</f:facet>
+											<h:outputText style="vertical-align: 25%; margin-left: 2px; "
+												value="#{entity.nombre}"></h:outputText>
+										</rich:column>
+									</rich:listShuttle>
+								</a4j:outputPanel></td>
+							</tr>
+							<tr>
+								<td><rich:spacer height="7px" /></td>
+							</tr>
+							<tr>
+								<td></td>
+							</tr>
+							<tr>
+								<td><rich:spacer height="7px" /></td>
+							</tr>
+							<tr>
+								<td></td>
+							</tr>
+							<tr>
+								<td><rich:spacer height="7px" /></td>
+							</tr>
+							<tr>
+								<td></td>
+							</tr>
+						</table>
+
+
+
+
+					</rich:tab>
+				</rich:tabPanel>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<rich:spacer height="3px" />
+				<s:div styleClass="actionButtons" rendered="#{empty from}"
+					style="text-align: right">
+
+					<div align="right"><h:commandButton
+						value="#{messages.aceptar}" style="" tabindex="13"
+						id="buttonCrear"
+						action="#{crearBioanalistaUserExist_Controlador.crear()}">
+					</h:commandButton> <h:commandButton tabindex="14" value="#{messages.cancelar}"
+						style="margin-right:0px;" action="salir" propagation="end"
+						immediate="true" /></div>
+				</s:div>
+			</s:validateAll>
+		</h:form>
+		<br />
+
+
+
+	</ui:define>
+
+</ui:composition>
+

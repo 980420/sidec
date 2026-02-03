@@ -1,0 +1,519 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<s:div>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript">setContentTitle("#{messages.titulo}")</script>
+		<script type="text/javascript">setWindowTitle("#{messages.titulo}")</script>
+		<link href="#{facesContext.externalContext.requestContextPath}/resources/modLaboratorio/stylesheet/laboratorio_style.css" rel="stylesheet" type="text/css" />
+		<h:form id="idForm">
+			<rich:messages globalOnly='true' styleClass='message' id='globalMessage' ajaxRendered="true" />
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{messages.tituloP1}" />
+				</f:facet>
+				<table border="0" cellpadding="0" cellspacing="0">
+					<tr>
+						<td colspan="4" class="espacio_vertical"></td>
+					</tr>
+					<tr>
+						<td class="espacio_corto_h"></td>
+						<td style="vertical-align: middle" align="center"><h:graphicImage
+							value="/resources/modCommon/patientphotos/desconocido.png"
+							width="74" height="74" /></td>
+						<td class="espacio_imagen"></td>
+						<td style="vertical-align: top;">
+						<table border="0" cellpadding="0" cellspacing="0">
+							<tr>
+								<td><h:outputText value="#{messages.msg_nombre}:" styleClass="normalText" />
+								</td>
+								<td class="espacio_mediano"></td>
+								<td><h:outputText
+									value="#{verDetallesSolicitudControlador.solicitud.medicoExterno.nombre}"
+									styleClass="dataText" /></td>
+								<td class="espacio_grande"></td>
+								<td><h:outputText value="#{messages.msg_cedula}:"
+									styleClass="normalText" /></td>
+								<td class="espacio_mediano"></td>
+								<td><h:outputText
+									value="#{verDetallesSolicitudControlador.solicitud.medicoExterno.cedula}"
+									styleClass="dataText" /></td>
+								<td class="espacio_grande"></td>
+								<td><h:outputText value="#{messages.msg_entidad}:" styleClass="normalText" /></td>
+								<td class="espacio_mediano"></td>
+								<td><h:outputText
+									value="#{verDetallesSolicitudControlador.solicitud.medicoExterno.nombreClinica}"
+									styleClass="dataText" /></td>
+							</tr>
+							<tr>
+								<td colspan="7" class="espacio_corto_v"></td>
+							</tr>
+							<tr>
+								<td><h:outputText value="#{messages.msg_primer_apellido}:"
+									styleClass="normalText" /></td>
+								<td class="espacio_mediano"></td>
+								<td><h:outputText
+									value="#{verDetallesSolicitudControlador.solicitud.medicoExterno.apellido1}"
+									styleClass="dataText" /></td>
+								<td class="espacio_grande"></td>
+								<td><h:outputText value="#{messages.msg_segundo_apellido}:"
+									styleClass="normalText" /></td>
+								<td class="espacio_mediano"></td>
+								<td><h:outputText
+									value="#{verDetallesSolicitudControlador.solicitud.medicoExterno.apellido2}"
+									styleClass="dataText" /></td>
+								<td class="espacio_grande"></td>
+								<td><h:outputText value="#{messages.msg_matricula_mpps}:"
+									styleClass="normalText" /></td>
+								<td class="espacio_mediano"></td>
+								<td><h:outputText
+									value="#{verDetallesSolicitudControlador.solicitud.medicoExterno.matriculaMinisterio}"
+									styleClass="dataText" /></td>
+							</tr>
+							<tr>
+								<td colspan="7" class="espacio_corto_v"></td>
+							</tr>
+							<tr>
+								<td><h:outputText value="#{messages.msg_matricula_cm}:" styleClass="normalText" /></td>
+								<td class="espacio_mediano"></td>
+								<td><h:outputText
+									value="#{verDetallesSolicitudControlador.solicitud.medicoExterno.matriculaColegioMedico}"
+									styleClass="dataText" /></td>
+							</tr>
+						</table>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4" class="espacio_final"></td>
+					</tr>
+				</table>
+			</rich:panel>
+			<br />
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{messages.tituloP2}" />
+				</f:facet>
+				<table border="0" cellpadding="0" cellspacing="0" width="100%">
+					<tr>
+						<td colspan="8" class="espacio_vertical"></td>
+					</tr>
+					<tr>
+						<td rowspan="3" class="espacio_corto_h"></td>
+						<td>
+						<table border="0" cellpadding="0" cellspacing="0">
+							<tr>
+								<td style="vertical-align: top"><h:outputText
+									value="#{messages.msg_fecha_emision}:" styleClass="normaltext" /></td>
+								<td class="espacio_mediano"></td>
+								<td style="vertical-align: top"><h:outputLabel id="fecha"
+									styleClass="dataText"
+									value="#{verDetallesSolicitudControlador.solicitud.fecha}">
+									<s:convertDateTime pattern="#{messages.msg_patron_fecha}" />
+								</h:outputLabel></td>
+								<td class="espacio_grande"></td>
+								<td><h:outputText value="#{messages.msg_numero}:"
+									styleClass="normalText" /></td>
+								<td class="espacio_mediano"></td>
+								<td><h:outputText styleClass="dataText"
+									value="#{verDetallesSolicitudControlador.solicitud.numero}" /></td>
+								<td class="espacio_grande"></td>
+								<td><h:outputText value="#{messages.msg_fecha_cita}:"
+									styleClass="normalText" /></td>
+								<td class="espacio_mediano"></td>
+								<td><h:outputText styleClass="dataText"
+									rendered="#{verDetallesSolicitudControlador.cita == null}"
+									value="-" /> <h:outputText styleClass="dataText"
+									rendered="#{verDetallesSolicitudControlador.cita != null}"
+									value="#{verDetallesSolicitudControlador.cita.fecha}">
+									<s:convertDateTime pattern="#{messages.msg_patron_fecha}"></s:convertDateTime>
+								</h:outputText></td>
+							</tr>
+							<!-- <tr>
+								<td colspan="10" class="espacio_corto_v"></td>
+							</tr>
+							<tr>
+								<td><h:outputText value="Hora entrada:" styleClass="normalText" /></td>
+								<td class="espacio_mediano" />
+								<td>
+									<h:outputText value="#{verDetallesSolicitudControlador.cita.horaEntrada}">
+										<s:convertDateTime pattern="#{messages.msg_patron_hora}" />
+									</h:outputText>
+								</td>
+								<td class="espacio_grande" />
+								<td><h:outputText value="Hora salida:" styleClass="normalText" /></td>
+								<td class="espacio_mediano" />
+								<td>
+									<h:outputText value="#{verDetallesSolicitudControlador.cita.horaSalida}">
+										<s:convertDateTime pattern="#{messages.msg_patron_hora}" />
+									</h:outputText>
+								</td>
+							</tr> -->
+						</table>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="8" class="espacio_corto_v"></td>
+					</tr>
+					<tr>
+						<td style="vertical-align: top;" width="100%"><s:div rendered="#{empty verDetallesSolicitudControlador.examenes}">
+							<rich:panel>
+								<f:facet name="header">
+									<div>#{messages.tituloP3}</div>
+								</f:facet>
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td colspan="6" class="espacio_vertical"></td>
+									</tr>
+									<tr>
+										<td class="espacio_corto_h"></td>
+										<td align="left"><h:outputText value="#{messages.msg_noinfo_mostrar}" styleClass="etiqueta" /></td>
+									</tr>
+									<tr>
+										<td class="espacio_final" colspan="6"></td>
+									</tr>
+								</table>
+							</rich:panel>
+						</s:div> <rich:dataTable var="linea" width="100%" rendered="#{not empty verDetallesSolicitudControlador.examenes}" value="#{verDetallesSolicitudControlador.examenes}" headerClass="barraOp2" align="center">
+							<f:facet name="header">
+								<div align="left">#{messages.tituloP3}</div>
+							</f:facet>
+							<rich:column>
+								<f:facet name="header">
+									<s:div>
+										<div style="float: left;"><h:outputText value="#{messages.msg_examen}"
+											styleClass="etiqueta" /></div>
+									</s:div>
+								</f:facet>
+								<h:outputText value="#{linea.examenLab.nombre}" />
+							</rich:column>
+							<rich:column>
+								<f:facet name="header">
+									<s:div>
+										<div style="float: left;"><h:outputText value="#{messages.msg_seccion}" styleClass="etiqueta" /></div>
+									</s:div>
+								</f:facet>
+								<h:outputText value="#{linea.examenLab.seccionLaboratorio.valor}" />
+							</rich:column>
+							<rich:column>
+								<f:facet name="header">
+									<s:div>
+										<div style="float: left;"><h:outputText value="#{messages.msg_urgente}" styleClass="etiqueta" /></div>
+									</s:div>
+								</f:facet>
+								<div align="center"><h:selectBooleanCheckbox value="#{linea.urgente}" disabled="true" /></div>
+							</rich:column>
+							<rich:column width="10">
+								<f:facet name="header">
+									<s:div style="float: left;">
+										<h:outputText value="#{messages.msg_disponible}" styleClass="etiqueta" />
+									</s:div>
+								</f:facet>
+								<div align="center">
+									<h:graphicImage value="/resources/modLaboratorio/visible.png" rendered="#{verDetallesSolicitudControlador.disponible(linea.examenLab.id)}" />
+									<h:graphicImage value="/resources/modLaboratorio/not-visible.png" rendered="#{!verDetallesSolicitudControlador.disponible(linea.examenLab.id)}" />
+								</div>
+							</rich:column>
+						</rich:dataTable></td>
+						<td class="espacio_corto_h" />
+					</tr>
+					<tr>
+						<td colspan="7" class="espacio_corto_v" />
+					</tr>
+				</table>
+				<s:div rendered="#{!verDetallesSolicitudControlador.mostrarPerfiles()}">
+					<table width="100%" cellpadding="0" cellspacing="0" align="center" border="0">
+						<tr>
+							<td class="espacio_corto_h" width="1px"></td>
+							<td><rich:panel>
+								<f:facet name="header">
+									<div id="headerTarget">#{messages.tituloP4}</div>
+								</f:facet>
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td colspan="6" class="espacio_vertical" />
+									</tr>
+									<tr>
+										<td class="espacio_corto_h" />
+										<td align="left"><h:outputText value="#{messages.msg_noinfo_mostrar}" styleClass="etiqueta" /></td>
+									</tr>
+									<tr>
+										<td colspan="6" class="espacio_final" />
+									</tr>
+								</table>
+							</rich:panel></td>
+							<td width="1px" class="espacio_corto_h" />
+						</tr>
+					</table>
+				</s:div>
+				<s:div rendered="#{verDetallesSolicitudControlador.mostrarPerfiles()}">
+					<table width="100%" cellpadding="0" cellspacing="0" align="center" border="0">
+						<tr>
+							<td class="espacio_corto_h" width="1px"></td>
+							<td><rich:panel>
+								<f:facet name="header">
+									<div id="headerTarget">#{messages.tituloP4}</div>
+								</f:facet>
+								<table border="0" cellpadding="0" cellspacing="0" width="100%">
+									<tr>
+										<td class="espacio_vertical" colspan="6" />
+									</tr>
+									<tr>
+										<td class="espacio_corto_h" width="1px" />
+										<td width="100%"><a4j:repeat rowKeyVar="rowKey" value="#{verDetallesSolicitudControlador.mapPerfilesExamenes.values().toArray()}" var="p">
+											<s:div rendered="#{rowKey != 0}">
+												<table border="0" cellpadding="0" cellspacing="0">
+													<tr>
+														<td colspan="8" class="espacio_corto_v" />
+													</tr>
+												</table>
+											</s:div>
+											<rich:simpleTogglePanel headerClass="simple_cabeza" opened="false" bodyClass="simple_cuerpo" switchType="client" label="#{messages.msg_perfil}: #{p.perfil.nombre}">
+												<table width="100%" cellpadding="0" cellspacing="0" align="center" border="0">
+													<tr>
+														<td colspan="6" class="espacio_vertical" />
+													</tr>
+													<tr>
+														<td class="espacio_corto_h" width="1px" />
+														<td width="100%">
+															<rich:dataTable var="examen" style="width:100%" value="#{p.examenes}" headerClass="barraOp2">
+																<f:facet name="header">
+																	<div align="left">#{messages.tituloP5}</div>
+																</f:facet>
+																<h:column>
+																	<f:facet name="header">
+																		<s:div>
+																			<div align="left"><h:outputText value="#{messages.msg_nombre}" styleClass="etiqueta" /></div>
+																		</s:div>
+																	</f:facet>
+																	<h:outputText value="#{examen.examenLab.nombre}" />
+														        </h:column>
+																<h:column>
+																	<f:facet name="header">
+																		<s:div>
+																			<div align="left"><h:outputText value="#{messages.msg_seccion}" styleClass="etiqueta" /></div>
+																		</s:div>
+																	</f:facet>
+																	<h:outputText value="#{examen.examenLab.seccionLaboratorio.valor}" />
+																</h:column>
+																<h:column>
+																	<f:facet name="header">
+																		<s:div>
+																			<div align="left"><h:outputText value="#{messages.msg_estado}" styleClass="etiqueta" /></div>
+																		</s:div>
+																	</f:facet>
+																	<h:outputText value="#{examen.estadoExamenLab.valor}" />
+									        					</h:column>
+										        				<rich:column>
+																	<f:facet name="header">
+																		<h:panelGrid columns="2" style="width: 100%; padding:0px; margin:0px;" border="0" cellpadding="0" cellspacing="0">
+																			<s:div style="float: left;">
+																				<h:outputText value="#{messages.msg_urgente}" styleClass="etiqueta" />
+																			</s:div>
+																		</h:panelGrid>
+																	</f:facet>
+																	<div align="center"><h:selectBooleanCheckbox value="#{examen.urgente}" disabled="true" /></div>
+																</rich:column>
+																<rich:column width="10px">
+																	<f:facet name="header">
+																		<h:panelGrid columns="2" style="width: 100%; padding:0px; margin:0px;" border="0" cellpadding="0" cellspacing="0">
+																			<s:div style="float: left;">
+																				<h:outputText value="#{messages.msg_disponible}" styleClass="etiqueta" />
+																			</s:div>
+																		</h:panelGrid>
+																	</f:facet>
+																	<div align="center"><h:graphicImage value="/resources/modLaboratorio/visible.png" rendered="#{verDetallesSolicitudControlador.disponible(examen.examenLab.id)}" />
+																	<h:graphicImage value="/resources/modLaboratorio/not-visible.png" rendered="#{!verDetallesSolicitudControlador.disponible(examen.examenLab.id)}" />
+																	</div>
+																</rich:column>
+															</rich:dataTable>	
+														</td>
+														<td class="espacio_corto_h" width="1px" />
+													</tr>
+													<tr>
+														<td colspan="6" class="espacio_final" />
+													</tr>
+												</table>
+											</rich:simpleTogglePanel>
+										</a4j:repeat></td>
+										<td class="espacio_corto_h" width="1px" />
+									</tr>
+										<tr>
+											<td colspan="12" class="espacio_final" />
+										</tr>
+									</table>
+							</rich:panel></td>
+							<td width="1px" class="espacio_corto_h" />
+						</tr>
+					</table>
+				</s:div>
+				<br />
+				<s:div rendered="#{!verDetallesSolicitudControlador.mostrarAspectos()}">
+					<table width="100%" cellpadding="0" cellspacing="0" align="center" border="0">
+						<tr>
+							<td class="espacio_corto_h" width="1px"></td>
+							<td><rich:panel>
+								<f:facet name="header">
+									<div id="headerTarget">#{messages.tituloP6}</div>
+								</f:facet>
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td colspan="6" class="espacio_vertical"></td>
+									</tr>
+									<tr>
+										<td class="espacio_corto_h"></td>
+										<td align="left"><h:outputText value="#{messages.msg_noinfo_mostrar}" styleClass="etiqueta" /></td>
+									</tr>
+									<tr>
+										<td colspan="6" class="espacio_final"></td>
+									</tr>
+								</table>
+							</rich:panel></td>
+							<td width="1px" class="espacio_corto_h"></td>
+						</tr>
+					</table>
+				</s:div>
+				<s:div
+					rendered="#{verDetallesSolicitudControlador.mostrarAspectos()}">
+					<table width="100%" cellpadding="0" cellspacing="0" align="center"
+						border="0">
+						<tr>
+							<td class="espacio_corto_h" width="1px"></td>
+							<td colspan="6" width="100%"><s:div>
+								<rich:panel>
+									<f:facet name="header">
+										<div>#{messages.tituloP6}</div>
+									</f:facet>
+									<table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="6" class="espacio_vertical"></td>
+										</tr>
+										<tr>
+											<td class="espacio_corto_h" width="1px"></td>
+											<td width="100%"><a4j:repeat rowKeyVar="rowKey"
+												value="#{verDetallesSolicitudControlador.listadoSeccion()}"
+												var="seccion">
+												<s:div rendered="#{rowKey != 0}">
+													<table border="0" cellpadding="0" cellspacing="0">
+														<tr>
+															<td colspan="8" class="espacio_corto_v"></td>
+														</tr>
+													</table>
+												</s:div>
+												<rich:simpleTogglePanel headerClass="simple_cabeza" opened="false" bodyClass="simple_cuerpo" switchType="client" label="#{messages.tituloP7} #{seccion.dato}">
+													<rich:dataTable value="#{verDetallesSolicitudControlador.listadoGrupos(seccion.id)}" var="grupo" width="100%">
+														<rich:column>
+															<rich:dataTable style="width:100%" id="las" value="#{verDetallesSolicitudControlador.listadoAspectos(seccion.id, grupo.id)}" var="aspecto">
+																<f:facet name="header">
+																	<h:outputText value="#{grupo.dato}" />
+																</f:facet>
+																<rich:column width="40%">
+																	<f:facet name="header">
+																		<h:outputText value="#{messages.msg_aspecto}" />
+																	</f:facet>
+																	<h:outputText value="#{aspecto.dato}" />
+																</rich:column>
+																<rich:column width="60%">
+																	<f:facet name="header">
+																		<h:outputText value="#{messages.msg_valor}" />
+																	</f:facet>
+																	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+																		<tr style="vertical-align: top;">
+																			<s:div rendered="#{verDetallesSolicitudControlador.sag.get(verDetallesSolicitudControlador.convierteKey(seccion.id, grupo.id, aspecto.id)).tipoDato.dato.toLowerCase() == messages.msg_codigo_tipo_dato_texto}">
+																				<td style="vertical-align: top;">
+																					<h:inputTextarea id="aspectoTextarea" style="width:100%;" rows="10" value="#{verDetallesSolicitudControlador.sag.get(verDetallesSolicitudControlador.convierteKey(seccion.id, grupo.id, aspecto.id)).valor}" styleClass="dataText" disabled="true" />
+																				</td>
+																			</s:div>
+																			<s:div rendered="#{verDetallesSolicitudControlador.sag.get(verDetallesSolicitudControlador.convierteKey(seccion.id, grupo.id, aspecto.id)).tipoDato.dato.toLowerCase() == messages.msg_codigo_tipo_dato_boolean or verDetallesSolicitudControlador.sag.get(verDetallesSolicitudControlador.convierteKey(seccion.id, grupo.id, aspecto.id)).tipoDato.dato.toLowerCase() == messages.msg_codigo_tipo_dato_cadena or verDetallesSolicitudControlador.sag.get(verDetallesSolicitudControlador.convierteKey(seccion.id, grupo.id, aspecto.id)).tipoDato.dato.toLowerCase() == messages.msg_codigo_tipo_dato_lista}">
+																				<td style="vertical-align: top;" width="150px;">
+																					<h:outputText id="aspectoCadena" value="#{verDetallesSolicitudControlador.sag.get(verDetallesSolicitudControlador.convierteKey(seccion.id, grupo.id, aspecto.id)).valor}" style="width:150px;" styleClass="dataText" />
+																				</td>
+																			</s:div>
+																			<s:div rendered="#{verDetallesSolicitudControlador.sag.get(verDetallesSolicitudControlador.convierteKey(seccion.id, grupo.id, aspecto.id)).tipoDato.dato.toLowerCase() == 'numérico' or verDetallesSolicitudControlador.sag.get(verDetallesSolicitudControlador.convierteKey(seccion.id, grupo.id, aspecto.id)).tipoDato.dato.toLowerCase() == messages.msg_codigo_tipo_dato_numerico}">
+																				<td style="text-align: right; vertical-align: top;" width="150px">
+																					<h:outputText id="aspectoNumerico" value="#{verDetallesSolicitudControlador.sag.get(verDetallesSolicitudControlador.convierteKey(seccion.id, grupo.id, aspecto.id)).valor}" style="width:150px;" styleClass="dataText" />
+																				</td>
+																				<td style="vertical-align: top;">
+																					<rich:spacer width="3px" />
+																					<h:outputText value="#{verDetallesSolicitudControlador.sag.get(verDetallesSolicitudControlador.convierteKey(seccion.id, grupo.id, aspecto.id)).magnitud.dato}" />
+																					<rich:spacer width="1px" />
+																					<h:outputText value="#{verDetallesSolicitudControlador.sag.get(verDetallesSolicitudControlador.convierteKey(seccion.id, grupo.id, aspecto.id)).unidad.dato}" />
+																				</td>
+																			</s:div>
+																		</tr>
+																	</table>
+																</rich:column>
+															</rich:dataTable>
+														</rich:column>
+													</rich:dataTable>
+												</rich:simpleTogglePanel>
+											</a4j:repeat></td>
+											<td class="espacio_corto_h" width="1px" />
+										</tr>
+										<tr>
+											<td colspan="12" class="espacio_final" />
+										</tr>
+									</table>
+								</rich:panel>
+							</s:div></td>
+							<td class="espacio_corto_h" width="1px" />
+						</tr>
+					</table>
+				</s:div>
+				<table border="0" cellpadding="0" cellspacing="0">
+					<tr>
+						<td colspan="8" class="espacio_final" />
+					</tr>
+				</table>
+			</rich:panel>
+			<rich:spacer height="8px;" width="100%" />
+			<div align="right" style="width: 100%">
+				<a4j:commandButton id="exportar" oncomplete="Richfaces.showModalPanel('exportPanel')"  value="#{messages.msg_exportar}" style="margin-bottom: 0px; margin-left: 0px; margin-top: 0px;" />
+				<h:commandButton action="#{verDetallesSolicitudControlador.seleccionarSolicitudModificar()}" value="#{messages.msg_modificar}" style="margin-bottom: 0px; margin-top: 0px;" />
+				<a4j:commandButton value="#{messages.msg_eliminar}" style="margin-bottom: 0px; margin-top: 0px;" onclick="Richfaces.showModalPanel('panel')" />
+				<h:commandButton action="#{verDetallesSolicitudControlador.salir()}" value="#{messages.msg_salir}" style="margin-right: 0px; margin-bottom: 0px; margin-top: 0px;" />
+			</div>
+		</h:form>
+		<h:form>
+			<rich:modalPanel id="panel" height="89" width="440" resizeable="false">
+				<f:facet name="header">
+					<h:panelGroup>
+						<h:outputText value="#{messages.tituloMPEliminar}" />
+					</h:panelGroup>
+				</f:facet>
+				<table border="0" cellpadding="0" cellspacing="0">
+					<tr>
+						<td colspan="4" class="espacio_vertical"></td>
+					</tr>
+					<tr>
+						<td rowspan="2" class="espacio_corto_h"></td>
+						<td style="vertical-align: top;"><h:graphicImage value="/resources/icons/default/acciones/advertencia.png" /></td>
+						<td class="espacio_imagen"></td>
+						<td>
+							<h:outputText value="#{messages.textoMPEliminar}" />
+						</td>
+					</tr>
+					<tr>
+						<td class="espacio_corto_v" colspan="4"></td>
+					</tr>
+					<tr>
+						<td colspan="4" align="center">
+							<h:commandButton value="#{messages.msg_si}" action="#{verDetallesSolicitudControlador.eliminar()}" onclick="Richfaces.hideModalPanel('panel')" style="width:35px; margin-top: 0px; margin-bottom: 0px; margin-left: 0px;" />
+							<a4j:commandButton value="#{messages.msg_no}" onclick="Richfaces.hideModalPanel('panel')" style="width:35px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;" />
+						</td>
+					</tr>
+					<tr>
+						<td class="espacio_final" colspan="4"></td>
+					</tr>
+				</table>
+			</rich:modalPanel>			
+		</h:form>
+		<ui:include src="/modLaboratorio/Laboratorio/codebase/Comunes/exportarModalPanel.xhtml">
+       		<ui:param name="controlador" value="#{verDetallesSolicitudControlador}"/>
+        </ui:include>
+	</s:div>
+</s:div>

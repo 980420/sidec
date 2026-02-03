@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<page    xmlns               ="http://jboss.com/products/seam/pages"  
+         xmlns:xsi           ="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">  
+           
+  	<begin-conversation flush-mode="manual" join="true"/>    
+  	
+	<action if="#{modificarHojaCrd.inicioConversacion==false}" execute="#{modificarHojaCrd.inicializarHojaCrd()}" />
+	 <param name="idHojaCRD" value="#{modificarHojaCrd.idHojaCrd}" />
+   	<param name="origen"/>
+	
+	<navigation from-action="#{modificarHojaCrd.modificarHojaCrd()}">	
+		<rule if-outcome="ok" if="#{origen.equals('buscar')}">
+			<end-conversation before-redirect="true"/>  		
+			<redirect view-id="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCrd/modificarTransformacion.gehos">
+			</redirect>
+		</rule>
+		<rule if-outcome="ok" if="#{origen.equals('cargar')}">
+			<end-conversation before-redirect="true"/>  		
+			<redirect view-id="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCrd/modificarTransformacion.gehos">
+			</redirect>
+		</rule>
+	</navigation>
+	<navigation from-action="cancelar">	
+		<rule if="#{origen.equals('buscar')}">
+			<end-conversation before-redirect="true"/>  		
+			<redirect view-id="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCrd/modificarTransformacion.gehos">
+			
+			
+			</redirect>
+		</rule>
+		<rule if="#{origen.equals('cargar')}">
+			<end-conversation before-redirect="true"/>  		
+			<redirect view-id="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCrd/modificarTransformacion.gehos">
+			
+			
+			</redirect>
+		</rule>
+	</navigation>
+	
+	
+	
+	
+</page>

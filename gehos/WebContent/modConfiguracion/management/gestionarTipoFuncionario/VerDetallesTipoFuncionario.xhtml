@@ -1,0 +1,69 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+		<!-- CSS -->		
+		<link href="#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/style/stylesheet.css"
+			 rel="stylesheet" type="text/css" />
+
+		<s:div rendered="#{not tipoFuncionarioVerDetallesControlador.from.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.titulo1}')</script>
+		</s:div>
+		<s:div rendered="#{tipoFuncionarioVerDetallesControlador.from.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.titulo2}')</script>
+		</s:div>
+		
+		<h:form id="form" enctype="multipart/form-data">
+			<rich:messages id="message" for="message" styleClass="message" ajaxRendered="true" />
+
+			<rich:panel>
+				<f:facet name="header">#{messages.datos}</f:facet>
+				<table cellpadding="0px" cellspacing="0px"  class="tabla lh-sint lv-text-l lh-sinb lv-text-r">
+					<tr>
+						<td class="lvp-bet-text">
+							<h:outputLabel value="#{messages.nombre}" />
+						</td>
+						<td>
+							<h:outputText id="valor" value="#{tipoFuncionarioVerDetallesControlador.tipoFuncionario.valor}" />
+						</td>
+					</tr>
+				</table>
+			</rich:panel>
+			<div align="right">
+				<table cellpadding="0" cellspacing="0" class="tabla">
+					<tr>
+						<td class="lv-bet-botton">
+							<h:commandButton value="#{messages.modificar}" tabindex="1" 							
+								action="#{tipoFuncionarioModificarControlador.setId(tipoFuncionarioVerDetallesControlador.tipoFuncionario.id)}"
+								rendered="#{not tipoFuncionarioVerDetallesControlador.from.equals('listar')}"
+							    styleClass="botton" />
+						</td>
+						<td class="lv-bet-botton">
+							<a4j:commandButton value="#{messages.eliminar}" id="btnEliminar" tabindex="2"
+								onclick="Richfaces.showModalPanel('panel_eliminar')"
+								rendered="#{not tipoFuncionarioVerDetallesControlador.from.equals('listar')}"
+								styleClass="botton" >
+							</a4j:commandButton>
+						</td>
+						<td>
+							<h:commandButton value="#{messages.salir}" action="salir" tabindex="3"
+								styleClass="botton" />
+						</td>
+					</tr>
+				</table>
+			</div>
+		</h:form>
+		<ui:include src="/modConfiguracion/management/gestionarTipoFuncionario/modalspanel/ConfirmarEliminarTipoFuncionarioVerDetalles.xhtml" />
+	</ui:define>
+</ui:composition>

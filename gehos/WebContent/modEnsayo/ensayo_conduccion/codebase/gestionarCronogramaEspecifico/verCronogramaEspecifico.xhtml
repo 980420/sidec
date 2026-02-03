@@ -1,0 +1,208 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle('#{titulo}')</script>
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css"
+		rel="stylesheet" type="text/css" />
+	
+	<rich:messages globalOnly="true" styleClass="message"
+		id="globalMessage" ajaxRendered="true" />
+		<rich:panel style="height:120px" >
+		<f:facet name="header">
+			<h:panelGroup>
+				<div>
+					<div align="left">
+						#{messages.detallesSujeto}
+					</div>
+				</div>
+			</h:panelGroup>
+		</f:facet>
+		<table class="Tabla" cellspacing="0" cellpadding="0" width="100%">
+			<tr>
+				<td class="margenSupIzq">
+					<table cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td>
+								<table cellpadding="0" cellspacing="0">
+									<tr>
+										<td class="">
+											<table cellpadding="0" cellspacing="0">
+												<tr class="filSepGranRA">
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.iniciales}:" style="margin:0px; padding:0px;" />
+													</td>
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText"
+														value="#{(not empty verCronogramaEspecifico.sujeto.inicialesPaciente) ? verCronogramaEspecifico.sujeto.inicialesPaciente : messages.vacio}"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.numinclusion}:" style="margin:0px; padding:0px;" />
+													</td>
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText"
+														value="#{(not empty verCronogramaEspecifico.sujeto.numeroInclucion) ? verCronogramaEspecifico.sujeto.numeroInclucion : messages.vacio}"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.estadoInclusion}:" style="margin:0px; padding:0px;" />
+													</td>
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText" value="#{(not empty verCronogramaEspecifico.sujeto.estadoInclusion.nombre) ? verCronogramaEspecifico.sujeto.estadoInclusion.nombre : messages.vacio}"
+														style="margin:0px; padding:0px;" /></td>
+												</tr>
+												<tr class="filSepGranRA">
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.inicialesCentro}:"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText"
+														value="#{(not empty verCronogramaEspecifico.sujeto.inicialesCentro) ? verCronogramaEspecifico.sujeto.inicialesCentro : messages.vacio}"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.codigoSuj}:" style="margin:0px; padding:0px;" /></td>
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText"
+														value="#{(not empty verCronogramaEspecifico.sujeto.codigoPaciente) ? verCronogramaEspecifico.sujeto.codigoPaciente : messages.vacio}"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.fechaNacimiento}:"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText"
+														value="#{(not empty verCronogramaEspecifico.sujeto.fechaNacimiento) ? verCronogramaEspecifico.sujeto.fechaNacimiento : messages.vacio}"
+														style="margin:0px; padding:0px;">
+														<s:convertDateTime pattern="#{messages.patronFecha}">
+														</s:convertDateTime>
+													</h:outputText></td>
+													
+												</tr>
+												<tr>
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.sexo}:"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText"
+														value="#{(not empty verCronogramaEspecifico.sujeto.sexo.valor) ? verCronogramaEspecifico.sujeto.sexo.valor : messages.vacio}"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.grupodelSujeto}:" style="margin:0px; padding:0px;" /></td>
+					
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText"
+														value="#{(not empty verCronogramaEspecifico.sujeto.grupoSujetos.nombreGrupo) ? verCronogramaEspecifico.sujeto.grupoSujetos.nombreGrupo : messages.vacio}"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.fechaInclusion}:"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText"
+														value="#{(not empty verCronogramaEspecifico.sujeto.fechaInclucion) ? verCronogramaEspecifico.sujeto.fechaInclucion : messages.vacio}"
+														style="margin:0px; padding:0px;">
+														<s:convertDateTime pattern="#{messages.patronFecha}">
+														</s:convertDateTime>
+													</h:outputText></td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</rich:panel>
+	
+	
+	
+	
+	<h:form>
+	<rich:simpleTogglePanel label="#{messages.cronograma}"
+					switchType="client"
+					style=" width : 586px;">
+
+					<rich:dataTable id="idCronogramaEspecifico" value="#{verCronogramaEspecifico.nombresMomentos()}" border="0" cellpadding="0"
+						cellspacing="0" var="nombremomento"
+						width="75%" style=" width : 569px;">
+						<f:facet name="header">
+							<rich:columnGroup>
+								<rich:column rowspan="2">
+									<h:outputText value="#{messages.momentos}" />
+								</rich:column>
+
+								<rich:column
+									colspan="#{verCronogramaEspecifico.momentos.size()}">
+									<h:outputText value="#{messages.etapas}" />
+								</rich:column>
+
+								<rich:column breakBefore="true" 
+									colspan="#{verCronogramaEspecifico.tamannoEtapas.get(0)}"
+									style="broder:1px;border-style :solid;">
+									<h:outputText value="#{messages.evaluacion}" />
+								</rich:column>
+								<rich:column  rendered="#{verCronogramaEspecifico.tamannoEtapas.get(1) != 0}"
+									colspan="#{verCronogramaEspecifico.tamannoEtapas.get(1)}"
+									style="broder:1px;border-style :solid;">
+									<h:outputText value="#{messages.tratamiento}" />
+								</rich:column>
+								<rich:column rendered="#{verCronogramaEspecifico.tamannoEtapas.get(2) != 0}"
+									colspan="#{verCronogramaEspecifico.tamannoEtapas.get(2)}"
+									style="broder:1px;border-style :solid;">
+									<h:outputText value="#{messages.seguimiento}" />
+								</rich:column>
+
+							</rich:columnGroup>
+						</f:facet>
+
+						<rich:column style="broder:1px;" >
+							<f:facet name="header">
+								<h:outputText value="#{messages.momentosdias}" />
+							</f:facet>
+							
+							<h:outputText value="#{nombremomento}"   >
+							</h:outputText>
+						</rich:column>
+						
+
+						<rich:columns width="16px" style="border-right-width: 1px;"
+							value="#{verCronogramaEspecifico.momentos}"
+							var="momento">
+							<f:facet name="header">
+							<h:outputText value="#{momento.fechaInicio}" >
+      							<f:convertDateTime pattern="dd/MM/yyyy"/>
+      							</h:outputText>
+								
+							</f:facet>
+							<h:commandButton title="#{momento.estadoMomentoSeguimiento}" alt="Ver" image="/resources/icons/default/acciones/ver.png" rendered="#{verCronogramaEspecifico.PerteneceMomento(momento,nombremomento,momento.fechaInicio)}" 
+								style="FONT-SIZE: large; width : 16px; broder:1px;"/>
+
+
+						</rich:columns>
+						<rich:datascroller for="idCronogramaEspecifico" maxPages="5"
+							align="left" />
+					</rich:dataTable>
+					
+					
+
+
+				</rich:simpleTogglePanel>
+			
+				</h:form>
+     <div align="right" style="padding-top: 8px">
+	<h:form>
+		<br></br>		
+		<h:commandButton
+			value="#{messages.salir}" style="margin:0px;"
+			action="#{verCronogramaEspecifico.salir()}"  immediate="true"/>
+	</h:form>
+	</div>
+
+	
+	
+</ui:composition>

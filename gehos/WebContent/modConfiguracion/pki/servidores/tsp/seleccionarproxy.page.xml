@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<action execute="#{buscarProxyControlador.begin()}" />
+	<navigation from-action="#{crearServidorTSPControlador.seleccionarProxy(proxy)}">
+		<redirect
+			view-id="/modConfiguracion/pki/servidores/tsp/adicionartspserver.xhtml"></redirect>
+	</navigation>
+	<navigation from-action="cancelar">
+		<redirect
+			view-id="/modConfiguracion/pki/servidores/tsp/adicionartspserver.xhtml"></redirect>
+	</navigation>
+	
+	<navigation from-action="crearproxy">
+
+		<redirect
+			view-id="/modConfiguracion/pki/servidores/proxy/adicionarproxy.xhtml">
+			<param name="from" value="seleccionaproxy" />
+		</redirect>
+
+	</navigation>
+</page>

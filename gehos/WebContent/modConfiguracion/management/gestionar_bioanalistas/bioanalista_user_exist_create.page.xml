@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<begin-conversation flush-mode="manual" join="true" />
+	<param name="userSelId" value="#{crearBioanalistaUserExist_Controlador.id}" />
+	<param name="firstResult" />
+	<param name="order" />
+	<param name="avz" />
+	<param name="open" />
+	<param name="critB1" />
+	<param name="critB2" />
+	<param name="critB3" />
+	<param name="critB4" />
+	<param name="critB5" />
+
+	<navigation from-action="#{crearBioanalistaUserExist_Controlador.crear()}">
+		<rule if-outcome="valorRequerido">
+			<redirect
+				view-id="/modConfiguracion/management/gestionar_bioanalistas/bioanalista_user_exist_create.xhtml">
+			</redirect>
+		</rule>
+		<rule if-outcome="crear">
+
+			<redirect
+				view-id="/modConfiguracion/management/gestionar_bioanalistas/bioanalista_detail.xhtml">
+				<param name="userId"
+					value="#{crearBioanalistaUserExist_Controlador.medico.id}" />
+				<param name="from" value="crear" />
+				<param name="firstResult" value="0" />
+				<param name="order" value="medico.usuario.id desc" />
+				<param name="avz" value="false" />
+				<param name="open" value="true" />
+				<param name="critB1" value="" />
+				<param name="critB2" value="" />
+				<param name="critB3" value="" />
+				<param name="critB4" value="" />
+				<param name="critB5" value="" />
+			</redirect>
+			<end-conversation before-redirect="true" />
+		</rule>
+	</navigation>
+
+	<navigation from-action="salir">
+		<rule>
+			<redirect
+				view-id="/modConfiguracion/management/gestionar_bioanalistas/bioanalistaList.xhtml">
+				<param name="firstResult" value="#{firstResult}" />
+				<param name="order" value="#{order}" />
+				<param name="avz" value="#{avz}" />
+				<param name="open" value="#{open}" />
+				<param name="critB1" value="#{critB1}" />
+				<param name="critB2" value="#{critB2}" />
+				<param name="critB3" value="#{critB3}" />
+				<param name="critB4" value="#{critB4}" />
+				<param name="critB5" value="#{critB5}" />
+			</redirect>
+			<end-conversation before-redirect="true" />
+		</rule>
+	</navigation>
+
+
+</page>

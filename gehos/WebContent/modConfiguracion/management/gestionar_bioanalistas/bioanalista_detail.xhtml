@@ -1,0 +1,338 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" template="#{theme.template}">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css">
+.rich-stglpanel-body {
+	padding: 0px
+}
+</style>
+		<style type="text/css">
+.dr-mpnl-pnl-b {
+	padding: 1px;
+}
+
+.dr-mpnl-pnl {
+	border: 1px !important;
+	border-style: solid !important;
+	border-color: #BED6F8 !important;
+}
+</style>
+		<style type="text/css">
+.rich-panel-body {
+	padding: 0px
+}
+
+.dr-tbpnl-cntnt,.rich-tabpanel-content {
+	/*arriba, derecha ,abajo ,izquierda*/
+	padding: 8px 0px 7px 8px;
+}
+</style>
+		<s:div
+			rendered="#{not bioanalistaDetail_Controlador.from.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.titulo1}')</script>
+		</s:div>
+
+		<s:div
+			rendered="#{bioanalistaDetail_Controlador.from.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.titulo2}')</script>
+		</s:div>
+
+		<a:outputPanel ajaxRendered="true">
+			<rich:messages styleClass="message" for="btnSi" ajaxRendered="true" />
+		</a:outputPanel>
+
+		<h:form id="userSearch" styleClass="edit">
+
+			<rich:tabPanel switchType="client" style="white-space:nowrap">
+				<rich:tab label="#messages.datosComoUsuario">
+
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<rich:spacer height="5px" />
+						<tr>
+
+							<td>
+							<td><h:graphicImage
+								url="/resources/modCommon/unknown/#{theme.name}/generico/desconocido.png"
+								border="0" style="width: 74px; height: 74px;margin-left:0px;"
+								rendered="#{not userTools.userImageExist(bioanalistaDetail_Controlador.medico.usuario.username)}" />
+							<h:graphicImage
+								url="/resources/modCommon/userphotos/#{bioanalistaDetail_Controlador.medico.usuario.username}.png"
+								rendered="#{userTools.userImageExist(bioanalistaDetail_Controlador.medico.usuario.username)}"
+								border="0" style="width: 74px; height: 74px;margin-left:0px;" /></td>
+							</td>
+							<td><rich:spacer width="7px" /></td>
+							<td valign="top">
+							<table cellpadding="0px" cellspacing="0px" border="0px">
+
+								<tr>
+									<td><rich:spacer width="7px" /></td>
+
+									<td></td>
+								</tr>
+								<tr style="vertical-align: top;">
+									<td><h:outputLabel value="#{messages.atributo7}"></h:outputLabel>
+									<rich:spacer width="8"></rich:spacer></td>
+									<td><h:outputLabel styleClass="dataText"
+										value="#{bioanalistaDetail_Controlador.medico.usuario.nombre}"></h:outputLabel>
+									<rich:spacer height="16" style="display:block"></rich:spacer></td>
+									<td style="width: 25px"></td>
+									<td><h:outputLabel value="#{messages.atributo8}"></h:outputLabel>
+									<rich:spacer width="8"></rich:spacer></td>
+									<td><h:outputLabel styleClass="dataText"
+										value="#{bioanalistaDetail_Controlador.medico.usuario.primerApellido}"></h:outputLabel>
+									<h:outputLabel styleClass="dataText" value="-"
+										rendered="#{bioanalistaDetail_Controlador.medico.usuario.primerApellido == ''}"></h:outputLabel><rich:spacer
+										height="16" style="display:block"></rich:spacer></td>
+									<td style="width: 25px"></td>
+									<td><h:outputLabel value="#{messages.atributo9}"></h:outputLabel>
+									<rich:spacer width="8"></rich:spacer></td>
+									<td><h:outputLabel styleClass="dataText"
+										value="#{bioanalistaDetail_Controlador.medico.usuario.segundoApellido}"></h:outputLabel>
+									<h:outputLabel styleClass="dataText" value="-"
+										rendered="#{bioanalistaDetail_Controlador.medico.usuario.segundoApellido == ''}"></h:outputLabel>
+									<rich:spacer height="16" style="display:block"></rich:spacer></td>
+								</tr>
+
+								<tr>
+									<td><h:outputLabel value="#{messages.atributo1}"></h:outputLabel>
+									<rich:spacer width="8"></rich:spacer></td>
+									<td><h:outputLabel styleClass="dataText"
+										value="#{bioanalistaDetail_Controlador.medico.usuario.username}"></h:outputLabel>
+									</td>
+									<td style="width: 25px"></td>
+									<td><h:outputLabel value="#{messages.atributo4} "></h:outputLabel><rich:spacer
+										width="8"></rich:spacer></td>
+									<td><h:outputLabel styleClass="dataText"
+										value="#{bioanalistaDetail_Controlador.culturaSelec}"
+										rendered="#{bioanalistaDetail_Controlador.culturaSelec != ''}"></h:outputLabel>
+									<h:outputLabel styleClass="dataText" value="-"
+										rendered="#{bioanalistaDetail_Controlador.culturaSelec == ''}"></h:outputLabel>
+									</td>
+								</tr>
+
+							</table>
+							</td>
+						</tr>
+					</table>
+
+				</rich:tab>
+
+				<rich:tab label="#{messages.roles}">
+
+					<table cellpadding="0px" cellspacing="0px" border="0px"
+						style="width: 100%">
+						<tr>
+							<td></td>
+							<td><rich:spacer height="3px" /></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td style="vertical-align: top;"><rich:panel
+								rendered="#{empty bioanalistaDetail_Controlador.rolsSource}">
+								<f:facet name="header">#{messages.listadoRoles}</f:facet>
+								<div class="results" id="userList"><rich:spacer
+									height="20px" /> <rich:spacer width="8px" /> <h:outputText
+									value="#{messages.noInf}" /></div>
+								<rich:spacer height="6px" />
+							</rich:panel> <rich:dataTable
+								value="#{bioanalistaDetail_Controlador.rolsSource}" var="rol"
+								width="100%"
+								rendered="#{not empty bioanalistaDetail_Controlador.rolsSource}">
+								<f:facet name="header">#{messages.listadoRoles}</f:facet>
+								<rich:column>
+											#{rol.name}
+										</rich:column>
+							</rich:dataTable></td>
+
+							<td width="8px"></td>
+
+
+
+						</tr>
+					</table>
+
+
+				</rich:tab>
+
+				<rich:tab label="#{messages.datosComoBio}">
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr>
+							<td><rich:spacer height="2px" /></td>
+						</tr>
+						<tr style="vertical-align: top;">
+							<td><h:outputLabel
+								value="#{messages.conf_matricula_colegio}"></h:outputLabel> <rich:spacer
+								width="6"></rich:spacer> 
+								<h:outputText styleClass="dataText"
+								value="#{bioanalistaDetail_Controlador.medico.matriculaColegio}" 
+								rendered="#{bioanalistaDetail_Controlador.medico.matriculaColegio != null and not bioanalistaDetail_Controlador.medico.matriculaColegio.isEmpty()}" />
+								<h:outputText styleClass="dataText"
+								value="-" 
+								rendered="#{bioanalistaDetail_Controlador.medico.matriculaColegio == null or bioanalistaDetail_Controlador.medico.matriculaColegio.isEmpty()}" />
+							</td>
+							<td style="width: 25px"></td>
+							<td></td>
+							<td style="width: 25px"></td>
+							<td valign="top"></td>
+						</tr>
+
+					</table>
+				</rich:tab>
+
+				<rich:tab label="#{messages.entidades}">
+
+					<table border="0px" cellpadding="0px" cellspacing="0px"
+						width="100%">
+						<tr>
+							<td><rich:spacer height="3px" /></td>
+						</tr>
+						<tr>
+							<td>
+							
+							<rich:panel
+								rendered="#{empty bioanalistaDetail_Controlador.mediInEnt}">
+								<f:facet name="header">#{messages.listServEntidad}</f:facet>
+								<div class="results" id="servList"><rich:spacer
+									height="20px" /> <rich:spacer width="8px" /> <h:outputText
+									value="#{messages.noInf}" /></div>
+								<rich:spacer height="6px" />
+							</rich:panel> <rich:dataTable
+								value="#{bioanalistaDetail_Controlador.mediInEnt}"
+								var="bioanalistaInEnt" width="100%"
+								rendered="#{not empty bioanalistaDetail_Controlador.mediInEnt}">
+								<f:facet name="header">#{messages.listServEntidad}</f:facet>
+								<rich:column>
+									<f:facet name="header">#{messages['Nombre']}</f:facet>
+								#{bioanalistaInEnt.entidad.nombre}
+							</rich:column>
+								
+							</rich:dataTable></td>
+						</tr>
+
+					</table>
+				</rich:tab>
+			</rich:tabPanel>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		</h:form>
+		<h:form>
+			<rich:spacer height="3px" />
+			<s:div styleClass="actionButtons" style="text-align: right">
+				<div align="right"><h:commandButton style="margin-right:5px;"
+					value="#{messages.modificar}"
+					rendered="#{not bioanalistaDetail_Controlador.from.equals('listar')}"
+					action="modificar" propagation="end" /> 
+					<a:commandButton
+						id="btnEliminar"
+						action="#{bioanalistaList_configuracionCustom.setIdeliminarMed(bioanalistaDetail_Controlador.medico.id)}"
+						rendered="#{not bioanalistaDetail_Controlador.from.equals('listar')}"
+						onclick="Richfaces.showModalPanel('eliminarMedico')"
+						style="margin-right:5px;" value="#{messages.eliminar}">
+					</a:commandButton> 
+					<h:commandButton value="#{messages.salir}"
+					style="margin-right:0px;" action="salir" propagation="end" /></div>
+			</s:div>
+		</h:form>
+
+		<ui:include
+			src="/modConfiguracion/management/gestionar_bioanalistas/modalspanel/eliminar_medico.xhtml" />
+	</ui:define>
+
+</ui:composition>
+

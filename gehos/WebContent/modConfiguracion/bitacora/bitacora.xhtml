@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<h:form>
+			<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+			<rich:simpleTogglePanel switchType="client" label="#{messages.crit}"
+				opened="true">
+
+				<table cellpadding="0px" cellspacing="0px" border="0px"
+					id="simplesearch">
+					<tr>
+						<td>#{messages.anno}:<br />
+						<rich:comboBox suggestionValues="#{bitacoraReview.annos}"
+							value="#{bitacoraReview.anno}"
+							defaultLabel="#{messages.cbxSeleccionPorDefecto}" id="anno">
+
+
+						</rich:comboBox></td>
+						<td><rich:spacer width="25px" /></td>
+						<td>#{messages.mes}:<br />
+						<rich:comboBox suggestionValues="#{bitacoraReview.mesesComboBox()}"
+							value="#{bitacoraReview.mesSeleccionadoComboBox}"
+							defaultLabel="#{messages.cbxSeleccionPorDefecto}">
+
+							<a4j:support event="onselect"
+								action="#{bitacoraReview.llenarDiasSegunMes()}" ajaxSingle="true"
+								reRender="panel,div" />
+						</rich:comboBox></td>
+						<td><rich:spacer width="25px" /></td>
+						<td>#{messages.dia}:<br />
+						<a4j:outputPanel id="panel">
+							<div id="div"><rich:comboBox
+								suggestionValues="#{bitacoraReview.dias}"
+								value="#{bitacoraReview.dia}"
+								defaultLabel="#{messages.cbxSeleccionPorDefecto}" id="dia">
+
+
+							</rich:comboBox></div>
+						</a4j:outputPanel></td>
+					</tr>
+					<tr style="height: 8px;" />
+					<tr>
+						<td>#{messages.ip}:<br />
+						<h:inputText id="codigo" tabindex="1" value="#{bitacoraReview.ip}"
+							style="width:150px;" /></td>
+						<td><rich:spacer width="25px" /></td>
+						<td>#{messages.user}:<br />
+						<h:inputText id="user" tabindex="2"
+							value="#{bitacoraReview.usuario}" style="width:150px;" /></td>
+						<td><rich:spacer width="25px" /></td>
+						<td>#{messages.modules}:<br />
+						<rich:comboBox
+							suggestionValues="#{bitacoraReview.listadoModulesNames}"
+							value="#{bitacoraReview.modulo}"
+							defaultLabel="#{messages.cbxSeleccionPorDefecto}" id="modulo">
+						</rich:comboBox></td>
+					</tr>
+					<tr style="height: 3px;" />
+					<tr style="text-align: right">
+						<td colspan="9"><a4j:commandButton value="#{messages.buscar}"
+							tabindex="3"
+							style="margin-right: 0px; margin-bottom: 0px;"
+							action="#{bitacoraReview.buscar()}" reRender="tree,treenode">
+						</a4j:commandButton> <s:button propagation="end" action="#{bitacoraReview.limpiar()}"
+							value="#{messages.cancelar}" tabindex="4"
+							style="margin-bottom: 0px;margin-right: 0px;"></s:button></td>
+					</tr>
+				</table>
+				
+			</rich:simpleTogglePanel>
+
+			<rich:spacer height="11px" />
+			<rich:panel>
+				<f:facet name="header">
+					<a:status startText="#{messages.start}..." stopText="#{messages.stop}"></a:status>
+				</f:facet>
+				<rich:panel>
+
+					<rich:tree
+						changeExpandListener="#{bitacoraReview.OnNodeCollapseExpand}"
+						style="width:400px; cursor: default;"
+						value="#{bitacoraReview.treeData}"
+						icon="/img/folder#{theme.color}.png"
+						iconLeaf="/img/folder#{theme.color}.png" id="tree" var="var">
+						<rich:treeNode id="treenode">
+							<s:div rendered="#{var.toString().equals('anno')}"
+								style="cursor: default;">
+								<h:outputLabel value="#{var.value.toString()}" />
+							</s:div>
+							<s:div rendered="#{var.toString().equals('mes')}"
+								style="cursor: default;">
+								<h:outputLabel value="#{messages[var.getMessagesKey()]}"></h:outputLabel>
+							</s:div>
+							<s:div rendered="#{var.toString().equals('dia')}"
+								style="cursor: default;">
+								<h:outputLabel value="#{var.value.toString()}" />
+							</s:div>
+							<s:div rendered="#{var.toString().equals('ip')}"
+								style="cursor: default;">
+								<h:outputLabel value="#{var.value.toString()}" />
+							</s:div>
+							<s:div rendered="#{var.toString().equals('usuario')}"
+								style="cursor: default;">
+								<h:outputLabel value="#{var.value}" />
+							</s:div>
+							<s:div rendered="#{var.toString().equals('session')}"
+								style="cursor: default;">
+								<h:outputLabel
+									value="session #{var.value.id} - #{messages.hora}: #{var.value.horaInicio}" />
+							</s:div>
+							<s:div rendered="#{var.toString().equals('modulo')}"
+								style="cursor: default;">
+								<h:outputLabel
+									value="#{var.value.modulo.nombre} - #{messages.hora}: #{var.value.hora}" />
+							</s:div>
+							<s:div rendered="#{var.toString().equals('accion')}"
+								style="cursor: default;">
+								<h:outputLabel
+									value="#{var.value.accionRealizada} - #{messages.de}: #{var.value.horaInicio} - #{messages.hasta}: #{var.value.horaFin}" />
+							</s:div>
+							<s:div rendered="#{var.toString().equals('atributos')}">
+								<rich:dataTable value="#{var.value}" var="atr"
+									style="cursor: default;">
+									<rich:column>
+								#{atr.id}
+							</rich:column>
+									<rich:column>
+										<f:facet name="header">#{messages.entidad}</f:facet>
+								#{atr.entidad}
+							</rich:column>
+									<rich:column>
+										<f:facet name="header">#{messages.id}</f:facet>
+								#{atr.idEntidad}
+							</rich:column>
+									<rich:column>
+										<f:facet name="header">#{messages.atributo}</f:facet>
+								#{atr.atributo}
+							</rich:column>
+									<rich:column>
+										<f:facet name="header">#{messages.vantes}</f:facet>
+								#{atr.valorAntes}
+							</rich:column>
+									<rich:column>
+										<f:facet name="header">#{messages.vdespues}</f:facet>
+								#{atr.valorDespues}
+							</rich:column>
+								</rich:dataTable>
+							</s:div>
+						</rich:treeNode>
+					</rich:tree>
+
+				</rich:panel>
+			</rich:panel>
+			<s:div style="text-align: right;">
+				<s:button view="/modCommons/modHome/home.gehos" value="#{messages.salir}"
+					style="margin-right:0px"
+					rendered="#{not identificadorManager.editing}">
+					<f:param name="idFuncionalidad"
+						value="#{activeModule.activeModule.id}" />
+					<f:param name="idancestors"
+						value="#{activeModule.activeModule.id}a" />
+					<f:param name="moduleName" value="#{activeModule.activeModuleName}" />
+				</s:button>
+			</s:div>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

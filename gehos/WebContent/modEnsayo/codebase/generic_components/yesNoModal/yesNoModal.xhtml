@@ -1,0 +1,26 @@
+<rich:modalPanel id="#{modalId}" autosized="true" width="200"
+	resizeable="false" style="white-space: nowrap"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+	<f:facet name="header">
+		<h:panelGroup>
+			<h:outputText value="#{modalHeader}"></h:outputText>
+		</h:panelGroup>
+	</f:facet>
+	<f:facet name="controls">
+		<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+			style="cursor:pointer; position:relative; top:1px;"
+			onclick="Richfaces.hideModalPanel('#{modalId}')" />
+	</f:facet>
+	 <ui:include src="/modEnsayo/codebase/generic_components/yesNoModal/yesNoModalContent.xhtml">
+	 	<ui:param name="modalId" value="#{modalId}" />
+	 	<ui:param name="modalBody" value="#{modalBody}" />
+	 	<ui:param name="controller" value="#{controller}" />
+	 	<ui:param name="onYesRerender" value="#{onYesRerender}" />
+	 </ui:include>
+	</rich:modalPanel>

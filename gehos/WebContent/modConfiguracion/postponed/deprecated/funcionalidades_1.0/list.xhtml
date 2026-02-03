@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+      xmlns:rich="http://richfaces.org/rich"
+	  xmlns:a="http://richfaces.org/a4j">
+<head>    
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <title>list</title>
+    <link href="#{facesContext.externalContext.requestContextPath}/stylesheet/theme.css" rel="stylesheet" type="text/css" />
+	<style type="text/css">
+		body{
+			font-size : small;
+		}
+	</style>
+		<link
+		href="#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/stylesheet/layout.css"
+		rel="stylesheet"
+		type="text/css" />
+</head>
+  
+  	<body>
+  		<h:form id="funcionalidadesListForm">
+  		<div style="position: relative; left: 5px;">
+  			<h:outputLabel style="font-size:7" value="#{menuBuilder.getModuleById(funcionalidadList_custom.modulo.id).nombre}"></h:outputLabel>
+		  	<s:div style="position:relative; left:-5px;">
+		        <s:button view="/modConfiguracion/funcionalidades/insert.xhtml"
+		                    id="create" 
+		                 value="Adicionar funcionalidad"
+		                 rendered="#{menuBuilder.moduleExist(funcionalidadList_custom.modulo.id)}">
+		                 <f:param name="moduleId" value="#{funcionalidadList_custom.modulo.id}" />
+		        </s:button>
+		    </s:div>
+  			
+  			<rich:dataTable id="funcionalidadList_custom" 
+		                var="funcionalidad"
+		              	value="#{funcionalidadList_custom.resultList}" 
+		           		rendered="#{not empty funcionalidadList_custom.resultList}">
+
+		        <h:column>
+		            <f:facet name="header">
+						label
+		            </f:facet>
+		            #{funcionalidad.label}
+		        </h:column>
+		        <h:column>
+		            <f:facet name="header">
+		                url
+		            </f:facet>
+		            #{funcionalidad.url}
+		        </h:column>
+		        <h:column>
+		            <f:facet name="header">ver</f:facet>
+		            
+		            <s:link view="/modConfiguracion/funcionalidades/edit.xhtml"
+		                      id="edit"
+		                      value="editar">
+		                <f:param name="funcionalidadId" 
+		                        value="#{funcionalidad.id}"/>
+		            </s:link>
+		        </h:column>
+		        <h:column>
+		            <f:facet name="header">eliminar</f:facet>
+		            
+		            <h:commandLink 	onclick="return confirm('seguro que desea eliminar esta funcionalidad?')"
+		            				value="eliminar"
+		            			    action="#{funcionalidadesDeleteController.Eliminar(funcionalidad.id)}">
+		            </h:commandLink> 
+		            		            
+		        </h:column>
+		    </rich:dataTable>
+		    <br/>
+		    <s:link view="/modConfiguracion/funcionalidades/list.xhtml"
+	                    id="refresh"
+	                    value="refrescar"
+	                    rendered="#{menuBuilder.moduleExist(funcionalidadList_custom.modulo.id)}">
+	        </s:link>
+  		</div>	
+		</h:form>
+	</body>
+
+</html>
+

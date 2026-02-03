@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript">setContentTitle('Configuraciones personales')</script>
+		<style type="text/css">
+.rich-stglpanel-body {
+	padding: 0px
+}
+</style>
+		<style type="text/css">
+.rich-panel-body {
+	padding: 0px
+}
+</style>
+		<h:form>
+
+			<rich:panel>
+				<f:facet name="header">Configurar idioma y tema visual</f:facet>
+				<table cellpadding="0px" cellspacing="0px" border="0px">
+					<tr>
+						<td style="height: 11px;" colspan="6"></td>
+					</tr>
+					<tr style="vertical-align: top;">
+						<td style="width: 7px;"></td>
+						<td><h:outputLabel value="Tema:"></h:outputLabel><br />
+
+						<h:selectOneMenu value="#{themeSelector.theme}"
+							style="width: 120px">
+							<f:selectItems value="#{themeSelector.themes}" />
+						</h:selectOneMenu></td>
+						<td style="width: 25px"></td>
+						<td><h:outputLabel value="Idioma:"></h:outputLabel><br />
+
+						<h:selectOneMenu value="#{localeSelector.localeString}"
+							style="width: 120px">
+							<f:selectItems value="#{localeSelector.supportedLocales}" />
+						</h:selectOneMenu></td>
+						<td style="width: 25px"></td>
+						<td style="vertical-align: bottom;"><h:commandButton
+							action="#{profileSettings.updateSettings()}" value="Aceptar"
+							style="margin-left: 0px; margin-bottom: 0px;" /> <s:button
+							view="#{activeModule.activeModule.url}" value="Cancelar"
+							style="margin-right: 0px; margin-bottom: 0px;" /></td>
+					</tr>
+				</table>
+				<br />
+			</rich:panel>
+			<br />
+		</h:form>
+		<h:form>
+			<rich:panel>
+				<f:facet name="header">Configurar menú</f:facet>
+				<table cellpadding="0px" cellspacing="0px" border="0px">
+					<tr>
+						<td style="height: 11px;" colspan="6"></td>
+					</tr>
+					<tr style="vertical-align: top;">
+						<td style="width: 7px;"></td>
+						<td style="vertical-align: top; padding: 0px;">Menú en forma
+						de árbol: <rich:spacer height="8px"></rich:spacer></td>
+						<td style="vertical-align: top; padding: 0px;"><h:selectBooleanCheckbox
+							value="#{user.profile.treeLikeMenu}"
+							style="margin-top: 0px; margin-right: 0px;">
+						</h:selectBooleanCheckbox></td>
+						<td style="width: 25px"></td>
+						<td style="vertical-align: top;"><h:commandButton
+							value="Aceptar"
+							action="#{profileSettings.updateMenuPreferences()}"
+							style="margin-left: 0px; margin-top: 0px; margin-bottom: 0px;" />
+						<s:button value="Cancelar" view="/modConfiguracion/home.xhtml"
+							style="margin-right: 0px; margin-top: 0px; margin-bottom: 0px;"></s:button>
+						</td>
+					</tr>
+				</table>
+				<br />
+			</rich:panel>
+			<s:div style="text-align: right;">
+				<s:button view="/modCommons/modHome/home.gehos" value="Salir"
+					style="margin-right:0px" 
+					rendered="#{not identificadorManager.editing}">
+					<f:param name="idFuncionalidad"
+						value="#{activeModule.activeModule.id}" />
+					<f:param name="idancestors"
+						value="#{activeModule.activeModule.id}a" />
+					<f:param name="moduleName" value="#{activeModule.activeModuleName}" />
+				</s:button>
+			</s:div>
+			<rich:simpleTogglePanel switchType="client" rendered="false">
+				<f:facet name="header">test</f:facet>
+				<table cellpadding="0px" cellspacing="0px" border="1px">
+					<tr>
+						<td style="height: 13px;" colspan="6"></td>
+					</tr>
+					<tr style="vertical-align: top;">
+						<td style="width: 8px;"></td>
+						<td>Dato1:<br />
+						<h:inputText /> <rich:spacer height="8px" style="display: block"></rich:spacer>
+						Dato2:<br />
+						<h:inputText /></td>
+						<td style="width: 25px"></td>
+						<td>Dato3:<br />
+						<h:inputText /> <rich:spacer height="8px" style="display: block"></rich:spacer>
+						Dato4:<br />
+						<h:inputText /></td>
+						<td style="width: 25px"></td>
+						<td valign="top">Dato5:<br />
+						<h:inputText /></td>
+					</tr>
+					<tr>
+						<td colspan="6" style="text-align: right;"><input
+							type="button" value="Aceptar" style="margin-bottom: 0px;" /> <input
+							type="button" value="Cancelar"
+							style="margin-right: 0px; margin-bottom: 0px;" /> <rich:spacer
+							height="8px" style="display: block"></rich:spacer> <a href="#">Búsqueda
+						avanzada</a></td>
+					</tr>
+				</table>
+			</rich:simpleTogglePanel>
+			<br />
+
+			<rich:simpleTogglePanel switchType="client" rendered="false">
+				<f:facet name="header">test2</f:facet>
+				<table cellpadding="0px" cellspacing="0px" border="1px">
+					<tr>
+						<td style="height: 13px;" colspan="6"></td>
+					</tr>
+					<tr style="vertical-align: top;">
+						<td style="width: 8px;"></td>
+						<td>Dato1: <rich:spacer height="8px" style="display: block"></rich:spacer>
+						<h:inputText /></td>
+						<td style="width: 25px"></td>
+						<td>Dato2: <rich:spacer height="8px" style="display: block"></rich:spacer>
+						<h:inputText /></td>
+						<td style="width: 25px"></td>
+						<td style="vertical-align: bottom;"><input type="button"
+							value="Aceptar" style="margin-bottom: 0px;" /> <input
+							type="button" value="Cancelar"
+							style="margin-right: 0px; margin-bottom: 0px;" /></td>
+					</tr>
+					<tr>
+						<td colspan="6" style="text-align: right; padding-top: 8px;">
+						<a href="#">Búsqueda avanzada</a></td>
+					</tr>
+				</table>
+			</rich:simpleTogglePanel>
+			<br />
+			<h:commandButton rendered="false" style="width: 400px;"
+				action="#{logicPermissionResolverDataLoader.loadAccessControlLists()}"
+				value="logicPermissionResolverDataLoader.loadAccessControlLists" />
+			<br />
+			<h:commandButton rendered="false"
+				action="#{createUserProfileTest.createUserProfile()}"
+				value="crear user profile" />
+			<br />
+
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

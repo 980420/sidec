@@ -1,0 +1,231 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                template="#{theme.template}">
+                       
+<ui:define name="body">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style type="text/css">.rich-stglpanel-body{padding:0px}</style>
+	<style type="text/css">.rich-panel-body{padding:0px}</style>
+    <script type="text/javascript">setContentTitle('Administrar roles')</script>
+    <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
+    
+    <h:form id="camaSearch" styleClass="edit">
+    
+    <rich:simpleTogglePanel switchType="client" >
+		<f:facet name="header">Criterios de búsqueda</f:facet>
+		<table cellpadding="0px" cellspacing="0px" border="0px" >
+			<tr>
+				<td style="height: 11px;" colspan="6">
+				</td>
+			</tr>
+			<tr style="vertical-align: top;">
+				<td style="width: 7px;"></td>
+				<td>
+					Nombre:<br />
+					<h:inputText style=" width : 131px;" value="#{roleList_security.role.name}"/>
+					
+					<rich:spacer height="8px" style="display: block"></rich:spacer>
+      			</td>
+				<td style="width: 25px"></td>
+
+				
+				<td style="vertical-align: bottom;">
+					<h:commandButton id="search" value="Buscar" 
+										action="/modConfiguracion/roles/RoleList.xhtml"
+										style="margin-left: 0px; margin-bottom: 0px;" />
+					<h:commandButton value="Cancelar" style="margin-right: 0px; margin-bottom: 0px;" />
+					<rich:spacer height="8px" style="display: block"></rich:spacer>
+				</td>
+			</tr>
+		</table>
+	</rich:simpleTogglePanel>
+    </h:form>
+    
+    <h:form>
+    <s:div styleClass="actionButtons" rendered="#{empty from}" style="text-align: right" >
+    <div align="right">
+    <table cellpadding="1px" cellspacing="0px" >
+    	<tr>
+    		<td>
+		    	<h:graphicImage height="12" width="12" value="/resources/icons/default/acciones/adicionar.png"/>
+    		</td>
+    		<td style="vertical-align: middle;">
+			    <s:link view="/modConfiguracion/roles/RoleCreate.xhtml"
+			                id="create" 
+			             value="Crear rol">
+			        <f:param name="rolId"/>
+			    </s:link>
+    		</td>
+    	</tr>
+    </table>
+    </div>
+    </s:div>  
+    <rich:panel>
+        <f:facet name="header">Listado de roles</f:facet>
+    <div class="results" id="roleList">
+
+    <h:outputText value="No se encuentra información que cumpla con los criterios de búsqueda." 
+               rendered="#{empty roleList_security.resultList}"/>
+           
+         
+    <rich:dataTable id="roleList_security_datatable" style="width:100%" 
+                var="role"
+              value="#{roleList_security.resultList}" 
+           rendered="#{not empty roleList_security.resultList}"
+           columnsWidth="100%, 0*, 0*, 0*">
+
+        <h:column>
+            <f:facet name="header">
+            		<h:panelGrid columns="2" style="width: 100%; padding:0px; margin:0px;" border="0"
+								cellpadding="0" cellspacing="0">
+								<s:div style="float: left;">Nombre</s:div>
+								<s:div style="text-align: right; padding-left:3px;">
+									<h:graphicImage rendered="#{not roleList_security.order.equals('name asc') and not roleList_security.order.equals('name desc')}"
+										value="/resources/icons/default/filtro/default.png" width="17" height="17">
+										<rich:componentControl 
+											event="onclick" 
+											for="valorcontextmenu"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage rendered="#{roleList_security.order.equals('name asc')}"
+										value="/resources/icons/default/filtro/asc_sort.png" width="17" height="17">
+										<rich:componentControl 
+											event="onclick" 
+											for="valorcontextmenu"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage rendered="#{roleList_security.order.equals('name desc')}"
+										value="/resources/icons/default/filtro/des_sort.png" width="17" height="17">
+										<rich:componentControl 
+											event="onclick" 
+											for="valorcontextmenu"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>												
+									</s:div>
+						</h:panelGrid>
+						</f:facet>
+            #{role.name}
+        </h:column>
+        <h:column >
+                  <div align="center">
+                        <s:link view="/modConfiguracion/roles/RoleDetail.xhtml">
+                   <h:graphicImage title="Ver" style="border: 0px;"
+                             value="/resources/icons/default/acciones/ver.png"/>
+                        <f:param id="rolIdparam1" name="rolId" value="#{role.id}"/>
+                  </s:link>
+                  </div>
+        </h:column>
+        <h:column >
+                  <div align="center">
+                        <s:link view="/modConfiguracion/roles/RoleEdit.xhtml">
+                   <h:graphicImage title="Modificar" style="border: 0px;"
+                             value="/resources/icons/default/acciones/modificar.png"/>
+                        <f:param id="rolIdparam2" name="rolId" value="#{role.id}"/>
+                  </s:link>
+                  </div>
+        </h:column>
+        <h:column >
+			<div align="center">
+                   <h:graphicImage title="Eliminar" style="border: 0px; cursor:pointer;"
+                   		value="/resources/icons/default/acciones/eliminar.png"
+                   		onclick="Richfaces.showModalPanel('panelEliminar')">
+               		</h:graphicImage>
+			</div>
+        </h:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+    </h:form>
+    <br/>
+    <div class="tableControl" style="width: 100%" align="center">
+      
+        <s:link view="/modConfiguracion/roles/RoleList.xhtml" 
+            disabled="#{not roleList_security.previousExists}" 
+                  id="firstPage">
+                 <h:graphicImage title="Primera página" style="border: 0px;"
+                 	value="/resources/icons/default/paginado/blue/inicio.png"/>
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+        
+        <s:link view="/modConfiguracion/roles/RoleList.xhtml"
+            disabled="#{not roleList_security.previousExists}"
+                  id="previousPage">
+                 <h:graphicImage title="Anterior" style="border: 0px;"
+                 	value="/resources/icons/default/paginado/blue/anterior.png"/>
+            <f:param name="firstResult" 
+                    value="#{roleList_security.previousFirstResult}"/>
+        </s:link>
+        
+        <s:link view="/modConfiguracion/roles/RoleList.xhtml" 
+            disabled="#{not roleList_security.nextExists}" 
+                  id="nextPage">
+      		<h:graphicImage title="Siguiente" style="border: 0px;"
+      			value="/resources/icons/default/paginado/blue/siguiente.png"/>
+            <f:param name="firstResult" 
+                    value="#{roleList_security.nextFirstResult}"/>
+        </s:link>
+        
+        <s:link view="/modConfiguracion/roles/RoleList.xhtml"
+            disabled="#{not roleList_security.nextExists}" 
+                  id="lastPage">
+                 <h:graphicImage title="última página" style="border: 0px;"
+                 	value="/resources/icons/default/paginado/blue/fin.png"/>
+            <f:param name="firstResult" 
+                    value="#{roleList_security.lastFirstResult}"/>
+        </s:link>
+        
+    </div>
+    
+<rich:modalPanel id="panelEliminar" width="290" height="125">
+	<f:facet name="header" id="panelEliminarHeader" >
+			<h:outputText  value="Eliminar rol" />
+	</f:facet>
+	<s:div id="panelEliminarBody" >
+		<div align="left">
+			<h:graphicImage	value="/resources/icons/default/acciones/advertencia.png" /> 
+			<rich:spacer width="4px" /> 
+			<h:outputText value="Se eliminará el rol. Al seleccionar Sí se perderán todos los datos." />
+			<br />
+			<h:outputText value="¿Desea continuar?" />
+		</div>
+		<br />
+		<div align="center">
+			<input type="button" value="Sí" style="margin-right: 4px;"
+							 onclick="Richfaces.hideModalPanel('panelEliminar')" />
+			
+			<input type="button" value="No" style="margin-left: 3px;"
+				onclick="Richfaces.hideModalPanel('panelEliminar')" />
+		</div>
+	</s:div>
+
+</rich:modalPanel>
+    
+<h:form>
+	<rich:contextMenu attached="false" id="valorcontextmenu" submitMode="ajax">
+		<rich:menuItem value="Ordenar de mayor a menor" ajaxSingle="true"
+			icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+			action="#{roleList_security.setOrder('name desc')}" reRender="roleList_security_datatable">
+		</rich:menuItem>
+		<rich:menuItem value="Ordenar de menor a mayor" ajaxSingle="true"
+			icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+			action="#{roleList_security.setOrder('name asc')}" reRender="roleList_security_datatable">
+		</rich:menuItem>
+	</rich:contextMenu>
+</h:form>   
+    
+</ui:define>
+
+</ui:composition>
+

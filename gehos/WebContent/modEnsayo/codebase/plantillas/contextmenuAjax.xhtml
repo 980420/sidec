@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+<ui:composition>
+	<!-- Contextmenu ajax generico para los listados, se le pasa la 
+	customList(controladorList), el atributo a ordenar(atributo) 
+	y el outputPanel a renderizar(listado) -->
+	<h:graphicImage
+		rendered="#{not controladorList.order.equals(atributo.concat(' desc')) and not controladorList.order.equals(atributo.concat(' asc'))}"
+		value="/resources/icons/default/filtro/default.png"
+		style="cursor: pointer;">
+		<rich:componentControl event="onclick" for="#{atributo.replace('.', '')}Order"
+			operation="show" />
+	</h:graphicImage>
+
+	<h:graphicImage rendered="#{controladorList.order.equals(atributo.concat(' asc'))}"
+		value="/resources/icons/default/filtro/asc_sort.png"
+		style="cursor: pointer;">
+		<rich:componentControl event="onclick" for="#{atributo.replace('.', '')}Order"
+			operation="show" />
+	</h:graphicImage>
+
+	<h:graphicImage rendered="#{controladorList.order.equals(atributo.concat(' desc'))}"
+		value="/resources/icons/default/filtro/des_sort.png"
+		style="cursor: pointer;">
+		<rich:componentControl event="onclick" for="#{atributo.replace('.', '')}Order"
+			operation="show" />
+	</h:graphicImage>
+
+	<rich:contextMenu attached="false" id="#{atributo.replace('.', '')}Order"
+		submitMode="ajax">
+		<rich:menuItem
+			icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+			value="#{messages.filtroMenMay}" ajaxSingle="true"
+			reRender="#{listado}" immediate="true"
+			action="#{controladorList.setOrder(atributo.concat(' asc'))}" />
+
+		<rich:menuItem
+			icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+			value="#{messages.filtroMayMen}" ajaxSingle="true"
+			reRender="#{listado}" immediate="true"
+			action="#{controladorList.setOrder(atributo.concat(' desc'))}" />
+	</rich:contextMenu>
+</ui:composition>
+
+</html>

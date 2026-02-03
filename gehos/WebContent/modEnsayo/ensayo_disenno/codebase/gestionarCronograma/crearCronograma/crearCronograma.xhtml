@@ -1,0 +1,103 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}">
+	<s:div>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript">setContentTitle('#{messages.lbl_titulo_ens}')</script>
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css"
+			rel="stylesheet" type="text/css" />
+		<rich:messages globalOnly="true" styleClass="message"
+			id="globalMessage" ajaxRendered="true" />
+		<h:form id="crearCronograma">
+			<rich:panel>
+
+				<rich:simpleTogglePanel label="#{messages.lbl_datosCronograma_ens}"
+					switchType="client" opened="true">
+
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr>
+
+
+							<td><h:outputText
+									value="#{messages.lbl_tiempoDuracion_ens}:"
+									styleClass="normalText" /><span style="color:red;">*</span> <rich:message for="tiempoduracion"
+									showDetail="false" tooltip="true" style="color:red;">
+									<f:facet name="errorMarker">
+										<h:outputText value="*"
+											title="#{facesMessages.getCurrentMessagesForControl('tiempoduracion').get(0).getDetail()}" />
+									</f:facet>
+								</rich:message> <br /> <h:inputText value="#{crearCronograma.tiempoDuracion}"
+									id="tiempoduracion"
+									required="#{!empty param['crearCronograma:aceptarBtn']}"
+									validator="#{crearCronograma.number4cifras}" /></td>
+							<td style="vertical-align: bottom"><h:selectOneRadio
+									style="mar" id="periodo" value="${crearCronograma.periodo}">
+									<f:selectItem id="item1" itemLabel="#{messages.lbl_diasCr_ens}"
+										itemValue="dias" />
+									<f:selectItem id="item2"
+										itemLabel="#{messages.lbl_semanas_ens}" itemValue="semanas" />
+									<f:selectItem id="item3" itemLabel="#{messages.lbl_meses_ens}"
+										itemValue="meses" />
+									<f:selectItem id="item4" itemLabel="#{messages.lbl_annos_ens}"
+										itemValue="annos" />
+
+								</h:selectOneRadio></td>
+
+
+
+
+						</tr>
+
+
+
+
+					</table>
+					<rich:spacer height="8px"></rich:spacer>
+					<table cellpadding="0px" cellspacing="0px" border="0px"
+						width="100%">
+						<tr>
+
+							<td><h:outputText value="#{messages.lbl_descripcion_ens}:"
+									styleClass="normalText" /> <rich:message
+											for="descripcion" showDetail="false" tooltip="true"
+											style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('descripcion').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message><br /> <h:inputTextarea
+									id="descripcion"
+									value="#{crearCronograma.cronograma.descripcion}"
+									validator="#{validations_ensayo.textnumber250}"
+									style="width:50%;resize: vertical">
+								</h:inputTextarea></td>
+
+						</tr>
+					</table>
+				</rich:simpleTogglePanel>
+			</rich:panel>
+			<s:div>
+			<div align="right">
+				<rich:spacer width="100%" height="8px"/>
+			</div>
+		</s:div>
+			<div align="right">
+
+				<a4j:commandButton id="aceptarBtn"
+					action="#{crearCronograma.insertarCronograma()}"
+					value="#{messages.btn_aceptar_ens}">
+				</a4j:commandButton>
+				<rich:spacer width="10px"/>
+				<s:button immediate="true" view="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}//gestionarCronograma/listarGruposujetosCronograma/listarGruposujetosCronograma.xhtml" value="#{messages.btn_cancelar_ens}"
+					style="margin-right:0px"></s:button>
+			</div>
+
+		</h:form>
+
+	</s:div>
+</s:div>

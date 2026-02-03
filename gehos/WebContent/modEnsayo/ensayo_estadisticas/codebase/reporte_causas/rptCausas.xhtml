@@ -1,0 +1,250 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}">
+	<s:div>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript">
+
+	setContentTitle('#{messages.lbl_titulo_ens}');
+	var curDtN = new Date();
+	 var calDtN=null;
+
+	 function previousDate(date){
+		calDtN = date;
+	 }
+
+	 function disablementFunction(day){
+		 if(calDtN == null){
+			 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+					return true; 
+				else 
+					return false; 
+		 }
+		 else {
+			 if (calDtN.getTime() - day.date.getTime() &#62;= 0 ) 
+					return true; 
+				else 
+					return false;
+		 }					 
+	 }
+
+	 function disabledClassesProv(day){
+		 if(calDtN == null){
+			 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+					return ''; 
+				else 
+					return 'noavailable'; 
+		 }
+		 else {
+			 if (calDtN.getTime() - day.date.getTime() &#62;= 0) 
+					return ''; 
+				else 
+					return 'noavailable';
+		 }				
+	 }
+
+	 function resetSecondDate(first,second) {
+		 var firstDate = first.getSelectedDate().getTime();
+		 var secondDate = second.getSelectedDate().getTime();
+
+		 if(firstDate - secondDate &#62; 0)
+			 second.resetSelectedDate();
+	 }
+	 
+	 function disablementFunctionPreviousEx(day){
+		if(calDtN == null){
+			if (curDtN.getTime() - day.date.getTime() &#62; 0) return true; else return false;
+		}
+		if ((curDtN.getTime() - day.date.getTime() &#62; 0) &#38;&#38; (calDtN.getTime() - day.date.getTime() &#60;= 0)){
+			return true;
+		}
+		else 
+			return false;
+	  }
+
+	function disabledClassesProvPreviousEx(day){
+		if(calDtN == null){
+			if (curDtN.getTime() - day.date.getTime() &#60; 0)
+				return 'noavailable';
+			else 
+				return '';
+		}
+		if ((curDtN.getTime() - day.date.getTime() &#60; 0) || (calDtN.getTime() - day.date.getTime() &#62; 0))
+			return 'noavailable';
+		else 
+			return '';
+	}
+	
+	
+		</script>
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css"
+			rel="stylesheet" type="text/css" />
+		<link rel='stylesheet'
+			href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+			type='text/css' />
+
+		<rich:messages globalOnly="true" styleClass="message"
+			id="globalMessage" ajaxRendered="true" />
+		<h:form id="reporteCausasForm">
+
+			<table width="100%" cellpadding="5px" cellspacing="0px"
+				style="vertical-align: top;">
+				<tr>
+
+
+
+					<td style="vertical-align: top; width: 100%;"><rich:simpleTogglePanel
+							switchType="client" styleClass="whitespace" opened="true"
+							label="#{messages.lbl_parametrosReporte_ens}">
+							<table cellpadding="0px" cellspacing="0px" border="0px">
+								<tr>
+
+
+									<td>
+									<a4j:outputPanel id="op_fd">
+									<h:outputLabel styleClass='normalText'
+											value='#{messages.desde}:' /> <rich:message for="fechaDesde"
+											showDetail="false" tooltip="true" style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('fechaDesde').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message> <br /> <rich:calendar datePattern='dd/MM/yyyy' tabindex="12"
+											value="#{reporteCausas.fechaInicio}" id="fechaDesde"
+											isDayEnabled="disablementFunction"
+											dayStyleClass="disabledClassesProv"
+											onexpand="previousDate(document.getElementById('reporteCausasForm:fechaHasta').component.getSelectedDate());Richfaces.getComponent('calendar',this).nextMonth(); Richfaces.getComponent('calendar',this).prevMonth(); return true;"
+											required="#{!empty param['reporteCausasForm:generarBtn']}" />
+										<br /> <rich:spacer height="8px"></rich:spacer>
+										</a4j:outputPanel>
+										</td>
+									<td class="colGran">
+									<a4j:outputPanel id="op_fh">
+									<h:outputLabel styleClass="normalText"
+											value="#{messages.hasta}:" /> <rich:message for="fechaHasta"
+											showDetail="false" tooltip="true" style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('fechaHasta').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message> <br /> <rich:calendar datePattern="dd/MM/yyyy" tabindex="12"
+											value="#{reporteCausas.fechaFin}" id="fechaHasta"
+											isDayEnabled="disablementFunctionPreviousEx"
+											dayStyleClass="disabledClassesProvPreviousEx"
+											onexpand="previousDate(document.getElementById('reporteCausasForm:fechaDesde').component.getSelectedDate());Richfaces.getComponent('calendar',this).nextMonth(); Richfaces.getComponent('calendar',this).prevMonth(); return true;"
+											required="#{!empty param['reporteCausasForm:generarBtn']}" />
+									
+									</a4j:outputPanel>
+									</td>
+								</tr>
+							</table>
+
+
+
+
+
+
+						</rich:simpleTogglePanel></td>
+				</tr>
+			</table>
+			
+			<div align="right"><a4j:status id="status" onstart="#{rich:component('bloqueo')}.show()" onstop="#{rich:component('bloqueo')}.hide()">
+                        <f:facet name="start">
+                                <s:div>
+                                        <table>
+                                                <tr>
+                                                        <td><h:graphicImage width="12" height="12"
+                                                                value="/resources/icons/default/acciones/loading_big.gif" /></td>
+                                                        <td><h:outputText value="#{messages.lblProcesando_ap}" /></td>
+                                                </tr>
+                                        </table>
+                                </s:div>
+                        </f:facet>
+                </a4j:status></div>
+
+			<div align="right">
+
+				<a4j:commandButton id="generarBtn"
+					action="#{reporteCausas.generarReporte()}"
+					value="#{messages.generar}" style="margin-right:10px"
+					reRender="contenedorReporteHTML, fechaDesde, fechaHasta, op_fd, op_fh">
+				</a4j:commandButton>
+
+
+				<s:button view="/modCommons/modHome/home.gehos"
+					value="#{messages.btn_cancelar_ens}" tabindex="4"
+					style="margin-right:0px;margin-bottom:  0px; margin-top: 0px;"
+					rendered="#{not identificadorManager.editing}">
+					<f:param name="idFuncionalidad"
+						value="#{activeModule.activeModule.id}" />
+					<f:param name="idancestors"
+						value="#{activeModule.activeModule.id}a" />
+					<f:param name="moduleName" value="#{activeModule.activeModuleName}" />
+				</s:button>
+			</div>
+			<rich:spacer height="8px"></rich:spacer>
+			<a4j:outputPanel id="contenedorReporteHTML">
+				<rich:panel rendered="#{reporteCausas.listadoCausas.size()>0}">
+					<f:facet name='header'> 
+              #{messages.lbl_titulo_ens}
+            </f:facet>
+					<iframe width="100%" height="800px"
+						src="#{facesContext.externalContext.requestContextPath}#{reporteCausas.pathToReport}"></iframe>
+					<rich:spacer height="8px">
+					</rich:spacer>
+
+					<div align="right">
+						<a4j:commandButton id="exportarBtn" action="exportar"
+							onclick="javascript:Richfaces.showModalPanel('exportPanel');"
+							value="#{messages.btn_exportar_ens}" style="margin-right:10px">
+						</a4j:commandButton>
+
+
+						<s:button view="/modCommons/modHome/home.gehos"
+							value="#{messages.btn_salir_ens}" tabindex="4"
+							style="margin-right:0px;margin-bottom:  0px; margin-top: 0px;"
+							rendered="#{not identificadorManager.editing}">
+							<f:param name="idFuncionalidad"
+								value="#{activeModule.activeModule.id}" />
+							<f:param name="idancestors"
+								value="#{activeModule.activeModule.id}a" />
+							<f:param name="moduleName"
+								value="#{activeModule.activeModuleName}" />
+						</s:button>
+					</div>
+				</rich:panel>
+
+				
+				<rich:panel styleClass="whitespace"
+					rendered="#{reporteCausas.pathToReport.equals('')}">
+					<f:facet name="header">#{messages.lbl_titulo_ens}</f:facet>
+					
+					<div class="results" id="roleList">
+					<h:outputText value="#{messages.msg_listaVacia_ens}" /></div>
+					
+				</rich:panel>
+				<rich:panel
+					rendered="#{reporteCausas.pathToReport.equals('noResult')}">
+					<f:facet name="header">#{messages.lbl_titulo_ens}</f:facet>
+					
+					<div class="results" id="roleList">
+					<h:outputText value="#{messages.msg_noResultados_ens}" /></div>
+					
+				</rich:panel>
+				<rich:modalPanel id="bloqueo" width="0" height="0" top="0" left="0" style="opacity: -10000" shadowOpacity="-10000" />
+				
+			</a4j:outputPanel>
+
+		</h:form>
+		<ui:include
+			src="/modEnsayo/codebase/plantillas/exportModalPanel.xhtml">
+
+			<ui:param name="controlador" value="#{reporteCausas}" />
+		</ui:include>
+	</s:div>
+</s:div>

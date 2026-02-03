@@ -1,0 +1,117 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+		<s:div
+			rendered="#{not servicioNoClinicoVerDetallesControlador.from.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.titulo2}')</script>
+		</s:div>
+		<s:div
+			rendered="#{servicioNoClinicoVerDetallesControlador.from.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+		</s:div>
+
+
+		<h:form id="servicioSearch" styleClass="edit">
+			<a4j:outputPanel ajaxRendered="true">
+				<rich:messages id="error" styleClass="message" ajaxRendered="true" for="error" />
+			</a4j:outputPanel>
+			<rich:panel switchType="client">
+				<f:facet name="header">#{messages.datos}</f:facet>
+				<table cellpadding="0px" cellspacing="0px" border="0px">
+					<tr>
+						<td style="height: 13px;" colspan="6"></td>
+					</tr>
+					<tr style="vertical-align: top;">
+						<td><rich:spacer width="6px" /></td>
+						<td>#{messages.codigo}<rich:spacer width="9px"></rich:spacer></td>
+						<td><h:outputLabel styleClass="dataText"
+							value="#{servicioNoClinicoVerDetallesControlador.servicio.codigo}"></h:outputLabel>
+						</td>
+						<td><rich:spacer width="24px" /></td>
+						<td>#{messages.nombre}<rich:spacer width="9px"></rich:spacer>
+						<rich:spacer height="8px" style="display: block"></rich:spacer></td>
+						<td><h:outputLabel styleClass="dataText"
+							value="#{servicioNoClinicoVerDetallesControlador.servicio.nombre}"></h:outputLabel>
+						</td>
+						<td><rich:spacer width="24px" /></td>
+						<td>
+						<table cellpadding="0" cellspacing="0" border="0"
+							style="vertical-align: middle;">
+							<tr>
+								<td valign="middle"><h:outputLabel
+									value="#{messages.servicioFisico}"></h:outputLabel> <rich:spacer
+									width="8"></rich:spacer></td>
+								<td valign="middle"><h:selectBooleanCheckbox
+									style="margin: 0px;" tabindex="5" disabled="true"
+									value="#{servicioNoClinicoVerDetallesControlador.servicio.servicioFisico}">
+								</h:selectBooleanCheckbox></td>
+								<td><rich:spacer width="6px" /></td>
+
+							</tr>
+						</table>
+						</td>
+					</tr>
+					<tr style="vertical-align: top;">
+						<td style="width: 6px;"></td>
+						<td>#{messages.departamentoClinico}<rich:spacer width="9px"></rich:spacer></td>
+						<td><h:outputLabel styleClass="dataText"
+							value="#{servicioNoClinicoVerDetallesControlador.servicio.departamento.nombre}"></h:outputLabel>
+						</td>
+						<td width="24px" />
+						<td>#{messages.servicioClinico}<rich:spacer width="9px"></rich:spacer>
+						<rich:spacer height="4px" style="display: block"></rich:spacer></td>
+						<td><h:outputLabel styleClass="dataText"
+							rendered="#{servicioNoClinicoVerDetallesControlador.servicio.servicio.nombre != '' and servicioNoClinicoVerDetallesControlador.servicio.servicio.nombre != null}"
+							value="#{servicioNoClinicoVerDetallesControlador.servicio.servicio.nombre}"></h:outputLabel>
+						<h:outputLabel styleClass="dataText"
+							rendered="#{servicioNoClinicoVerDetallesControlador.servicio.servicio.nombre == '' || servicioNoClinicoVerDetallesControlador.servicio.servicio.nombre == null}"
+							value="-"></h:outputLabel></td>
+					</tr>
+
+				</table>
+			</rich:panel>
+			<div align="right">
+			<table cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td><h:commandButton action="#{servicioNoClinicoModificarControlador.setServicioId(servicioNoClinicoVerDetallesControlador.servicio.id)}"
+						value="#{messages.modificar}" tabindex="1"
+						rendered="#{not servicioNoClinicoVerDetallesControlador.from.equals('listar')}"
+						style="margin-bottom: 0px; margin-right: 10px; margin-top: 8px" /></td>
+					<td><a4j:commandButton
+						onclick="Richfaces.showModalPanel('eliminar_servicio_clinico_panel')"
+						tabindex="2"
+						style="margin-bottom: 0px; margin-right: 10px;margin-left: 0px; margin-top: 8px"
+						rendered="#{not servicioNoClinicoVerDetallesControlador.from.equals('listar')}"
+						value="#{messages.eliminar}" /></td>
+					<td><h:commandButton action="salir" value="#{messages.salir}"
+						tabindex="3"
+						style="margin-bottom: 0px; margin-right: 0px; margin-left: 0px; margin-top: 8px">
+					</h:commandButton></td>
+				</tr>
+			</table>
+			</div>
+		</h:form>
+
+		<ui:include
+			src="/modConfiguracion/management/gestionarServiciosNoClinicos/modalspanel/ConfirmarEliminarServiciosNoClinicosVerDetalles.xhtml" />
+	</ui:define>
+
+</ui:composition>
+

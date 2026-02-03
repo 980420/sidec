@@ -1,0 +1,74 @@
+<s:div   xmlns     ="http://www.w3.org/1999/xhtml" 
+ 			      xmlns:ui  ="http://java.sun.com/jsf/facelets" 
+      		      xmlns:h   ="http://java.sun.com/jsf/html" 
+			      xmlns:f   ="http://java.sun.com/jsf/core" 
+			      xmlns:s   ="http://jboss.com/products/seam/taglib" 
+			      xmlns:rich="http://richfaces.org/rich" 
+                  xmlns:a4j ="http://richfaces.org/a4j" 
+                  > 
+<rich:modalPanel id="exportPanel" width="360" height="73" resizeable="false">
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<f:facet name="header">
+		            <h:panelGroup>
+		                <h:outputText value="#{messages.msg_seleccioneExportar_ens}"></h:outputText>
+		            </h:panelGroup>
+		        </f:facet>
+		        <f:facet name="controls">
+		            <h:panelGroup>
+		                <h:graphicImage value="/resources/icons/default/acciones/cerrar.gif" styleClass="hidelink" id="hidelinkEx"/>
+		                <rich:componentControl for="exportPanel" attachTo="hidelinkEx" operation="hide" event="onclick"/>
+		            </h:panelGroup>
+		        </f:facet>
+		        <a4j:form ajaxSubmit="false" id="ajaxFormExport">
+		         <!-- a partir de aqui -->
+		         		
+		            	<table cellpadding="0px" cellspacing="0px" border="0px" >
+									   
+									  <tr>
+									  	
+									  	<td >
+									  		<h:outputText value="Formato:" />
+									  		<rich:message for="fileComboExport" showDetail="false"  tooltip="true" style="color:red;" >
+							    					<f:facet name="errorMarker">
+								    					<h:outputText title="#{facesMessages.getCurrentMessagesForControl('fileComboExport').get(0).getDetail()}" value="*" styleClass="errorLabel"
+								    					/>
+								    				</f:facet>
+							    			</rich:message> 	
+									  	</td>
+									  	<td>
+									  	</td>
+									  </tr>
+									  <tr style="vertical-align: top;">
+									    							   
+									    <td width="150px">									       											       		
+             									<rich:comboBox id="fileComboExport" 
+             									required="true"
+             									requiredMessage="#{messages.msg_requerido_ens}"
+             									defaultLabel="#{messages.lbl_seleccione_ens}"
+					        					directInputSuggestions="true" suggestionValues="#{controlador.filesFormatCombo}"
+					        					enableManualInput = "false" value="#{controlador.fileformatToExport}" >
+             									</rich:comboBox>               	
+									    </td>
+									    
+									    
+									    <td style="padding-left: 25px;">
+									    	<a4j:commandButton value="#{messages.btn_aceptar_ens}" action="#{controlador.exportReportToFileFormat()}" 
+									    	oncomplete="if(#{empty facesMessages.getCurrentMessagesForControl('fileComboExport')}) {window.open('#{facesContext.externalContext.requestContextPath}#{controlador.pathExportedReport}'); Richfaces.hideModalPanel('exportPanel');}"
+									    	style="margin:0px;" reRender="fileComboExport" />
+											<rich:spacer width="10"/>								    	
+           									<a4j:commandButton value="#{messages.btn_cancelar_ens}" style="text-align:center ;margin:0px;" action="exportar" immediate="true" id="cancelarRMP">
+           									<rich:componentControl for="exportPanel" attachTo="cancelarRMP" operation="hide" event="onclick"/>
+           									</a4j:commandButton>
+									    </td>
+									  </tr>
+									  		                
+						</table>
+									
+		       	<!-- hasta aqui -->  
+		       	</a4j:form>
+		
+</rich:modalPanel>
+
+</s:div>

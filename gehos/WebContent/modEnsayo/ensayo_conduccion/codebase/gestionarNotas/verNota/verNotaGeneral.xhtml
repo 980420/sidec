@@ -1,0 +1,120 @@
+<!-- CU 35 Visualizar detalles de nota general-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a="http://richfaces.org/a4j" xmlns:a4j="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle('#{messages.verDetallesGeneral}')</script>
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css"
+		rel="stylesheet" type="text/css" />
+
+
+	<table class="Tabla" width="100%" cellpadding="0" cellspacing="0">
+		<tr>
+			<td><rich:panel style="margin-left: 1px">
+					<f:facet name="header">
+						<h:panelGroup>
+							<div>
+								<div align="left">#{messages.detalles}</div>
+							</div>
+						</h:panelGroup>
+					</f:facet>
+					<table width="80%" cellpadding="0" cellspacing="0" border="1px;">
+						<tr class="filSepGranRA">
+							<td align="left" width="40%"><h:outputText
+									value="#{messages.descripcion}:"
+									style="margin:0px; padding:0px; font-weight: bold;margin-left:5px;" /><h:outputText
+									value="#{(not empty verNotaGeneral.notaGeneral.descripcion) ? verNotaGeneral.notaGeneral.descripcion : messages.vacio}"
+									style="margin:0px; padding:0px; font-weight: bold; margin-left:5px;" /></td>
+							<td align="right" width="50%"><h:outputText
+									value="#{messages.ultimaActualizacion}:"
+									style="margin:0px; padding:0px; font-weight: bold; " /> <h:outputText
+									styleClass="dataText"
+									value="#{(not empty verNotaGeneral.notaGeneral.fechaActualizacion) ? verNotaGeneral.notaGeneral.fechaActualizacion : verNotaGeneral.notaGeneral.fechaCreacion}"
+									style="margin:0px; padding:0px; margin-left:5px; ">
+									<s:convertDateTime pattern="#{messages.patronFecha}">
+									</s:convertDateTime>
+								</h:outputText> <h:outputText value="#{messages.por}:"
+									style="margin:0px; padding:0px; font-weight: bold; margin-left:5px;" />
+								<h:outputText styleClass="dataText"
+									value="#{(not empty verNotaGeneral.notaGeneral.usuario.nombre) ? verNotaGeneral.notaGeneral.usuario.nombre : messages.vacio}"
+									style="margin:0px; padding:0px; margin-left:5px;" /></td>
+						</tr>
+						<tr class="filSepGranRA">
+							<td align="left" width="40%"><h:outputText
+									value="#{messages.estadoRes}:"
+									style="margin:0px; padding:0px; font-weight: bold; margin-left:5px;" />
+								<h:outputText styleClass="dataText"
+									value="#{(not empty verNotaGeneral.notaGeneral.estadoNota.nombre) ? verNotaGeneral.notaGeneral.estadoNota.nombre : messages.vacio}"
+									style="margin:0px; padding:0px; margin-left:5px; " /></td>
+							<td align="left" width="40%"><h:outputText
+									value="#{messages.nroNotas}:"
+									style="margin:0px; padding:0px; font-weight: bold; margin-left:5px;" />
+								<h:outputText styleClass="dataText"
+									value="#{(not empty verNotaGeneral.DevolverNotaGeneralAsociadas(verNotaGeneral.notaGeneral)) ? verNotaGeneral.DevolverNotaGeneralAsociadas(verNotaGeneral.notaGeneral).size() : 0}"
+									style="margin:0px; padding:0px; margin-left:5px; " /></td>
+						</tr>
+
+					</table>
+					<rich:spacer height="2px;" width="80%" />
+					<c:set var="cuenta" value="${0}" />
+					<c:forEach
+						items="#{verNotaGeneral.DevolverNotaGeneralAsociadas(verNotaGeneral.notaGeneral)}"
+						var="nota" varStatus="cont">
+						<table border="1px;" cellpadding="0" cellspacing="0" width="80%">
+							<tr style="border: 1px;" bgcolor="#BFE1FF" class="filSepGranRA">
+								<td width="26.6%" align="left"><h:outputText
+										value="#{nota.descripcion}"
+										style="margin:0px; padding:0px; font-weight: bold; margin-left:5px;" /></td>
+								<td width="26.6%" align="center"><h:outputText
+										styleClass="dataText"
+										value="#{(not empty nota.fechaActualizacion) ? nota.fechaActualizacion : nota.fechaCreacion}"
+										style="margin:0px; padding:0px; margin-left:5px; ">
+										<s:convertDateTime pattern="#{messages.patronFecha}">
+										</s:convertDateTime>
+									</h:outputText> <h:outputText value="#{messages.por}:"
+										style="margin:0px; padding:0px; font-weight: bold; margin-left:5px;" />
+									<h:outputText styleClass="dataText"
+										value="#{(not empty nota.usuario.nombre) ? nota.usuario.nombre : messages.vacio}"
+										style="margin:0px; padding:0px; margin-left:5px;" /></td>
+								<td width="26.6%" align="right"><h:outputText
+										value="#{messages.estado}:"
+										style="margin:0px; padding:0px; font-weight: bold; " /> <h:outputText
+										styleClass="dataText"
+										value="#{(not empty nota.estadoNota.nombre) ? nota.estadoNota.nombre : messages.vacio}"
+										style="margin:0px; padding:0px; margin-left:5px; " /></td>
+							</tr>
+							<tr border="1px;" class="filSepGranRA">
+								<td><h:outputText styleClass="dataText"
+										value="#{(not empty nota.detallesNota) ? nota.detallesNota : messages.vacio}"
+										style="margin:0px; padding:0px; margin-left:5px; " /></td>
+							</tr>
+						</table>
+						<c:set value="${cuenta + 1}" var="cuenta"></c:set>
+						<c:if test="#{cuenta != (verNotaGeneral.DevolverNotaGeneralAsociadas(verNotaGeneral.notaGeneral).size())}">
+							<rich:spacer height="2px;" width="80%" />
+						</c:if>
+						
+
+					</c:forEach>
+
+
+				</rich:panel></td>
+		</tr>
+		<tr>
+			<td><h:form>
+					<div align="right">
+						<br></br>
+						<h:commandButton value="#{messages.salir}" style="margin:0px;"
+							action="salir" immediate="true" />
+					</div>
+				</h:form></td>
+		</tr>
+
+	</table>
+</ui:composition>

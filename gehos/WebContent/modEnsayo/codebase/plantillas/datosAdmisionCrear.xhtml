@@ -1,0 +1,414 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+<rich:panel>
+ 	<f:facet name="header">
+		<h:outputText value="#{messages.datosAdmision}" />
+	</f:facet>
+	<table class="Tabla" cellspacing="0" cellpadding="0" width="100%">
+		<tr>
+			<td class="margenSupIzq" width="100%">
+				<table cellpadding="0" cellspacing="0" width="100%">
+					<tr class="filSepPeq">
+						<td class="colSepPeq">
+							<h:outputText value="#{messages.fechaIngreso}:"  style="margin:0px; padding:0px;"/>
+							<ui:include src="/modAdmision/admision/codebase/plantillas/messagesValidation.xhtml" >
+								<ui:param name="forComponent" value="fechaIngreso" />
+								<ui:param name="title" value="#{facesMessages.getCurrentMessagesForControl('fechaIngreso').get(0).getDetail()}" />
+							</ui:include>
+						</td>
+					</tr>
+					<tr class="filSepGran">
+						<td class="colSepPeq">
+							<rich:calendar datePattern="#{messages.patronFecha}" styleClass="dataText" popup="true" 
+										   value="#{controlador.fechaIngreso}" required="true" id="fechaIngreso"
+										   dayStyleClass="hoyAyerClass" isDayEnabled="hoyAyer"/>
+						</td>
+					</tr>
+					<tr class="filSepPeq">
+						<td>
+							<h:outputText value="#{messages.observaciones}:" style="margin:0px; padding:0px;" />
+						</td>
+					</tr>
+					
+					<tr class="filSepGranRA">
+						<td colspan="6">
+							<h:inputTextarea styleClass="dataText" style="width:99%" rows="4" readonly="false"
+											 value="#{controlador.observaciones}" />
+						</td>
+					</tr>
+				</table>
+				<rich:panel rendered="#{empty controlador.cama}">
+				 	<f:facet name="header">
+						<h:outputText value="#{messages.seleccionarCamaDisponible}" />
+					</f:facet>
+			 		<table cellspacing="0" cellpadding="0" width="100%">
+			 			<tr>
+			 				<td class="margenSupIzq">
+			 					<rich:tree value="#{camasTree_admision.rootNode}"
+													var="node"  style="width:350px" id="bedTree"
+													treeNodeVar="treeNode"
+													nodeFace="#{node.type}" 
+													switchType="client" 
+													toggleOnClick="true" 
+													adviseNodeOpened="#{camasTree_admision.adviseNodeOpened}">
+											<rich:treeNode type="entity"
+												icon="#{modulosPorEntidadManager.entidadIcon(node.value)}"
+												iconLeaf="#{modulosPorEntidadManager.entidadIcon(node.value)}">
+												<h:outputText value="#{node.value.nombre}" /> 
+											</rich:treeNode>
+											<rich:treeNode type="dpto" 
+												icon="/resources/modCommon/ubicacionesimages/habitaciones.png"
+												iconLeaf="/resources/modCommon/ubicacionesimages/habitaciones.png">
+												<h:outputText value="#{node.value.nombre}" /> 
+											</rich:treeNode>
+											<rich:treeNode type="service" 
+												icon="/resources/funcionalidadesIcons/configuracion/funcionalidades.png"
+												iconLeaf="/resources/funcionalidadesIcons/configuracion/funcionalidades.png">
+												<h:outputText value="#{node.value.nombre}" /> 
+											</rich:treeNode>
+											<rich:treeNode type="location" 
+												icon="/resources/modCommon/ubicacionesimages/ala.png"
+												iconLeaf="/resources/modCommon/ubicacionesimages/ala.png">
+												<h:outputText value="#{node.key}" /> 
+											</rich:treeNode>
+											<rich:treeNode type="bed" icon="" iconLeaf="" id="bedNode">
+												<div class="dialog" style="margin-right: 1px; color: #15428b; cursor:default ;" 
+														onmouseover="javascript:this.style.color='#000000'" 
+														onmouseout="javascript:this.style.color='#15428b'">
+													<div class="content">
+							      						<table cellpadding="0" cellspacing="0">
+															<tr>												
+																<td class="padding: 8px;">
+			    													<table>
+			    														<tr>
+			    															<td class="colSepImg">
+			    																<table cellpadding="0" cellspacing="0">
+			    																	<tr>
+			    																		<td style="padding-right: 2px; ">
+			    																			<a:commandLink action="#{controlador.setCama(node.value)}" title="#{messages.seleccionar}"
+			    																							reRender="panelBedData" immediate="true">
+						    																	<h:graphicImage width="32" height="32"
+																									value="/resources/modCommon/tipocamaimage/#{node.value.tipoCama.icono}" />
+																							</a:commandLink>
+			    																		</td>
+			    																		<td>
+			    																			<h:outputText styleClass="dataText" style="margin:0px; padding:0px;"
+																								value="#{node.value.descripcion}" />			    	
+																						</td>
+			    																	</tr>
+			    																</table>																
+		    																</td>
+																			<td>
+																				<table>
+						    														<tr>
+														 								<td class="colSepPeq">
+																							<h:outputText value="#{messages.categoria}:" style="margin:0px; padding:0px;" />
+																						</td>														
+																						<td class="colSepGran">
+																							<h:outputText styleClass="dataText"
+																								value="#{node.value.categoriaCama.valor}"
+																								style="margin:0px; padding:0px;" />
+																						</td>
+																						<td class="colSepPeq">
+																							<h:outputText value="#{messages.tipo}:" style="margin:0px; padding:0px;" />
+																						</td>														
+																						<td class="colSepGran">
+																							<h:outputText styleClass="dataText"
+																								value="#{node.value.tipoCama.valor}"
+																								style="margin:0px; padding:0px;" />
+																						</td>
+																						<td class="colSepPeq">
+																							<h:outputText value="#{messages.estado}:" style="margin:0px; padding:0px; #{utiles_admision.getColor(node.value.estadoCama)}" />
+																						</td>														
+																						<td class="colSepGran">
+																							<h:outputText styleClass="dataText"
+																								value="#{node.value.estadoCama.valor}"
+																								style="margin:0px; padding:0px; #{utiles_admision.getColor(node.value.estadoCama)}" />
+																						</td>
+														 							</tr>
+																				</table>
+																			</td>
+			    														</tr>
+							       									</table>
+			    												</td>
+			    											</tr>
+														</table>						
+													</div>
+												</div>	
+											</rich:treeNode>
+										</rich:tree>
+										<a:outputPanel id="panelBedData">
+											<rich:panel rendered="#{not empty controlador.cama}">
+												<f:facet name="header">#{messages.datosCama}</f:facet>
+										    	<table class="Tabla" cellspacing="0" cellpadding="0" width="100%">
+													<tr>
+														<td class="margenSupIzq" width="100%">
+															<table cellpadding="0" cellspacing="0">
+																<tr class="filSepGranRA">
+																	<td class="colSepImg">
+																		<h:graphicImage width="32" height="32"
+																			value="/resources/modCommon/tipocamaimage/#{controlador.cama.tipoCama.icono}" />
+																	</td>
+																	<td>
+																		<table cellpadding="0" cellspacing="0">
+																			<tr class="filSepGranRA">
+																				<td class="colSepPeq">
+																					<h:outputText value="#{messages.servicio}:"  style="margin:0px; padding:0px;"/>
+																				</td>														
+																				<td class="colSepGran">
+																					<h:outputText styleClass="dataText"
+																								  value="#{(not empty controlador.cama.servicioInEntidadByIdServicioFlotante.servicio.nombre) ? controlador.cama.servicioInEntidadByIdServicioFlotante.servicio.nombre : ((not empty controlador.cama.servicioInEntidadByIdServicio.servicio.nombre) ? controlador.cama.servicioInEntidadByIdServicio.servicio.nombre : messages.vacio)}"
+																								  style="margin:0px; padding:0px;">									
+																					</h:outputText>
+																				</td>
+																				<td class="colSepPeq">
+																					<h:outputText value="#{messages.ubicacion}:"  style="margin:0px; padding:0px;"/>
+																				</td>														
+																				<td class="colSepGran">
+																					<h:outputText styleClass="dataText"
+																								  value="#{(not empty controlador.cama.ubicacion) ? utiles_admision.getUbicacion(controlador.cama.ubicacion.id) : messages.vacio}"
+																								  style="margin:0px; padding:0px;">									
+																					</h:outputText>
+																				</td>
+																				<td class="colSepPeq">
+																					<h:outputText value="#{messages.descripcion}:"  style="margin:0px; padding:0px;"/>
+																				</td>														
+																				<td class="colSepGran">
+																					<h:outputText styleClass="dataText"
+																								  value="#{(not empty controlador.cama.descripcion) ? controlador.cama.descripcion : messages.vacio}"
+																								  style="margin:0px; padding:0px;">									
+																					</h:outputText>
+																				</td>
+																			</tr>
+																			<tr class="filSepGranRA">
+											 								<td class="colSepPeq">
+																				<h:outputText value="#{messages.categoria}:" style="margin:0px; padding:0px;" />
+																			</td>														
+																			<td class="colSepGran">
+																				<h:outputText styleClass="dataText"
+																					value="#{(not empty controlador.cama.categoriaCama.valor) ? controlador.cama.categoriaCama.valor : messages.vacio}"
+																					style="margin:0px; padding:0px;" />
+																			</td>
+																			<td class="colSepPeq">
+																				<h:outputText value="#{messages.tipo}:" style="margin:0px; padding:0px;" />
+																			</td>														
+																			<td class="colSepGran">
+																				<h:outputText styleClass="dataText"
+																					value="#{(not empty controlador.cama.tipoCama.valor) ? controlador.cama.tipoCama.valor : messages.vacio}"
+																					style="margin:0px; padding:0px;" />
+																			</td>
+																			<td class="colSepPeq">
+																				<h:outputText value="#{messages.estado}:" style="margin:0px; padding:0px; #{utiles_admision.getColor(controlador.cama.estadoCama)}" />
+																			</td>														
+																			<td class="colSepGran">
+																				<h:outputText styleClass="dataText" style="margin:0px; padding:0px; #{utiles_admision.getColor(controlador.cama.estadoCama)}"
+																					value="#{(not empty controlador.cama.estadoCama.valor) ? controlador.cama.estadoCama.valor : messages.vacio}" />
+																			</td>
+											 							</tr>
+																		</table>
+																	</td>	
+																</tr>	 
+															</table>
+														</td>
+													</tr>
+												</table>								
+										    </rich:panel>
+									    </a:outputPanel>
+			 				
+			 				<br />
+			 				<br />
+			 				<br />
+			 				<br />
+			 				
+			 				
+			 				
+								<table cellspacing="0" cellpadding="0">	
+									<tr class="filSepPeq">
+										<td class="colSepGran">
+											<h:outputText value="#{messages.servicio}:" style="margin:0px; padding:0px;"/>
+										</td>														
+										<td class="colSepGran">
+											<h:outputText value="#{messages.ubicacion}:" style="margin:0px; padding:0px;"/>
+										</td>														
+										<td class="colSepGran">
+											<h:outputText value="#{messages.cama}:" style="margin:0px; padding:0px;"/>
+										</td>
+									</tr>
+									<a:region id="camasRegion">												
+									<tr class="filSepGranRA" valign="top">														
+										<td class="colSepGran" width="152px">
+											<rich:comboBox value="#{controlador.servicio}" width="152px" defaultLabel="#{messages.seleccione}"
+											                 suggestionValues="#{controlador.listServicios}" enableManualInput="false"
+											                 disabled="#{empty controlador.listServicios}"
+											                 onselect="limpiar()" onchange="limpiar()">																                   
+											</rich:comboBox>
+											<a:jsFunction name="limpiar" reRender="ubicaciones, panelCamasLibres"  action="#{controlador.setUbicacion('')}"></a:jsFunction>
+										</td>														
+										<td class="colSepGran" width="152px">
+											<rich:comboBox id="ubicaciones" value="#{controlador.ubicacion}" defaultLabel="#{messages.seleccione}"
+											               suggestionValues="#{controlador.ubi}"
+											               width="152px" onselect="ren()" enableManualInput="false"
+											               disabled="#{empty controlador.servicio}">																    
+											    <a:support event="onchange" reRender="panelCamasLibres, mensaje" action="#{controlador.setUbicacion('')}"></a:support>            
+											</rich:comboBox>
+											<a:jsFunction name="ren" reRender="panelCamasLibres, mensaje"></a:jsFunction>
+										</td>
+										<td class="colSepGran">	
+										      <a:outputPanel id="aaa" >														  
+										            <s:div style="width: 23px; height: 23px; border: dotted; border-color: orange; text-align: center; cellpading: 0; cellspacing: 0"
+													        id="div">																	  														            
+									                     <rich:dropSupport acceptedTypes="tipo" 
+									                                       dropListener="#{controlador.listenn}"
+									                                       reRender="aaa">
+									                     </rich:dropSupport>
+									                     <h:graphicImage  rendered="#{not empty controlador.cama}"
+									                                     value="/resources/modAdmision/img/#{theme.color}/camaLibre.png"
+																	     width="23" height="23">
+														 </h:graphicImage>			
+									                     <b><h:outputText  value="#{controlador.cama.descripcion}"/></b>
+									                 </s:div>	
+									           </a:outputPanel>      	
+										</td>	
+										<td rowspan="2">
+										    <ui:include src="/modAdmision/admision/codebase/plantillas/statusCargando.xhtml">
+										    	<ui:param name="forComponent" value="camasRegion" />
+										    	<ui:param name="idStatus" value="camasStatus" />
+										    </ui:include>
+										</td>
+									</tr>
+									</a:region>
+								</table>													
+								<br></br>	
+								<table cellspacing="0" cellpadding="0" width="99%">		
+									<tr>
+										<td colspan="4">
+											<div style="width: 100%">
+												<s:div id="panelHabitaciones" >							
+													<s:div style="align:left">							
+														<div>			
+														<!-- dentro del datagrid estaba  style="background-color: #E0F7DF;"  -->									
+															<rich:dataGrid value="#{controlador.listarCamasLibres()}"
+											                	var="cama" width="100%" columns="10" align="center"
+											                	columnClasses="grid" rowClasses="grid" style="border:0px"
+												            	id="panelCamasLibres">
+													       		<div style="text-align: center;">
+														        	<s:div styleClass="dragndrop">
+													                	<a:outputPanel layout="block">
+													                   		<rich:dragSupport dragIndicator="indicator" 
+											                                 	dragType="tipo" dragValue="#{cama}" >
+												                         		<rich:dndParam name="label" value="#{cama.descripcion}" type="drag"/>
+			                                                                	<rich:dndParam name="accept"  >
+	                                			                             		<h:graphicImage value="/resources/modAdmision/img/#{theme.color}/camaLibre.png"
+																			        	width="30"  height="30" />
+                                		                                		</rich:dndParam>
+	                                		                                	<rich:dndParam name="default">
+     							        													<h:graphicImage value="/resources/modAdmision/img/#{theme.color}/camaLibre.png"
+      							        													width="30" height="30" />
+      							        											</rich:dndParam>
+	                                		                               		<h:graphicImage value="/resources/modAdmision/img/#{theme.color}/camaLibre.png"
+																					width="30" height="30">
+																		   		</h:graphicImage>																				   																				                                  		                               
+												                     		</rich:dragSupport>
+														               	</a:outputPanel>
+													               	</s:div>
+													               	<b><h:outputText  value="#{cama.descripcion}"
+																	 	style="text-align:center; margin:0px; padding:0px;"/> 
+																  	</b>	
+															  </div> 
+														  </rich:dataGrid>														
+													  </div>
+												  </s:div>
+											  </s:div>
+										  </div>														
+									  </td>																										
+								  </tr>
+							  </table>
+						  </td>
+					  </tr>
+				  </table>
+			  </rich:panel>
+			  <rich:panel rendered="#{not empty controlador.cama}">
+				<f:facet name="header">#{messages.datosCama}</f:facet>
+		    	<table class="Tabla" cellspacing="0" cellpadding="0" width="100%">
+					<tr>
+						<td class="margenSupIzq" width="100%">
+							<table cellpadding="0" cellspacing="0">
+								<tr class="filSepGranRA">
+									<td class="colSepImg">
+										<h:graphicImage width="32" height="32"
+											value="/resources/modCommon/tipocamaimage/#{controlador.cama.tipoCama.icono}" />
+									</td>
+									<td>
+										<table cellpadding="0" cellspacing="0">
+											<tr class="filSepGranRA">
+												<td class="colSepPeq">
+													<h:outputText value="#{messages.servicio}:"  style="margin:0px; padding:0px;"/>
+												</td>														
+												<td class="colSepGran">
+													<h:outputText styleClass="dataText"
+																  value="#{(not empty controlador.cama.servicioInEntidadByIdServicioFlotante.servicio.nombre) ? controlador.cama.servicioInEntidadByIdServicioFlotante.servicio.nombre : ((not empty controlador.cama.servicioInEntidadByIdServicio.servicio.nombre) ? controlador.cama.servicioInEntidadByIdServicio.servicio.nombre : messages.vacio)}"
+																  style="margin:0px; padding:0px;">									
+													</h:outputText>
+												</td>
+												<td class="colSepPeq">
+													<h:outputText value="#{messages.ubicacion}:"  style="margin:0px; padding:0px;"/>
+												</td>														
+												<td class="colSepGran">
+													<h:outputText styleClass="dataText"
+																  value="#{(not empty controlador.cama.ubicacion) ? utiles_admision.getUbicacion(controlador.cama.ubicacion.id) : messages.vacio}"
+																  style="margin:0px; padding:0px;">									
+													</h:outputText>
+												</td>
+												<td class="colSepPeq">
+													<h:outputText value="#{messages.descripcion}:"  style="margin:0px; padding:0px;"/>
+												</td>														
+												<td class="colSepGran">
+													<h:outputText styleClass="dataText"
+																  value="#{(not empty controlador.cama.descripcion) ? controlador.cama.descripcion : messages.vacio}"
+																  style="margin:0px; padding:0px;">									
+													</h:outputText>
+												</td>
+											</tr>
+											<tr class="filSepGranRA">
+			 								<td class="colSepPeq">
+												<h:outputText value="#{messages.categoria}:" style="margin:0px; padding:0px;" />
+											</td>														
+											<td class="colSepGran">
+												<h:outputText styleClass="dataText"
+													value="#{(not empty controlador.cama.categoriaCama.valor) ? controlador.cama.categoriaCama.valor : messages.vacio}"
+													style="margin:0px; padding:0px;" />
+											</td>
+											<td class="colSepPeq">
+												<h:outputText value="#{messages.tipo}:" style="margin:0px; padding:0px;" />
+											</td>														
+											<td class="colSepGran">
+												<h:outputText styleClass="dataText"
+													value="#{(not empty controlador.cama.tipoCama.valor) ? controlador.cama.tipoCama.valor : messages.vacio}"
+													style="margin:0px; padding:0px;" />
+											</td>
+											<td class="colSepPeq">
+												<h:outputText value="#{messages.estado}:" style="margin:0px; padding:0px; #{utiles_admision.getColor(controlador.cama.estadoCama)}" />
+											</td>														
+											<td class="colSepGran">
+												<h:outputText styleClass="dataText" style="margin:0px; padding:0px; #{utiles_admision.getColor(controlador.cama.estadoCama)}"
+													value="#{(not empty controlador.cama.estadoCama.valor) ? controlador.cama.estadoCama.valor : messages.vacio}" />
+											</td>
+			 							</tr>
+										</table>
+									</td>	
+								</tr>	 
+							</table>
+						</td>
+					</tr>
+				</table>								
+		    </rich:panel>
+			</td>
+		</tr>
+	</table>
+  </rich:panel>		
+</s:div>

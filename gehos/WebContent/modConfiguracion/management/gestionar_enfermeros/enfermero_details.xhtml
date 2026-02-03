@@ -1,0 +1,452 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<!-- Estilo para el modalPanel -->
+		<style type="text/css">
+.dr-mpnl-pnl-b {
+	padding: 1px;
+}
+
+.dr-mpnl-pnl {
+	border: 1px !important;
+	border-style: solid !important;
+	border-color: #BED6F8 !important;
+}
+</style>
+		<!-- Estilo para el panel -->
+		<style type="text/css">
+.rich-panel-body {
+	padding: 0px 0px 0px 0px !important;
+	padding-bottom: 0px !important;
+}
+</style>
+
+		<style type="text/css">
+.dr-tbpnl-cntnt,.rich-tabpanel-content {
+	/*arriba, derecha ,abajo ,izquierda*/
+	padding: 0px 0px 0px 0px;
+}
+
+.table {
+	border: 0px;
+	padding: 0px !important;
+	margin: 0px;
+}
+</style>
+
+		<s:div rendered="#{not enfermeroDetails_custom.from.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.verDetallesEnfermero}')</script>
+		</s:div>
+
+		<s:div rendered="#{enfermeroDetails_custom.from.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.verDatosEnfermero}')</script>
+		</s:div>
+		
+
+		<h:form id="FormRol" styleClass="edit">
+
+
+			<rich:tabPanel switchType="client" style="white-space:nowrap">
+
+				<rich:tab label="#{messages.usuario}" name="tabUsuario">
+					<a4j:support event="onlabelclick" ajaxSingle="true"
+						action="#{enfermeroDetails_custom.cambiarTabSelected('tabUsuario')}" />
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr height="13px" />
+						<tr>
+							<td><rich:spacer width="7px" /></td>
+
+							<td><h:graphicImage
+								url="/resources/modCommon/unknown/#{theme.name}/generico/desconocido.png"
+								border="0"
+								style="width: 74px; height: 74px; margin-left:0px; padding-left: 0px"
+								rendered="#{not userTools.userImageExist(enfermeroDetails_custom.usuario_conf.username)}" />
+							<h:graphicImage
+								url="/resources/modCommon/userphotos/#{enfermeroDetails_custom.usuario_conf.username}.png"
+								border="0" style="width: 74px; height: 74px;"
+								rendered="#{userTools.userImageExist(enfermeroDetails_custom.usuario_conf.username)}" />
+							</td>
+							<td style="vertical-align: top">
+							<table cellpadding="0px" cellspacing="0px" border="0px">
+								<tr>
+									<td width="5px"></td>
+									<td valign="top"><h:outputLabel
+										value="#{messages.atributo1} "></h:outputLabel></td>
+									<td width="9px"></td>
+									<td valign="top"><h:outputLabel styleClass="dataText"
+										value="#{enfermeroDetails_custom.usuario_conf.username}"></h:outputLabel>
+
+									</td>
+									<td width="24px"></td>
+									<td valign="top"><h:outputLabel
+										value="#{messages.atributo4} "></h:outputLabel></td>
+									<td width="9px"></td>
+									<td valign="top"><h:outputText
+										value="#{enfermeroDetails_custom.culturaSelec}"
+										styleClass="dataText"></h:outputText> <h:outputLabel
+										styleClass="dataText" value="-"
+										rendered="#{enfermeroDetails_custom.usuario_conf.nombre == ''}"></h:outputLabel>
+									</td>
+									<td width="24px"></td>
+									<td valign="top">#{messages.cuentahabilitada}</td>
+									<td width="2px"></td>
+									<td valign="top"><h:selectBooleanCheckbox
+										style="margin-top: 0px"
+										value="#{enfermeroDetails_custom.usuario_conf.cuentaHabilitada}"
+										disabled="true" /></td>
+
+								</tr>
+								<tr>
+									<td width="5px"></td>
+									<td height="8px"></td>
+								</tr>
+							</table>
+							</td>
+
+						</tr>
+
+
+					</table>
+					<rich:spacer height="5px"></rich:spacer>
+
+					<table cellpadding="0" cellspacing="0" border="0" width="100%">
+						<tr>
+							<td><rich:spacer width="5px" /></td>
+							<td><rich:panel>
+								<f:facet name="header">#{messages.otrosDatosUser}</f:facet>
+								<table cellpadding="0px" cellspacing="0px" border="0px">
+									<tr>
+										<td height="13px" />
+									</tr>
+									<tr>
+										<td><rich:spacer width="7px" /></td>
+										<td>#{messages.atributo7}</td>
+										<td width="9px"></td>
+										<td><h:outputText
+											value="#{enfermeroDetails_custom.usuario_conf.nombre}"
+											styleClass="dataText"></h:outputText> <h:outputLabel
+											styleClass="dataText" value="-"
+											rendered="#{enfermeroDetails_custom.usuario_conf.nombre == ''}"></h:outputLabel>
+										</td>
+										<td><rich:spacer width="24px" /></td>
+										<td>#{messages.atributo8}</td>
+										<td width="9px"></td>
+										<td><h:outputText
+											value="#{enfermeroDetails_custom.usuario_conf.primerApellido}"
+											styleClass="dataText"></h:outputText> <h:outputLabel
+											styleClass="dataText" value="-"
+											rendered="#{enfermeroDetails_custom.usuario_conf.primerApellido == ''}"></h:outputLabel>
+
+
+										</td>
+										<td><rich:spacer width="24px" /></td>
+										<td>#{messages.atributo9}</td>
+										<td width="9px"></td>
+										<td><h:outputText
+											value="#{enfermeroDetails_custom.usuario_conf.segundoApellido}"
+											styleClass="dataText"></h:outputText> <h:outputLabel
+											styleClass="dataText" value="-"
+											rendered="#{enfermeroDetails_custom.usuario_conf.segundoApellido == ''}"></h:outputLabel>
+
+
+										</td>
+										<td><rich:spacer width="7px" /></td>
+									</tr>
+									<tr>
+										<td height="8px" />
+									</tr>
+									<tr>
+										<td width="6px" />
+										<td>#{messages.atributo10}</td>
+										<td width="9px"></td>
+										<td><h:outputText
+											value="#{enfermeroDetails_custom.usuario_conf.cedula}"
+											styleClass="dataText"></h:outputText> <h:outputLabel
+											styleClass="dataText" value="-"
+											rendered="#{enfermeroDetails_custom.usuario_conf.cedula == ''}" />
+										</td>
+										<td width="24px" />
+										<td><h:outputLabel value="#{messages.pasaporte}"></h:outputLabel></td>
+										<td width="9px" />
+										<td><h:outputLabel styleClass="dataText"
+											value="#{enfermeroDetails_custom.usuario_conf.pasaporte}" />
+										<h:outputLabel styleClass="dataText" value="-"
+											rendered="#{enfermeroDetails_custom.usuario_conf.pasaporte == ''}" />
+										</td>
+										<td width="24px" />
+										<td><h:outputLabel value="#{messages.fechaNacimiento}"></h:outputLabel></td>
+										<td width="9px" />
+										<td><h:outputLabel styleClass="dataText"
+											value="#{enfermeroDetails_custom.usuario_conf.fechaNacimiento}">
+											<s:convertDateTime pattern="dd/MM/yyyy" />
+										</h:outputLabel> <h:outputLabel styleClass="dataText" value="-"
+											rendered="#{enfermeroDetails_custom.usuario_conf.fechaNacimiento == ''}" />
+										</td>
+										<td width="6px" />
+									</tr>
+									<tr>
+										<td height="8px" />
+									</tr>
+									<tr>
+										<td width="6px" />
+										<td><h:outputLabel value="#{messages.telefono}"></h:outputLabel></td>
+										<td width="9px" />
+										<td><h:outputLabel styleClass="dataText"
+											value="#{enfermeroDetails_custom.usuario_conf.telefono}" />
+										<h:outputLabel styleClass="dataText" value="-"
+											rendered="#{enfermeroDetails_custom.usuario_conf.telefono == ''}" />
+										</td>
+										<td width="24px" />
+										<td><h:outputLabel value="#{messages.direccion}"></h:outputLabel></td>
+										<td width="9px" />
+										<td><h:outputLabel styleClass="dataText"
+											value="#{enfermeroDetails_custom.usuario_conf.direccionParticular}" />
+										<h:outputLabel styleClass="dataText" value="-"
+											rendered="#{enfermeroDetails_custom.usuario_conf.direccionParticular == ''}" />
+										</td>
+									</tr>
+								</table>
+
+								<rich:spacer height="7px" style="display: block" />
+							</rich:panel></td>
+							<td><rich:spacer width="6px" /></td>
+						</tr>
+						<tr>
+							<td height="8px" />
+						</tr>
+					</table>
+				</rich:tab>
+
+				<!-- tab1 datos demográficos -->
+
+				<rich:tab name="tabEnfermero" label="Datos como enfermero">
+					<a4j:support event="onlabelclick" ajaxSingle="true"
+						action="#{enfermeroDetails_custom.cambiarTabSelected('tabEnfermero')}" />
+					<table cellpadding="0px" cellspacing="0px" border="0px"
+						style="width: 100%">
+						<tr>
+							<td height="12px" />
+						</tr>
+						<tr>
+							<td width="7px" />
+							<td>#{messages.atributo15}<rich:spacer width="6px" /> 
+								
+								<h:outputText
+									value="#{enfermeroDetails_custom.enfermero.matriculaColegioEnfermeria}"
+									styleClass="dataText" 
+									rendered="#{enfermeroDetails_custom.enfermero.matriculaColegioEnfermeria != null and !enfermeroDetails_custom.enfermero.matriculaColegioEnfermeria.isEmpty()}">
+								</h:outputText>
+								<h:outputText
+									value="-"
+									styleClass="dataText" 
+									rendered="#{enfermeroDetails_custom.enfermero.matriculaColegioEnfermeria == null or enfermeroDetails_custom.enfermero.matriculaColegioEnfermeria.isEmpty()}">
+								</h:outputText>
+							</td>
+							<td width="7px" />
+						</tr>
+						<tr>
+							<td height="6px" />
+						</tr>
+					</table>
+				</rich:tab>
+				<!-- tab2 datos del rol-->
+				<rich:tab label="#{messages.roles}" name="tabRol">
+					<a4j:support event="onlabelclick" ajaxSingle="true"
+						action="#{enfermeroDetails_custom.cambiarTabSelected('tabRol')}" />
+
+					<rich:spacer style="display: block"
+						rendered="#{empty enfermeroDetails_custom.rolsSource}">
+						<table cellpadding="0" cellspacing="0" border="0" width="100%">
+							<tr height="13px" />
+							<tr>
+								<td width="8px" />
+								<td><rich:panel>
+									<f:facet name="header">#{messages.listadoRolesAsignados}</f:facet>
+									<rich:spacer height="11px" style="display: block" />
+									<div class="results" id="roleList"><rich:spacer
+										width="6px" /> <h:outputText
+										value="#{messages.noInf}" /></div>
+									<rich:spacer height="4px" style="display: block" />
+								</rich:panel></td>
+								<td width="8px" />
+							</tr>
+							<tr height="7px" />
+						</table>
+					</rich:spacer>
+					<rich:spacer style="display: block"
+						rendered="#{not empty enfermeroDetails_custom.rolsSource}">
+						<table cellpadding="0" cellspacing="0" border="0" width="100%">
+							<tr height="14px" />
+							<tr>
+								<td width="9px" />
+								<td><rich:dataTable
+									value="#{enfermeroDetails_custom.rolsSource}" var="role"
+									width="100%">
+									<f:facet name="header">#{messages.listadoRolesAsignados}</f:facet>
+									<rich:column>
+								#{role.name}
+							</rich:column>
+								</rich:dataTable></td>
+								<td width="8px"></td>
+							</tr>
+							<tr height="7px" />
+						</table>
+					</rich:spacer>
+				</rich:tab>
+
+				<!--tab3 Datos como funcionario -->
+				<rich:tab label="#{messages.tiposFuncionariosCargos}"
+					name="tabFuncionario">
+					<a4j:support event="onlabelclick" ajaxSingle="true"
+						action="#{enfermeroDetails_custom.cambiarTabSelected('tabFuncionario')}" />
+					<rich:spacer height="6px"
+						rendered="#{empty enfermeroDetails_custom.tipoFuncionarioSource}">
+						<table cellpadding="0" cellspacing="0" border="0" width="100%">
+							<tr height="13px" />
+							<tr>
+								<td width="8px" />
+								<td><rich:panel>
+									<f:facet name="header">"#{messages.tiposFuncionarioAsignados}"</f:facet>
+									<rich:spacer height="11px" style="display: block" />
+									<div class="results" id="roleList"><rich:spacer
+										width="6px" /> <h:outputText
+										value="#{messages.noInf}" /></div>
+									<rich:spacer height="4px" style="display: block" />
+								</rich:panel></td>
+								<td width="8px" />
+							</tr>
+						</table>
+					</rich:spacer>
+					<rich:spacer height="6px"
+						rendered="#{not empty enfermeroDetails_custom.tipoFuncionarioSource}">
+						<table cellpadding="0" cellspacing="0" border="0" width="100%">
+							<tr height="14px" />
+							<tr>
+								<td width="9px" />
+								<td><rich:dataTable
+									value="#{enfermeroDetails_custom.tipoFuncionarioSource}"
+									var="func" width="100%">
+									<f:facet name="header">"#{messages.tiposFuncionarioAsignados}"</f:facet>
+									<rich:column>
+								#{func.valor}
+							</rich:column>
+
+								</rich:dataTable></td>
+								<td width="8px" />
+							</tr>
+						</table>
+					</rich:spacer>
+					<rich:spacer
+						rendered="#{not empty enfermeroDetails_custom.cargoSource}">
+
+						<table cellpadding="0" cellspacing="0" border="0" width="100%">
+							<tr height="13px" />
+							<tr>
+								<td width="9px" />
+								<td><rich:dataTable
+									value="#{enfermeroDetails_custom.cargoSource}" var="cargo"
+									width="100%">
+									<f:facet name="header">#{messages.cargos}</f:facet>
+									<rich:column>
+										<f:facet name="header">#{messages.cargo}</f:facet>
+								#{cargo.valor}
+							</rich:column>
+									<rich:column>
+										<f:facet name="header">#{messages.tipoDeFuncionario}</f:facet>
+								#{cargo.tipoFuncionario.valor}
+							</rich:column>
+								</rich:dataTable></td>
+								<td width="8px" />
+							</tr>
+						</table>
+					</rich:spacer>
+					<rich:spacer height="8px" />
+				</rich:tab>
+				<!-- Datos de servicios -->
+
+
+				<rich:tab label="#{messages.servicio}" name="tabServicio">
+					<a4j:support event="onlabelclick" ajaxSingle="true"
+						action="#{enfermeroDetails_custom.cambiarTabSelected('tabServicio')}" />
+
+					<rich:spacer height="6px"
+						rendered="#{empty enfermeroDetails_custom.listaDepartamentoEntidad}">
+						<table cellpadding="0" cellspacing="0" border="0" width="100%">
+							<tr height="13px" />
+							<tr>
+								<td width="8px" />
+								<td><rich:panel>
+
+									<f:facet name="header">#{messages.serviciosEnEntidad}</f:facet>
+									<rich:spacer height="11px" style="display: block" />
+									<div class="results" id="roleList"><rich:spacer
+										width="6px" /> <h:outputText
+										value="#{messages.noInf}" /></div>
+									<rich:spacer height="4px" style="display: block" />
+								</rich:panel></td>
+								<td width="8px" />
+							</tr>
+						</table>
+					</rich:spacer>
+					<rich:spacer height="6px"
+						rendered="#{not empty enfermeroDetails_custom.listaDepartamentoEntidad}">
+						<table cellpadding="0" cellspacing="0" border="0" width="100%">
+							<tr height="14px" />
+							<tr>
+								<td><rich:spacer width="9px" /></td>
+								<td><rich:dataTable
+									value="#{enfermeroDetails_custom.listaDepartamentoEntidad}"
+									var="departamentoEntidad" width="100%">
+									<f:facet name="header">#{messages.serviciosEnEntidad}</f:facet>
+									<rich:column>
+										<f:facet name="header">#{messages.servicio}</f:facet>
+								#{enfermeroDetails_custom.servicioConfiguracion(departamentoEntidad.departamento.id, departamentoEntidad.entidad.id)}
+							</rich:column>
+									<rich:column>
+										<f:facet name="header">#{messages.departamento}</f:facet>
+								#{departamentoEntidad.departamento.nombre}
+							</rich:column>
+									<rich:column>
+										<f:facet name="header">#{messages.entidad}</f:facet>
+								#{departamentoEntidad.entidad.nombre}
+							</rich:column>
+
+								</rich:dataTable></td>
+								<td width="8px" />
+							</tr>
+						</table>
+					</rich:spacer>
+					<rich:spacer height="8px" />
+				</rich:tab>
+
+			</rich:tabPanel>
+			<s:div styleClass="actionButtons" style="text-align: right">
+				<div align="right"><h:commandButton value="#{messages.modf}"
+					action="modificar" rendered="#{not enfermeroDetails_custom.from.equals('listar')}"
+					style="margin-bottom: 0px; margin-right: 6px; margin-top: 8px" />
+
+				<a4j:commandButton  rendered="#{not enfermeroDetails_custom.from.equals('listar')}"
+					onclick="Richfaces.showModalPanel('eliminar_enfermero_panel')"
+					style="margin-bottom: 0px; margin-right: 10px; margin-top: 8px"
+					value="#{messages.eliminar}">
+					<s:conversationPropagation type="end"></s:conversationPropagation>
+				</a4j:commandButton> <h:commandButton action="salir" value="#{messages.salir}"
+					style="margin-right: 0px; margin-left: 0px; margin-top: 8px" /></div>
+			</s:div>
+		</h:form>
+
+
+		<ui:include
+			src="/modConfiguracion/management/gestionar_enfermeros/modalspanel/confirmar_eliminar_enfermero_detail.xhtml" />
+	</ui:define>
+
+</ui:composition>
+

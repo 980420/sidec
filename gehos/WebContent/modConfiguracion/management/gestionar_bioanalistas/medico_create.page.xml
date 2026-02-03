@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+      
+   <action execute = "#{usuarioMedicoList_configuracionCustom.begin()}"/>    
+     
+   <param name="firstResult" value="#{usuarioMedicoList_configuracionCustom.firstResult}"/>
+   <param name="order" value="#{usuarioMedicoList_configuracionCustom.order}" /> 
+   
+   <navigation from-action="#{crearMedico_Controlador.goTo()}">
+		<rule if-outcome="gotoMedicoUserCreate">
+			<redirect view-id="/modConfiguracion/management/gestionar_medicos/medico_user_create.xhtml">
+			</redirect>			
+		</rule>	
+		<rule if-outcome="gotoMedicoUserExist">
+			<redirect view-id="/modConfiguracion/management/gestionar_medicos/medico_select_user_create.xhtml">
+			</redirect>			
+		</rule>			
+	</navigation>  
+
+</page>

@@ -1,0 +1,216 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/pkiStyles/pkistyles.css"
+			rel="stylesheet" type="text/css" />
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+
+		<a4j:form>
+
+			<a4j:jsFunction name="setActivo" ajaxSingle="true"
+				ignoreDupResponses="true"
+				action="#{modificarServidorTSPControlador.cambiarActivo()}"
+				reRender="outputActivo">
+
+			</a4j:jsFunction>
+
+		</a4j:form>
+		<h:form id="form" styleClass="edit">
+			<a4j:outputPanel ajaxRendered="true">
+				<rich:messages styleClass="message" for="buttonAceptar"
+					ajaxRendered="true" />
+
+			</a4j:outputPanel>
+			<s:validateAll>
+			<rich:panel bodyClass="rich-panel-body-custom">
+					<f:facet name="header">#{messages.datos}</f:facet>
+					<table cellpadding="0px" cellspacing="0px" border="0px" width="">
+						<tr style="vertical-align: top;">
+
+							<td>#{messages.url}: <rich:message for="url"
+								showDetail="false" tooltip="true"
+								style="color:red;cursor:pointer;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('url').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message><br />
+							<h:inputText id="url" style="width: 148px;"
+								value="#{modificarServidorTSPControlador.server.url}"
+								required="#{!empty param['form:buttonAceptar']}" validator="#{modificarServidorTSPControlador.validarUrl}"
+								/></td>
+							<td><rich:spacer styleClass="h-spacer-between-2c" /></td>
+							
+							<td><a4j:outputPanel id="outputActivo">
+								<s:div style="text-align: left;"
+									rendered="#{not modificarServidorTSPControlador.activo}">
+									<table cellpadding="0px" cellspacing="0px" border="0px">
+										<tr>
+											<td><input type="checkbox" onclick="setActivo()" /></td>
+											<td style="text-align: center;">#{messages.activo}</td>
+										</tr>
+									</table>
+
+
+								</s:div>
+								<s:div style="text-align: left;"
+									rendered="#{modificarServidorTSPControlador.activo}">
+									<table cellpadding="0px" cellspacing="0px" border="0px">
+										<tr>
+											<td><input type="checkbox" onclick="setActivo()"
+												checked="checked" /></td>
+											<td style="text-align: center;">#{messages.activo}</td>
+										</tr>
+									</table>
+
+
+								</s:div>
+							</a4j:outputPanel></td>
+						</tr>
+						<tr>
+						<td colspan="11"><rich:spacer
+							styleClass="v-spacer-between-2l" /></td>
+					</tr>
+					
+
+					</table>
+					<table cellpadding="0px" cellspacing="0px" border="0px"
+				width="100%">
+				<tr style="vertical-align: top;">
+					<td colspan="3">#{messages.descripcion}: <rich:message for="descripcion"
+								showDetail="false" tooltip="true"
+								style="color:red;cursor:pointer;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('descripcion').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message><br />
+							<h:inputTextarea id="descripcion" styleClass="input-text-area"
+								value="#{modificarServidorTSPControlador.server.descripcion}"
+								validator="#{modificarServidorTSPControlador.descripcionEnBlanco}"
+								required="#{!empty param['form:buttonAceptar']}"
+								/></td>
+					</tr>
+				</table>
+
+				</rich:panel>
+				
+
+				<br />
+				<div align="right">
+				<table cellpadding="0" cellspacing="0" border="0">
+					<tr>
+						<s:div>
+							<td><h:graphicImage title="#{messages.Adicionar}"
+								style="margin-right: 1px" height="12" width="12"
+								value="/resources/icons/default/acciones/adicionar.png" /></td>
+							<td><h:commandLink action="seleccionarproxy"
+								value="#{messages.seleccionarproxy}" style="cursor: pointer"
+								title="#{messages.seleccionarproxy}" /></td>
+						</s:div>
+						
+					</tr>
+				</table>
+				</div>
+				<rich:spacer height="2px" />
+				<rich:panel styleClass="whitespace" id="idnada"
+					rendered="#{modificarServidorTSPControlador.proxy == null}">
+					<f:facet name="header">#{messages.proxy}</f:facet>
+					<rich:spacer height="11px" style="display: block" />
+					<div class="results" id="roleList"><rich:spacer width="6px" />
+					<h:outputText value="#{messages.info1}" /></div>
+					<rich:spacer height="6px" style="display: block" />
+				</rich:panel>
+				<s:div style="margin-left:0px;margin-top:0px"
+					rendered="#{modificarServidorTSPControlador.proxy != null}">
+					<rich:dataTable id="proxyDatail_Table" style="width: 100%;"
+						var="proxy" value="#{modificarServidorTSPControlador.proxy}"
+						columnsWidth="33%, 32%, 1%">
+						<f:facet name="header">
+							#{messages.proxy}
+					</f:facet>
+
+						<rich:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.url}</s:div>
+
+								</h:panelGrid>
+							</f:facet>
+	            	#{proxy.direccion}
+	        	</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.puerto}</s:div>
+
+								</h:panelGrid>
+							</f:facet>
+	            	#{proxy.puerto}
+	        	</rich:column>
+						
+
+
+
+						<rich:column>
+							<div align="center"><h:commandLink
+								action="#{modificarServidorTSPControlador.eliminarSeleccionarProxy()}">
+
+								<h:graphicImage title="#{messages.eliminarseleccionarproxy}"
+									style="border: 0px; cursor:pointer;"
+									value="/resources/icons/default/acciones/eliminar.png">
+								</h:graphicImage>
+							</h:commandLink></div>
+						</rich:column>
+
+					</rich:dataTable>
+				</s:div>
+
+				<rich:spacer height="8px" style="display: block"></rich:spacer>
+
+				<div align="right">
+				<table cellpadding="0" cellspacing="0" border="0">
+					<tr>
+						<td><h:commandButton id="buttonAceptar"
+							value="#{messages.aceptar}"
+							action="#{modificarServidorTSPControlador.modificar()}"
+							style="margin-bottom: 0px; margin-right: 5px; margin-left: 0px; margin-top: 0px">
+						</h:commandButton></td>
+						<td><h:commandButton immediate="true"
+							value="#{messages.cancelar} " action="cancelar"
+							style="margin-bottom: 0px; margin-right: 0px; margin-left: 5px; margin-top: 0px"
+							propagation="end"></h:commandButton></td>
+					</tr>
+				</table>
+				<rich:spacer height="8px" style="display: block"></rich:spacer></div>
+			</s:validateAll>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+

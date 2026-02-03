@@ -1,0 +1,872 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+		<style type="text/css">
+
+</style>
+		<script type="text/javascript" src="js/valcalendar.js"></script>
+		<script type="text/javascript">		
+  	
+  		function makeVisible()
+  		{
+  			document.getElementById('resultado').style.display='';
+  		}
+
+  		var curDt = new Date();
+		 var calDt=null;
+
+		 function previousDate(date){
+			calDt = date;
+		 }
+
+		 function disablementFunction(day){
+			if (curDt.getTime() - day.date.getTime() &#62; 0) return true; else return false;  
+		 }
+
+		 function disabledClassesProv(day){
+			if (curDt.getTime() - day.date.getTime() &#60; 0)
+				return 'noAvailable';
+			else 
+				return '';
+		 }
+
+		 function resetSecondDate(first,second) {
+			 var firstDate = first.getSelectedDate().getTime();
+			 var secondDate = second.getSelectedDate().getTime();
+
+			 if(firstDate - secondDate &#62; 0)
+				 second.resetSelectedDate();
+		 }
+ 		 
+		 function disablementFunctionPreviousEx(day){
+			if(calDt == null){
+				if (curDt.getTime() - day.date.getTime() &#62; 0) return true; else return false;
+			}
+			if ((curDt.getTime() - day.date.getTime() &#62; 0) &#38;&#38; (calDt.getTime() - day.date.getTime() &#60;= 0)){
+				return true;
+			}
+			else 
+				return false;
+		  }
+
+		function disabledClassesProvPreviousEx(day){
+			if(calDt == null){
+				if (curDt.getTime() - day.date.getTime() &#60; 0)
+					return 'noAvailable';
+				else 
+					return '';
+			}
+			if ((curDt.getTime() - day.date.getTime() &#60; 0) || (calDt.getTime() - day.date.getTime() &#62; 0))
+				return 'noAvailable';
+			else 
+				return '';
+		}
+  	</script>
+
+		<a4j:form>
+			<a4j:jsFunction action="#{usuarioCrearControlador.asignarCargos()}"
+				name="selected" ignoreDupResponses="true">
+				<a4j:actionparam name="id"
+					assignTo="#{usuarioCrearControlador.idCargo}" />
+			</a4j:jsFunction>
+		</a4j:form>
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')		
+		</script>
+
+		<a4j:outputPanel ajaxRendered="true">
+			<rich:messages styleClass="message" for="buttonAceptar"
+				ajaxRendered="true" />
+			<h:messages globalOnly="true" styleClass="custom-error"
+				id="globalMessages" />
+		</a4j:outputPanel>
+
+		<h:form id="form" styleClass="create" enctype="multipart/form-data">
+
+			<s:validateAll>
+				<rich:tabPanel switchType="client"
+					selectedTab="#{usuarioCrearControlador.tabSelect}"
+					styleClass="whitespace">
+					<!-- tab1 datos demográficos -->
+					<rich:tab id="usuario" name="usuario">
+						<f:facet name="label">		
+						 	<s:div>
+								<div style="float: left">	
+									<h:outputText value="#{messages.tab1}" />
+								</div>
+								<div>
+									<rich:message for="usuario" showDetail="false" tooltip="true" style="color:red;">
+										<f:facet name="errorMarker">
+											<h:outputText value="*" title="#{facesMessages.getCurrentMessagesForControl('usuario').get(0).getDetail()}"/>
+										</f:facet>
+									</rich:message>
+								</div>
+							</s:div>
+				      	</f:facet>
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+							<tr height="11px" />
+							<tr>
+								<td><rich:spacer width="7px" /></td>
+								<td><h:graphicImage
+									url="/resources/modCommon/unknown/#{theme.name}/generico/desconocido.png"
+									border="0" style="width: 74px; height: 74px;"
+									rendered="#{not userTools.userImageExist(usuarioCrearControlador.usuario.username)}" />
+								<h:graphicImage
+									url="/resources/modCommon/userphotos/#{usuarioCrearControlador.usuario.username}.png"
+									rendered="#{userTools.userImageExist(usuarioCrearControlador.usuario.username)}"
+									border="0" style="width: 74px; height: 74px;" /></td>
+								<td><rich:spacer width="6px" /></td>
+								<td valign="top">
+								<table cellpadding="0px" cellspacing="0px" border="0px">
+									<tr style="vertical-align: top;">
+										<td style="width: 0px;"></td>
+										<td><h:outputLabel value="#{messages.usuario}" /> <rich:message
+											for="userName" showDetail="false" tooltip="true"
+											style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('userName').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message><br />
+										<h:inputText value="#{usuarioCrearControlador.nick}"
+											tabindex="1" id="userName"
+											requiredMessage="#{messages.valorRequerido}"
+											style="width:148px;" /> <rich:spacer height="5"
+											style="display:block"></rich:spacer> <h:outputLabel
+											value="#{messages.cultura}"></h:outputLabel> <rich:message
+											for="cultura" showDetail="false" tooltip="true"
+											style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('cultura').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message><rich:comboBox id="cultura" enableManualInput="false"
+											width="150px" tabindex="4"
+											requiredMessage="#{messages.valorRequerido}"
+											defaultLabel="#{messages.seleccione}"
+											suggestionValues="#{usuarioCrearControlador.cultura()}"
+											value="#{usuarioCrearControlador.culturaSelec}">
+										</rich:comboBox></td>
+										<td><rich:spacer width="25px" /></td>
+
+										<td><h:outputLabel value="#{messages.contrasena}"></h:outputLabel>
+										<rich:message for="password" showDetail="false" tooltip="true"
+											style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('password').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message> <br />
+										<h:inputSecret value="#{usuarioCrearControlador.contrasenna}"
+											redisplay="true" id="password" tabindex="2"
+											requiredMessage="#{messages.valorRequerido}"
+											style=" width : 146px;" /> <rich:spacer height="6"
+											style="display:block"></rich:spacer>
+										<table cellpadding="0" cellspacing="0" border="0"
+											style="vertical-align: middle; margin-top: 8px">
+											<tr>
+												<td valign="middle"><h:outputLabel
+													value="#{messages.cuentaHabilitada}"></h:outputLabel> <rich:spacer
+													width="8px"></rich:spacer></td>
+												<td valign="middle"><h:selectBooleanCheckbox
+													tabindex="5" style="margin: 0px;"
+													value="#{usuarioCrearControlador.usuario.cuentaHabilitada}">
+												</h:selectBooleanCheckbox></td>
+											</tr>
+										</table>
+										</td>
+
+										<td><rich:spacer width="24px" /></td>
+										<td valign="top"><h:outputLabel
+											value="#{messages.repetirContrasena}"></h:outputLabel> <rich:message
+											for="repitPassword" showDetail="false" tooltip="true"
+											style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('repitPassword').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message><br />
+										<h:inputSecret id="repitPassword" tabindex="3"
+											redisplay="true"
+											value="#{usuarioCrearControlador.verificarPassword}"
+											requiredMessage="#{messages.valorRequerido}"
+											style="width:146px;" /></td>
+										<td><rich:spacer width="8px" /></td>
+									</tr>
+								</table>
+								<rich:spacer height="5px" /></td>
+							</tr>
+						</table>
+						<rich:spacer height="5px"></rich:spacer>
+						<table cellpadding="0px" cellspacing="0px" border="0px"
+							width="100%">
+							<tr>
+								<td width="8px"></td>
+								<td><rich:panel>
+									<f:facet name="header">#{messages.fotoUsuario}</f:facet>
+									<table cellpadding="0" cellspacing="0" border="0">
+										<tr>
+											<td height="10px"></td>
+										</tr>
+										<tr>
+											<td><rich:spacer width="6px" /></td>
+											<td><h:outputLabel value="#{messages.foto}"></h:outputLabel><rich:message
+										for="addPhoto" showDetail="false" tooltip="true"
+										style="color:red;">
+										<f:facet name="errorMarker">
+											<h:outputText value="*"
+												title="#{facesMessages.getCurrentMessagesForControl('addPhoto').get(0).getDetail()}" />
+										</f:facet>
+									</rich:message><br />
+											<s:fileUpload id="addPhoto" accept="*.*" tabindex="6"
+												data="#{usuarioCrearControlador.data}"
+												fileName="#{usuarioCrearControlador.nombrePhoto}" /></td>
+											<td><rich:spacer width="6px" /></td>
+										</tr>
+									</table>
+
+									<rich:spacer height="6px" style="display: block" />
+								</rich:panel> <rich:spacer height="13px" style="display: block" /> <rich:panel>
+									<f:facet name="header">#{messages.otrosDatos}</f:facet>
+									<table cellpadding="0px" cellspacing="0px" border="0px">
+										<tr>
+											<td height="10px" />
+										</tr>
+										<tr>
+											<td><rich:spacer width="7px" /></td>
+											<td><h:outputLabel value="#{messages.nombre}" /> <rich:message
+												for="name" showDetail="false" tooltip="true"
+												style="color:red;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('name').get(0).getDetail()}" />
+												</f:facet>
+											</rich:message> <br />
+											<h:inputText id="name" tabindex="7"
+												requiredMessage="#{messages.valorRequerido}"
+												value="#{usuarioCrearControlador.nombre}"
+												style="width:148px;" /> <rich:spacer height="6"
+												style="display:block"></rich:spacer></td>
+											<td><rich:spacer width="25px" /></td>
+
+											<td><h:outputLabel value="#{messages.primerApellido}"></h:outputLabel>
+											<rich:message for="primerApellido" showDetail="false"
+												tooltip="true" style="color:red;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('primerApellido').get(0).getDetail()}" />
+												</f:facet>
+											</rich:message><br />
+											<h:inputText tabindex="8" id="primerApellido"
+												value="#{usuarioCrearControlador.primerApellido}"
+												style="width:148px;" /> <rich:spacer height="5"
+												style="display:block"></rich:spacer></td>
+
+											<td><rich:spacer width="25px" /></td>
+
+											<td><h:outputLabel value="#{messages.segundoApellido}"></h:outputLabel>
+											<rich:message for="segundoApellido" showDetail="false"
+												tooltip="true" style="color:red;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('segundoApellido').get(0).getDetail()}" />
+												</f:facet>
+											</rich:message><br />
+											<h:inputText tabindex="9" id="segundoApellido"
+												requiredMessage="#{messages.valorRequerido}"
+												value="#{usuarioCrearControlador.segundoApellido}"
+												style="width:148px;" /> <rich:spacer height="5"
+												style="display:block"></rich:spacer></td>
+											<td><rich:spacer width="7px" /></td>
+										</tr>
+
+										<tr>
+											<td width="7px" />
+											<td><h:outputLabel value="#{messages.carnetIdentidad}"></h:outputLabel>
+											<rich:message for="cedula" showDetail="false" tooltip="true"
+												style="color:red;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('cedula').get(0).getDetail()}" />
+												</f:facet>
+											</rich:message><br />
+											<h:inputText id="cedula" tabindex="10"
+												requiredMessage="#{messages.valorRequerido}"
+												value="#{usuarioCrearControlador.cedula}"
+												style="width:148px; display:block" /> <rich:spacer
+												height="6"></rich:spacer></td>
+
+											<td style="width: 25px"></td>
+
+											<td><h:outputLabel value="#{messages.pasaporte}"></h:outputLabel>
+											<rich:message for="pasaporte" showDetail="false"
+												tooltip="true" style="color:red;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('pasaporte').get(0).getDetail()}" />
+												</f:facet>
+											</rich:message><br />
+											<h:inputText tabindex="11" id="pasaporte"
+												value="#{usuarioCrearControlador.pasaporte}"
+												style="width:148px;" /> <rich:spacer height="5"
+												style="display:block"></rich:spacer></td>
+
+											<td style="width: 25px"></td>
+
+											<td><h:outputLabel value="#{messages.fechaNacimiento}"></h:outputLabel>
+											 <br />
+											<rich:calendar styleClass="normalText" id="fecha"
+												datePattern="dd/MM/yyyy" tabindex="12"
+												value="#{usuarioCrearControlador.fechaNacimiento}"
+												isDayEnabled="disableMayoresHoy"
+												dayStyleClass="disableMayoresHoyClass">
+												<s:convertDateTime />
+											</rich:calendar> <rich:spacer height="5" style="display:block"></rich:spacer></td>
+											<td />
+										</tr>
+
+										<tr>
+											<td width="7px" />
+											<td><h:outputLabel value="#{messages.telefono}"></h:outputLabel>
+											<rich:message for="telefonopers" showDetail="false"
+												tooltip="true" style="color:red;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('telefonopers').get(0).getDetail()}" />
+												</f:facet>
+											</rich:message> <br />
+											<h:inputText tabindex="13" id="telefonopers"
+												value="#{usuarioCrearControlador.telefono}"
+												style="width:148px;" /> <rich:spacer height="3"
+												style="display:block"></rich:spacer></td>
+
+											<td style="width: 25px"></td>
+
+											<td><h:outputLabel value="#{messages.direccion}"></h:outputLabel>
+											<rich:message for="direccionParticular" showDetail="false"
+												tooltip="true" style="color:red;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('direccionParticular').get(0).getDetail()}" />
+												</f:facet>
+											</rich:message><br />
+											<h:inputText tabindex="14" id="direccionParticular"
+												value="#{usuarioCrearControlador.direccionParticular}"
+												style="width:148px;" /> <rich:spacer height="3"
+												style="display:block" /></td>
+											<td><rich:spacer height="3" style="display:block"></rich:spacer></td>
+											
+											<td><h:outputLabel value="#{messages.correo}:"></h:outputLabel>
+													<rich:message for="email" showDetail="false"
+														tooltip="true" style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('email').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message><br /> <h:inputText tabindex="15" id="email"
+														value="#{usuarioCrearControlador.email}"
+														style="width:148px;" /> <rich:spacer height="3"
+														style="display:block" />
+												</td>	
+											
+											
+											
+											
+										</tr>
+									</table>
+
+									<rich:spacer height="4px" style="display: block" />
+								</rich:panel></td>
+								<td width="8px"></td>
+							</tr>
+						</table>
+
+						<rich:spacer height="8px" style="display: block" />
+					</rich:tab>
+					<!-- tab2 datos del rol-->
+					<rich:tab label="#{messages.tab2}">
+
+						<table border="0" cellpadding="0" cellspacing="0">
+							<tr height="10px" />
+							<tr valign="top">
+								<td width="8px" />
+								<td><a4j:outputPanel id="listaRoles_source">
+
+									<rich:listShuttle id="lista" listsHeight="290"
+										sourceListWidth="300px" tabindex="15" targetListWidth="300px"
+										sourceValue="#{usuarioCrearControlador.rolsSource}"
+										targetValue="#{usuarioCrearControlador.rolsTarget}" var="rol"
+										sourceCaptionLabel="#{messages.roles}"
+										targetCaptionLabel="#{messages.rolesAsignados}"
+										showButtonLabels="false" fastOrderControlsVisible="false"
+										orderControlsVisible="false">
+										<s:convertEntity />
+										<rich:column>
+											<f:facet name="header">
+												<h:panelGrid columns="2"
+													style="width: 100%; padding:0px; margin:0px;" border="0"
+													cellpadding="0" cellspacing="0">
+													<s:div style="float: left;">#{messages.nombreRol}</s:div>
+												</h:panelGrid>
+											</f:facet>
+											<h:outputText style="vertical-align: 25%; margin-left: 2px; "
+												value="#{rol.name}">
+
+											</h:outputText>
+										</rich:column>
+
+
+									</rich:listShuttle>
+
+								</a4j:outputPanel></td>
+							</tr>
+							<tr height="8px" />
+						</table>
+					</rich:tab>
+
+					<rich:tab id="servicios" name="servicios">
+						 <f:facet name="label">		
+						 	<s:div>
+								<div style="float: left">	
+									<h:outputText value="#{messages.tab4}" />
+								</div>
+								<div>
+									<rich:message for="servicios" showDetail="false" tooltip="true" style="color:red;">
+										<f:facet name="errorMarker">
+											<h:outputText value="*" title="#{facesMessages.getCurrentMessagesForControl('servicios').get(0).getDetail()}"/>
+										</f:facet>
+									</rich:message>
+								</div>
+							</s:div>
+				      	</f:facet>
+						
+							
+						<a4j:outputPanel id="tablaServicios">
+							<s:div id="divServicios">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr height="10px" />
+									<tr valign="top">
+										<td width="8px" />
+										<td><rich:listShuttle id="ListShuttleEntidades"
+											style="pa" listsHeight="125" sourceListWidth="300px"
+											targetListWidth="300px"
+											sourceValue="#{usuarioCrearControlador.listaEntidadSource}"
+											targetValue="#{usuarioCrearControlador.listaEntidadTarget}"
+											var="entidad" 
+											sourceCaptionLabel="#{messages.entidades}"
+											showButtonLabels="false" fastOrderControlsVisible="false"
+											orderControlsVisible="false">
+											<f:facet name="targetCaption">
+												<s:div>
+													<div style="float: left">								
+														<h:outputText value="#{messages.entidadesSeleccionadas}" />
+													</div>
+													<div>
+														<rich:message for="ListShuttleEntidades" showDetail="false" tooltip="true" style="color:red;">
+															<f:facet name="errorMarker">
+																<h:outputText value="*" title="#{facesMessages.getCurrentMessagesForControl('ListShuttleEntidades').get(0).getDetail()}"/>
+															</f:facet>
+														</rich:message>
+													</div>
+												</s:div>
+											</f:facet>
+											<a4j:support event="onlistchanged" ajaxSingle="true"
+												action="#{usuarioCrearControlador.departamentos()}"
+												reRender="tablaServicios" />
+											<s:convertEntity />
+											<rich:column>
+												<f:facet name="header">
+													<h:panelGrid columns="2"
+														style="width: 100%; padding:0px; margin:0px;" border="0"
+														cellpadding="0" cellspacing="0">
+														<s:div style="float: left;">#{messages.nombreEntidad}</s:div>
+													</h:panelGrid>
+												</f:facet>
+												<h:outputText
+													style="vertical-align: 25%; margin-left: 2px; "
+													value="#{entidad.nombre}" />
+
+											</rich:column>
+										</rich:listShuttle></td>
+										<td width="9px" />
+									</tr>
+									<tr>
+										<td height="5px" />
+									</tr>
+									<tr>
+										<td width="7px" />
+										<td><rich:listShuttle id="ListShuttleDepartamentos"
+											sourceListWidth="300px" listsHeight="125"
+											targetListWidth="300px"
+											sourceValue="#{usuarioCrearControlador.listaDepartamentoSource}"
+											targetValue="#{usuarioCrearControlador.listaDepartamentoTarget}"
+											var="departamento"
+											sourceCaptionLabel="#{messages.departamentos}"											
+											showButtonLabels="false" fastOrderControlsVisible="false"
+											orderControlsVisible="false">
+											<f:facet name="targetCaption">
+												<s:div>
+													<div style="float: left">								
+														<h:outputText value="#{messages.departamentosAsignados}" />
+													</div>
+													<div>
+														<rich:message for="ListShuttleDepartamentos" showDetail="false" tooltip="true" style="color:red;">
+															<f:facet name="errorMarker">
+																<h:outputText value="*" title="#{facesMessages.getCurrentMessagesForControl('ListShuttleDepartamentos').get(0).getDetail()}"/>
+															</f:facet>
+														</rich:message>
+													</div>
+												</s:div>
+											</f:facet>
+											<a4j:support event="onlistchanged" ajaxSingle="true"
+												action="#{usuarioCrearControlador.servicios()}"
+												reRender="ListShuttleServicios2,ListShuttleDepartamentos" />
+											<s:convertEntity />
+
+											<rich:column>
+												<f:facet name="header">
+													<h:panelGrid columns="2"
+														style="width: 100%; padding:0px; margin:0px;" border="0"
+														cellpadding="0" cellspacing="0">
+														<s:div style="float: left;">#{messages.nombreDepartamento}</s:div>
+													</h:panelGrid>
+												</f:facet>
+												<h:outputText
+													style="vertical-align: 25%; margin-left: 2px; "
+													value="#{departamento.departamento.nombre}">
+												</h:outputText>
+											</rich:column>
+											<rich:column>
+												<f:facet name="header">
+													<h:panelGrid columns="2"
+														style="width: 100%; padding:0px; margin:0px;" border="0"
+														cellpadding="0" cellspacing="0">
+														<s:div style="float: left;">#{messages.entidad}</s:div>
+													</h:panelGrid>
+												</f:facet>
+												<h:outputText
+													style="vertical-align: 25%; margin-left: 2px; "
+													value="#{departamento.entidad.nombre}">
+												</h:outputText>
+											</rich:column>
+										</rich:listShuttle></td>
+										<td width="8px" />
+									</tr>
+									<tr>
+										<td height="5px" />
+									</tr>
+									<tr>
+										<td width="8px" />
+										<td><rich:listShuttle id="ListShuttleServicios2"
+											sourceListWidth="300px" targetListWidth="300px"
+											listsHeight="125"
+											sourceValue="#{usuarioCrearControlador.listaServicioInEntidadSource}"
+											targetValue="#{usuarioCrearControlador.listaServicioInEntidadTarget}"
+											var="servicio" sourceCaptionLabel="#{messages.servicios}"											
+											targetCaptionLabel="#{messages.serviciosAsignados}"
+											showButtonLabels="false" fastOrderControlsVisible="false"
+											orderControlsVisible="false" style="padding: 0px 0px 0px 0px">
+											
+											<f:facet name="targetCaption">
+												<s:div>
+													<div style="float: left">								
+														<h:outputText value="#{messages.serviciosAsignados}" />
+													</div>
+													<div>
+														<rich:message for="ListShuttleServicios2" showDetail="false" tooltip="true" style="color:red;">
+															<f:facet name="errorMarker">
+																<h:outputText value="*" title="#{facesMessages.getCurrentMessagesForControl('ListShuttleServicios2').get(0).getDetail()}"/>
+															</f:facet>
+														</rich:message>
+													</div>
+												</s:div>
+											</f:facet>
+											<s:convertEntity />
+											<a4j:support event="onlistchanged" ajaxSingle="true"
+												action="#{usuarioCrearControlador.subirServicios()}" />
+											<rich:column>
+												<f:facet name="header">
+													<h:panelGrid columns="2"
+														style="width: 100%; padding:0px; margin:0px;" border="0"
+														cellpadding="0" cellspacing="0">
+														<s:div style="float: left;">#{messages.nombreServicio}</s:div>
+													</h:panelGrid>
+												</f:facet>
+												<h:outputText
+													style="vertical-align: 25%; margin-left: 2px; "
+													value="#{servicio.servicio.nombre}">
+												</h:outputText>
+											</rich:column>
+											<rich:column>
+												<f:facet name="header">
+													<h:panelGrid columns="2"
+														style="width: 100%; padding:0px; margin:0px;" border="0"
+														cellpadding="0" cellspacing="0">
+														<s:div style="float: left;">#{messages.departamento}</s:div>
+													</h:panelGrid>
+												</f:facet>
+												<h:outputText
+													style="vertical-align: 25%; margin-left: 2px; "
+													value="#{servicio.servicio.departamento.nombre}">
+												</h:outputText>
+											</rich:column>
+											<rich:column>
+												<f:facet name="header">
+													<h:panelGrid columns="2"
+														style="width: 100%; padding:0px; margin:0px;" border="0"
+														cellpadding="0" cellspacing="0">
+														<s:div style="float: left;">#{messages.entidad}</s:div>
+													</h:panelGrid>
+												</f:facet>
+												<h:outputText
+													style="vertical-align: 25%; margin-left: 2px; "
+													value="#{servicio.entidad.nombre}">
+												</h:outputText>
+											</rich:column>
+										</rich:listShuttle></td>
+										<td width="8px" />
+									</tr>
+									<tr height="8px" />
+								</table>
+							</s:div>
+						</a4j:outputPanel>
+					</rich:tab>
+					<rich:tab id="datosLaboralesTab" rendered="false">
+						<f:facet name="label">
+							<s:div>
+								<h:outputText value="Datos laborales" />
+								
+							</s:div>
+						</f:facet>
+						<table width="100%" cellpadding="0" cellspacing="0">
+							<tr>
+								<td class="margenSupIzq">
+								<table cellpadding="0" cellspacing="0">
+									<tr class="filSepGranPeq">
+										<td class="colSepGran"><h:outputText
+											value="#{messages.formacion}:" /> </td>
+										<td class="colSepGran"><h:outputText
+											value="#{messages.grupoPersonal}:" /> </td>
+										<td class="colSepGran"><h:outputText
+											value="#{messages.ocupacion}:" /> </td>
+									</tr>
+									<tr class="filSepGranRA">
+										<td class="colSepGran"><rich:comboBox id="formacion"
+											suggestionValues="#{usuarioCrearControlador.listarFormacion()}" 
+											value="#{usuarioCrearControlador.formacion}"
+											defaultLabel="#{messages.seleccione}" width="151px">
+										</rich:comboBox></td>
+										<td class="colSepGran"><rich:comboBox id="grupoPersonal"
+											suggestionValues="#{usuarioCrearControlador.listarGrupoPersonal()}"
+											value="#{usuarioCrearControlador.grupoPersonal}"
+											defaultLabel="#{messages.seleccione}" width="151px">
+										</rich:comboBox></td>
+										<td class="colSepGran"><rich:comboBox id="estadoLaboral"
+											suggestionValues="#{usuarioCrearControlador.listarEstadoLaboral()}"
+											value="#{usuarioCrearControlador.estadoLaboral}"
+											defaultLabel="#{messages.seleccione}" width="151px">
+										</rich:comboBox></td>
+									</tr>
+									<tr class="filSepGranPeq">
+										<td class="colSepGran"><h:outputText
+											value="#{messages.areaPersonal}:" /> </td>
+										<td class="colSepGran"><h:outputText
+											value="#{messages.divisionPersonal}:" /> </td>
+										<td class="colSepGran"><h:outputText
+											value="#{messages.division}:" /> </td>
+									</tr>
+									<tr class="filSepGranRA">
+										<td class="colSepGran"><rich:comboBox id="tipoNomina"
+											suggestionValues="#{usuarioCrearControlador.listarTipoNomina()}"
+											value="#{usuarioCrearControlador.tipoNomina}"
+											defaultLabel="#{messages.seleccione}" width="151px">
+										</rich:comboBox></td>
+										<td class="colSepGran"><rich:comboBox
+											id="divisionPersonal"
+											suggestionValues="#{usuarioCrearControlador.listarDivisionPersonal()}"
+											value="#{usuarioCrearControlador.divisionPersonal}"
+											defaultLabel="#{messages.seleccione}" width="151px">
+										</rich:comboBox></td>
+										<td class="colSepGran"><rich:comboBox id="division"
+											suggestionValues="#{usuarioCrearControlador.listarDivision()}" 
+											value="#{usuarioCrearControlador.division}"
+											defaultLabel="#{messages.seleccione}" width="151px">
+										</rich:comboBox></td>
+									</tr>
+									<tr class="filSepGranPeq">
+										<td class="colSepGran"><h:outputText
+											value="#{messages.subdivisionPersonal}:" /> </td>
+										<td class="colSepGran"><h:outputText
+											value="#{messages.sociedad}:" /> </td>
+										<td class="colSepGran"><h:outputText
+											value="#{messages.unidadOrganizativa}:" /> </td>
+									</tr>
+									<tr class="filSepGranRA">
+										<td class="colSepGran"><rich:comboBox
+											id="subdivisionPersonal"
+											suggestionValues="#{usuarioCrearControlador.listarSubdivisionPersonal()}"
+											value="#{usuarioCrearControlador.subdivisionPersonal}"
+											defaultLabel="#{messages.seleccione}" width="151px">
+										</rich:comboBox></td>
+										<td class="colSepGran"><rich:comboBox id="sociedad"
+											suggestionValues="#{usuarioCrearControlador.listarSociedad()}" 
+											value="#{usuarioCrearControlador.sociedad}"
+											defaultLabel="#{messages.seleccione}" width="151px">
+										</rich:comboBox></td>
+										<td class="colSepGran"><rich:comboBox
+											id="unidadOrganizativa"
+											suggestionValues="#{usuarioCrearControlador.listarUnidadOrganizativa()}"
+											value="#{usuarioCrearControlador.unidadOrganizativa}"
+											defaultLabel="#{messages.seleccione}" width="151px">
+										</rich:comboBox></td>
+									</tr>
+									<tr class="filSepGranPeq">
+										<td class="colSepGran"><h:outputText
+											value="#{messages.telefono}" /> </td>
+										<td class="colSepGran"><h:outputText
+											value="#{messages.posicion}:" /> </td>
+										<td class="colSepGran"><h:outputText
+											value="Tiempo de servicio:" />  </td>
+									</tr>
+									<tr class="filSepGranRA">
+										<td class="colSepGran"><h:inputText
+											style="width:148px;" id="telefono" 
+											value="#{usuarioCrearControlador.telefonoOficina}"
+											validator="#{validations_configuracion.validarTelefono}" /></td>
+										<td class="colSepGran"><rich:comboBox id="posicion"
+											suggestionValues="#{usuarioCrearControlador.listarPosicion()}" 
+											value="#{usuarioCrearControlador.posicion}"
+											defaultLabel="#{messages.seleccione}" width="151px">
+										</rich:comboBox></td>
+										<td class="colSepGran">
+										<table cellpadding="0" cellspacing="0" class="Tabla">
+											<tr valign="top"> 
+												<td class="colSepPeq"><h:inputText
+													styleClass="inputText" style="width: 65px !important;"
+													id="tiempo" 
+													value="#{usuarioCrearControlador.tiempoServicio}"
+													validator="#{validations_configuracion.number}" /></td>
+												<td><rich:comboBox id="unidadTiempo"
+													suggestionValues="#{usuarioCrearControlador.listarUnidadTiempo()}"
+													value="#{usuarioCrearControlador.unidadTiempo}"
+													width="75px">
+												</rich:comboBox></td>
+											</tr>
+										</table>
+										</td>
+									</tr>
+									<tr class="filSepGranPeq">
+										<td class="colSepGran"><h:outputText
+											value="Mano dominante:" /> </td>
+										<td class="colSepGran"><h:outputText
+											value="Número personal:" /> </td>
+									</tr>
+									<tr class="filSepGranRA">
+										<td class="colSepGran"><rich:comboBox id="manoDominante"
+											suggestionValues="#{usuarioCrearControlador.listarManoDominante()}"
+											value="#{usuarioCrearControlador.manoDominante}"
+											defaultLabel="#{messages.seleccione}" width="151px">
+										</rich:comboBox></td>
+										<td class="colSepGran"><h:inputText
+											style="width:148px;" id="numeroPersonal" 
+											value="#{usuarioCrearControlador.numeroPersonal}" /></td>
+										<td class="colSepGran" valign="middle"><h:selectBooleanCheckbox
+											id="asegurado"
+											value="#{usuarioCrearControlador.aseguradoIvss}" /> <h:outputText
+											value="Asegurado:" style="position:relative;top:-3px;"/></td>
+									</tr>
+									<tr class="filSepGranPeq">
+										<td class="colSepGran"><h:outputText
+											value="Tipo de zona laboral:" /> </td>
+										<td class="colSepGran"><h:outputText
+											value="Número de hijos:" /> </td>
+									</tr>
+									<tr class="filSepGranRA">
+										<td class="colSepGran"><rich:comboBox
+											id="tipoZOnaLaboral"
+											suggestionValues="#{usuarioCrearControlador.listarTipoZonaLaboral()}"
+											value="#{usuarioCrearControlador.tipoZonaLaboral}"
+											defaultLabel="#{messages.seleccione}" width="151px">
+										</rich:comboBox></td>
+										<td class="colSepGran"><h:inputText
+											style="width:148px;" id="numeroHijos" 
+											value="#{usuarioCrearControlador.numHijos}"
+											validator="#{validations_configuracion.number}" /></td>
+									</tr>
+									
+								</table>
+								</td>
+							</tr>
+						</table>
+					</rich:tab>
+
+					<rich:tab id="firma">
+						<a4j:support event="onlabelclick" ajaxSingle="true"
+							action="#{usuarioEditarControlador.setSelectedTab('firma')}" />
+
+						<f:facet name="label">
+							<s:div>
+								<div style="float: left">
+									<h:outputText value="Firma" />
+								</div>
+								<div>
+									<rich:message for="firma" showDetail="false"
+										tooltip="true" style="color:red;">
+										<f:facet name="errorMarker">
+											<h:outputText value="*"
+												title="#{facesMessages.getCurrentMessagesForControl('firma').get(0).getDetail()}" />
+										</f:facet>
+									</rich:message>
+								</div>
+							</s:div>
+						</f:facet>
+						<table style="margin-top: 9px; margin-left: 5px; ">
+							<tr>
+								<td>
+									<h:outputLabel value="Firma:" /> <rich:message
+										for="addSignature" showDetail="false" tooltip="true"
+										style="color:red;">
+										<f:facet name="errorMarker">
+											<h:outputText value="*"
+												title="#{facesMessages.getCurrentMessagesForControl('addSignature').get(0).getDetail()}" />
+										</f:facet>
+									</rich:message><br />
+									<s:fileUpload id="addSignature" accept="*.*" tabindex="27"
+										data="#{usuarioCrearControlador.signature}"
+										fileName="#{usuarioCrearControlador.url_signature}" />
+								</td>						
+							</tr>
+						</table>
+					</rich:tab>				
+				</rich:tabPanel>
+			</s:validateAll>
+			<table cellpadding="0" cellspacing="0" border="0" align="right">
+				<tr>
+					<td><h:commandButton tabindex="14"
+						value="#{messages.aceptar}" id="buttonAceptar"
+						style="margin-bottom: 0px; margin-right: 10px; margin-left: 0px; margin-top: 8px"
+						action="#{usuarioCrearControlador.crear()}" /></td>
+					<td><h:commandButton value="#{messages.cancelar}"
+						tabindex="15" immediate="true"
+						style="margin-bottom: 0px; margin-right: 0px; margin-left: 0px; margin-top: 8px"
+						action="salir" propagation="end" /></td>
+				</tr>
+			</table>
+		</h:form>
+	</ui:define>
+</ui:composition>

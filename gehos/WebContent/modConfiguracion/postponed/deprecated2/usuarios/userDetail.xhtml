@@ -1,0 +1,348 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a="http://richfaces.org/a4j" 
+                template="#{theme.template}">
+                       
+<ui:define name="body">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style type="text/css">.rich-stglpanel-body{padding:0px}</style>
+	<style type="text/css">.rich-panel-body{padding:0px}</style>
+    <script type="text/javascript">setContentTitle('Detalles de usuario')</script>
+   
+    
+    <h:form id="userSearch" styleClass="edit">
+    
+    <rich:panel switchType="client" >
+		<f:facet name="header">Datos como funcionario</f:facet>
+		<h:graphicImage url="/resources/modCommon/userphotos/#{usuariosDetails_common.user.username}.png"
+					 	rendered="#{userTools.userImageExist(usuariosDetails_common.user.username)}" height="40"
+					 	style="position: relative; left: 7px; top: 11px;" />
+		<table cellpadding="0px" cellspacing="0px" border="0px" >
+			<tr>
+				<td style="height: 11px;" colspan="6">
+				</td>
+			</tr>
+			<tr style="vertical-align: top; height : 148px;">
+				<td style="width: 7px;"></td>
+				<td>
+	                <h:outputLabel value="Nombre:"></h:outputLabel>
+	                <rich:spacer width="6"></rich:spacer>
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+		           	<h:outputLabel value="Primer apellido:"></h:outputLabel>
+		           	<rich:spacer width="6"></rich:spacer>
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+		           	<h:outputLabel value="Segundo apellido:"></h:outputLabel>
+		           	<rich:spacer width="6"></rich:spacer>
+
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+		           	<h:outputLabel value="Tipo de funcionario:"></h:outputLabel>
+		           	<rich:spacer width="6"></rich:spacer>
+		           	
+		           	<rich:spacer height="6" style="display:block"></rich:spacer>
+		           	
+		            <h:outputLabel value="Dirección particular:"></h:outputLabel>
+		            <rich:spacer width="6"></rich:spacer>
+	              
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+	                <h:outputLabel value="Fecha de nacimiento:"></h:outputLabel>
+	                <rich:spacer width="6"></rich:spacer>
+	               
+	                <rich:spacer height="6" style="display:block"></rich:spacer>  
+				</td>
+				<td>	
+	                <h:outputLabel styleClass="dataText" value="#{usuariosDetails_common.user.nombre}"></h:outputLabel>
+	                
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+		           
+	                <h:outputLabel styleClass="dataText" value="#{usuariosDetails_common.user.primerApellido}"></h:outputLabel>
+	                <h:outputLabel styleClass="dataText" value="-" rendered="#{usuariosDetails_common.user.primerApellido == null}"></h:outputLabel>
+
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+		           
+	                <h:outputLabel styleClass="dataText" value="#{usuariosDetails_common.user.segundoApellido}"></h:outputLabel>
+	                <h:outputLabel styleClass="dataText" value="-" rendered="#{usuariosDetails_common.user.segundoApellido == null}"></h:outputLabel>
+	                
+
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+		           
+	                
+	                <h:outputLabel styleClass="dataText" value="-" ></h:outputLabel>
+	                
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+	                <h:outputLabel styleClass="dataText" value="#{usuariosDetails_common.user.direccionParticular}"></h:outputLabel>
+	                <h:outputLabel styleClass="dataText" value="-" rendered="#{usuariosDetails_common.user.direccionParticular == null}"></h:outputLabel>
+	                
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+	               
+	                <h:outputLabel styleClass="dataText" value="#{usuariosDetails_common.user.fechaNacimiento}">
+	                	<s:convertDateTime pattern="dd/MM/yyyy" />
+	                </h:outputLabel>
+	                <h:outputLabel styleClass="dataText" value="-" rendered="#{usuariosDetails_common.user.fechaNacimiento == null}"></h:outputLabel>
+
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+
+	               
+	                
+				</td>
+				
+				<td style="width: 23px"></td>
+				<td>
+	                <h:outputLabel value="Cédula:"></h:outputLabel>
+	                <rich:spacer width="6"></rich:spacer>
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+	                <h:outputLabel value="Tipo cédula:"></h:outputLabel>
+	                <rich:spacer width="6"></rich:spacer>
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+
+	                <h:outputLabel value="Pasaporte:"></h:outputLabel>
+	                <rich:spacer width="6"></rich:spacer>
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+
+	                <h:outputLabel value="Cargo:"></h:outputLabel>
+	                <rich:spacer width="6"></rich:spacer>
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+	                <h:outputLabel value="Teléfono:"></h:outputLabel>
+	                <rich:spacer width="6"></rich:spacer>
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+
+	                <h:outputLabel value="Foto:"></h:outputLabel><br/>
+	              
+				</td>
+				
+				<td width="180px">
+					
+	                <h:outputLabel styleClass="dataText" value="#{usuariosDetails_common.user.cedula}"></h:outputLabel>
+	                <h:outputLabel styleClass="dataText" value="-" rendered="#{usuariosDetails_common.user.cedula == null}"></h:outputLabel>
+	                
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+	               
+	               
+	                <h:outputLabel styleClass="dataText" value="-" ></h:outputLabel>
+
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+
+	                
+	                <h:outputLabel styleClass="dataText" value="#{usuariosDetails_common.user.pasaporte}"></h:outputLabel>
+	                <h:outputLabel styleClass="dataText" value="-" rendered="#{usuariosDetails_common.user.pasaporte == null}"></h:outputLabel>
+
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+
+	               
+	               
+	                <h:outputLabel styleClass="dataText" value="-" ></h:outputLabel>
+	                
+	                 <rich:spacer height="6" style="display:block"></rich:spacer>
+	                 
+	                <h:outputLabel styleClass="dataText" value="#{usuariosDetails_common.user.telefono}"></h:outputLabel>
+	                <h:outputLabel styleClass="dataText" value="-" rendered="#{usuariosDetails_common.user.telefono == null}"></h:outputLabel>
+
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+
+					 
+	                <h:outputLabel styleClass="dataText" value="-" 
+	                	rendered="#{not userTools.userImageExist(usuariosDetails_common.user.username)}"></h:outputLabel>
+	             
+				</td>
+				
+				<td style="width: 25px"></td>
+				
+			</tr></table>
+			
+			
+			<table cellpadding="0" cellspacing="0" width="100%">
+				<tr>
+					<td>
+						<rich:spacer width="7"></rich:spacer>
+					</td>
+					<td width="100%">
+						<rich:dataTable value="#{usuariosDetails_common.userServices()}" 
+							var="serv" width="100%" >
+							<f:facet name="header">Servicios</f:facet>
+							<rich:column>
+								#{serv.descripcion}
+							</rich:column>
+						</rich:dataTable>
+					</td>
+					<td>
+						<rich:spacer width="7"></rich:spacer>
+					</td>
+				</tr>
+			</table>
+			
+
+		    
+			<br/>
+	</rich:panel><br/>
+	<rich:panel>
+		<f:facet name="header">Datos como usuario</f:facet>
+		<table cellpadding="0px" cellspacing="0px" border="0px" >
+			<tr>
+				<td style="height: 11px;" colspan="6">
+				</td>
+			</tr>
+			<tr style="vertical-align: top;">
+				<td style="width: 7px;"></td>
+				<td>
+	                <h:outputLabel value="Usuario:"></h:outputLabel>
+	                <rich:spacer height="6" ></rich:spacer>
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+					Cuenta habilitada:
+					<rich:spacer width="6" ></rich:spacer>
+
+				</td>
+				<td>	             
+	                 <h:outputLabel styleClass="dataText" value="#{usuariosDetails_common.user.username}">
+	                <h:outputLabel styleClass="dataText" value="-" rendered="#{usuariosDetails_common.user.username == null}"></h:outputLabel>
+	                 </h:outputLabel>
+	                 
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+					<h:selectBooleanCheckbox value="#{usuariosDetails_common.user.cuentaHabilitada}"
+						style="margin-top: 0px; margin-right: 0px; margin-left: 0px; margin-bottom: 0px;">
+					</h:selectBooleanCheckbox>
+				</td>
+				<td style="width: 25px"></td>
+
+				<td style="width: 25px"></td>
+
+			</tr>
+			</table>
+			<br/>
+			<table cellpadding="0px" cellspacing="0px" border="0px" width="100%">
+				<tr>
+					<td>
+						<rich:spacer width="7"></rich:spacer>
+					</td>
+					<td width="100%">
+						<rich:dataTable value="#{usuariosDetails_common.userRoles()}"
+							var="role" width="100%">
+							<f:facet name="header">Roles</f:facet>
+							<rich:column>
+								#{role.name}
+							</rich:column>
+						</rich:dataTable>
+					</td>
+					<td>
+						<rich:spacer width="7"></rich:spacer>
+					</td>
+				</tr>
+			</table>
+
+		  
+			<br/>	
+	</rich:panel><br/>
+	
+	<rich:panel switchType="client" >
+		<f:facet name="header">Datos como médico</f:facet>
+		<table cellpadding="0px" cellspacing="0px" border="0px" >
+			<tr>
+				<td style="height: 11px;" colspan="6">
+				</td>
+			</tr>
+			<tr style="vertical-align: top;">
+				<td style="width: 7px;"></td>
+				<td>
+	                <h:outputLabel value="Mat. MPPS:"></h:outputLabel>
+	                <rich:spacer width="6" ></rich:spacer>
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+		           	<h:outputLabel value="Especialidad:"></h:outputLabel>
+		           	<rich:spacer height="6" ></rich:spacer>
+		           	<rich:spacer width="6" ></rich:spacer>
+
+	               
+				</td>
+				<td>
+
+	               <h:outputLabel styleClass="dataText" value="-" ></h:outputLabel>
+	               
+	                
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+		           
+
+           			<h:outputLabel styleClass="dataText" value="-" ></h:outputLabel>
+	               
+				</td>
+				<td style="width: 23px"></td>
+				<td>
+	                <h:outputLabel value="Mat. CM:"></h:outputLabel>
+	                
+	               <rich:spacer height="6" ></rich:spacer>
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+	                <h:outputLabel value="Fecha de graduación:"></h:outputLabel>
+	                <rich:spacer width="6" ></rich:spacer>
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+	               
+				</td>
+				<td>
+					               
+	              
+	               <h:outputLabel styleClass="dataText" value="-" ></h:outputLabel>
+	                
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+	                <h:outputLabel styleClass="dataText" value="">
+	                	<s:convertDateTime pattern="dd/MM/yyyy" />
+	                </h:outputLabel>
+	                <h:outputLabel styleClass="dataText" value="-" ></h:outputLabel>
+
+	                <rich:spacer height="6" style="display:block"></rich:spacer>
+	                
+	               
+	               
+				</td>
+				<td style="width: 25px"></td>
+
+			</tr></table>
+			<br/>
+		    
+			<br/>
+	</rich:panel>
+	
+	
+    </h:form>
+    
+    <h:form>
+    <s:div styleClass="actionButtons" rendered="#{empty from}" style="text-align: right" >
+    <div align="right">
+		<s:button value="Modificar" style=""
+			view="/modConfiguracion/usuarios/userEdit.xhtml" >
+			<f:param name="userId" value="#{usuariosDetails_common.user.id}"/>
+		</s:button>	
+		<s:button value="Salir" style="margin-right:0px;"
+			view="/modConfiguracion/usuarios/userList.xhtml" />
+    </div>
+    </s:div>  
+   
+    </h:form>
+    <br/>
+    
+    
+
+    
+</ui:define>
+
+</ui:composition>
+

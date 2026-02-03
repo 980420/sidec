@@ -1,0 +1,106 @@
+<s:div id="expvariableSelection" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<a4j:form>
+		
+						<s:div style="margin-left:2px;">
+							<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+								<h:graphicImage
+									value="/resources/modEnsayo/img/iconos/estudio.png" height="16" />
+								<a4j:commandLink value="Estudios" style="margin-left:1px;"
+									ajaxSingle="true" />
+							</h:panelGrid>
+						</s:div>
+						<rich:tree ajaxSingle="true" switchType="client">
+							<rich:treeNodesAdaptor nodes="#{RuleConditionsManager.estudios}"
+								var="estudio">
+								<rich:treeNode
+									icon="/resources/modEnsayo/img/iconos/gruposujetos.png">
+									<h:outputText value="#{estudio.nombre}" />
+								</rich:treeNode>
+								<rich:treeNodesAdaptor
+									nodes="#{estudio.grupoSujetoses}"
+									var="grupoSujeto"
+									includedNode="#{not empty grupoSujeto.cronogramas}">
+									<rich:treeNode
+										icon="/resources/modEnsayo/img/iconos/gruposujetos.png">
+										<h:outputText value="#{grupoSujeto.nombreGrupo}" />
+									</rich:treeNode>
+									<rich:treeNodesAdaptor nodes="#{grupoSujeto.cronogramas}"
+										var="cronograma"
+										includedNode="#{not empty cronograma.momentoSeguimientoGenerals}">
+										<rich:treeNode
+											icon="/resources/modEnsayo/img/iconos/cronograma.png">
+											<h:outputText value="#{cronograma.descripcion}" />
+										</rich:treeNode>
+										<rich:treeNodesAdaptor
+											nodes="#{cronograma.momentoSeguimientoGenerals}"
+											var="momentoGeneral" 
+											includedNode="#{not empty cronograma.momentoSeguimientoGenerals}">
+											<rich:treeNode
+												icon="/resources/modEnsayo/img/iconos/momento.png"
+												includedNode="#{not empty cronograma.momentoSeguimientoGenerals}">
+												<h:outputText value="#{momentoGeneral.nombre}" />
+											</rich:treeNode>
+											<rich:treeNodesAdaptor nodes="#{momentoGeneral.hojaCrds}"
+												var="hojaCrd">
+												<rich:treeNode
+													icon="/resources/modEnsayo/img/iconos/hojacrd.png">
+													<h:outputText value="#{hojaCrd.nombreHoja}" />
+												</rich:treeNode>
+												<rich:treeNodesAdaptor nodes="#{hojaCrd.seccions}"
+													var="seccion">
+													<rich:treeNode
+														icon="/resources/modEnsayo/img/iconos/seccion.png"
+														iconLeaf="/resources/modEnsayo/img/iconos/seccion.png">
+														<h:outputText value="#{seccion.tituloSeccion}" />
+													</rich:treeNode>
+													<rich:treeNodesAdaptor nodes="#{seccion.variables}"
+														var="variable"
+														includedNode="#{variable.grupoVariables==null}">
+														<rich:treeNode
+															icon="/resources/modEnsayo/img/iconos/variable.png"
+															iconLeaf="/resources/modEnsayo/img/iconos/variable.png">
+															<a4j:commandLink value="#{variable.nombreVariable}"
+																action="#{dragDropBean.SetVariable(variable)}"
+																reRender="phptable"
+																limitToList="true"
+																></a4j:commandLink>
+														</rich:treeNode>
+													</rich:treeNodesAdaptor>
+													<rich:treeNodesAdaptor nodes="#{seccion.grupoVariableses}"
+														var="grupoVariable">
+														<rich:treeNode
+															icon="/resources/modEnsayo/img/iconos/grupo-variable.png"
+															iconLeaf="/resources/modEnsayo/img/iconos/grupo-variable.png">
+															<h:outputText value="#{grupoVariable.etiquetaGrupo}" />
+														</rich:treeNode>
+														<rich:treeNodesAdaptor nodes="#{grupoVariable.variables}"
+															var="variable">
+															<rich:treeNode
+																icon="/resources/modEnsayo/img/iconos/variable.png"
+																iconLeaf="/resources/modEnsayo/img/iconos/variable.png">
+																<a4j:commandLink value="#{variable.nombreVariable}"
+																	action="#{dragDropBean.SetVariable(variable)}"
+																	reRender="phptable" limitToList="true"
+																	></a4j:commandLink>
+															</rich:treeNode>
+														</rich:treeNodesAdaptor>
+													</rich:treeNodesAdaptor>
+												</rich:treeNodesAdaptor>
+											</rich:treeNodesAdaptor>
+										</rich:treeNodesAdaptor>
+									</rich:treeNodesAdaptor>
+								</rich:treeNodesAdaptor>
+							</rich:treeNodesAdaptor>
+
+						</rich:tree>
+					
+					</a4j:form>
+</s:div>

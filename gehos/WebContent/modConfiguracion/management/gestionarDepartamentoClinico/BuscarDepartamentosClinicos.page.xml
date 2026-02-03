@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<action execute="#{departamentoClinicoBuscarControler.begin()}" />
+	
+	<param name="state" value="#{departamentoClinicoBuscarControler.state}" />
+	<param name="order" value="#{departamentoClinicoBuscarControler.order}" />
+	<param name="firstResult" value="#{departamentoClinicoBuscarControler.firstResult}" />
+	<param name="critB1" value="#{departamentoClinicoBuscarControler.nombre}" />
+
+	<!-- go to create -->
+	<navigation from-action="#{departamentoClinicoCrearControlador.begin()}">
+		<redirect view-id="/modConfiguracion/management/gestionarDepartamentoClinico/CrearDepartamentosClinicos.xhtml">
+			<param name="open" value="#{departamentoClinicoBuscarControler.state}" />
+			<param name="firstResult" value="#{departamentoClinicoBuscarControler.firstResult}" />
+			<param name="order" value="#{parameters.encodec(departamentoClinicoBuscarControler.order)}" />
+			<param name="critB1" value="#{parameters.encodec(departamentoClinicoBuscarControler.nombre)}" />
+		</redirect>
+	</navigation>
+
+	<!-- go to view details -->
+	<navigation from-action="#{departamentoClinicoBuscarControler.seleccionarVer()}" evaluate="#{departamentoClinicoBuscarControler.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarDepartamentoClinico/VerDetallesDepartamentosClinicos.xhtml">
+				<param name="departamentoId" value="#{departamentoClinicoBuscarControler.departamentoId}" />
+				<param name="firstResult" value="#{departamentoClinicoBuscarControler.firstResult}" />
+				<param name="critB1" value="#{parameters.encodec(departamentoClinicoBuscarControler.nombre)}" />
+				<param name="order" value="#{departamentoClinicoBuscarControler.order}" />
+				<param name="open" value="#{departamentoClinicoBuscarControler.state}" />
+				<param name="from" value="listar" />
+			</redirect>
+		</rule>
+	</navigation>
+
+	<!-- go to modify -->
+	<navigation from-action="#{departamentoClinicoBuscarControler.seleccionarModificar()}" evaluate="#{departamentoClinicoBuscarControler.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarDepartamentoClinico/ModificarDepartamentosClinicos.xhtml">
+				<param name="departamentoId" value="#{departamentoClinicoBuscarControler.departamentoId}" />		
+				<param name="firstResult" value="#{departamentoClinicoBuscarControler.firstResult}" />
+				<param name="critB1" value="#{parameters.encodec(departamentoClinicoBuscarControler.nombre)}" />
+				<param name="order" value="#{departamentoClinicoBuscarControler.order}" />
+				<param name="open" value="#{departamentoClinicoBuscarControler.state}" />
+			</redirect>
+		</rule>
+	</navigation>
+</page>

@@ -1,0 +1,85 @@
+<!-- Modal Panel Desaprobar diseno -->
+	<rich:modalPanel 
+		id="mpAdvertenciaRestablecerHoja" 
+		width="380" 
+		height="130"
+		 xmlns ="http://www.w3.org/1999/xhtml" 
+ 			      xmlns:ui  ="http://java.sun.com/jsf/facelets" 
+      		      xmlns:h   ="http://java.sun.com/jsf/html" 
+			      xmlns:f   ="http://java.sun.com/jsf/core" 
+			      xmlns:a="http://richfaces.org/a4j"
+			      xmlns:s   ="http://jboss.com/products/seam/taglib" 
+			      xmlns:rich="http://richfaces.org/rich" 
+                  xmlns:a4j ="http://richfaces.org/a4j" >
+		<f:facet name="header">
+			<h:panelGroup>
+				<h:outputText value="Reiniciar hoja CRD"></h:outputText>
+			</h:panelGroup>
+		</f:facet>
+		<!-- Boton de cerrar el panel -->
+		<f:facet name="controls">
+				<a4j:commandButton id="btnCerrar2" 
+					onclick="Richfaces.hideModalPanel('mpAdvertenciaRestablecerHoja')"
+					image="/resources/icons/default/acciones/cerrar.gif">
+				</a4j:commandButton>
+		</f:facet>
+		
+		<a:outputPanel id="outputDesaprobar">
+			<h:form id="modalDesaprobar">
+				<table cellpadding="0px" cellspacing="0px" border="0px"
+					id="container">
+					<td><rich:spacer height="6px" /></td>
+					<tr style="vertical-align: top;">
+						<td><rich:spacer width="6px" /></td>
+						<td valign="top">
+							<table cellpadding="0px" cellspacing="0px" border="0">
+								<tr valign="top">
+									<td>
+										<!-- Imagen de advertencia --> <h:graphicImage
+											value="/resources/icons/default/acciones/advertencia.png" />
+									</td>
+									<td><rich:spacer width="6px" /></td>
+									<td><h:outputText
+											value="Se borrarán todos los datos de la hoja CRD. Por favor, introduzca la causa:" /> <rich:message
+											for="caus" showDetail="false" tooltip="true"
+											style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*" style='cursor:pointer'
+													title="#{facesMessages.getCurrentMessagesForControl('caus').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message> <br /> <h:inputTextarea
+											value="#{gestionarHoja.descripcionCausaReiniciarHoja}" required="true"
+											id="caus" style="width:100%;resize: vertical" /> <br /> <h:outputText
+											value="Al seleccionar Sí, se podrá gestionar la hoja CRD para el momento de seguimiento correspondiente. ¿ Desea continuar ?" />
+									</td>
+								</tr>
+							</table>
+						</td>
+						<td><rich:spacer width="6px" /></td>
+					</tr>
+					<tr>
+						<td style="height: 7px;" colspan="6"></td>
+					</tr>
+					<tr>
+						<td colspan="3">
+							<div align="center">
+							<a4j:commandButton action="#{gestionarHoja.reiniciarHoja()}"
+								value="#{messages['si']}"
+								oncomplete="#{rich:component('ajaxLoadingModalBox')}.hide(),#{gestionarHoja.esEvento()}"
+								data="#{ruleManager.clientData}" />
+
+							<a4j:commandButton 
+							 		value="#{messages['no']}"
+									onclick="Richfaces.hideModalPanel('mpAdvertenciaRestablecerHoja')"/>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td style="height: 6px;" colspan="6"></td>
+					</tr>					
+				</table>
+			</h:form>
+		</a:outputPanel>
+	</rich:modalPanel>
+
+	<!-- Fin del modal panel desaprobar diseno -->

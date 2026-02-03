@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="productos_de_proveedores" width="833" height="530">
+  <node name="inicio" x="150" y="11" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="-152" h1="2" w2="-183" h2="-371"/>
+      <bendpoint w1="-151" h1="170" w2="-182" h2="-203"/>
+      <bendpoint w1="-187" h1="47" w2="-218" h2="-326"/>
+    </edge>
+  </node>
+  <node name="recepcionar_producto" x="110" y="80" width="219" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="-125" h1="3" w2="-1" h2="-372"/>
+      <bendpoint w1="-124" h1="63" w2="-152" h2="-241"/>
+    </edge>
+  </node>
+  <node name="informe_de_recepcion" x="134" y="142" width="175" height="36">
+    <edge>
+      <label x="-18" y="7"/>
+      <bendpoint w1="151" h1="-29" w2="-128" h2="-29"/>
+    </edge>
+  </node>
+  <node name="aceptar_recepcion" x="137" y="278" width="167" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="-114" y="-42"/>
+      <bendpoint w1="1" h1="-43" w2="1" h2="41"/>
+    </edge>
+    <edge>
+      <label x="-56" y="-17"/>
+    </edge>
+  </node>
+  <node name="editar_informe" x="443" y="229" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="60" h1="-47" w2="69" h2="40"/>
+    </edge>
+    <edge>
+      <label x="-96" y="7"/>
+    </edge>
+  </node>
+  <node name="detalles" x="434" y="142" width="132" height="36">
+    <edge>
+      <label x="-53" y="-24"/>
+      <bendpoint w1="-128" h1="26" w2="151" h2="26"/>
+    </edge>
+    <edge>
+      <label x="-207" y="79"/>
+      <bendpoint w1="103" h1="-3" w2="383" h2="-139"/>
+      <bendpoint w1="104" h1="136" w2="384" h2="0"/>
+    </edge>
+    <edge>
+      <label x="13" y="-4"/>
+      <bendpoint w1="-55" h1="38" w2="-64" h2="-49"/>
+    </edge>
+  </node>
+  <node name="entrada_producto" x="171" y="384" width="152" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="3" h1="71" w2="155" h2="0"/>
+    </edge>
+  </node>
+  <node name="fin" x="29" y="454" width="132" height="38"/>
+</root-container>

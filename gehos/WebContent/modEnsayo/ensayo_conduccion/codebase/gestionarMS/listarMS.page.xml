@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<begin-conversation flush-mode="manual" join="true" />
+	<action execute="#{listarMSP.initConversation()}"/>
+	<action execute="#{listarMSNP.initConversation()}"/>
+	
+	<action execute="#{listarMSP.refresh()}" />
+	<action execute="#{listarMSNP.refresh()}" />
+	<action execute="#{crearCronogramaEspecifico.loadData()}" />
+	<param name="idMS" />
+	<param name="idSujeto" value="#{crearCronogramaEspecifico.idSujeto}" />
+	<param name="idSujeto" value="#{listarMSP.idSujeto}" />
+	<param name="idSujeto" value="#{listarMSNP.idSujeto}" />
+	<param name="idSujeto" value="#{crearMSNP.idSujeto}" />
+
+	<navigation from-action="crearMSNoProg">
+		<end-conversation before-redirect="true" />
+		<redirect
+			view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarMS/crearMSNP.xhtml">
+			<param name="idSujeto" value="#{idSujeto}" />
+		</redirect>
+	</navigation>
+
+	<navigation from-action="gestionar">
+		<end-conversation before-redirect="true" />
+		<redirect
+			view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCRD/listarCRD.xhtml">
+			<param name="fromP" value="listarMS"/>
+			<param name="idMS" value="#{idMS}" />
+			<param name="idSujeto" value="#{idSujeto}" />
+		</redirect>
+	</navigation>
+
+	<navigation from-action="salir">
+		<end-conversation before-redirect="true" />
+		<redirect
+			view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarSujeto/buscarSujeto.xhtml">
+		</redirect>
+	</navigation>
+
+	<navigation from-action="#{crearCronogramaEspecifico.Cronograma_Especifico()}">
+		<end-conversation before-redirect="true" />
+		<redirect
+			view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarSujeto/verSujeto.xhtml">
+			<param name="idSujeto" value="#{idSujeto}" />
+			<param name="idSujeto1" value="#{idSujeto}" />
+			<param name="idSujetoCronograma" value="#{idSujetoCronograma}" />
+		</redirect>
+	</navigation>
+
+</page>

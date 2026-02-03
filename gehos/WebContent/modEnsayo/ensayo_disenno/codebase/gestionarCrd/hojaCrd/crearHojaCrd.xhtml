@@ -1,0 +1,1241 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}">
+	<s:div>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript">setContentTitle('#{messages.lbl_titulo_ens}')</script>
+
+		<script>
+		function disableField(id,bool)
+		{
+			var el = jQuery('#'+id);
+			if(bool)
+			{	
+				el.attr('disabled','disabled');
+				el.parent().addClass("file-disabled");
+			}
+			else
+			{
+				el.parent().removeClass("file-disabled");
+			}
+		}
+
+		function cambiarStyle(id,size)
+  		{
+  		var size2=''+size+'px';
+  		var n=new String(id);
+  		var idN=n.replace('combobox','list');
+  		
+  		var com=document.getElementById(idN);
+  		var parent=com.parentNode;
+  		var gran=parent.parentNode;
+  		parent.style.width=size2;
+  		gran.style.width=size2;
+  		com.style.width=size2;
+  		}
+		//<![CDATA[
+	    function hideErrorSpans() {
+	        var errorSpans = document.getElementsByClassName('errorSpan');
+	        for(var i = 0; i < errorSpans.length; i++) {
+	            errorSpans[i].style.display = 'none';
+	        }
+	    }
+	//]]>
+	  //<![CDATA[
+	    function hideErrorSpansSeccion() {
+	        var errorSpans1 = document.getElementsByClassName('errorSpan1');
+	        for(var i = 0; i < errorSpans1.length; i++) {
+	            errorSpans1[i].style.display = 'none';
+	        }
+	    }
+	//]]>
+	  //<![CDATA[
+	    function hideErrorSpansGroup() {
+	        var errorSpans2 = document.getElementsByClassName('errorSpan2');
+	        for(var i = 0; i < errorSpans2.length; i++) {
+	            errorSpans2[i].style.display = 'none';
+	        }
+	    }
+	//]]>
+		//<![CDATA[
+	    function hideErrorSpansVariable() {
+	        var errorSpans3 = document.getElementsByClassName('errorSpan3');
+	        for(var i = 0; i < errorSpans3.length; i++) {
+	            errorSpans3[i].style.display = 'none';
+	        }
+	    }
+	//]]>
+	//<![CDATA[
+	    function validarCamposVacios() {
+	        var campos = ['crearHojaCrd:nombreHoja','crearHojaCrd:etiquetaSeccion']; // Añade aquí los IDs de todos los campos de entrada que quieres verificar
+	        for(var i = 0; i < campos.length; i++) {
+	            var input = document.getElementById(campos[i]);
+	            if(input.value == '') {
+	                input.style.border = '1px solid red';
+	            } else {
+	                input.style.border = '';
+	            }
+	        }
+	    }
+	 //]]>
+	  //<![CDATA[
+	    function validarCamposVaciosSeccion() {
+	        var campos = ['crearHojaCrd:etiquetaSeccion','crearHojaCrd:tituloSeccion']; // Añade aquí los IDs de todos los campos de entrada que quieres verificar
+	        for(var i = 0; i < campos.length; i++) {
+	            var input = document.getElementById(campos[i]);
+	            if(input.value == '') {
+	                input.style.border = '1px solid red';
+	            } else {
+	                input.style.border = '';
+	            }
+	        }
+	    }
+	 //]]>      
+	  //<![CDATA[
+	    function validarCamposVaciosGrupo() {
+	        var campos = ['crearHojaCrd:nombreGrupo','crearHojaCrd:encabezadoGrupo','crearHojaCrd:seccionGrupocomboboxField']; // Añade aquí los IDs de todos los campos de entrada que quieres verificar
+	        for(var i = 0; i < campos.length; i++) {
+	            var input = document.getElementById(campos[i]);
+	            if(input.value == '') {
+	                input.style.border = '1px solid red';
+	            } else {
+	                input.style.border = '';
+	            }
+	        }
+	    }
+	 //]]> 
+	  //<![CDATA[
+	    function validarCamposVaciosVar() {
+	        var campos = ['crearHojaCrd:nombrevar','crearHojaCrd:descvar','crearHojaCrd:seccionVariablecomboboxField','crearHojaCrd:numeroColumna','crearHojaCrd:numeroPregunta','crearHojaCrd:tipoDatocomboboxField','crearHojaCrd:presentacionFormulariocomboboxField','crearHojaCrd:nombreNomenclador','crearHojaCrd:valoresTexto']; // Añade aquí los IDs de todos los campos de entrada que quieres verificar
+	        for(var i = 0; i < campos.length; i++) {
+	            var input = document.getElementById(campos[i]);
+	            if(input.value == '') {
+	                input.style.border = '1px solid red';
+	            } else {
+	                input.style.border = '';
+	            }
+	        }
+	    }
+	 //]]> 
+		</script>
+
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css"
+			rel="stylesheet" type="text/css" />
+		<link rel='stylesheet'
+			href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+			type='text/css' />
+		<rich:messages globalOnly="true" styleClass="message"
+			id="globalMessage" ajaxRendered="true" />
+		<a4j:outputPanel ajaxRendered="true" id="errorOutputPanel">
+			<s:div style="height:35px;"
+				rendered="#{facesMessages.getCurrentMessagesForControl('crearHojaCrd').size() > 0 }">
+				<div class="custom-error">
+
+					<rich:message for="crearHojaCrd"></rich:message>
+				</div>
+			</s:div>
+		</a4j:outputPanel>
+
+
+		<h:form id="crearHojaCrd">
+			<rich:panel>
+				<rich:tabPanel switchType="client" styleClass="whitespace">
+					<rich:tab id="datosCrd">
+						<f:facet name="label">
+							<s:div>
+								<div style="float: left">
+									<h:outputText value="#{messages.lbl_datosHojaCrd_ens}" />
+									<rich:message for="nombreHoja" showDetail="false"
+										tooltip="true" style="color:red;">
+										<f:facet name="errorMarker">
+											<h:outputText value="*"
+												title="#{facesMessages.getCurrentMessagesForControl('nombreHoja').get(0).getDetail()}" />
+										</f:facet>
+									</rich:message>
+								</div>
+
+							</s:div>
+						</f:facet>
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+							<tr>
+								<td colspan="5"><rich:spacer height="13px"></rich:spacer></td>
+							</tr>
+							<tr>
+
+								<td><h:outputText value="#{messages.lbl_nombre_ens}:"
+										styleClass="normalText" /> <span class="errorSpan"
+									style="color: red;">*</span> <rich:message for="nombreHoja"
+										styleClass="normalText" /> <span class="errorSpan"
+									style="color: red;">*</span> <rich:message for="nombreHoja"
+										showDetail="false" tooltip="true" style="color:red;">
+										<f:facet name="errorMarker">
+											<h:outputText value="*"
+												title="#{facesMessages.getCurrentMessagesForControl('nombreHoja').get(0).getDetail()}" />
+										</f:facet>
+									</rich:message></td>
+							</tr>
+							<tr>
+								<td><h:inputText styleClass="inputText"
+										value="#{crearHojaCrd.hojaCrd.nombreHoja}" id="nombreHoja"
+										required="true" validator="#{validaciones_CRD.caracteresEsp}"
+										onblur="if(this.value == '') {this.style.border = '1px solid red';} else {this.style.border = '';}" />
+								</td>
+							</tr>
+						</table>
+						<s:div>
+							<div align="right">
+								<rich:spacer width="100%" height="8px" />
+							</div>
+						</s:div>
+						<table cellpadding="0px" cellspacing="0px" border="0px"
+							width="100%">
+							<tr>
+
+								<td><h:outputText value="#{messages.lbl_descripcion_ens}:"
+										styleClass="normalText" />
+									<rich:message for="descripcion" showDetail="false"
+										tooltip="true" style="color:red;">
+										<f:facet name="errorMarker">
+											<h:outputText value="*"
+												title="#{facesMessages.getCurrentMessagesForControl('descripcion').get(0).getDetail()}" />
+										</f:facet>
+									</rich:message> <br /> <h:inputTextarea id="descripcion"
+										value="#{crearHojaCrd.hojaCrd.descripcion}"
+										style="width:50%;resize: vertical">
+									</h:inputTextarea></td>
+
+							</tr>
+						</table>
+					</rich:tab>
+					<rich:tab id="seccionesCrd">
+						<f:facet name="label">
+							<s:div>
+								<div style="float: left">
+									<h:outputText value="#{messages.lbl_seccionesHojaCrd_ens}" />
+
+								</div>
+
+							</s:div>
+						</f:facet>
+						<a4j:outputPanel id="datos_seccion">
+							<table cellpadding="0px" cellspacing="0px" border="0px">
+								<tr>
+									<td colspan="5"><rich:spacer height="13px"></rich:spacer></td>
+								</tr>
+								<tr>
+									<td><h:outputText
+											value="#{messages.lbl_EtiquetaSeccion_ens}:"
+											styleClass="normalText" /> <rich:message
+											for="etiquetaSeccion" showDetail="false" tooltip="true"
+											style="color:red;">
+											<span class="errorSpan1" style="color: red;">*</span>
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('etiquetaSeccion').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:outputText
+											value="#{messages.lbl_tituloSeccion_ens}:"
+											styleClass="normalText" /> <span class="errorSpan1"
+										style="color: red;">*</span> <rich:message for="tituloSeccion"
+											showDetail="false" tooltip="true" style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('tituloSeccion').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message></td>
+
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:outputText
+											value="#{messages.lbl_subTituloSeccion_ens}:"
+											styleClass="normalText" />
+										<rich:message for="subTituloSeccion" showDetail="false"
+											tooltip="true" style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('subTituloSeccion').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message></td>
+								</tr>
+								<tr>
+									<td><h:inputText styleClass="tbx"
+											value="#{crearHojaCrd.seccion.etiquetaSeccion}"
+											id="etiquetaSeccion"
+											validator="#{validaciones_CRD.caracteresEsp500}"
+											required="#{!empty param['crearHojaCrd:addSeccionBtn']}"
+											onblur="if(this.value == '') {this.style.border = '1px solid red';} else {this.style.border = '';}" /></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:inputText styleClass="tbx"
+											value="#{crearHojaCrd.seccion.tituloSeccion}"
+											id="tituloSeccion"
+											validator="#{validaciones_CRD.caracteresEsp500}"
+											required="#{!empty param['crearHojaCrd:addSeccionBtn']}"
+											onblur="if(this.value == '') {this.style.border = '1px solid red';} else {this.style.border = '';}" /></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:inputText styleClass="tbx"
+											value="#{crearHojaCrd.seccion.subtitulo}"
+											validator="#{validaciones_CRD.textnumber500}"
+											id="subTituloSeccion" style="width:100%;resize: vertical" /></td>
+								</tr>
+								<tr>
+									<td colspan="5"><rich:spacer height="8px"></rich:spacer></td>
+								</tr>
+								<tr>
+
+									<td><h:outputText
+											value="#{messages.lbl_instruccionesSeccion_ens}:"
+											styleClass="normalText" />
+										<rich:message for="instruccionesSeccion" showDetail="false"
+											tooltip="true" style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('instruccionesSeccion').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message></td>
+
+								</tr>
+
+								<tr>
+									<td colspan="5"><h:inputTextarea id="instruccionesSeccion"
+											value="#{crearHojaCrd.seccion.instrucciones}"
+											style="width:100%;resize: vertical">
+										</h:inputTextarea></td>
+								</tr>
+							</table>
+						</a4j:outputPanel>
+						<div align="right">
+
+							<a4j:commandButton id="addSeccionBtn"
+								action="#{crearHojaCrd.adicionarSeccion()}"
+								reRender="tablas_secciones, datos_seccion, seccionVariable, seccionGrupo"
+								value="#{messages.btn_add_ens}" style="margin-right:10px"
+								oncomplete="hideErrorSpansSeccion();validarCamposVaciosSeccion();">
+							</a4j:commandButton>
+						</div>
+
+						<a4j:outputPanel id="tablas_secciones">
+							<rich:panel styleClass="whitespace"
+								rendered="#{crearHojaCrd.secciones.size() == 0}">
+								<f:facet name="header">#{messages.lbl_listadoSecciones_ens}</f:facet>
+
+								<div class="results" id="roleList">
+									<h:outputText value="#{messages.msg_listaVacia_ens}" />
+								</div>
+
+							</rich:panel>
+							<s:div style="margin-left:1px;margin-top:1px"
+								rendered="#{crearHojaCrd.secciones.size() > 0}">
+								<rich:dataTable id="tabla_listado_secciones"
+									style="width: 100%;" var="seccion"
+									value="#{crearHojaCrd.secciones}"
+									columnsWidth="20%, 20%, 60%, 0*">
+									<f:facet name="header">
+										<div>#{messages.lbl_listadoSecciones_ens}</div>
+									</f:facet>
+									<h:column>
+										<f:facet name="header">
+											<h:panelGrid columns="2"
+												style="width: 100%; padding:0px; margin:0px;" border="0"
+												cellpadding="0" cellspacing="0">
+												<s:div style="float: left;">#{messages.lbl_EtiquetaSeccion_ens}</s:div>
+												<s:div style="text-align: right; padding-left:3px;"></s:div>
+											</h:panelGrid>
+										</f:facet>
+	            			#{seccion.etiquetaSeccion}
+	        			</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:panelGrid columns="2"
+												style="width: 100%; padding:0px; margin:0px;" border="0"
+												cellpadding="0" cellspacing="0">
+												<s:div style="float: left;">#{messages.lbl_tituloSeccion_ens}</s:div>
+												<s:div style="text-align: right; padding-left:3px;"></s:div>
+											</h:panelGrid>
+										</f:facet>
+	            			#{seccion.tituloSeccion}
+	        			</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:panelGrid columns="2"
+												style="width: 100%; padding:0px; margin:0px;" border="0"
+												cellpadding="0" cellspacing="0">
+												<s:div style="float: left;">#{messages.lbl_subTituloSeccion_ens}</s:div>
+												<s:div style="text-align: right; padding-left:3px;"></s:div>
+											</h:panelGrid>
+										</f:facet>
+										<h:outputText value="#{seccion.subtitulo}"
+											rendered="#{seccion.subtitulo !=null}" />
+										<h:outputText value="-" rendered="#{seccion.subtitulo ==null}" />
+									</h:column>
+
+
+									<h:column>
+										<f:facet name="header">
+											<h:panelGrid columns="2"
+												style="width: 100%; padding:0px; margin:0px;" border="0"
+												cellpadding="0" cellspacing="0">
+												<s:div style="float: left;">#{messages.lbl_instruccionesSeccion_ens}</s:div>
+												<s:div style="text-align: right; padding-left:3px;"></s:div>
+											</h:panelGrid>
+										</f:facet>
+										<h:outputText value="#{seccion.instrucciones}"
+											rendered="#{seccion.instrucciones !=null}" />
+										<h:outputText value="-"
+											rendered="#{seccion.instrucciones ==null}" />
+									</h:column>
+
+									<h:column>
+										<div align="center">
+											<a4j:commandLink
+												action="#{crearHojaCrd.modificarSeccion(seccion)}"
+												reRender="tablas_secciones, datos_seccion, seccionVariable, seccionGrupo">
+												<h:graphicImage title="#{messages.lbl_modificar_ens}"
+													style="border: 0px;"
+													value="/resources/icons/default/acciones/modificar.png" />
+											</a4j:commandLink>
+										</div>
+									</h:column>
+									<h:column>
+										<div align="center">
+											<a4j:commandLink
+												action="#{crearHojaCrd.eliminarSeccion(seccion)}"
+												reRender="tablas_secciones, seccionVariable, seccionGrupo">
+												<h:graphicImage title="#{messages.lbl_eliminar_ens}"
+													style="border: 0px; cursor:pointer;"
+													value="/resources/icons/default/acciones/eliminar.png">
+
+												</h:graphicImage>
+											</a4j:commandLink>
+										</div>
+									</h:column>
+								</rich:dataTable>
+							</s:div>
+
+
+
+
+						</a4j:outputPanel>
+					</rich:tab>
+					<rich:tab id="gruposCrd">
+						<f:facet name="label">
+							<s:div>
+								<div style="float: left">
+									<h:outputText value="#{messages.lbl_gruposHojaCrd_ens}" />
+
+								</div>
+
+							</s:div>
+						</f:facet>
+						<a4j:outputPanel id="datos_grupo">
+							<table cellpadding="0px" cellspacing="0px" border="0px">
+								<tr>
+									<td colspan="5"><rich:spacer height="13px"></rich:spacer></td>
+								</tr>
+								<tr>
+
+									<td><h:outputText value="#{messages.lbl_nombreGrupo_ens}:"
+											styleClass="normalText" /> <span class="errorSpan2"
+										style="color: red;">*</span> <rich:message for="nombreGrupo"
+											showDetail="false" tooltip="true" style="color:red;">
+
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('nombreGrupo').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:outputText
+											value="#{messages.lbl_encabezadoGrupo_ens}:"
+											styleClass="normalText" /> <span class="errorSpan2"
+										style="color: red;">*</span> <rich:message
+											for="encabezadoGrupo" showDetail="false" tooltip="true"
+											style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('encabezadoGrupo').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:outputText
+											value="#{messages.lbl_numeroRepeticiones_ens}:"
+											styleClass="normalText" /> <rich:message
+											for="numeroRepeticiones" showDetail="false" tooltip="true"
+											style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('numeroRepeticiones').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message></td>
+								</tr>
+								<tr>
+									<td><h:inputText styleClass="tbx"
+											value="#{crearHojaCrd.grupo.etiquetaGrupo}" id="nombreGrupo"
+											required="#{!empty param['crearHojaCrd:addGrupoBtn']}"
+											validator="#{validaciones_CRD.caracteresEsp500}"
+											onblur="if(this.value == '') {this.style.border = '1px solid red';} else {this.style.border = '';}" /></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:inputText styleClass="tbx"
+											value="#{crearHojaCrd.grupo.encabezado}" id="encabezadoGrupo"
+											required="#{!empty param['crearHojaCrd:addGrupoBtn']}"
+											validator="#{validaciones_CRD.caracteresEsp500}"
+											onblur="if(this.value == '') {this.style.border = '1px solid red';} else {this.style.border = '';}" />
+									</td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:inputText styleClass="tbx"
+											value="#{crearHojaCrd.grupo.numRepeticiones}"
+											validator="#{validaciones_CRD.number4cifras}"
+											id="numeroRepeticiones" /></td>
+								</tr>
+
+								<tr>
+									<td colspan="5"><rich:spacer height="8px"></rich:spacer></td>
+								</tr>
+
+								<tr>
+									<td><h:outputText
+											value="#{messages.lbl_numeroMaximoRepeticiones_ens}:"
+											styleClass="normalText" /> <rich:message
+											for="numeroMaximoRepeticiones" showDetail="false"
+											tooltip="true" style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('numeroMaximoRepeticiones').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:outputText value="#{messages.lbl_visibilidad_ens}:"
+											styleClass="normalText" /></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:outputText
+											value="#{messages.lbl_seccionVariable_ens}:"
+											styleClass="normalText" /> <span class="errorSpan2"
+										style="color: red;">*</span> <rich:message for="seccionGrupo"
+											showDetail="false" tooltip="true" style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('seccionGrupo').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message></td>
+
+
+								</tr>
+								<tr>
+									<td><h:inputText styleClass="tbx"
+											value="#{crearHojaCrd.grupo.numMaxRepeticiones}"
+											validator="#{validaciones_CRD.number4cifras}"
+											id="numeroMaximoRepeticiones" /></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><rich:comboBox id="estado"
+											value="#{crearHojaCrd.grupo.estadoGrupo}"
+											defaultLabel="#{messages.lbl_seleccione_ens}"
+											enableManualInput="false" styleClass="cbx"
+											suggestionValues="#{crearHojaCrd.listaEstadosGrupo}">
+
+										</rich:comboBox></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><rich:comboBox id="seccionGrupo"
+											value="#{crearHojaCrd.seccionGrupo}"
+											defaultLabel="#{messages.lbl_seleccione_ens}"
+											enableManualInput="false" styleClass="cbx"
+											suggestionValues="#{crearHojaCrd.listadoSecciones()}"
+											onclick="cambiarStyle(this.id,#{crearHojaCrd.sizeMaxString(crearHojaCrd.listadoSecciones())})"
+											required="#{!empty param['crearHojaCrd:addGrupoBtn']}"
+											onblur="if(this.value == '') {this.style.border = '1px solid red';} else {this.style.border = '';}">
+
+										</rich:comboBox></td>
+								</tr>
+
+								<tr>
+									<td colspan="5"><rich:spacer height="8px"></rich:spacer></td>
+								</tr>
+								<tr>
+
+									<td><h:outputText value="#{messages.lbl_descripcion_ens}:"
+											styleClass="normalText" /> <rich:message
+											for="descripcionGrupo" showDetail="false" tooltip="true"
+											style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('descripcionGrupo').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message></td>
+
+								</tr>
+								<tr>
+									<td colspan="5"><h:inputTextarea id="descripcionGrupo"
+											value="#{crearHojaCrd.grupo.descripcionGrupo}"
+											style="width:100%;resize: vertical">
+										</h:inputTextarea></td>
+								</tr>
+							</table>
+						</a4j:outputPanel>
+						<div align="right">
+
+							<a4j:commandButton id="addGrupoBtn"
+								action="#{crearHojaCrd.adicionarGrupo()}"
+								reRender="tablas_grupos, datos_grupo, grupoVariable"
+								value="#{messages.btn_add_ens}" style="margin-right:10px"
+								oncomplete="hideErrorSpansGroup();validarCamposVaciosGrupo();">
+							</a4j:commandButton>
+						</div>
+
+						<a4j:outputPanel id="tablas_grupos">
+							<rich:panel styleClass="whitespace"
+								rendered="#{crearHojaCrd.grupos.size() == 0}">
+								<f:facet name="header">#{messages.lbl_listadoGrupos_ens}</f:facet>
+
+								<div class="results" id="roleList">
+									<h:outputText value="#{messages.msg_listaVacia_ens}" />
+								</div>
+
+							</rich:panel>
+							<s:div style="margin-left:1px;margin-top:1px"
+								rendered="#{crearHojaCrd.grupos.size() > 0}">
+								<rich:dataTable id="tabla_listado_grupos" style="width: 100%;"
+									var="grupo" value="#{crearHojaCrd.grupos}"
+									columnsWidth="15%, 15%, 15%, 15%, 40%, 0*">
+									<f:facet name="header">
+										<div>#{messages.lbl_listadoGrupos_ens}</div>
+									</f:facet>
+
+									<h:column>
+										<f:facet name="header">
+											<h:panelGrid columns="2"
+												style="width: 100%; padding:0px; margin:0px;" border="0"
+												cellpadding="0" cellspacing="0">
+												<s:div style="float: left;">#{messages.lbl_nombreGrupo_ens}</s:div>
+												<s:div style="text-align: right; padding-left:3px;"></s:div>
+											</h:panelGrid>
+										</f:facet>
+	            			#{grupo.etiquetaGrupo}
+	        			</h:column>
+
+									<h:column>
+										<f:facet name="header">
+											<h:panelGrid columns="2"
+												style="width: 100%; padding:0px; margin:0px;" border="0"
+												cellpadding="0" cellspacing="0">
+												<s:div style="float: left;">#{messages.lbl_encabezadoGrupo_ens}</s:div>
+												<s:div style="text-align: right; padding-left:3px;"></s:div>
+											</h:panelGrid>
+										</f:facet>
+	            			#{grupo.encabezado}
+	        			</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:panelGrid columns="2"
+												style="width: 100%; padding:0px; margin:0px;" border="0"
+												cellpadding="0" cellspacing="0">
+												<s:div style="float: left;">#{messages.lbl_numeroRepeticiones_ens}</s:div>
+												<s:div style="text-align: right; padding-left:3px;"></s:div>
+											</h:panelGrid>
+										</f:facet>
+	            			#{grupo.numRepeticiones}
+	            			
+	        			</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:panelGrid columns="2"
+												style="width: 100%; padding:0px; margin:0px;" border="0"
+												cellpadding="0" cellspacing="0">
+												<s:div style="float: left;">#{messages.lbl_numeroMaximoRepeticiones_ens}</s:div>
+												<s:div style="text-align: right; padding-left:3px;"></s:div>
+											</h:panelGrid>
+										</f:facet>
+	            			#{grupo.numMaxRepeticiones}
+	            			
+	        			</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:panelGrid columns="2"
+												style="width: 100%; padding:0px; margin:0px;" border="0"
+												cellpadding="0" cellspacing="0">
+												<s:div style="float: left;">#{messages.lbl_seccionVariable_ens}</s:div>
+												<s:div style="text-align: right; padding-left:3px;"></s:div>
+											</h:panelGrid>
+										</f:facet>
+	            			#{grupo.seccion.etiquetaSeccion}
+	        			</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:panelGrid columns="2"
+												style="width: 100%; padding:0px; margin:0px;" border="0"
+												cellpadding="0" cellspacing="0">
+												<s:div style="float: left;">#{messages.lbl_descripcion_ens}</s:div>
+												<s:div style="text-align: right; padding-left:3px;"></s:div>
+											</h:panelGrid>
+										</f:facet>
+										<h:outputText value="#{grupo.descripcionGrupo}"
+											rendered="#{grupo.descripcionGrupo !=null}" />
+										<h:outputText value="-"
+											rendered="#{grupo.descripcionGrupo ==null}" />
+									</h:column>
+									<h:column>
+										<div align="center">
+											<a4j:commandLink
+												action="#{crearHojaCrd.modificarGrupo(grupo)}"
+												reRender="tablas_grupos, datos_grupo, grupoVariable">
+												<h:graphicImage title="#{messages.lbl_modificar_ens}"
+													style="border: 0px;"
+													value="/resources/icons/default/acciones/modificar.png" />
+											</a4j:commandLink>
+										</div>
+									</h:column>
+									<h:column>
+										<div align="center">
+											<a4j:commandLink
+												action="#{crearHojaCrd.eliminarGrupo(grupo)}"
+												reRender="tablas_grupos, grupoVariable">
+												<h:graphicImage title="#{messages.lbl_eliminar_ens}"
+													style="border: 0px; cursor:pointer;"
+													value="/resources/icons/default/acciones/eliminar.png">
+
+												</h:graphicImage>
+											</a4j:commandLink>
+										</div>
+									</h:column>
+								</rich:dataTable>
+							</s:div>
+						</a4j:outputPanel>
+					</rich:tab>
+
+
+					<rich:tab id="variablesCrd">
+						<f:facet name="label">
+							<s:div>
+								<div style="float: left">
+									<h:outputText value="#{messages.lbl_variablesHojaCrd_ens}" />
+
+								</div>
+
+							</s:div>
+						</f:facet>
+						<a4j:outputPanel id="datos_variable">
+							<table cellpadding="0px" cellspacing="0px" border="0px">
+								<tr>
+									<td colspan="5"><rich:spacer height="13px"></rich:spacer></td>
+								</tr>
+								<tr>
+									<td><h:outputText value="#{messages.lbl_nombrevar_ens}:"
+											styleClass="normalText" /> <span class="errorSpan3"
+										style="color: red;">*</span> <rich:message for="nombrevar"
+											showDetail="false" tooltip="true" style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('nombrevar').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:outputText value="#{messages.lbl_descripcion_ens}:"
+											styleClass="normalText" /><span class="errorSpan3"
+										style="color: red;">*</span> <rich:message for="descvar"
+											showDetail="false" tooltip="true" style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('descvar').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:outputText
+											value="#{messages.lbl_seccionVariable_ens}:"
+											styleClass="normalText" /><span class="errorSpan3"
+										style="color: red;">*</span> <rich:message
+											for="seccionVariable" showDetail="false" tooltip="true"
+											style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('seccionVariable').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message></td>
+
+								</tr>
+
+								<tr>
+									<td><h:inputText styleClass="tbx"
+											value="#{crearHojaCrd.variable.nombreVariable}"
+											id="nombrevar"
+											validator="#{validaciones_CRD.caracteresEsp4000}"
+											required="#{!empty param['crearHojaCrd:addVariableBtn']}"
+											onblur="if(this.value == '') {this.style.border = '1px solid red';} else {this.style.border = '';}" />
+									</td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:inputText styleClass="tbx"
+											value="#{crearHojaCrd.variable.descripcionVariable}"
+											id="descvar"
+											validator="#{validaciones_CRD.caracteresEsp4000}"
+											required="#{!empty param['crearHojaCrd:addVariableBtn']}"
+											onblur="if(this.value == '') {this.style.border = '1px solid red';} else {this.style.border = '';}" /></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><rich:comboBox style="width:100%;resize: vertical"
+											id="seccionVariable" value="#{crearHojaCrd.seccionVariable}"
+											defaultLabel="#{messages.lbl_seleccione_ens}"
+											enableManualInput="false" styleClass="cbx"
+											suggestionValues="#{crearHojaCrd.listadoSecciones()}"
+											onclick="cambiarStyle(this.id,#{crearHojaCrd.sizeMaxString(crearHojaCrd.listadoSecciones())})"
+											required="#{!empty param['crearHojaCrd:addVariableBtn']}"
+											onblur="if(this.value == '') {this.style.border = '1px solid red';} else {this.style.border = '';}">
+											<a4j:support event="onselect" reRender="grupoVariable"
+												ajaxSingle="true" />
+										</rich:comboBox></td>
+								</tr>
+								<tr>
+									<td colspan="5"><rich:spacer height="8px"></rich:spacer></td>
+								</tr>
+								<tr>
+									<td><h:outputText
+											value="#{messages.lbl_grupoVariable_ens}:"
+											styleClass="normalText" /></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:outputText
+											value="#{messages.lbl_textoIzquierdaVariable_ens}:"
+											styleClass="normalText" />
+										<rich:message for="textoIzquierdaVariable" showDetail="false"
+											tooltip="true" style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('textoIzquierdaVariable').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:outputText
+											value="#{messages.lbl_unidadesVariable_ens}:"
+											styleClass="normalText" />
+										<rich:message for="unidadesVariable" showDetail="false"
+											tooltip="true" style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('unidadesVariable').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message></td>
+								</tr>
+
+								<tr>
+									<td><rich:comboBox id="grupoVariable"
+											value="#{crearHojaCrd.grupoVariable}"
+											defaultLabel="#{messages.lbl_seleccione_ens}"
+											style="width:100%;resize: vertical" enableManualInput="false"
+											onclick="cambiarStyle(this.id,#{crearHojaCrd.sizeMaxString(crearHojaCrd.listadoGrupos())})"
+											styleClass="cbx"
+											suggestionValues="#{crearHojaCrd.listadoGrupos()}">
+
+										</rich:comboBox></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:inputText styleClass="tbx"
+											value="#{crearHojaCrd.variable.textoIzquierdaVariable}"
+											id="textoIzquierdaVariable"
+											validator="#{validaciones_CRD.caracteresEsp4000}" /></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:inputText styleClass="tbx"
+											value="#{crearHojaCrd.variable.unidadesVariable}"
+											id="unidadesVariable"
+											validator="#{validaciones_CRD.caracteresEsp4000}" /></td>
+
+								</tr>
+								<tr>
+									<td colspan="5"><rich:spacer height="8px"></rich:spacer></td>
+								</tr>
+								<tr>
+									<td><h:outputText
+											value="#{messages.lbl_textoDerechaVariable_ens}:"
+											styleClass="normalText" />
+										<rich:message for="textoDerechaVariable" showDetail="false"
+											tooltip="true" style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('textoDerechaVariable').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:outputText
+											value="#{messages.lbl_encabezadoVariable_ens}:"
+											styleClass="normalText" />
+										<rich:message for="encabezadoVariable" showDetail="false"
+											tooltip="true" style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('encabezadoVariable').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:outputText
+											value="#{messages.lbl_subencabezadoVariable_ens}:"
+											styleClass="normalText" />
+										<rich:message for="subencabezadoVariable" showDetail="false"
+											tooltip="true" style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('subencabezadoVariable').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message></td>
+
+								</tr>
+
+								<tr>
+									<td><h:inputText styleClass="tbx"
+											value="#{crearHojaCrd.variable.textoDerechaVariable}"
+											id="textoDerechaVariable"
+											validator="#{validaciones_CRD.caracteresEsp4000}" /></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:inputText styleClass="tbx"
+											value="#{crearHojaCrd.variable.encabezadoVariable}"
+											id="encabezadoVariable"
+											validator="#{validaciones_CRD.caracteresEsp4000}" /></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:inputText styleClass="tbx"
+											value="#{crearHojaCrd.variable.subencabezadoVariable}"
+											id="subencabezadoVariable"
+											validator="#{validaciones_CRD.caracteresEsp4000}" /></td>
+								</tr>
+								<tr>
+									<td colspan="5"><rich:spacer height="8px"></rich:spacer></td>
+								</tr>
+								<tr>
+									<td><h:outputText
+											value="#{messages.lbl_numeroColumna_ens}:"
+											styleClass="normalText" /><span class="errorSpan3"
+										style="color: red;">*</span> <rich:message for="numeroColumna"
+											showDetail="false" tooltip="true" style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('numeroColumna').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:outputText
+											value="#{messages.lbl_numeroPregunta_ens}:"
+											styleClass="normalText" /><span class="errorSpan3"
+										style="color: red;">*</span> <rich:message
+											for="numeroPregunta" showDetail="false" tooltip="true"
+											style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('numeroPregunta').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:outputText value="#{messages.lbl_tipoDato_ens}:"
+											styleClass="normalText" /><span class="errorSpan3"
+										style="color: red;">*</span> <rich:message for="tipoDato"
+											showDetail="false" tooltip="true" style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('tipoDato').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message></td>
+
+								</tr>
+
+								<tr>
+									<td><h:inputText styleClass="tbx"
+											value="#{crearHojaCrd.variable.numeroColumna}"
+											id="numeroColumna"
+											required="#{!empty param['crearHojaCrd:addVariableBtn']}"
+											validator="#{validaciones_CRD.number4cifras}"
+											onblur="if(this.value == '') {this.style.border = '1px solid red';} else {this.style.border = '';}" /></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:inputText styleClass="tbx"
+											value="#{crearHojaCrd.variable.numeroPregunta}"
+											id="numeroPregunta"
+											required="#{!empty param['crearHojaCrd:addVariableBtn']}"
+											validator="#{validaciones_CRD.number4cifras}"
+											onblur="if(this.value == '') {this.style.border = '1px solid red';} else {this.style.border = '';}" /></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><rich:comboBox id="tipoDato"
+											value="#{crearHojaCrd.nombreTipoDato}"
+											defaultLabel="#{messages.lbl_seleccione_ens}"
+											enableManualInput="false" styleClass="cbx"
+											suggestionValues="#{crearHojaCrd.listadoTipoDato()}"
+											required="#{!empty param['crearHojaCrd:addVariableBtn']}"
+											onblur="if(this.value == '') {this.style.border = '1px solid red';} else {this.style.border = '';}">
+											<a4j:support event="onselect"
+												reRender="presentacionFormulario, nombreNomenclador, valoresTexto, datos_variable_nomenclador"
+												ajaxSingle="true" />
+
+										</rich:comboBox></td>
+								</tr>
+								<tr>
+									<td colspan="5"><rich:spacer height="8px"></rich:spacer></td>
+								</tr>
+								 <tr>
+									<td colspan="5"><a4j:outputPanel
+											id="datos_variable_nomenclador">
+											<s:div rendered="#{crearHojaCrd.habilitarNomenclador}">
+												<table cellpadding="0px" cellspacing="0px" border="0px">
+													<tr>
+
+														<td><h:outputText
+																value="#{messages.lbl_nombreNomenclador_ens}:"
+																styleClass="normalText" /> <span class="errorSpan3"
+															style="color: red;">*</span> <rich:message
+																for="nombreNomenclador" showDetail="false"
+																tooltip="true" style="color:red;">
+																<f:facet name="errorMarker">
+																	<h:outputText value="*"
+																		title="#{facesMessages.getCurrentMessagesForControl('nombreNomenclador').get(0).getDetail()}" />
+																</f:facet>
+															</rich:message></td>
+														<td><rich:spacer width="25px"></rich:spacer></td>
+														<td><h:outputText
+																value="#{messages.lbl_valoresTexto_ens}:"
+																styleClass="normalText" /> <span class="errorSpan3"
+															style="color: red;">*</span> <rich:message
+																for="valoresTexto" showDetail="false" tooltip="true"
+																style="color:red;">
+																<f:facet name="errorMarker">
+																	<h:outputText value="*"
+																		title="#{facesMessages.getCurrentMessagesForControl('valoresTexto').get(0).getDetail()}" />
+																</f:facet>
+															</rich:message></td>
+
+													</tr>
+
+													<tr>
+														<td><h:inputText styleClass="tbx"
+																value="#{crearHojaCrd.nomencladorVariable.nombre}"
+																id="nombreNomenclador"
+																required="#{!empty param['crearHojaCrd:addVariableBtn'] }"
+																validator="#{validaciones_CRD.caracteresEsp500}"
+																onblur="if(this.value == '') {this.style.border = '1px solid red';} else {this.style.border = '';}" />
+														</td>
+														<td><rich:spacer width="25px"></rich:spacer></td>
+														<td><h:inputText styleClass="tbx"
+																value="#{crearHojaCrd.valoresTexto}" id="valoresTexto"
+																required="#{!empty param['crearHojaCrd:addVariableBtn']}"
+																onblur="if(this.value == '') {this.style.border = '1px solid red';} else {this.style.border = '';}" /></td>
+													</tr>
+													<tr>
+														<td colspan="5"><rich:spacer height="8px"></rich:spacer></td>
+													</tr>
+												</table>
+											</s:div>
+										</a4j:outputPanel></td>
+								</tr> 
+
+								<tr>
+									<td><h:outputText
+											value="#{messages.lbl_presentacionFormulario_ens}:"
+											styleClass="normalText" /> <span class="errorSpan3"
+										style="color: red;">*</span> <rich:message
+											for="presentacionFormulario" showDetail="false"
+											tooltip="true" style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('presentacionFormulario').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:outputText
+											value="#{messages.lbl_ubicacionRespuesta_ens}:"
+											styleClass="normalText" /></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:outputText
+											value="#{messages.lbl_valorRequerido_ens}:"
+											styleClass="normalText" />
+											<rich:spacer width="50px"></rich:spacer>
+			
+											</td>
+                                    
+                                    
+								</tr>
+								
+
+								<tr>
+									<td><rich:comboBox style="width:100%;resize: vertical"
+											id="presentacionFormulario"
+											value="#{crearHojaCrd.nombrePresentacionFormulario}"
+											defaultLabel="#{messages.lbl_seleccione_ens}"
+											enableManualInput="false" styleClass="cbx"
+											suggestionValues="#{crearHojaCrd.listadoPresentacionFormulario()}"
+											required="#{!empty param['crearHojaCrd:addVariableBtn']}"
+											onblur="if(this.value == '') {this.style.border = '1px solid red';} else {this.style.border = '';}">
+
+										</rich:comboBox>
+										
+										</td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><rich:comboBox id="ubicacionRespuesta"
+											style="width:100%;resize: vertical"
+											value="#{crearHojaCrd.variable.ubicacionRespuesta}"
+											defaultLabel="#{messages.lbl_seleccione_ens}"
+											enableManualInput="false" styleClass="cbx"
+											suggestionValues="#{crearHojaCrd.listaUbicacionRespuesta}">
+                                     </rich:comboBox></td>
+                                     <td><rich:spacer width="25px"></rich:spacer></td>
+								<td style=" width : 71px;">
+									<h:selectBooleanCheckbox
+											value="#{crearHojaCrd.variable.requerido}" /> 
+											</td>
+
+											
+								</tr>
+								<tr>
+									<td colspan="5"><rich:spacer height="8px"></rich:spacer></td>
+
+								</tr>
+
+								<tr>
+									<td><h:outputText value="#{messages.lbl_valorUnico_ens}:"
+											styleClass="normalText" />
+											<td><rich:spacer width="25px"></rich:spacer></td></td>
+											
+											<td><h:outputText value="#{messages.lbl_valorCritica_ens}:"
+											styleClass="normalText" /></td>
+										</tr>
+								<tr>
+								 <td><h:selectBooleanCheckbox
+								 value="#{crearHojaCrd.variable.unica}" /></td>
+								 <td><rich:spacer width="25px"></rich:spacer></td>
+								 
+								 <td><h:selectBooleanCheckbox
+								 value="#{crearHojaCrd.variable.critica}" /></td>
+								</tr>
+								
+                      </table>
+
+						</a4j:outputPanel>
+						<div align="right">
+
+							<a4j:commandButton id="addVariableBtn"
+								action="#{crearHojaCrd.adicionarVariable()}"
+								reRender="tablas_variables, datos_variable"
+								value="#{messages.btn_add_ens}" style="margin-right:10px"
+								oncomplete="hideErrorSpansVariable();validarCamposVaciosVar();">
+							</a4j:commandButton>
+						</div>
+						<a4j:outputPanel id="tablas_variables">
+							<rich:panel styleClass="whitespace"
+								rendered="#{crearHojaCrd.variables.size() == 0}">
+								<f:facet name="header">#{messages.lbl_listadoVariables_ens}</f:facet>
+
+								<div class="results" id="roleList">
+									<h:outputText value="#{messages.msg_listaVacia_ens}" />
+								</div>
+
+							</rich:panel>
+							<s:div style="margin-left:1px;margin-top:1px"
+								rendered="#{crearHojaCrd.variables.size() > 0}">
+								<rich:dataTable id="tabla_listado_variables"
+									style="width: 100%;" var="variable"
+									value="#{crearHojaCrd.variables}"
+									columnsWidth="40%, 30%, 30%, 0*">
+									<f:facet name="header">
+										<div>#{messages.lbl_listadoVariables_ens}</div>
+									</f:facet>
+
+									<h:column>
+										<f:facet name="header">
+											<h:panelGrid columns="2"
+												style="width: 100%; padding:0px; margin:0px;" border="0"
+												cellpadding="0" cellspacing="0">
+												<s:div style="float: left;">#{messages.lbl_nombrevar_ens}</s:div>
+												<s:div style="text-align: right; padding-left:3px;"></s:div>
+											</h:panelGrid>
+										</f:facet>
+	            			#{variable.nombreVariable}
+	        			</h:column>
+
+									<h:column>
+										<f:facet name="header">
+											<h:panelGrid columns="2"
+												style="width: 100%; padding:0px; margin:0px;" border="0"
+												cellpadding="0" cellspacing="0">
+												<s:div style="float: left;">#{messages.lbl_descripcion_ens}</s:div>
+												<s:div style="text-align: right; padding-left:3px;"></s:div>
+											</h:panelGrid>
+										</f:facet>
+	            			#{variable.descripcionVariable}
+	        			</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:panelGrid columns="2"
+												style="width: 100%; padding:0px; margin:0px;" border="0"
+												cellpadding="0" cellspacing="0">
+												<s:div style="float: left;">#{messages.lbl_seccionVariable_ens}</s:div>
+												<s:div style="text-align: right; padding-left:3px;"></s:div>
+											</h:panelGrid>
+										</f:facet>
+	            			#{variable.seccion.etiquetaSeccion}
+	        			</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:panelGrid columns="2"
+												style="width: 100%; padding:0px; margin:0px;" border="0"
+												cellpadding="0" cellspacing="0">
+												<s:div style="float: left;">#{messages.lbl_grupoVariable_ens}</s:div>
+												<s:div style="text-align: right; padding-left:3px;"></s:div>
+											</h:panelGrid>
+										</f:facet>
+										<h:outputText value="#{variable.grupoVariables.etiquetaGrupo}"
+											rendered="#{variable.grupoVariables!=null}" />
+										<h:outputText value="-"
+											rendered="#{variable.grupoVariables ==null}" />
+
+									</h:column>
+
+									<h:column>
+										<div align="center">
+											<a4j:commandLink
+												action="#{crearHojaCrd.modificarVariable(variable)}"
+												reRender="tablas_variables, datos_variable">
+												<h:graphicImage title="#{messages.lbl_modificar_ens}"
+													style="border: 0px;"
+													value="/resources/icons/default/acciones/modificar.png" />
+											</a4j:commandLink>
+										</div>
+									</h:column>
+
+									<h:column>
+										<div align="center">
+											<a4j:commandLink
+												action="#{crearHojaCrd.eliminarVariable(variable)}"
+												reRender="tablas_variables">
+												<h:graphicImage title="#{messages.lbl_eliminar_ens}"
+													style="border: 0px; cursor:pointer;"
+													value="/resources/icons/default/acciones/eliminar.png">
+
+												</h:graphicImage>
+											</a4j:commandLink>
+										</div>
+									</h:column>
+								</rich:dataTable>
+							</s:div>
+
+
+
+
+						</a4j:outputPanel>
+					</rich:tab>
+				</rich:tabPanel>
+
+			</rich:panel>
+			<s:div>
+				<div align="right">
+					<rich:spacer width="100%" height="8px" />
+				</div>
+			</s:div>
+			<div align="right">
+
+				<a4j:commandButton id="aceptarBtn"
+					onclick="hideErrorSpans(); validarCamposVacios();"
+					action="#{crearHojaCrd.insertarHojaCrd()}"
+					value="#{messages.btn_aceptar_ens}">
+				</a4j:commandButton>
+				<rich:spacer width="10px" />
+				<a4j:commandButton action="cancelar" immediate="true"
+					value="#{messages.btn_cancelar_ens}" tabindex="4"
+					style="margin-right:0px;margin-bottom:  0px; margin-top: 0px;">
+
+				</a4j:commandButton>
+
+			</div>
+
+		</h:form>
+
+	</s:div>
+</s:div>

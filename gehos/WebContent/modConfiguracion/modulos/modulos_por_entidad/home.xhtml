@@ -1,0 +1,778 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:a="http://richfaces.org/a4j" template="#{theme.template}"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+<ui:define name="body">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle("#{messages.modPorEntidad}")</script>
+	<style type="text/css">
+	.rich-stglpanel-body {
+		padding: 0px
+	}
+	</style>
+	<style type="text/css">
+	.rich-panel-body {
+		padding: 0px
+	}
+	</style>
+	<style>
+	.functpanelbody {
+		padding: 0px;
+	}
+	.functpanelbody2 {
+		padding: 5px;
+	}
+	.dr-tree-h-text {
+		padding: 0px !important;
+	}
+	.dr-mpnl-pnl-b{
+		padding:1px; 
+	}
+	.dr-mpnl-pnl{
+   		border: 1px !important; 
+   		border-style :solid !important; 
+   		border-color: #BED6F8 !important;
+	}
+	</style>
+	<style>
+		.functpanelbody {
+			padding: 0px;
+		}
+		.functpanelbody2 {
+			padding: 5px;
+		}
+		
+		.iconcell,.labelcell {
+			padding: 0px;
+			border: 1px;
+		}
+		.strech {
+			width: 99%;
+		}
+		.strech50 {
+			width: 50%;
+		}
+		.nostrech {
+			width: 1%;
+		}
+		.custom-error {
+			border: 1px solid #FFCC00;
+			padding: 5px;
+			background-color: #F0F8FF;
+			font-size: 10px;
+			font-family: "Verdana";
+			position: relative;	left: 5px; top: 5px; 
+			margin-right: 10px;
+		}	
+		
+		.dr-spnr-e{
+			width: 134px;
+		}
+		</style>
+
+		<script type="text/javascript">
+		function cambiaColor(chk){
+			if(chk.parentNode.parentNode.style.backgroundColor == "#f0f0f0"
+				|| chk.parentNode.parentNode.style.backgroundColor == "rgb(240, 240, 240)" )
+				chk.parentNode.parentNode.style.backgroundColor = "#ffffff";
+			else 
+				chk.parentNode.parentNode.style.backgroundColor = "#f0f0f0";
+		}
+		function marcarODesmarcarTodos(id, checked){
+			var inputs = document.getElementsByTagName("input");
+			for (var i = 0; i != inputs.length; i++) { 
+			    name = inputs[i].getAttribute("id"); 
+			    disable = inputs[i].getAttribute("disabled");
+			    if(disable != "disabled"){ 
+				    if (name != null) {
+					    if(name.match(id) != null) { 
+						    if(inputs[i].checked != checked){
+				    			inputs[i].checked = checked;
+				    			cambiaColor(inputs[i]);
+						    }
+					    } 
+				    }
+			    }
+			}
+		}
+	</script>
+
+	<rich:hotKey key="esc" handler="subir()"/>
+	
+	<a:form>
+		<a:jsFunction name="subir" ajaxSingle="true" status="funcSelectedStatus" 
+			action="#{modulosPorEntidadManager.subir()}"></a:jsFunction>
+	</a:form>
+	
+	<h:form id="ubicacionesForm">
+
+			<a:outputPanel ajaxRendered="true" id="errorOutputPanel">
+				<s:div style="height:30px;width:100%"
+					rendered="#{facesMessages.getCurrentMessagesForControl('error').size() > 0 }">
+					<div class="custom-error">
+						<rich:message for="error"></rich:message>
+					</div>	
+				</s:div>
+			</a:outputPanel>
+
+			<a:keepAlive beanName="modulosPorEntidadManager" />
+
+			<table width="100%" cellpadding="5px" cellspacing="0px"
+				style="vertical-align: top;">
+				<tr>
+
+					<td style="vertical-align: top; width: 45%;"><rich:panel
+						bodyClass="functpanelbody2" id="error">
+						<f:facet name="header">
+							<a:status stopText="#{messages.modPorEntidad}" for="functsstree"
+								startText="Actualizando..." id="funcstatus"
+								onstart="document.body.style.cursor='wait'; Richfaces.showModalPanel('ajaxLoadingModalBox',{left:1, top:-15});"
+								onstop="document.body.style.cursor='default'; Richfaces.hideModalPanel('ajaxLoadingModalBox');">
+							</a:status>
+						</f:facet>
+						<div style="border: 1px; position: relative; left: -1px; top: 2px;">  
+						    <a:region id="functsstree">
+							<a:outputPanel ajaxRendered="true">
+
+								<rich:dragIndicator id="treeDragIndicator">
+									<f:facet name="single">
+										<h:panelGrid columns="2">
+											<h:graphicImage styleClass="indicatorPicture" value="/{iconname}" 
+												height="45" />
+											<h:outputLabel value="{label}" />
+										</h:panelGrid>
+									</f:facet>
+								</rich:dragIndicator>
+
+								<s:div style="margin-left:2px;">
+									<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+										<h:graphicImage
+											value="/resources/modConfiguracion/hospital-icon.png"
+											height="16" />
+										<a:commandLink
+											action="#{modulosPorEntidadManager.setSelectedItem(null, null)}"
+											value="#{messages.entidades}" style="margin-left:1px;"
+											status="funcSelectedStatus" ajaxSingle="true"
+											reRender="settingsdiv" />
+									</h:panelGrid>
+								</s:div>
+								<div style="position: relative; left: 1px;">
+								<rich:tree
+									changeExpandListener="#{modulosPorEntidadManager.treeBuilder.OnNodeCollapseExpand}"
+									value="#{modulosPorEntidadManager.treeBuilder.treeData}"
+									switchType="ajax" preserveModel="state"
+									preserveDataInRequest="true" treeNodeVar="treenode"
+									dragIndicator="treeDragIndicator" style="width:200px" 
+									nodeFace="#{node.toString()}" var="node" id="functree"
+									dropListener="#{modulosPorEntidadManager.processDrop}"
+									componentState="#{treeStateController.modulosPorEntidadTreeState}">
+
+									<rich:treeNode type="entidad" acceptedTypes="modulofisico"
+										icon="#{modulosPorEntidadManager.entidadIcon(node)}"
+										iconLeaf="#{modulosPorEntidadManager.entidadIcon(node)}" >
+										<a:commandLink value="#{node.value.nombre}"
+											status="funcSelectedStatus" ajaxSingle="true"
+											immediate="true" event="onclick"
+											action="#{modulosPorEntidadManager.setSelectedItem(node, treenode)}"
+											reRender="errorOutputPanel, settingsdiv, detailspanelheader, modalpanelsdiv">
+										</a:commandLink>
+									</rich:treeNode>
+
+									<rich:treeNode type="modulo-padre" 
+										icon="/modCommons/modSelector/#{theme.name}/themes/#{theme.color}/images/icons/bg.png"
+										iconLeaf="/modCommons/modSelector/#{theme.name}/themes/#{theme.color}/images/icons/bg.png">
+										<div style="left:-16px; position: relative; top: 2px;">
+											<c:set var="conc"
+												value="/resources/modCommon/moduleimages/#{theme.name}/#{node.value.imagen}"></c:set>
+											<c:set var="existeicon" value="#{viewSelectorBuilder.existFile(conc)}"></c:set>
+											<h:graphicImage value="#{conc}" 
+												height="16" style="left:-1px; position: relative;"
+												rendered="#{existeicon}"/>
+											<h:graphicImage value="/resources/modCommon/moduleimages/#{theme.name}/generic.png" 
+												height="16" style="left:-1px; position: relative;"
+												rendered="#{not existeicon}"/>
+											<a:commandLink value="#{node.value.label}"
+												rendered="#{node.moduloUnico == false}"
+												style="position: relative; top: -4px; left: 1px;"
+												status="funcSelectedStatus" ajaxSingle="true"
+												immediate="true" event="onclick"
+												action="#{modulosPorEntidadManager.setSelectedItem(node, treenode, false)}"
+												reRender="errorOutputPanel, settingsdiv, detailspanelheader, modalpanelsdiv">
+											</a:commandLink>
+										</div>	
+									</rich:treeNode>
+
+									<rich:treeNode type="modulo-fisico" dragType="modulofisico"
+										icon="/modCommons/modSelector/#{theme.name}/themes/#{theme.color}/images/icons/bg.png"
+										iconLeaf="/modCommons/modSelector/#{theme.name}/themes/#{theme.color}/images/icons/bg.png">
+										<div style="left:-16px; position: relative; top: 2px;">
+											<c:set var="conc"
+												value="/resources/modCommon/moduleimages/#{theme.name}/#{node.value.imagen}"></c:set>
+											<c:set var="existeicon" value="#{viewSelectorBuilder.existFile(conc)}"></c:set>
+											<h:graphicImage value="#{conc}" 
+												height="16" style="left:-1px; position: relative;"
+												rendered="#{existeicon}"/>
+											<h:graphicImage value="/resources/modCommon/moduleimages/#{theme.name}/generic.png" 
+												height="16" style="left:-1px; position: relative;"
+												rendered="#{not existeicon}"/>
+											<a:commandLink value="#{node.value.label}"
+												rendered="#{node.moduloUnico == false}"
+												style="position: relative; top: -4px; left: 1px;"
+												status="funcSelectedStatus" ajaxSingle="true"
+												immediate="true" event="onclick"
+												action="#{modulosPorEntidadManager.setSelectedItem(node, treenode, false)}"
+												reRender="errorOutputPanel, settingsdiv, detailspanelheader, modalpanelsdiv">
+											</a:commandLink>
+											<a:commandLink value="#{node.value.funcionalidadPadre.funcionalidadPadre.label}"
+												rendered="#{node.moduloUnico == true}"
+												style="position: relative; top: -4px; left: 1px;"
+												status="funcSelectedStatus" ajaxSingle="true"
+												immediate="true" event="onclick"
+												action="#{modulosPorEntidadManager.setSelectedItem(node, treenode, true)}"
+												reRender="errorOutputPanel, settingsdiv, detailspanelheader, modalpanelsdiv">
+											</a:commandLink>
+										</div>	
+										<rich:dndParam name="label" type="drag" value="#{node.value.label}" />
+										<rich:dndParam name="iconname" type="drag" value="resources/modCommon/moduleimages/#{theme.name}/#{theme.color}/#{node.value.imagen}" />	
+									</rich:treeNode>
+								</rich:tree>
+								</div>
+							</a:outputPanel>
+						</a:region></div>
+					</rich:panel></td>
+
+					<td style="vertical-align: top; width: 55%;"><a:region>
+						<a:outputPanel ajaxRendered="true">
+							<rich:panel bodyClass="functpanelbody" id="childfuncspanel"
+								rendered="true">
+								<f:facet name="header">
+									<s:div id="detailspanelheader" >
+										<a:status 
+											id="funcstatus2"
+											onstart="document.body.style.cursor='wait'; Richfaces.showModalPanel('ajaxLoadingModalBox',{left:1, top:-15});"
+											onstop="document.body.style.cursor='default'; Richfaces.hideModalPanel('ajaxLoadingModalBox');">
+										</a:status>
+										<s:div rendered="#{modulosPorEntidadManager.selectedItem == null}">
+											Entidades
+										</s:div>
+										<s:div rendered="#{modulosPorEntidadManager.selectedItem.toString() == 'entidad'}">
+											<h:panelGrid columns="3" cellpadding="0" cellspacing="0">
+												<h:graphicImage
+													value="#{modulosPorEntidadManager.entidadIcon(modulosPorEntidadManager.selectedItem)}"
+													height="16" width="16" />
+												<rich:spacer width="3"/>	
+												<h:outputLabel 
+													value="#{modulosPorEntidadManager.selectedItem.value.nombre}" />
+											</h:panelGrid> 
+										</s:div>
+										<s:div rendered="#{modulosPorEntidadManager.selectedItem.toString() == 'modulo-padre'
+													or modulosPorEntidadManager.selectedItem.toString() == 'modulo-fisico' }" >
+											<h:panelGrid columns="2" cellpadding="0" cellspacing="0" 
+												style="width: 100%; " 
+												columnClasses="strech, nostrech">
+												<h:panelGrid columns="4" cellpadding="0" cellspacing="0" >
+													<h:graphicImage 
+														value="/modCommons/modSelector/#{theme.name}/themes/#{theme.color}/images/icons/bg.png"
+														height="16" width="16" />
+													<c:set var="conc"
+														value="/resources/modCommon/moduleimages/#{theme.name}/#{modulosPorEntidadManager.selectedItem.value.imagen}"></c:set>
+													<c:set var="existeicon" value="#{viewSelectorBuilder.existFile(conc)}"></c:set>
+													<h:graphicImage value="#{conc}" 
+														height="16" style="left:-16px; position: relative;"
+														rendered="#{existeicon}"/>
+													<h:graphicImage value="/resources/modCommon/moduleimages/#{theme.name}/generic.png" 
+														height="16" style="left:-16px; position: relative;"
+														rendered="#{not existeicon}"/>
+													<rich:spacer width="3"/>	
+													<h:outputLabel  style="left:-16px; position: relative;"
+														value="#{modulosPorEntidadManager.selectedItem.value.label}" />
+												</h:panelGrid>	
+												<s:div rendered="#{modulosPorEntidadManager.selectedItem.value.moduloFisico == true and !modulosPorEntidadManager.moduleService}">
+												<div align="right">
+													<h:graphicImage title="Modificar" style="border: 0px; cursor: pointer;" 
+														value="/resources/icons/default/acciones/modificar.png">
+														<a:support event="onclick" reRender="editar_modulo"
+															oncomplete="javascript:Richfaces.showModalPanel('editar_modulo')"/>
+					                   				</h:graphicImage>
+												</div>
+												</s:div>	
+												<s:div rendered="#{modulosPorEntidadManager.selectedItem.value.moduloFisico == true and modulosPorEntidadManager.moduleService}">
+												<div align="right">
+													<h:graphicImage title="Modificar" style="border: 0px; cursor: pointer;" 
+														value="/resources/icons/default/acciones/modificar.png">
+														<a:support event="onclick" reRender="editar_modulo_servicio"
+															oncomplete="javascript:Richfaces.showModalPanel('editar_modulo_servicio')"/>
+					                   				</h:graphicImage>
+												</div>
+												</s:div>
+											</h:panelGrid>
+										</s:div>
+									</s:div>
+								</f:facet>
+
+							<a:status id="funcSelectedStatus" forceId="true" 
+								  onstart="Richfaces.showModalPanel('ajaxLoadingModalBox',{left:1, top:-15});
+								  		   javascript:document.getElementById('ubicacionesForm:settsdiv').style.display = 'none';
+								  		   javascript:document.getElementById('ubicacionesForm:loadingdiv').style.display = ''"
+								  onstop="Richfaces.hideModalPanel('ajaxLoadingModalBox');
+								  		  javascript:document.getElementById('ubicacionesForm:loadingdiv').style.display = 'none';
+								  		  javascript:document.getElementById('ubicacionesForm:settsdiv').style.display = ''">
+							  <f:facet name="start">
+							  </f:facet>
+						    </a:status>
+						    <s:div id="loadingdiv" style="text-align: center; width: 100%; display:none;">
+							  <br/><br/>
+								 <h:graphicImage url="/resources/icons/default/acciones/loading_small.gif" />
+							  <br/><br/><br/>	 
+							</s:div>	 
+							<s:div id="settsdiv">
+								<s:div id="settingsdiv" style="display: inline;">
+								  <s:div
+									rendered="#{modulosPorEntidadManager.selectedItem == null}">
+									<div align="right">
+										<h:panelGrid columns="2" rendered="false" 
+											cellpadding="0" cellspacing="0">
+											<a:status id="crearmodulosfisicosstatus" forceId="true">
+												<f:facet name="stop">
+													<h:graphicImage height="12" width="12"
+														value="/resources/icons/default/acciones/adicionar.png" 
+														style="margin: 2px 2px 2px 2px; cursor: pointer;" >
+														<a:support event="onclick" 
+															action="#{modulosPorEntidadManager.crearModulosFisicamente()}" 
+															status="crearmodulosfisicosstatus" />
+													</h:graphicImage>
+												</f:facet>
+												<f:facet name="start">
+													<h:graphicImage
+														url="/resources/icons/default/acciones/loading_small.gif" />
+												</f:facet>
+											</a:status>
+											<a:commandLink action="#{modulosPorEntidadManager.crearModulosFisicamente()}" 
+												value="Crear módulos físicamente" rendered="false"  
+												status="crearmodulosfisicosstatus" />
+										</h:panelGrid>
+									</div>												
+									</s:div>
+									<s:div rendered="#{modulosPorEntidadManager.selectedItem == null}" id="entidadestable">
+										<h:dataTable value="#{modulosPorEntidadManager.entidades()}" 
+											var="entidad" border="1" columnClasses="strech, nostrech"
+											style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+											cellspacing="0" cellpadding="0"
+											rowClasses="dr-table-firstrow2">											
+											<h:column>
+												<f:facet name="header">
+													<div style="background-color: ##{theme.headercolor}; cursor: default;">Nombre</div>
+												</f:facet>
+												<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+													<h:graphicImage
+														value="#{modulosPorEntidadManager.entidadIcon(entidad)}"
+														height="16" width="16" 
+														style="padding: 2px 2px 2px 2px" />
+													<a:commandLink 
+														ajaxSingle="true"
+														reRender="settingsdiv, detailspanelheader" limitToList="true"
+														value="#{entidad.nombre}" status="funcSelectedStatus"
+														action="#{modulosPorEntidadManager.setSelectedItem(entidad.id)}"
+														style="color: ##{theme.linkscolor}; position:relative; left:-1px;" />
+
+												</h:panelGrid>
+											</h:column>
+											<h:column>
+												<f:facet name="header">
+													<div style="background-color: ##{theme.headercolor}; cursor: default;">
+														<span style=" margin-left:2px; margin-right:2px; ">Visible</span>
+													</div>
+												</f:facet>
+												<div align="center">
+													<a:commandLink
+														status="funcstatus2" rendered="#{not entidad.eliminado}"
+														ajaxSingle="true" limitToList="true" reRender="entidadestable"
+														action="#{modulosPorEntidadManager.cambiarVisibilidadDeEntidad(entidad.id)}">
+														<h:graphicImage
+															value="/resources/modConfiguracion/visible.png" width="14"
+															height="14" style="border:0px;"
+															title="Cambiar visibilidad" />
+													</a:commandLink> 
+													<a:commandLink status="funcstatus2" limitToList="true" reRender="entidadestable"
+														rendered="#{entidad.eliminado}" ajaxSingle="true"
+														action="#{modulosPorEntidadManager.cambiarVisibilidadDeEntidad(entidad.id)}" >
+														<h:graphicImage
+															value="/resources/modConfiguracion/not-visible.png"
+															width="14" height="14" style="border:0px;"
+															title="Cambiar visibilidad" />
+													</a:commandLink>
+												</div>
+											</h:column>
+										</h:dataTable>
+									
+									</s:div>
+
+									<s:div
+										rendered="#{modulosPorEntidadManager.selectedItem.toString() == 'entidad'}">
+										<div align="right">										
+											<h:panelGrid columns="2"
+												cellpadding="0" cellspacing="0">
+												<h:graphicImage height="12" width="12"
+													value="/resources/icons/default/acciones/adicionar.png" 
+													style="margin: 2px 2px 2px 2px;"/>
+												<h:outputLink value="#"
+													style="margin-left: 0px; margin-bottom: 4px; margin-top: 2px;">
+													Adicionar módulo
+													<a:support event="onclick" limitToList="true"
+														ajaxSingle="true"
+														reRender="agregar_modulo_panel"
+														oncomplete="javascript:Richfaces.showModalPanel('agregar_modulo', {width: '166px', height: '96px', 'departamento': '#{departamentosYServiciosManager.selectedItem.value.nombre}' } )" />
+												</h:outputLink>
+											</h:panelGrid>
+										</div>	
+									</s:div>
+
+									<s:div
+										rendered="#{modulosPorEntidadManager.selectedItem.toString().equals('entidad')}"
+										id="modulostable">
+										<h:dataTable value="#{modulosPorEntidadManager.modulos()}"
+											var="module" border="1" columnClasses="strech, nostrech"
+											style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+											cellspacing="0" cellpadding="0" 
+											rowClasses="dr-table-firstrow2">
+											<f:facet name="header">
+												<div style="background-color: ##{theme.headercolor}; cursor: default;">Módulos</div>
+											</f:facet>
+											<h:column rendered="#{modulosPorEntidadManager.modulos().size() != 0}">
+												<f:facet name="header">
+													<div style="background-color: ##{theme.headercolor}; cursor: default;">Nombre</div>
+												</f:facet>
+												<h:panelGrid columns="4" cellpadding="0" cellspacing="0">
+													<c:set var="conc"
+														value="/resources/modCommon/moduleimages/#{theme.name}/#{module.imagen}"></c:set>
+													<c:set var="existeicon" value="#{viewSelectorBuilder.existFile(conc)}"></c:set>
+													<h:graphicImage value="/modCommons/modSelector/#{theme.name}/themes/#{theme.color}/images/icons/bg.png"
+														height="16" style="margin:2px 2px 2px 2px ;"/>
+													<h:graphicImage value="#{conc}" 
+														height="16" style="left:-20px; position: relative; margin:2px 2px 2px 2px ;"
+														rendered="#{existeicon}"/>
+													<h:graphicImage value="/resources/modCommon/moduleimages/#{theme.name}/generic.png" 
+														height="16" style="left:-20px; position: relative;  margin:2px 2px 2px 2px ;"
+														rendered="#{not existeicon}"/>
+												
+													<a:commandLink rendered="#{not module.moduloFisico}"
+														ajaxSingle="true"
+														reRender="errorOutputPanel, settingsdiv, detailspanelheader" limitToList="true"
+														value="#{module.label}" status="funcSelectedStatus"
+														action="#{modulosPorEntidadManager.setSelectedItem(module, module.moduloFisico)}"
+														style="margin-left: 1px; color: ##{theme.linkscolor}; left:-20px; position: relative;" />
+													<s:div rendered="#{module.moduloFisico}" >	
+														<a:commandLink 
+															ajaxSingle="true"
+															rendered="true" 
+															reRender="settingsdiv, detailspanelheader, editar_modulo, editar_modulo_servicio" limitToList="true"
+															value="#{module.funcionalidadPadre.funcionalidadPadre.label}" 
+															status="funcSelectedStatus"
+															action="#{modulosPorEntidadManager.setSelectedItem(module, module.moduloFisico)}"
+															style="margin-left: 1px; color: ##{theme.linkscolor}; left:-20px; position: relative;" />
+														<s:div rendered="false">
+														<a:commandLink 
+															ajaxSingle="true"
+															rendered="#{modulosPorEntidadManager.moduloTieneDirectorio(module) == false}" 
+															reRender="settingsdiv, detailspanelheader, errorOutputPanel" limitToList="true"
+															value="#{module.funcionalidadPadre.funcionalidadPadre.label}" 
+															status="funcSelectedStatus"
+															action="#{modulosPorEntidadManager.crearSubModuloFisicamente(module.id)}"
+															style="margin-left: 1px; color: ##{theme.linkscolor}; font-style: italic; left:-20px; position: relative;" />
+														</s:div>	
+														</s:div>	
+														
+												</h:panelGrid>
+											</h:column>
+											<h:column rendered="#{modulosPorEntidadManager.modulos().size() != 0}">
+												<f:facet name="header">
+													<div style="background-color: ##{theme.headercolor};">
+														<span style=" margin-left:2px; margin-right:2px; ">Eliminar</span>
+													</div>
+												</f:facet>
+												<div align="center" style=" cursor: default;">
+												<a:commandLink rendered="true"
+													disabled="#{not module.moduloFisico}"
+													action="#{modulosPorEntidadManager.setModuloIdToRemove(module.id.toString())}"
+													oncomplete="Richfaces.showModalPanel('eliminar_modulo_fisico_panel')"
+													view="/modConfiguracion/modulos/modulos_por_entidad/home.xhtml">
+													<h:graphicImage style="border:0px; cursor: pointer"
+														title="Eliminar" rendered="#{module.moduloFisico == true}"
+														url="/resources/icons/default/acciones/eliminar.png">
+													</h:graphicImage>
+													<h:graphicImage style="border:0px; cursor: default; opacity: 0.6;"
+														title="" rendered="#{module.moduloFisico == false}"
+														url="/resources/icons/default/acciones/eliminar.png">
+													</h:graphicImage>
+												</a:commandLink>
+												</div>
+											</h:column>
+											<h:column rendered="#{modulosPorEntidadManager.modulos().size() != 0}">
+												<f:facet name="header">
+													<div style="background-color: ##{theme.headercolor}; cursor: default;">
+														<span style=" margin-left:2px; margin-right:2px; ">Visible</span>
+													</div>
+												</f:facet>
+												<div align="center">
+												  <a:commandLink reRender="modulostable"
+													status="funcstatus2" rendered="#{not module.eliminado}"
+													ajaxSingle="true"
+													action="#{modulosPorEntidadManager.cambiarVisibilidadDeModulo(module.id)}">
+													<h:graphicImage
+														value="/resources/modConfiguracion/visible.png" width="14"
+														height="14" style="border:0px;"
+														title="Cambiar visibilidad" />
+												  </a:commandLink> 
+												  <a:commandLink status="funcstatus2" reRender="modulostable"
+													rendered="#{module.eliminado}" ajaxSingle="true"
+													action="#{modulosPorEntidadManager.cambiarVisibilidadDeModulo(module.id)}">
+													<h:graphicImage
+														value="/resources/modConfiguracion/not-visible.png"
+														width="14" height="14" style="border:0px;"
+														title="Cambiar visibilidad" />
+												  </a:commandLink>
+												 </div>
+											</h:column>
+										</h:dataTable>
+										<s:div style="border-left: 1px solid #d0d7e5;
+													  border-right: 1px solid #d0d7e5;
+													  border-bottom: 1px solid #d0d7e5;"
+											rendered="#{modulosPorEntidadManager.modulos().size() == 0}">
+											<rich:spacer height="10" style="display:block"/>
+											<h:outputLabel value="No existe información a mostrar." 
+											 	style="margin-left:7px;" />
+											<rich:spacer height="5" style="display:block"/>
+										</s:div>
+									</s:div>
+									
+									<s:div
+										rendered="#{modulosPorEntidadManager.selectedItem.toString() == 'modulo-padre' }">
+										<div align="right">
+											<h:panelGrid columns="2"
+												cellpadding="0" cellspacing="0">
+												<h:graphicImage height="12" width="12"
+													value="/resources/icons/default/acciones/adicionar.png" 
+													style="margin: 2px 2px 2px 2px;"/>
+												<h:outputLink value="#" 
+													style="margin-left: 0px; margin-bottom: 4px; margin-top: 2px;" >
+													Adicionar módulo de este tipo
+													<a:support event="onclick" 
+														limitToList="true" ajaxSingle="true"
+													  	reRender="agregar_modulo_de_tipo_panel"
+													  	action="#{modulosPorEntidadManager.setSelectedModule(modulosPorEntidadManager.selectedItem.value.label)}"
+													  	oncomplete="javascript:Richfaces.showModalPanel('agregar_modulo_de_tipo', {width: '166px', height: '96px'})" />
+												</h:outputLink>
+											</h:panelGrid>
+										</div>
+									</s:div>
+									
+								    <s:div
+									  rendered="#{modulosPorEntidadManager.selectedItem.toString().equals('modulo-fisico')
+									  				or modulosPorEntidadManager.selectedItem.toString().equals('modulo-padre') }">
+									  <s:div rendered="#{modulosPorEntidadManager.selectedItem.value.moduloFisico == true}">
+									  	<rich:spacer height="10" style="display:block"/>
+									  	<table cellpadding="0px" cellspacing="0px" >	
+									  		<tr style="vertical-align: top;" valign="top">
+												<td style="width: 6px;"></td>
+												<td>
+									                <h:outputLabel value="Label:"></h:outputLabel>
+									                <rich:spacer height="2" style="display:block"></rich:spacer>
+										           	<h:outputLabel value="Descripción:"></h:outputLabel>
+												</td>
+												<td>
+													<div style="padding-left: 6px;">
+														<h:outputLabel value="#{modulosPorEntidadManager.selectedItem.value.label}"></h:outputLabel>
+										                <rich:spacer height="2" style="display:block"></rich:spacer>
+														<h:outputLabel value="#{modulosPorEntidadManager.selectedItem.value.descripcion}"></h:outputLabel>
+									                </div>
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 6px;"></td>
+												<td>
+										           	<s:div rendered="#{modulosPorEntidadManager.moduleService}">
+										           		<rich:spacer height="2" style="display:block"></rich:spacer>
+										           		<h:outputLabel value="Servicio:"></h:outputLabel>
+										           	</s:div>
+												</td>
+												<td>
+													<div style="padding-left: 6px;">
+									                	<s:div rendered="#{modulosPorEntidadManager.moduleService}">
+									                		<rich:spacer height="2" style="display:block"></rich:spacer>
+									                		<h:outputLabel value="#{modulosPorEntidadManager.servicioSelected.equals('') ? '-':modulosPorEntidadManager.servicioSelected}" />
+									                	</s:div>
+									                </div>
+												</td>
+											</tr>
+										</table>
+										<rich:spacer height="6" style="display:block"/>
+									  </s:div>
+									  <s:div rendered="#{modulosPorEntidadManager.selectedItem.value.moduloFisico == false}"
+									  	  id="submodulostable">
+										  <h:dataTable value="#{modulosPorEntidadManager.modulosDelTipoSeleccionado()}"
+											var="module" border="1" columnClasses="strech50, strech50, nostrech, nostrech"
+											style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+											cellspacing="0" cellpadding="0"
+											rowClasses="dr-table-firstrow2">
+											<f:facet name="header">
+												<div style="background-color: ##{theme.headercolor}; cursor: default;">Módulos</div>
+											</f:facet>
+											<h:column rendered="#{modulosPorEntidadManager.modulosDelTipoSeleccionado().size() != 0}">
+												<f:facet name="header">
+													<div style="background-color: ##{theme.headercolor}; cursor: default;">Nombre</div>
+												</f:facet>
+												<h:panelGrid columns="3" cellpadding="0" cellspacing="0" >
+													<c:set var="conc"
+														value="/resources/modCommon/moduleimages/#{theme.name}/#{module.imagen}"></c:set>
+													<c:set var="existeicon" value="#{viewSelectorBuilder.existFile(conc)}"></c:set>
+													<h:graphicImage value="/modCommons/modSelector/#{theme.name}/themes/#{theme.color}/images/icons/bg.png"
+														height="16" style="margin:2px 2px 2px 2px ;"/>
+													<h:graphicImage value="#{conc}" 
+														height="16" style="left:-20px; position: relative; margin:2px 2px 2px 2px ;"
+														rendered="#{existeicon}"/>
+													<h:graphicImage value="/resources/modCommon/moduleimages/#{theme.name}/generic.png" 
+														height="16" style="left:-20px; position: relative;  margin:2px 2px 2px 2px ;"
+														rendered="#{not existeicon}"/>
+													
+													<a:commandLink 
+														ajaxSingle="true"
+														rendered="true" 
+														reRender="settingsdiv, detailspanelheader, editar_modulo, editar_modulo_servicio" limitToList="true"
+														value="#{module.label}" status="funcSelectedStatus"
+														action="#{modulosPorEntidadManager.setSelectedItem(module, false)}" 
+														style="margin-left: 1px; color: ##{theme.linkscolor}; left:-20px; position: relative;" />
+													<s:div rendered="false">
+													<a:commandLink 
+														ajaxSingle="true"
+														rendered="#{modulosPorEntidadManager.moduloTieneDirectorio(module) == false}" 
+														reRender="settingsdiv, detailspanelheader, errorOutputPanel" limitToList="true"
+														value="#{module.label}" status="funcSelectedStatus"
+														action="#{modulosPorEntidadManager.crearSubModuloFisicamente(module.id)}"
+														style="margin-left: 1px; color: ##{theme.linkscolor}; left:-20px; position: relative; font-style: italic;" />
+													</s:div>	
+												</h:panelGrid>
+											</h:column>
+											<h:column  rendered="#{modulosPorEntidadManager.modulosDelTipoSeleccionado().size() != 0}">
+												<f:facet name="header">
+													<div style="background-color: ##{theme.headercolor}; cursor: default;">Tipo</div>
+												</f:facet>
+												<h:outputLabel value="#{module.funcionalidadPadre.label}" />
+											</h:column>
+											<h:column  rendered="#{modulosPorEntidadManager.modulosDelTipoSeleccionado().size() != 0}">
+												<f:facet name="header">
+													<div style="background-color: ##{theme.headercolor};">
+														<span style=" margin-left:2px; margin-right:2px; ">Eliminar</span>
+													</div>
+												</f:facet>
+												<div align="center">
+												<a:commandLink rendered="true"
+													action="#{modulosPorEntidadManager.setModuloIdToRemove(module.id.toString())}"
+													oncomplete="Richfaces.showModalPanel('eliminar_modulo_fisico_panel')"
+													view="/modConfiguracion/modulos/modulos_por_entidad/home.xhtml">
+													<h:graphicImage style="border:0px; cursor: pointer"
+														title="Eliminar"
+														url="/resources/icons/default/acciones/eliminar.png">
+													</h:graphicImage>
+												</a:commandLink>
+												</div>
+											</h:column>
+											<h:column rendered="#{modulosPorEntidadManager.modulosDelTipoSeleccionado().size() != 0}">
+												<f:facet name="header">
+													<div style="background-color: ##{theme.headercolor}; cursor: default;">
+														<span style=" margin-left:2px; margin-right:2px; ">Visible</span>
+													</div>
+												</f:facet>
+												<div align="center">
+												  <a:commandLink reRender="submodulostable"
+													status="funcstatus2" rendered="#{not module.eliminado}"
+													ajaxSingle="true"
+													action="#{modulosPorEntidadManager.cambiarVisibilidadDeModulo(module.id)}">
+													<h:graphicImage
+														value="/resources/modConfiguracion/visible.png" width="14"
+														height="14" style="border:0px;" title="Cambiar visibilidad" />
+												</a:commandLink> 
+												<a:commandLink status="funcstatus2" reRender="submodulostable"
+													rendered="#{module.eliminado}" ajaxSingle="true"
+													action="#{modulosPorEntidadManager.cambiarVisibilidadDeModulo(module.id)}">
+													<h:graphicImage
+														value="/resources/modConfiguracion/not-visible.png"
+														width="14" height="14" style="border:0px;"
+														title="Cambiar visibilidad" />
+												</a:commandLink></div>
+											</h:column>
+										</h:dataTable>
+										
+										<s:div style="border-left: 1px solid #d0d7e5;
+													  border-right: 1px solid #d0d7e5;
+													  border-bottom: 1px solid #d0d7e5;"
+											rendered="#{modulosPorEntidadManager.modulosDelTipoSeleccionado().size() == 0}">
+											<rich:spacer height="10" style="display:block"/>
+											<h:outputLabel value="No existe información a mostrar." 
+											 	style="margin-left:7px;" />
+											<rich:spacer height="5" style="display:block"/>
+										</s:div>
+										
+									</s:div>
+								 </s:div>
+							  </s:div>	
+							</s:div>  
+							</rich:panel>
+						</a:outputPanel>
+
+						<s:div style="text-align: right;">
+							<rich:spacer height="3" style="display:block"/>
+							<s:button view="/modCommons/modHome/home.gehos" value="Salir"
+								style="margin-right:0px"
+								rendered="#{not identificadorManager.editing}">
+								<f:param name="idFuncionalidad"
+									value="#{activeModule.activeModule.id}" />
+								<f:param name="idancestors"
+									value="#{activeModule.activeModule.id}a" />
+								<f:param name="moduleName"
+									value="#{activeModule.activeModuleName}" />
+							</s:button>
+						</s:div>
+					</a:region></td>
+				</tr>
+			</table>
+
+		</h:form>
+		
+		
+		<s:div id="modalpanelsdiv" >
+	
+			<ui:include src="/modConfiguracion/modulos/modulos_por_entidad/modalpanels/agregar_modulo.xhtml" />
+		
+			<ui:include src="/modConfiguracion/modulos/modulos_por_entidad/modalpanels/agregar_modulo_de_tipo.xhtml" />
+		
+			<ui:include src="/modConfiguracion/modulos/modulos_por_entidad/modalpanels/confirmar_eliminar_modulo_fisico.xhtml" />
+		
+			<ui:include src="/modConfiguracion/modulos/modulos_por_entidad/modalpanels/editar_modulo.xhtml" />
+			
+			<ui:include src="/modConfiguracion/modulos/modulos_por_entidad/modalpanels/editar_modulo_servicio.xhtml" />
+		
+		</s:div>
+
+		<rich:modalPanel id="ajaxLoadingModalBox" minHeight="10" minWidth="10" 
+		        height="10" width="10" zindex="2000">
+		     <s:div rendered="false">  
+		           <img id="favsloadingdiv" 
+		        	src="#{facesContext.externalContext.requestContextPath}/resources/icons/default/acciones/loading_small.gif"
+		        	style="position: absolute; top: 0px; left: 0px;" />
+		     </s:div>  
+		</rich:modalPanel> 	
+
+	</ui:define>
+
+</ui:composition>
+
+
+
+

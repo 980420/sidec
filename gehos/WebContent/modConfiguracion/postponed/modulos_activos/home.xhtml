@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+      xmlns:a4j="http://richfaces.org/a4j"
+      template="#{theme.template}"
+                xmlns:rich="http://richfaces.org/rich">
+                
+<ui:define name="body" >
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('Administrar módulos')</script>
+	<style type="text/css">.rich-stglpanel-body{padding:0px}</style>
+	<style type="text/css">.rich-panel-body{padding:0px}</style>
+	<h:form>
+	<rich:panel >
+		<f:facet name="header">Habilitar o deshabilitar módulos</f:facet>
+		<rich:dataGrid columns="4" value="#{moduloList_configuracion.modulos()}" 
+					var="modulo" id="modulosDatagrid">
+			<table cellpadding="1px" cellspacing="0px" border="0">
+				<tr>
+					<td rowspan="2">
+						<h:graphicImage width="30" height="30" 
+								value="/resources/modCommon/moduleimages/#{theme.name}/#{theme.color}/#{modulo.imagen}" /> 
+					</td>
+					<td width="100%">
+						<table cellpadding="0px" cellspacing="0px" border="0">
+							<tr>
+								<td colspan="2"><h:outputLabel value="#{modulo.label}" /></td>
+							</tr>
+							<tr>
+								<td width="100%">habilitado:</td>
+								<td>
+									<h:selectBooleanCheckbox value="#{modulo.eliminado}" style="margin-bottom: 0px;" >
+									</h:selectBooleanCheckbox>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</rich:dataGrid>
+	</rich:panel>
+	<s:div style="text-align: right">
+		<h:commandButton action="#{moduloList_configuracion.aceptar()}" value="Aceptar" />
+		<s:button value="salir" view="/modConfiguracion/home.xhtml" style="margin-right: 0px;"></s:button>
+	</s:div>
+	
+	</h:form>
+	
+</ui:define>
+
+</ui:composition>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

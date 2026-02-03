@@ -1,0 +1,132 @@
+<!-- CU 32 Visualizar detalles de nota de sitio-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" xmlns:a4j="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle('#{messages.verDetallesSitio}')</script>
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css"
+		rel="stylesheet" type="text/css" />
+
+
+	<table class="Tabla" width="100%" cellpadding="0" cellspacing="0">
+		<tr>
+			<td>
+				<div style="margin-left: 1px">
+					<rich:panel switchType="client">
+						<f:facet name="header">
+							<s:div>
+								<h:outputText value="#{messages.datosGenerales}" />
+
+							</s:div>
+						</f:facet>
+						<table cellpadding="0" cellspacing="0">
+							<tr class="filSepGranRA">
+								<td class="colSepPeq"><h:outputText
+										value="#{messages.nombreVariable}:"
+										style="margin:0px; padding:0px;" /></td>
+								<td class="colSepGran"><h:outputText styleClass="dataText"
+										value="#{(not empty verNotaSitioListado.notaSitio.variable.nombreVariable) ? verNotaSitioListado.notaSitio.variable.nombreVariable : messages.vacio}"
+										style="margin:0px; padding:0px;" /></td>
+								<td class="colSepPeq"><h:outputText
+										value="#{messages.valorVariable}:"
+										style="margin:0px; padding:0px;" /></td>
+								<td class="colSepGran"><h:outputText styleClass="dataText"
+										value="#{verNotaSitioListado.notaSitio.variableDato == null ? (verNotaSitioListado.ObtenerValorVariable() != null ? verNotaSitioListado.ObtenerValorVariable().valor : messages.vacio) : (verNotaSitioListado.notaSitio.variableDato.valor)}"										
+										style="margin:0px; padding:0px;" /></td>
+								<td class="colSepPeq"><h:outputText
+										value="#{messages.idSujetEstudio}:"
+										style="margin:0px; padding:0px;" /></td>
+								<td class="colSepGran"><h:outputText styleClass="dataText"
+										value="#{(not empty verNotaSitioListado.notaSitio.crdEspecifico.momentoSeguimientoEspecifico.sujeto.codigoPaciente) ? verNotaSitioListado.notaSitio.crdEspecifico.momentoSeguimientoEspecifico.sujeto.codigoPaciente : messages.vacio}"
+										style="margin:0px; padding:0px;" /></td>
+							</tr>
+							<tr >
+								<td class="colSepPeq"><h:outputText
+										value="#{messages.crd}:" style="margin:0px; padding:0px;" /></td>
+								<td class="colSepGran"><h:outputText styleClass="dataText"
+										value="#{(not empty verNotaSitioListado.notaSitio.crdEspecifico.hojaCrd.nombreHoja) ? verNotaSitioListado.notaSitio.crdEspecifico.hojaCrd.nombreHoja : messages.vacio}"
+										style="margin:0px; padding:0px;" /></td>
+								<td class="colSepPeq"><h:outputText
+										value="#{messages.mometo}:" style="margin:0px; padding:0px;" /></td>
+								<td class="colSepGran"><h:outputText styleClass="dataText"
+										value="#{(not empty verNotaSitioListado.notaSitio.crdEspecifico.momentoSeguimientoEspecifico.momentoSeguimientoGeneral.nombre) ? verNotaSitioListado.notaSitio.crdEspecifico.momentoSeguimientoEspecifico.momentoSeguimientoGeneral.nombre : messages.vacio}"
+										style="margin:0px; padding:0px;" /></td>
+								<td class="colSepPeq"><h:outputText
+										value="#{messages.fechaMomento}:"
+										style="margin:0px; padding:0px;" /></td>
+								<td class="colSepGran"><h:outputText styleClass="dataText"
+										value="#{(not empty verNotaSitioListado.notaSitio.crdEspecifico.momentoSeguimientoEspecifico.fechaInicio) ? verNotaSitioListado.notaSitio.crdEspecifico.momentoSeguimientoEspecifico.fechaInicio : messages.vacio}"
+										style="margin:0px; padding:0px;">
+										<s:convertDateTime pattern="#{messages.patronFecha}">
+										</s:convertDateTime>
+									</h:outputText></td>
+
+							</tr>
+						</table>
+					</rich:panel>
+
+				</div>
+			</td>
+
+		</tr>
+		<tr>
+			<td><rich:panel style="margin-top: 8px">
+					<f:facet name="header">
+						<h:panelGroup>
+							<div>
+								<div align="left">#{messages.verDetallesSitio}</div>
+							</div>
+						</h:panelGroup>
+					</f:facet>
+					<table cellpadding="0" cellspacing="0">
+						<tr class="filSepGranRA">
+							<td class="colSepPeq"><h:outputText
+									value="#{messages.nombreUsuario}:"
+									style="margin:0px; padding:0px;" /></td>
+							<td class="colSepGran"><h:outputText styleClass="dataText"
+									value="#{(not empty verNotaSitioListado.notaSitio.usuario) ? verNotaSitioListado.notaSitio.usuario.nombre : messages.vacio}"
+									style="margin:0px; padding:0px;" /></td>
+							<td class="colSepPeq"><h:outputText
+									value="#{messages.ultimaActualizacion}:"
+									style="margin:0px; padding:0px;" /></td>
+							<td class="colSepGran"><h:outputText styleClass="dataText"
+									value="#{(not empty verNotaSitioListado.notaSitio.fechaActualizacion) ? verNotaSitioListado.notaSitio.fechaActualizacion : verNotaSitioListado.notaSitio.fechaCreacion}"
+									style="margin:0px; padding:0px;">
+									<s:convertDateTime pattern="#{messages.patronFecha}">
+									</s:convertDateTime>
+								</h:outputText></td>
+							<td class="colSepPeq"><h:outputText
+									value="#{messages.descripcion}:"
+									style="margin:0px; padding:0px;" /></td>
+							<td class="colSepGran"><h:outputText styleClass="dataText"
+									value="#{(not empty verNotaSitioListado.notaSitio.descripcion) ? verNotaSitioListado.notaSitio.descripcion : messages.vacio}"
+									style="margin:0px; padding:0px;" /></td>
+						</tr>
+						<tr >
+							<td class="colSepPeq"><h:outputText
+									value="#{messages.detalles}:" style="margin:0px; padding:0px;" /></td>
+							<td class="colSepGran"><h:outputText styleClass="dataText"
+									value="#{(not empty verNotaSitioListado.notaSitio.detallesNota) ? verNotaSitioListado.notaSitio.detallesNota : messages.vacio}"
+									style="margin:0px; padding:0px;" /></td>
+
+						</tr>
+					</table>
+				</rich:panel></td>
+		</tr>
+		<tr>
+			<td><h:form>
+					<div align="right">
+						<br></br>
+						<h:commandButton value="#{messages.salir}" style="margin:0px;"
+							action="salir" immediate="true" />
+					</div>
+				</h:form></td>
+		</tr>
+
+	</table>
+</ui:composition>

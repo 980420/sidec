@@ -1,0 +1,63 @@
+<!--CU 18 Adicionar MS no programado en el cronograma específico-->
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" xmlns:a4j="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle('#{messages.adicionarMSNP}')</script>
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css"
+		rel="stylesheet" type="text/css" />
+
+	<h:form id="idForm" enctype="multipart/form-data">
+		<a:queue id="cola" ignoreDupResponses="true" />
+		<a:outputPanel id="outPutForm">
+			<s:validateAll>
+				<rich:panel id="Datos" opened="true" switchType="client"
+					>
+					<f:facet name="header">
+						<h:panelGroup>
+							<div>
+								<div align="left">#{messages.seleccioneMom}</div>
+							</div>
+						</h:panelGroup>
+					</f:facet>
+					<a:region id="datosGeneralesRegion">
+						<table class="Tabla" width="100%" cellpadding="0" cellspacing="0">
+							<tr>
+								<td class="colSepGran"><s:label
+										styleClass="#{invalid?'labelErrors':''}"
+										value="#{messages.momentoSeg}:">
+										<rich:message for="tipoM" showDetail="false">
+											<f:facet name="errorMarker">
+												<h:outputText style="color: red;cursor: pointer !important;"
+													title="#{facesMessages.getCurrentMessagesForControl('tipoM').get(0).getDetail()}"
+													value="*" />
+											</f:facet>
+										</rich:message>
+									</s:label><br /> <rich:comboBox
+										suggestionValues="#{crearMSNP.listarMomentos1()}"
+										value="#{crearMSNP.momento}"
+										defaultLabel="#{messages.seleccione}" id="tipoM"
+										required="#{!empty param['idForm:aceptarr'] and crearMSNP.momentosRequired}"
+										width="152px" enableManualInput="false">
+									</rich:comboBox></td>
+							</tr>
+						</table>
+					</a:region>
+				</rich:panel>
+				<div align="right">
+					<br></br>
+					<h:commandButton id="aceptarr" value="#{messages.aceptar}"
+						action="#{crearMSNP.persistir()}" />
+					<rich:spacer width="10" />
+					<h:commandButton value="#{messages.cancelar}" style="margin:0px;"
+						action="cancelar" immediate="true" />
+				</div>
+			</s:validateAll>
+		</a:outputPanel>
+	</h:form>
+</s:div>

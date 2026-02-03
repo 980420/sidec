@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?JbpmExtensions version="2"?>
+
+<process-definition  name="solicitud-almacen">
+	<start-state name="inicio">
+		<transition to="definir-productos-solicitud" name="crear"></transition>
+	</start-state>
+ 
+	<task-node name="definir-productos-solicitud">
+		<task name="definir-productos-solicitud"
+			  description="definir productos, solicitud: #{solicitudId}">
+			<assignment actor-id="root"   />
+		</task>
+		<transition to="crear-adjudicacion-directa" name="enviar"></transition>
+		<transition to="gestionar-solicitud" name="guardar"></transition>
+	</task-node>
+
+	<decision name="crear-licitacion">
+		<handler class="org.jboss.seam.drools.DroolsDecisionHandler">
+			<workingMemoryName>solicitud-almacen-workingMemory-v2</workingMemoryName>
+			<assertObjects>
+				<element>#{dataContextGetter.solicitud}</element>
+				<element>#{dataContextGetter.solicitud.productos}</element>
+			</assertObjects>
+		</handler>
+		<transition to="crear-adjudicacion-directa" name="no"></transition>
+		<transition to="aceptar-solicitud" name="si"></transition>
+	</decision>
+
+	<task-node name="crear-adjudicacion-directa">
+		<task name="crear-adjudicacion-directa"
+			  description="Crear adjudicación directa, solicitud: #{solicitudId}">
+			<assignment actor-id="root"/>
+		</task>
+		<transition to="crear-orden-de-compra"></transition>
+	</task-node>
+
+	<task-node name="gestionar-solicitud">
+		<task name="gestionar-solicitud"
+			  description="Editar productos, solicitud: #{solicitudId}">
+			<assignment actor-id="root"/>
+		</task>
+		
+		<transition to="crear-licitacion" name="enviar"></transition>
+		<transition to="fin" name="eliminar"></transition>
+		<transition to="gestionar-solicitud" name="guardar"></transition>
+	</task-node>
+
+	<task-node name="registrar-proveedores-y-ofertas">
+		<task name="registrar-proveedores-y-ofertas"
+			  description="Registrar proveedores y ofertas, solicitud: #{solicitudId}">
+			<assignment actor-id="root"/>
+		</task>
+		<transition to="crear-cuadro-adjudicacion-buena-pro"></transition>
+	</task-node>
+
+	<task-node name="crear-cuadro-adjudicacion-buena-pro">
+		<task name="crear-cuadro-adjudicacion-buena-pro"
+			  description="crear cuadro adjudicacion buena-pro para la solicitud con id: #{solicitudId}">
+			<assignment pooled-actors="root"/>
+		</task>
+		<transition to="aprobar-adjudicacion" name="enviar"></transition>
+		<transition to="gestionar-cuadro-adjudicacion" name="guardar"></transition>
+	</task-node>
+
+	<task-node name="aprobar-adjudicacion">
+		<transition to="necesidad-de-contrato" name="aprobada"></transition>
+		<transition to="gestionar-cuadro-adjudicacion" name="no aprobada"></transition>
+	</task-node>
+
+	<task-node name="gestionar-cuadro-adjudicacion">
+		<transition to="gestionar-cuadro-adjudicacion" name="modificar"></transition>
+		<transition to="aprobar-adjudicacion" name="enviar"></transition>
+		<transition to="crear-cuadro-adjudicacion-buena-pro" name="eliminar"></transition>
+	</task-node>
+
+	<decision name="necesidad-de-contrato">
+		<transition to="crear-orden-de-compra" name="no"></transition>
+		<transition to="crear-contrato" name="si"></transition>
+	</decision>
+
+	<task-node name="crear-orden-de-compra">
+		<transition to="fin"></transition>
+	</task-node>
+
+	<task-node name="crear-contrato">
+		
+		<transition to="crear-orden-de-compra"></transition>
+	</task-node>
+
+	<task-node name="aceptar-solicitud">
+		<task name="aceptar-solicitud"
+			  description="Aceptar solicitud, solicitud: #{solicitudId}">
+			<assignment actor-id="root"/>
+		</task>
+		<transition to="gestionar-solicitud" name="no"></transition>
+		<transition to="registrar-proveedores-y-ofertas" name="si"></transition>
+	</task-node>
+
+
+	<end-state name="fin" />
+
+
+</process-definition>

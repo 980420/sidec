@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<page    xmlns               ="http://jboss.com/products/seam/pages"  
+         xmlns:xsi           ="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">  
+           
+  	<begin-conversation flush-mode="manual" join="true"/>    
+	<action if="#{modificarMSProgramado.inicioConversacion == false}" execute="#{modificarMSProgramado.inicializarMSProgramado()}"/>
+	<param name="idCronograma" value="#{modificarMSProgramado.idCronograma}" />
+	<param name="idMS" value="#{modificarMSProgramado.idMomentoSeguimiento}" />
+	 
+	
+	<navigation from-action="#{modificarMSProgramado.modificarMSProgramado()}">	
+		<rule if-outcome="ok">
+			<end-conversation before-redirect="true"/>  		
+			<redirect view-id="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarMS/buscarMSProgramados/buscarMSProgramados.gehos">
+			<param name="idCronograma" value="#{modificarMSProgramado.idCronograma}"/>
+			</redirect>
+		</rule>
+	</navigation>
+	<navigation from-action="cancelar">	
+		
+			<end-conversation before-redirect="true"/>  		
+			<redirect view-id="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarMS/buscarMSProgramados/buscarMSProgramados.gehos">
+			<param name="idCronograma" value="#{modificarMSProgramado.idCronograma}"/>
+			</redirect>
+		
+	</navigation>
+	
+	
+	
+	
+	
+</page>

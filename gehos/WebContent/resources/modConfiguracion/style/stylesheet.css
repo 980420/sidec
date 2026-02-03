@@ -1,0 +1,88 @@
+/*COMPONENTES------------------------------------------------------*/
+/*SimpleTogglePanel*/
+.simpleTogglePanel{
+	padding: 0px;
+	margin:0px;
+	spacing:0px;
+	border:0px;   
+	white-space:nowrap;	    
+}
+
+/*Panel*/
+.rich-panel-body {
+	padding: 0px;
+	white-space:nowrap;	
+}
+
+/*ModalPanel*/
+.dr-mpnl-pnl-b {     
+	padding: 1px;
+	white-space:nowrap;
+}
+
+.botton {
+	margin-top: 8px !IMPORTANT; 
+	margin-left: 0px !IMPORTANT;
+	margin-bottom: 0px !IMPORTANT;
+	margin-right: 0px !IMPORTANT;	
+}
+
+.errorLabel{	
+ 	color: red; 	
+}
+
+.select {
+	cursor:pointer;
+	border: 0px;
+}
+
+.imputText{
+	width: 148px !IMPORTANT;
+}
+
+
+/*ESTRUCTURAS -----------------------------------*/
+/*Etiqueta - Etiqueta*/
+.lh-sinb-sint{padding-bottom: 8px;}
+.lh-sinb-cont{padding-bottom: 8px;}
+.lh-conb-sint{padding-bottom: 8px;}
+.lh-conb-cont{padding-bottom: 8px;}
+
+/*Componente - Componente*/
+.lh-comp-b{ padding-bottom: 7px;}
+.lv-comp-l{padding-left: 8px;}
+.lv-comp-r{padding-right: 8px;}
+
+/*Etiqueta - Componente*/
+/*Top*/
+.lh-sint{padding-top: 10px;}
+.lh-cont{padding-top: 11px;}
+/*Botton*/
+.lh-sinb{padding-bottom: 4px;}
+.lh-conb{padding-bottom: 6px;}
+/*Left*/
+.lv-text-l{padding-left: 7px;}
+/*Right*/
+.lv-text-r{padding-right: 7px;}
+
+/*Otros*/
+.lvp-bet-text{padding-right: 6px;}
+.lvg-bet-text{padding-right: 24px;}
+.lvg-bet-comp{padding-right: 25px;}
+.lv-bet-botton{padding-right: 10px;}
+.lv-link-add{padding-left: 1px; cursor: pointer;}
+
+/*Generales*/
+/*Tabla general*/
+.tabla,.tablaLinkAdd{
+	border:0px;
+	spacing:0px;	
+	vertical-align:top;
+	text-align:left;
+	vertical-align: bottom;
+	spacing:0px; 	
+}
+
+.tablaLinkAdd {
+	padding-bottom: 1px; 
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<page    xmlns               ="http://jboss.com/products/seam/pages"  
+         xmlns:xsi           ="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">  
+           
+    
+    <param name="from" value="#{gestionarHoja.from}"/>
+	<!-- <param name="idMS"/> -->	
+	<navigation from-action="#{gestionarHoja.DescompletarInstanciaHoja()}">
+	
+			<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCRD/gestionarHoja.xhtml">
+				<param name="idcrd" value="#{gestionarHoja.hojaCRD.id}" />
+				<param name="from" value="#{gestionarHoja.from}"/>
+			</redirect>
+	</navigation>
+	
+	<navigation from-action="cancelar">
+		
+           <redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCRD/gestionarHoja.xhtml" >
+          		 <param name="idFuncionalidad" value="#{activeModule.activeModule.id}" />
+   			 	 <param name="idancestors" value="#{activeModule.activeModule.id}a" />	  
+   			 	 <param name="from" value="#{gestionarHoja.from}"/>         		
+           </redirect>
+	</navigation>
+</page>

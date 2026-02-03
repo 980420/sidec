@@ -1,0 +1,127 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core">
+	
+	<style type="text/css">
+        .rich-panel-body{padding-top:11px; padding-left:6px; padding-bottom:6px !important;}
+        .table{border:0px; padding:0px !important; margin:0px;}
+        .bb{padding-top:11px; padding-left:6px; padding-bottom:6px !important;}
+        .rich-calendar-button{vertical-align: top !important;}
+        .cellEntre {
+			padding-left: 24px;
+		}
+		.cellDato {
+			padding-left: 8px;
+		}
+		.rowEntre{
+			padding-top: 7px;
+		}
+		.message {
+			background-color:#F0F8FF;
+			border:1px solid #FFCC00;
+			font-family:"Verdana";
+			font-size:10px;
+			margin-bottom:5px;
+			margin-top:5px;
+			padding:5px;
+		}
+    </style>
+<rich:modalPanel  id="confirmarOperacion" autosized="true" resizeable="false"
+	keepVisualState="true">
+	<f:facet name="header">
+   	<h:outputLabel value="#{messages.confirmarOperacion}" for="" />
+   </f:facet>
+   <f:facet name="controls">
+   	<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+   		style="border: none; cursor: pointer;"
+   		onclick="Richfaces.hideModalPanel('confirmarOperacion')"/>
+   </f:facet>
+	<h:form id="ccc">		
+		   <table cellpadding="0" cellspacing="0" style="padding-right: 10px;">
+		   	<s:div rendered="#{confirmarOperacion.error}">
+		   		<tr>
+			   		<td colspan="4" >
+			   			<div class="message" style="width: 300px;">
+			   				<h:outputText value="#{confirmarOperacion.errorValue}"/>
+			   			</div>			   			
+			   		</td>
+			   	</tr>
+			   	<tr>
+			   		<td class="rowEntre"/>
+			   	</tr>
+		   	</s:div>		   	
+		   	<tr>
+			   	<td rowspan="8" valign="middle">
+			   		<h:graphicImage value="/resources/modCommon/includes/llave2.png" />
+			   	</td>
+			   	<td rowspan="8" valign="middle" width="20px">
+			   	</td>
+			   	<td class="cellDato">
+			   		<h:outputLabel value="#{messages['Usuario']}:"/>
+			   		<rich:message showDetail="false"  tooltip="true" 
+						style="color:red;" for="username">
+						<f:facet name="errorMarker">
+							<h:outputLabel value="*" title="#{facesMessages.getCurrentMessagesForControl('username').get(0).detail}"/>
+						</f:facet>
+					</rich:message>
+			   		<br/>
+			   		<h:inputText value="#{confirmarOperacion.user}" id="username"
+				   		styleClass="input" required="#{not empty param['ccc:aceptarMP']}"
+				   		style="width : 193px;" />
+			   	</td>
+		   	</tr>
+		   	<tr>
+		   		<td class="rowEntre"/>
+		   	</tr>
+		   	<tr>
+			   	<td class="cellDato">
+			   		<h:outputLabel value="#{messages['Contraseña']}:"/>
+			   		<rich:message showDetail="false"  tooltip="true" 
+						style="color:red;" for="pass">
+						<f:facet name="errorMarker">
+							<h:outputLabel value="*" title="#{facesMessages.getCurrentMessagesForControl('pass').get(0).detail}"/>
+						</f:facet>
+					</rich:message>
+			   		<br/>
+			   		<h:inputSecret value="#{confirmarOperacion.password}"  id="pass" 
+				   		style="fon-family: Arial; font-size: 10px; width : 193px;" 
+				   		required="#{not empty param['ccc:aceptarMP']}"/>
+			   	</td>
+		   	</tr>
+		   	<tr>
+		   		<td class="rowEntre"/>
+		   	</tr>
+		   	<tr>
+			   	<td class="cellDato">
+			   		<h:outputLabel value="#{messages['Dominio']}:"/>
+			   		<br/>
+			   		<h:selectOneMenu styleClass="styled"
+                     	style=" width : 193px;position:relative; top:0px; left:-1px; background-color: #fff;"
+                     	value="#{confirmarOperacion.domain}" >
+                     	  <f:selectItem id="item1" itemLabel="pdvsa.com" itemValue="pdvsa.com" />
+  						  <f:selectItem id="item2" itemLabel="local" itemValue="local" />
+                     </h:selectOneMenu>
+			   	</td>
+		   	</tr>
+		   	<tr>
+		   	<td class="rowEntre">
+		   	</td>
+		   	</tr>
+		   	<tr>
+		   	<td align="right">
+		   	    <h:commandButton value="#{messages['Aceptar']}" action="#{actionBean[method]}" id="aceptarMP"
+		   	     style="margin-top: 0px; margin-bottom: 0px; margin-right: 10px;"/>
+		   		<a4j:commandButton value="#{messages['Cancelar']}" styleClass="boton"
+		   		 style="margin-top: 0px; margin-bottom: 0px; margin-right: 0px;"
+		   		 onclick="Richfaces.hideModalPanel('confirmarOperacion')"/>
+		   	</td>
+		   	</tr>
+		   </table>
+	  </h:form>
+</rich:modalPanel>
+</s:div>

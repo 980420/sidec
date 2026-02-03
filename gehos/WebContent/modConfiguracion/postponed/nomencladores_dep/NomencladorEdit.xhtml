@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+      xmlns:a4j="http://richfaces.org/a4j"
+      template="#{theme.template}"
+                xmlns:rich="http://richfaces.org/rich">
+                
+<ui:define name="body" >
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('Modificar nomenclador')</script>
+	<style type="text/css">.rich-stglpanel-body{padding:0px}</style>
+	<style type="text/css">.rich-panel-body{padding:0px}</style>
+	
+	<h:form>	
+		
+	<rich:panel>
+		<f:facet name="header">Datos del nomenclador</f:facet>
+		<table cellpadding="0px" cellspacing="0px" border="0px" >
+			<tr>
+				<td style="height: 11px;" colspan="6">
+				</td>
+			</tr>
+			<tr style="vertical-align: top;">
+				<td style="width: 7px;"></td>
+				<td>
+					Código:<br />
+					<h:inputText value="#{nomencladorEditController.nomenclador.codigo}" />
+				</td>
+				<td style="width: 25px"></td>
+				<td>
+					Valor:<br />
+					<h:inputText value="#{nomencladorEditController.nomenclador.valor}" />
+				</td>
+				<td style="width: 25px"></td>
+				<td  style="vertical-align: bottom;">
+				</td>
+				<td style="width: 25px"></td>
+				<td style="vertical-align: bottom;">
+				</td>
+			</tr>
+		</table>
+		<br/>
+	</rich:panel> 
+	<div align="right">
+		<h:commandButton action="#{nomencladorEditController.Salvar()}" 
+			value="Aceptar" style="margin-left: 0px; margin-bottom: 0px;" >
+		</h:commandButton>
+		<a4j:commandButton value="Cancelar" onclick="history.go(-1)" 
+					style="margin-right: 0px; margin-bottom: 0px;" >
+		</a4j:commandButton>
+	</div>
+	<br/>
+		
+  </h:form>
+
+</ui:define>
+
+</ui:composition>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

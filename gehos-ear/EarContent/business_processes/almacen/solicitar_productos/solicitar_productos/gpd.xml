@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="solicitar_productos" width="765" height="528">
+  <node name="inicio" x="213" y="19" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="tipo_de_solicitud" x="214" y="105" width="132" height="36">
+    <edge>
+      <label x="5" y="32"/>
+      <bendpoint w1="-190" h1="-1" w2="2" h2="-100"/>
+    </edge>
+    <edge>
+      <label x="9" y="-16"/>
+    </edge>
+    <edge>
+      <label x="-179" y="57"/>
+      <bendpoint w1="365" h1="0" w2="-1" h2="-105"/>
+    </edge>
+  </node>
+  <node name="otro_almacen" x="22" y="202" width="132" height="41">
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="-2" h1="285" w2="-198" h2="-2"/>
+    </edge>
+  </node>
+  <node name="aceptar_solicitud_de_compra" x="179" y="299" width="204" height="40">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="procesar_solicitud_de_productos" x="482" y="281" width="227" height="41">
+    <edge>
+      <label x="-108" y="-10"/>
+    </edge>
+    <edge>
+      <label x="-66" y="-137"/>
+      <bendpoint w1="120" h1="207" w2="431" h2="-1"/>
+    </edge>
+  </node>
+  <node name="registrar_ofertas" x="422" y="353" width="169" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="procesar_ofertas" x="345" y="427" width="162" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="detalles_de_solicitud_de_compra" x="167" y="203" width="223" height="42">
+    <edge>
+      <label x="4" y="-1"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="-145" h1="47" w2="-151" h2="-238"/>
+      <bendpoint w1="-145" h1="141" w2="-151" h2="-144"/>
+      <bendpoint w1="-145" h1="214" w2="-151" h2="-71"/>
+    </edge>
+  </node>
+  <node name="detalles_de_solicitud_de_licitacion" x="528" y="208" width="236" height="41">
+    <edge>
+      <label x="-176" y="-11"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="78" h1="21" w2="440" h2="-260"/>
+      <bendpoint w1="82" h1="280" w2="444" h2="-1"/>
+    </edge>
+  </node>
+  <node name="fin" x="218" y="491" width="132" height="36"/>
+</root-container>

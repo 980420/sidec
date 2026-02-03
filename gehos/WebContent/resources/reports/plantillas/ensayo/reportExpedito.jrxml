@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportExpedito" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="reporteExp" class="java.lang.String"/>
+	<parameter name="SUBREPORTS" class="java.util.Map"/>
+	<parameter name="SUBREPORTS_DATASOURCES" class="java.util.Map"/>
+	<parameter name="SUBREPORTS_PARAMETERS" class="java.util.Map"/>
+	<parameter name="LOGO_URL" class="java.lang.String"/>
+	<parameter name="SEPARADOR" class="java.lang.String"/>
+	<parameter name="AUTOR_RPT" class="java.lang.String"/>
+	<parameter name="DEPARTAMENTO" class="java.lang.String"/>
+	<parameter name="DATE_TODAY" class="java.lang.String"/>
+	<parameter name="PRODUCT_IMG" class="java.lang.String"/>
+	<group name="primerRep">
+		<groupExpression><![CDATA[$V{PAGE_NUMBER}]]></groupExpression>
+		<groupHeader>
+			<band height="50">
+				<subreport>
+					<reportElement x="0" y="8" width="572" height="42"/>
+					<parametersMapExpression><![CDATA[$P{SUBREPORTS_PARAMETERS}.get("REPORTEXPEDITO_SUBREPORT1_PARAMETERS")]]></parametersMapExpression>
+					<dataSourceExpression><![CDATA[$P{SUBREPORTS_DATASOURCES}.get("REPORTEXPEDITO_SUBREPORT1_DATASOURCE")]]></dataSourceExpression>
+					<subreportExpression class="net.sf.jasperreports.engine.JasperReport"><![CDATA[$P{SUBREPORTS}.get("REPORTEXPEDITO_SUBREPORT1")]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="segundoRep">
+		<groupExpression><![CDATA[$V{PAGE_NUMBER}]]></groupExpression>
+		<groupHeader>
+			<band height="50">
+				<subreport>
+					<reportElement x="0" y="8" width="572" height="42"/>
+					<parametersMapExpression><![CDATA[$P{SUBREPORTS_PARAMETERS}.get("REPORTEXPEDITO_SUBREPORT2_PARAMETERS")]]></parametersMapExpression>
+					<dataSourceExpression><![CDATA[$P{SUBREPORTS_DATASOURCES}.get("REPORTEXPEDITO_SUBREPORT2_DATASOURCE")]]></dataSourceExpression>
+					<subreportExpression class="net.sf.jasperreports.engine.JasperReport"><![CDATA[$P{SUBREPORTS}.get("REPORTEXPEDITO_SUBREPORT2")]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="tercerRep">
+		<groupExpression><![CDATA[$V{PAGE_NUMBER}]]></groupExpression>
+		<groupHeader>
+			<band height="50">
+				<subreport>
+					<reportElement x="0" y="8" width="572" height="42"/>
+					<parametersMapExpression><![CDATA[$P{SUBREPORTS_PARAMETERS}.get("REPORTEXPEDITO_SUBREPORT3_PARAMETERS")]]></parametersMapExpression>
+					<dataSourceExpression><![CDATA[$P{SUBREPORTS_DATASOURCES}.get("REPORTEXPEDITO_SUBREPORT3_DATASOURCE")]]></dataSourceExpression>
+					<subreportExpression class="net.sf.jasperreports.engine.JasperReport"><![CDATA[$P{SUBREPORTS}.get("REPORTEXPEDITO_SUBREPORT3")]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="89" splitType="Stretch">
+			<textField pattern="h.mm a">
+				<reportElement x="464" y="12" width="99" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="345" y="12" width="111" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="150" y="4" width="162" height="39"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO_URL}]]></imageExpression>
+			</image>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="53" width="572" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{reporteExp}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+</jasperReport>

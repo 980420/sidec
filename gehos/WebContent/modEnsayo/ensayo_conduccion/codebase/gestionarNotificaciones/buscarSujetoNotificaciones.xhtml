@@ -1,0 +1,15 @@
+<!-- CU: BUSCAR SUJETO POR NOTIFICACIONES -->
+<s:div   xmlns     ="http://www.w3.org/1999/xhtml" 
+ 			      xmlns:ui  ="http://java.sun.com/jsf/facelets" 
+      		      xmlns:h   ="http://java.sun.com/jsf/html" 
+			      xmlns:f   ="http://java.sun.com/jsf/core" 
+			      xmlns:s   ="http://jboss.com/products/seam/taglib" 
+			      xmlns:rich="http://richfaces.org/rich" 
+                  xmlns:a   ="http://richfaces.org/a4j">
+	<s:div >  
+		<ui:include src="/modEnsayo/ensayo_conduccion/codebase/plantillas/buscarSujetoNotificacion.xhtml" >
+	      	<ui:param name="titulo" value="#{messages.titulo}" />		
+			<ui:param name="controlador" value="#{sujetoCustomListNotificacion}" />		
+		</ui:include>
+	</s:div>
+</s:div>

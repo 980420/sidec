@@ -1,0 +1,19 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+	<rich:panel	rendered="#{rendered}">
+		<f:facet name="header">#{titulo}</f:facet>
+		<iframe width="100%" height="800px" src="#{facesContext.externalContext.requestContextPath}#{urlToReport}"></iframe>
+		<div align="right">			
+			<input type="button" value="#{messages.exportar}" onclick="javascript:Richfaces.showModalPanel('exportPanel')"
+				title="#{messages.exportar}" style="text-align:center"
+				id="exportButton" action="export"/>
+			<h:commandButton value="#{messages.graficar}"  action="graficar" rendered="#{graficarr}"/>			
+			<h:commandButton value="#{messages.salir}"	title="#{messages.salir}" style="text-align:center; width:70px" action="cancelar" />
+		</div>
+	</rich:panel>
+</s:div>

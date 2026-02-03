@@ -1,0 +1,796 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/pkiStyles/pkistyles.css"
+			rel="stylesheet" type="text/css" />
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+		<style type="text/css">
+.custom-error {
+	border: 1px solid #FFCC00;
+	padding: 5px;
+	background-color: #F0F8FF;
+	font-size: 10px;
+	font-family: "Verdana";
+	position: relative;
+	left: 5px;
+	top: 5px;
+	margin-right: 10px;
+}
+</style>
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+		<a4j:outputPanel id="panel_busqueda">
+			<h:form>
+
+				<a4j:outputPanel ajaxRendered="true" id="errorOutputPanel">
+					<s:div style="height:30px;width:100%"
+						rendered="#{facesMessages.getCurrentMessagesForControl('btnSi').size() > 0 }">
+						<div class="custom-error">
+							<rich:message for="btnSi"></rich:message>
+						</div>
+					</s:div>
+				</a4j:outputPanel>
+
+
+				<rich:simpleTogglePanel switchType="client"
+					bodyClass="rich-stglpanel-body-custom"
+					opened="#{buscarCertificadosConfianza.open}"
+					rendered="#{!buscarCertificadosConfianza.avanzada}">
+					<a4j:support event="oncollapse" ajaxSingle="true"
+						action="#{buscarCertificadosConfianza.abrirCerrar()}"
+						reRender="panel_busqueda" />
+					<a4j:support event="onexpand" ajaxSingle="true"
+						action="#{buscarCertificadosConfianza.abrirCerrar()}"
+						reRender="panel_busqueda" />
+					<f:facet name="header">#{messages.criterios}</f:facet>
+
+
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr style="vertical-align: top;">
+							<td>#{messages.cn}:<br /> <h:inputText id="cn" tabindex="1"
+									value="#{buscarCertificadosConfianza.certificadoCn}"
+									style="width:148px;" /></td>
+							<td><rich:spacer styleClass="h-spacer-between-2c" /></td>
+							<td style="vertical-align: bottom;"><h:commandButton
+									id="search" value="#{messages.buscar}" tabindex="3"
+									action="#{buscarCertificadosConfianza.buscar(false)}"
+									style="margin-left: 0px; margin-bottom:  0px; margin-top: 0px;">
+									<s:defaultAction />
+								</h:commandButton> <s:button view="/modCommons/modHome/home.gehos"
+									value="#{messages.cancelar}" tabindex="4"
+									style="margin-right:0px;margin-bottom:  0px; margin-top: 0px;"
+									rendered="#{not identificadorManager.editing}">
+									<f:param name="idFuncionalidad"
+										value="#{activeModule.activeModule.id}" />
+									<f:param name="idancestors"
+										value="#{activeModule.activeModule.id}a" />
+									<f:param name="moduleName"
+										value="#{activeModule.activeModuleName}" />
+								</s:button></td>
+						</tr>
+						<tr>
+
+						</tr>
+						<tr>
+							<td colspan="6" align="right">
+								<table cellpadding="0" cellspacing="0" border="0">
+									<tr>
+										<td><h:graphicImage height="12"
+												style="margin-top:2px;margin-right:2px;"
+												value="/resources/icons/default/acciones/buscar.png" /></td>
+										<td><a4j:commandLink tabindex="5"
+												action="#{buscarCertificadosConfianza.cambiarTipodeBusqueda(true)}"
+												value="#{messages.busquedaAvanzada}"
+												reRender="panel_busqueda">
+											</a4j:commandLink></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+
+
+					</table>
+
+
+
+				</rich:simpleTogglePanel>
+			</h:form>
+			<h:form>
+				<rich:simpleTogglePanel switchType="client"
+					bodyClass="rich-stglpanel-body-custom"
+					opened="#{buscarCertificadosConfianza.open}"
+					rendered="#{buscarCertificadosConfianza.avanzada}">
+					<a4j:support event="oncollapse" ajaxSingle="true"
+						action="#{buscarCertificadosConfianza.abrirCerrar()}"
+						reRender="panel_busqueda" />
+					<a4j:support event="onexpand" ajaxSingle="true"
+						action="#{buscarCertificadosConfianza.abrirCerrar()}"
+						reRender="panel_busqueda" />
+					<f:facet name="header">#{messages.criterios}</f:facet>
+
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr style="vertical-align: top;">
+
+							<td>#{messages.cn}:<br /> <h:inputText id="advcn"
+									tabindex="6"
+									value="#{buscarCertificadosConfianza.certificadoCn}"
+									style="width:148px;" /> <rich:spacer
+									styleClass="v-spacer-between-2l" /> #{messages.l}:<br /> <h:inputText
+									value="#{buscarCertificadosConfianza.certificadoL}"
+									tabindex="9" style="width:148px;" /></td>
+							<td><rich:spacer styleClass="h-spacer-between-2c" /></td>
+							<td>#{messages.ou}:<br /> <h:inputText id="ou" tabindex="7"
+									value="#{buscarCertificadosConfianza.certificadoOu}"
+									style="width:148px;" /> <rich:spacer
+									styleClass="v-spacer-between-2l" /> #{messages.st}:<br /> <h:inputText
+									value="#{buscarCertificadosConfianza.certificadoSt}"
+									tabindex="9" style="width:148px;" />
+							</td>
+							<td><rich:spacer styleClass="h-spacer-between-2c" /></td>
+							<td>#{messages.o}:<br /> <h:inputText
+									value="#{buscarCertificadosConfianza.certificadoO}"
+									tabindex="8" style="width:148px;" /> <rich:spacer
+									styleClass="v-spacer-between-2l" /> #{messages.c}:<br /> <h:inputText
+									value="#{buscarCertificadosConfianza.certificadoC}"
+									tabindex="9" style="width:148px;" /></td>
+
+						</tr>
+						<tr>
+							<td colspan="5"><rich:spacer
+									styleClass="v-spacer-between-2l" /></td>
+						</tr>
+						<tr>
+
+							<td colspan="5" align="right"><a4j:commandButton
+									value="#{messages.buscar}" tabindex="10"
+									action="#{buscarCertificadosConfianza.buscar(true)}"
+									style="margin-left: 0px; margin-bottom:  0px; margin-top: 0px;"
+									reRender="tablas_id">
+									<s:defaultAction />
+								</a4j:commandButton> <s:button view="/modCommons/modHome/home.gehos"
+									value="#{messages.cancelar}" tabindex="11"
+									style="margin-right:0px;margin-bottom:  0px; margin-top: 0px;"
+									rendered="#{not identificadorManager.editing}">
+									<f:param name="idFuncionalidad"
+										value="#{activeModule.activeModule.id}" />
+									<f:param name="idancestors"
+										value="#{activeModule.activeModule.id}a" />
+									<f:param name="moduleName"
+										value="#{activeModule.activeModuleName}" />
+								</s:button>
+								<table cellpadding="0" cellspacing="0" border="0">
+									<tr>
+										<td><h:graphicImage height="12"
+												style="margin-top:2px;margin-right:2px;"
+												value="/resources/icons/default/acciones/buscar.png" /></td>
+										<td><a4j:commandLink tabindex="12"
+												action="#{buscarCertificadosConfianza.cambiarTipodeBusqueda(false)}"
+												value="#{messages.busquedaSimple}" reRender="panel_busqueda">
+											</a4j:commandLink></td>
+									</tr>
+								</table></td>
+						</tr>
+
+
+
+					</table>
+
+				</rich:simpleTogglePanel>
+			</h:form>
+		</a4j:outputPanel>
+
+
+		<h:form>
+			<rich:spacer height="8px" />
+
+			<div align="right">
+				<table cellpadding="0" cellspacing="1" border="0">
+					<tr>
+
+						<td><h:graphicImage title="#{messages.Adicionar}"
+								style="margin-right: 1px" height="12" width="12"
+								value="/resources/modConfiguracion/addcert.png" /></td>
+
+						<td><a4j:commandLink
+								oncomplete="Richfaces.showModalPanel('subirCert')"
+								action="#{fileUploadBean.begin()}" value="#{messages.adicionar}"
+								style="cursor: pointer" title="#{messages.adicionar}">
+
+							</a4j:commandLink></td>
+
+
+					</tr>
+				</table>
+			</div>
+		</h:form>
+		<h:form>
+			<a4j:outputPanel id="tablas_id">
+
+				<rich:panel
+					rendered="#{empty buscarCertificadosConfianza.resultList and (!buscarCertificadosConfianza.certificadoCn.equals('') or 
+					!buscarCertificadosConfianza.certificadoOu.equals('') or !buscarCertificadosConfianza.certificadoO.equals('') or
+					!buscarCertificadosConfianza.certificadoL.equals('') or !buscarCertificadosConfianza.certificadoSt.equals('') or
+					!buscarCertificadosConfianza.certificadoC.equals(''))}">
+					<f:facet name="header">#{messages.listado}</f:facet>
+					<div class="results" id="userList">
+						<rich:spacer height="22" />
+						<rich:spacer width="7px" />
+						<h:outputText value="#{messages.info1}" />
+					</div>
+					<rich:spacer height="5px" />
+				</rich:panel>
+				<rich:panel
+					rendered="#{empty buscarCertificadosConfianza.resultList and buscarCertificadosConfianza.certificadoCn.equals('') and 
+					buscarCertificadosConfianza.certificadoOu.equals('') and buscarCertificadosConfianza.certificadoO.equals('')
+					and buscarCertificadosConfianza.certificadoL.equals('') and buscarCertificadosConfianza.certificadoSt.equals('')
+					and buscarCertificadosConfianza.certificadoC.equals('')}">
+					<f:facet name="header">	#{messages.listado} </f:facet>
+					<div class="results" id="camasList">
+						<rich:spacer height="22" />
+						<rich:spacer width="8px" />
+						<h:outputText value="#{messages.info2}" />
+					</div>
+					<rich:spacer height="5px" />
+				</rich:panel>
+				<s:div style="margin-left:1px;margin-top:1px"
+					rendered="#{not empty buscarCertificadosConfianza.resultList}">
+
+					<rich:dataTable id="certificados" style="width: 100%;" var="cert"
+						value="#{buscarCertificadosConfianza.resultList}"
+						columnsWidth="0*, 0*, 15%, 15px, 15%, 15%, 15%, 15%, 0*">
+						<f:facet name="header">
+							#{messages.listado}
+					</f:facet>
+
+						<rich:column>
+							<f:facet name="header"></f:facet>
+							<s:div style="text-align: center;"
+								rendered="#{!buscarCertificadosConfianza.EstaSeleccionado(cert.id)}">
+								<input type="checkbox" onclick="seleccionar(#{cert.id})" />
+							</s:div>
+							<s:div style="text-align: center;"
+								rendered="#{buscarCertificadosConfianza.EstaSeleccionado(cert.id)}">
+								<input type="checkbox" onclick="seleccionar(#{cert.id})"
+									checked="checked" />
+							</s:div>
+						</rich:column>
+						<rich:column>
+							<div align="center">
+								<h:graphicImage height="15" width="15"
+									value="/resources/modConfiguracion/trustcert_entry.png">
+
+								</h:graphicImage>
+							</div>
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.cn}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not buscarCertificadosConfianza.order.equals('certificadoConfiable.certificadoCn asc') and not buscarCertificadosConfianza.order.equals('certificadoConfiable.certificadoCn desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="cncontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{buscarCertificadosConfianza.order.equals('certificadoConfiable.certificadoCn asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="cncontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{buscarCertificadosConfianza.order.equals('certificadoConfiable.certificadoCn desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="cncontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+							<h:outputLabel value="#{cert.certificadoCn}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.ou}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not buscarCertificadosConfianza.order.equals('certificadoConfiable.certificadoOu asc') and not buscarCertificadosConfianza.order.equals('certificadoConfiable.certificadoOu desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="oucontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{buscarCertificadosConfianza.order.equals('certificadoConfiable.certificadoOu asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="oucontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{buscarCertificadosConfianza.order.equals('certificadoConfiable.certificadoOu desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="oucontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+							<h:outputLabel value="#{cert.certificadoOu}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.o}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not buscarCertificadosConfianza.order.equals('certificadoConfiable.certificadoO asc') and not buscarCertificadosConfianza.order.equals('certificadoConfiable.certificadoO desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="ocontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{buscarCertificadosConfianza.order.equals('certificadoConfiable.certificadoO asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="ocontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{buscarCertificadosConfianza.order.equals('certificadoConfiable.certificadoO desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="ocontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+							<h:outputLabel value="#{cert.certificadoO}" />
+
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.l}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not buscarCertificadosConfianza.order.equals('certificadoConfiable.certificadoL asc') and not buscarCertificadosConfianza.order.equals('certificadoConfiable.certificadoL desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="lcontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{buscarCertificadosConfianza.order.equals('certificadoConfiable.certificadoL asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="lcontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{buscarCertificadosConfianza.order.equals('certificadoConfiable.certificadoL desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="lcontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+	            	#{cert.certificadoL}
+	        	</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.st}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not buscarCertificadosConfianza.order.equals('certificadoConfiable.certificadoSt asc') and not buscarCertificadosConfianza.order.equals('certificadoConfiable.certificadoSt desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="stcontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{buscarCertificadosConfianza.order.equals('certificadoConfiable.certificadoSt asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="stcontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{buscarCertificadosConfianza.order.equals('certificadoConfiable.certificadoSt desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="stcontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+	            	#{cert.certificadoSt}
+	        	</rich:column>
+
+						<rich:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.c}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not buscarCertificadosConfianza.order.equals('certificadoConfiable.certificadoC asc') and not buscarCertificadosConfianza.order.equals('certificadoConfiable.certificadoC desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="ccontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{buscarCertificadosConfianza.order.equals('certificadoConfiable.certificadoC asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="ccontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{buscarCertificadosConfianza.order.equals('certificadoConfiable.certificadoC desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="ccontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+	            	#{cert.certificadoC}
+	        	</rich:column>
+
+						<rich:column>
+							<div align="center">
+								<a4j:commandLink
+									oncomplete="Richfaces.showModalPanel('panelEliminarCert')"
+									action="#{buscarCertificadosConfianza.seleccionar(cert.id)}">
+
+									<h:graphicImage title="#{messages.msg_eliminar_modConfig}"
+										style="border: 0px; cursor:pointer;"
+										value="/resources/icons/default/acciones/eliminar.png">
+									</h:graphicImage>
+								</a4j:commandLink>
+							</div>
+						</rich:column>
+
+					</rich:dataTable>
+				</s:div>
+
+				<rich:spacer height="11px" />
+
+				<ui:include
+					src="/modEnsayo/codebase/plantillas/paginado_tabla_inferior_generico.xhtml/">
+					<ui:param name="vzPaginado"
+						value="#{buscarCertificadosConfianza.resultCount>10}" />
+					<ui:param name="nomControladorList" value="#{buscarCertificadosConfianza}" />
+					<ui:param name="idListado" value="tablas_id" />
+
+				</ui:include>
+				<br />
+				<s:div
+					rendered="#{buscarCertificadosConfianza.certstoexport.size() > 0}">
+					<div align="right">
+						<table cellpadding="0" cellspacing="1" border="0">
+							<tr>
+
+								<td><h:graphicImage title="#{messages.exportar}"
+										style="margin-right: 1px" height="12" width="12"
+										value="/resources/modConfiguracion/importcert.png" /></td>
+
+								<td><script>
+								 function redi(condi,url)
+				                   {
+									 
+				                       if(condi||url==null){
+					                      
+				                          window.open(url,'_blank');
+				                          document.getElementById('spinner').style.display="none";
+				                         
+				                      }
+				                       else
+				                       {
+					                       
+				                    	   document.getElementById('spinner').style.display="none";
+					                         
+					                       
+					                   }
+				                    }
+								 function redi2()
+			                    	{
+			                    			document.getElementById('spinner').style.display="";
+			                    			
+			                    	}
+						</script> <a4j:commandLink action="#{buscarCertificadosConfianza.export()}"
+										style="cursor: pointer"
+										oncomplete="redi(#{not empty buscarCertificadosConfianza.path},'#{buscarCertificadosConfianza.path}')"
+										onclick="redi2()" value="#{messages.exportar}">
+										<div style="float: right">
+
+
+											<div id="spinner"
+												style="float: right; padding-right: 7px; display: none">
+												<h:graphicImage
+													value="/resources/icons/default/acciones/loading_small.gif" />
+											</div>
+										</div>
+									</a4j:commandLink></td>
+
+
+
+							</tr>
+						</table>
+					</div>
+					<rich:dataTable id="certificadostoexport" style="width: 100%;"
+						var="cert"
+						value="#{buscarCertificadosConfianza.certToExportToList()}"
+						columnsWidth="0*, 16%, 16%, 16%, 16%, 16%, 16%">
+						<f:facet name="header">
+							#{messages.listadotoexport}
+					</f:facet>
+						<rich:column>
+							<div align="center">
+								<h:graphicImage height="15" width="15"
+									value="/resources/modConfiguracion/trustcert_entry.png">
+
+								</h:graphicImage>
+							</div>
+						</rich:column>
+
+						<rich:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.cn}</s:div>
+
+								</h:panelGrid>
+							</f:facet>
+	            	#{cert.certificadoCn}
+	        	</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.ou}</s:div>
+
+								</h:panelGrid>
+							</f:facet>
+	            	#{cert.certificadoOu}
+	        	</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.o}</s:div>
+
+								</h:panelGrid>
+							</f:facet>
+	            	#{cert.certificadoO}
+	        	</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.l}</s:div>
+
+								</h:panelGrid>
+							</f:facet>
+	            	#{cert.certificadoL}
+	        	</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.st}</s:div>
+
+								</h:panelGrid>
+							</f:facet>
+	            	#{cert.certificadoSt}
+	        	</rich:column>
+
+						<rich:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.c}</s:div>
+
+								</h:panelGrid>
+							</f:facet>
+	            	#{cert.certificadoC}
+	        	</rich:column>
+
+
+
+					</rich:dataTable>
+				</s:div>
+
+			</a4j:outputPanel>
+			<a4j:jsFunction name="seleccionar" ajaxSingle="true"
+				ignoreDupResponses="true"
+				action="#{buscarCertificadosConfianza.seleccionarCertsToExport()}"
+				reRender="tablas_id">
+				<a4j:actionparam name="cert"
+					assignTo="#{buscarCertificadosConfianza.certToSlected}" />
+			</a4j:jsFunction>
+
+		</h:form>
+
+		<h:form>
+			<rich:contextMenu attached="false" id="cncontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.lbl_ordenar_modConfig}"
+					ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{buscarCertificadosConfianza.setOrder('certificadoConfiable.certificadoCn desc')}"
+					reRender="certificados">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.lbl_ordenarMenor_modConfig}"
+					ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{buscarCertificadosConfianza.setOrder('certificadoConfiable.certificadoCn asc')}"
+					reRender="certificados">
+				</rich:menuItem>
+			</rich:contextMenu>
+
+		</h:form>
+		<h:form>
+			<rich:contextMenu attached="false" id="oucontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.lbl_ordenar_modConfig}"
+					ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{buscarCertificadosConfianza.setOrder('certificadoConfiable.certificadoOu desc')}"
+					reRender="certificados">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.lbl_ordenarMenor_modConfig}"
+					ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{buscarCertificadosConfianza.setOrder('certificadoConfiable.certificadoOu asc')}"
+					reRender="certificados">
+				</rich:menuItem>
+			</rich:contextMenu>
+
+		</h:form>
+		<h:form>
+			<rich:contextMenu attached="false" id="ocontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.lbl_ordenar_modConfig}"
+					ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{buscarCertificadosConfianza.setOrder('certificadoConfiable.certificadoO desc')}"
+					reRender="certificados">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.lbl_ordenarMenor_modConfig}"
+					ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{buscarCertificadosConfianza.setOrder('certificadoConfiable.certificadoO asc')}"
+					reRender="certificados">
+				</rich:menuItem>
+			</rich:contextMenu>
+
+		</h:form>
+
+		<h:form>
+			<rich:contextMenu attached="false" id="lcontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.lbl_ordenar_modConfig}"
+					ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{buscarCertificadosConfianza.setOrder('certificadoConfiable.certificadoL desc')}"
+					reRender="certificados">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.lbl_ordenarMenor_modConfig}"
+					ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{buscarCertificadosConfianza.setOrder('certificadoConfiable.certificadoL asc')}"
+					reRender="certificados">
+				</rich:menuItem>
+			</rich:contextMenu>
+
+		</h:form>
+		<h:form>
+			<rich:contextMenu attached="false" id="stcontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.lbl_ordenar_modConfig}"
+					ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{buscarCertificadosConfianza.setOrder('certificadoConfiable.certificadoSt desc')}"
+					reRender="certificados">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.lbl_ordenarMenor_modConfig}"
+					ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{buscarCertificadosConfianza.setOrder('certificadoConfiable.certificadoSt asc')}"
+					reRender="certificados">
+				</rich:menuItem>
+			</rich:contextMenu>
+
+		</h:form>
+		<h:form>
+			<rich:contextMenu attached="false" id="ccontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.lbl_ordenar_modConfig}"
+					ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{buscarCertificadosConfianza.setOrder('certificadoConfiable.certificadoC desc')}"
+					reRender="certificados">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.lbl_ordenarMenor_modConfig}"
+					ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{buscarCertificadosConfianza.setOrder('certificadoConfiable.certificadoC asc')}"
+					reRender="certificados">
+				</rich:menuItem>
+			</rich:contextMenu>
+
+		</h:form>
+
+		<ui:include
+			src="/modConfiguracion/pki/confianzacert/modlaspanel/confirmareliminarcertificadoconfianza.xhtml" />
+
+		<ui:include
+			src="/modConfiguracion/pki/confianzacert/modlaspanel/subircertificadoconfianza.xhtml" />
+
+
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+<ui:composition>
+	<style>
+/*Some way to let know what node to click*/
+.dr-tree-h-text {
+	cursor: not-allowed !important;
+}
+
+.var-node:hover {
+	font-style: italic !important;
+	color: #2E5E2F !important;
+}
+</style>	
+	<div style="max-height:#{not empty treeHeight ? treeHeight : '400'}px;overflow-y: scroll;">
+	<s:div style="margin-left:2px;">
+		<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+			<h:graphicImage value="/resources/modEnsayo/img/iconos/estudio.png"
+				height="16" />			
+			<h:outputText value="#{estudio.nombre}" style="margin-left:1px;"/>
+		</h:panelGrid>
+	</s:div>
+	
+	<rich:tree switchType="ajax" ajaxSingle="true">
+		<rich:treeNodesAdaptor nodes="#{estudio.grupoSujetoses}"
+			var="grupoSujeto"
+			includedNode="#{not empty grupoSujeto.cronogramas and not empty grupoSujeto.cronogramas.iterator().next().momentoSeguimientoGenerals and not grupoSujeto.eliminado}">
+			<c:set var="cronograma"
+				value="${grupoSujeto.cronogramas.iterator().next()}" />
+			<rich:treeNode
+				icon="/resources/modEnsayo/img/iconos/gruposujetos.png">
+				<a4j:commandLink value="#{grupoSujeto.nombreGrupo}"
+					action="#{actionSelectGrupo}" reRender="#{reRender}" rendered="#{actionSelectGrupo!=null}"
+					limitToList="true" styleClass="var-node">
+				</a4j:commandLink>
+				<h:outputText value="#{grupoSujeto.nombreGrupo}" rendered="#{actionSelectGrupo==null}"/>
+			</rich:treeNode>
+			<rich:treeNodesAdaptor
+				nodes="#{cronograma.momentoSeguimientoGenerals}"
+				var="momentoGeneral"
+				includedNode="#{not empty cronograma.momentoSeguimientoGenerals and not momentoGeneral.eliminado}">
+				<rich:treeNode icon="/resources/modEnsayo/img/iconos/momento.png"
+					includedNode="#{not empty cronograma.momentoSeguimientoGenerals}">
+					<a4j:commandLink value="#{momentoGeneral.nombre}"
+						action="#{actionSelectMomento}" reRender="#{reRender}" rendered="#{actionSelectMomento!=null}"
+						limitToList="true" styleClass="var-node">
+					</a4j:commandLink>
+					<h:outputText value="#{momentoGeneral.nombre}" rendered="#{actionSelectMomento==null}"/>
+				</rich:treeNode>
+				<rich:treeNodesAdaptor
+					nodes="#{momentoGeneral.momentoSeguimientoGeneralHojaCrds}"
+					var="mhojaCrd" includedNode="#{not mhojaCrd.eliminado}">
+					<rich:treeNode icon="/resources/modEnsayo/img/iconos/hojacrd.png">
+						<a4j:commandLink value="#{mhojaCrd.hojaCrd.nombreHoja}"
+							action="#{actionSelectHojaCRD}" reRender="#{reRender}" rendered="#{actionSelectHojaCRD!=null}"
+							limitToList="true" styleClass="var-node">
+						</a4j:commandLink>
+						<h:outputText value="#{mhojaCrd.hojaCrd.nombreHoja}" rendered="#{actionSelectHojaCRD==null}"/>
+					</rich:treeNode>
+					<rich:treeNodesAdaptor nodes="#{mhojaCrd.hojaCrd.seccions}"
+						var="seccion" includedNode="#{not seccion.eliminado}">
+						<rich:treeNode icon="/resources/modEnsayo/img/iconos/seccion.png"
+							iconLeaf="/resources/modEnsayo/img/iconos/seccion.png">
+							<h:outputText value="#{seccion.tituloSeccion}" />
+						</rich:treeNode>
+						<rich:treeNodesAdaptor nodes="#{seccion.variables}" var="variable"
+							includedNode="#{variable.grupoVariables==null and not variable.eliminado}">
+							<rich:treeNode
+								icon="/resources/modEnsayo/img/iconos/variable.png"
+								iconLeaf="/resources/modEnsayo/img/iconos/variable.png">
+								<a4j:commandLink value="#{variable.nombreVariable}" 
+								style="#{(actionReglasSize!=null and actionReglasSize.invoke(facesContext.ELContext,null)==0) ? 'color: rgb(132, 27, 27); font-weight: bold;':''}"
+									action="#{bean}" reRender="#{reRender}" limitToList="true" ajaxSingle="true"
+									styleClass="var-node">
+								</a4j:commandLink>
+							</rich:treeNode>
+						</rich:treeNodesAdaptor>
+						<rich:treeNodesAdaptor nodes="#{seccion.grupoVariableses}"
+							var="grupoVariable" includedNode="#{not grupoVariable.eliminado}">
+							<rich:treeNode
+								icon="/resources/modEnsayo/img/iconos/grupo-variable.png"
+								iconLeaf="/resources/modEnsayo/img/iconos/grupo-variable.png">
+								<h:outputText value="#{grupoVariable.etiquetaGrupo}" />
+							</rich:treeNode>
+							<rich:treeNodesAdaptor nodes="#{grupoVariable.variables}"
+								var="variable" includedNode="#{not variable.eliminado}">
+								<rich:treeNode
+									icon="/resources/modEnsayo/img/iconos/variable.png"
+									iconLeaf="/resources/modEnsayo/img/iconos/variable.png">
+									<a4j:commandLink value="#{variable.nombreVariable}" 
+									style="#{(actionReglasSize!=null and actionReglasSize.invoke(facesContext.ELContext,null)==0) ? 'color: rgb(132, 27, 27); font-weight: bold;':''}"
+										action="#{bean}" reRender="#{reRender}" limitToList="true" ajaxSingle="true"
+										styleClass="var-node">
+									</a4j:commandLink>
+								</rich:treeNode>
+							</rich:treeNodesAdaptor>
+						</rich:treeNodesAdaptor>
+					</rich:treeNodesAdaptor>
+				</rich:treeNodesAdaptor>
+			</rich:treeNodesAdaptor>
+		</rich:treeNodesAdaptor>
+
+	</rich:tree>
+	</div>
+</ui:composition>
+</html>

@@ -1,0 +1,68 @@
+
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" xmlns:a4j="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle('#{messages.cambiarSujeto}')</script>
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css"
+		rel="stylesheet" type="text/css" />
+
+
+
+	<h:form id="idForm" enctype="multipart/form-data">
+
+		<rich:panel id="idInterrumpir" opened="true" switchType="client">
+			<f:facet name="header">
+				<h:panelGroup>
+					<div>
+						<div align="left">#{messages.causaCambio}</div>
+					</div>
+				</h:panelGroup>
+			</f:facet>
+			<table width="100%" cellpadding="0px" cellspacing="0px">
+				<tr>
+					<td><s:label styleClass="#{invalid?'labelErrors':''}"
+							value="#{messages.causa}:">
+							<rich:message for="causa" showDetail="false">
+								<f:facet name="errorMarker">
+									<h:outputText style="color: red;cursor: pointer !important;"
+										title="#{facesMessages.getCurrentMessagesForControl('causa').get(0).getDetail()}"
+										value="*" />
+								</f:facet>
+							</rich:message>
+						</s:label><br /> 
+						<h:inputTextarea 
+							id="causa" 
+							value="#{listarCentros.causa}" 
+							validator="#{validations_sujeto.causaEnBlanco}"
+							style="width:100%;resize: vertical"
+							required="#{!empty param['idForm:aceptarr'] and listarCentros.causaRequired}">
+						</h:inputTextarea></td>
+				</tr>
+			</table>
+		</rich:panel>
+
+
+		<div align="right">
+			<br />
+			<a:commandButton style="margin:0px;" id="aceptarr"
+				value="#{messages.aceptar}"
+				oncomplete="#{listarCentros.validarCampo()}" />
+			<rich:spacer width="10" />
+			<a:commandButton value="#{messages.cancelar}" style="margin:0px;"
+				action="cancelar" immediate="true" />
+		</div>
+
+
+
+	</h:form>
+	<ui:include
+		src="/modEnsayo/ensayo_conduccion/codebase/plantillas/AdvertenciaCambiarCentro.xhtml">
+		<ui:param name="control" value="#{listarCentros}" />
+	</ui:include>
+</s:div>

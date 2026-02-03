@@ -1,0 +1,45 @@
+/*estilos configuracion-----------------------------------------*/
+/*estilos para tabPanel*/
+.dr-tbpnl-cntnt,.rich-tabpanel-content {
+	/*arriba, derecha ,abajo ,izquierda*/
+	padding: 0px 0px 0px 0px;	
+}
+
+/*estilo para el modalPanel*/
+.dr-mpnl-pnl-b {
+	padding: 1px;
+}
+
+.dr-mpnl-pnl {
+	border: 1px !important;
+	border-style: solid !important;
+	border-color: #BED6F8 !important;
+}
+
+/*estilo para el calendar*/
+.rich-calendar-input {
+	width: 132px !important;
+}
+
+.noAvailable {
+	color: red;
+	text-decoration: line-through;
+}
+
+/*Estilo para el panel */
+.rich-panel-body {
+	padding: 0px 0px 0px 0px;
+	white-space:nowrap;	
+}
+
+/*Estilo para singletuglepanel */
+.rich-stglpanel-body {
+	padding: 0px;
+	white-space:nowrap;	
+}
+
+.rich-table{
+	white-space:nowrap;	
+}
+
+

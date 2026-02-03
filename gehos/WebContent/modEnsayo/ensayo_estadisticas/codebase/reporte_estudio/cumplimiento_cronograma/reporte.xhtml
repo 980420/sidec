@@ -1,0 +1,17 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}">
+	<ui:define name="body">
+		<ui:include
+			src="/modEnsayo/ensayo_estadisticas/codebase/reporte_estudio/generic_report/generic.xhtml">
+			<ui:param name="functionalityTitle" value="Porciento cumplimiento" />
+			<ui:param name="search_include" value="/modEnsayo/ensayo_estadisticas/codebase/reporte_estudio/search_includes/cumplimiento_cronograma/include.xhtml" />			
+			<ui:param name="provider" value="#{PorcientoCumProvider.className()}" />
+		</ui:include>
+	</ui:define>
+
+</ui:composition>

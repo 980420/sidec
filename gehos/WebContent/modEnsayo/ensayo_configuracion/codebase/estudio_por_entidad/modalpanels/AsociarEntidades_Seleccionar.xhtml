@@ -1,0 +1,259 @@
+<rich:modalPanel id="adicionarEntidad" resizeable="false" autosized="true"
+	 xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />     
+
+	<f:facet name="header">
+		<h:panelGroup id="servicio_editar_panel_header">
+			<h:outputText value="#{messages.titulo2}" />
+		</h:panelGroup>
+	</f:facet>
+	<f:facet name="controls">
+		<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+			style="cursor:pointer; position:relative; top:1px; right:1px;"
+			onclick="Richfaces.hideModalPanel('adicionarEntidad')" />
+	</f:facet>
+	<h:form>
+		<a4j:outputPanel id="entidadesList">
+			<table cellpadding="0" cellspacing="0" border="0" width="100%">
+				<tr>
+					<td style="width: 6px;"></td>
+					<td>
+					<table cellpadding="0px" cellspacing="0px" border="0px"
+						id="container">
+						<tr>
+							<td style="height: 12px;" colspan="6"></td>
+						</tr>
+
+						<tr style="vertical-align: top;">
+
+							<td>Nombre:<br />
+							<h:inputText id="name"
+								value="#{entidadSistemaSeleccionarControlador.entidadNoAsociadaList.valor}"
+								style="width:148px;" /></td>
+							<td style="width: 25px"></td>
+							<td style="vertical-align: bottom;"><a4j:commandButton
+								id="search" value="#{messages.buscar}"
+								action="#{entidadSistemaSeleccionarControlador.buscar()}"
+								reRender="aTablaEntidadesNoAsociadas,search"
+								style="margin-left: 0px; margin-bottom: 0px; margin-right: 10px; ">
+								<s:defaultAction />
+							</a4j:commandButton> <a4j:commandButton id="cancel" value="#{messages.cancelar}"
+								oncomplete="Richfaces.hideModalPanel('adicionarEntidad')"
+								style="margin-right: 0px; margin-bottom: 0px; margin-left: 0px;">
+								<s:defaultAction />
+							</a4j:commandButton></td>
+						</tr>
+
+					</table>
+					</td>
+					<td style="width: 6px;"></td>
+
+				</tr>
+
+				<tr>
+
+					<td style="width: 6px;"></td>
+					<td><rich:spacer height="8px" style="display: block" /> <a4j:outputPanel
+						id="aTablaEntidadesNoAsociadas">
+						<rich:panel
+							rendered="#{empty entidadSistemaSeleccionarControlador.entidadNoAsociadaList.resultList and entidadSistemaSeleccionarControlador.entidadNoAsociadaList.valor == ''}">
+
+							<f:facet name="header">#{messages.listadoEntidadesNoAsociadas}</f:facet>
+							<rich:spacer height="13px" style="display: block" />
+							<div class="results" id="roleList"><rich:spacer width="7px" />
+							<h:outputText value="#{messages.noInf}" /></div>
+							<rich:spacer height="7px" style="display: block" />
+						</rich:panel>
+						<rich:panel
+							rendered="#{empty entidadSistemaSeleccionarControlador.entidadNoAsociadaList.resultList and entidadSistemaSeleccionarControlador.entidadNoAsociadaList.valor != '' }">
+
+							<f:facet name="header">#{messages.listadoEntidadesNoAsociadas}</f:facet>
+							<rich:spacer height="13px" style="display: block" />
+							<div class="results" id="roleList"><rich:spacer width="7px" />
+							<h:outputText value="#{messages.noInf2}" /></div>
+							<rich:spacer height="7px" style="display: block" />
+						</rich:panel>
+						<s:div
+							rendered="#{not empty entidadSistemaSeleccionarControlador.entidadNoAsociadaList.resultList}">
+							<a4j:outputPanel id="aCheckBox">
+								<rich:dataTable id="entidadNoAsociadaTabla"
+									style="FONT-FAMILY: 'A Charming Font'; width: 100%; white-space:nowrap"
+									var="entidad"
+									value="#{entidadSistemaSeleccionarControlador.entidadNoAsociadaList.resultList}"
+									columnsWidth="1%,1%, 70%,">
+									<f:facet name="header">#{messages.listadoEntidadesNoAsociadas}</f:facet>
+
+									<h:column>
+										<div align="center"><s:div
+											rendered="#{!entidadSistemaSeleccionarControlador.buscarEntidadad(entidad.id)}">
+
+											<input type="checkbox" onclick="selected('#{entidad.id}');"
+												checked=""
+												style="margin-top: 0px; margin-right: 0px; margin-left: 0px; margin-bottom: 0px;" />
+										</s:div> <s:div
+											rendered="#{entidadSistemaSeleccionarControlador.buscarEntidadad(entidad.id)}">
+											<input type="checkbox" onclick="selected(#{entidad.id});"
+												checked="true"
+												style="margin-top: 0px; margin-right: 0px; margin-left: 0px; margin-bottom: 0px;" />
+										</s:div></div>
+									</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:panelGrid columns="2"
+												style="width: 100%; padding:0px; margin:0px;" border="0"
+												cellpadding="0" cellspacing="0">
+												<s:div style="float: left;">#{messages.logotipoCol}</s:div>
+
+											</h:panelGrid>
+										</f:facet>
+										<center><h:graphicImage
+											value="/resources/modCommon/entidades_logos/#{theme.name}/#{theme.color}/#{entidad.logo}"
+											style="border: 0px; width: 25px; height: 25px; margin-right: 0px " />
+										</center>
+									</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:panelGrid columns="2"
+												style="width: 100%; padding:0px; margin:0px;" border="0"
+												cellpadding="0" cellspacing="0">
+												<s:div style="float: left;">#{messages.nombreCol}</s:div>
+
+											</h:panelGrid>
+										</f:facet>
+	            #{entidad.nombre}
+	        </h:column>
+
+								</rich:dataTable>
+							</a4j:outputPanel>
+							<rich:spacer height="11px" />
+							<div class="tableControl"
+								style="width: 100%; border: 0px; height: 14px;" align="center"><h:graphicImage
+								title="#{messages.pag1}" style="cursor:pointer;"
+								rendered="#{entidadSistemaSeleccionarControlador.entidadNoAsociadaList.previousExists}"
+								value="/resources/icons/default/paginado/#{theme.color}/inicio.png">
+								<a4j:support ajaxSingle="true" event="onclick"
+									action="#{entidadSistemaSeleccionarControlador.entidadNoAsociadaList.setFirstResult(0)}"
+									reRender="entidadesList" />
+							</h:graphicImage> <h:graphicImage
+								value="/resources/icons/default/paginado/iniciod.png"
+								rendered="#{!entidadSistemaSeleccionarControlador.entidadNoAsociadaList.previousExists}" />
+							<h:graphicImage title="#{messages.pag2}"
+								style="cursor:pointer; border: 0px;"
+								rendered="#{entidadSistemaSeleccionarControlador.entidadNoAsociadaList.previousExists}"
+								value="/resources/icons/default/paginado/#{theme.color}/anterior.png">
+								<a4j:support ajaxSingle="true" event="onclick"
+									action="#{entidadSistemaSeleccionarControlador.entidadNoAsociadaList.setFirstResult(entidadSistemaSeleccionarControlador.entidadNoAsociadaList.previousFirstResult)}"
+									reRender="entidadesList" />
+							</h:graphicImage> <h:graphicImage
+								value="/resources/icons/default/paginado/anteriord.png"
+								rendered="#{!entidadSistemaSeleccionarControlador.entidadNoAsociadaList.previousExists}" />
+							<h:graphicImage title="#{messages.pag3}"
+								style="cursor:pointer; border: 0px;"
+								rendered="#{entidadSistemaSeleccionarControlador.entidadNoAsociadaList.nextExists}"
+								value="/resources/icons/default/paginado/#{theme.color}/siguiente.png">
+								<a4j:support ajaxSingle="true" event="onclick"
+									action="#{entidadSistemaSeleccionarControlador.entidadNoAsociadaList.setFirstResult(entidadSistemaSeleccionarControlador.entidadNoAsociadaList.nextFirstResult)}"
+									reRender="entidadesList" />
+							</h:graphicImage> <h:graphicImage
+								value="/resources/icons/default/paginado/siguiented.png"
+								rendered="#{!entidadSistemaSeleccionarControlador.entidadNoAsociadaList.nextExists}" />
+							<h:graphicImage title="#{messages.pag4}"
+								style="cursor:pointer; border: 0px;"
+								rendered="#{entidadSistemaSeleccionarControlador.entidadNoAsociadaList.nextExists}"
+								value="/resources/icons/default/paginado/#{theme.color}/fin.png">
+								<a4j:support ajaxSingle="true" event="onclick"
+									action="#{entidadSistemaSeleccionarControlador.entidadNoAsociadaList.setFirstResult(entidadSistemaSeleccionarControlador.entidadNoAsociadaList.lastFirstResult)}"
+									reRender="entidadesList" />
+							</h:graphicImage> <h:graphicImage
+								value="/resources/icons/default/paginado/find.png"
+								rendered="#{!entidadSistemaSeleccionarControlador.entidadNoAsociadaList.nextExists}" /></div>
+						</s:div>
+					</a4j:outputPanel></td>
+					<td style="width: 6px;"></td>
+				</tr>
+				<tr>
+					<td style="width: 6px;"></td>
+					<td><a4j:outputPanel id="aEntidadesNoAsosciadasSeleccionadas">
+						<rich:spacer height="11px"
+							rendered="#{not empty entidadSistemaSeleccionarControlador.entidadAsociadaList}" />
+						<rich:dataTable id="entidadNoAsociadaSeleccionadaTabla"
+							rendered="#{not empty entidadSistemaSeleccionarControlador.entidadAsociadaList}"
+							style="FONT-FAMILY: 'A Charming Font'; width: 100%; white-space:nowrap"
+							var="entidad"
+							value="#{entidadSistemaSeleccionarControlador.entidadAsociadaList}"
+							columnsWidth="1%,100%,1%">
+							<f:facet name="header">#{messages.listadoEntidadesNoAsociadasSeleccionadas}</f:facet>
+
+							<h:column>
+								<f:facet name="header">
+									<h:panelGrid columns="2"
+										style="width: 100%; padding:0px; margin:0px;" border="0"
+										cellpadding="0" cellspacing="0">
+										<s:div style="float: left;">#{messages.logotipoCol}</s:div>
+
+									</h:panelGrid>
+								</f:facet>
+								<center><h:graphicImage
+									value="/resources/modCommon/entidades_logos/#{theme.name}/#{theme.color}/#{entidad.logo}"
+									style="border: 0px; width: 25px; height: 25px; margin-right: 0px " />
+								</center>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:panelGrid columns="2"
+										style="width: 100%; padding:0px; margin:0px;" border="0"
+										cellpadding="0" cellspacing="0">
+										<s:div style="float: left;">#{messages.nombreCol}</s:div>
+
+									</h:panelGrid>
+								</f:facet>
+	            #{entidad.nombre}
+	        </h:column>
+							<h:column>
+								<div align="center"><a4j:commandLink
+									onclick="selected(#{entidad.id});">
+									<h:graphicImage title="#{messages.eliminar}"
+										style="border: 0px; cursor:pointer;"
+										value="/resources/icons/default/acciones/eliminar.png">
+									</h:graphicImage>
+								</a4j:commandLink></div>
+							</h:column>
+
+						</rich:dataTable>
+
+					</a4j:outputPanel></td>
+					<td style="width: 6px;"></td>
+				</tr>
+				<tr>
+					<td style="width: 6px;"></td>
+					<td>
+					<div align="right"><a4j:outputPanel id="aButtonAceptar">
+						<a4j:commandButton
+							rendered="#{not empty entidadSistemaSeleccionarControlador.entidadAsociadaList}"
+							value="#{messages.aceptar}" ajaxSingle="true" event="onclick"
+							action="#{entidadSistemaSeleccionarControlador.asociarEntidades()}"
+							oncomplete="Richfaces.hideModalPanel('adicionarEntidad')"
+							reRender="entidadSistemaList,entidadSistemaSelect,aIncEntidadesNoAsociadasSelec"
+							style="margin-bottom: 0px; margin-right: 0px; margin-top: 8px">
+						</a4j:commandButton>
+					</a4j:outputPanel> <rich:spacer height="6px" style="display: block" /></div>
+					</td>
+					<td style="width: 6px;"></td>
+				</tr>
+			</table>
+
+
+
+
+
+
+		</a4j:outputPanel>
+	</h:form>
+	</rich:modalPanel>

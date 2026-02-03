@@ -1,0 +1,671 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- CSS -->
+		
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/style/stylesheet_configuracion.css"
+			rel="stylesheet" type="text/css" />
+		
+		<!-- Estilo para los mensajes -->
+		<style type="text/css">
+.custom-error {
+			border: 1px solid #FFCC00;
+			padding: 5px;
+			background-color: #F0F8FF;
+			font-size: 10px;
+			font-family: "Verdana";
+			position: relative;	left: 5px; top: 5px; 
+			margin-right: 10px;
+		}	
+</style>
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+		
+		<a4j:outputPanel ajaxRendered="true" id="errorOutputPanel">
+		<s:div style="height:30px;width:100%"
+			rendered="#{facesMessages.getCurrentMessagesForControl('userSearch').size() > 0 }">
+			<div class="custom-error">
+				<rich:message for="userSearch"></rich:message>
+			</div>	
+		</s:div>
+	</a4j:outputPanel>
+
+		<h:form id="userSearch" styleClass="edit">
+			<a4j:outputPanel id="pageBuscar">
+				<rich:simpleTogglePanel switchType="client"
+					label="#{message.criterios}" bodyClass="simpleTogglePanel"
+					opened="#{camaBuscarControlador.state}">
+					<a4j:support event="oncollapse" ajaxSingle="true"
+						action="#{camaBuscarControlador.changeStateSimpleTugglePanel()}"
+						reRender="busquedas,tablas_id" />
+					<a4j:support event="onexpand" ajaxSingle="true"
+						action="#{camaBuscarControlador.changeStateSimpleTugglePanel()}"
+						reRender="busquedas,tablas_id" />
+					<a4j:outputPanel id="busquedas">
+						<a4j:outputPanel id="advancedsearch"
+							rendered="#{camaBuscarControlador.searchMode == true}">
+							<table cellpadding="0px" cellspacing="0px" class="tabla fil-mt-cont col-mc-izq fil-mt-conb col-mc-der"
+								id="simplesearch">
+								<tr>
+									<td class="colg-c">#{messages.crit1}: <br />
+									<h:inputText id="nombre"
+										value="#{camaBuscarControlador.descripcion}"
+										styleClass="inputText" /></td>
+
+									<td class="colg-c">#{messages.crit2}: <br />
+									<rich:comboBox id="estado"
+										suggestionValues="#{camaBuscarControlador.estados()}"
+										defaultLabel="#{messages.seleccione}"
+										enableManualInput="false"
+										value="#{camaBuscarControlador.estadoCama}">
+									</rich:comboBox></td>
+									<td>#{messages.crit3}: <br />
+									<rich:comboBox id="categoria"
+										suggestionValues="#{camaBuscarControlador.categorias()}"
+										defaultLabel="#{messages.seleccione}"
+										enableManualInput="false"
+										value="#{camaBuscarControlador.categoriaCama}">
+									</rich:comboBox></td>
+								</tr>
+								<tr>
+									<td class="fil-ct-sint colg-c">#{messages.crit4}: <br />
+									<rich:comboBox id="tipoCama"
+										suggestionValues="#{camaBuscarControlador.tipos()}"
+										defaultLabel="#{messages.seleccione}"
+										enableManualInput="false"
+										value="#{camaBuscarControlador.tipoCama}">
+									</rich:comboBox></td>
+									<td class="fil-ct-sint">#{messages.crit5}: <br />
+									<rich:comboBox id="serv"
+										suggestionValues="#{camaBuscarControlador.servicios()}"
+										defaultLabel="#{messages.seleccione}"
+										enableManualInput="false"
+										value="#{camaBuscarControlador.servicio}">
+									</rich:comboBox></td>
+								</tr>
+								<tr>
+									<td colspan="3" align="right">
+									<table cellpadding="0" cellspacing="0" class="tabla">
+										<tr>
+											<td class="col-botton"><h:commandButton
+												styleClass="botton" value="#{messages.buscar}"
+												style="margin-left: 0px; margin-bottom: 0px;"
+												action="#{camaBuscarControlador.buscar()}">
+												<s:defaultAction />
+											</h:commandButton></td>
+											<td><s:button view="/modCommons/modHome/home.gehos"
+												styleClass="botton" value="#{messages.cancelar}"
+												style="margin-right:0px;margin-bottom: 0px;">
+												<f:param name="idFuncionalidad"
+													value="#{activeModule.activeModule.id}" />
+												<f:param name="idancestors"
+													value="#{activeModule.activeModule.id}a" />
+												<f:param name="moduleName"
+													value="#{activeModule.activeModuleName}" />
+											</s:button></td>
+										</tr>
+									</table>
+									</td>
+								</tr>
+								<tr>
+									<td align="right" colspan="5">
+									<table cellpadding="0" cellspacing="0" border="0">
+										<tr>
+											<td><h:graphicImage height="12"
+												style="margin-top:2px;margin-right:2px;"
+												value="/resources/icons/default/acciones/buscar.png" /></td>
+											<td><a4j:commandLink style="margin-right: 0px"
+												action="#{camaBuscarControlador.changeSearchMode(false)}"
+												value="#{messages.busquedaSimple}"
+												reRender="busquedas,tablas_id">
+											</a4j:commandLink></td>
+										</tr>
+									</table>
+									</td>
+
+								</tr>
+							</table>
+						</a4j:outputPanel>
+
+						<a4j:outputPanel id="simplesearch"
+							rendered="#{!camaBuscarControlador.searchMode}">
+							<table cellpadding="0px" cellspacing="0px" class="tabla fil-mt-sint col-mc-izq fil-mt-conb col-mc-der"
+								id="simplesearch">
+								<tr>
+									<td class="colg-c">#{messages.crit1}: <br />
+									<h:inputText id="name"
+										value="#{camaBuscarControlador.descripcion}"
+										styleClass="inputText" /></td>
+									<td valign="bottom" class="col-botton"><h:commandButton
+										styleClass="botton" value="#{messages.buscar}"
+										action="#{camaBuscarControlador.buscar()}">
+										<s:defaultAction />
+									</h:commandButton></td>
+									<td valign="bottom"><s:button styleClass="botton"
+										view="/modCommons/modHome/home.gehos"
+										value="#{messages.cancelar}">
+										<f:param name="idFuncionalidad"
+											value="#{activeModule.activeModule.id}" />
+										<f:param name="idancestors"
+											value="#{activeModule.activeModule.id}a" />
+										<f:param name="moduleName"
+											value="#{activeModule.activeModuleName}" />
+									</s:button></td>
+								</tr>
+								<tr>
+
+									<td align="right" colspan="3">
+									<table cellpadding="0" cellspacing="0" class="tabla">
+										<tr>
+											<td><h:graphicImage height="12"
+												style="margin-top:2px;margin-right:2px;"
+												value="/resources/icons/default/acciones/buscar.png" /></td>
+											<td><a4j:commandLink style="margin-right: 0px"
+												action="#{camaBuscarControlador.changeSearchMode(true)}"
+												value="#{messages.busquedaAvanzada}"
+												reRender="busquedas,tablas_id">
+											</a4j:commandLink></td>
+										</tr>
+									</table>
+									</td>
+								</tr>
+							</table>
+						</a4j:outputPanel>
+					</a4j:outputPanel>
+				</rich:simpleTogglePanel>
+				
+				<br />
+				<div align="right">
+			<table class="tablaLinkAdd" cellpadding="0" cellspacing="0">
+				<tr>
+					<td><a4j:commandLink action="#{camaCrearControlador.begin()}" 
+						status="showModalStatus" style="cursor:pointer;">
+						<h:graphicImage title="#{messages.adicionar}"
+						height="12" width="12"
+						value="/resources/icons/default/acciones/adicionar.png" /></a4j:commandLink></td>
+					<td valign="middle" class="lv-link-add"><a4j:commandLink
+						action="#{camaCrearControlador.begin()}" tabindex="4" style="border: 0px; cursor:pointer;"
+						value=" #{messages.adicionar}" status="showModalStatus" title="#{messages.adicionar}"/></td>
+				</tr>
+			</table>
+			<a4j:status id="showModalStatus" forceId="true" 
+					  onstart="Richfaces.showModalPanel('ajaxLoadingModalBox',{left:1, top:-15});
+					  		   document.body.style.cursor='wait';"
+					  onstop="Richfaces.hideModalPanel('ajaxLoadingModalBox');
+					  		  document.body.style.cursor='default';">
+			</a4j:status>
+			</div>
+				<a4j:outputPanel id="tablas_id">
+					<rich:panel
+						rendered="#{camaBuscarControlador.resultList.size() == 0 and (camaBuscarControlador.descripcion != '' || camaBuscarControlador.estadoCama != '' || camaBuscarControlador.categoriaCama != '' || camaBuscarControlador.tipoCama != '' || camaBuscarControlador.servicio != '')}"
+						>
+						<f:facet name="header">#{messages.listado}</f:facet>
+						<div class="fil-mt-cont col-mt-izq fil-mt-conb col-mt-der"><h:outputText
+						value="#{messages.noInf2}" /></div>						
+					</rich:panel>
+
+					<rich:panel
+						rendered="#{camaBuscarControlador.resultList.size() == 0 and camaBuscarControlador.descripcion == '' and camaBuscarControlador.estadoCama == '' and camaBuscarControlador.categoriaCama == '' and camaBuscarControlador.tipoCama =='' and camaBuscarControlador.servicio == ''}">
+						<f:facet name="header">#{messages.listado}</f:facet>
+						<div class="fil-mt-cont col-mt-izq fil-mt-sinb col-mt-der"><h:outputText
+						value="#{messages.noInf}" /></div>
+					</rich:panel>
+					
+						<rich:dataTable id="userList_security_datatable" rendered="#{not empty camaBuscarControlador.resultList}"
+							style="width: 100%;white-space:nowrap" var="cama"
+							value="#{camaBuscarControlador.resultList}"
+							columnsWidth="0%, 30%, 30%, 30%, 1%, 1%,1%">
+							<f:facet name="header">#{messages.listado}</f:facet>
+
+							<h:column>
+								<f:facet name="header">
+									<h:panelGrid columns="2"
+										style="width: 100%; padding:0px; margin:0px;" border="0"
+										cellpadding="0" cellspacing="0">
+										<s:div style="float: left;">#{messages.crit1}</s:div>
+										<s:div style="text-align: right; padding-left:3px;">
+											<h:graphicImage
+												rendered="#{not camaBuscarControlador.order.equals('descripcion asc') and not camaBuscarControlador.order.equals('descripcion desc')}"
+												value="/resources/icons/default/filtro/default.png"
+												width="17" height="17">
+												<rich:componentControl event="onclick"
+													for="nombrecontextmenu" operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+											<h:graphicImage
+												rendered="#{camaBuscarControlador.order.equals('descripcion asc')}"
+												value="/resources/icons/default/filtro/asc_sort.png"
+												width="17" height="17">
+												<rich:componentControl event="onclick"
+													for="nombrecontextmenu" operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+											<h:graphicImage
+												rendered="#{camaBuscarControlador.order.equals('descripcion desc')}"
+												value="/resources/icons/default/filtro/des_sort.png"
+												width="17" height="17">
+												<rich:componentControl event="onclick"
+													for="nombrecontextmenu" operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+										</s:div>
+									</h:panelGrid>
+								</f:facet>
+	            #{cama.descripcion}
+	            
+	        </h:column>
+
+
+							<h:column>
+								<f:facet name="header">
+									<h:panelGrid columns="2"
+										style="width: 100%; padding:0px; margin:0px;" border="0"
+										cellpadding="0" cellspacing="0">
+										<s:div style="float: left;">#{messages.crit2}</s:div>
+										<s:div style="text-align: right; padding-left:3px;">
+											<h:graphicImage
+												rendered="#{not camaBuscarControlador.order.equals('cama.estadoCama.valor asc') and not camaBuscarControlador.order.equals('cama.estadoCama.valor desc')}"
+												value="/resources/icons/default/filtro/default.png"
+												width="17" height="17">
+												<rich:componentControl event="onclick"
+													for="estadoContextmenu" operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+											<h:graphicImage
+												rendered="#{camaBuscarControlador.order.equals('cama.estadoCama.valor asc')}"
+												value="/resources/icons/default/filtro/asc_sort.png"
+												width="17" height="17">
+												<rich:componentControl event="onclick"
+													for="estadoContextmenu" operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+											<h:graphicImage
+												rendered="#{camaBuscarControlador.order.equals('cama.estadoCama.valor desc')}"
+												value="/resources/icons/default/filtro/des_sort.png"
+												width="17" height="17">
+												<rich:componentControl event="onclick"
+													for="estadoContextmenu" operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+										</s:div>
+									</h:panelGrid>
+								</f:facet>
+						#{cama.estadoCama.valor}
+			</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:panelGrid columns="2"
+										style="width: 100%; padding:0px; margin:0px;" border="0"
+										cellpadding="0" cellspacing="0">
+										<s:div style="float: left;">#{messages.crit3}</s:div>
+										<s:div style="text-align: right; padding-left:3px;">
+											<h:graphicImage
+												rendered="#{not camaBuscarControlador.order.equals('cama.categoriaCama.valor asc') and not camaBuscarControlador.order.equals('cama.categoriaCama.valor desc')}"
+												value="/resources/icons/default/filtro/default.png"
+												width="17" height="17">
+												<rich:componentControl event="onclick"
+													for="categoriaContextmenu" operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+											<h:graphicImage
+												rendered="#{camaBuscarControlador.order.equals('cama.categoriaCama.valor asc')}"
+												value="/resources/icons/default/filtro/asc_sort.png"
+												width="17" height="17">
+												<rich:componentControl event="onclick"
+													for="categoriaContextmenu" operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+											<h:graphicImage
+												rendered="#{camaBuscarControlador.order.equals('cama.categoriaCama.valor desc')}"
+												value="/resources/icons/default/filtro/des_sort.png"
+												width="17" height="17" style=" height : 17px;">
+												<rich:componentControl event="onclick"
+													for="categoriaContextmenu" operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+										</s:div>
+									</h:panelGrid>
+								</f:facet>
+						#{cama.categoriaCama.valor}
+			</h:column>
+
+							<h:column>
+								<f:facet name="header">
+									<h:panelGrid columns="2"
+										style="width: 100%; padding:0px; margin:0px;" border="0"
+										cellpadding="0" cellspacing="0">
+										<s:div style="float: left;">#{messages.crit4}</s:div>
+										<s:div style="text-align: right; padding-left:3px;">
+											<h:graphicImage
+												rendered="#{not camaBuscarControlador.order.equals('cama.tipoCama.valor asc') and not camaBuscarControlador.order.equals('cama.tipoCama.valor desc')}"
+												value="/resources/icons/default/filtro/default.png"
+												width="17" height="17">
+												<rich:componentControl event="onclick"
+													for="tipoCamaContextmenu" operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+											<h:graphicImage
+												rendered="#{camaBuscarControlador.order.equals('cama.tipoCama.valor asc')}"
+												value="/resources/icons/default/filtro/asc_sort.png"
+												width="17" height="17">
+												<rich:componentControl event="onclick"
+													for="tipoCamaContextmenu" operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+											<h:graphicImage
+												rendered="#{camaBuscarControlador.order.equals('cama.tipoCama.valor desc')}"
+												value="/resources/icons/default/filtro/des_sort.png"
+												width="17" height="17">
+												<rich:componentControl event="onclick"
+													for="tipoCamaContextmenu" operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+										</s:div>
+									</h:panelGrid>
+								</f:facet>
+						#{cama.tipoCama.valor}
+			</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:panelGrid columns="2"
+										style="width: 100%; padding:0px; margin:0px;" border="0"
+										cellpadding="0" cellspacing="0">
+										<s:div style="float: left;">#{messages.crit5}</s:div>
+										<s:div style="text-align: right; padding-left:3px;">
+											<h:graphicImage
+												rendered="#{not camaBuscarControlador.order.equals('cama.servicioInEntidadByIdServicio.servicio.nombre asc') and not camaBuscarControlador.order.equals('cama.servicioInEntidadByIdServicio.servicio.nombre desc')}"
+												value="/resources/icons/default/filtro/default.png"
+												width="17" height="17">
+												<rich:componentControl event="onclick"
+													for="servicioContextmenu" operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+											<h:graphicImage
+												rendered="#{camaBuscarControlador.order.equals('cama.servicioInEntidadByIdServicio.servicio.nombre asc')}"
+												value="/resources/icons/default/filtro/asc_sort.png"
+												width="17" height="17">
+												<rich:componentControl event="onclick"
+													for="servicioContextmenu" operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+											<h:graphicImage
+												rendered="#{camaBuscarControlador.order.equals('cama.servicioInEntidadByIdServicio.servicio.nombre desc')}"
+												value="/resources/icons/default/filtro/des_sort.png"
+												width="17" height="17">
+												<rich:componentControl event="onclick"
+													for="servicioContextmenu" operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+										</s:div>
+									</h:panelGrid>
+								</f:facet>
+						#{cama.servicioInEntidadByIdServicio.servicio.nombre}
+			</h:column>
+							<h:column>
+								<div align="center" style="margin-top: 3px"><a4j:commandLink
+									status="showModalStatus" 
+									ajaxSingle="true" immediate="true"	
+									onclick="SeleccionarVer('#{cama.id}')" >
+									<h:graphicImage title="#{messages.ver}" style="border: 0px;"
+										value="/resources/icons/default/acciones/ver.png" />
+								</a4j:commandLink></div>
+							</h:column>
+							<h:column>
+								<div align="center"><a4j:commandLink
+									 status="showModalStatus" 
+									 ajaxSingle="true" immediate="true"						
+									 onclick="SeleccionarModif('#{cama.id}')" >
+									<h:graphicImage title="#{messages.modificar}"
+										style="border: 0px;"
+										value="/resources/icons/default/acciones/modificar.png" />
+								</a4j:commandLink></div>
+							</h:column>
+							<h:column>
+								<div align="center"><a4j:commandLink  ajaxSingle="true"							 
+									 onclick="SeleccionarStat('#{cama.id}')"							 
+									 status="showModalStatus">
+									<h:graphicImage title="#{messages.eliminar}"
+										style="border: 0px; cursor:pointer;"
+										value="/resources/icons/default/acciones/eliminar.png">
+									</h:graphicImage>
+								</a4j:commandLink></div>
+							</h:column>
+
+						</rich:dataTable>					
+						<a4j:jsFunction name="SeleccionarStat" action="#{camaBuscarControlador.seleccionarEliminar()}" 
+								oncomplete="Richfaces.showModalPanel('eliminarMedico')" ajaxSingle="true">
+							<a4j:actionparam name="pos" assignTo="#{camaBuscarControlador.idEliminar}"/>
+						</a4j:jsFunction>
+						<a4j:jsFunction name="SeleccionarModif" action="#{camaBuscarControlador.seleccionarModificar()}" 
+								ajaxSingle="true">
+							<a4j:actionparam name="pos" assignTo="#{camaBuscarControlador.idEliminar}"/>
+						</a4j:jsFunction>
+						<a4j:jsFunction name="SeleccionarVer" action="#{camaBuscarControlador.seleccionarVer()}" 
+								ajaxSingle="true">
+						<a4j:actionparam name="pos" assignTo="#{camaBuscarControlador.idEliminar}"/>
+				</a4j:jsFunction>
+					<br />
+					<s:div id="pagingcontrols" styleClass="tableControl"
+						style="width: 100%; text-align:center" align="center"
+						rendered="#{not empty camaBuscarControlador.resultList}">
+
+						<h:graphicImage
+							value="/resources/icons/default/paginado/iniciod.png"
+							rendered="#{!camaBuscarControlador.previousExists}" />
+
+						<s:link
+							view="/modConfiguracion/management/gestionarCama/BuscarCama.gehos"
+							rendered="#{camaBuscarControlador.previousExists}" id="firstPage">
+							<h:graphicImage title="#{messages.pag1}"
+								style="border: 0px;cursor:pointer;"
+								value="/resources/icons/default/paginado/#{theme.color}/inicio.png" />
+							<f:param name="firstResult" value="0" />
+							<f:param name="order" value="#{camaBuscarControlador.order}" />
+							<f:param name="avz" value="#{camaBuscarControlador.searchMode}" />
+							<f:param name="state" value="#{camaBuscarControlador.state}" />
+							<f:param name="critB1"
+								value="#{parameters.encodec(camaBuscarControlador.descripcion)}" />
+							<f:param name="critB2"
+								value="#{parameters.encodec(camaBuscarControlador.estadoCama)}" />
+							<f:param name="critB3"
+								value="#{parameters.encodec(camaBuscarControlador.categoriaCama)}" />
+							<f:param name="critB4"
+								value="#{parameters.encodec(camaBuscarControlador.tipoCama)}" />
+							<f:param name="critB5"
+								value="#{parameters.encodec(camaBuscarControlador.servicio)}" />
+						</s:link>
+
+						<h:graphicImage
+							value="/resources/icons/default/paginado/anteriord.png"
+							rendered="#{!camaBuscarControlador.previousExists}" />
+
+
+						<s:link
+							view="/modConfiguracion/management/gestionarCama/BuscarCama.gehos"
+							rendered="#{camaBuscarControlador.previousExists}"
+							id="previousPage">
+							<h:graphicImage title="#{messages.pag2}"
+								style="border: 0px;cursor:pointer;"
+								value="/resources/icons/default/paginado/#{theme.color}/anterior.png" />
+							<f:param name="firstResult"
+								value="#{camaBuscarControlador.previousFirstResult}" />
+							<f:param name="order" value="#{camaBuscarControlador.order}" />
+							<f:param name="avz" value="#{camaBuscarControlador.searchMode}" />
+							<f:param name="state" value="#{camaBuscarControlador.state}" />
+							<f:param name="critB1"
+								value="#{parameters.encodec(camaBuscarControlador.descripcion)}" />
+							<f:param name="critB2"
+								value="#{parameters.encodec(camaBuscarControlador.estadoCama)}" />
+							<f:param name="critB3"
+								value="#{parameters.encodec(camaBuscarControlador.categoriaCama)}" />
+							<f:param name="critB4"
+								value="#{parameters.encodec(camaBuscarControlador.tipoCama)}" />
+							<f:param name="critB5"
+								value="#{parameters.encodec(camaBuscarControlador.servicio)}" />
+						</s:link>
+
+
+						<h:graphicImage
+							value="/resources/icons/default/paginado/siguiented.png"
+							rendered="#{!camaBuscarControlador.nextExists}" />
+
+
+						<s:link
+							view="/modConfiguracion/management/gestionarCama/BuscarCama.gehos"
+							rendered="#{camaBuscarControlador.nextExists}" id="nextPage">
+							<h:graphicImage title="#{messages.pag3}"
+								style="border: 0px;cursor:pointer;"
+								value="/resources/icons/default/paginado/#{theme.color}/siguiente.png" />
+
+							<f:param name="firstResult"
+								value="#{camaBuscarControlador.nextFirstResult}" />
+							<f:param name="order" value="#{camaBuscarControlador.order}" />
+							<f:param name="avz" value="#{camaBuscarControlador.searchMode}" />
+							<f:param name="state" value="#{camaBuscarControlador.state}" />
+							<f:param name="critB1"
+								value="#{parameters.encodec(camaBuscarControlador.descripcion)}" />
+							<f:param name="critB2"
+								value="#{parameters.encodec(camaBuscarControlador.estadoCama)}" />
+							<f:param name="critB3"
+								value="#{parameters.encodec(camaBuscarControlador.categoriaCama)}" />
+							<f:param name="critB4"
+								value="#{parameters.encodec(camaBuscarControlador.tipoCama)}" />
+							<f:param name="critB5"
+								value="#{parameters.encodec(camaBuscarControlador.servicio)}" />
+
+						</s:link>
+
+						<h:graphicImage value="/resources/icons/default/paginado/find.png"
+							rendered="#{!camaBuscarControlador.nextExists}" />
+
+
+						<s:link
+							view="/modConfiguracion/management/gestionarCama/BuscarCama.gehos"
+							rendered="#{camaBuscarControlador.nextExists}" id="lastPage">
+							<h:graphicImage title="#{messages.pag4}"
+								style="border: 0px;cursor:pointer;"
+								value="/resources/icons/default/paginado/#{theme.color}/fin.png" />
+
+							<f:param name="firstResult"
+								value="#{camaBuscarControlador.lastFirstResult}" />
+							<f:param name="order" value="#{camaBuscarControlador.order}" />
+							<f:param name="avz" value="#{camaBuscarControlador.searchMode}" />
+							<f:param name="state" value="#{camaBuscarControlador.state}" />
+							<f:param name="critB1"
+								value="#{parameters.encodec(camaBuscarControlador.descripcion)}" />
+							<f:param name="critB2"
+								value="#{parameters.encodec(camaBuscarControlador.estadoCama)}" />
+							<f:param name="critB3"
+								value="#{parameters.encodec(camaBuscarControlador.categoriaCama)}" />
+							<f:param name="critB4"
+								value="#{parameters.encodec(camaBuscarControlador.tipoCama)}" />
+							<f:param name="critB5"
+								value="#{parameters.encodec(camaBuscarControlador.servicio)}" />
+						</s:link>
+
+
+
+					</s:div>
+				</a4j:outputPanel>
+			</a4j:outputPanel>
+		</h:form>
+
+		<h:form>
+			<rich:contextMenu attached="false" id="nombrecontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{camaBuscarControlador.setOrder('descripcion asc')}"
+					reRender="pageBuscar,userList_security_datatable">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{camaBuscarControlador.setOrder('descripcion desc')}"
+					reRender="pageBuscar,userList_security_datatable">
+				</rich:menuItem>
+				
+			</rich:contextMenu>
+			<rich:contextMenu attached="false" id="categoriaContextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{camaBuscarControlador.setOrder('cama.categoriaCama.valor asc')}"
+					reRender="pageBuscar,userList_security_datatable">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{camaBuscarControlador.setOrder('cama.categoriaCama.valor desc')}"
+					reRender="pageBuscar,userList_security_datatable">
+				</rich:menuItem>
+				
+			</rich:contextMenu>
+			<rich:contextMenu attached="false" id="estadoContextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{camaBuscarControlador.setOrder('cama.estadoCama.valor asc')}"
+					reRender="pageBuscar,userList_security_datatable">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{camaBuscarControlador.setOrder('cama.estadoCama.valor desc')}"
+					reRender="pageBuscar,userList_security_datatable">
+				</rich:menuItem>
+				
+			</rich:contextMenu>
+			<rich:contextMenu attached="false" id="tipoCamaContextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{camaBuscarControlador.setOrder('cama.tipoCama.valor asc')}"
+					reRender="pageBuscar,userList_security_datatable">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMayMen}r" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{camaBuscarControlador.setOrder('cama.tipoCama.valor desc')}"
+					reRender="pageBuscar,userList_security_datatable">
+				</rich:menuItem>
+				
+			</rich:contextMenu>
+			<rich:contextMenu attached="false" id="servicioContextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{camaBuscarControlador.setOrder('cama.servicioInEntidadByIdServicio.servicio.nombre asc')}"
+					reRender="pageBuscar,userList_security_datatable">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{camaBuscarControlador.setOrder('cama.servicioInEntidadByIdServicio.servicio.nombre desc')}"
+					reRender="pageBuscar,userList_security_datatable">
+				</rich:menuItem>
+				
+			</rich:contextMenu>
+		</h:form>
+
+		<ui:include
+			src="/modConfiguracion/management/gestionarCama/modalspanel/ConfirmarEliminarCamaBuscar.xhtml" />
+			
+		<rich:modalPanel id="ajaxLoadingModalBox" minHeight="10" minWidth="10" 
+	        height="10" width="10" zindex="2000">
+	     <s:div rendered="false">  
+	           <img id="favsloadingdiv" 
+	        	src="#{facesContext.externalContext.requestContextPath}/resources/icons/default/acciones/loading_small.gif"
+	        	style="position: absolute; top: 0px; left: 0px;" />
+	     </s:div>  
+	</rich:modalPanel>
+	</ui:define>
+
+</ui:composition>
+

@@ -1,0 +1,133 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+		<a4j:outputPanel ajaxRendered="true">
+			<rich:messages styleClass="message" for="buttonAceptar"
+				ajaxRendered="true" />
+			<h:messages globalOnly="true" styleClass="message"
+				id="globalMessages" />
+		</a4j:outputPanel>
+
+		<h:form id="form" styleClass="edit">
+
+			<s:validateAll>
+				<rich:panel>
+					<f:facet name="header">#{messages.datos}</f:facet>
+
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr>
+							<td style="height: 13px;" colspan="6"></td>
+						</tr>
+						<tr style="vertical-align: top;">
+							<td style="width: 7px;"></td>
+							<td><h:outputText value="#{messages.codigo}" /> <rich:message
+								for="codigo" showDetail="false" showSummary="false"
+								tooltip="true">
+								<f:facet name="errorMarker">
+									<h:outputText
+										title="#{facesMessages.getCurrentMessagesForControl('codigo').get(0).getDetail()}"
+										style="color : red;cursor:pointer;" value="*"
+										styleClass="nombre" />
+								</f:facet>
+							</rich:message><br />
+							<h:inputText id="codigo"
+								value="#{especialidadModificarControlador.codigo}"
+								required="true" requiredMessage="#{messages.valorRequerido}"
+								validator="#{especialidadModificarControlador.validateCodigo}"
+								style="width:148px; text-align: left" /></td>
+							<td width="25px" />
+							<td><h:outputText value="#{messages.nombre}" /> <rich:message
+								for="nombre" showDetail="false" showSummary="false"
+								tooltip="true">
+								<f:facet name="errorMarker">
+									<h:outputText
+										title="#{facesMessages.getCurrentMessagesForControl('nombre').get(0).getDetail()}"
+										style="color : red;cursor:pointer;" value="*"
+										styleClass="nombre" />
+								</f:facet>
+							</rich:message><br />
+							<h:inputText id="nombre"
+								value="#{especialidadModificarControlador.nombre}"
+								required="true" requiredMessage="#{messages.valorRequerido}"
+								validator="#{validations_configuracion.textnumber30}" style="width:148px;" /></td>
+							<td width="25px" />
+							<td><h:outputLabel value="#{messages.servicio}" /> <rich:message
+								for="servicio" showDetail="false" showSummary="false"
+								tooltip="true">
+								<f:facet name="errorMarker">
+									<h:outputText
+										title="#{facesMessages.getCurrentMessagesForControl('servicio').get(0).getDetail()}"
+										style="color : red;cursor:pointer;" value="*"
+										styleClass="nombre" />
+								</f:facet>
+							</rich:message><br />
+							<rich:comboBox id="servicio" required="true"
+								requiredMessage="#{messages.valorRequerido}"
+								suggestionValues="#{especialidadModificarControlador.serviciosClinicos()}"
+								style=" width: 149px;" defaultLabel="#{messages.seleccione}"
+								value="#{especialidadModificarControlador.servicioSeleccionado}">
+							</rich:comboBox></td>
+						</tr>
+						<tr>
+							<td height="8px" />
+						</tr>
+						<tr>
+							<td />
+							<td valign="top" style="width: 1px;">
+							<table cellpadding="0" cellspacing="0" border="0">
+								<tr>
+									<td>#{messages.quirurgica}</td>
+									<td width="8px" />
+									<td><h:selectBooleanCheckbox
+										value="#{especialidadModificarControlador.quirurgica}"
+										style="margin-top: 0px; margin-right: 0px; margin-left: 0px; margin-bottom: 0px;" /></td>
+								</tr>
+							</table>
+							</td>
+
+						</tr>
+						<tr>
+							<td height="7px" />
+						</tr>
+					</table>
+
+				</rich:panel>
+				<rich:spacer height="1px" />
+				<div align="right">
+				<table cellpadding="0" cellspacing="0" border="0">
+					<tr>
+						<td ><h:commandButton value="#{messages.aceptar}"
+							id="buttonAceptar"
+							
+							style="margin-right: 5px; margin-left: 0px; margin-top: 7px; margin-bottom:  0px"
+							action="#{especialidadModificarControlador.modificar()}">
+						</h:commandButton></td>						
+						<td><h:commandButton value="#{messages.cancelar}"
+							style="margin-right: 0px; margin-left: 5px; margin-top: 7px; margin-bottom:  0px"
+							immediate="true" action="cancelar" propagation="end" /></td>       
+					</tr>
+				</table>
+				</div>
+			</s:validateAll>
+		</h:form>
+	</ui:define>
+</ui:composition>

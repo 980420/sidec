@@ -1,0 +1,118 @@
+
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" xmlns:a4j="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle('#{messages.eliminarFirma}')</script>
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css"
+		rel="stylesheet" type="text/css" />
+
+
+
+	<h:form id="idForm" enctype="multipart/form-data">
+
+		<rich:panel>
+			<f:facet name="header">
+				<h:panelGroup>
+					<div>
+						<div align="left">#{messages.datosHoja}</div>
+					</div>
+				</h:panelGroup>
+			</f:facet>
+			<table border="0" cellpadding="0" cellspacing="0">
+				<tr class="filSepGranRA">
+					<td rowspan="15" ></td>
+					<td class="colSepPeq"><h:outputText
+							value="#{messages.msg_nombreHoja_modCond}:"
+							style="margin:0px; padding:0px;" /></td>
+					<td class="colSepGran"><h:outputText styleClass="dataText"
+							value="#{listarCRD.hojaElimininarFirma.hojaCrd.nombreHoja}"
+							style="margin:0px; padding:0px;" /> <h:graphicImage
+							title="#{listarCRD.hojaElimininarFirma.estadoHojaCrd.nombre}"
+							height="16" style="position: relative; vertical-align: middle;"
+							value="#{listarCRD.estadoIcon(listarCRD.hojaElimininarFirma.estadoHojaCrd)}" />
+					</td>
+					<td class="colSepPeq"><h:outputText
+							value="#{messages.identificadorSujeto}:"
+							style="margin:0px; padding:0px;" /></td>
+					<td class="colSepGran"><h:outputText styleClass="dataText"
+							value="#{listarCRD.hojaElimininarFirma.momentoSeguimientoEspecifico.sujeto.codigoPaciente}"
+							style="margin:0px; padding:0px;" /></td>
+					<td class="colSepPeq"><h:outputText
+							value="#{messages.notasDiscrepancia}:"
+							style="margin:0px; padding:0px;" /></td>
+					<td class="colSepGran"><h:outputText style="color:red;"
+							value="#{listarCRD.CantidadNotasDiscrepancias().get(0)} Nuevas," />
+						<h:outputText style="color:gray; margin-left:5px;"
+							value="#{listarCRD.CantidadNotasDiscrepancias().get(1)} Actualizadas," />
+						<h:outputText style="color:green; margin-left:5px;"
+							value="#{listarCRD.CantidadNotasDiscrepancias().get(2)} Resueltas," />
+						<h:outputText style="font-weight: bold; margin-left:5px;"
+							value="#{listarCRD.CantidadNotasDiscrepancias().get(3)} Cerradas" /></td>
+
+				</tr>
+				<tr>
+					<td class="colSepPeq"><h:outputText
+							value="#{messages.momentoSeguimiento}:"
+							style="margin:0px; padding:0px;" /></td>
+					<td class="colSepGran"><h:outputText styleClass="dataText"
+							value="#{listarCRD.hojaElimininarFirma.momentoSeguimientoEspecifico.momentoSeguimientoGeneral.nombre}"
+							style="margin:0px; padding:0px;" /></td>
+					<td class="colSepPeq"><h:outputText
+							value="#{messages.nombreEntidad}:"
+							style="margin:0px; padding:0px;" /></td>
+					<td class="colSepGran"><h:outputText styleClass="dataText"
+							value="#{listarCRD.hojaElimininarFirma.momentoSeguimientoEspecifico.sujeto.entidad.nombre}"
+							style="margin:0px; padding:0px;" /></td>
+				</tr>
+			</table>
+		</rich:panel>
+		<rich:panel id="idInterrumpir" opened="true" switchType="client">
+			<f:facet name="header">
+				<h:panelGroup>
+					<div>
+						<div align="left">#{messages.causaEliminar}</div>
+					</div>
+				</h:panelGroup>
+			</f:facet>
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td><s:label styleClass="#{invalid?'labelErrors':''}"
+							value="#{messages.causa}:">
+							<rich:message for="causa" showDetail="false">
+								<f:facet name="errorMarker">
+									<h:outputText style="color: red;cursor: pointer !important;"
+										title="#{facesMessages.getCurrentMessagesForControl('causa').get(0).getDetail()}"
+										value="*" />
+								</f:facet>
+							</rich:message>
+						</s:label><br /> <h:inputTextarea id="causa" value="#{listarCRD.causa}" validator="#{validations_sujeto.causaEnBlanco}"
+							style="width:100%;resize: vertical"
+							required="#{!empty param['idForm:aceptarr'] and listarCRD.causaRequired}">
+						</h:inputTextarea></td>
+				</tr>
+			</table>
+		</rich:panel>
+
+		<div align="right">
+			<br></br>
+			<a:commandButton id="aceptarr" value="#{messages.aceptar}"
+				oncomplete="#{listarCRD.validarCampo()}" />
+			<rich:spacer width="10" />
+			<a:commandButton value="#{messages.cancelar}" style="margin:0px;"
+				action="cancelar" immediate="true" />
+		</div>
+
+
+
+	</h:form>
+	<ui:include
+		src="/modEnsayo/ensayo_conduccion/codebase/plantillas/AdvertenciaEliminarFirma.xhtml">
+		<ui:param name="control" value="#{listarCRD}" />
+	</ui:include>
+</s:div>

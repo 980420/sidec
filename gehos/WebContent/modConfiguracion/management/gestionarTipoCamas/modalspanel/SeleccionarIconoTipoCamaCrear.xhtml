@@ -1,0 +1,70 @@
+<rich:modalPanel id="icono_tipo_ubicacion" width="217" height="110" resizeable="false" autosized="true"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+	<f:facet name="header">
+		<h:panelGroup>
+			<h:outputText value="#{messages.titulo2}" style="FONT-SIZE: x-small;"></h:outputText>
+		</h:panelGroup>
+	</f:facet>
+	<f:facet name="controls">
+		<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+			style="cursor:pointer; position:relative; top:1px;"
+			onclick="Richfaces.hideModalPanel('icono_tipo_ubicacion')" />
+	</f:facet>
+
+	<h:form id="eliminar_entidad_panel_form">
+		<table cellpadding="0px" cellspacing="0px" class="tabla"
+			style="padding-top: 12px; padding-left: 7px;" id="container">
+			<tr>
+				<td><h:outputLabel value="#{messages.icono}"></h:outputLabel><br />
+
+				<s:div id="iconspanel" rendered="true">
+					<s:div id="modulo_agregar_cat_iconslist">
+						<div style="overflow: auto; width: 210px;"><rich:dataGrid
+							columns="4" 
+							value="#{tipoCamaCrearControlador.getExistingModuleIcons()}"
+							border="0px" var="icon">
+							<s:div style="float: left;"
+								rendered="#{tipoCamaCrearControlador.isSelected(icon)}">
+								<input type="radio"
+									onclick="var icn='#{icon}'; updateIcon(icn);"
+									style="visibility: visible;" name="musictype2"
+									checked="checked"> </input>
+							</s:div>
+							<s:div style="float: left;"
+								rendered="#{not tipoCamaCrearControlador.isSelected(icon)}">
+								<input type="radio"
+									onclick="var icn='#{icon}'; updateIcon(icn);"
+									style="visibility: visible;" name="musictype2"> </input>
+							</s:div>
+
+							<h:graphicImage width="20" height="20" title="#{icon}"
+								url="/resources/modCommon/tipocamaimage/#{icon}" />
+						</rich:dataGrid></div>
+					</s:div>
+				</s:div></td>
+			</tr>			
+		</table>
+		
+		<div align="right">
+				<table cellpadding="0" cellspacing="0" class="table fil-c" style="padding-right: 8px">
+					<tr>
+						<td class="col-botton"><a:commandButton ajaxSingle="true"
+							value="#{messages.aceptar}" reRender="aIcono"
+							oncomplete="Richfaces.hideModalPanel('icono_tipo_ubicacion')"
+							styleClass="botton" /></td>
+						<td><a:commandButton ajaxSingle="true"
+							value="#{messages.cancelar}" reRender="aIcono"
+							oncomplete="javascript:Richfaces.hideModalPanel('icono_tipo_ubicacion');"
+							styleClass="botton" /></td>
+					</tr>
+				</table>
+				</div>
+
+	</h:form>
+	</rich:modalPanel>

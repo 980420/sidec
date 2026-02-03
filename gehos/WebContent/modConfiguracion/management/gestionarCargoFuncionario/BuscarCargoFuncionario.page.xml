@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+	
+	<action execute="#{cargoFuncionarioBuscarControlador.begin()}"/>
+
+	<!-- go to create -->
+	<navigation from-action="#{cargoFuncionarioCrearControlador.begin()}" evaluate="#{cargoFuncionarioCrearControlador.error}">
+		<rule if-outcome="0">		
+			<redirect view-id="/modConfiguracion/management/gestionarCargoFuncionario/CrearCargoFuncionario.xhtml" />
+		</rule>
+	</navigation>
+	
+	<!-- go to view details -->
+	<navigation from-action="#{cargoFuncionarioVerDetallesControlador.setCargoId(carg.id)}" evaluate="#{cargoFuncionarioVerDetallesControlador.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarCargoFuncionario/VerDetallesCargoFuncionario.xhtml">			
+				<param name="from" value="listar" />
+			</redirect>		
+		</rule>
+	</navigation>
+	
+	<!-- go to modify -->
+	<navigation from-action="#{cargoFuncionarioModificarControlador.setCargoId(carg.id)}" evaluate="#{cargoFuncionarioModificarControlador.error}">		
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarCargoFuncionario/ModificarCargoFuncionario.xhtml" />
+		</rule>
+	</navigation>
+</page>

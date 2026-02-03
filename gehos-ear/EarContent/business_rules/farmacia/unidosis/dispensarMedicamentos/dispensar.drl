@@ -1,0 +1,25 @@
+package dispensar
+
+#list any import classes here.
+import java.util.Hashtable;
+import gehos.reglasdelnegocio.test.RuleResult;
+import java.lang.Object;
+import java.lang.reflect.Array;
+#declare any global variables here
+
+rule "Notificacion de Error"
+	when
+		Hashtable(size==0)
+		
+		$result : RuleResult();
+	then 
+        $result.setValue("ok");
+end
+rule "Notificacion de Error2"
+	when
+		Hashtable(size != 0)
+		
+		$result : RuleResult();
+	then 
+        $result.setValue("exists");
+end

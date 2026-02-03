@@ -1,0 +1,144 @@
+.horario {
+	padding: 1px 2px 1px 1px !important; 
+}
+
+.rich-panel-body {
+	padding: 13px 8px 13px 8px;
+}
+
+.cellEntre {
+	padding-left: 25px;
+}
+
+.cellDato {
+	padding-left: 8px;
+}
+
+.cellPaciente {
+	padding-left: 8px;
+}
+
+.v-spacer-between-2l{
+	height: 8px;
+	display: block;
+}
+
+.panelBody {
+	padding: 13px 8px 13px 8px;
+}
+
+.cellBoton {
+	padding-top: 8px;
+}
+
+.row td {
+	padding-bottom: 8px;
+}
+
+.lab label {
+	vertical-align: top;
+}
+
+.rich-panelbar-content {
+	padding: 13px 8px 13px 8px;
+}
+
+.tabPanelContent {
+	padding: 13px 8px 13px 8px;
+}
+
+.simpleToPanelContent {
+	padding: 1px 1px 1px 1px;
+}
+
+.holeDay{
+	background-image: url("../../resources/modHospitalizacion/images/fullfuture.png");
+	color: black;
+}
+
+.holeDay:hover{
+	background-image: url("../../resources/modHospitalizacion/images/dayhover.png");
+	color: black;
+	font-weight: bold;
+}
+
+.oneQuarterDay{
+	background-image: url("../../resources/modHospitalizacion/images/halffuture.jpg");
+	color: black;
+}
+
+.oneQuarterDay:hover{
+	background-image: url("../../resources/modHospitalizacion/images/dayhover.png");
+	color: black;
+	font-weight: bold;
+}
+
+.twoQuarterDay{
+	background-image: url("../../resources/modHospitalizacion/images/halffuture.jpg");
+	color: black;
+}
+
+.twoQuarterDay:hover{
+	background-image: url("../../resources/modHospitalizacion/images/dayhover.png");
+	color: black;
+	font-weight: bold;
+}
+
+.threeQuarterDay{
+	background-image: url("../../resources/modHospitalizacion/images/halfpast.jpg");
+	color: black;
+}
+
+.threeQuarterDay:hover{
+	background-image: url("../../resources/modHospitalizacion/images/dayhover.png");
+	color: black;
+	font-weight: bold;
+}
+
+.fullDay{
+	background-image: url("../../resources/modHospitalizacion/images/fullpast.png");
+	color: black;
+}
+
+.threeQuarterDay:hover{
+	background-image: url("../../resources/modHospitalizacion/images/dayhover.png");
+	color: black;
+	font-weight: bold;
+}
+
+.panelBarContent {
+	padding: 13px 8px 13px 8px;
+}
+
+.rich-tabpanel-content {
+	padding: 13px 8px 13px 8px;
+}
+
+.simpleTogPanel {
+	padding: 13px 8px 13px 8px;
+}
+
+.simpleTogPanel-H {
+	font-family: "Verdana";
+	font-size: 11px;
+	font-weight: bold;
+}
+
+.errorLabel{	
+ 	color: red;
+ 	padding-left: 4px;
+}
+
+.demo_fieldset {
+	margin : 8px;
+	border : 1px solid #ACBECE;
+}
+.demo_legend {
+	font-weight : bold; 
+	margin : 0px 10px 0px 18px;
+	font-family: Verdana;
+}
+
+.inplaceSelect {
+	cursor:pointer;
+}

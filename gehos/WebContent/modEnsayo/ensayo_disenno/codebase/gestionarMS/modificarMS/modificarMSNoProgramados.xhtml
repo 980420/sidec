@@ -1,0 +1,352 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}">
+	<s:div>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript">setContentTitle('#{messages.lbl_titulo_ens}')</script>
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css"
+			rel="stylesheet" type="text/css" />
+		<link rel='stylesheet'
+			href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+			type='text/css' />
+		<rich:messages globalOnly="true" styleClass="message"
+			id="globalMessage" ajaxRendered="true" />
+
+		<a4j:outputPanel ajaxRendered="true" id="errorOutputPanel">
+			<s:div style="height:35px;"
+				rendered="#{facesMessages.getCurrentMessagesForControl('modificarMSNoProgramado').size() > 0 }">
+				<div class="custom-error">
+					<rich:message for="modificarMSNoProgramado"></rich:message>
+				</div>
+			</s:div>
+		</a4j:outputPanel>
+
+		<h:form id="modificarMSNoProgramado">
+			<rich:panel>
+
+				<rich:simpleTogglePanel label="#{messages.lbl_datosMS_ens}"
+					switchType="client" opened="true">
+
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr>
+
+							<td><h:outputText value="#{messages.lbl_nombre_ens}:"
+									styleClass="normalText" />
+									<span style="color:red;">*</span> <rich:message
+											for="nombrems" showDetail="false" tooltip="true"
+											style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title="#{facesMessages.getCurrentMessagesForControl('nombrems').get(0).getDetail()}" />
+											</f:facet>
+										</rich:message> <br /> <h:inputText
+									styleClass="tbx" value="#{modificarMSNoProgramado.ms.nombre}"
+									id="nombrems" validator="#{modificarMSNoProgramado.textnumber100}"
+									required="#{!empty param['modificarMSNoProgramado:aceptarBtn']}"
+									disabled="#{!modificarMSNoProgramado.habilitarModificar()}" />
+								<br /> <rich:spacer height="8px"></rich:spacer></td>
+
+							<td class="colGran"><h:outputText
+									value="#{messages.lbl_ocurre_ens}:" styleClass="normalText" />
+									<span style="color:red;">*</span>
+									<rich:message for="descripcion" showDetail="false"
+									tooltip="true" style="color:red;">
+									<f:facet name="errorMarker">
+										<h:outputText value="*"
+											title="#{facesMessages.getCurrentMessagesForControl('descripcion').get(0).getDetail()}" />
+									</f:facet>
+								</rich:message>
+								<br /> <rich:comboBox id="descripcion"
+									value="#{modificarMSNoProgramado.descripcion}"
+									defaultLabel="#{messages.lbl_seleccione_ens}"
+									enableManualInput="false" styleClass="cbx"
+									suggestionValues="#{modificarMSNoProgramado.descripciones}"
+									required="#{!empty param['modificarMSNoProgramado:aceptarBtn']}"
+									disabled="#{!modificarMSNoProgramado.habilitarModificar()}">
+
+								</rich:comboBox></td>
+						</tr>
+					</table>
+					<rich:simpleTogglePanel label="#{messages.lbl_hojasCrd_ens}"
+						switchType="client" styleClass="whitespace">
+						<a4j:region>
+							<rich:panel>
+								<f:facet name="header">#{messages.lbl_criterios_ens}</f:facet>
+								<a4j:outputPanel id="busquedas_crd">
+									<a4j:outputPanel>
+										<table cellpadding="0px" cellspacing="0px" border="0px">
+
+											<tr style="vertical-align: top;">
+
+												<td>#{messages.lbl_nombre_ens}:<br /> <h:inputText
+														tabindex="6" value="#{hojasCRDCustomList_ensayo.nombre}"
+														style="width:148px;" />
+
+												</td>
+
+
+												<td><rich:spacer width="25px" /></td>
+												<td><br /> <a4j:commandButton
+														value="#{messages.btn_buscar_ens}" tabindex="10"
+														action="buscar"
+														style="margin-left: 0px; margin-bottom:  0px; margin-top: 0px;"
+														reRender="tablas_crd,tabla_listado_crd">
+														<s:defaultAction />
+													</a4j:commandButton></td>
+
+											</tr>
+
+
+										</table>
+									</a4j:outputPanel>
+								</a4j:outputPanel>
+							</rich:panel>
+
+							<rich:spacer height="11px" />
+
+							<a4j:outputPanel id="tablas_crd">
+								<a4j:jsFunction name="selectHojaCRD"
+									action="#{modificarMSNoProgramado.seleccionarHojaCRD()}"
+									status="estadoHojaCRD"
+									reRender="tablas_crd, tabla_listado_crd, hojasCRD"
+									ajaxSingle="true">
+									<a4j:actionparam name="id"
+										assignTo="#{modificarMSNoProgramado.idHojaCRD}" />
+								</a4j:jsFunction>
+								<rich:panel styleClass="whitespace"
+									rendered="#{hojasCRDCustomList_ensayo.resultList.size() == 0 and hojasCRDCustomList_ensayo.nombre  == ''}">
+									<f:facet name="header">#{messages.lbl_listadoCrd_ens}</f:facet>
+
+									<div class="results" id="roleList">
+										<h:outputText value="#{messages.msg_listaVacia_ens}" />
+									</div>
+
+								</rich:panel>
+								<rich:panel
+									rendered="#{hojasCRDCustomList_ensayo.resultList.size() == 0 and hojasCRDCustomList_ensayo.nombre  != ''}">
+									<f:facet name="header">#{messages.lbl_listadoCrd_ens}</f:facet>
+
+									<div class="results" id="roleList">
+										<h:outputText value="#{messages.msg_noResultadosMS_ens}" />
+									</div>
+								</rich:panel>
+								<s:div style="margin-left:1px;margin-top:1px"
+									rendered="#{not empty hojasCRDCustomList_ensayo.resultList}">
+									<rich:dataTable id="tabla_listado_crd" style="width: 100%;"
+										var="hojaCRD" value="#{hojasCRDCustomList_ensayo.resultList}"
+										columnsWidth="0*, 40%, 20%, 40%*">
+										<f:facet name="header">
+											<div>#{messages.lbl_listadoCrd_ens}</div>
+										</f:facet>
+										<h:column>
+											<f:facet name="header">
+												<h:panelGrid columns="2"
+													style="width: 100%; padding:0px; margin:0px;" border="0"
+													cellpadding="0" cellspacing="0">
+													<s:div style="float: left;"></s:div>
+													<s:div style="text-align: right; padding-left:3px;"></s:div>
+												</h:panelGrid>
+											</f:facet>
+											<s:div
+												rendered="#{modificarMSNoProgramado.hojaCRDSeleccionada.containsKey(hojaCRD.id)}">
+												<input type="checkbox" style="margin: 0px 0px 0px 0px;"
+													checked="true" onclick="selectHojaCRD('#{hojaCRD.id}')" />
+											</s:div>
+											<s:div
+												rendered="#{not modificarMSNoProgramado.hojaCRDSeleccionada.containsKey(hojaCRD.id)}">
+												<input type="checkbox" style="margin: 0px 0px 0px 0px;"
+													onclick="selectHojaCRD('#{hojaCRD.id}')" />
+											</s:div>
+
+
+										</h:column>
+
+										<h:column>
+											<f:facet name="header">
+												<h:panelGrid columns="2"
+													style="width: 100%; padding:0px; margin:0px;" border="0"
+													cellpadding="0" cellspacing="0">
+													<s:div style="float: left;">#{messages.lbl_nombre_ens}</s:div>
+													<s:div style="text-align: right; padding-left:3px;"></s:div>
+												</h:panelGrid>
+											</f:facet>
+			            			#{hojaCRD.nombreHoja}
+			        			</h:column>
+										<h:column>
+											<f:facet name="header">
+												<h:panelGrid columns="2"
+													style="width: 100%; padding:0px; margin:0px;" border="0"
+													cellpadding="0" cellspacing="0">
+													<s:div style="float: left;">#{messages.lbl_dateCr_ens}</s:div>
+													<s:div style="text-align: right; padding-left:3px;"></s:div>
+												</h:panelGrid>
+											</f:facet>
+											<h:outputLabel value='#{hojaCRD.fechaCreacion}'>
+												<s:convertDateTime pattern='dd/MM/yyyy' />
+											</h:outputLabel>
+
+										</h:column>
+										<h:column>
+											<f:facet name="header">
+												<h:panelGrid columns="2"
+													style="width: 100%; padding:0px; margin:0px;" border="0"
+													cellpadding="0" cellspacing="0">
+													<s:div style="float: left;">#{messages.lbl_propietario_ens}</s:div>
+													<s:div style="text-align: right; padding-left:3px;"></s:div>
+												</h:panelGrid>
+											</f:facet>
+											<h:outputText value="#{hojaCRD.usuario.nombre}" />
+
+										</h:column>
+
+
+
+
+
+									</rich:dataTable>
+								</s:div>
+								<rich:spacer height="11px" />
+
+								<!-- Paginado -->
+								<ui:include
+									src="/layouts/alas-layout/themes/template_auxiliares/paginado_tabla_inferior_generico.xhtml/">
+									<ui:param name="vzPaginado"
+										value="#{hojasCRDCustomList_ensayo.resultCount>10}" />
+									<ui:param name="nomControladorList"
+										value="#{hojasCRDCustomList_ensayo}" />
+									<ui:param name="idListado" value="tablas_crd" />
+
+								</ui:include>
+
+								<!-- END Paginado -->
+							</a4j:outputPanel>
+
+						</a4j:region>
+						<br />
+						<table width="100%" cellpadding="0" cellspacing="0">
+							<tr>
+								<td align="right"><a4j:status id="estadoHojaCRD">
+										<f:facet name="start">
+											<s:div>
+												<div align="right" style="width: 100%">
+													<h:graphicImage
+														value="/resources/icons/default/acciones/loading_small.gif" />
+													<rich:spacer width="4" height="8" />
+													<h:outputText value="#{messages.lbl_cargando_ens}"
+														styleClass="normalText" />
+												</div>
+											</s:div>
+										</f:facet>
+									</a4j:status></td>
+							</tr>
+						</table>
+						<a4j:outputPanel id="hojasCRD">
+							<s:div style="margin-left:1px;margin-top:1px"
+								rendered="#{modificarMSNoProgramado.listaHojasCRD.size() != 0}">
+
+								<rich:dataTable style="width: 100%;" var="hojaCRD"
+									value="#{modificarMSNoProgramado.listaHojasCRD}"
+									columnsWidth="40%, 20%, 40%, 0*">
+									<f:facet name="header">
+										<div>#{messages.lbl_listadoCrdSelecionadas_ens}</div>
+									</f:facet>
+
+									<h:column>
+										<f:facet name="header">
+											<h:panelGrid columns="2"
+												style="width: 100%; padding:0px; margin:0px;" border="0"
+												cellpadding="0" cellspacing="0">
+												<s:div style="float: left;">#{messages.lbl_nombre_ens}</s:div>
+												<s:div style="text-align: right; padding-left:3px;"></s:div>
+											</h:panelGrid>
+										</f:facet>
+			            			#{hojaCRD.nombreHoja}
+			        			</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:panelGrid columns="2"
+												style="width: 100%; padding:0px; margin:0px;" border="0"
+												cellpadding="0" cellspacing="0">
+												<s:div style="float: left;">#{messages.lbl_dateCr_ens}</s:div>
+												<s:div style="text-align: right; padding-left:3px;"></s:div>
+											</h:panelGrid>
+										</f:facet>
+			            			<h:outputLabel value='#{hojaCRD.fechaCreacion}'>
+												<s:convertDateTime pattern='dd/MM/yyyy' />
+											</h:outputLabel>
+			        			</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:panelGrid columns="2"
+												style="width: 100%; padding:0px; margin:0px;" border="0"
+												cellpadding="0" cellspacing="0">
+												<s:div style="float: left;">#{messages.lbl_propietario_ens}</s:div>
+												<s:div style="text-align: right; padding-left:3px;"></s:div>
+											</h:panelGrid>
+										</f:facet>
+										<h:outputText value="#{hojaCRD.usuario.nombre}" />
+
+									</h:column>
+									<h:column>
+										<div align="center">
+											<a4j:commandLink
+												action="#{modificarMSNoProgramado.eliminarHojaCRD(hojaCRD.id)}"
+												ajaxSingle="true" status="estadoHojaCRD"
+												reRender="tablas_crd, tabla_listado_crd, hojasCRD">
+												<h:graphicImage title="#{messages.lbl_eliminar_ens}"
+													style="border: 0px; cursor:pointer;"
+													value="/resources/icons/default/acciones/eliminar.png">
+
+												</h:graphicImage>
+											</a4j:commandLink>
+										</div>
+									</h:column>
+
+
+
+
+								</rich:dataTable>
+
+							</s:div>
+						</a4j:outputPanel>
+					</rich:simpleTogglePanel>
+
+
+
+
+
+
+				</rich:simpleTogglePanel>
+			</rich:panel>
+			<s:div>
+			<div align="right">
+				<rich:spacer width="100%" height="8px"/>
+			</div>
+		</s:div>
+			<div align="right">
+
+				<a4j:commandButton id="aceptarBtn"
+					action="#{modificarMSNoProgramado.modificarMSNoProgramado()}"
+					value="#{messages.btn_aceptar_ens}"
+					style="margin-right:0px;margin-bottom:  0px; margin-top: 0px;"
+					tabindex="4">
+				</a4j:commandButton>
+				<rich:spacer width="10px"/>
+				<a4j:commandButton action="cancelar" immediate="true"
+					value="#{messages.btn_cancelar_ens}"
+					style="margin-right:0px;margin-bottom:  0px; margin-top: 0px;"
+					tabindex="4">
+				</a4j:commandButton>
+
+
+			</div>
+
+		</h:form>
+
+	</s:div>
+</s:div>

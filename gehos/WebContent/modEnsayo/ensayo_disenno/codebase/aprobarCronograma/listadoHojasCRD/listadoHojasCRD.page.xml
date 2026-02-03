@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+     
+	<param name="idMs" value="#{listadoHojasCRDCustomList_ensayo.idMs}"/>	
+	  <param name="idCronograma" value="#{listadoHojasCRDCustomList_ensayo.idCronograma}"/>
+		
+	
+	<navigation from-action="cancelar">			
+			<end-conversation before-redirect="true"/>  		
+			<redirect view-id="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/aprobarCronograma/visualizarCronograma/visualizarCronograma.gehos">
+				<param name="idCronograma" value="#{listadoHojasCRDCustomList_ensayo.idCronograma}"/>
+				<param name="idCronogramaNoProgramado" value="#{listadoHojasCRDCustomList_ensayo.idCronograma}"/>
+				<param name="idCronogramaExportar" value="#{listadoHojasCRDCustomList_ensayo.idCronograma}" />
+			</redirect>
+		
+	</navigation>
+	
+</page>

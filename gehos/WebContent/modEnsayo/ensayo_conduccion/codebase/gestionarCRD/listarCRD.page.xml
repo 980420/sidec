@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<page    xmlns               ="http://jboss.com/products/seam/pages"  
+         xmlns:xsi           ="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">  
+           
+    <begin-conversation flush-mode="manual" join="true"/>
+    
+	<action execute="#{listarCRD.refresh()}"/>
+	<param name="idcrd"/>
+	<param name="fromP" />
+	<param name="idMS" value="#{listarCRD.idMS}"/>
+	<param name="idSujeto" value="#{listarCRD.idSujeto}"/>
+  	<param name="firstResultt" value="#{listarCRD.firstResult}"/>
+	
+	
+	<navigation from-action="gestionarHoja">	
+		<end-conversation before-redirect="false"/>
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCRD/gestionarHoja.xhtml">
+		  <param name="idcrd" value="#{idcrd}"/>
+		  <param name="fromP" value="#{fromP}"/>
+		  <param name="from" value="listarCRD"/>
+		  <param name="idMS" value="#{listarCRD.idMS}"/>
+		  <param name="idSujeto" value="#{listarCRD.idSujeto}"/>
+		</redirect>
+	</navigation>
+	<navigation from-action="visualizarHoja">	
+		<end-conversation before-redirect="true"/>
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCRD/visualizarHoja.xhtml">
+		  <param name="idcrd" value="#{idcrd}"/>
+		   <param name="fromP" value="#{fromP}"/>
+		  <param name="idMS" value="#{listarCRD.idMS}"/>
+		  <param name="idSujeto" value="#{listarCRD.idSujeto}"/>
+		</redirect>
+	</navigation>
+	
+	<navigation from-action="imprimirhoja">	
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCRD/Imprimir/imprimirhojaconduccion.xhtml">
+		  <param name="idcrd" value="#{idcrd}"/>
+		   <param name="fromP" value="#{fromP}"/>
+		  <param name="idMS" value="#{listarCRD.idMS}"/>
+		  <param name="idSujeto" value="#{listarCRD.idSujeto}"/>
+		</redirect>
+	</navigation>
+	<navigation from-action="#{listarCRD.SeleccionarHoja(CRD)}">
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCRD/causaEliminarFirma.xhtml">		 
+		 <param name="idMS" value="#{listarCRD.idMS}"/>
+		  <param name="idSujeto" value="#{listarCRD.idSujeto}"/>
+		  <param name="fromP" value="#{fromP}"/>
+		</redirect>
+	</navigation>
+	
+	<navigation from-action="atras">
+		<rule if="#{fromP == 'listarMS'}">
+			<end-conversation before-redirect="true"/>
+           <redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarMS/listarMS.xhtml" >	           		
+           	<param name="idMS" value="#{listarCRD.idMS}"/>
+			<param name="idSujeto" value="#{listarCRD.idSujeto}"/>
+           </redirect>
+		</rule>
+		<rule if="#{fromP == 'sujetoPesquisaje'}">
+			<end-conversation before-redirect="true" />
+			<redirect
+				view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarSujeto/buscarSujetoPesquisaje.xhtml">
+				<param name="idFuncionalidad" value="#{activeModule.activeModule.id}" />
+				<param name="idancestors" value="#{activeModule.activeModule.id}a" />
+			</redirect>
+		</rule>
+	</navigation>
+	
+	
+</page>

@@ -1,0 +1,50 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:rich="http://richfaces.org/rich">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+<div align="left" style="width:100%;"  >
+		<rich:panel>
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td valign="top"><h:graphicImage
+								url="/resources/modMedicinaFamiliar/images/folder_home.png"
+								border="0" style="width: 74px; height: 74px; margin-top:0px"/>
+							</td>
+							<td><rich:spacer width="7px" /></td>
+							<td valign="top">
+								<table cellpadding="0px" cellspacing="0px" border="0px">
+									<tr style="vertical-align: top;">							
+										<td class="fileInputTextDetail">#{messages.numerohsf}</td>
+										<td class="spacer_detail"></td>
+										<td class="dataText">#{objHsf.numeroHsf}</td>
+										<td class="spacer_v"></td>	
+										<td class="fileInputTextDetail">#{messages.areasld}</td>
+										<td class="spacer_detail"></td>
+										<td class="dataText">#{objHsf.direccion.nombreZona}</td>
+										<td class="spacer_v"></td>	
+										<td class="fileInputTextDetail">#{messages.telf}</td>
+										<td class="spacer_detail"></td>
+										<td class="dataText">#{objHsf.noTelefono}</td>
+									</tr>				
+									<tr>
+										<td class="spacer_h"  colspan="11"></td>
+									</tr>
+									<tr style="vertical-align: top;">
+										<td class="fileInputTextDetail">#{messages.dir}</td>	
+										<td class="spacer_detail"></td>	
+										<td class="dataText" colspan="9">#{informacionHSF.construirDirVer(objHsf.direccion)}</td>
+									</tr>									
+								</table>
+							</td>
+						</tr>
+					</table>	
+					</rich:panel>			
+				</div>
+
+</s:div>
+

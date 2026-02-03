@@ -1,0 +1,259 @@
+
+<!-- Rafa loko -->
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle("#{messages.msg_titulo_ensClin}")</script>
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+		type='text/css' />
+
+	<link
+		href="#{request.contextPath}/resources/modDashBoard/css/dashboard.css"
+		rel="stylesheet" type="text/css" />
+
+	<h:form id="mainForm">
+
+		<a4j:outputPanel id="estudioSeleccionado" rendered="#{seguridadEstudio.estudioEntidadActivo != null and seleccionarEstudio.isActiveModuleDisenno() == false}">	
+		
+			<s:div>
+				<rich:simpleTogglePanel  styleClass="rich-table-dash" switchType="client"
+					label="Visualizar datos del ensayo clínico">
+
+					<rich:dataGrid value="entrada" var="item" >
+
+						<rich:column styleClass="columna-dashboard" style="width:25%;">
+							<f:facet name="header">Sujetos incluidos</f:facet>
+							<div style="display: flex;">
+								<h:graphicImage styleClass="icono-svg"
+									value="/resources/modDashBoard/image/group-profile-users.svg" />
+								<div style="margin-left: 10px;">
+									<h:outputText value="Sujetos incluidos" />
+									<br /> <br /> <br />
+									<h:outputText
+										value="#{sujetoCustomList.totalSujetosEstudio()}" />
+								</div>
+							</div>
+						</rich:column>
+						
+						<rich:column styleClass="columna-dashboard" style="width:25%;">
+							<f:facet name="header">MS Atrasados</f:facet>
+							<div style="display: flex;">
+								<h:graphicImage styleClass="icono-svg"
+									value="/resources/modDashBoard/image/book-solid.svg" />
+								<div style="margin-left: 10px;">
+									<h:outputText value="MS Atrasados" />
+									<br /> <br /> <br />
+									<h:outputText
+										value="#{listarMSP.momentosSeguimientoAtrasados()}" />
+								</div>
+							</div>
+						</rich:column>
+						
+					<rich:column styleClass="columna-dashboard" style="width:25%;">
+							<f:facet name="header">CRD Completadas sin firmar</f:facet>
+							<div style="display: flex;">
+								<h:graphicImage styleClass="icono-svg"
+									value="/resources/modDashBoard/image/file-pen-solid.svg" />
+								<div style="margin-left: 10px;">
+									<h:outputText value="CRD Completadas sin firmar" />
+									<br /> <br /> <br />
+									<h:outputText
+										value="#{listarCRD.cdrCompletadaSinFirmar()}" />
+								</div>
+							</div>
+						</rich:column>
+						
+						<rich:column style="width:25%;">
+							<f:facet name="header">Notas abiertas</f:facet>
+							<div style="display: flex;">
+								<h:graphicImage styleClass="icono-svg"
+									value="/resources/modDashBoard/image/flag-regular.svg" />
+								<div style="margin-left: 10px;">
+									<h:outputText value="Notas abiertas" />
+									<br /> <br /> <br />
+									<h:outputText
+										value="#{listarNotasMonitoreo.notasAbiertas()}" />
+								</div>
+							</div>
+						</rich:column>					
+						
+						
+					</rich:dataGrid>
+				</rich:simpleTogglePanel>
+
+			</s:div>
+
+		</a4j:outputPanel>
+
+
+		<a4j:outputPanel ajaxRendered="true">
+			<s:div
+				rendered="#{facesMessages.getCurrentMessagesForControl('listOfGruposujetos').size() > 0 }"
+				styleClass="custom-error">
+				<div>
+					<rich:message for="listadoEstudios" />
+				</div>
+			</s:div>
+		</a4j:outputPanel>
+		<h:form>
+			<rich:simpleTogglePanel switchType="client" style="margin-top:5px;"
+				bodyClass="simpleTogPanel">
+				<f:facet name="header">
+					<h:outputLabel value="#{messages.msg_critBusqueda_ensClin}"
+						style="cursor:pointer;" />
+				</f:facet>
+				<a4j:outputPanel id="busquedas">
+					<table cellpadding="0" cellspacing="0" border="0">
+						<tr>
+							<td><h:outputLabel styleClass='normalText'
+									value="#{messages.msg_nombre_ensClin}:" /> <br /> <h:inputText
+									styleClass="inputText"
+									value="#{seleccionarEstudio.filterNombre}" /></td>
+							<td><rich:spacer width="25px" /></td>
+							<td style="vertical-align: bottom;"><br /> <a4j:commandButton
+									action="#{seleccionarEstudio.buscarEstudio()}"
+									value="#{messages.btn_buscar_ensClin}"
+									style="margin-left: 0px; margin-bottom:  0px; margin-top: 0px;"
+									reRender="listadoEstudios" tabindex="3">
+									<s:defaultAction />
+								</a4j:commandButton></td>
+							<td style="vertical-align: bottom;"><br /> <s:button
+									view="/modCommons/modHome/home.gehos"
+									value="#{messages.cancelar}" tabindex="4"
+									style="margin-right:0px;margin-bottom:  0px; margin-top: 0px;"
+									rendered="#{not identificadorManager.editing}">
+									<f:param name="idFuncionalidad"
+										value="#{activeModule.activeModule.id}" />
+									<f:param name="idancestors"
+										value="#{activeModule.activeModule.id}a" />
+									<f:param name="moduleName"
+										value="#{activeModule.activeModuleName}" />
+								</s:button></td>
+						</tr>
+					</table>
+				</a4j:outputPanel>
+			</rich:simpleTogglePanel>
+		</h:form>
+		<a4j:outputPanel id="listadoEstudios">
+			<rich:spacer height="11px" width="100%" />
+			<rich:panel styleClass="whitespace"
+				rendered="#{seleccionarEstudio.listadoSeleccionaEstudio.resultList.isEmpty() and seleccionarEstudio.filterNombre==null}">
+				<f:facet name="header">#{messages.msg_listEst_ensClin}</f:facet>
+				<div class="results" id="estudioList">
+					<h:outputText value="#{messages.msg_notdata_ensClin}" />
+				</div>
+			</rich:panel>
+			<rich:panel styleClass="whitespace"
+				rendered="#{seleccionarEstudio.listadoSeleccionaEstudio.resultList.size()==0 and seleccionarEstudio.filterNombre.length()>0}">
+				<f:facet name="header">#{messages.msg_listEst_ensClin}</f:facet>
+				<div class="results" id="estudioList">
+					<h:outputText value="#{messages.msg_notdatabusqueda_ensClin}" />
+				</div>
+			</rich:panel>
+			<s:div style="margin-left:1px;margin-top:1px"
+				rendered="#{not empty seleccionarEstudio.listadoSeleccionaEstudio.resultList}">
+				<rich:dataTable
+					value="#{seleccionarEstudio.listadoSeleccionaEstudio.resultList}"
+					var="est" id="f"
+					style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+					cellspacing="0" cellpadding="0" rowClasses="dr-table-firstrow2"
+					rendered="#{!seleccionarEstudio.listadoSeleccionaEstudio.resultList.isEmpty()}"
+					columnsWidth="10%,60%, 40%,1*">
+					<f:facet name="header">#{messages.msg_listEst_ensClin}</f:facet>
+					<rich:column>
+						<f:facet name="header">
+							<h:panelGrid columns="2" width="100%" cellpadding="0"
+								cellspacing="0" border="0">
+								<s:div style="float: left;">
+									<h:outputLabel value="#{messages.msg_identificador_ensClin}" />
+								</s:div>
+								<s:div style="text-align: right;">
+									<ui:include
+										src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/">
+										<ui:param name="controladorList"
+											value="#{seleccionarEstudio.listadoSeleccionaEstudio}" />
+										<ui:param name="atributo" value="estudioE.identificador" />
+										<ui:param name="listado" value="listadoEstudios" />
+									</ui:include>
+								</s:div>
+							</h:panelGrid>
+						</f:facet>
+						<h:outputLabel value='#{est.estudio.identificador}' />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:panelGrid columns="2" width="100%" cellpadding="0"
+								cellspacing="0" border="0">
+								<s:div style="float: left;">
+									<h:outputLabel value="#{messages.msg_nombre_ensClin}" />
+								</s:div>
+								<s:div style="text-align: right;">
+									<ui:include
+										src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/">
+										<ui:param name="controladorList"
+											value="#{seleccionarEstudio.listadoSeleccionaEstudio}" />
+										<ui:param name="atributo" value="estudioE.nombre" />
+										<ui:param name="listado" value="listadoEstudios" />
+									</ui:include>
+								</s:div>
+							</h:panelGrid>
+						</f:facet>
+						<h:outputLabel value='#{est.estudio.nombre}' />
+					</rich:column>
+
+					<rich:column>
+						<f:facet name="header">
+							<h:panelGrid columns="2" width="100%" cellpadding="0"
+								cellspacing="0" border="0">
+								<s:div style="float: left;">
+									<h:outputLabel value="#{messages.msg_entidad_ensClin}" />
+								</s:div>
+								<s:div style="text-align: right;">
+									<ui:include
+										src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/">
+										<ui:param name="controladorList"
+											value="#{seleccionarEstudio.listadoSeleccionaEstudio}" />
+										<ui:param name="atributo" value="entidadE.nombre" />
+										<ui:param name="listado" value="listadoEstudios" />
+									</ui:include>
+								</s:div>
+							</h:panelGrid>
+						</f:facet>
+						<h:graphicImage height="16"
+							style="position: relative; vertical-align: middle;"
+							value="#{seleccionarEstudio.entidadIcon(est)}" />
+						<h:outputLabel value='#{est.entidad.nombre}' />
+					</rich:column>
+
+					<rich:column style="text-align:center;" width="16">
+						<a4j:commandLink rendered="true"
+							action="#{seguridadEstudio.PonerActivo(est)}"
+							reRender="labelEstudio">
+							<h:graphicImage height="16"
+								title="#{messages.msg_selccionar_ensClin}"
+								style="position: relative;  margin:2px 2px 2px 2px ;cursor: pointer;"
+								value="/resources/icons/default/acciones/seleccionar_uno.png" />
+						</a4j:commandLink>
+					</rich:column>
+				</rich:dataTable>
+			</s:div>
+			<rich:spacer height="11px" />
+			<ui:include
+				src="/modEnsayo/codebase/plantillas/paginado_tabla_inferior_generico.xhtml/">
+				<ui:param name="vzPaginado"
+					value="#{seleccionarEstudio.listadoSeleccionaEstudio.resultCount>10}" />
+				<ui:param name="nomControladorList"
+					value="#{seleccionarEstudio.listadoSeleccionaEstudio}" />
+				<ui:param name="idListado" value="listadoEstudios" />
+			</ui:include>
+		</a4j:outputPanel>
+
+	</h:form>
+</s:div>

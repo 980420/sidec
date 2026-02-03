@@ -1,0 +1,377 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" xmlns:a="http://richfaces.org/a4j">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+		type='text/css' />
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css'
+		type='text/css' />
+
+	<script type="text/javascript">					
+
+		//funcion para cambiar el tamano de la lista del combobox
+		function cambiarStyle(id,size)
+		{
+		var size2=''+size+'px';
+		var n=new String(id);
+		var idN=n.replace('combobox','list');
+		
+		var com=document.getElementById(idN);
+		var parent=com.parentNode;
+		var gran=parent.parentNode;
+		parent.style.width=size2;
+		gran.style.width=size2;
+		com.style.width=size2;
+		
+		} 
+
+		var curDtN = new Date();
+		 var calDtN=null;
+
+		 function previousDate(date){
+			calDtN = date;
+		 }
+
+		 function disablementFunction(day){
+			 if(calDtN == null){
+				 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+						return true; 
+					else 
+						return false; 
+			 }
+			 else {
+				 if (calDtN.getTime() - day.date.getTime() &#62;= 0 ) 
+						return true; 
+					else 
+						return false;
+			 }					 
+		 }
+
+		 function disabledClassesProv(day){
+			 if(calDtN == null){
+				 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+						return ''; 
+					else 
+						return 'noavailable'; 
+			 }
+			 else {
+				 if (calDtN.getTime() - day.date.getTime() &#62;= 0) 
+						return ''; 
+					else 
+						return 'noavailable';
+			 }				
+		 }
+
+		 function resetSecondDate(first,second) {
+			 var firstDate = first.getSelectedDate().getTime();
+			 var secondDate = second.getSelectedDate().getTime();
+
+			 if(firstDate - secondDate &#62; 0)
+				 second.resetSelectedDate();
+		 }
+ 		 
+		 function disablementFunctionPreviousEx(day){
+			if(calDtN == null){
+				if (curDtN.getTime() - day.date.getTime() &#62; 0) return true; else return false;
+			}
+			if ((curDtN.getTime() - day.date.getTime() &#62; 0) &#38;&#38; (calDtN.getTime() - day.date.getTime() &#60;= 0)){
+				return true;
+			}
+			else 
+				return false;
+		  }
+
+		function disabledClassesProvPreviousEx(day){
+			if(calDtN == null){
+				if (curDtN.getTime() - day.date.getTime() &#60; 0)
+					return 'noavailable';
+				else 
+					return '';
+			}
+			if ((curDtN.getTime() - day.date.getTime() &#60; 0) || (calDtN.getTime() - day.date.getTime() &#62; 0))
+				return 'noavailable';
+			else 
+				return '';
+		}
+	</script>
+
+	<h:form id="busquedasForm">
+		<a4j:outputPanel ajaxRendered="true">
+			<s:div
+				rendered="#{facesMessages.getCurrentMessagesForControl('listOfGruposujetos').size() > 0 }"
+				styleClass="custom-error">
+				<div>
+					<rich:message for="listOfGruposujetos" />
+				</div>
+			</s:div>
+		</a4j:outputPanel>
+
+		<rich:simpleTogglePanel switchType="client" style="margin-top:10px;"
+			bodyClass="simpleTogPanel">
+			<f:facet name="header">
+				<h:outputLabel value="#{messages.criterios}" style="cursor:pointer;" />
+			</f:facet>
+			<a4j:outputPanel id="busquedas">
+				<a4j:outputPanel rendered="#{not gruposujetosList.busquedaAvanzada}">
+					<table cellpadding="0" cellspacing="0" border="0">
+						<tr>
+							<td><h:outputLabel styleClass='normalText'
+									value='#{messages.nombre}:' /> <br /> <h:inputText
+									styleClass="inputText"
+									value='#{gruposujetosList.gruposujetos.nombreGrupo}' /></td>
+							<td><rich:spacer width="25px" /></td>
+							<td><h:outputLabel styleClass='normalText'
+									value='#{messages.desde}:' /> <br /> <rich:calendar
+									datePattern='dd/MM/yyyy' tabindex="12"
+									value='#{gruposujetosList.desde}' id='fechaDesde'
+									isDayEnabled='disablementFunction'
+									dayStyleClass='disabledClassesProv'
+									onexpand="previousDate(document.getElementById('busquedasForm:fechaHasta').component.getSelectedDate());Richfaces.getComponent('calendar',this).nextMonth(); Richfaces.getComponent('calendar',this).prevMonth(); return true;" />
+							</td>
+							<td><rich:spacer width="25px" /></td>
+							<td><h:outputLabel styleClass='normalText'
+									value='#{messages.hasta}:' /> <br /> <rich:calendar
+									datePattern='dd/MM/yyyy' value='#{gruposujetosList.hasta}'
+									id='fechaHasta' isDayEnabled='disablementFunctionPreviousEx'
+									dayStyleClass='disabledClassesProvPreviousEx'
+									onexpand="previousDate(document.getElementById('busquedasForm:fechaDesde').component.getSelectedDate());Richfaces.getComponent('calendar',this).nextMonth(); Richfaces.getComponent('calendar',this).prevMonth(); return true;" />
+							</td>
+						</tr>
+						<tr>
+							<td colspan="5"><rich:spacer height="11px" width="100%" /></td>
+						</tr>
+						<tr>
+							<td colspan="5" align="right"><a4j:commandButton
+									reRender="listadoGruposujetos" style="margin:0px"
+									value="#{messages.btn_buscar_ens}" ><s:defaultAction /></a4j:commandButton> <rich:spacer width="8px" /> <h:commandButton
+									action="#{gruposujetosList.cancelarBusqueda()}"
+									style="margin:0px" value="#{messages.btn_cancelar_ens}" /></td>
+						</tr>
+					</table>
+				</a4j:outputPanel>
+			</a4j:outputPanel>
+		</rich:simpleTogglePanel>
+	</h:form>
+	<rich:spacer height="11px" width="100%" />
+	<h:form id="listOfGruposujetos">
+		<a4j:outputPanel id="listadoGruposujetos">
+			<div align="right">
+				<table class="tablaLinkAdd" cellpadding="0" cellspacing="0">
+					<tr>
+						<td valign="middle" class="lv-link-add"><s:div rendered="#{gruposujetosList.puedeAdd()}"><a4j:commandLink status="showModalStatus" action="crear">
+								<h:graphicImage title="#{messages.adicionar}" height="12"
+									width="12" style="cursor: pointer"
+									value="/resources/icons/default/acciones/adicionar.png" />
+							</a4j:commandLink><a4j:commandLink 
+								style="cursor: pointer; margin-left:2px;"
+								title="#{messages.lbl_adicionar_enDis}" action="crear"
+								tabindex="4" value=" #{messages.lbl_adicionar_enDis}" /></s:div></td>
+					</tr>
+				</table>
+			</div>
+			<rich:panel
+				rendered="#{gruposujetosList.resultList.size() == 0 and empty gruposujetosList.gruposujetos.nombreGrupo and gruposujetosList.gruposujetos.fechaCreacion == null and gruposujetosList.desde == null and gruposujetosList.hasta == null}">
+				<f:facet name="header">
+					<h:outputText value="#{messages.listado}" />
+				</f:facet>
+				<h:outputText value="#{messages.listaVacia}" />
+			</rich:panel>
+
+			<rich:panel
+				rendered="#{gruposujetosList.resultList.size() == 0 and (not empty gruposujetosList.gruposujetos.nombreGrupo || gruposujetosList.gruposujetos.fechaCreacion != null || gruposujetosList.desde != null || gruposujetosList.hasta != null)}">
+				<f:facet name="header">
+					<h:outputText value="#{messages.listado}" />
+				</f:facet>
+				<h:outputText value="#{messages.noResultados}" />
+			</rich:panel>
+			<rich:dataTable rendered="#{not empty gruposujetosList.resultList}"
+				width="100%" value="#{gruposujetosList.resultList}"
+				var="gruposujetos" columnsWidth="30%,60%, 10%,0*,0*,0*,0*">
+				<f:facet name="header">
+					<h:outputLabel value="#{messages.listado}" />
+				</f:facet>
+				<rich:column>
+					<f:facet name="header">
+						<h:panelGrid columns="2" width="100%" cellpadding="0"
+							cellspacing="0" border="0">
+							<s:div style="float: left;">
+								<h:outputLabel value="#{messages.nombre}" />
+							</s:div>
+							<s:div style="text-align: right;">
+								<ui:include
+									src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/">
+									<ui:param name="controladorList" value="#{gruposujetosList}" />
+									<ui:param name="atributo" value="nombreGrupo" />
+									<ui:param name="listado" value="listadoGruposujetos" />
+								</ui:include>
+							</s:div>
+						</h:panelGrid>
+					</f:facet>
+					<h:outputLabel value='#{gruposujetos.nombreGrupo}' />
+				</rich:column>
+
+				<rich:column>
+					<f:facet name="header">
+						<h:panelGrid columns="2" width="100%" cellpadding="0"
+							cellspacing="0" border="0">
+							<s:div style="float: left;">
+								<h:outputLabel value="#{messages.lbl_descripcionGS_ensDis}" />
+							</s:div>
+							<s:div style="text-align: right;">
+								<ui:include
+									src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/">
+									<ui:param name="controladorList" value="#{gruposujetosList}" />
+									<ui:param name="atributo" value="descripcion" />
+									<ui:param name="listado" value="listadoGruposujetos" />
+								</ui:include>
+							</s:div>
+						</h:panelGrid>
+					</f:facet>
+					<h:outputLabel value='#{gruposujetos.descripcion}' />
+				</rich:column>
+
+
+
+				<rich:column>
+					<f:facet name="header">
+						<h:panelGrid columns="2" width="100%" cellpadding="0"
+							cellspacing="0" border="0">
+							<s:div style="float: left;">
+								<h:outputLabel value="#{messages.fechacreacion}" />
+							</s:div>
+							<s:div style="text-align: right;">
+								<ui:include
+									src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/">
+									<ui:param name="controladorList" value="#{gruposujetosList}" />
+									<ui:param name="atributo" value="fechaCreacion" />
+									<ui:param name="listado" value="listadoGruposujetos" />
+								</ui:include>
+							</s:div>
+						</h:panelGrid>
+					</f:facet>
+
+					<h:outputLabel value='#{gruposujetos.fechaCreacion}'>
+						<s:convertDateTime pattern='dd/MM/yyyy' />
+					</h:outputLabel>
+
+				</rich:column>
+
+				<rich:column>
+					<div align="center">
+						<h:commandButton title="#{messages.ver}"
+							action="#{gruposujetosList.seleccionarVer(gruposujetos.id)}"
+							image="/resources/icons/default/acciones/ver.png" />
+					</div>
+				</rich:column>
+
+				<rich:column>
+					<div align="center">
+						<h:commandButton title="#{messages.modificar}"
+							rendered="#{gruposujetos.cronogramas.size()==0 and gruposujetos.habilitado and !gruposujetos.nombreGrupo.equals('Grupo Validación')}"
+							action="#{gruposujetosList.seleccionarModificar(gruposujetos.id)}"
+							image="/resources/icons/default/acciones/modificar.png" />
+						<h:graphicImage title="#{messages.msg_eliminar4_ensClinDis}"
+							rendered="#{gruposujetos.cronogramas.size()>0 and (!gruposujetos.habilitado or gruposujetos.habilitado)}"
+							value="/resources/icons/default/acciones/modificar.png"
+							style="border:0; opacity: 0.4; height : 16px;" />
+						<h:graphicImage title="#{messages.msg_eliminar5_ensClinDis}"
+							rendered="#{gruposujetos.cronogramas.size()==0 and !gruposujetos.habilitado }"
+							value="/resources/icons/default/acciones/modificar.png"
+							style="border:0; opacity: 0.4; height : 16px;" /> 
+						<h:graphicImage title="#{messages.msg_eliminar6_ensClinDis}"
+							rendered="#{gruposujetos.cronogramas.size()==0 and gruposujetos.habilitado and gruposujetos.nombreGrupo.equals('Grupo Validación')}"
+							value="/resources/icons/default/acciones/modificar.png"
+							style="border:0; opacity: 0.4; height : 16px;" />
+					</div>
+				</rich:column>
+				<rich:column>
+					<div align="center">
+						<a4j:commandLink id="eliminarCommandLink"
+							rendered="#{gruposujetos.cronogramas.size()==0 and gruposujetos.habilitado}"
+							action="#{gruposujetosList.seleccionarEliminar(gruposujetos.id)}"
+							oncomplete="Richfaces.showModalPanel('mpAdvertenciaEliminarGrupoSuj')">
+							<h:graphicImage style="border:0px; cursor: pointer "
+								title="#{messages.eliminar}"
+								url="/resources/icons/default/acciones/eliminar.png">
+							</h:graphicImage>
+						</a4j:commandLink>
+						<h:graphicImage title="#{messages.msg_eliminar4_ensClinDis}"
+							rendered="#{gruposujetos.cronogramas.size()>0 and (!gruposujetos.habilitado or gruposujetos.habilitado)}"
+							value="/resources/icons/default/acciones/eliminar.png"
+							style="border:0; opacity: 0.4; height : 16px;" />
+						<h:graphicImage title="#{messages.msg_eliminar5_ensClinDis}"
+							rendered="#{gruposujetos.cronogramas.size()==0 and !gruposujetos.habilitado}"
+							value="/resources/icons/default/acciones/eliminar.png"
+							style="border:0; opacity: 0.4; height : 16px;" />
+					</div>
+				</rich:column>
+				<rich:column>
+					<div align="center">
+						<a4j:commandButton title="#{messages.btn1_deshabilitarGS_enDis}"
+							rendered="#{gruposujetos.habilitado and !gruposujetos.nombreGrupo.equals('Grupo Pesquisaje')}"
+							action="#{gruposujetosList.seleccionarHabilitar(gruposujetos.id)}"
+							image="/resources/modEnsayo/img/not-visible.png">
+							<rich:componentControl operation="show" event="onclick"
+								for="mpAdvertenciaDeshabilitarGS" />
+						</a4j:commandButton>
+						<a4j:commandButton title="#{messages.btn1_deshabilitarGS_enDis}"
+							rendered="#{gruposujetos.habilitado and gruposujetos.nombreGrupo.equals('Grupo Pesquisaje')}"
+							action="#{gruposujetosList.seleccionarHabilitar(gruposujetos.id)}"
+							image="/resources/modEnsayo/img/not-visible.png">
+							<rich:componentControl operation="show" event="onclick"
+								for="mpAdvertenciaDeshabilitarGSPesquisaje" />
+						</a4j:commandButton>
+						<a4j:commandButton title="#{messages.btn1_habilitarGS_enDis}"
+							rendered="#{gruposujetos.habilitado != true}"
+							action="#{gruposujetosList.seleccionarHabilitar(gruposujetos.id)}"
+							image="/resources/modEnsayo/img/visible.png">
+							<rich:componentControl operation="show" event="onclick"
+								for="mpAdvertenciaRestaurarGS" />
+						</a4j:commandButton>
+					</div>
+				</rich:column>
+			</rich:dataTable>
+			<a4j:jsFunction name="SeleccionarStat"
+				oncomplete="Richfaces.showModalPanel('mpAdvertenciaEliminarGrupoSuj')"
+				action="#{gruposujetosList.seleccionarE()}" ajaxSingle="true">
+				<a4j:actionparam name="pos"
+					assignTo="#{gruposujetosList.idGruposujetosEliminar}" />
+			</a4j:jsFunction>
+
+			<rich:spacer height="11px" />
+
+			<ui:include
+				src="/modEnsayo/codebase/plantillas/paginado_tabla_inferior_generico.xhtml/">
+				<ui:param name="vzPaginado"
+					value="#{gruposujetosList.resultCount>10}" />
+				<ui:param name="nomControladorList" value="#{gruposujetosList}" />
+				<ui:param name="idListado" value="listadoGruposujetos" />
+
+			</ui:include>
+		</a4j:outputPanel>
+
+	</h:form>
+	<ui:include
+		src="/modEnsayo/ensayo_disenno/codebase/gestionarGruposujetos/modalspanel/AdvertenciaEliminar.xhtml">
+	</ui:include>
+
+	<ui:include
+		src="/modEnsayo/ensayo_disenno/codebase/gestionarGruposujetos/modalspanel/AdvertenciaDeshabilitar.xhtml">
+	</ui:include>
+	<ui:include
+		src="/modEnsayo/ensayo_disenno/codebase/gestionarGruposujetos/modalspanel/AdvertenciaDeshabilitarGrupoPesquisaje.xhtml">
+	</ui:include>
+
+	<ui:include
+		src="/modEnsayo/ensayo_disenno/codebase/gestionarGruposujetos/modalspanel/AdvertenciaRestaurar.xhtml">
+	</ui:include>
+
+</ui:composition>

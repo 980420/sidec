@@ -1,0 +1,14 @@
+<s:div   xmlns     ="http://www.w3.org/1999/xhtml" 
+ 			      xmlns:ui  ="http://java.sun.com/jsf/facelets" 
+      		      xmlns:h   ="http://java.sun.com/jsf/html" 
+			      xmlns:f   ="http://java.sun.com/jsf/core" 
+			      xmlns:s   ="http://jboss.com/products/seam/taglib" 
+			      xmlns:rich="http://richfaces.org/rich" 
+                  xmlns:a   ="http://richfaces.org/a4j">
+	<s:div >  
+		<ui:include src="/modEnsayo/ensayo_conduccion/codebase/plantillas/buscarSujetoRe.xhtml" >
+	      	<ui:param name="titulo" value="#{messages.buscarSujeto}" />		
+			<ui:param name="controlador" value="#{sujetoCustomListRe}" />		
+		</ui:include>
+	</s:div>
+</s:div>

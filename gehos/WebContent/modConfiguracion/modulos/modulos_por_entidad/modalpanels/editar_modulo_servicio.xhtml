@@ -1,0 +1,132 @@
+<rich:modalPanel id="editar_modulo_servicio" onhide="" 
+	autosized="true" resizeable="false"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j"
+	onshow="">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<f:facet name="header">
+		<h:panelGroup id="_editar_modulo_header">
+			<h:outputText value="Modificar módulo" />
+		</h:panelGroup>
+	</f:facet>
+	<f:facet name="controls">
+		<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+			style="cursor:pointer; position:relative; top:2px;"
+			onclick="Richfaces.hideModalPanel('editar_modulo_servicio')" />
+	</f:facet>
+	
+	<a:outputPanel id="_editar_modulo_panel">
+
+		<h:form id="_editar_modulo_form">
+		<s:div rendered="#{modulosPorEntidadManager.selectedItem.toString() == 'modulo-fisico'}" >
+			<a:status forceId="true"
+				onstart="document.getElementById('_editar_modulo_form:_acpbtn').style.cursor='wait'"
+				id="_modificarcamastatus"
+				onstop="document.getElementById('_editar_modulo_form:_acpbtn').style.cursor='default'">
+			</a:status>
+
+			<table cellpadding="0px" cellspacing="0px" border="0px"
+				id="_container" title="">
+				<tr>
+					<td style="height: 10px;" colspan="8"></td>
+				</tr>
+				<tr style="vertical-align: top;">
+					<td > <rich:spacer width="6"/> </td>
+					<td>
+						<h:outputLabel value="Label:"></h:outputLabel>
+						<rich:message for="_labelinput" style="color: red;"
+							id="_subtiposComboMessage" 
+							showDetail="false" showSummary="false" >
+							<f:facet name="errorMarker">
+								<span title="#{facesMessages.getCurrentMessagesForControl('_labelinput').get(0).detail}">*</span>
+							</f:facet>
+						</rich:message>
+						<br />
+						<h:inputText style="width: 148px;" required="true" id="_labelinput"
+							value="#{modulosPorEntidadManager.selectedItem.value.label}" />
+						
+						<rich:spacer height="7" style="display:block;"/>
+						
+					</td>
+					<td > <rich:spacer width="25"/> </td>
+					<td>
+						<h:outputLabel value="Servicio:" /> 
+							<rich:message
+								for="servicio" showDetail="false" showSummary="false"
+								tooltip="true">
+								<f:facet name="errorMarker">
+									<h:outputText
+										title="#{facesMessages.getCurrentMessagesForControl('servicio').get(0).getDetail()}"
+										style="color : red;cursor:pointer;" value="*"/>
+								</f:facet>
+							</rich:message><br />
+							<rich:comboBox id="servicio" required="true"
+							requiredMessage="#{messages.valorRequerido}"
+								enableManualInput="false"
+								disabled="#{modulosPorEntidadManager.servicioSelected.equals('') ? 'false':'true'}"
+								suggestionValues="#{modulosPorEntidadManager.getServiciosInEntidad()}"
+								style=" width: 149px;" defaultLabel="#{messages.seleccione}"
+								value="#{modulosPorEntidadManager.servicioSelected}">
+							</rich:comboBox>
+							</td>
+							<td > <rich:spacer width="6"/> </td>
+							
+				</tr>
+				<tr>
+					<td style="height: 7px;" colspan="6"></td>
+				</tr>
+				<tr>
+					<td > <rich:spacer width="6"/> </td>
+					<td colspan="6" >
+						<h:outputLabel value="Descripción:"></h:outputLabel>
+						<rich:message for="_descinput" style="color: red;"
+							id="_serviciosComboMessage" 
+							showDetail="false" showSummary="false" >
+							<f:facet name="errorMarker">
+								<span title="#{facesMessages.getCurrentMessagesForControl('_descinput').get(0).detail}">*</span>
+							</f:facet>
+						</rich:message>
+						<br />
+						<h:inputTextarea style="width: 320px; height: 80px;" required="true" 
+							id="_descinput"
+							value="#{modulosPorEntidadManager.selectedItem.value.descripcion}" />
+					</td>
+					<td > <rich:spacer width="6"/> </td>
+				</tr>
+				<tr>
+					<td style="height: 7px;" colspan="6"></td>
+				</tr>
+				<tr>
+					<td colspan="4">
+					<div align="right">
+						<a:commandButton value="Aceptar" id="_acpbtn"
+							action="#{modulosPorEntidadManager.salvarModulo()}"
+							status="_modificarcamastatus"
+							style="margin-bottom: 0px; margin-top: 0px;"
+							reRender="functree, settingsdiv, _subtiposComboMessage, _serviciosComboMessage,
+									  _acpbtn, detailspanelheader"
+							limitToList="true" 
+							oncomplete="#{modulosPorEntidadManager.onModuleEditComplete('editar_modulo_servicio','_labelinput', '_descinput')}" >
+						</a:commandButton> <input type="button"
+							onclick="javascript:Richfaces.hideModalPanel('editar_modulo_servicio');"
+							value="Cancelar"
+							style="margin-bottom: 0px; margin-top: 0px; margin-left: 2px; margin-right: 0px;" />
+					</div>
+					</td>
+				</tr>
+				<tr>
+					<td style="height: 6px;" colspan="6"></td>
+				</tr>
+			</table>
+		</s:div>
+		</h:form>
+
+	</a:outputPanel>
+</rich:modalPanel>

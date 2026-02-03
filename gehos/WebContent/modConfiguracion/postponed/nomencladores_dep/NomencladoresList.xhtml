@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+      xmlns:a4j="http://richfaces.org/a4j"
+      template="#{theme.template}"
+                xmlns:rich="http://richfaces.org/rich">
+                
+<ui:define name="body" >
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('Administrar nomencladores')</script>
+	<style type="text/css">.rich-stglpanel-body{padding:0px}</style>
+	<style type="text/css">.rich-panel-body{padding:0px}</style>
+	<h:form>
+	<a4j:keepAlive beanName="nomencladoresController" />
+	<rich:simpleTogglePanel switchType="client">
+		<f:facet name="header">Criterios de búsqueda</f:facet>
+		<table cellpadding="0px" cellspacing="0px" border="0px" >
+			<tr>
+				<td style="height: 11px;" colspan="6">
+				</td>
+			</tr>
+			<tr style="vertical-align: top;">
+				<td style="width: 7px;"></td>
+				<td>
+					Nombre:<br />
+					<h:inputText value="#{nomencladoresController.nombreNomenclador}" autocomplete="off" >
+					</h:inputText>
+					<a4j:region rendered="false">
+						<h:inputText value="#{nomencladoresController.nombreNomenclador}" autocomplete="off" >
+							<a4j:support event="onkeyup" reRender="nomDataTable" />
+						</h:inputText>
+					</a4j:region>	
+					<a4j:region rendered="false">
+						<h:inputText id="nomenc"  
+								value="#{nomencladoresController.nombreNomenclador}" />
+						<rich:suggestionbox	id="nomencbox" for="nomenc" 
+											fetchValue="#{suggest}" requestDelay="200"  
+											suggestionAction="#{nomencladoresController.nomencladoresNames}"
+											var="suggest" height="150" >
+							<h:column >
+									#{suggest}
+							</h:column>
+							<a4j:support event="onselect" reRender="nomDataGrid" />
+						</rich:suggestionbox>
+					</a4j:region>
+				</td>
+				<td style="width: 25px"></td>
+				<td  style="vertical-align: bottom;">
+					<h:commandButton action="buscar" value="Buscar" style="margin-left: 0px; margin-bottom: 0px;" >
+						<s:defaultAction />
+					</h:commandButton>
+					<s:button view="/modConfiguracion/home.gehos" value="Cancelar" 
+								style="margin-right: 0px; margin-bottom: 0px;" >
+					</s:button>
+				</td>
+				<td style="width: 25px"></td>
+				<td style="vertical-align: bottom;">
+				</td>
+			</tr>
+		</table>
+		<br/>
+	</rich:simpleTogglePanel> 
+	<br/>
+	<rich:dataTable value="#{nomencladoresController.nomencladoresNames()}" id="nomDataTable"
+					var="nomenc" width="100%" columnsWidth="100%, 0*"
+					rows="8" >
+		<f:facet name="header">Listado de nomencladores</f:facet>
+		<h:column >
+			<f:facet name="header">
+			   	<h:panelGrid columns="2" style="width: 100%; padding:0px; margin:0px;" 
+            		border="0" cellpadding="0" cellspacing="0">
+            		<s:div style="float: left;">Nombre</s:div>
+	            	<s:div style="text-align: right; padding-left:3px;">
+						<h:graphicImage rendered="#{not nomencladoresController.order.equals('asc') and not nomencladoresController.order.equals('desc')}"
+							value="/resources/icons/default/filtro/default.png" width="17" height="17">
+							<rich:componentControl 
+								event="onclick" 
+								for="nombrecontextmenu"
+								operation="show">
+							</rich:componentControl>
+						</h:graphicImage>
+						<h:graphicImage rendered="#{nomencladoresController.order.equals('asc')}"
+							value="/resources/icons/default/filtro/asc_sort.png" width="17" height="17">
+							<rich:componentControl 
+								event="onclick" 
+								for="nombrecontextmenu"
+								operation="show">
+							</rich:componentControl>
+						</h:graphicImage>
+						<h:graphicImage rendered="#{nomencladoresController.order.equals('desc')}"
+							value="/resources/icons/default/filtro/des_sort.png" width="17" height="17">
+							<rich:componentControl 
+								event="onclick" 
+								for="nombrecontextmenu"
+								operation="show">
+							</rich:componentControl>
+						</h:graphicImage>	
+					</s:div>												
+            	</h:panelGrid>
+			</f:facet>
+			#{nomenc}
+		</h:column>
+		<h:column >
+			<div align="center">
+				<s:link view="/modConfiguracion/nomencladores/NomencladoresDetail.xhtml" >
+	                    <h:graphicImage title="Ver" style="border: 0px;"
+	                   					value="/resources/icons/default/acciones/ver.png"/>
+	               		<f:param id="nomenc" name="nomenc" value="#{nomenc}"/>
+	            </s:link>
+			</div>
+		</h:column>
+	</rich:dataTable>
+	<br/>
+	<div align="center">
+		<rich:datascroller for="nomDataTable"  />
+	</div>
+	
+	</h:form>
+	<h:form>
+		<rich:contextMenu attached="false" id="nombrecontextmenu" submitMode="ajax">
+			<rich:menuItem value="Ordenar de mayor a menor" ajaxSingle="true"
+				icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+				action="#{nomencladoresController.setOrder('desc')}" reRender="nomDataTable">
+			</rich:menuItem>
+			<rich:menuItem value="Ordenar de menor a mayor" ajaxSingle="true"
+				icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+				action="#{nomencladoresController.setOrder('asc')}" reRender="nomDataTable">
+			</rich:menuItem>
+		</rich:contextMenu>
+	</h:form>   
+	
+</ui:define>
+
+</ui:composition>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

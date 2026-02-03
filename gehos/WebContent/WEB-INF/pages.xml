@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd"
+	no-conversation-view-id="/modCommons/modSelector/selector.xhtml?modname=alas_his"
+	login-view-id="/modCommons/login/login.xhtml">
+
+	<page view-id="/*" login-required="true"
+		action="#{permissionResolver.checkCurrentUserRights()}">
+		<navigation>
+			<rule if-outcome="not-authorized">
+				<redirect view-id="/error.xhtml">
+					<message>No tiene los permisos para acceder a este recurso.
+					</message>
+				</redirect>
+			</rule>
+			<!--
+				@author yurien Regla para denegar el acceso a las funcionalidades
+				mientras no se haya configurado un identificador de anillo (destanque)
+			-->
+			<rule if-outcome="no-his-instance">
+				<redirect view-id="/error.xhtml">
+					<message>#{messages.noAnillo}
+			</message>
+				</redirect>
+			</rule>
+			<rule if-outcome="no-his-instance_root">
+				<redirect view-id="/modConfiguracion/anillo/ConfigurarAnillo.xhtml">
+					<message>#{messages.noAnillo_root}
+					</message>
+				</redirect>
+			</rule>
+			<!--
+				Fin Regla para denegar el acceso a las funcionalidades mientras no
+				se haya configurado un identificador de anillo
+			-->
+			<rule if-outcome="module-not-activated">
+				<redirect
+					view-id="#{activeModule.activeModule.funcionalidadPadre.codebase.substring(0, activeModule.activeModule.funcionalidadPadre.codebase.indexOf('codebase'))}/config/home.xhtml" />
+			</rule>
+			<rule if-outcome="password-expired"> 
+		      <redirect view-id="/modCommons/passwordchg/passwordchg.xhtml" />         
+		    </rule> 
+		</navigation>
+		<navigation from-action="toGroup">
+
+			<redirect view-id="#{theme.modSelector}">
+				<param name="idFuncionalidad"
+					value="#{activeModule.activeModule.funcionalidadPadre.funcionalidadPadre.id}" />
+				<param name="idEntidad" value="#{activeModule.activeModule.entidad.id}" />
+			</redirect>
+
+		</navigation>
+	</page>
+
+
+	<page view-id="*">
+		<navigation>
+			<rule if-outcome="home">
+				<redirect view-id="/index.html" />
+			</rule>
+		</navigation>
+		<navigation
+			from-action="#{datosGeneralesPaciente_Comun.navegarAlVisorHc(hojaFrontal.id)}">
+			<redirect
+				view-id="/modVisorhc/visorhc/modules/visorhc_1/hce/modInfo/BuscarDocumento/BuscarDocumentos.xhtml">
+			</redirect>
+		</navigation>
+	</page>
+
+
+	<exception class="org.jboss.seam.framework.EntityNotFoundException">
+		<redirect view-id="/error.xhtml">
+			<message>Entidad no encontrada. Reporte a los administradores
+				del
+				sistema.</message>
+		</redirect>
+	</exception>
+
+	<exception class="org.jbpm.JbpmException">
+		<redirect view-id="/error.xhtml">
+			<message>Definición de proceso no desplegada.</message>
+		</redirect>
+	</exception>
+
+	<exception class="javax.persistence.EntityNotFoundException">
+		<redirect view-id="/error.xhtml">
+			<message>Entidad no encontrada. Reporte a los administradores
+				del
+				sistema.</message>
+		</redirect>
+	</exception>
+
+
+	<exception class="javax.persistence.PersistenceException">
+
+		<redirect view-id="/error.xhtml">
+			<message>
+				#{messages.servletExcep}
+			</message>
+		</redirect>
+	</exception>
+	<exception class="java.lang.NullPointerException">
+
+		<redirect view-id="/error.xhtml">
+			<message>
+				#{messages.nullPointer}
+			</message>
+		</redirect>
+	</exception>
+	<exception class="javax.persistence.OptimisticLockException">
+		<end-conversation />
+		<redirect view-id="/error.xhtml">
+			<message>Otro usuario ha cambiado estos datos, verifíquelos
+				primero.
+			</message>
+		</redirect>
+	</exception>
+
+	<exception class="org.jboss.seam.security.AuthorizationException">
+		<redirect view-id="/error.xhtml">
+			<message>No tiene los permisos para realizar esta operación.
+			</message>
+		</redirect>
+	</exception>
+
+	<exception class="org.jboss.seam.security.NotLoggedInException">
+		<redirect view-id="/modCommons/login3/login.xhtml">
+			<message>Por favor, autentíquese primero.</message>
+		</redirect>
+	</exception>
+
+
+
+	<exception class="javax.faces.application.ViewExpiredException">
+		<redirect view-id="/error.xhtml">
+			<message>Su sesión ha expirado.</message>
+		</redirect>
+	</exception>
+
+	<exception class="org.jboss.seam.web.FileUploadException">
+		<redirect view-id="/error.xhtml">
+			<message>El fichero sobrepasa el tamaño máximo permitido.</message>
+		</redirect>
+	</exception>
+
+
+	<exception class="javax.faces.el.EvaluationException">
+		<redirect view-id="/error.xhtml">
+			<message severity="error">
+				#{messages.elException}
+			</message>
+		</redirect>
+	</exception>
+
+
+	<exception>
+		<redirect view-id="/errorGeneral.xhtml" />
+	</exception>
+
+
+</pages>

@@ -1,0 +1,376 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+			
+		<!-- Estilo para los mensajes -->
+		<style type="text/css">
+.custom-error {
+			border: 1px solid #FFCC00;
+			padding: 5px;
+			background-color: #F0F8FF;
+			font-size: 10px;
+			font-family: "Verdana";
+			position: relative;	left: 5px; top: 5px; 
+			margin-right: 10px;
+		}	
+</style>
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+
+
+		<h:form id="userSearch" styleClass="edit">
+			<a4j:outputPanel ajaxRendered="true" id="errorOutputPanel">
+				<s:div style="height:30px;width:100%"
+					rendered="#{facesMessages.getCurrentMessagesForControl('userSearch').size() > 0 }">
+					<div class="custom-error">
+						<rich:message for="userSearch"></rich:message>
+					</div>	
+				</s:div>
+			</a4j:outputPanel>
+
+			<rich:simpleTogglePanel switchType="client"
+				label="#{messages.criterios}"
+				opened="#{departamentoClinicoBuscarControler.state}">
+				<a4j:support event="oncollapse" ajaxSingle="true"
+					action="#{departamentoClinicoBuscarControler.cambiarEstadoSimpleTogglePanel()}"
+					reRender="tablas_id" />
+				<a4j:support event="onexpand" ajaxSingle="true"
+					action="#{departamentoClinicoBuscarControler.cambiarEstadoSimpleTogglePanel()}"
+					reRender="tablas_id" />
+				<table cellpadding="0px" cellspacing="0px" border="0px"
+					id="simplesearch">
+
+					<tr>
+						<td style="height: 13px"></td>
+					</tr>
+					<tr style="vertical-align: top;">
+						<td style="width: 7px;"></td>
+						<td>
+						<table cellpadding="0" cellspacing="0" border="0">
+							<tr>
+								<td>#{messages.crit1}<br />
+								<h:inputText id="nombre" tabindex="1"
+									value="#{departamentoClinicoBuscarControler.nombre}"
+									style="width:150px;" /></td>
+								<td style="width: 25px;"></td>
+
+
+								<td style="vertical-align: bottom;"><h:commandButton id="buscarbtn"
+									tabindex="2" value="#{messages.buscar}"
+									style="margin-left: 0px; margin-right: 5px; margin-bottom: 0px;"
+									action="#{departamentoClinicoBuscarControler.buscar()}">
+									<s:defaultAction />
+								</h:commandButton></td>
+								<td style="vertical-align: bottom;"><s:button
+									view="/modCommons/modHome/home.gehos"
+									value="#{messages.cancelar}" tabindex="3"
+									style="margin-right:0px;margin-bottom: 0px;"
+									rendered="#{not identificadorManager.editing}">
+									<f:param name="idFuncionalidad"
+										value="#{activeModule.activeModule.id}" />
+									<f:param name="idancestors"
+										value="#{activeModule.activeModule.id}a" />
+									<f:param name="moduleName"
+										value="#{activeModule.activeModuleName}" />
+								</s:button></td>
+							</tr>
+						</table>
+						</td>
+						<td style="width: 7px;"></td>
+					</tr>
+				</table>
+				<rich:spacer height="7px" />
+			</rich:simpleTogglePanel>
+			<rich:spacer height="11px" />
+
+			<div align="right"><h:panelGrid columns="2" cellpadding="1"
+				cellspacing="0" border="0">
+				<a4j:commandLink action="#{departamentoClinicoCrearControlador.begin()}"
+				status="showModalStatus">
+				<h:graphicImage style="border: 0px;" height="12" width="12"
+					title="#{messages.adicionar}" 
+					value="/resources/icons/default/acciones/adicionar.png" />
+					</a4j:commandLink>
+				<a4j:commandLink value="#{messages.adicionar}" title="#{messages.adicionar}"
+					action="#{departamentoClinicoCrearControlador.begin()}"
+					tabindex="4" style="cursor: pointer" status="showModalStatus"/>
+			</h:panelGrid>			
+			</div>
+			<a4j:outputPanel id="tablas_id">
+				<rich:panel
+					rendered="#{empty departamentoClinicoBuscarControler.resultList and departamentoClinicoBuscarControler.nombre.equals('')}">
+
+					<f:facet name="header">#{messages.listado}</f:facet>
+					<rich:spacer height="13px" style="display: block" />
+					<div class="results" id="roleList"><rich:spacer width="7px" />
+					<h:outputText value="#{messages.noInf}" /></div>
+					<rich:spacer height="7px" style="display: block" />
+				</rich:panel>
+				<rich:panel
+					rendered="#{empty departamentoClinicoBuscarControler.resultList and departamentoClinicoBuscarControler.nombre != ''}">
+
+					<f:facet name="header">#{messages.listado}</f:facet>
+					<rich:spacer height="13px" style="display: block" />
+					<div class="results" id="roleList"><rich:spacer width="7px" />
+					<h:outputText value="#{messages.noInf2}" /></div>
+					<rich:spacer height="7px" style="display: block" />
+				</rich:panel>
+				<s:div style="margin-left:1px;margin-top:1px"
+					rendered="#{not empty departamentoClinicoBuscarControler.resultList}">
+					<rich:dataTable id="departamentoList_Table" style="width: 100%;"
+						var="dep" value="#{departamentoClinicoBuscarControler.resultList}"
+						columnsWidth="90%, 1%, 1%, 1%">
+						<f:facet name="header">
+							#{messages.listado}
+					</f:facet>
+
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.nombre}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not departamentoClinicoBuscarControler.order.equals('departamento.nombre asc') and not departamentoClinicoBuscarControler.order.equals('departamento.nombre desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="valorcontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{departamentoClinicoBuscarControler.order.equals('departamento.nombre asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="valorcontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{departamentoClinicoBuscarControler.order.equals('departamento.nombre desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="valorcontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+	            	#{dep.nombre}
+	        	</h:column>
+
+						<h:column>
+							<div align="center"><a4j:commandLink
+								status="showModalStatus" 
+								ajaxSingle="true" immediate="true"
+								onclick="SeleccionarVer('#{dep.id}')">
+								<h:graphicImage title="#{messages.ver}" style="border: 0px;"
+									value="/resources/icons/default/acciones/ver.png" />
+							</a4j:commandLink></div>
+						</h:column>
+						<h:column>
+							<div align="center"><a4j:commandLink 
+								onclick="SeleccionarModif('#{dep.id}')"
+								status="showModalStatus">								
+								<h:graphicImage title="#{messages.modificar}"
+									style="border: 0px;"
+									value="/resources/icons/default/acciones/modificar.png" />
+							</a4j:commandLink></div>
+						</h:column>
+						<h:column>
+							<div align="center"><a4j:commandLink
+								onclick="SeleccionarStat('#{dep.id}')" 
+								status="showModalStatus">
+								<h:graphicImage title="#{messages.eliminar}"
+									style="border: 0px; cursor:pointer;"
+									value="/resources/icons/default/acciones/eliminar.png">
+								</h:graphicImage>
+							</a4j:commandLink></div>
+						</h:column>
+						<h:column>
+							<div align="center"><h:graphicImage
+								rendered="#{not dep.eliminado}"
+								value="/resources/modConfiguracion/visible.png" width="14"
+								height="14" style="border:0px; cursor:pointer"
+								title="#{messages.visibilidad}">
+								<a4j:support event="onclick" ajaxSingle="true" 
+									action="#{departamentoClinicoBuscarControler.cambiarVisibilidad(dep.id)}"
+									reRender="tablas_id,departamentoList_Table" status="showModalStatus"/>
+							</h:graphicImage> <h:graphicImage rendered="#{dep.eliminado}"
+								value="/resources/modConfiguracion/not-visible.png" width="14"
+								height="14" style="border:0px; cursor:pointer; height : 14px;"
+								title="#{messages.visibilidad}">
+								<a4j:support event="onclick" ajaxSingle="true"
+									action="#{departamentoClinicoBuscarControler.cambiarVisibilidad(dep.id)}"
+									reRender="tablas_id,departamentoList_Table" status="showModalStatus"/>
+							</h:graphicImage></div>
+						</h:column>
+
+					</rich:dataTable>
+					<a4j:jsFunction name="SeleccionarStat" action="#{departamentoClinicoBuscarControler.seleccionar()}" 
+									oncomplete="Richfaces.showModalPanel('panelEliminar')" ajaxSingle="true">
+						<a4j:actionparam name="pos" assignTo="#{departamentoClinicoBuscarControler.departamentoId}"/>
+					</a4j:jsFunction>
+					<a4j:jsFunction name="SeleccionarModif" action="#{departamentoClinicoBuscarControler.seleccionarModificar()}" 
+									ajaxSingle="true">
+						<a4j:actionparam name="pos" assignTo="#{departamentoClinicoBuscarControler.departamentoId}"/>
+					</a4j:jsFunction>
+					<a4j:jsFunction name="SeleccionarVer" action="#{departamentoClinicoBuscarControler.seleccionarVer()}" 
+									ajaxSingle="true">
+						<a4j:actionparam name="pos" assignTo="#{departamentoClinicoBuscarControler.departamentoId}"/>
+					</a4j:jsFunction>
+					<a4j:status id="showModalStatus" forceId="true" 
+					  onstart="Richfaces.showModalPanel('ajaxLoadingModalBox',{left:1, top:-15});
+					  		   document.body.style.cursor='wait';"
+					  onstop="Richfaces.hideModalPanel('ajaxLoadingModalBox');
+					  		  document.body.style.cursor='default';">
+					</a4j:status>
+				</s:div>
+
+				<rich:spacer height="11px" />
+				<s:div id="pagingcontrols" styleClass="tableControl"
+					style="width: 100%; text-align:center" align="center"
+					rendered="#{not empty departamentoClinicoBuscarControler.resultList}">
+
+					<h:graphicImage
+						value="/resources/icons/default/paginado/iniciod.png"
+						rendered="#{!departamentoClinicoBuscarControler.previousExists}" />
+
+					<s:link
+						view="/modConfiguracion/management/gestionarDepartamentoClinico/BuscarDepartamentosClinicos.gehos"
+						rendered="#{departamentoClinicoBuscarControler.previousExists}"
+						id="firstPage">
+						<h:graphicImage title="#{messages.pag1}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/inicio.png" />
+						<f:param name="firstResult" value="0" />
+						<f:param name="critB1"
+							value="#{parameters.encodec(departamentoClinicoBuscarControler.nombre)}" />
+						<f:param name="open"
+							value="#{departamentoClinicoBuscarControler.state}" />
+						<f:param name="order"
+							value="#{departamentoClinicoBuscarControler.order}" />
+					</s:link>
+
+					<h:graphicImage
+						value="/resources/icons/default/paginado/anteriord.png"
+						rendered="#{!departamentoClinicoBuscarControler.previousExists}" />
+
+
+					<s:link
+						view="/modConfiguracion/management/gestionarDepartamentoClinico/BuscarDepartamentosClinicos.gehos"
+						rendered="#{departamentoClinicoBuscarControler.previousExists}"
+						id="previousPage">
+						<h:graphicImage title="#{messages.pag2}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/anterior.png" />
+						<f:param name="firstResult"
+							value="#{departamentoClinicoBuscarControler.previousFirstResult}" />
+						<f:param name="critB1"
+							value="#{parameters.encodec(departamentoClinicoBuscarControler.nombre)}" />
+						<f:param name="open"
+							value="#{departamentoClinicoBuscarControler.state}" />
+						<f:param name="order"
+							value="#{departamentoClinicoBuscarControler.order}" />
+					</s:link>
+
+
+					<h:graphicImage
+						value="/resources/icons/default/paginado/siguiented.png"
+						rendered="#{!departamentoClinicoBuscarControler.nextExists}" />
+
+
+					<s:link
+						view="/modConfiguracion/management/gestionarDepartamentoClinico/BuscarDepartamentosClinicos.gehos"
+						rendered="#{departamentoClinicoBuscarControler.nextExists}"
+						id="nextPage">
+						<h:graphicImage title="#{messages.pag3}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/siguiente.png" />
+						<f:param name="firstResult"
+							value="#{departamentoClinicoBuscarControler.nextFirstResult}" />
+						<f:param name="critB1"
+							value="#{parameters.encodec(departamentoClinicoBuscarControler.nombre)}" />
+						<f:param name="open"
+							value="#{departamentoClinicoBuscarControler.state}" />
+						<f:param name="order"
+							value="#{departamentoClinicoBuscarControler.order}" />
+					</s:link>
+
+					<h:graphicImage value="/resources/icons/default/paginado/find.png"
+						rendered="#{!departamentoClinicoBuscarControler.nextExists}" />
+
+
+					<s:link
+						view="/modConfiguracion/management/gestionarDepartamentoClinico/BuscarDepartamentosClinicos.gehos"
+						rendered="#{departamentoClinicoBuscarControler.nextExists}"
+						id="lastPage">
+						<h:graphicImage title="#{messages.pag4}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/fin.png" />
+						<f:param name="firstResult"
+							value="#{departamentoClinicoBuscarControler.lastFirstResult}" />
+						<f:param name="critB1"
+							value="#{parameters.encodec(departamentoClinicoBuscarControler.nombre)}" />
+						<f:param name="open"
+							value="#{departamentoClinicoBuscarControler.state}" />
+						<f:param name="order"
+							value="#{departamentoClinicoBuscarControler.order}" />
+					</s:link>
+				</s:div>
+			</a4j:outputPanel>
+
+
+		</h:form>
+
+		<h:form>
+			<rich:contextMenu attached="false" id="valorcontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{departamentoClinicoBuscarControler.setOrder('departamento.nombre asc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{departamentoClinicoBuscarControler.setOrder('departamento.nombre desc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+				
+			</rich:contextMenu>
+
+		</h:form>
+
+		<ui:include
+			src="/modConfiguracion/management/gestionarDepartamentoClinico/modalspanel/ConfirmarEliminarDepartamentoClinicoBuscar.xhtml" />
+			
+		<rich:modalPanel id="ajaxLoadingModalBox" minHeight="10" minWidth="10" 
+	        height="10" width="10" zindex="2000">
+	     <s:div rendered="false">  
+	           <img id="favsloadingdiv" 
+	        	src="#{facesContext.externalContext.requestContextPath}/resources/icons/default/acciones/loading_small.gif"
+	        	style="position: absolute; top: 0px; left: 0px;" />
+	     </s:div>  
+	</rich:modalPanel>	
+
+	</ui:define>
+
+</ui:composition>
+

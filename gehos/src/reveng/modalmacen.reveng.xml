@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+	<table-filter match-schema="almacen" match-name="adjudicacion" />
+	<table-filter match-schema="almacen" match-name="almacen" />
+	<table-filter match-schema="almacen" match-name="almacen_jefe" />
+	<table-filter match-name="almacen_ayudante"
+		match-schema="almacen">
+	</table-filter>
+	<table-filter match-schema="almacen"
+		match-name="cuadro_adjudicacion" />
+
+	<table-filter match-schema="almacen" match-name="fecha_entrega" />
+
+	<table-filter match-schema="almacen" match-name="lote" />
+
+	<table-filter match-schema="almacen" match-name="movimiento" />
+
+	<table-filter match-schema="almacen" match-name="oferta" />
+
+	<table-filter match-schema="almacen" match-name="perfil_producto" />
+
+	<table-filter match-schema="almacen" match-name="perfil_solicitud" />
+
+	<table-filter match-schema="almacen" match-name="producto_almacen" />
+
+	<table-filter match-schema="almacen"
+		match-name="producto_en_almacen" />
+
+	<table-filter match-schema="almacen" match-name="proveedor" />
+
+	<table-filter match-schema="almacen" match-name="tarjeta_almacen" />
+
+	<table-filter match-schema="seguridad" match-name="user">
+
+	</table-filter>
+	<table-filter match-name="sol_prod" match-schema="almacen"></table-filter>
+	<table-filter match-name="solicitud_producto"
+		match-schema="almacen">
+	</table-filter>
+
+
+</hibernate-reverse-engineering>

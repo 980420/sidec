@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<param name="servicioId" value="#{servicioClinicoModificarControlador.servicioId}" />
+
+	<!-- validation -->
+	<navigation evaluate="#{servicioClinicoModificarControlador.errorLoadData}">
+		<rule if-outcome="true">
+			<redirect view-id="/modConfiguracion/management/gestionarServiciosClinicos/BuscarServiciosClinicos.gehos" />
+			<end-conversation before-redirect="true" />
+		</rule>
+		<rule if="#{servicioClinicoModificarControlador.servicioId == null or servicioClinicoModificarControlador.servicioId == ''}">
+			<redirect view-id="/modConfiguracion/management/gestionarServiciosClinicos/BuscarServiciosClinicos.gehos" />
+			<end-conversation before-redirect="true" />
+		</rule>
+	</navigation>
+
+	<!-- modify and go to view details -->
+	<navigation from-action="#{servicioClinicoModificarControlador.modificar()}" evaluate="#{servicioClinicoModificarControlador.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarServiciosClinicos/VerDetallesServiciosClinicos.xhtml">
+				<param name="servicioId" value="#{servicioClinicoModificarControlador.servicio.id}" />				
+				<param name="from" value="modificar" />
+			</redirect>
+			<end-conversation before-redirect="true" />
+		</rule>
+	</navigation>
+
+	<!-- cancel and go to view list -->
+	<navigation from-action="cancelar">
+		<redirect view-id="/modConfiguracion/management/gestionarServiciosClinicos/BuscarServiciosClinicos.gehos">
+		</redirect>
+		<end-conversation before-redirect="true" />
+	</navigation>
+</page>

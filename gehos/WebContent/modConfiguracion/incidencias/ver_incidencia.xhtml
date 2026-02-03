@@ -1,0 +1,116 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j ="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core"
+	template="#{theme.template}" >
+
+	<ui:define name="body" >
+    	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    	<script type="text/javascript">setContentTitle('#{messages.label}')</script>
+    	<h:form id="idForm">
+    		<rich:panel style="width:100%;">
+                <f:facet name="header">
+                     <h:outputText value="#{messages.datosIncidencia}"/>           
+                </f:facet>
+           		<table cellpadding="0px" cellspacing="0px">
+                  	<tr>
+						<td>
+							#{messages.tema}:
+						</td>
+						<td width="8px"></td>
+						<td>
+							<h:outputText value="#{gestionarIncidencia.incidencia.tema}" styleClass="dataText"/>
+						</td>
+						<td width="25px"></td>
+						<td>
+							#{messages.componente}:
+						</td>
+						<td width="8px"></td>
+						<td>
+							<h:outputText value="#{gestionarIncidencia.incidencia.componente.valor}" styleClass="dataText"/>
+						</td>
+					</tr>
+					<tr>
+						<td height="8px"></td>
+					</tr>
+				</table>
+				<table cellpadding="0px" cellspacing="0px" width="100%">
+					<tr>
+						<td width="100%">
+							<h:outputLabel value="#{messages.descripcion}:"/>
+                            <rich:spacer height="0px" style="display: block"></rich:spacer>
+                            <h:inputTextarea value="#{gestionarIncidencia.incidencia.descripcion}" style=" width : 100%;" disabled="true">
+						
+					        </h:inputTextarea>
+						</td>
+					</tr>
+					<tr>
+						<td height="8px"></td>
+					</tr>
+				</table>
+				<table cellpadding="0px" cellspacing="0px">
+					<tr>
+						<td>
+							#{messages.fechaI}:
+						</td>
+						<td width="8px"></td>
+						<td>
+							<h:outputText value="#{gestionarIncidencia.incidencia.fechaInicio}" styleClass="dataText">
+								<s:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText>
+						</td>
+						<td width="25px"></td>
+						<td>
+							<h:outputText value="#{messages.fechaEst}:" rendered="#{empty gestionarIncidencia.incidencia.fechaFin}" />
+							<h:outputText value="#{messages.fechaF}:" rendered="#{not empty gestionarIncidencia.incidencia.fechaFin}" />
+						</td>
+						<td width="8px"></td>
+						<td>
+							<h:outputText value="#{gestionarIncidencia.incidencia.fechaFinEstimada}" styleClass="dataText"
+								rendered="#{empty gestionarIncidencia.incidencia.fechaFin}">
+								<s:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText>
+							<h:outputText value="#{gestionarIncidencia.incidencia.fechaFin}" styleClass="dataText"
+								rendered="#{not empty gestionarIncidencia.incidencia.fechaFin}">
+								<s:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText>
+							<h:outputText value="-" styleClass="dataText"
+								rendered="#{empty gestionarIncidencia.incidencia.fechaFin and empty gestionarIncidencia.incidencia.fechaFinEstimada}">
+							</h:outputText>
+						</td>
+						<td width="25px"></td>
+						<td>
+							#{messages.porciento}:
+						</td>
+						<td width="8px"></td>
+						<td>
+							<h:outputText value="#{gestionarIncidencia.incidencia.prociento}" styleClass="dataText"/>
+						</td>
+					</tr>
+					<tr>
+						<td height="8px"></td>
+					</tr>
+				</table>
+				<table cellpadding="0px" cellspacing="0px" width="100%">
+					<tr>
+						<td width="100%">
+							<h:outputLabel value="#{messages.comentario}:"/>
+                            <rich:spacer height="0px" style="display: block"></rich:spacer>
+                            <h:inputTextarea value="#{gestionarIncidencia.incidencia.comentario}" style=" width : 100%;" disabled="true">
+						
+					        </h:inputTextarea>
+						</td>
+					</tr>
+				</table>
+				<br />
+				<div align="right">
+					<h:commandButton value="#{messages.salir}" style="margin: 0px" action="salir"/>
+				</div>				
+			</rich:panel>
+    	</h:form>
+    </ui:define>
+</ui:composition>

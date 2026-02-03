@@ -1,0 +1,144 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<ui:define name="body">
+		<s:div>
+			<script type="text/javascript">setContentTitle('#{messages.confanillo}')</script>
+
+			<style>
+.message {
+	border: 1px solid #FFCC00;
+	padding: 5px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	background-color: #F0F8FF;
+	font-size: 10px;
+	font-family: "Verdana";
+}
+</style>
+			<!-- Estilos generales -->
+			<link
+				href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+				rel="stylesheet" type="text/css" />
+
+			<h:form id="idForm">
+
+				<rich:messages globalOnly='true' styleClass='message'
+					id='globalMessage' ajaxRendered="true" />
+				<s:div id="generalPage">
+
+					<rich:panel>
+						<f:facet name="header">
+ 					#{messages.anilloPanel}
+ 				  </f:facet>
+						<s:div id="tableEditable"
+							rendered="#{(updateRhioID.existeAnilloConfigurado() and updateRhioID.modificar) or not updateRhioID.existeAnilloConfigurado()}">
+
+							<table border="0" cellpadding="0" cellspacing="0">
+								<tr>
+									<td colspan="6" class="espacio_vertical"></td>
+								</tr>
+								<tr>
+									<td class="espacio_corto_h"></td>
+									<td><h:outputText styleClass="normalText"
+										value="#{messages.idanillo}:" /> <rich:message for="idanillo"
+										showDetail="false" tooltip="true" style="color:red;">
+										<f:facet name="errorMarker">
+											<h:outputText value="*"
+												title="#{facesMessages.getCurrentMessagesForControl('idanillo').get(0).getDetail()}" />
+										</f:facet>
+									</rich:message> <br />
+									<h:inputText value="#{updateRhioID.id}"
+										required="#{!empty param['idForm:btnSi']}" id="idanillo"
+										readonly="#{updateRhioID.existeAnilloConfigurado()}"
+										>
+										<f:validateLongRange maximum="9999" minimum="1002"></f:validateLongRange>
+									</h:inputText></td>
+
+									<td width="25px" />
+									<td><h:outputText styleClass="normalText" value="#{messages.nombre}:" />
+									<rich:message for="nombre" showDetail="false" tooltip="true"
+										style="color:red;">
+										<f:facet name="errorMarker">
+											<h:outputText value="*"
+												title="#{facesMessages.getCurrentMessagesForControl('nombre').get(0).getDetail()}" />
+										</f:facet>
+									</rich:message> <br />
+									<h:inputText id="nombre" style="width:150px;"
+										required="#{!empty param['idForm:btnSi']}"
+										validator="#{validations_configuracion.text}"
+										value="#{updateRhioID.nombreAnillo}" /></td>
+
+
+								</tr>
+								<tr>
+									<td colspan="4" class="espacio_final"></td>
+								</tr>
+							</table>
+						</s:div>
+						<s:div id="tableNoEditable"
+							rendered="#{updateRhioID.existeAnilloConfigurado() and not updateRhioID.modificar}">
+							<table border="0" cellpadding="0" cellspacing="0">
+								<tr>
+									<td colspan="6" class="espacio_vertical"></td>
+								</tr>
+								<tr>
+									<td class="espacio_corto_h"></td>
+									<td><h:outputText styleClass="normalText"
+										value="#{messages.idanillo}:" /></td>
+									<td width="10px" />
+									<td><h:outputText styleClass="normalText"
+										value="#{updateRhioID.id}" /></td>
+
+									<td width="25px" />
+									<td><h:outputText styleClass="normalText" value="#{messages.nombre}:" /></td>
+									<td width="10px" />
+									<td><h:outputText styleClass="normalText"
+										value="#{updateRhioID.nombreAnillo}" /></td>
+
+
+								</tr>
+								<tr>
+									<td colspan="4" class="espacio_final"></td>
+								</tr>
+							</table>
+						</s:div>
+					</rich:panel>
+
+				</s:div>
+
+
+				<rich:spacer height="8px;" width="100%" />
+				<div align="right"><a4j:commandButton id="aceptar"
+					rendered="#{(updateRhioID.existeAnilloConfigurado() and updateRhioID.modificar) or not updateRhioID.existeAnilloConfigurado()}"
+					value="#{messages.aceptar}"
+					oncomplete="Richfaces.showModalPanel('crear_anillo_panel');"
+					reRender="idanillo,nombre"
+					style="margin-left: 0px; margin-bottom: 0px; margin-top: 0px;" />
+				<h:commandButton id="modificar"
+					rendered="#{updateRhioID.existeAnilloConfigurado() and not updateRhioID.modificar}"
+					value="#{messages.modf}"
+					style="margin-left: 0px; margin-bottom: 0px; margin-top: 0px;"
+					action="#{updateRhioID.setModificar(true)}" /> <h:commandButton
+					action="cancel" value="#{messages.cancelar}" immediate="true"
+					style="margin-right: 0px; margin-bottom: 0px; margin-top: 0px;" />
+				</div>
+				<ui:include
+					src="/modConfiguracion/anillo/configurarAnilloAdvertencia.xhtml" />
+			</h:form>
+
+
+
+
+		</s:div>
+
+	</ui:define>
+</ui:composition>

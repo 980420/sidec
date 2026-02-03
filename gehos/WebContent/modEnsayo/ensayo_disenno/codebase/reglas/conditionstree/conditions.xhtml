@@ -1,0 +1,296 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core" template="#{theme.template}">
+	<s:div>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css"
+			rel="stylesheet" type="text/css" />
+		<link rel='stylesheet'
+			href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+			type='text/css' />
+		<link rel='stylesheet'
+			href='#{facesContext.externalContext.requestContextPath}/modEnsayo/ensayo_disenno/codebase/reglas/style/fileupload.css'
+			type='text/css' />
+
+		<style>
+.panelc {
+	vertical-align: top;
+}
+
+.dropTargetPanel {
+	
+}
+
+.exp-item {
+	border: 2px rgb(142, 205, 158) solid;
+	padding: 7px;
+	border-radius: 5px;
+	min-width: 12px;
+	text-align: center;
+	display: inline-block;
+	margin-right: 2px;
+	color: rgb(71, 102, 79);
+	cursor: pointer;
+	transition: ease-in .3s;
+	font-style: oblique;
+	font-weight: bold;
+}
+
+.exp-item:hover {
+	/* font-weight: bolder; */
+	
+}
+
+.remove-exp-item {
+	position: relative;
+	top: -8px;
+	left: 5px;
+	color: rgb(140, 192, 155) !important;
+}
+
+.remove-exp-item:hover {
+	color: red !important;
+}
+
+.eval-sign {
+	height: 16px;
+	width: 16px;
+	border-radius: 100%;
+}
+
+.eval-ok {
+	background: rgb(30, 142, 78);
+}
+
+.eval-fail {
+	background: red;
+}
+</style>
+		<script>
+		//in conditions.xhtml			
+	
+		function hola(data)
+		{
+			data = JSON.parse(data);
+			if(data.type=='var')
+			{
+				Richfaces.showModalPanel('expvariableSelection');
+			}
+			else if(data.type=='lit')
+			{				
+				Richfaces.showModalPanel('literalInput');
+			}		
+		}
+    </script>
+    <script>    //this script could be place in the testvar template. I put it here to be able of debugging it since the navigator dont show this part
+				function pickFileData(fileInput, data, varid)
+				{
+					var curr = jQuery(fileInput);					
+					
+					var fileDetailsEl = curr.parent().siblings('div.file-details');
+					var strin;
+					if(fileInput.files.length>0 || data)
+					{
+						var f;
+						
+						if(data)
+							f = data;
+						else
+							f = fileInput.files[0];
+						var json = {'name':f.name, 'size':f.size, 'type':f.type}						
+						var strin = JSON.stringify(json);
+						updateFileData(true, fileDetailsEl, json);						
+					}
+					else
+					{	
+						strin = "";
+						updateFileData(false, fileDetailsEl, json);
+					}
+					pushFileInfo(strin,varid);
+					
+					//by setting the value to the corresponding hidden field the sync is complete so the required * works as if the fileUpload would be working	
+					var hiddenInput = curr.next();
+					hiddenInput.val(strin);
+				}
+				function ddd(fileInput)
+				{
+					var inputHidden = jQuery(fileInput).parent().parent().prev();
+					var strin;
+					var fileDetailsEl = inputHidden.siblings('.file-holder').find('div.file-details');
+					if(fileInput.files.length>0)
+					{
+						var f = fileInput.files[0];
+						var json = {'name':f.name, 'size':f.size, 'type':f.type}
+						//alert(json);
+						strin = JSON.stringify(json);						
+						updateFileData(true, fileDetailsEl, json);										
+					}
+					else
+					{	
+						strin = "";
+						updateFileData(false, fileDetailsEl, json);
+					}
+					
+					inputHidden.val(strin);	
+				}
+				function updateFileData(show,fileDetailsEl,data)
+				{
+					if(show===true)
+					{
+						var fileNameEl= fileDetailsEl.children('.file-name');
+						var fileSizeEl= fileDetailsEl.children('.file-size');
+						fileNameEl[0].textContent = data.name;
+						fileSizeEl[0].textContent = convertBytesToHighest(data.size);
+						fileDetailsEl.css('display','inline-block');
+					}
+					else
+					{
+						fileDetailsEl.css('display','none');
+					}
+				}
+
+				function convertBytesToHighest(bytes)
+				{
+					var unit = "B";
+					var divisor = 1024;
+					if(bytes>divisor)
+					{	
+						bytes = bytes/divisor;
+						unit = "KB";
+					}
+					if(bytes>divisor)
+					{	
+						bytes = bytes/divisor;
+						unit = "MB";
+					}
+					if(bytes>divisor)
+					{	
+						bytes = bytes/divisor;
+						unit = "GB";
+					}
+					return Math.round(bytes * 10)/10+unit;
+						
+				}	
+			</script>		
+		<script
+			src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/reglas/vendor/jquery1.9.js"
+			type="text/javascript"></script>
+		<script type="text/javascript" language="javascript"
+			src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/jquery-inputmask/jquery.inputmask.bundle.js">
+		</script>
+		<script>
+		var $j = jQuery.noConflict(true);
+		$j(document).ready(function()
+		{   	   
+			applyDateMask();
+		});
+
+		function applyDateMask()
+		{
+			var allInputsLikeDate = $j(".likedate");
+			allInputsLikeDate.inputmask("y/[m]/[d]", { "placeholder": "*", greedy:false });	
+			allInputsLikeDate.attr("placeholder","aaaa/mm/dd");
+		}
+		function applyIntegerMask()
+		{
+			var allInputsLikeDate = $j(".likeinteger");
+			allInputsLikeDate.inputmask("integer", { allowMinus: false, allowPlus: true });	
+			//allInputsLikeDate.attr("placeholder","aaaa/mm/dd");
+		}
+
+		function applyAllMask()
+		{
+			applyDateMask();
+			applyIntegerMask();
+		}
+		function fixContextMenu(el)
+		{
+			
+		}
+
+		function applyEmailMask()
+		{
+			$j('.likeMultEmail').multipleInput();
+		}	
+		</script>
+		<a4j:region>
+
+			<a4j:form id="aruleformContainer">
+				<a4j:outputPanel id="ruleform" ajaxRendered="true">
+					<ui:include
+						src="/modEnsayo/ensayo_disenno/codebase/reglas/conditionstree/node.xhtml">
+						<ui:param name="node" value="#{RuleConditionsManager.firstNode}" />
+					</ui:include>
+					<script>applyDateMask();</script>
+				</a4j:outputPanel>
+				<!-- AQUI iva una region, por si empieza a dar problemas -->
+					<a4j:outputPanel id="opValues">
+						<rich:panel rendered="#{empty RuleConditionsManager.testVariableValues}">
+									<f:facet name="header">
+										<h:outputLabel value="Valores de prueba" />
+									</f:facet>
+									<h:outputText value="#{messages.msg_listaVacia_ens}" />
+						</rich:panel>
+						<rich:simpleTogglePanel switchType="client" id="stp" rendered="#{not empty RuleConditionsManager.testVariableValues}">
+							<f:facet name="header">Valores de prueba</f:facet>
+							<a4j:repeat var="tv" rowKeyVar="rowindex" id="stpOpvalues"
+								value="#{RuleConditionsManager.testVariableValues}">								
+									<ui:include
+										src="/modEnsayo/ensayo_disenno/codebase/reglas/testvariables/testvar_template.xhtml">
+										<ui:param name="tv" value="#{tv}" />
+										<ui:param name="rowindex" value="#{rowindex}" />
+									</ui:include>								
+							</a4j:repeat>													
+						</rich:simpleTogglePanel>
+						<script>applyDateMask();</script>						
+					</a4j:outputPanel>
+				
+				<rich:spacer styleClass="espacio_vertical"></rich:spacer>
+				
+				<s:div id="readableConds">
+				<rich:panel rendered="#{empty if}">
+									<f:facet name="header">
+										<h:outputLabel value="Interpretación" />
+									</f:facet>
+									<h:outputText value="#{messages.msg_listaVacia_ens}" />
+				</rich:panel>
+				<rich:simpleTogglePanel switchType="client" rendered="#{not empty if}">
+					<f:facet name="header">Interpretación</f:facet>
+					<ui:include src="/modEnsayo/ensayo_disenno/codebase/reglas/rule_interpretation.xhtml">
+						<ui:param name="if" value="#{if}" />
+						<ui:param name="then" value="#{then}" />
+						<ui:param name="else" value="#{else}" />
+					</ui:include>
+				</rich:simpleTogglePanel>
+				</s:div>
+				<div align="right">
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr style="text-align: right">
+					<td colspan="9">
+					<a4j:commandButton action="#{evalAction}"
+					value="Evaluar" reRender="ruleform,readableConds"></a4j:commandButton>
+					<a4j:commandButton rendered="false"
+					action="#{RuleConditionsManager.SaveConditions()}"
+					value="Guardar condiciones"></a4j:commandButton></td>
+				</tr>
+			</table>
+			</div>
+				
+				
+
+				
+
+			</a4j:form>
+		</a4j:region>
+
+		<ui:debug />
+
+
+	</s:div>
+</s:div>

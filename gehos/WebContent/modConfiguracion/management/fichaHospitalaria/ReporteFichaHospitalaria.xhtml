@@ -1,0 +1,107 @@
+
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- eticEstilos -->
+		<!-- Estilo para el modalPanel -->
+		<style type="text/css">
+.dr-mpnl-pnl-b {
+	padding: 1px;
+}
+
+.dr-mpnl-pnl {
+	border: 1px !important;
+	border-style: solid !important;
+	border-color: #BED6F8 !important;
+}
+</style>
+		<!-- estilos para tabPanel -->
+		<style type="text/css">
+.dr-tbpnl-cntnt,.rich-tabpanel-content {
+	/*arriba, derecha ,abajo ,izquierda*/
+	padding: 0px 0px 0px 0px;
+}
+</style>
+
+		<!-- Estilo para panel -->
+		<style type="text/css">
+.rich-panel-body {
+	padding: 0px
+}
+</style>
+
+		<script type="text/javascript">setContentTitle("#{messages['titulo']}")</script>
+
+		<h:form id="idForm">
+			<rich:messages globalOnly="true" styleClass="message"
+				id="globalMessage" ajaxRendered="true">
+			</rich:messages>
+
+			<rich:simpleTogglePanel bodyClass="padCero" label="#{messages['parametros']}" switchType="client">
+       	   <table cellpadding="0px" cellspacing="0px" >
+                  <tr>
+                        <td style="height: 11px;" colspan="6"/>                       
+                  </tr>
+                  <tr style="vertical-align: top;">
+                        <td style="width: 8px;"/>
+                        <td>
+	                         <h:outputText styleClass="normalText" value="#{messages['entidad']}"/>	                         
+	                         <br/>
+                             <rich:comboBox style=" width : 150px;" id="entidad"
+							enableManualInput="false" required="true"
+							defaultLabel="#{messages.seleccione}"
+							requiredMessage="Valor requerido" var="valor"
+							suggestionValues="#{reporteFichaHospitalariaControlador.entidadesDelSistema()}"
+							value="#{reporteFichaHospitalariaControlador.entidadSeleccionada}">							
+						</rich:comboBox>
+                        </td>
+                                                
+                       <td style="width: 25px"></td>
+					   <td  style="text-align: right; padding-top: 8px;">	
+                             <h:commandButton id="generar"  value="#{messages['generar']}" style="margin-bottom:0px;" action="#{reporteFichaHospitalariaControlador.crearReporte()}"/>
+								<h:commandButton  value="#{messages['cancelar']}" style="margin-right: 0px;margin-bottom:0px;" action="#{reporteFichaHospitalariaControlador.cancelar()}" />
+		               </td>
+		               <td style="width: 8px;"/>
+                       </tr>
+                   <tr>
+                        <td style="height: 8px;" colspan="6"/>                       
+                  </tr>
+            </table>		   
+	</rich:simpleTogglePanel>
+			<rich:panel bodyClass="padCero"
+				rendered="#{not empty reporteFichaHospitalariaControlador.pathToReport}">
+				<f:facet name="header">
+					<h:outputText value="#{messages['tituloReporte']}" />
+				</f:facet>
+				<iframe width="100%" height="800px"
+					src="#{facesContext.externalContext.requestContextPath}#{reporteFichaHospitalariaControlador.pathToReport}"></iframe>
+				<rich:spacer height="8px" />
+				<div align="right"><h:commandLink
+					value="#{messages['enviar']}" /> <a4j:commandButton
+					onclick="javascript:Richfaces.showModalPanel('exportPanel');"
+					value="#{messages['exportar']}"
+					style="margin-top: 0px;margin-bottom: 0px;margin-left: 10px;" /> <h:commandButton
+					value="#{messages['imprimir']}"
+					style="margin-top: 0px;margin-bottom: 0px;" /> <h:commandButton
+					value="#{messages['salir']}"
+					style="margin-top: 0px;margin-bottom: 0px;margin-right: 0px;"
+					action="#{reporteFichaHospitalariaControlador.salir()}" /></div>
+				<rich:spacer height="8px" />
+			</rich:panel>
+		</h:form>
+		<ui:include
+			src="/modConfiguracion/management/fichaHospitalaria/modalpanels/ExportarReporte.xhtml">
+			<ui:param name="controlador" value="#{reporteFichaHospitalariaControlador}" />
+		</ui:include>
+
+	</ui:define>
+</ui:composition>

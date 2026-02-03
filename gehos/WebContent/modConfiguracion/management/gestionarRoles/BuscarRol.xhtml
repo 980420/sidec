@@ -1,0 +1,321 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- CSS -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/style/stylesheet_configuracion.css"
+			rel="stylesheet" type="text/css" />
+			<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+		<h:form id="form">
+			<a4j:outputPanel ajaxRendered="true" id="errorOutputPanel">
+				<s:div style="height:30px;width:100%"
+					rendered="#{facesMessages.getCurrentMessagesForControl('form').size() > 0 }">
+					<div class="custom-error"><rich:message for="form"></rich:message>
+					</div>
+				</s:div>
+			</a4j:outputPanel>
+
+
+			<rich:simpleTogglePanel switchType="client"
+				label="#{messages.criterios}" bodyClass="simpleTogglePanel"
+				opened="#{rolBuscarControlador.state}">
+				<a4j:support event="oncollapse" ajaxSingle="true"
+					action="#{rolBuscarControlador.changeSimpleTogglePanelState()}" />
+				<a4j:support event="onexpand" ajaxSingle="true"
+					action="#{rolBuscarControlador.changeSimpleTogglePanelState()}" />
+
+				<table cellpadding="0px" cellspacing="0px"
+					class="tabla fil-mt-sint col-mc-izq fil-mc-botton col-mc-der"
+					id="simplesearch">
+					<tr>
+						<td class="colg-c">
+							#{messages.crit1}: <br />
+							<h:inputText id="nombre" value="#{rolBuscarControlador.nombre}"	styleClass="inputText" />
+						</td>
+							<td class="colg-c">
+							#{messages.crit2}: <br />
+							<h:inputText id="codigo" value="#{rolBuscarControlador.codigo}"	styleClass="inputText" />
+						</td>
+						<td class="col-botton" valign="bottom">
+							<h:commandButton
+							value="#{messages.buscar}" styleClass="botton"
+							action="#{rolBuscarControlador.buscar()}">
+							<s:defaultAction />
+							</h:commandButton>
+						</td>
+						<td valign="bottom"><s:button
+							view="/modCommons/modHome/home.gehos" styleClass="botton"
+							value="#{messages.cancelar}">
+							<f:param name="idFuncionalidad"
+								value="#{activeModule.activeModule.id}" />
+							<f:param name="idancestors"
+								value="#{activeModule.activeModule.id}a" />
+							<f:param name="moduleName"
+								value="#{activeModule.activeModuleName}" />
+						</s:button></td>
+					</tr>
+				</table>
+			</rich:simpleTogglePanel>
+
+			<br />
+
+			<div align="right">
+			<table class="tablaLinkAdd" cellpadding="0" cellspacing="0">
+				<tr>
+					<td><a4j:commandLink status="showModalStatus"
+						action="#{rolCrearControlador.begin()}">
+						<h:graphicImage title="#{messages.adicionar}" height="12"
+							width="12" style="cursor: pointer"
+							value="/resources/icons/default/acciones/adicionar.png" />
+					</a4j:commandLink></td> 
+					<td valign="middle" class="lv-link-add"><a4j:commandLink
+						style="cursor: pointer; margin-left:2px;" title="#{messages.adicionar}"
+						action="#{rolCrearControlador.begin()}" tabindex="4"
+						value=" #{messages.adicionar}" status="showModalStatus" /></td>
+				</tr>
+			</table>
+			</div>
+
+			<a4j:outputPanel id="tablas_id">
+
+				<rich:panel rendered="#{empty rolBuscarControlador.resultList}">
+					<f:facet name="header">	#{messages.listado} </f:facet>
+					<div class="fil-mt-cont col-mt-izq fil-mt-conb col-mt-der"><h:outputText
+						value="#{messages.noInf2}" /></div>
+				</rich:panel>
+				<rich:panel
+					rendered="#{rolBuscarControlador.resultList.size() == 0 and rolBuscarControlador.nombre == '' and rolBuscarControlador.codigo == ''}">
+					<f:facet name="header">	#{messages.listdo} </f:facet>
+					<div class="fil-mt-cont col-mt-izq fil-mt-sinb col-mt-der"><h:outputText
+						value="#{messages.noInf}" /></div>
+				</rich:panel>
+				<s:div style="margin-left:1px;margin-top:1px"
+					rendered="#{not empty rolBuscarControlador.resultList}">
+					<rich:dataTable id="departamentoList_Table" style="width: 100%;"
+						var="rol" value="#{rolBuscarControlador.resultList}"
+						columnsWidth="45%, 45%, 1%,1% ,1%">
+						<f:facet name="header">
+							#{messages.listado}
+					</f:facet>
+
+						<rich:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.crit1}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not rolBuscarControlador.order.equals('name asc') and not rolBuscarControlador.order.equals('name desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="valorcontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{rolBuscarControlador.order.equals('name asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="valorcontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{rolBuscarControlador.order.equals('name desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="valorcontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+	            	#{rol.name}
+	        	</rich:column>
+	        	
+	        	<rich:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.crit2}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not rolBuscarControlador.order.equals('codigo asc') and not rolBuscarControlador.order.equals('codigo desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="valorcontextmenu2"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{rolBuscarControlador.order.equals('codigo asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="valorcontextmenu2"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{rolBuscarControlador.order.equals('codigo desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="valorcontextmenu2"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+	            	#{rol.codigo}
+	        	</rich:column>
+						<rich:column>
+							<div align="center">
+								<a4j:commandLink
+									status="showModalStatus" ajaxSingle="true" immediate="true"
+									onclick="SeleccionarVer('#{rol.id}')">
+									<h:graphicImage title="#{messages.ver}" styleClass="select"
+										value="/resources/icons/default/acciones/ver.png" />
+								</a4j:commandLink>
+							</div>
+						</rich:column>
+						<rich:column>
+							<div align="center"><a4j:commandLink
+								status="showModalStatus" ajaxSingle="true" immediate="true"
+								onclick="SeleccionarModif('#{rol.id}')">
+								<h:graphicImage title="#{messages.modificar}"
+									styleClass="select"
+									value="/resources/icons/default/acciones/modificar.png" />
+							</a4j:commandLink></div>
+						</rich:column>
+						<rich:column>
+							<div align="center"><a4j:commandLink ajaxSingle="true"
+								onclick="SeleccionarStat('#{rol.id}')" status="showModalStatus">
+
+								<h:graphicImage title="#{messages.eliminar}" styleClass="select"
+									value="/resources/icons/default/acciones/eliminar.png">
+								</h:graphicImage>
+							</a4j:commandLink></div>
+						</rich:column>
+						<!--<rich:column>
+							<div align="center"><h:graphicImage
+								rendered="#{not rol.eliminado}"
+								value="/resources/modConfiguracion/visible.png" width="14"
+								height="14" style="border:0px; cursor:pointer"
+								title="#{messages.visibilidad}">
+								<a4j:support event="onclick" ajaxSingle="true"
+									action="#{rolBuscarControlador.cambiarVisibilidad(rol.id)}"
+									reRender="tablas_id,departamentoList_Table" />
+							</h:graphicImage> <h:graphicImage rendered="#{rol.eliminado}"
+								value="/resources/modConfiguracion/not-visible.png" width="14"
+								height="14" style="border:0px; cursor:pointer;"
+								title="#{messages.visibilidad}">
+								<a4j:support event="onclick" ajaxSingle="true"
+									action="#{rolBuscarControlador.cambiarVisibilidad(rol.id)}"
+									reRender="departamentoList_Table" />
+							</h:graphicImage></div>
+						</rich:column>
+
+					-->
+					</rich:dataTable>
+
+					<a4j:jsFunction name="SeleccionarStat"
+						oncomplete="Richfaces.showModalPanel('panelEliminar')"
+						action="#{rolBuscarControlador.seleccionar()}" ajaxSingle="true">
+						<a4j:actionparam name="pos"
+							assignTo="#{rolBuscarControlador.idRolEliminar}" />
+					</a4j:jsFunction>
+
+					<a4j:jsFunction name="SeleccionarModif"
+						action="#{rolBuscarControlador.seleccionarModificar()}"
+						ajaxSingle="true">
+						<a4j:actionparam name="pos"
+							assignTo="#{rolBuscarControlador.idRolEliminar}" />
+					</a4j:jsFunction>
+
+					<a4j:jsFunction name="SeleccionarVer"
+						action="#{rolBuscarControlador.seleccionarVer()}"
+						ajaxSingle="true">
+						<a4j:actionparam name="pos"
+							assignTo="#{rolBuscarControlador.idRolEliminar}" />
+					</a4j:jsFunction>
+
+					<a4j:status id="showModalStatus" forceId="true"
+						onstart="Richfaces.showModalPanel('ajaxLoadingModalBox',{left:1, top:-15});
+					  		   document.body.style.cursor='wait';"
+						onstop="Richfaces.hideModalPanel('ajaxLoadingModalBox');
+					  		  document.body.style.cursor='default';">
+					</a4j:status>
+
+				</s:div>
+				<rich:spacer height="11px" />
+				<ui:include src="/modEnsayo/codebase/plantillas/paginado_tabla_inferior_generico.xhtml/" >
+					<ui:param name="vzPaginado" value="#{rolBuscarControlador.resultCount>10}"/>
+					<ui:param name="nomControladorList" value="#{rolBuscarControlador}" />
+					<ui:param name="idListado" value="tablas_id" />
+				</ui:include>
+				</a4j:outputPanel>
+
+			<rich:contextMenu attached="false" id="valorcontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{rolBuscarControlador.setOrder('name desc')}"
+					reRender="departamentoList_Table, paginado">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{rolBuscarControlador.setOrder('name asc')}"
+					reRender="departamentoList_Table, paginado">
+				</rich:menuItem>
+			</rich:contextMenu>
+			
+		 <rich:contextMenu attached="false" id="valorcontextmenu2"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{rolBuscarControlador.setOrder('codigo desc')}"
+					reRender="departamentoList_Table, paginado">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{rolBuscarControlador.setOrder('codigo asc')}"
+					reRender="departamentoList_Table, paginado">
+				</rich:menuItem>
+			</rich:contextMenu>
+
+		</h:form>
+
+		<ui:include
+			src="/modConfiguracion/management/gestionarRoles/modalspanel/ConfirmarEliminarRolBuscar.xhtml" />
+
+		<rich:modalPanel id="ajaxLoadingModalBox" minHeight="10" minWidth="10"
+			height="10" width="10" zindex="2000">
+			<s:div rendered="false">
+				<img id="favsloadingdiv"
+					src="#{facesContext.externalContext.requestContextPath}/resources/icons/default/acciones/loading_small.gif"
+					style="position: absolute; top: 0px; left: 0px;" />
+			</s:div>
+		</rich:modalPanel>
+
+	</ui:define>
+
+</ui:composition>
+

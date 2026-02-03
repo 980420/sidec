@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+	
+	<param name="firstResult" value="#{notaCustomList.firstResult}" />
+	<action execute="#{notaCustomList.refresh()}" />
+	
+	<navigation from-action="crearNota">	  		
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/crearNota/crearNota.gehos">
+		</redirect>
+	</navigation>
+	
+	<navigation from-action="cancelar">
+		<end-conversation/>
+		<redirect view-id="/modCommons/modHome/home.xhtml">
+			 <param name="idFuncionalidad" value="#{activeModule.activeModule.id}" />
+   			 <param name="idancestors" value="#{activeModule.activeModule.id}a" />
+		</redirect>	
+	</navigation>
+</page>

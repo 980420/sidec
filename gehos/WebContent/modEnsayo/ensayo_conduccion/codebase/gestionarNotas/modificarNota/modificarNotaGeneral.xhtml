@@ -1,0 +1,73 @@
+<!-- CU 37 Modificar nota general -->
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}">
+	<s:div>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript">setContentTitle('#{messages.modificarNota}')</script>
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css"
+			rel="stylesheet" type="text/css" />
+		<rich:messages globalOnly="true" styleClass="message"
+			id="globalMessage" ajaxRendered="true" />
+		<h:form id="idForm">
+			<rich:panel switchType="client">
+				<f:facet name="header">
+					<s:div>
+						<h:outputText value="#{messages.descripcioDetalles}" />
+
+					</s:div>
+				</f:facet>
+				<table width="100%" cellpadding="0px" cellspacing="0px">
+					<tr>
+						<td class="colSepGran"><s:label
+								styleClass="#{invalid?'labelErrors':''}"
+								value="#{messages.descripcion}:">
+
+								<rich:message for="descripcion" showDetail="false">
+									<f:facet name="errorMarker">
+										<h:outputText style="color: red;cursor: pointer !important;"
+											title="#{facesMessages.getCurrentMessagesForControl('descripcion').get(0).getDetail()}"
+											value="*" />
+									</f:facet>
+								</rich:message>
+							</s:label> <br /> <h:inputTextarea id="descripcion"
+								value="#{modificarNotaGeneral.nota.descripcion}"
+								style="width:100%;resize: vertical"
+								required="#{!empty param['idForm:aceptarr']}">
+							</h:inputTextarea></td>
+						<td><s:label value="#{messages.detallesNota}:">
+								<rich:message for="detalles" showDetail="false">
+									<f:facet name="errorMarker">
+										<h:outputText style="color: red;cursor: pointer !important;"
+											title="#{facesMessages.getCurrentMessagesForControl('detalles').get(0).getDetail()}"
+											value="*" />
+									</f:facet>
+								</rich:message>
+							</s:label> <br /> <h:inputTextarea
+								value="#{modificarNotaGeneral.nota.detallesNota}" id="detalles"
+								style="width:100%;resize: vertical">
+							</h:inputTextarea></td>
+
+					</tr>
+				</table>
+			</rich:panel>
+
+			<br />
+			<div align="right">
+
+				<h:commandButton style="margin:0px;" id="aceptarr"
+					value="#{messages.aceptar}"
+					action="#{modificarNotaGeneral.modificar()}" />
+				<rich:spacer width="10" />
+				<h:commandButton value="#{messages.cancelar}" style="margin:0px;"
+					action="cancelar" immediate="true" />
+			</div>
+		</h:form>
+
+	</s:div>
+</s:div>

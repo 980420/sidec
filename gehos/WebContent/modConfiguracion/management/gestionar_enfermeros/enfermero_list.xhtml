@@ -1,0 +1,597 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- eticEstilos -->
+		<!-- Estilo para simpleTogglePanel -->
+		<style type="text/css">
+.rich-stglpanel-body {
+	padding: 0px
+}
+</style>
+		<!-- Estilo para panel -->
+		<style type="text/css">
+.rich-panel-body {
+	padding: 0px
+}
+</style>
+
+<!-- Estilo para los mensajes -->
+		<style type="text/css">
+.custom-error {
+			border: 1px solid #FFCC00;
+			padding: 5px;
+			background-color: #F0F8FF;
+			font-size: 10px;
+			font-family: "Verdana";
+			position: relative;	left: 5px; top: 5px; 
+			margin-right: 10px;
+		}	
+</style>
+
+		<!-- Estilo para el modalPanel -->
+		<style type="text/css">
+.dr-mpnl-pnl-b {
+	padding: 1px;
+}
+
+.dr-mpnl-pnl {
+	border: 1px !important;
+	border-style: solid !important;
+	border-color: #BED6F8 !important;
+}
+</style>
+
+
+
+		<a4j:form>
+			<a4j:jsFunction action="#{usuarioCrearControlador.asignarCargos()}"
+				name="selected" ignoreDupResponses="true">
+				<a4j:actionparam name="id"
+					assignTo="#{usuarioCrearControlador.idCargo}" />
+			</a4j:jsFunction>
+		</a4j:form>
+
+		<script type="text/javascript">setContentTitle('#{messages.adminEnfermeros}')</script>
+		
+		<a4j:outputPanel ajaxRendered="true" id="errorOutputPanel">
+		<s:div style="height:30px;width:100%"
+			rendered="#{facesMessages.getCurrentMessagesForControl('idForm').size() > 0 }">
+			<div class="custom-error">
+				<rich:message for="idForm"></rich:message>
+			</div>	
+		</s:div>
+	</a4j:outputPanel>
+
+
+		<h:form id="idForm" styleClass="edit">
+
+
+			<!-- eticBusqueda -->
+			<rich:simpleTogglePanel id="enfermeroBusqueda" switchType="client"
+				opened="#{enfermeroList_custom.openSimpleTogglePanel}">
+				<a4j:support event="oncollapse" ajaxSingle="true"
+					action="#{enfermeroList_custom.cambiarEstadoSimpleTogglePanel()}"
+					reRender="enfermeroList_custom_datatable_a" />
+				<a4j:support event="onexpand" ajaxSingle="true"
+					action="#{enfermeroList_custom.cambiarEstadoSimpleTogglePanel()}"
+					reRender="enfermeroList_custom_datatable_a" />
+
+
+				<f:facet name="header">#{messages.crit}</f:facet>
+
+				<a4j:outputPanel id="busquedas">
+					<a4j:outputPanel id="simplesearch"
+						rendered="#{!enfermeroList_custom.avanzada}">
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+							<tr>
+								<td style="height: 10px;" colspan="6"></td>
+							</tr>
+							<tr style="vertical-align: top;">
+								<td style="width: 7px;"></td>
+								<td>#{messages.param1}<br />
+								<h:inputText id="name" value="#{enfermeroList_custom.nombre}"
+									style="width:148px;" /></td>
+								<td style="width: 25px"></td>
+								<td style="vertical-align: bottom;"><h:commandButton
+									id="search" value="#{messages.buscar}"
+									onclick="document.getElementById('userSearch:advname').value = document.getElementById('userSearch:name').value; document.getElementById('userSearch:advusername').value = document.getElementById('userSearch:username').value;"
+									action="#{enfermeroList_custom.Buscar()}"
+									style="margin-left: 0px; margin-bottom: 0px;">
+									<s:defaultAction />
+								</h:commandButton> <s:button view="/modCommons/modHome/home.gehos"
+									value="#{messages.cancelar}"
+									style="margin-right:0px;margin-bottom: 0px;">
+									<f:param name="idFuncionalidad"
+										value="#{activeModule.activeModule.id}" />
+									<f:param name="idancestors"
+										value="#{activeModule.activeModule.id}a" />
+									<f:param name="moduleName"
+										value="#{activeModule.activeModuleName}" />
+								</s:button></td>
+							</tr>
+							<tr>
+								<td style="width: 7px;"></td>
+								<td align="right" colspan="5"><h:panelGrid columns="2"
+									cellpadding="0" cellspacing="0" border="0">
+									<h:graphicImage height="12"
+										style="margin-top:2px;margin-right:2px;"
+										value="/resources/icons/default/acciones/buscar.png" />
+									<a4j:commandLink
+										action="#{enfermeroList_custom.tipoBusqueda()}"
+										value="#{messages.busquedaavz}" reRender="busquedas">
+									</a4j:commandLink>
+								</h:panelGrid></td>
+							</tr>
+						</table>
+					</a4j:outputPanel>
+					<a4j:outputPanel id="advancedsearch"
+						rendered="#{enfermeroList_custom.avanzada}">
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+							<tr>
+								<td style="height: 10px;" colspan="6"></td>
+							</tr>
+							<tr style="vertical-align: top;">
+								<td style="width: 7px;"></td>
+								<td>#{messages.param1}<br />
+								<h:inputText id="advname" value="#{enfermeroList_custom.nombre}"
+									style="width:148px;" /></td>
+								<td style="width: 25px"></td>
+								<td>#{messages.param2}<br />
+								<h:inputText value="#{enfermeroList_custom.primerApellido}"
+									style="width:148px;" /> <rich:spacer height="3px"
+									style="display:block"></rich:spacer></td>
+								<td style="width: 25px"></td>
+								<td>#{messages.param3}<br />
+								<h:inputText value="#{enfermeroList_custom.segundoApellido}"
+									style="width:148px;" /></td>
+
+							</tr>
+							<tr height="3px"></tr>
+							<tr style="vertical-align: top;">
+								<td style="width: 7px;"></td>
+								<td>#{messages.param4}<br />
+								<h:inputText id="matriculaCB"
+									value="#{enfermeroList_custom.matriculaEnfermeria}"
+									style="width:148px;" /></td>
+								<td style="width: 25px"></td>
+
+
+
+
+							</tr>
+							<tr>
+								<td height="3px"></td>
+							</tr>
+														<tr>
+								<td style="width: 7px;"></td>
+								<td colspan="5" style="" align="right"><h:commandButton
+									value="#{messages.buscar}"
+									action="#{enfermeroList_custom.Buscar()}"
+									style="margin-left: 0px; margin-bottom: 0px;">
+									<s:defaultAction />
+								</h:commandButton> <s:button view="/modCommons/modHome/home.gehos"
+									value="#{messages.cancelar}"
+									style="margin-right:0px;margin-bottom: 0px;">
+									<f:param name="idFuncionalidad"
+										value="#{activeModule.activeModule.id}" />
+									<f:param name="idancestors"
+										value="#{activeModule.activeModule.id}a" />
+									<f:param name="moduleName"
+										value="#{activeModule.activeModuleName}" />
+								</s:button></td>
+							</tr>
+							<tr>
+								<td style="width: 7px;"></td>
+								<td align="right" colspan="5"><h:panelGrid columns="2">
+
+								</h:panelGrid>
+								<table cellpadding="0" cellspacing="0" border="0">
+									<tr>
+										<td><h:graphicImage height="12"
+											style="margin-top:2px;margin-right:2px;"
+											value="/resources/icons/default/acciones/buscar.png" /></td>
+										<td><a4j:commandLink
+											style="margin-top:0px; margin-right:2px; "
+											action="#{enfermeroList_custom.tipoBusqueda()}"
+											value="#{messages.busquedasimple}" reRender="busquedas">
+										</a4j:commandLink></td>
+									</tr>
+								</table>
+								</td>
+							</tr>
+						</table>
+					</a4j:outputPanel>
+				</a4j:outputPanel>
+				<rich:spacer height="7px" style="display: block" />
+			</rich:simpleTogglePanel>
+			<rich:spacer height="12px"/>
+
+			<div align="right">
+			<table cellpadding="0" cellspacing="1" border="0">
+				<tr>
+					<td><a4j:commandLink action="adicionar" status="showModalStatus">
+						<h:graphicImage title="#{messages.addEnfermero}"
+								style="margin-right: 1px;cursor:pointer" height="12" width="12"
+								value="/resources/icons/default/acciones/adicionar.png" />
+								</a4j:commandLink></td>
+					<td><a4j:commandLink action="adicionar"
+								value="#{messages.addEnfermero}" style="cursor: pointer"
+								title="#{messages.addEnfermero}" status="showModalStatus"/></td>
+					<td><a4j:commandLink action="asociar" status="showModalStatus">
+						<h:graphicImage title="#{messages.asociarEnf}"
+							style="margin-right: 1px" height="14" width="14"
+							value="/resources/icons/default/acciones/asociar.png" />
+							</a4j:commandLink></td>
+					<td><a4j:commandLink action="asociar" value="#{messages.asociarEnf}"
+							style="cursor: pointer" title="#{messages.asociarEnf}" status="showModalStatus">
+						</a4j:commandLink></td>
+				</tr>
+			</table>
+			<a4j:status id="showModalStatus" forceId="true" 
+					  onstart="Richfaces.showModalPanel('ajaxLoadingModalBox',{left:1, top:-15});
+					  		   document.body.style.cursor='wait';"
+					  onstop="Richfaces.hideModalPanel('ajaxLoadingModalBox');
+					  		  document.body.style.cursor='default';">
+			</a4j:status>
+			</div>
+			<a4j:outputPanel id="enfermeroList_custom_datatable_a">
+				<!-- eticValidacion -->
+				<rich:panel
+					rendered="#{empty enfermeroList_custom.resultList and enfermeroList_custom.nombre == '' and enfermeroList_custom.primerApellido == '' and enfermeroList_custom.segundoApellido == '' and enfermeroList_custom.matriculaEnfermeria == ''}">
+
+					<f:facet name="header">#{messages.listadoenfermero}</f:facet>
+					<rich:spacer height="11px" style="display: block" />
+					<div class="results" id="roleList"><rich:spacer width="6px" />
+					<h:outputText value="#{messages.noInf}" /></div>
+					<rich:spacer height="4px" style="display: block" />
+				</rich:panel>
+				<rich:panel id="enfermeroNoInfEncontrada"
+					rendered="#{empty enfermeroList_custom.resultList and (enfermeroList_custom.nombre != '' || enfermeroList_custom.matriculaEnfermeria != '' || enfermeroList_custom.segundoApellido != '' || enfermeroList_custom.primerApellido != '')}">
+					<f:facet name="header">#{messages.listadoenfermero}</f:facet>
+					<rich:spacer height="11px" style="display: block" />
+					<div class="results" id="userList"><rich:spacer width="6px" />
+					<h:outputText
+						value="#{messages.noSeEncontro}" />
+					</div>
+					<rich:spacer height="4px" style="display: block" />
+				</rich:panel>
+
+				<!-- eticListado -->
+				<s:div style="margin-left:1px;margin-top:1px"
+					rendered="#{not empty enfermeroList_custom.resultList}">	
+				<rich:dataTable id="enfermeroList_custom_datatable"
+					style="width:100%" var="enfermero"
+					value="#{enfermeroList_custom.resultList}"
+					
+					columnsWidth="5%,80%,20%,0*, 0*, 0*">
+					<f:facet name="header">
+						<s:div>
+							<div style="float: left;">#{messages.listadoenfermero}</div>
+						</s:div>
+					</f:facet>
+					<h:column>
+						<f:facet name="header">
+					#{messages.colum1}
+	            </f:facet>
+						<h:graphicImage height="25" width="25"
+							rendered="#{userTools.userImageExist(enfermero.usuario.username)}"
+							url="/resources/modCommon/userphotos/#{enfermero.usuario.username}.png">
+						</h:graphicImage>
+						<h:graphicImage height="25" width="25"
+							rendered="#{not userTools.userImageExist(enfermero.usuario.username)}"
+							value="/resources/modCommon/unknown/#{theme.name}/generico/desconocido.png">
+						</h:graphicImage>
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:panelGrid columns="2"
+								style="width: 100%; padding:0px; margin:0px;" border="0"
+								cellpadding="0" cellspacing="0">
+								<s:div style="float: left;">Enfermero</s:div>
+								<s:div style="text-align: right; padding-left:3px;">
+									<h:graphicImage
+										rendered="#{not enfermeroList_custom.order.equals('usuario.nombre asc') and not enfermeroList_custom.order.equals('usuario.nombre desc')}"
+										value="/resources/icons/default/filtro/default.png" width="17"
+										height="17">
+										<rich:componentControl event="onclick" for="filtro_nombre"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{enfermeroList_custom.order.equals('usuario.nombre asc')}"
+										value="/resources/icons/default/filtro/asc_sort.png"
+										width="17" height="17">
+										<rich:componentControl event="onclick" for="filtro_nombre"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{enfermeroList_custom.order.equals('usuario.nombre desc')}"
+										value="/resources/icons/default/filtro/des_sort.png"
+										width="17" height="17">
+										<rich:componentControl event="onclick" for="filtro_nombre"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+								</s:div>
+							</h:panelGrid>
+						</f:facet>
+            #{enfermero.usuario.nombre}
+             <h:outputLabel styleClass="dataText; font-weight: bold"
+							value="  #{enfermero.usuario.primerApellido}" />
+						<h:outputLabel styleClass="dataText; font-weight: bold"
+							value=" #{enfermero.usuario.segundoApellido}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:panelGrid columns="2"
+								style="width: 100%; padding:0px; margin:0px;" border="0"
+								cellpadding="0" cellspacing="0">
+								<s:div style="float: left;">#{messages.colum3}</s:div>
+								<s:div style="text-align: right; padding-left:3px;">
+									<h:graphicImage
+										rendered="#{not enfermeroList_custom.order.equals('enfermera.matriculaColegioEnfermeria asc') and not enfermeroList_custom.order.equals('enfermera.matriculaColegioEnfermeria desc')}"
+										value="/resources/icons/default/filtro/default.png" width="17"
+										height="17">
+										<rich:componentControl event="onclick" for="matricula"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{enfermeroList_custom.order.equals('enfermera.matriculaColegioEnfermeria asc')}"
+										value="/resources/icons/default/filtro/asc_sort.png"
+										width="17" height="17">
+										<rich:componentControl event="onclick" for="matricula"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{enfermeroList_custom.order.equals('enfermera.matriculaColegioEnfermeria desc')}"
+										value="/resources/icons/default/filtro/des_sort.png"
+										width="17" height="17">
+										<rich:componentControl event="onclick" for="matricula"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+								</s:div>
+							</h:panelGrid>
+						</f:facet>
+						#{enfermero.matriculaColegioEnfermeria}
+			</h:column>
+
+					<h:column>
+						<div align="center" style="margin-top: 2px"><a4j:commandLink
+							status="showModalStatus" 
+							ajaxSingle="true" immediate="true"	
+							onclick="SeleccionarVer('#{enfermero.id}')">															
+							<h:graphicImage title="#{messages.ver}" style="border: 0px;"
+								value="/resources/icons/default/acciones/ver.png" />							
+						</a4j:commandLink></div>
+					</h:column>
+					<h:column>
+						<div align="center" style="margin-top: 2px"><a4j:commandLink	
+							 status="showModalStatus" 
+							 ajaxSingle="true" immediate="true"						
+							 onclick="SeleccionarModif('#{enfermero.id}')">
+							 <h:graphicImage title="#{messages.modf}" style="border: 0px;"
+								value="/resources/icons/default/acciones/modificar.png" />							
+						</a4j:commandLink></div>
+					</h:column>
+					<h:column>
+						<div align="center"><a4j:commandLink  ajaxSingle="true"							 
+							 onclick="SeleccionarStat('#{enfermero.id}')"							 
+							 status="showModalStatus">
+						<h:graphicImage title="#{messages.eliminar}"
+							style="border: 0px; cursor:pointer; width : 16px;"
+							value="/resources/icons/default/acciones/eliminar.png">						
+						</h:graphicImage></a4j:commandLink></div>
+					</h:column>
+				</rich:dataTable>
+				<a4j:jsFunction name="SeleccionarStat" action="#{enfermeroList_custom.seleccionarEnfermero()}" 
+								oncomplete="Richfaces.showModalPanel('eliminar_enfermero_panel')" ajaxSingle="true">
+					<a4j:actionparam name="pos" assignTo="#{enfermeroList_custom.enfermeroId}"/>
+				</a4j:jsFunction>
+				<a4j:jsFunction name="SeleccionarModif" action="#{enfermeroList_custom.seleccionarModificar()}" 
+								ajaxSingle="true">
+					<a4j:actionparam name="pos" assignTo="#{enfermeroList_custom.enfermeroId}"/>
+				</a4j:jsFunction>
+				<a4j:jsFunction name="SeleccionarVer" action="#{enfermeroList_custom.seleccionarVer()}" 
+								ajaxSingle="true">
+					<a4j:actionparam name="pos" assignTo="#{enfermeroList_custom.enfermeroId}"/>
+				</a4j:jsFunction>				
+				</s:div>
+				<rich:spacer height="11px"/>
+
+				<!-- eticPaginado -->
+				<s:div id="pagingcontrols" styleClass="tableControl"
+					style="width: 100%; text-align:center" align="center"
+					rendered="#{not empty enfermeroList_custom.resultList}">
+
+					<h:graphicImage
+						value="/resources/icons/default/paginado/iniciod.png"
+						rendered="#{!enfermeroList_custom.previousExists}" />
+
+					<s:link
+						view="/modConfiguracion/management/gestionar_enfermeros/enfermero_list.gehos"
+						rendered="#{enfermeroList_custom.previousExists}" id="firstPage">
+						<h:graphicImage title="#{messages.primera}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/inicio.png" />
+						<f:param name="firstResult" value="0" />
+						<f:param name="open"
+								value="#{enfermeroList_custom.openSimpleTogglePanel}" />
+							<f:param name="avz" value="#{enfermeroList_custom.avanzada}" />
+							<f:param name="order" value="#{enfermeroList_custom.order}" />							
+							<f:param name="critB1"
+								value="#{parameters.encodec(enfermeroList_custom.nombre)}" />
+							<f:param name="critB2"
+								value="#{parameters.encodec(enfermeroList_custom.primerApellido)}" />
+							<f:param name="critB3"
+								value="#{parameters.encodec(enfermeroList_custom.segundoApellido)}" />
+							<f:param name="critB4"
+								value="#{parameters.encodec(enfermeroList_custom.matriculaEnfermeria)}" />
+
+					</s:link>
+
+					<h:graphicImage
+						value="/resources/icons/default/paginado/anteriord.png"
+						rendered="#{!enfermeroList_custom.previousExists}" />
+
+
+					<s:link
+						view="/modConfiguracion/management/gestionar_enfermeros/enfermero_list.gehos"
+						rendered="#{enfermeroList_custom.previousExists}"
+						id="previousPage">
+						<h:graphicImage title="#{messages.anterior}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/anterior.png" />
+						<f:param name="firstResult"
+							value="#{enfermeroList_custom.previousFirstResult}" />
+						<f:param name="open"
+								value="#{enfermeroList_custom.openSimpleTogglePanel}" />
+							<f:param name="avz" value="#{enfermeroList_custom.avanzada}" />
+							<f:param name="order" value="#{enfermeroList_custom.order}" />							
+							<f:param name="critB1"
+								value="#{parameters.encodec(enfermeroList_custom.nombre)}" />
+							<f:param name="critB2"
+								value="#{parameters.encodec(enfermeroList_custom.primerApellido)}" />
+							<f:param name="critB3"
+								value="#{parameters.encodec(enfermeroList_custom.segundoApellido)}" />
+							<f:param name="critB4"
+								value="#{parameters.encodec(enfermeroList_custom.matriculaEnfermeria)}" />
+					</s:link>
+
+
+					<h:graphicImage
+						value="/resources/icons/default/paginado/siguiented.png"
+						rendered="#{!enfermeroList_custom.nextExists}" />
+
+
+					<s:link
+						view="/modConfiguracion/management/gestionar_enfermeros/enfermero_list.gehos"
+						rendered="#{enfermeroList_custom.nextExists}" id="nextPage">
+						<h:graphicImage title="#{messages.siguiente}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/siguiente.png" />
+
+						<f:param name="firstResult"
+							value="#{enfermeroList_custom.nextFirstResult}" />
+						<f:param name="open"
+								value="#{enfermeroList_custom.openSimpleTogglePanel}" />
+							<f:param name="avz" value="#{enfermeroList_custom.avanzada}" />
+							<f:param name="order" value="#{enfermeroList_custom.order}" />							
+							<f:param name="critB1"
+								value="#{parameters.encodec(enfermeroList_custom.nombre)}" />
+							<f:param name="critB2"
+								value="#{parameters.encodec(enfermeroList_custom.primerApellido)}" />
+							<f:param name="critB3"
+								value="#{parameters.encodec(enfermeroList_custom.segundoApellido)}" />
+							<f:param name="critB4"
+								value="#{parameters.encodec(enfermeroList_custom.matriculaEnfermeria)}" />
+
+					</s:link>
+
+					<h:graphicImage value="/resources/icons/default/paginado/find.png"
+						rendered="#{!enfermeroList_custom.nextExists}" />
+
+
+					<s:link
+						view="/modConfiguracion/management/gestionar_enfermeros/enfermero_list.gehos"
+						rendered="#{enfermeroList_custom.nextExists}" id="lastPage">
+						<h:graphicImage title="#{messages.ultima}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/fin.png" />
+						<f:param name="firstResult"
+							value="#{enfermeroList_custom.lastFirstResult}" />
+						<f:param name="open"
+							value="#{enfermeroList_custom.openSimpleTogglePanel}" />
+						<f:param name="avz" value="#{enfermeroList_custom.avanzada}" />
+						<f:param name="order" value="#{enfermeroList_custom.order}" />						
+						<f:param name="critB1"
+							value="#{parameters.encodec(enfermeroList_custom.nombre)}" />
+						<f:param name="critB2"
+							value="#{parameters.encodec(enfermeroList_custom.primerApellido)}" />
+						<f:param name="critB3"
+							value="#{parameters.encodec(enfermeroList_custom.segundoApellido)}" />
+						<f:param name="critB4"
+							value="#{parameters.encodec(enfermeroList_custom.matriculaEnfermeria)}" />
+
+					</s:link>
+
+
+
+				</s:div>
+				<!--
+			///////////
+				
+			-->
+			</a4j:outputPanel>
+
+			<!-- eticFiltrado -->
+			<rich:contextMenu attached="false" id="valorcontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.ordMenorMayor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{roleList_security.setOrder('name asc')}"
+					reRender="roleList_security_datatable">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.ordMayorMenor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{roleList_security.setOrder('name desc')}"
+					reRender="roleList_security_datatable">
+				</rich:menuItem>
+				
+			</rich:contextMenu>
+			<rich:contextMenu attached="false" id="filtro_nombre"
+				submitMode="ajax" style="margin-left: -5% !important;">
+				<rich:menuItem value="#{messages.ordMenorMayor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{enfermeroList_custom.setOrder('usuario.nombre asc')}"
+					reRender="enfermeroList_custom_datatable,enfermeroList_custom_datatable_a">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.ordMayorMenor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{enfermeroList_custom.setOrder('usuario.nombre desc')}"
+					reRender="enfermeroList_custom_datatable,enfermeroList_custom_datatable_a">
+				</rich:menuItem>
+				
+			</rich:contextMenu>
+			<rich:contextMenu attached="false" id="matricula" submitMode="ajax">
+				<rich:menuItem value="#{messages.ordMenorMayor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{enfermeroList_custom.setOrder('enfermera.matriculaColegioEnfermeria asc')}"
+					reRender="enfermeroList_custom_datatable,enfermeroList_custom_datatable_a">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.ordMayorMenor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{enfermeroList_custom.setOrder('enfermera.matriculaColegioEnfermeria desc')}"
+					reRender="enfermeroList_custom_datatable,enfermeroList_custom_datatable_a">
+				</rich:menuItem>
+				
+			</rich:contextMenu>
+		</h:form>
+
+		<!-- eticEliminar -->
+		<ui:include
+			src="/modConfiguracion/management/gestionar_enfermeros/modalspanel/confirmar_eliminar_enfermero.xhtml" />
+
+		<rich:modalPanel id="ajaxLoadingModalBox" minHeight="10" minWidth="10" 
+	        height="10" width="10" zindex="2000">
+	     <s:div rendered="false">  
+	           <img id="favsloadingdiv" 
+	        	src="#{facesContext.externalContext.requestContextPath}/resources/icons/default/acciones/loading_small.gif"
+	        	style="position: absolute; top: 0px; left: 0px;" />
+	     </s:div>  
+	</rich:modalPanel>
+	</ui:define>
+</ui:composition>

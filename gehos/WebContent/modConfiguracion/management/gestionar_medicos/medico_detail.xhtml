@@ -1,0 +1,473 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" template="#{theme.template}">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css">
+.rich-stglpanel-body {
+	padding: 0px
+}
+</style>
+		<style type="text/css">
+.dr-mpnl-pnl-b {
+	padding: 1px;
+}
+
+.dr-mpnl-pnl {
+	border: 1px !important;
+	border-style: solid !important;
+	border-color: #BED6F8 !important;
+}
+</style>
+		<style type="text/css">
+.rich-panel-body {
+	padding: 0px
+}
+
+.dr-tbpnl-cntnt,.rich-tabpanel-content {
+	/*arriba, derecha ,abajo ,izquierda*/
+	padding: 8px 0px 7px 8px;
+}
+</style>
+		<s:div
+			rendered="#{not medicoDetail_Controlador.from.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.verDetallesMedico}')</script>
+		</s:div>
+
+		<s:div rendered="#{medicoDetail_Controlador.from.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.verDatosMedico}')</script>
+		</s:div>
+
+		<a:outputPanel ajaxRendered="true">
+			<rich:messages styleClass="message" for="btnSi" ajaxRendered="true" />
+		</a:outputPanel>
+
+		<h:form id="userSearch" styleClass="edit">
+
+			<rich:tabPanel switchType="client" style="white-space:nowrap">
+				<rich:tab label="#{messages.datosComoUsuario}">
+
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<rich:spacer height="5px" />
+						<tr>
+
+							<td>
+							<td><h:graphicImage
+								url="/resources/modCommon/unknown/#{theme.name}/generico/desconocido.png"
+								border="0" style="width: 74px; height: 74px;margin-left:0px;"
+								rendered="#{not userTools.userImageExist(medicoDetail_Controlador.medico.usuario.username)}" />
+							<h:graphicImage
+								url="/resources/modCommon/userphotos/#{medicoDetail_Controlador.medico.usuario.username}.png"
+								rendered="#{userTools.userImageExist(medicoDetail_Controlador.medico.usuario.username)}"
+								border="0" style="width: 74px; height: 74px;margin-left:0px;" /></td>
+							</td>
+							<td><rich:spacer width="7px" /></td>
+							<td valign="top">
+							<table cellpadding="0px" cellspacing="0px" border="0px">
+
+								<tr>
+									<td><rich:spacer width="7px" /></td>
+
+									<td></td>
+								</tr>
+								<tr style="vertical-align: top;">
+									<td><h:outputLabel value="#{messages.atributo7}"></h:outputLabel>
+									<rich:spacer width="8"></rich:spacer></td>
+									<td><h:outputLabel styleClass="dataText"
+										value="#{medicoDetail_Controlador.medico.usuario.nombre}"></h:outputLabel>
+									<rich:spacer height="16" style="display:block"></rich:spacer></td>
+									<td style="width: 25px"></td>
+									<td><h:outputLabel value="#{messages.atributo8}"></h:outputLabel>
+									<rich:spacer width="8"></rich:spacer></td>
+									<td><h:outputLabel styleClass="dataText"
+										value="#{medicoDetail_Controlador.medico.usuario.primerApellido}"></h:outputLabel>
+									<h:outputLabel styleClass="dataText" value="-"
+										rendered="#{medicoDetail_Controlador.medico.usuario.primerApellido == ''}"></h:outputLabel><rich:spacer
+										height="16" style="display:block"></rich:spacer></td>
+									<td style="width: 25px"></td>
+									<td><h:outputLabel value="#{messages.atributo9}"></h:outputLabel>
+									<rich:spacer width="8"></rich:spacer></td>
+									<td><h:outputLabel styleClass="dataText"
+										value="#{medicoDetail_Controlador.medico.usuario.segundoApellido}"></h:outputLabel>
+									<h:outputLabel styleClass="dataText" value="-"
+										rendered="#{medicoDetail_Controlador.medico.usuario.segundoApellido == ''}"></h:outputLabel>
+									<rich:spacer height="16" style="display:block"></rich:spacer></td>
+								</tr>
+
+								<tr>
+									<td><h:outputLabel value="#{messages.atributo1}"></h:outputLabel>
+									<rich:spacer width="8"></rich:spacer></td>
+									<td><h:outputLabel styleClass="dataText"
+										value="#{medicoDetail_Controlador.medico.usuario.username}"></h:outputLabel>
+									</td>
+									<td style="width: 25px"></td>
+									<td><h:outputLabel value="#{messages.atributo4} "></h:outputLabel><rich:spacer
+										width="8"></rich:spacer></td>
+									<td><h:outputLabel styleClass="dataText"
+										value="#{medicoDetail_Controlador.culturaSelec}"
+										rendered="#{medicoDetail_Controlador.culturaSelec != ''}"></h:outputLabel>
+									<h:outputLabel styleClass="dataText" value="-"
+										rendered="#{medicoDetail_Controlador.culturaSelec == ''}"></h:outputLabel>
+									</td>
+								</tr>
+
+							</table>
+							</td>
+						</tr>
+					</table>
+
+				</rich:tab>
+
+				<rich:tab label="#{messages.tiposFuncionariosCargos}">
+
+					<table cellpadding="0px" cellspacing="0px" border="0px"
+						style="width: 100%">
+						<tr>
+							<td></td>
+							<td><rich:spacer height="3px" /></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td style="vertical-align: top;"><rich:panel
+								rendered="#{empty medicoDetail_Controlador.tipoFuncionarioTarget}">
+								<f:facet name="header">#{messages.listadoTipoFunc}</f:facet>
+								<div class="results" id="tipoList"><rich:spacer
+									height="20px" /> <rich:spacer width="8px" /> <h:outputText
+									value="#{messages.noInf}" /></div>
+								<rich:spacer height="6px" />
+							</rich:panel> <rich:dataTable
+								value="#{medicoDetail_Controlador.tipoFuncionarioTarget}"
+								var="tipo" width="100%"
+								rendered="#{not empty medicoDetail_Controlador.tipoFuncionarioTarget}">
+								<f:facet name="header">#{messages.listadoTipoFunc}</f:facet>
+								<rich:column>
+											#{tipo.valor}
+										</rich:column>
+							</rich:dataTable></td>
+							<td width="8px"></td>
+
+
+
+
+						</tr>
+						<tr>
+							<td></td>
+							<td style="vertical-align: top;"><rich:spacer height="8px" />
+							<rich:panel
+								rendered="#{empty medicoDetail_Controlador.cargoTarget}">
+								<f:facet name="header">#{messages.listadoCargos}</f:facet>
+								<div class="results" id="cargosList"><rich:spacer
+									height="20px" /> <rich:spacer width="7px" /> <h:outputText
+									value="#{messages.noInf}" /></div>
+								<rich:spacer height="6px" />
+							</rich:panel> <rich:dataTable value="#{medicoDetail_Controlador.cargoTarget}"
+								var="cargos" width="100%"
+								rendered="#{not empty medicoDetail_Controlador.cargoTarget}">
+								<f:facet name="header">#{messages.listadoCargos}</f:facet>
+								<rich:column>
+											#{cargos.valor}
+										</rich:column>
+							</rich:dataTable></td>
+							<td width="8px"></td>
+
+
+
+
+						</tr>
+					</table>
+
+					<rich:spacer height="1px" />
+				</rich:tab>
+
+				<rich:tab label="#{messages.roles}">
+
+					<table cellpadding="0px" cellspacing="0px" border="0px"
+						style="width: 100%">
+						<tr>
+							<td></td>
+							<td><rich:spacer height="3px" /></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td style="vertical-align: top;"><rich:panel
+								rendered="#{empty medicoDetail_Controlador.rolsSource}">
+								<f:facet name="header">#{messages.listadoRoles}</f:facet>
+								<div class="results" id="userList"><rich:spacer
+									height="20px" /> <rich:spacer width="8px" /> <h:outputText
+									value="#{messages.noInf}" /></div>
+								<rich:spacer height="6px" />
+							</rich:panel> <rich:dataTable value="#{medicoDetail_Controlador.rolsSource}"
+								var="rol" width="100%"
+								rendered="#{not empty medicoDetail_Controlador.rolsSource}">
+								<f:facet name="header">#{messages.listadoRoles}</f:facet>
+								<rich:column>
+											#{rol.name}
+										</rich:column>
+							</rich:dataTable></td>
+
+							<td width="8px"></td>
+
+
+
+						</tr>
+					</table>
+
+
+				</rich:tab>
+
+				<rich:tab label="#{messages.datosComoMedico}">
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr>
+							<td><rich:spacer height="2px" /></td>
+						</tr>
+						<tr style="vertical-align: top;">
+							<td><h:outputLabel
+								value="#{messages.conf_matricula_ministerio}"></h:outputLabel> <rich:spacer
+								width="6"></rich:spacer> <h:outputText styleClass="dataText"
+								value="#{medicoDetail_Controlador.medico.matriculaMinisterio}" 
+								rendered="#{medicoDetail_Controlador.medico.matriculaMinisterio != null and !medicoDetail_Controlador.medico.matriculaMinisterio.isEmpty()}" />
+									<h:outputText styleClass="dataText"
+								value="-" 
+								rendered="#{medicoDetail_Controlador.medico.matriculaMinisterio == null or medicoDetail_Controlador.medico.matriculaMinisterio.isEmpty()}" />
+							</td>
+							<td style="width: 25px"></td>
+							<td><h:outputLabel
+								value="#{messages.conf_matricula_colegio}"></h:outputLabel> <rich:spacer
+								width="6"></rich:spacer> <h:outputText styleClass="dataText"
+								value="#{medicoDetail_Controlador.medico.matriculaColegioMedico}" 
+								rendered="#{medicoDetail_Controlador.medico.matriculaColegioMedico != null and !medicoDetail_Controlador.medico.matriculaColegioMedico.isEmpty()}" />
+									<h:outputText styleClass="dataText"
+								value="-" 
+								rendered="#{medicoDetail_Controlador.medico.matriculaColegioMedico == null or medicoDetail_Controlador.medico.matriculaColegioMedico.isEmpty()}" />
+							</td>
+							<td style="width: 25px"></td>
+							<td valign="top"><h:outputLabel
+								value="#{messages.fechaGraduacion}"></h:outputLabel> <rich:spacer
+								width="6"></rich:spacer> <h:outputText styleClass="dataText"
+								value="#{medicoDetail_Controlador.medico.fechaGraduacion}" 
+								rendered="#{medicoDetail_Controlador.medico.fechaGraduacion != null}" >
+								<s:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+							<h:outputText styleClass="dataText"
+								value="-" 
+								rendered="#{medicoDetail_Controlador.medico.fechaGraduacion == null}" />
+							</td>
+						</tr>
+
+					</table>
+				</rich:tab>
+				<rich:tab label="#{messages.especialidadesGraduacion}">
+
+					<table cellpadding="0px" cellspacing="0px" border="0px"
+						style="width: 100%">
+						<tr>
+							<td></td>
+							<td><rich:spacer height="3px" /></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td style="vertical-align: top;"><rich:panel
+								rendered="#{empty medicoDetail_Controlador.medico.especialidads}">
+								<f:facet name="header">#{messages.listadoEspcGraduac}</f:facet>
+								<div class="results" id="especList"><rich:spacer
+									height="20px" /> <rich:spacer width="8px" /> <h:outputText
+									value="#{messages.noInf}" /></div>
+								<rich:spacer height="6px" />
+							</rich:panel> <rich:dataTable
+								value="#{medicoDetail_Controlador.convert2Especialidad_configuracion()}"
+								var="esp" width="100%"
+								rendered="#{not empty medicoDetail_Controlador.medico.especialidads}">
+								<f:facet name="header">#{messages.listadoEspcGraduac}</f:facet>
+								<rich:column>
+											#{esp.nombre}
+										</rich:column>
+							</rich:dataTable></td>
+							<td width="8px"></td>
+
+
+
+
+						</tr>
+					</table>
+
+					<rich:spacer height="1px" />
+				</rich:tab>
+				<rich:tab label="#{messages.serviciosEspecialidades}">
+
+					<table border="0px" cellpadding="0px" cellspacing="0px"
+						width="100%">
+						<tr>
+							<td><rich:spacer height="3px" /></td>
+						</tr>
+						<tr>
+							<td><rich:panel
+								rendered="#{empty medicoDetail_Controlador.listaDepartamentoEntidad}">
+								<f:facet name="header">#{messages.listServEntidad}</f:facet>
+								<div class="results" id="servList"><rich:spacer
+									height="20px" /> <rich:spacer width="8px" /> <h:outputText
+									value="#{messages.noInf}" /></div>
+								<rich:spacer height="6px" />
+							</rich:panel> <rich:dataTable
+								value="#{medicoDetail_Controlador.listaDepartamentoEntidad}"
+								var="departamentoEntidad" width="100%"
+								rendered="#{not empty medicoDetail_Controlador.listaDepartamentoEntidad}">
+								<f:facet name="header">#{messages.listServEntidad}</f:facet>
+								<rich:column>
+									<f:facet name="header">#{messages.servicio}</f:facet>
+								#{medicoDetail_Controlador.servicioConfiguracion(departamentoEntidad.departamento.id, departamentoEntidad.entidad.id)}
+							</rich:column>
+								<rich:column>
+									<f:facet name="header">#{messages.departamento}</f:facet>
+								#{departamentoEntidad.departamento.nombre}
+							</rich:column>
+								<rich:column>
+									<f:facet name="header">#{messages.entidad}</f:facet>
+								#{departamentoEntidad.entidad.nombre}
+							</rich:column>
+							</rich:dataTable></td>
+						</tr>
+						<tr>
+							<td><rich:spacer height="8px" /> <rich:panel
+								rendered="#{empty medicoDetail_Controlador.mediInEnt}">
+								<f:facet name="header">#{messages.espcEntidad}</f:facet>
+								<div class="results" id="servLista"><rich:spacer
+									height="20px" /> <rich:spacer width="8px" /> <h:outputText
+									value="#{messages.noInf}" /></div>
+								<rich:spacer height="6px" />
+							</rich:panel> <rich:dataTable value="#{medicoDetail_Controlador.mediInEnt}"
+								var="medInEntidad" width="100%"
+								rendered="#{not empty medicoDetail_Controlador.mediInEnt}"
+								columnsWidth="90%, 10%">
+								<f:facet name="header">#{messages.espcEntidad}</f:facet>
+								<rich:column>
+									<f:facet name="header">#{messages.espe}</f:facet>
+								#{medicoDetail_Controlador.convert2StringEspecialidades(medInEntidad)}
+							</rich:column>
+								<rich:column>
+									<f:facet name="header">#{messages.entidad}</f:facet>
+								#{medInEntidad.entidad.nombre}
+							</rich:column>
+							</rich:dataTable></td>
+						</tr>
+					</table>
+				</rich:tab>
+			</rich:tabPanel>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		</h:form>
+		<h:form>
+			<rich:spacer height="3px" />
+			<s:div styleClass="actionButtons" style="text-align: right">
+				<div align="right"><h:commandButton style="margin-right:5px;"
+					value="#{messages.modificar}"
+					rendered="#{not medicoDetail_Controlador.from.equals('listar')}"
+					action="modificar" propagation="end" /> 
+				<a:commandButton id="btnEliminar"
+					rendered="#{not medicoDetail_Controlador.from.equals('listar')}"
+					onclick="Richfaces.showModalPanel('eliminar_medico')"
+					style="margin-right:5px;" value="#{messages.eliminar}">
+				</a:commandButton> <h:commandButton value="#{messages.salir}"
+					style="margin-right:0px;" action="salir" propagation="end" /></div>
+			</s:div>
+		</h:form>
+
+		<ui:include
+			src="/modConfiguracion/management/gestionar_medicos/modalspanel/confirmar_eliminar_medico.xhtml" />
+	</ui:define>
+
+</ui:composition>
+

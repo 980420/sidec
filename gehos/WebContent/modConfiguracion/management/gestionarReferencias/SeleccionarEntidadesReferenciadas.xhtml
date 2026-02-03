@@ -1,0 +1,308 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css">
+.rich-stglpanel-body {
+	padding: 0px
+}
+</style>
+		<style type="text/css">
+.rich-panel-body {
+	padding: 0px
+}
+</style>
+		<style type="text/css">
+.dr-mpnl-pnl-b {
+	padding: 1px;
+}
+
+.dr-mpnl-pnl {
+	border: 1px !important;
+	border-style: solid !important;
+	border-color: #BED6F8 !important;
+}
+</style>
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+
+		<a4j:form>
+			<a4j:jsFunction
+				action="#{seleccionarEntidades.adicionartoSeleccionadas()}"
+				name="selected" ignoreDupResponses="true"
+				reRender="tablas_id,panelSeleccionadas">
+				<a4j:actionparam name="id"
+					assignTo="#{seleccionarEntidades.seleccionada}" />
+			</a4j:jsFunction>
+		</a4j:form>
+
+		<a4j:outputPanel ajaxRendered="true">
+				<rich:messages styleClass="message" ajaxRendered="true" />
+			</a4j:outputPanel>
+
+		<h:form id="userSearch" styleClass="edit">
+						
+			<a4j:outputPanel id="tablas_id">
+				<rich:panel
+					rendered="#{seleccionarEntidades.listaEntidades.size() == 0}">
+					<f:facet name="header">#{messages.listadoEntity}</f:facet>
+					<rich:spacer height="11px" style="display: block" />
+					<div class="results" id="roleList"><rich:spacer width="6px" />
+					<h:outputText value="#{messages.notInfotoShow}" /></div>
+					<rich:spacer height="6px" style="display: block" />
+				</rich:panel>
+
+				<s:div rendered="#{not empty seleccionarEntidades.listaEntidades}">
+				<rich:dataTable
+					id="entidadNoAsociadaTabla" style="width: 100%;" var="entidad"
+					value="#{seleccionarEntidades.listaControlerEntidades.resultList}"					
+					columnsWidth="1%,100%,">
+					<f:facet name="header">#{messages.listadoEntity}</f:facet>
+					<h:column>
+						
+						<div align="center"> 
+						<s:div rendered="#{!seleccionarEntidades.estaSeleccionada(entidad.id)}">
+							<input type="checkbox" title="#{messages.seleccionar}" onclick="selected('#{entidad.id}');"
+								checked=""
+								style="margin-top: 0px; margin-right: 0px; margin-left: 0px; margin-bottom: 0px;" />
+						</s:div>
+						<s:div rendered="#{seleccionarEntidades.estaSeleccionada(entidad.id)}"> 
+						<input type="checkbox" title="#{messages.seleccionar}" onclick="selected('#{entidad.id}');"
+								checked="true"
+								style="margin-top: 0px; margin-right: 0px; margin-left: 0px; margin-bottom: 0px;" />
+						</s:div>
+						</div>
+					</h:column>					
+					<h:column>
+						<f:facet name="header">
+							<h:panelGrid columns="2"
+								style="width: 100%; padding:0px; margin:0px;" border="0"
+								cellpadding="0" cellspacing="0">
+								<s:div style="float: left;">#{messages.nombre}</s:div>
+								
+							</h:panelGrid>
+						</f:facet>
+						<table cellpadding="0" cellspacing="0" border="0">
+											<tr>
+												<td>
+													<h:graphicImage
+							value="/resources/modCommon/entidades_logos/#{theme.name}/#{theme.color}/#{entidad.logo}"
+								height="16" />
+												</td>
+												<td width="2px"></td>
+												<td valign="middle">
+													#{entidad.nombre}
+												</td>
+											</tr>
+										</table>
+						
+	        </h:column>
+
+				</rich:dataTable>
+				<rich:spacer height="13px"/>
+				<s:div rendered="#{not empty seleccionarEntidades.listaControlerEntidades.resultList}" styleClass="tableControl" 
+				style="width: 100%; text-align:center" align="center" >
+		    
+		            	<a4j:commandButton action="#{seleccionarEntidades.listaControlerEntidades.first()}"
+		            		image="/resources/icons/default/paginado/#{theme.color}/inicio.png"
+		            		rendered="#{seleccionarEntidades.listaControlerEntidades.previousExists}"
+		            		reRender="tablas_id"  title="#{messages.primera}"
+		            		style="border: 0px;"/>
+						<h:graphicImage value="/resources/modBancoSangre/iniciod.png" 
+		                    rendered="#{not seleccionarEntidades.listaControlerEntidades.previousExists}" style=" width : 16px;"/>
+		           
+		            	<a4j:commandButton action="#{seleccionarEntidades.listaControlerEntidades.previous()}"
+		            		image="/resources/icons/default/paginado/#{theme.color}/anterior.png"
+		            		rendered="#{seleccionarEntidades.listaControlerEntidades.previousExists}"
+		            		reRender="tablas_id" title="#{messages.anterior}"
+		            		style="border: 0px;"/>
+						<h:graphicImage value="/resources/modBancoSangre/anteriord.png" 
+		                    rendered="#{not seleccionarEntidades.listaControlerEntidades.previousExists}"/>
+		            
+		            	<a4j:commandButton action="#{seleccionarEntidades.listaControlerEntidades.next()}"
+		            		image="/resources/icons/default/paginado/#{theme.color}/siguiente.png"
+		            		rendered="#{seleccionarEntidades.listaControlerEntidades.nextExists}" ajaxSingle="true"
+		            		reRender="tablas_id" title="#{messages.siguiente}"
+		            		style="border: 0px;"/>
+						<h:graphicImage value="/resources/modBancoSangre/siguiented.png" 
+		                    rendered="#{not seleccionarEntidades.listaControlerEntidades.nextExists}"/>
+		            
+		            	<a4j:commandButton action="#{seleccionarEntidades.listaControlerEntidades.last()}"
+		            		image="/resources/icons/default/paginado/#{theme.color}/fin.png"
+		            		rendered="#{seleccionarEntidades.listaControlerEntidades.nextExists}"
+		            		reRender="tablas_id" title="#{messages.ultima}"
+		            		style="border: 0px;"/>
+						<h:graphicImage value="/resources/modBancoSangre/find.png" 
+		                    rendered="#{not seleccionarEntidades.listaControlerEntidades.nextExists}"/>
+		           
+		</s:div></s:div>
+
+				
+				
+			</a4j:outputPanel>
+
+		<a4j:outputPanel id="panelSeleccionadas">
+		<a4j:outputPanel id="panel" rendered="#{seleccionarEntidades.listanewEntidades.size()!=0}">		
+		<br/>
+			 <rich:dataTable
+					id="tablaEntidadesSeleccionadas" style="width: 100%;" var="entitySelected"
+					value="#{seleccionarEntidades.listanewEntidades}"					
+					columnsWidth="100%,1%" rendered="#{seleccionarEntidades.listanewEntidades.size()!=0}">
+					<f:facet name="header">#{messages.listadoEntitySeleccionada}</f:facet>
+					
+					<h:column>
+						<f:facet name="header">
+							<h:panelGrid columns="2"
+								style="width: 100%; padding:0px; margin:0px;" border="0"
+								cellpadding="0" cellspacing="0">
+								<s:div style="float: left;">#{messages.nombre}</s:div>
+								
+							</h:panelGrid>
+						</f:facet>
+						<table cellpadding="0" cellspacing="0" border="0">
+											<tr>
+												<td>
+													<h:graphicImage
+							value="/resources/modCommon/entidades_logos/#{theme.name}/#{theme.color}/#{entitySelected.logo}"
+								height="16" />
+												</td>
+												<td width="2px"></td>
+												<td valign="middle">
+													 #{entitySelected.nombre}
+												</td>
+											</tr>
+										</table>
+						
+	        </h:column>
+			<h:column>
+										<div align="center">
+										<a4j:commandLink											
+											action="#{seleccionarEntidades.eliminar(entitySelected.id)}" reRender="panelSeleccionadas,tablas_id">
+											
+											<h:graphicImage title="#{messages.eliminar}"
+												style="border: 0px; cursor:pointer;"
+												value="/resources/icons/default/acciones/eliminar.png">
+											</h:graphicImage>
+										</a4j:commandLink>
+									</div>
+									</h:column>
+				</rich:dataTable>
+				</a4j:outputPanel>
+				<rich:spacer height="7px" style="display: block"></rich:spacer>
+			<s:div styleClass="actionButtons" rendered="#{empty from}"
+				style="text-align: right">
+				<div align="right"><h:commandButton id="btnSi" rendered="#{seleccionarEntidades.listanewEntidades.size()!=0}"
+					value="#{messages.aceptar}" action="#{seleccionarEntidades.adicionar()}"
+					style="margin-bottom: 0px; margin-right: 5px; margin-left: 0px; margin-top: 0px">
+				</h:commandButton> <h:commandButton immediate="true" value="#{messages.cancelar}" action="cancelar"
+					style="margin-bottom: 0px; margin-right: 0px; margin-left: 5px; margin-top: 0px"
+					propagation="end"></h:commandButton> <rich:spacer height="8px"
+					style="display: block"></rich:spacer></div>
+			</s:div>
+		</a4j:outputPanel>
+		
+		</h:form>
+
+		<h:form>
+
+
+			<rich:modalPanel id="panelEliminar" width="339" height="89">
+				<f:facet name="header" id="panelEliminarHeader">
+					<h:outputText value="#{messages.eliminar1}" />
+				</f:facet>
+				<f:facet name="controls">
+					<h:graphicImage
+						value="/resources/icons/default/acciones/cerrar.gif"
+							style="cursor:pointer; position:relative; top:1px;"
+						onclick="Richfaces.hideModalPanel('panelEliminar')" />
+				</f:facet>
+
+				<table cellpadding="0px" cellspacing="0px" border="0px"
+					id="container" title="">
+					<tr>
+						<td style="height: 10px;" colspan="6"></td>
+					</tr>
+					<tr style="vertical-align: top;">
+						<td style="width: 6px;"></td>
+						<td valign="top">
+						<table cellpadding="0px" cellspacing="0px">
+							<tr valign="top">
+								<td><h:graphicImage
+									value="/resources/icons/default/acciones/advertencia.png" /></td>
+								<td style="width: 7px;"></td>
+								<td><h:outputText value="#{messages.eliminar2}"></h:outputText>
+								</td>
+							</tr>
+						</table>
+						</td>
+						<td style="width: 4px;"></td>
+					</tr>
+					<tr>
+						<td style="height: 3px;" colspan="6"></td>
+					</tr>
+					<tr>
+						<td colspan="3">
+						<div align="center"><a4j:commandButton type="button"
+							ajaxSingle="true" value="#{messages.eliminar3}"
+							style="margin-right: 4px;" id="btnSi"
+							oncomplete="Richfaces.hideModalPanel('panelEliminar')"
+							action="#{especialidadBuscarControler.eliminar()}"
+							reRender="tablas_id" /> <input type="button"
+							value="#{messages.eliminar4}" style="margin-left: 3px;"
+							onclick="Richfaces.hideModalPanel('panelEliminar')" /></div>
+						</td>
+					</tr>
+					<tr>
+						<td style="height: 6px;" colspan="6"></td>
+					</tr>
+				</table>
+
+
+
+			</rich:modalPanel>
+
+		</h:form>
+
+		<h:form>
+			<rich:contextMenu attached="false" id="nombreF"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{especialidadBuscarControler.setOrder('especialidad.nombre desc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{especialidadBuscarControler.setOrder('especialidad.nombre asc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+			</rich:contextMenu>
+			
+			<rich:contextMenu attached="false" id="codigoF"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{especialidadBuscarControler.setOrder('especialidad.codigo desc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{especialidadBuscarControler.setOrder('especialidad.codigo asc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+			</rich:contextMenu>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+

@@ -1,0 +1,16 @@
+package horarios
+
+import gehos.consulta.entity.custom.PlanificacionRuleResult;
+
+rule "Profesional de salud"
+	when 
+		$result : PlanificacionRuleResult()
+	then 
+		$result.setHorarioPrimera(false);
+		$result.setHorarioControl(false);
+		$result.setHorarioInter(false);
+		$result.setHorarioCharla(true);
+		$result.setHorarioTriageEsp(false);
+		$result.setHorarioTriageGen(false);
+			
+end

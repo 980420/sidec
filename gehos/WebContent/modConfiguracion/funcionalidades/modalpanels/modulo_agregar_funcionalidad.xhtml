@@ -1,0 +1,202 @@
+<rich:modalPanel id="modulo_agregar_func"
+				 onhide="" autosized="true" resizeable="false"
+				 xmlns="http://www.w3.org/1999/xhtml"
+				 xmlns:ui="http://java.sun.com/jsf/facelets"
+				 xmlns:h="http://java.sun.com/jsf/html"
+				 xmlns:f="http://java.sun.com/jsf/core"
+				 xmlns:s="http://jboss.com/products/seam/taglib"
+				 xmlns:rich="http://richfaces.org/rich"
+				 xmlns:a="http://richfaces.org/a4j" 
+				 >
+				 
+	 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	 
+	
+	 
+	 <f:facet name="header">
+		<h:panelGroup id="modulo_agregar_func_header">
+			<h:outputText value="#{messages.lbl_Adicionarfuncionalidad_conf}" rendered="#{not funcionalidadesManager.editingFunctionality}" />
+			<h:outputText value="#{messages.lbl_Modificarfuncionalidad_conf}" rendered="#{funcionalidadesManager.editingFunctionality}" />
+		</h:panelGroup>
+	</f:facet>
+	<f:facet name="controls">
+		<h:graphicImage 
+			value="/resources/icons/default/acciones/cerrar.gif" 
+			style="cursor:pointer; position: relative; top: 2px;"
+			onclick="Richfaces.hideModalPanel('modulo_agregar_func')" />
+	</f:facet>
+	
+	
+	<a:form id="modulo_agregar_func_form" >
+	<s:validateAll > 
+	<table cellpadding="0" cellspacing="0">
+	<tr> <td>  <rich:spacer height="10" style="display:block;"/>  </td> </tr>
+	<tr valign="top">
+	<td rowspan="8"> <rich:spacer width="6"/>  </td>
+	<td valign="top">
+       <table cellpadding="0" cellspacing="0"> 
+			<tr> 
+				<td colspan="3" valign="top"> 
+					<h:outputLabel>#{messages.lbl_nombre_conf}:</h:outputLabel>
+					
+					<rich:message for="funclabelinput" style="color: red;"
+							id="funclabelinputMessage" 
+							showDetail="false" showSummary="false" >
+							<f:facet name="errorMarker">
+								<span title="#{facesMessages.getCurrentMessagesForControl('funclabelinput').get(0).getDetail()}">*</span>
+							</f:facet>
+					</rich:message>
+					
+					<br/>
+					<h:inputText style="width: 148px;" id="funclabelinput" 
+						value="#{funcionalidadesManager.funLabel}" 
+						required="true">
+					</h:inputText>
+				</td> 
+			</tr> 
+			<tr> 
+				<td valign="top"> 
+					<rich:spacer height="6" style="display:block;"/>
+					#{messages.lbl_Url_conf}:
+					
+					<rich:message for="urlInputText" style="color: red;"
+							id="urlInputTextMessage" 
+							showDetail="false" showSummary="false" >
+							<f:facet name="errorMarker">
+								<span title="#{facesMessages.getCurrentMessagesForControl('urlInputText').get(0).getDetail()}">*</span>
+							</f:facet>
+					</rich:message>
+					
+					<br />
+					<h:inputText style="width: 148px;"  id="urlInputText" required="true"
+						value="#{funcionalidadesManager.funUrl}" disabled="true"
+						title="#{funcionalidadesManager.funUrl}" />	
+					
+					<div style="overflow: auto; width: 150px; height: 130px; position: relative; top: 8px;">
+					
+					<s:div rendered="false">
+					<iframe id="camasFrame" name="camasFrame" 
+						src="#{facesContext.externalContext.requestContextPath}/modConfiguracion/funcionalidades/modalpanels/tree.gehos?#{manager.conversationIdParameter}=#{conversation.id}"
+						style="border: 0px; padding: 0px;">
+					</iframe>
+					</s:div>
+					
+					<a:region >
+					<a:outputPanel ajaxRendered="true">
+					<rich:tree changeExpandListener="#{funcionalidadesManager.codeBaseTreeBuilder.OnNodeCollapseExpand}"
+						    id="codebasetree" switchType="ajax" 
+							value="#{funcionalidadesManager.codeBaseTreeBuilder.treeData}"
+							var="item"  nodeFace="#{item.toString()}" reRender="codebasetree" >
+						<rich:treeNode type="directorio" 
+								icon="/img/folder#{theme.color}.png" >	
+								<h:outputLabel title="#{item.getVirtualPath()}" 
+											   value="#{item.value.name}" 
+											   style="cursor: pointer">
+								</h:outputLabel>
+						</rich:treeNode>
+						<rich:treeNode type="archivo" >
+								<a:commandLink value="#{item.value.name}" title="#{item.getVirtualPath()}"
+									limitToList="true" status="funcstatus2" 
+									ajaxSingle="true" immediate="true"
+									event="onclick" style="cursor: pointer"
+									action="#{funcionalidadesManager.setFuncionalityUrl(item.getVirtualPath())}" 
+									reRender="urlInputText, urlInputTextMessage">
+								</a:commandLink>		
+						</rich:treeNode>
+					</rich:tree>
+					</a:outputPanel>
+					</a:region>
+					<a:jsFunction name="updateUrlInput" limitToList="true" ajaxSingle="true"
+						reRender="urlInputText">
+					</a:jsFunction>
+					
+
+					
+					</div>	
+				</td> 
+			</tr>
+			</table>	
+	</td>
+
+
+	<td>
+	
+	<table cellpadding="0" cellspacing="0">
+	    <tr valign="top">
+				<td>
+					<rich:spacer width="25"/>
+				</td>
+				<td valign="top" > 
+					
+					#{messages.lbl_icono_conf}:
+
+					<s:div id="funiconspanel" >
+									  
+						<s:div        id="modulo_agregar_func_iconslist"
+									  rendered="true">
+							
+							<div style="overflow: auto; width: 180px; height: 192px; margin-right: 6px;">
+								<rich:dataGrid columns="3" value="#{funcionalidadesManager.getExistingModuleIcons()}" 
+														   var="funicon">		   
+									<s:div style="float: left;" rendered="#{funcionalidadesManager.isFuncIconSelected(funicon)}">
+										<input type="radio" onclick="var icn2='#{funicon}'; updateFunIcon(icn2);" 
+											style="visibility: visible;" name="musictype3" checked="checked">
+										</input>
+									</s:div>
+									<s:div style="float: left;" rendered="#{not funcionalidadesManager.isFuncIconSelected(funicon)}">
+										<input type="radio" onclick="var icn2='#{funicon}'; updateFunIcon(icn2);" 
+											style="visibility: visible;" name="musictype3"  >
+										</input>
+									</s:div>
+		
+								<h:graphicImage width="20" height="20" title="#{icon}"
+								   url="/resources/funcionalidadesIcons/#{funcionalidadesManager.moduleByFuncionality(funcionalidadesManager.selectedFunctionality.value).nombre}/#{funicon}" />
+								</rich:dataGrid>
+							</div>
+						</s:div>
+					</s:div>
+
+				</td> 
+			</tr> 
+			</table>
+	</td>
+	
+	</tr></table>
+	
+	<table width="100%" cellpadding="0" cellspacing="0">
+			<tr>
+				<td colspan="3" align="right">
+					<div align="right">
+						<a:commandButton value="#{messages.btn_aceptar_conf}" style="" rendered="#{not funcionalidadesManager.editingFunctionality}"
+							 action="#{funcionalidadesManager.uploadFuncionalidadAndSave()}"
+							 status="funcstatus2"
+							 oncomplete="#{funcionalidadesManager.onAdicionarFuncComplete('modulo_agregar_func')}"
+							 reRender="funclabelinputMessage, urlInputTextMessage, settingsdiv, detailspanelheader" >
+						</a:commandButton>
+						<a:commandButton value="#{messages.btn_aceptar_conf}" style="" rendered="#{funcionalidadesManager.editingFunctionality}"
+							 action="#{funcionalidadesManager.saveFuncionalidad()}"
+							 status="funcstatus2"
+							 oncomplete="#{funcionalidadesManager.onAdicionarFuncComplete('modulo_agregar_func')}"
+							 reRender="funclabelinputMessage, urlInputTextMessage, settingsdiv, detailspanelheader" >
+						</a:commandButton>
+						<input type="button"
+							onclick="javascript:Richfaces.hideModalPanel('modulo_agregar_func');" 
+							value="#{messages.btn_cancelar_conf}"
+							style="margin-left:2px;margin-right:6px; margin-bottom: 6px; margin-top: 8px;" />
+					</div>	
+				</td>
+			</tr>
+		</table>	
+	  </s:validateAll>	  
+	</a:form>
+    
+    
+	<a:form>
+		<a:jsFunction name="clean" action="#{funcionalidadesManager.clean()}" >
+		</a:jsFunction>					
+		<a:jsFunction name="updateFunIcon" limitToList="true" ajaxSingle="true">
+		    <a:actionparam name="icn" assignTo="#{funcionalidadesManager.existingFuncIconName}"  />                  
+		</a:jsFunction>					
+	</a:form>
+	 
+</rich:modalPanel>

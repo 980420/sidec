@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j"
+ >
+
+<head>
+	<link rel="shortcut icon" href="#{facesContext.externalContext.requestContextPath}/img/gehos.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>#{messages.tit_sistema_com} - #{messages.modules}</title>
+	<meta http-equiv="pragma" content="no-cache" />
+	<style type="text/css">
+		html{
+			background-image:url('images/fond.gif');
+			height: 100%;
+			vertical-align: middle;
+		}
+		body {
+			background-image: url('images/fond.gif');
+		}
+		
+		.modulos {
+			width: 500px;
+			text-align : left;
+		}
+		
+		.headerMod {
+			height: 86px;
+			background-image: url('images/#{theme.color}/modulo_01.png');
+			background-repeat: no-repeat;
+		}
+		
+		.headerLetters {
+			padding-left: 80px;
+			padding-top: 30px;
+			font-family: Tahoma;
+			font-size: 12px;
+			color: #939393;
+			font-weight: bold;
+			width: 100px;
+		}
+		
+		.headerLetterSmall {
+			font-size: 9px;
+			padding-left: 4px;
+		}
+		
+		.conteMod {
+			background-image: url('images/#{theme.color}/modulo_02.png');
+			background-repeat: repeat-y;
+			padding-left: 15px;
+			padding-right: 15px;
+		}
+		
+		.footerMod {
+			height: 66px;
+			background-image: url('images/#{theme.color}/modulo_03.png');
+			background-repeat: no-repeat;
+		}
+		
+		.blueback {
+			background: none !important;
+			border: 0px;
+		}
+		.log {
+			margin-top: 15px;
+			margin-left: 20%;
+			padding-top: 20px;
+			padding-left: 35px;
+		}
+		.btnclass{
+			background-repeat: no-repeat;
+			width: 18px; height: 18px;
+			opacity: 0.6; 
+		}
+		.btnclass:hover{
+			opacity: 0.9; 
+		}
+	</style>
+	
+<script type="text/javascript">
+	document.onmousedown=coordinates;
+	document.onmouseup=mouseup;
+	
+	function coordinates(e)
+	{
+		if (e == null) { e = window.event;}
+		var sender = (typeof( window.event ) != "undefined" ) ? e.srcElement : e.target;
+		
+		if (sender.id=="moveMe" || sender.id=="moveMe2" || sender.id=="moveMe3")
+		{
+		  mouseover=true;
+		  pleft=parseInt(movMeId.style.left);
+		  ptop=parseInt(movMeId.style.top);
+		  xcoor=e.clientX;
+		  ycoor=e.clientY;
+		  document.onmousemove=moveImage;
+		  return false;
+		}
+		else { return false; }
+	}
+	
+	function moveImage(e)
+	{
+		if (e == null) { e = window.event;}
+		movMeId.style.left=pleft+e.clientX-xcoor+"px";
+		movMeId.style.top=ptop+e.clientY-ycoor+"px";
+		return false;
+	}
+	
+	function mouseup(e)
+	{
+		document.onmousemove=null;
+	}
+	</script>	
+	
+</head>
+
+<body style="height: 100%;">
+
+<h:form>
+<div align="center" >
+			<div class="log" style="position: absolute; cursor: pointer;" id="moveMe" >
+				<div class="modulos" style="">
+					<div style="position: relative; left: 455px; top:39px; opacity: 0.6; height: 24px; width:100px; overflow: hidden;">					
+						<s:link  view="/index.html" action="#{identity.logout}" >
+							<s:div styleClass="btnclass" style="background-image: url('#{facesContext.externalContext.requestContextPath}/modCommons/modSelector/soto-layout/themes/blue/close-small.png')"/>
+						</s:link>
+					</div>	
+					<div class="headerMod" id="moveMe2">
+						<div class="headerLetters" id="moveMe3" style="cursor: default;">ENTIDADES  
+							<div class="headerLetterSmall" style="cursor: default;">
+								#{messages.tit_sistema_conf}
+							</div>
+						</div>
+					</div>
+					<div class="conteMod">
+					<a:form>
+						<center>
+							<rich:dataGrid cellpadding="0" columnClasses="blueback"
+								styleClass="blueback" cellspacing="0"
+								value="#{entities}" var="entidad" columns="4">
+								<s:link rendered="#{entidad.class.simpleName == 'Entidad_configuracion'}"
+										action="gotomodselector" 
+										style="text-decoration: none; ">
+									<f:param name="entityid" value="#{entidad.id}" />
+									<div style="text-align: left;width:89px;height:90px;background-image:url('#{facesContext.externalContext.requestContextPath}/resources/modCommon/entidades_logos/#{theme.name}/#{theme.color}/#{entidad.id}.png');background-repeat:no-repeat;border:0px;">
+										<div style="color: #ffffff; font-weight: bold; font-family: Verdana; padding: 6px;">
+											<h:outputLabel value="#{entidad.nombre}" 
+												style="font-size: 10px;" />
+										</div>
+									</div>
+								</s:link>
+								<s:link rendered="#{entidad.class.simpleName == 'Funcionalidad'}"
+									action="gotomodhome"
+									style="text-decoration: none; ">
+									<f:param value="#{entidad.nombre}" name="moduleName" /> 
+							        <f:param name="idFuncionalidad" value="#{entidad.id}" />
+							        <f:param name="idancestors" value="#{entidad.id}a" />
+									<div style="text-align: left;width:89px;height:90px;background-image:url('#{facesContext.externalContext.requestContextPath}/resources/modCommon/moduleimages/#{theme.name}/#{theme.color}/#{entidad.imagen}');background-repeat:no-repeat;border:0px;">
+										<div style="color: #ffffff; font-weight: bold; font-family: Verdana; padding: 6px;">
+											<h:outputLabel value="#{entidad.label}" 
+												style="font-size: #{entidad.labelSize}px;" />
+										</div>
+									</div>
+								</s:link>
+							</rich:dataGrid>
+						</center>
+					</a:form>	
+					</div>
+					<div class="footerMod"></div>
+				</div>
+			</div>	
+</div>			
+<script type="text/javascript">
+	movMeId=document.getElementById("moveMe");
+	movMeId.style.top="1px";
+	movMeId.style.left="1px";
+</script>
+</h:form>	
+</body>
+</html>

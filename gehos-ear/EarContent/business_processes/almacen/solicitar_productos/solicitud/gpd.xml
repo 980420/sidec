@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="solicitar_productos" width="1548" height="478">
+  <node name="inicio" x="16" y="140" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="tipo_de_solicitud" x="17" y="257" width="132" height="36">
+    <edge>
+      <label x="-42" y="7"/>
+    </edge>
+    <edge>
+      <label x="31" y="1"/>
+    </edge>
+    <edge>
+      <label x="-28" y="14"/>
+      <bendpoint w1="257" h1="-77" w2="0" h2="78"/>
+    </edge>
+  </node>
+  <node name="otro_almacen" x="302" y="258" width="132" height="36">
+    <edge>
+      <label x="-35" y="7"/>
+      <bendpoint w1="503" h1="1" w2="-1" h2="-57"/>
+    </edge>
+  </node>
+  <node name="detalles_de_solicitud_de_compra" x="219" y="438" width="235" height="36">
+    <edge>
+      <label x="-83" y="-16"/>
+    </edge>
+    <edge>
+      <label x="-19" y="-24"/>
+      <bendpoint w1="397" h1="-93" w2="-129" h2="29"/>
+    </edge>
+  </node>
+  <node name="detalles_de_solicitud_de_licitacion" x="220" y="102" width="240" height="36">
+    <edge>
+      <label x="-114" y="-18"/>
+      <bendpoint w1="-2" h1="-67" w2="-280" h2="-6"/>
+      <bendpoint w1="146" h1="-67" w2="-132" h2="-6"/>
+    </edge>
+    <edge>
+      <label x="-47" y="-151"/>
+      <bendpoint w1="182" h1="-1" w2="-350" h2="-215"/>
+      <bendpoint w1="181" h1="155" w2="-351" h2="-59"/>
+      <bendpoint w1="531" h1="156" w2="-1" h2="-58"/>
+    </edge>
+  </node>
+  <node name="procesar_solicitud_de_productos" x="508" y="41" width="220" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="8" y="-181"/>
+      <bendpoint w1="-96" h1="19" w2="-350" h2="-256"/>
+      <bendpoint w1="-98" h1="216" w2="-352" h2="-59"/>
+      <bendpoint w1="252" h1="218" w2="-2" h2="-57"/>
+    </edge>
+  </node>
+  <node name="registrar_ofertas" x="552" y="122" width="132" height="36">
+    <edge>
+      <label x="-56" y="6"/>
+    </edge>
+  </node>
+  <node name="procesar_ofertas" x="808" y="123" width="132" height="36">
+    <edge>
+      <label x="-120" y="-6"/>
+    </edge>
+  </node>
+  <node name="aceptar_solicitud_de_compra" x="628" y="439" width="206" height="36">
+    <edge>
+      <label x="-34" y="-19"/>
+      <bendpoint w1="142" h1="-3" w2="1" h2="120"/>
+    </edge>
+  </node>
+  <node name="aprobar_adjudicacion" x="811" y="44" width="183" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="fork1" x="1162" y="51" width="252" height="24">
+    <edge>
+      <label x="-156" y="-6"/>
+    </edge>
+    <edge>
+      <label x="27" y="-2"/>
+    </edge>
+  </node>
+  <node name="crear_orden_de_compra" x="957" y="140" width="181" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="crear_cronograma_de_entrega" x="1186" y="316" width="211" height="36">
+    <edge>
+      <label x="2" y="-21"/>
+    </edge>
+  </node>
+  <node name="crear_contrato" x="1415" y="140" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="join1" x="1163" y="231" width="252" height="24">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="fin" x="806" y="316" width="132" height="36"/>
+</root-container>

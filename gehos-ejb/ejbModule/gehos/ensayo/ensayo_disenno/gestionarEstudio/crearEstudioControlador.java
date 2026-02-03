@@ -1,0 +1,1683 @@
+package gehos.ensayo.ensayo_disenno.gestionarEstudio;
+
+import gehos.autenticacion.entity.Usuario;
+import gehos.bitacora.session.traces.IBitacora;
+import gehos.comun.shell.IActiveModule;
+import gehos.ensayo.ensayo_configuracion.session.custom.SeguridadEstudio;
+import gehos.ensayo.entity.*;
+import gehos.ensayo.session.custom.CieConsList_custom;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Set;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
+import javax.persistence.EntityManager;
+
+import org.hibernate.validator.NotEmpty;
+import org.jboss.seam.ScopeType;
+import org.jboss.seam.annotations.Begin;
+import org.jboss.seam.annotations.Create;
+import org.jboss.seam.annotations.FlushModeType;
+import org.jboss.seam.annotations.In;
+import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.core.SeamResourceBundle;
+import org.jboss.seam.faces.FacesMessages;
+import org.jboss.seam.international.StatusMessage.Severity;
+
+@Name("crearEstudioControlador")
+@Scope(ScopeType.CONVERSATION)
+public class crearEstudioControlador {
+
+	@In
+	FacesMessages facesMessages;
+
+	@In
+	EntityManager entityManager;
+
+	@In
+	Usuario user;
+
+	@In
+	private IActiveModule activeModule;
+
+	@In
+	IBitacora bitacora;
+
+	@In(create = true)
+	CieConsList_custom cieConsList_custom;
+
+	@In(scope = ScopeType.SESSION)
+	SeguridadEstudio seguridadEstudio;
+	
+
+    private Boolean flag = true;
+
+	// Para que se vea
+	private long idestudioVER;
+
+	private String seleccione;
+	private String comboduracion = "longitudinal";
+	private boolean mostrarFormulario;
+	private BigDecimal edadMinima;
+	private BigDecimal edadMaxima;
+	private String cantidadSujetosEsperado;
+	private boolean submitAttempted = false;
+
+	@Create
+	@Begin(join = true, flushMode = FlushModeType.MANUAL)
+	public void initConversation() {
+		this.seleccione = SeamResourceBundle.getBundle()
+				.getString("seleccione");
+		this.mostrarFormulario = false;
+	}
+
+	private Estudio_ensayo estudio;
+
+	public Estudio_ensayo getEstudio() {
+		return estudio;
+	}
+
+	public void setEstudio(Estudio_ensayo estudio) {
+		this.estudio = estudio;
+	}
+
+	private UsuarioEstudio_ensayo usuarioestudio;
+	private EstudioEntidad_ensayo estudiocentro;
+	private EIntervencion_ensayo intervencionadd;
+
+	private Long idestudiohabilitar;
+	private EstadoEstudio_ensayo estado;
+	private List<EstadoEstudio_ensayo> listadeestado = new ArrayList<EstadoEstudio_ensayo>();
+
+	private List<EAleatorizacion_ensayo> listadalateorizacion = new ArrayList<EAleatorizacion_ensayo>();
+	private List<EEnmascaramiento_ensayo> listadenmascaramiento = new ArrayList<EEnmascaramiento_ensayo>();
+	private List<EControl_ensayo> listadcontrol = new ArrayList<EControl_ensayo>();
+	private List<EProposito_ensayo> listaproposito = new ArrayList<EProposito_ensayo>();
+	private List<EProposito_ensayo> listapropositoobservacional = new ArrayList<EProposito_ensayo>();
+	private List<EAsignacion_ensayo> listaasignacion = new ArrayList<EAsignacion_ensayo>();
+	private List<EPuntoFinal_ensayo> listapuntofinal = new ArrayList<EPuntoFinal_ensayo>();
+	private List<EIntervencion_ensayo> listaintervencion = new ArrayList<EIntervencion_ensayo>();
+	private List<EFaseEstudio_ensayo> listafase = new ArrayList<EFaseEstudio_ensayo>();
+	
+	private List<ESeleccion_ensayo> listaseleccion = new ArrayList<ESeleccion_ensayo>();
+	private ETipoProtocolo_ensayo tipoprotocolo = new ETipoProtocolo_ensayo();
+	private List<EAjusteTemporal_ensayo> listajustetemporal = new ArrayList<EAjusteTemporal_ensayo>();
+	private List<ETipoIntervencion_ensayo> listatipointervencion = new ArrayList<ETipoIntervencion_ensayo>();
+	private List<ESexo_ensayo> listasexo = new ArrayList<ESexo_ensayo>();
+	private List<Diccionarios_ensayo> listadiccionarios = new ArrayList<Diccionarios_ensayo>();
+
+	private String tipoProtocoloDB = "";
+
+	private String otrafase = "";
+
+	private List<EIntervencion_ensayo> listaintervenciontemp;
+
+	private String estadoestudio = "Creado";
+
+	private String aleatorizacion = "";
+	private String enmascaramiento = "";
+	private String control = "";
+
+	private String asignacion = "";
+	private String puntofinal = "";
+	private String intervencion = "";
+	private String fase = "";
+	private String sexo = "";
+	private String diccionario = "";
+
+	private String seleccion = "";
+	private String ajustetemporal = "";
+	private String proposito = "";
+	private String otroproposito = "";
+
+	private String tipointervencion = "";
+	private String nombreintervencion = "";
+
+	private int idintervencion;
+	
+	//add Evelio 
+	private List<EProducto_ensayo> listaProductos = new ArrayList<EProducto_ensayo>();	
+	private EProducto_ensayo producto = new EProducto_ensayo();	
+	//fin add
+	
+	private String combo = "inter";
+	private boolean combointer = true; // Si true muestra combo madre
+	private boolean comboobser = false; // Si true muestra combo padre
+
+	public void showCombo() {
+		if (combo.equals("inter")) {
+			combointer = true;
+			comboobser = false;
+		} else if (combo.equals("obser")) {
+			comboobser = true;
+			combointer = false;
+		}
+	}
+
+	private String combofasedef = "fase";
+	private boolean combofase = true; // Si true muestra combo madre
+	private boolean combootrafase = false; // Si true muestra combo padre
+
+	public void showComboFase() {
+		if (combofasedef.equals("fase")) {
+			combofase = true;
+			combootrafase = false;
+		} else if (combofasedef.equals("otrafase")) {
+			combootrafase = true;
+			combofase = false;
+		}
+	}
+
+	private String combopropositodef = "propositos";
+	private boolean comboproposito = true; // Si true muestra combo madre
+	private boolean combootrtroproposito = false; // Si true muestra combo padre
+
+	public void showComboProposito() {
+		if (combopropositodef.equals("propositos")) {
+			comboproposito = true;
+			combootrtroproposito = false;
+		} else if (combopropositodef.equals("otropropositos")) {
+			comboproposito = false;
+			combootrtroproposito = true;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public void iniCrearestudio() {
+		
+
+		if(flag)
+			flag = false;
+		
+		estudio = new Estudio_ensayo();
+		estudio.setTipoEdadMin("dias");
+		estudio.setTipoEdadMax("dias");
+		intervencionadd = new EIntervencion_ensayo();
+		usuarioestudio = new UsuarioEstudio_ensayo();
+		estudiocentro = new EstudioEntidad_ensayo();
+		listaintervenciontemp = new ArrayList<EIntervencion_ensayo>();
+		listaintervencion = new ArrayList<EIntervencion_ensayo>();
+		
+		setEdadMinima(null);
+		setEdadMaxima(null);
+		cieConsList_custom.clearAllRestrictions();
+
+		listadeestado = (List<EstadoEstudio_ensayo>) entityManager.createQuery(
+				"select e from EstadoEstudio_ensayo e ").getResultList();
+
+		listadalateorizacion = (List<EAleatorizacion_ensayo>) entityManager
+				.createQuery("select a from EAleatorizacion_ensayo a ")
+				.getResultList();
+		listadenmascaramiento = (List<EEnmascaramiento_ensayo>) entityManager
+				.createQuery("select a from EEnmascaramiento_ensayo a ")
+				.getResultList();
+		listadcontrol = (List<EControl_ensayo>) entityManager.createQuery(
+				"select a from EControl_ensayo a ").getResultList();
+		listaproposito = (List<EProposito_ensayo>) entityManager
+				.createQuery(
+						"select a from EProposito_ensayo a where a.ETipoProtocolo.id=1")
+				.getResultList();
+
+		listapropositoobservacional = (List<EProposito_ensayo>) entityManager
+				.createQuery(
+						"select a from EProposito_ensayo a where a.ETipoProtocolo.id=2")
+				.getResultList();
+
+		listaasignacion = (List<EAsignacion_ensayo>) entityManager.createQuery(
+				"select a from EAsignacion_ensayo a ").getResultList();
+		/*
+		 * listaintervencion=(List<EIntervencion_ensayo>)entityManager.createQuery
+		 * ("select a from EIntervencion_ensayo a ") .getResultList();
+		 */
+		listapuntofinal = (List<EPuntoFinal_ensayo>) entityManager.createQuery(
+				"select a from EPuntoFinal_ensayo a ").getResultList();
+		listafase = (List<EFaseEstudio_ensayo>) entityManager.createQuery(
+				"select a from EFaseEstudio_ensayo a ").getResultList();
+		listasexo = (List<ESexo_ensayo>) entityManager.createQuery(
+				"select a from ESexo_ensayo a ").getResultList();
+		listadiccionarios = (List<Diccionarios_ensayo>) entityManager.createQuery(
+				"select a from Diccionarios_ensayo a ").getResultList();
+		listaseleccion = (List<ESeleccion_ensayo>) entityManager.createQuery(
+				"select a from ESeleccion_ensayo a ").getResultList();
+		listajustetemporal = (List<EAjusteTemporal_ensayo>) entityManager
+				.createQuery("select a from EAjusteTemporal_ensayo a ")
+				.getResultList();
+		listatipointervencion = (List<ETipoIntervencion_ensayo>) entityManager
+				.createQuery("select a from ETipoIntervencion_ensayo a ")
+				.getResultList();
+
+	}
+
+	public List<String> ListaEstados() {
+		List<String> listaestadosS = new ArrayList<String>();
+
+		for (int i = 0; i < listadeestado.size(); i++) {
+			listaestadosS.add(listadeestado.get(i).getNombre());
+		}
+		listaestadosS.add("<Seleccione>");
+		return listaestadosS;
+
+	}
+
+	public List<String> ListaAlateorizacion() {
+		List<String> listadalateorizacionS = new ArrayList<String>();
+
+		for (int i = 0; i < listadalateorizacion.size(); i++) {
+			listadalateorizacionS.add(listadalateorizacion.get(i).getNombre());
+		}
+		listadalateorizacionS.add("<Seleccione>");
+		return listadalateorizacionS;
+
+	}
+
+	public List<String> ListaEEnmascaramiento() {
+		List<String> listadenmascaramientoS = new ArrayList<String>();
+
+		for (int i = 0; i < listadenmascaramiento.size(); i++) {
+			listadenmascaramientoS
+					.add(listadenmascaramiento.get(i).getNombre());
+		}
+		listadenmascaramientoS.add("<Seleccione>");
+		return listadenmascaramientoS;
+
+	}
+
+	public List<String> ListaEControl() {
+		List<String> listadEControlS = new ArrayList<String>();
+
+		for (int i = 0; i < listadcontrol.size(); i++) {
+			listadEControlS.add(listadcontrol.get(i).getNombre());
+		}
+		listadEControlS.add("<Seleccione>");
+		return listadEControlS;
+
+	}
+
+	public List<String> ListaEProposito() {
+		List<String> listadEPropositoS = new ArrayList<String>();
+
+		for (int i = 0; i < listaproposito.size(); i++) {
+			listadEPropositoS.add(listaproposito.get(i).getNombre());
+		}
+		listadEPropositoS.add("<Seleccione>");
+		return listadEPropositoS;
+
+	}
+
+	public List<String> ListaEPropositoObservacional() {
+		List<String> listadEPropositoS = new ArrayList<String>();
+
+		for (int i = 0; i < listapropositoobservacional.size(); i++) {
+			listadEPropositoS.add(listapropositoobservacional.get(i)
+					.getNombre());
+		}
+		listadEPropositoS.add("<Seleccione>");
+		return listadEPropositoS;
+
+	}
+
+	public List<String> ListaEAsignacion() {
+		List<String> listadAsignacionS = new ArrayList<String>();
+
+		for (int i = 0; i < listaasignacion.size(); i++) {
+			listadAsignacionS.add(listaasignacion.get(i).getNombre());
+		}
+		listadAsignacionS.add("<Seleccione>");
+		return listadAsignacionS;
+
+	}
+
+	public List<String> ListaEPuntofinal() {
+		List<String> listadEPuntofinalS = new ArrayList<String>();
+
+		for (int i = 0; i < listapuntofinal.size(); i++) {
+			listadEPuntofinalS.add(listapuntofinal.get(i).getNombre());
+		}
+		listadEPuntofinalS.add("<Seleccione>");
+		return listadEPuntofinalS;
+
+	}
+
+	public List<String> ListaEIntervenciones() {
+		List<String> listadEIntervencionesS = new ArrayList<String>();
+
+		for (int i = 0; i < listaintervencion.size(); i++) {
+			listadEIntervencionesS.add(listaintervencion.get(i).getNombre());
+		}
+		listadEIntervencionesS.add("<Seleccione>");
+		return listadEIntervencionesS;
+
+	}
+
+	public List<String> ListaEFase() {
+		List<String> listadEFaseS = new ArrayList<String>();
+
+		for (int i = 0; i < listafase.size(); i++) {
+			listadEFaseS.add(listafase.get(i).getNombre());
+		}
+		listadEFaseS.add("<Seleccione>");
+		return listadEFaseS;
+
+	}
+
+	public List<String> ListaESexo() {
+		List<String> listadESexoS = new ArrayList<String>();
+
+		for (int i = 0; i < listasexo.size(); i++) {
+			listadESexoS.add(listasexo.get(i).getValor());
+		}
+		listadESexoS.add("<Seleccione>");
+		return listadESexoS;
+
+	}
+	
+	public List<String> listaEDiccionario() {
+		List<String> listaEDiccionarioS = new ArrayList<String>();
+		for (int i = 0; i < listadiccionarios.size(); i++) {
+			listaEDiccionarioS.add(listadiccionarios.get(i).getNombre());
+		}
+		return listaEDiccionarioS;
+
+	}
+
+	private String idDic;
+	public void selectDiccionario() {
+		Diccionarios_ensayo d = this.entityManager.find(Diccionarios_ensayo.class, Long.parseLong(this.idDic));
+		this.diccionario = d.getNombre();
+	}
+	
+	public List<String> ListaESeleccion() {
+		List<String> listadESeleccionS = new ArrayList<String>();
+
+		for (int i = 0; i < listaseleccion.size(); i++) {
+			listadESeleccionS.add(listaseleccion.get(i).getNombre());
+		}
+		listadESeleccionS.add("<Seleccione>");
+		return listadESeleccionS;
+
+	}
+
+	public List<String> ListaEAjusteTemporal() {
+		List<String> listadEAjusteTemporalS = new ArrayList<String>();
+
+		for (int i = 0; i < listajustetemporal.size(); i++) {
+			listadEAjusteTemporalS.add(listajustetemporal.get(i).getNombre());
+		}
+		listadEAjusteTemporalS.add("<Seleccione>");
+		return listadEAjusteTemporalS;
+
+	}
+
+	public List<String> ListaETipoIntervencion() {
+		List<String> listatipointervencionS = new ArrayList<String>();
+
+		for (int i = 0; i < listatipointervencion.size(); i++) {
+			listatipointervencionS
+					.add(listatipointervencion.get(i).getNombre());
+		}
+		//listatipointervencionS.add("<Seleccione>");
+		return listatipointervencionS;
+
+	}
+
+	public EstadoEstudio_ensayo Estadoseleccionado(
+			String estadoseleccionadovista) {
+		try {
+			EstadoEstudio_ensayo estadoseleccionado = new EstadoEstudio_ensayo();
+			estadoseleccionado = (EstadoEstudio_ensayo) entityManager
+					.createQuery(
+							"select e from EstadoEstudio_ensayo e where e.nombre =:nombre ")
+					.setParameter("nombre", estadoseleccionadovista)
+					.getSingleResult();
+			return estadoseleccionado;
+
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public EAleatorizacion_ensayo Aleatorizacionseleccionado(
+			String aleatorizacionseleccionadovista) {
+		try {
+			EAleatorizacion_ensayo aleatorizacionseleccionado = new EAleatorizacion_ensayo();
+			aleatorizacionseleccionado = (EAleatorizacion_ensayo) entityManager
+					.createQuery(
+							"select e from EAleatorizacion_ensayo e where e.nombre =:nombre ")
+					.setParameter("nombre", aleatorizacionseleccionadovista)
+					.getSingleResult();
+			return aleatorizacionseleccionado;
+
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public EControl_ensayo EControLSeleccionado(String controlseleccionadovista) {
+		try {
+			EControl_ensayo controlseleccionado = new EControl_ensayo();
+			controlseleccionado = (EControl_ensayo) entityManager
+					.createQuery(
+							"select e from EControl_ensayo e where e.nombre =:nombre ")
+					.setParameter("nombre", controlseleccionadovista)
+					.getSingleResult();
+			return controlseleccionado;
+
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public EEnmascaramiento_ensayo EEnmascaramientoSeleccionado(
+			String enmascaramientoseleccionadovista) {
+		try {
+			EEnmascaramiento_ensayo enmascaramientoseleccionado = new EEnmascaramiento_ensayo();
+			enmascaramientoseleccionado = (EEnmascaramiento_ensayo) entityManager
+					.createQuery(
+							"select e from EEnmascaramiento_ensayo e where e.nombre =:nombre ")
+					.setParameter("nombre", enmascaramientoseleccionadovista)
+					.getSingleResult();
+			return enmascaramientoseleccionado;
+
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public EProposito_ensayo EPropositoSeleccionado(
+			String eropositoseleccionadovista) {
+		try {
+			EProposito_ensayo eropositoseleccionado = new EProposito_ensayo();
+			eropositoseleccionado = (EProposito_ensayo) entityManager
+					.createQuery(
+							"select e from EProposito_ensayo e where e.nombre =:nombre ")
+					.setParameter("nombre", eropositoseleccionadovista)
+					.getSingleResult();
+			return eropositoseleccionado;
+
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public EAsignacion_ensayo EAsignacionSeleccionado(
+			String asignacionseleccionadovista) {
+		try {
+			EAsignacion_ensayo asignacionseleccionado = new EAsignacion_ensayo();
+			asignacionseleccionado = (EAsignacion_ensayo) entityManager
+					.createQuery(
+							"select e from EAsignacion_ensayo e where e.nombre =:nombre ")
+					.setParameter("nombre", asignacionseleccionadovista)
+					.getSingleResult();
+			return asignacionseleccionado;
+
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public EPuntoFinal_ensayo EPuntoFinalSeleccionado(
+			String puntofinalseleccionadovista) {
+		try {
+			EPuntoFinal_ensayo puntofinalseleccionado = new EPuntoFinal_ensayo();
+			puntofinalseleccionado = (EPuntoFinal_ensayo) entityManager
+					.createQuery(
+							"select e from EPuntoFinal_ensayo e where e.nombre =:nombre ")
+					.setParameter("nombre", puntofinalseleccionadovista)
+					.getSingleResult();
+			return puntofinalseleccionado;
+
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public EIntervencion_ensayo EIntervencionSeleccionado(
+			String intervencionseleccionadovista) {
+		try {
+			EIntervencion_ensayo intervencionseleccionado = new EIntervencion_ensayo();
+			intervencionseleccionado = (EIntervencion_ensayo) entityManager
+					.createQuery(
+							"select e from EIntervencion_ensayo e where e.nombre =:nombre ")
+					.setParameter("nombre", intervencionseleccionadovista)
+					.getSingleResult();
+			return intervencionseleccionado;
+
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public EFaseEstudio_ensayo EFaseEstudioSeleccionado(
+			String faseEstudioseleccionadovista) {
+		try {
+			EFaseEstudio_ensayo faseEstudioseleccionado = new EFaseEstudio_ensayo();
+			faseEstudioseleccionado = (EFaseEstudio_ensayo) entityManager
+					.createQuery(
+							"select e from EFaseEstudio_ensayo e where e.nombre =:nombre ")
+					.setParameter("nombre", faseEstudioseleccionadovista)
+					.getSingleResult();
+			return faseEstudioseleccionado;
+
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public ESexo_ensayo ESexoSeleccionado(String sexoseleccionadovista) {
+		try {
+			ESexo_ensayo sexoseleccionado = new ESexo_ensayo();
+			sexoseleccionado = (ESexo_ensayo) entityManager
+					.createQuery(
+							"select e from ESexo_ensayo e where e.valor =:nombre ")
+					.setParameter("nombre", sexoseleccionadovista)
+					.getSingleResult();
+			return sexoseleccionado;
+
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	public Diccionarios_ensayo diccionarioSeleccionado(String diccionarioseleccionadovista) {
+		try {
+			Diccionarios_ensayo diccionarioseleccionado = new Diccionarios_ensayo();
+			diccionarioseleccionado = (Diccionarios_ensayo) entityManager
+					.createQuery(
+							"select e from Diccionarios_ensayo e where e.nombre =:nombre and (e.eliminado is null or e.eliminado = false)")
+					.setParameter("nombre", diccionarioseleccionadovista)
+					.getSingleResult();
+			return diccionarioseleccionado;
+
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public ESeleccion_ensayo ESeleccionSeleccionado(
+			String seleccionseleccionadovista) {
+		try {
+			ESeleccion_ensayo seleccionseleccionado = new ESeleccion_ensayo();
+			seleccionseleccionado = (ESeleccion_ensayo) entityManager
+					.createQuery(
+							"select e from ESeleccion_ensayo e where e.nombre =:nombre ")
+					.setParameter("nombre", seleccionseleccionadovista)
+					.getSingleResult();
+			return seleccionseleccionado;
+
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public EAjusteTemporal_ensayo EAjusteTemporalSeleccionado(
+			String ajusteTemporalseleccionadovista) {
+		try {
+			EAjusteTemporal_ensayo ajusteTemporalseleccionado = new EAjusteTemporal_ensayo();
+			ajusteTemporalseleccionado = (EAjusteTemporal_ensayo) entityManager
+					.createQuery(
+							"select e from EAjusteTemporal_ensayo e where e.nombre =:nombre ")
+					.setParameter("nombre", ajusteTemporalseleccionadovista)
+					.getSingleResult();
+			return ajusteTemporalseleccionado;
+
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public ETipoIntervencion_ensayo ETipoIntervencionSeleccionado(
+			String tipoIntervencionseleccionadovista) {
+		try {
+			ETipoIntervencion_ensayo tipoIntervencionseleccionado = new ETipoIntervencion_ensayo();
+			tipoIntervencionseleccionado = (ETipoIntervencion_ensayo) entityManager
+					.createQuery(
+							"select e from ETipoIntervencion_ensayo e where e.nombre =:nombre ")
+					.setParameter("nombre", tipoIntervencionseleccionadovista)
+					.getSingleResult();
+			return tipoIntervencionseleccionado;
+
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public String crearEstudio() {
+		
+		try {
+			this.submitAttempted = true;
+			List esta1 = entityManager
+					.createQuery(
+							"Select est From Estudio_ensayo est "
+									+ "where est.identificador =:identest and est.eliminado <>true")
+					.setParameter("identest", this.estudio.getIdentificador())
+					.getResultList();
+
+			List esta = entityManager
+					.createQuery(
+							"Select est From Estudio_ensayo est "
+									+ "where est.nombre =:nomest and est.eliminado <>true")
+					.setParameter("nomest", this.estudio.getNombre())
+					.getResultList();
+
+			if (!esta1.isEmpty()) {
+				this.facesMessages.addToControlFromResourceBundle(
+						"crearMSProgramado", Severity.INFO,
+						"msg_eidentificadorCreado_ensClin");
+				return "no";
+			}
+			if (!esta.isEmpty()) {
+
+				this.facesMessages.addToControlFromResourceBundle(
+						"crearMSProgramado", Severity.INFO,
+						"msg_nombreCreado_ensClin");
+				return "no";
+			}
+			// Valida que el estudio tenga al menos una enfermedad asociada
+			/*
+			 * if (enfermedadesSeleccionadas.isEmpty()) {
+			 * this.facesMessages.clear();
+			 * this.facesMessages.addToControlFromResourceBundle(
+			 * "crearMSProgramado", Severity.INFO, "msg_enfermedadCIE_ensClin");
+			 * return "no"; }
+			 */
+			else {
+
+				estudio.setEstadoEstudio(Estadoseleccionado(estadoestudio));
+				estudio.setEAleatorizacion(Aleatorizacionseleccionado(aleatorizacion));
+				estudio.setEEnmascaramiento(EEnmascaramientoSeleccionado(enmascaramiento));
+				estudio.setEControl(EControLSeleccionado(control));
+				
+				if (getEdadMinima() != null && getEdadMaxima() != null) {
+					Validations_ensayo valida = new Validations_ensayo();
+					Integer edadMin =Integer.parseInt(getEdadMinima().toString());
+					Integer edadMax = Integer.parseInt(getEdadMaxima().toString());
+					if(estudio.getTipoEdadMin().equals("meses"))
+						edadMin = edadMin*30;
+					if(estudio.getTipoEdadMin().equals("annos"))
+						edadMin = edadMin*365;
+					if(estudio.getTipoEdadMax().equals("meses"))
+						edadMax = edadMax*30;
+					if(estudio.getTipoEdadMax().equals("annos"))
+						edadMax = edadMax*365;
+					if (edadMin > edadMax) {
+						this.facesMessages.addToControlFromResourceBundle(
+								"crearMSProgramado", Severity.INFO,
+								"edadMinimaMenorMaxima");
+						return "no";
+					}
+				}
+					
+				estudio.setEdadMinima(this.edadMinima);
+				estudio.setEdadMaxima(this.edadMaxima);
+				if(!cantidadSujetosEsperado.equals("")){
+					estudio.setCantidadSujetosEsperado(new BigDecimal(cantidadSujetosEsperado));
+				}
+				
+				estudio.setEAsignacion(EAsignacionSeleccionado(asignacion));
+				estudio.setEPuntoFinal(EPuntoFinalSeleccionado(puntofinal));
+
+				estudio.setESexo(ESexoSeleccionado(sexo));
+				estudio.setDiccionario(diccionarioSeleccionado(diccionario));
+				estudio.setESeleccion(ESeleccionSeleccionado(seleccion));
+				estudio.setEAjusteTemporal(EAjusteTemporalSeleccionado(ajustetemporal));
+				if (combo.equals("inter")) {
+					tipoProtocoloDB = "Intervencionista";
+					tipoprotocolo = (ETipoProtocolo_ensayo) entityManager
+							.createQuery(
+									"select e from ETipoProtocolo_ensayo e where e.nombre =:nombre ")
+							.setParameter("nombre", tipoProtocoloDB)
+							.getSingleResult();
+				} else if (combo.equals("obser")) {
+					tipoProtocoloDB = "Observacional";
+					tipoprotocolo = (ETipoProtocolo_ensayo) entityManager
+							.createQuery(
+									"select e from ETipoProtocolo_ensayo e where e.nombre =:nombre ")
+							.setParameter("nombre", tipoProtocoloDB)
+							.getSingleResult();
+				}
+				if (combofasedef.equals("fase")) {
+					estudio.setTipofase("Fase");
+					estudio.setEFaseEstudio(EFaseEstudioSeleccionado(fase));
+				} else if (combofasedef.equals("otrafase")) {
+					estudio.setTipofase("OtraFase");
+					estudio.setOtrosFase(otrafase);
+				}
+				if (combopropositodef.equals("propositos")) {
+					estudio.setTipoproposito("Propositos");
+					estudio.setEProposito(EPropositoSeleccionado(proposito));
+				} else if (combopropositodef.equals("otropropositos")) {
+					estudio.setTipoproposito("OtraPropositos");
+					estudio.setOtroProposito(otroproposito);
+				}
+				if (comboduracion.equals("longitudinal")) {
+					estudio.setDuracion("Longitudinal");
+				} else if (comboduracion.equals("transversal")) {
+					estudio.setDuracion("Transversal");
+				}
+				estudio.setETipoProtocolo(tipoprotocolo);
+				estudio.setFechaCreacion(Calendar.getInstance().getTime());
+				estudio.setFechaActualizacion(Calendar.getInstance().getTime());
+				estudio.setEliminado(false);
+				estudio.setHabilitado(true);
+				Usuario_ensayo usuario = entityManager.find(
+						Usuario_ensayo.class, user.getId());
+				estudio.setUsuario(usuario);
+				Entidad_ensayo entidade = new Entidad_ensayo();
+				entidade = entityManager.find(Entidad_ensayo.class,
+						activeModule.getActiveModule().getEntidad().getId());
+				estudio.setEntidad(entidade);
+				estudio.setCid(bitacora
+						.registrarInicioDeAccion(SeamResourceBundle.getBundle()
+								.getString("prm_bitAddEst_ens")));
+				
+				estudiocentro.setEntidad(entidade);
+				estudiocentro.setEstudio(estudio);
+				estudiocentro.setEliminado(false);
+				entityManager.persist(estudio);
+				
+				//add Evelio
+				//Crear grupo Pesquisage
+				GrupoSujetos_ensayo grupo = new GrupoSujetos_ensayo();
+				EstadoGruposujeto_ensayo estados_GS = (EstadoGruposujeto_ensayo) entityManager
+						.createQuery(
+								"select estados from EstadoGruposujeto_ensayo estados where estados.codigo ='1'")
+						.getSingleResult();
+				grupo.setEstudio(estudio);
+				grupo.setEstadoGruposujeto(estados_GS);
+				grupo.setEliminado(false);
+				grupo.setHabilitado(true);
+				grupo.setFechaCreacion(Calendar.getInstance().getTime());
+				grupo.setUsuario(usuario);				
+				grupo.setNombreGrupo(SeamResourceBundle.getBundle()
+								.getString("grupoPesquisaje"));
+				grupo.setDescripcion(SeamResourceBundle.getBundle()
+								.getString("descripcionGrupoPesquisaje"));
+				entityManager.persist(grupo);
+				
+				// Crear grupo Validacion 
+				GrupoSujetos_ensayo grupoValidacion = new GrupoSujetos_ensayo();
+				EstadoGruposujeto_ensayo estados_GV = (EstadoGruposujeto_ensayo) entityManager
+						.createQuery(
+								"select estados from EstadoGruposujeto_ensayo estados where estados.codigo ='1'")
+						.getSingleResult();
+				grupoValidacion.setEstudio(estudio);
+				grupoValidacion.setEstadoGruposujeto(estados_GV);
+				grupoValidacion.setEliminado(false);
+				grupoValidacion.setHabilitado(true);
+				grupoValidacion.setFechaCreacion(Calendar.getInstance().getTime());
+				grupoValidacion.setUsuario(usuario);
+				grupoValidacion.setNombreGrupo(SeamResourceBundle.getBundle()
+						.getString("grupoValidacion"));
+				grupoValidacion.setDescripcion(SeamResourceBundle.getBundle()
+						.getString("descripcionGrupoValidacion"));
+				entityManager.persist(grupoValidacion);
+				
+				//crear Cronograma pesquisaje
+				Cronograma_ensayo cronograma = new Cronograma_ensayo();
+				
+				EstadoCronograma_ensayo estadoCronograma = (EstadoCronograma_ensayo) entityManager
+						.createQuery(
+								"select e from EstadoCronograma_ensayo e "
+										+ "where e.codigo = :codigo")
+						.setParameter("codigo", 2L).getSingleResult();
+				EstadoRegla_ensayo estadoReglas = (EstadoRegla_ensayo) entityManager
+						.createQuery(
+								"select e from EstadoRegla_ensayo e "
+										+ "where e.codigo = :codigo")
+						.setParameter("codigo", 1L).getSingleResult();
+				cronograma.setEstadoCronograma(estadoCronograma);
+				cronograma.setDescripcion(grupo.getDescripcion());
+				cronograma.setEliminado(false);
+				cronograma.setFechaCreacion(Calendar.getInstance().getTime());
+				cronograma.setGrupoSujetos(grupo);
+				cronograma.setTiempoDuracion(1);							
+				cronograma.setUsuario(usuario);
+				cronograma.setEstadoReglas(estadoReglas);
+				entityManager.persist(cronograma);
+				
+				//crear estapa Evaluacion
+				Etapa_ensayo etapa = new Etapa_ensayo();
+				etapa.setFechaCreacion(Calendar.getInstance().getTime());
+				etapa.setCronograma(cronograma);
+				etapa.setNombreEtapa(SeamResourceBundle.getBundle()
+							.getString("prm_evaluacion_ens"));
+				etapa.setDescripcion(SeamResourceBundle.getBundle()
+							.getString("prm_etapainicial_ens"));
+				etapa.setInicioEtapa(0);
+				etapa.setFinEtapa(0);
+				etapa.setUsuario(usuario);
+				entityManager.persist(etapa);
+				//crear momento pesquisaje
+				MomentoSeguimientoGeneral_ensayo momento = new MomentoSeguimientoGeneral_ensayo();
+				momento.setNombre(SeamResourceBundle.getBundle().getString(
+						"prm_pesquisaje_ens"));
+				momento.setDescripcion(null);
+				momento.setTiempoLlenado(15);
+				momento.setDia("0");
+				momento.setDiasEvaluacion("0");
+				momento.setProgramado(true);
+				momento.setEtapa(etapa.getNombreEtapa());
+				momento.setFechaCreacion(Calendar.getInstance().getTime());
+				momento.setCronograma(cronograma);
+				momento.setEliminado(false);
+				momento.setUsuario(usuario);
+				//momento.setCid(cid);
+				entityManager.persist(momento);
+				
+
+			
+				//fin crear momento pesquisaje
+				//fin crear estapa Evaluacion
+				//fin crear Cronograma pesquisaje.
+				
+				//fin crear Grupo pesquisaje.
+				//fin Evelio
+				//add Evelio Producto 
+				for (int i = 0; i < listaProductos.size(); i++)
+					entityManager.persist(listaProductos.get(i));
+				//fin Evelio Producto
+				for (int i = 0; i < listaintervencion.size(); i++) {
+					
+					intervencionadd = listaintervencion.get(i);
+					
+					//entityManager.persist();
+					intervencionadd.setEstudio(estudio);
+					entityManager.persist(intervencionadd);
+				}
+				for (int i = 0; i < enfermedadesSeleccionadas.size(); i++) {
+					enfermedadesSeleccionadas.get(i).setEstudio(estudio);
+					entityManager.persist(enfermedadesSeleccionadas.get(i));
+				}
+				
+				
+				
+
+				entityManager.persist(estudiocentro);
+				
+				entityManager.flush();
+				crearUsuarioestudio(estudio);
+				entityManager.merge(estudiocentro);
+
+				EstudioEntidad_ensayo estact = (EstudioEntidad_ensayo) entityManager
+						.find(EstudioEntidad_ensayo.class,
+								estudiocentro.getId());
+				seguridadEstudio.PonerActivo(estact);
+				return "ok";
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			return "no";
+		}
+
+	}
+
+	public List<EIntervencion_ensayo> ListaIntervencionSinEliminar() {
+		try {
+			List<EIntervencion_ensayo> listasineliminadotemp = new ArrayList<EIntervencion_ensayo>();
+			for (int i = 0; i < listaintervencion.size(); i++) {
+
+				if (listaintervencion.get(i).getEliminado() == false) {
+					listasineliminadotemp.add(listaintervencion.get(i));
+				}
+			}
+			return listasineliminadotemp;
+
+		} catch (Exception e) {
+			return null;
+		}
+
+	}
+	//logica de envio ///////
+	
+    public boolean isSubmitAttempted() {
+        return this.submitAttempted;
+    }
+// aqui acaba la logica de envio
+	public void eliminarInterv(int pos) {
+		listaintervencion.remove(pos);
+		/*
+		 * EIntervencion_ensayo intervencionelim= new EIntervencion_ensayo();
+		 * intervencionelim=listaintervencion.get(pos);
+		 * intervencionelim.setEliminado(true);
+		 */
+
+	}
+
+	public void addintervencion() {
+		try {
+			intervencionadd = new EIntervencion_ensayo();
+			intervencionadd.setNombre(nombreintervencion);
+			intervencionadd
+					.setETipoIntervencion(ETipoIntervencionSeleccionado(tipointervencion));
+			intervencionadd.setEliminado(false);
+			listaintervencion.add(intervencionadd);
+			// entityManager.persist(intervencionadd);
+
+			nombreintervencion = "";
+			tipointervencion = "";
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
+	//add Evelio metodo para adicionar productos 	
+	public void adicionarProducto() {
+		try {
+			producto.setEstudio(estudio);
+			producto.setEliminado(false);
+			listaProductos.add(producto);	
+			producto = new EProducto_ensayo();
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	public void eliminarProducto(EProducto_ensayo producto){
+		listaProductos.remove(producto);
+	}
+	//fin add
+
+	public void crearUsuarioestudio(Estudio_ensayo estudiop) {
+		try {
+
+			EstudioEntidad_ensayo estudiocentro = new EstudioEntidad_ensayo();
+			estudiocentro = (EstudioEntidad_ensayo) entityManager
+					.createQuery(
+							"select ec from EstudioEntidad_ensayo ec where ec.estudio.id = :ide")
+					.setParameter("ide", estudiop.getId()).getSingleResult();
+			Usuario_ensayo usere = new Usuario_ensayo();
+			usere = entityManager.find(Usuario_ensayo.class, user.getId());
+
+			Role_ensayo rol = new Role_ensayo();
+			rol = (Role_ensayo) entityManager
+					.createQuery(
+							"select r from Role_ensayo r where r.codigo = 'ecGerDatos'")
+					.getSingleResult();
+
+			usuarioestudio.setUsuario(usere);
+			usuarioestudio.setRole(rol);
+			usuarioestudio.setEstudioEntidad(estudiocentro);
+			usuarioestudio.setEliminado(false);
+			entityManager.persist(usuarioestudio);
+			entityManager.flush();
+			// entityManager.persist(usuarioestudio);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+	}
+
+	public void changeFuncHabilitar() {
+		Estudio_ensayo estudy = entityManager.find(Estudio_ensayo.class,
+				idestudiohabilitar);
+		if (estudy.getHabilitado() == null || estudy.getHabilitado() == false) {
+			estudy.setHabilitado(true);
+			estudy.setCid(bitacora.registrarInicioDeAccion(SeamResourceBundle
+					.getBundle().getString("bitHabilitar")));
+		} else {
+			estudy.setHabilitado(false);
+			estudy.setCid(bitacora.registrarInicioDeAccion(SeamResourceBundle
+					.getBundle().getString("bitDeshabilitar")));
+		}
+		entityManager.persist(estudy);
+		entityManager.flush();
+
+	}
+
+	private String pais = "";
+	private String provincia = "";
+	private String municipio = "";
+
+	/* Get and set */
+
+	public EstadoEstudio_ensayo getEstado() {
+		return estado;
+	}
+
+	public void setEstado(EstadoEstudio_ensayo estado) {
+		this.estado = estado;
+	}
+
+	public void setListadeestado(List<EstadoEstudio_ensayo> listadeestado) {
+		this.listadeestado = listadeestado;
+	}
+
+	public List<EstadoEstudio_ensayo> getListadeestado() {
+		return listadeestado;
+	}
+
+	public void setSeleccione(String seleccione) {
+		this.seleccione = seleccione;
+	}
+
+	public String getSeleccione() {
+		return seleccione;
+	}
+
+	public void setMostrarFormulario(boolean mostrarFormulario) {
+		this.mostrarFormulario = mostrarFormulario;
+	}
+
+	public boolean isMostrarFormulario() {
+		return mostrarFormulario;
+	}
+
+	public void setEstadoestudio(String estadoestudio) {
+		this.estadoestudio = estadoestudio;
+	}
+
+	public String getEstadoestudio() {
+		return estadoestudio;
+	}
+
+	public void setPais(String pais) {
+		this.pais = pais;
+		if (pais.equals(""))
+			provincia = "";
+	}
+
+	public String getPais() {
+		return pais;
+	}
+
+	public void setProvincia(String provincia) {
+		this.provincia = provincia;
+		if (provincia.equals(""))
+			municipio = "";
+
+	}
+
+	public long getIdestudioVER() {
+		return idestudioVER;
+	}
+
+	public void setIdestudioVER(long idestudioVER) {
+		this.idestudioVER = idestudioVER;
+	}
+
+	public String getProvincia() {
+		return provincia;
+	}
+
+	public void setMunicipio(String municipio) {
+		this.municipio = municipio;
+	}
+
+	public String getMunicipio() {
+		return municipio;
+	}
+
+	public void setUsuarioestudio(UsuarioEstudio_ensayo usuarioestudio) {
+		this.usuarioestudio = usuarioestudio;
+	}
+
+	public UsuarioEstudio_ensayo getUsuarioestudio() {
+		return usuarioestudio;
+	}
+
+	public void setEstudiocentro(EstudioEntidad_ensayo estudiocentro) {
+		this.estudiocentro = estudiocentro;
+	}
+
+	public EstudioEntidad_ensayo getEstudiocentro() {
+		return estudiocentro;
+	}
+
+	public List<EAleatorizacion_ensayo> getListadalateorizacion() {
+		return listadalateorizacion;
+	}
+
+	public void setListadalateorizacion(
+			List<EAleatorizacion_ensayo> listadalateorizacion) {
+		this.listadalateorizacion = listadalateorizacion;
+	}
+
+	public String getAleatorizacion() {
+		return aleatorizacion;
+	}
+
+	public void setAleatorizacion(String aleatorizacion) {
+		this.aleatorizacion = aleatorizacion;
+	}
+
+	public List<EEnmascaramiento_ensayo> getListadenmascaramiento() {
+		return listadenmascaramiento;
+	}
+
+	public void setListadenmascaramiento(
+			List<EEnmascaramiento_ensayo> listadenmascaramiento) {
+		this.listadenmascaramiento = listadenmascaramiento;
+	}
+
+	public String getEnmascaramiento() {
+		return enmascaramiento;
+	}
+
+	public void setEnmascaramiento(String enmascaramiento) {
+		this.enmascaramiento = enmascaramiento;
+	}
+
+	public List<EControl_ensayo> getListadcontrol() {
+		return listadcontrol;
+	}
+
+	public void setListadcontrol(List<EControl_ensayo> listadcontrol) {
+		this.listadcontrol = listadcontrol;
+	}
+
+	public String getControl() {
+		return control;
+	}
+
+	public void setControl(String control) {
+		this.control = control;
+	}
+
+	public List<EProposito_ensayo> getListaproposito() {
+		return listaproposito;
+	}
+
+	public void setListaproposito(List<EProposito_ensayo> listaproposito) {
+		this.listaproposito = listaproposito;
+	}
+
+	public String getProposito() {
+		return proposito;
+	}
+
+	public void setProposito(String proposito) {
+		this.proposito = proposito;
+	}
+
+	public List<EAsignacion_ensayo> getListaasignacion() {
+		return listaasignacion;
+	}
+
+	public void setListaasignacion(List<EAsignacion_ensayo> listaasignacion) {
+		this.listaasignacion = listaasignacion;
+	}
+
+	public List<EPuntoFinal_ensayo> getListapuntofinal() {
+		return listapuntofinal;
+	}
+
+	public void setListapuntofinal(List<EPuntoFinal_ensayo> listapuntofinal) {
+		this.listapuntofinal = listapuntofinal;
+	}
+
+	public List<EIntervencion_ensayo> getListaintervencion() {
+		return listaintervencion;
+	}
+
+	public void setListaintervencion(
+			List<EIntervencion_ensayo> listaintervencion) {
+		this.listaintervencion = listaintervencion;
+	}
+
+	public String getAsignacion() {
+		return asignacion;
+	}
+
+	public void setAsignacion(String asignacion) {
+		this.asignacion = asignacion;
+	}
+
+	public String getPuntofinal() {
+		return puntofinal;
+	}
+
+	public void setPuntofinal(String puntofinal) {
+		this.puntofinal = puntofinal;
+	}
+
+	public String getIntervencion() {
+		return intervencion;
+	}
+
+	public void setIntervencion(String intervencion) {
+		this.intervencion = intervencion;
+	}
+
+	public List<EFaseEstudio_ensayo> getListafase() {
+		return listafase;
+	}
+
+	public void setListafase(List<EFaseEstudio_ensayo> listafase) {
+		this.listafase = listafase;
+	}
+
+	public String getFase() {
+		return fase;
+	}
+
+	public void setFase(String fase) {
+		this.fase = fase;
+	}
+
+	public List<ESexo_ensayo> getListasexo() {
+		return listasexo;
+	}
+
+	public void setListasexo(List<ESexo_ensayo> listasexo) {
+		this.listasexo = listasexo;
+	}
+	public List<Diccionarios_ensayo> getListadiccionarios() {
+		return listadiccionarios;
+	}
+
+	public void setListadiccionarios(List<Diccionarios_ensayo> listadiccionarios) {
+		this.listadiccionarios = listadiccionarios;
+	}
+
+	public String getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+	
+	public String getDiccionario() {
+		return diccionario;
+	}
+
+	public void setDiccionario(String diccionario) {
+		this.diccionario = diccionario;
+	}
+
+	public String getCombo() {
+		return combo;
+	}
+
+	public void setCombo(String combo) {
+		this.combo = combo;
+	}
+
+	public boolean isComboobser() {
+		return comboobser;
+	}
+
+	public void setComboobser(boolean comboobser) {
+		this.comboobser = comboobser;
+	}
+
+	public boolean isCombointer() {
+		return combointer;
+	}
+
+	public void setCombointer(boolean combointer) {
+		this.combointer = combointer;
+	}
+
+	public String getSeleccion() {
+		return seleccion;
+	}
+
+	public void setSeleccion(String seleccion) {
+		this.seleccion = seleccion;
+	}
+
+	public List<ESeleccion_ensayo> getListaseleccion() {
+		return listaseleccion;
+	}
+
+	public void setListaseleccion(List<ESeleccion_ensayo> listaseleccion) {
+		this.listaseleccion = listaseleccion;
+	}
+
+	public ETipoProtocolo_ensayo getTipoprotocolo() {
+		return tipoprotocolo;
+	}
+
+	public void setTipoprotocolo(ETipoProtocolo_ensayo tipoprotocolo) {
+		this.tipoprotocolo = tipoprotocolo;
+	}
+
+	public String getTipoProtocoloDB() {
+		return tipoProtocoloDB;
+	}
+
+	public void setTipoProtocoloDB(String tipoProtocoloDB) {
+		this.tipoProtocoloDB = tipoProtocoloDB;
+	}
+
+	public String getAjustetemporal() {
+		return ajustetemporal;
+	}
+
+	public void setAjustetemporal(String ajustetemporal) {
+		this.ajustetemporal = ajustetemporal;
+	}
+
+	public List<EAjusteTemporal_ensayo> getListajustetemporal() {
+		return listajustetemporal;
+	}
+
+	public void setListajustetemporal(
+			List<EAjusteTemporal_ensayo> listajustetemporal) {
+		this.listajustetemporal = listajustetemporal;
+	}
+
+	public String getTipointervencion() {
+		return tipointervencion;
+	}
+
+	public void setTipointervencion(String tipointervencion) {
+		this.tipointervencion = tipointervencion;
+	}
+
+	public String getNombreintervencion() {
+		return nombreintervencion;
+	}
+
+	public void setNombreintervencion(String nombreintervencion) {
+		this.nombreintervencion = nombreintervencion;
+	}
+
+	public List<ETipoIntervencion_ensayo> getListatipointervencion() {
+		return listatipointervencion;
+	}
+
+	public void setListatipointervencion(
+			List<ETipoIntervencion_ensayo> listatipointervencion) {
+		this.listatipointervencion = listatipointervencion;
+	}
+
+	public EIntervencion_ensayo getIntervencionadd() {
+		return intervencionadd;
+	}
+
+	public void setIntervencionadd(EIntervencion_ensayo intervencionadd) {
+		this.intervencionadd = intervencionadd;
+	}
+
+	public List<EIntervencion_ensayo> getListaintervenciontemp() {
+		return listaintervenciontemp;
+	}
+
+	public void setListaintervenciontemp(
+			List<EIntervencion_ensayo> listaintervenciontemp) {
+		this.listaintervenciontemp = listaintervenciontemp;
+	}
+
+	public int getIdintervencion() {
+		return idintervencion;
+	}
+
+	public void setIdintervencion(int idintervencion) {
+		this.idintervencion = idintervencion;
+	}
+
+	public String getCombofasedef() {
+		return combofasedef;
+	}
+
+	public void setCombofasedef(String combofasedef) {
+		this.combofasedef = combofasedef;
+	}
+
+	public boolean isCombofase() {
+		return combofase;
+	}
+
+	public void setCombofase(boolean combofase) {
+		this.combofase = combofase;
+	}
+
+	public boolean isCombootrafase() {
+		return combootrafase;
+	}
+
+	public void setCombootrafase(boolean combootrafase) {
+		this.combootrafase = combootrafase;
+	}
+
+	public String getOtrafase() {
+		return otrafase;
+	}
+
+	public void setOtrafase(String otrafase) {
+		this.otrafase = otrafase;
+	}
+
+	public boolean isCombootrtroproposito() {
+		return combootrtroproposito;
+	}
+
+	public void setCombootrtroproposito(boolean combootrtroproposito) {
+		this.combootrtroproposito = combootrtroproposito;
+	}
+
+	public boolean isComboproposito() {
+		return comboproposito;
+	}
+
+	public void setComboproposito(boolean comboproposito) {
+		this.comboproposito = comboproposito;
+	}
+
+	public String getCombopropositodef() {
+		return combopropositodef;
+	}
+
+	public void setCombopropositodef(String combopropositodef) {
+		this.combopropositodef = combopropositodef;
+	}
+
+	public String getOtroproposito() {
+		return otroproposito;
+	}
+
+	public void setOtroproposito(String otroproposito) {
+		this.otroproposito = otroproposito;
+	}
+
+	public List<EProposito_ensayo> getListapropositoobservacional() {
+		return listapropositoobservacional;
+	}
+
+	public void setListapropositoobservacional(
+			List<EProposito_ensayo> listapropositoobservacional) {
+		this.listapropositoobservacional = listapropositoobservacional;
+	}
+
+	public Long getIdestudiohabilitar() {
+		return idestudiohabilitar;
+	}
+
+	public void setIdestudiohabilitar(Long idestudiohabilitar) {
+		this.idestudiohabilitar = idestudiohabilitar;
+	}
+
+	public String getComboduracion() {
+		return comboduracion;
+	}
+
+	public void setComboduracion(String comboduracion) {
+		this.comboduracion = comboduracion;
+	}
+
+	/**
+	 * Enfermedades CIE relacionadas con el estudio
+	 * **/
+
+	private Hashtable<Long, Cie_ensayo> enfSelected = new Hashtable<Long, Cie_ensayo>();
+	private Long idEnfSelect;
+	private List<EEnfermedadCie_ensayo> enfermedadesSeleccionadas = new ArrayList<EEnfermedadCie_ensayo>();
+
+	List<Cie_ensayo> listaCie = new ArrayList<Cie_ensayo>();
+
+	public void seleccionarEnfermedad() {
+		if (!getEnfSelected().containsKey(getIdEnfSelect())) {
+			Cie_ensayo cie = (Cie_ensayo) entityManager
+					.createQuery(
+							"select cie from Cie_ensayo cie where cie.id =:idCie")
+					.setParameter("idCie", this.getIdEnfSelect())
+					.getSingleResult();
+			listaCie.add(cie);
+
+			EEnfermedadCie_ensayo diag = new EEnfermedadCie_ensayo();
+			diag.setCodigoEnfermedad(cie.getCodigo());
+			diag.setDescripcionEnfermedad(cie.getDescripcion());
+			getEnfermedadesSeleccionadas().add(diag);
+			getEnfSelected().put(cie.getId(), cie);
+		} else {
+			Cie_ensayo c = getEnfSelected().get(getIdEnfSelect());
+			int pos = listaCie.indexOf(c);
+			getEnfermedadesSeleccionadas().remove(pos);
+			getEnfSelected().remove(getIdEnfSelect());
+			listaCie.remove(c);
+
+		}
+	}
+
+	public void eliminarEnfermedad(int pos) {
+		Cie_ensayo c = listaCie.get(pos);
+		getEnfermedadesSeleccionadas().remove(pos);
+		listaCie.remove(c);
+		getEnfSelected().remove(c.getId());
+	}
+
+	private void cargarDiagnosticoAnterior() {
+		Estudio_ensayo est = null;
+		// cargar las enfermedades
+		List<Cie_ensayo> l = entityManager
+				.createQuery(
+						"select distinct c from Cie_ensayo c "
+								+ "where c.codigo in ("
+								+ "select d.codigoEnfermedad from EEnfermedadCie_ensayo d "
+								+ "where d.id = :idhc)")
+				.setParameter("idhc", est.getId()).getResultList();
+		for (int i = 0; i < l.size(); i++) {
+
+			listaCie.add(l.get(i));
+
+			EEnfermedadCie_ensayo diag = new EEnfermedadCie_ensayo();
+
+			diag.setCodigoEnfermedad(l.get(i).getCodigo());
+			diag.setDescripcionEnfermedad(l.get(i).getDescripcion());
+			enfermedadesSeleccionadas.add(diag);
+			enfSelected.put(l.get(i).getId(), l.get(i));
+		}
+	}
+	
+
+	
+	public void cancelarEstudio(){
+
+		flag = true;
+		
+	}
+
+	public List<Cie_ensayo> getListaCie() {
+		return listaCie;
+	}
+
+	public void setListaCie(List<Cie_ensayo> listaCie) {
+		this.listaCie = listaCie;
+	}
+
+	public Hashtable<Long, Cie_ensayo> getEnfSelected() {
+		return enfSelected;
+	}
+
+	public void setEnfSelected(Hashtable<Long, Cie_ensayo> enfSelected) {
+		this.enfSelected = enfSelected;
+	}
+
+	public List<EEnfermedadCie_ensayo> getEnfermedadesSeleccionadas() {
+		return enfermedadesSeleccionadas;
+	}
+
+	public void setEnfermedadesSeleccionadas(
+			List<EEnfermedadCie_ensayo> enfermedadesSeleccionadas) {
+		this.enfermedadesSeleccionadas = enfermedadesSeleccionadas;
+	}
+
+	public Long getIdEnfSelect() {
+		return idEnfSelect;
+	}
+
+	public void setIdEnfSelect(Long idEnfSelect) {
+		this.idEnfSelect = idEnfSelect;
+	}
+
+	public CieConsList_custom getCieConsList_custom() {
+		return cieConsList_custom;
+	}
+
+	public void setCieConsList_custom(CieConsList_custom cieConsList_custom) {
+		this.cieConsList_custom = cieConsList_custom;
+	}
+
+	public BigDecimal getEdadMaxima() {
+		return edadMaxima;
+	}
+
+	public void setEdadMaxima(BigDecimal edadMaxima) {
+		this.edadMaxima = edadMaxima;
+	}
+
+	public BigDecimal getEdadMinima() {
+		return edadMinima;
+	}
+
+	public void setEdadMinima(BigDecimal edadMinima) {
+		this.edadMinima = edadMinima;
+	}
+
+
+	public Boolean getFlag() {
+		return flag;
+	}
+
+
+	public void setFlag(Boolean flag) {
+		this.flag = flag;
+	}
+
+	public String getCantidadSujetosEsperado() {
+		return cantidadSujetosEsperado;
+	}
+
+	public void setCantidadSujetosEsperado(String cantidadSujetosEsperado) {
+		this.cantidadSujetosEsperado = cantidadSujetosEsperado;
+	}
+
+	public List<EProducto_ensayo> getListaProductos() {
+		return listaProductos;
+	}
+
+	public void setListaProductos(List<EProducto_ensayo> listaProductos) {
+		this.listaProductos = listaProductos;
+	}
+
+	public EProducto_ensayo getProducto() {
+		return producto;
+	}
+
+	public void setProducto(EProducto_ensayo producto) {
+
+		this.producto = producto;
+	}
+
+	public String getIdDic() {
+		return idDic;
+	}
+
+	public void setIdDic(String idDic) {
+		this.idDic = idDic;
+	}
+
+	
+}

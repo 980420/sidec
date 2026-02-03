@@ -1,0 +1,372 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle('#{messages.listarmodificarCronograma}')</script>
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+		type='text/css' />
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css'
+		type='text/css' />
+
+	<a:form>
+		<a:jsFunction name="cambiar"
+			action="#{cronogramasEspecificosCustomList.cambiarBusqueda()}"></a:jsFunction>
+	</a:form>
+	<rich:messages globalOnly="true" styleClass="message"
+		id="globalMessage" ajaxRendered="true" />
+
+	<table class="Tabla" width="100%" cellpadding="0" cellspacing="0">
+		<tr>
+			<td><rich:simpleTogglePanel switchType="client"
+					label="#{messages.criterioBusqueda}">
+					<table width="100%" cellpadding="0" cellspacing="0">
+						<tr>
+							<td><h:form id="form1">
+									<table class="Tabla" id="buscarPacienteN" style="#{cronogramasEspecificosCustomList.displayBN}"
+										cellspacing="0" cellpadding="0">
+										<tr id="A" class="filSepPeq">
+											<td id="A1" class="colSepGran"><h:outputText
+													value="#{messages.identificador}:"
+													style="margin:0px; padding:0px; spacing:0px" /></td>
+										</tr>
+										<tr>
+											<td class="colSepGran"><h:inputText
+													styleClass="inputText" id="cedula1"
+													value="#{cronogramasEspecificosCustomList.sujeto.codigoPaciente}">
+												</h:inputText></td>
+											<td><h:commandButton value="#{messages.buscar}"
+													action="#{cronogramasEspecificosCustomList.buscar()}"
+													style="margin:0px;" /> <rich:spacer width="10" /> <h:commandButton
+													value="#{messages.cancelar}" action="cancelar"
+													style="margin:0px;" /></td>
+										</tr>
+										<tr class="filSepPeq">
+											<td colspan="2" align="right"><rich:spacer height="2px" />
+												<table cellpadding="0" cellspacing="0">
+													<tr>
+														<td><a href="javascript:void(0);"
+															onclick="document.getElementById('buscarPacienteA').style.display = 'block';document.getElementById('buscarPacienteN').style.display = 'none'; document.getElementById('form2:cedula2').value = document.getElementById('form1:cedula1').value; document.getElementById('form1:cedula1').value = '';cambiar()">
+																<table cellpadding="0" cellspacing="0">
+																	<tr>
+																		<td><img
+																			src="#{facesContext.externalContext.requestContextPath}/resources/icons/default/acciones/buscar.png"
+																			border="0" height="12px" width="12px" /></td>
+																		<td><rich:spacer width="2px" style="border:0px;" />
+																			<h:outputText value="#{messages.busquedaAvanzada}" />
+																		</td>
+																	</tr>
+																</table>
+														</a></td>
+													</tr>
+												</table></td>
+										</tr>
+									</table>
+								</h:form> <h:form id="form2">
+									<table class="Tabla" id="buscarPacienteA" cellpadding="0"
+										cellspacing="0" style="#{cronogramasEspecificosCustomList.displayBA}">
+										<tr class="filSepPeq">
+											<td class="colSepGran"><h:outputText
+													value="#{messages.identificador}:"
+													style="margin:0px; padding:0px; spacing:0px" /></td>
+											<td class="colSepGran"><h:outputText
+													value="#{messages.estadoInclucion}:" style="margin:0px;" />
+											</td>
+											<td><h:outputText
+													value="#{messages.nombreG}:" /></td>
+										</tr>
+										<tr class="filSepGranRA">
+											<td class="colSepGran"><h:inputText
+													styleClass="inputText" id="cedula2"
+													value="#{cronogramasEspecificosCustomList.sujeto.codigoPaciente}">
+												</h:inputText></td>
+											<td class="colSepGran"><rich:comboBox
+													value="#{cronogramasEspecificosCustomList.estadoI}"
+													defaultLabel="#{messages.seleccione}" width="152px"
+													enableManualInput="false"
+													suggestionValues="#{cronogramasEspecificosCustomList.listEstadoI()}">
+												</rich:comboBox></td>
+											<td><rich:comboBox
+													value="#{cronogramasEspecificosCustomList.nombeGrup}"
+													defaultLabel="#{messages.seleccione}" width="152px"
+													enableManualInput="false"
+													suggestionValues="#{cronogramasEspecificosCustomList.listNombreG()}">
+												</rich:comboBox></td>
+										</tr>
+										<tr>
+											<td colspan="3" align="right"><h:commandButton
+													value="#{messages.buscar}"
+													action="#{cronogramasEspecificosCustomList.buscar()}"
+													style="margin:0px;" /> <rich:spacer width="10px"
+													style="border:0px;" /> <h:commandButton
+													value="#{messages.cancelar}" action="cancelar"
+													style="margin:0px;" /></td>
+										</tr>
+										<tr class="filSepPeq">
+											<td colspan="3" align="right"><rich:spacer height="2px" />
+												<table cellpadding="0" cellspacing="0">
+													<tr>
+														<td><a href="javascript:void(0);"
+															onclick="document.getElementById('buscarPacienteA').style.display = 'none';document.getElementById('buscarPacienteN').style.display = 'block'; document.getElementById('form1:cedula1').value = document.getElementById('form2:cedula2').value; document.getElementById('form2:cedula2').value = '';cambiar();">
+																<table cellpadding="0" cellspacing="0">
+																	<tr>
+																		<td><img
+																			src="#{facesContext.externalContext.requestContextPath}/resources/icons/default/acciones/buscar.png"
+																			border="0" height="12px" width="12px" /></td>
+																		<td><rich:spacer width="2px" style="border:0px;" />
+																			<h:outputText value="#{messages.busquedaSimple}" /></td>
+																	</tr>
+																</table>
+														</a></td>
+													</tr>
+												</table></td>
+										</tr>
+									</table>
+								</h:form></td>
+						</tr>
+					</table>
+				</rich:simpleTogglePanel> <br /></td>
+		</tr>
+		<tr>
+			<td><h:form>
+					<a:outputPanel id="tb1">
+
+
+						<rich:panel
+							rendered="#{not cronogramasEspecificosCustomList.existResultados}">
+							<f:facet name="header">#{messages.listadoSujetosCronograma}</f:facet>
+							<table class="Tabla">
+								<tr>
+									<td><h:outputText value="#{messages.noResults}" /></td>
+								</tr>
+							</table>
+						</rich:panel>
+						<rich:panel
+							rendered="#{empty cronogramasEspecificosCustomList.resultList and cronogramasEspecificosCustomList.existResultados}">
+							<f:facet name="header">#{messages.listadoSujetosCronograma}</f:facet>
+							<table class="Tabla">
+								<tr>
+									<td><h:outputText value="#{messages.noSujetosCronograma}" /></td>
+								</tr>
+							</table>
+						</rich:panel>
+						<div style="margin-left: 1px">
+							<rich:dataTable id="lista"
+								value="#{cronogramasEspecificosCustomList.resultList}"
+								var="subject" width="100%"
+								rendered="#{not empty cronogramasEspecificosCustomList.resultList}">
+								<f:facet name="header">
+									<h:outputText value="#{messages.listadoSujetosCronograma}" />
+								</f:facet>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.identificador}" styleClass="label" /></td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList"
+																value="#{cronogramasEspecificosCustomList}" />
+															<ui:param name="columna" value="sujeto.codigoPaciente" />
+															<ui:param name="nombreMenu" value="ordenarNombresMenu" />
+															<ui:param name="tablaRender" value="lista" />
+														</ui:include></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText value="#{subject.codigoPaciente}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.nombreG}" styleClass="label" /></td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList"
+																value="#{cronogramasEspecificosCustomList}" />
+															<ui:param name="columna"
+																value="sujeto.grupoSujetos.nombreGrupo" />
+															<ui:param name="nombreMenu" value="ordenarNombreGMenu" />
+															<ui:param name="tablaRender" value="lista" />
+														</ui:include></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText value="#{subject.grupoSujetos.nombreGrupo}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.fechaInc}" styleClass="label" />
+													</td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList"
+																value="#{cronogramasEspecificosCustomList}" />
+															<ui:param name="columna" value="sujeto.fechaInclucion" />
+															<ui:param name="nombreMenu" value="ordenarPaapellidoMenu" />
+															<ui:param name="tablaRender" value="lista" />
+														</ui:include></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText
+										value="#{(not empty subject.fechaInclucion) ? subject.fechaInclucion : messages.vacio}">
+										<s:convertDateTime pattern="#{messages.patronFecha}">
+										</s:convertDateTime>
+									</h:outputText>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.estadoInclucion}" styleClass="label" />
+													</td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList"
+																value="#{cronogramasEspecificosCustomList}" />
+															<ui:param name="columna"
+																value="sujeto.estadoInclusion.nombre" />
+															<ui:param name="nombreMenu" value="ordenarPapellidoMenu" />
+															<ui:param name="tablaRender" value="lista" />
+														</ui:include></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText value="#{subject.estadoInclusion.nombre}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.estadoTratamiento}" styleClass="label" />
+													</td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList"
+																value="#{cronogramasEspecificosCustomList}" />
+															<ui:param name="columna"
+																value="sujeto.estadoInclusion.nombre" />
+															<ui:param name="nombreMenu" value="ordenarSapellidoMenu" />
+															<ui:param name="tablaRender" value="lista" />
+														</ui:include></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText value="#{subject.estadoTratamiento.nombre}" />
+								</rich:column>
+
+
+								<rich:column width="1px" styleClass="alineacionCentrada">
+									<h:commandLink action="modificar" title="#{messages.modificar}"
+										style="border: 0px; cursor:pointer;">
+
+										<h:graphicImage
+											value="/resources/icons/default/acciones/modificar.png"
+											style="border:0;"
+											rendered="#{modificarCronogramaEspecifico.puedeModificarseCronograma(subject)}" />
+
+
+
+										<f:param name="idSujeto" value="#{subject.id}" />
+									</h:commandLink>
+
+									<h:graphicImage
+										value="/resources/icons/default/acciones/modificar.png"
+										style="border:0px; opacity: 0.4; "
+										rendered="#{!modificarCronogramaEspecifico.puedeModificar}" />
+
+								</rich:column>
+
+
+
+
+								<rich:column width="1px" styleClass="alineacionCentrada">
+									<h:commandLink action="causa" title="#{messages.eliminar}"
+										style="border: 0px; cursor:pointer;"
+										rendered="#{modificarCronogramaEspecifico.puedeEliminarseCronograma(subject)}">
+
+
+										<h:graphicImage height="16"
+											style="position: relative;  margin:2px 2px 2px 2px ;"
+											value="/resources/icons/default/acciones/eliminar.png" />
+										<f:param name="idSujeto" value="#{subject.id}" />
+									</h:commandLink>
+
+									<h:graphicImage
+										value="/resources/icons/default/acciones/eliminar.png"
+										style="border:0px; opacity: 0.4; "
+										rendered="#{!modificarCronogramaEspecifico.puedeEliminar}" />
+								</rich:column>
+							</rich:dataTable>
+						</div>
+						<ui:include
+							src="/modEnsayo/codebase/plantillas/paginado_tabla_inferior_generico.xhtml/">
+							<ui:param name="vzPaginado"
+								value="#{cronogramasEspecificosCustomList.resultCount>10}" />
+							<ui:param name="nomControladorList"
+								value="#{cronogramasEspecificosCustomList}" />
+							<ui:param name="idListado" value="tb1" />
+
+						</ui:include>
+					</a:outputPanel>
+
+				</h:form></td>
+		</tr>
+
+
+
+
+
+
+
+
+
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+	<ui:include
+		src="/modEnsayo/ensayo_conduccion/codebase/plantillas/AdvertenciaEliminarCronogramaEsp.xhtml">
+		<ui:param name="listado" value="tb1" />
+	</ui:include>
+
+	<ui:include
+		src="/modEnsayo/codebase/plantillas/CausaEliminarCronogramaEsp.xhtml">
+		<ui:param name="listado" value="tb1" />
+	</ui:include>
+
+
+
+</ui:composition>

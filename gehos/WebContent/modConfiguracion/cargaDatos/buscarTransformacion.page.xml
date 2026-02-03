@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<page    xmlns               ="http://jboss.com/products/seam/pages"  
+         xmlns:xsi           ="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd"> 
+
+	<action execute="#{buscarTransformacion.cargaInicial()}" />
+
+	<navigation from-action="#{editTransf.setTransfSel(transf)}">
+		<redirect view-id="/modConfiguracion/cargaDatos/modificarTransformacion.xhtml" />
+	</navigation>
+
+	<navigation>
+		<rule if-outcome="addTr">
+			<redirect view-id="/modConfiguracion/cargaDatos/addTransformacion.xhtml" />
+		</rule>
+	</navigation>
+
+	<navigation from-action="#{buscarTransformacion.cancelar()}">
+		<redirect view-id="/modCommons/modHome/home.gehos">
+		<param name="idFuncionalidad" value="#{activeModule.activeModule.id}" />
+		<param name="idancestors" value="#{activeModule.activeModule.id}a" />
+		<param name="moduleName" value="#{activeModule.activeModuleName}" />
+		</redirect>
+	</navigation>
+
+
+</page>

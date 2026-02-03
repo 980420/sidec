@@ -1,0 +1,3219 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" xmlns:a="http://richfaces.org/a4j">
+	<s:div>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript">
+			setContentTitle('#{crearReporteExpedito.devolverTitulo()}');
+			var curDtN = new Date();
+			var calDtN=null;
+			function previousDate(date){
+				calDtN = date;
+			}
+			//<![CDATA[
+		    function hideErrorSpans() {
+		        var errorSpans = document.getElementsByClassName('errorSpan');
+		        for(var i = 0; i < errorSpans.length; i++) {
+		            errorSpans[i].style.display = 'none';
+		        }
+		    }
+		//]]>
+	 		function disablementFunction(day){
+				if(calDtN == null){
+					if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+						return true; 
+					else 
+						return false; 
+				}
+				else {
+					if (calDtN.getTime() - day.date.getTime() &#62;= 0 ) 
+						return true; 
+					else 
+						return false;
+				}					 
+	 		}
+			function disabledClassesProv(day){
+				if(calDtN == null){
+					if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+						return ''; 
+					else 
+						return 'noavailable'; 
+				} else {
+					if (calDtN.getTime() - day.date.getTime() &#62;= 0) 
+						return ''; 
+					else 
+						return 'noavailable';
+			 	}				
+			}
+			function resetSecondDate(first, second){
+				var firstDate = first.getSelectedDate().getTime();
+				var secondDate = second.getSelectedDate().getTime();
+				if(firstDate - secondDate &#62; 0)
+					second.resetSelectedDate();
+			}	 
+			function disablementFunctionPreviousEx(day){
+				if(calDtN == null){
+					if (curDtN.getTime() - day.date.getTime() &#62; 0) return true; else return false;
+				}
+				if ((curDtN.getTime() - day.date.getTime() &#62; 0) &#38;&#38; (calDtN.getTime() - day.date.getTime() &#60;= 0)){
+					return true;
+				}
+				else 
+					return false;
+			}
+			function disabledClassesProvPreviousEx(day){
+				if(calDtN == null){
+					if (curDtN.getTime() - day.date.getTime() &#60; 0)
+						return 'noavailable';
+					else 
+						return '';
+				}
+				if ((curDtN.getTime() - day.date.getTime() &#60; 0) || (calDtN.getTime() - day.date.getTime() &#62; 0))
+					return 'noavailable';
+				else 
+					return '';
+			}
+		</script>
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css"
+			rel="stylesheet" type="text/css" />
+		<link rel='stylesheet'
+			href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+			type='text/css' />
+		<rich:messages globalOnly="true" styleClass="message"
+			id="globalMessage" ajaxRendered="true" />
+		<a4j:outputPanel ajaxRendered="true" id="errorOutputPanel">
+			<s:div style="height:35px;"
+				rendered="#{facesMessages.getCurrentMessagesForControl('idForm').size() > 0 }">
+				<div class="custom-error">
+					<rich:message for="idForm" />
+				</div>
+			</s:div>
+		</a4j:outputPanel>
+		<a4j:form id="idForm" enctype="multipart/form-data">
+			<rich:panel>
+				<a4j:outputPanel id="hacorg1">
+					<rich:tabPanel width="100%" switchType="client">
+						<rich:tab>
+							<f:facet name="label">
+								<s:div>
+									<h:outputText value="#{messages.lbl_seccionA_ens}" />
+									<a4j:outputPanel ajaxRendered="true">
+										<h:outputText value="*" style="color:red;"
+											styleClass="errorLabel"
+											rendered="#{not empty facesMessages.getCurrentMessagesForControl('fase') or not empty facesMessages.getCurrentMessagesForControl('trazabilidaPromotornombreapellido') or not empty facesMessages.getCurrentMessagesForControl('producInvs') or not empty facesMessages.getCurrentMessagesForControl('dosisAdmin') or not empty facesMessages.getCurrentMessagesForControl('presentacion') or not empty facesMessages.getCurrentMessagesForControl('viaA') or not empty facesMessages.getCurrentMessagesForControl('investigador') or not empty facesMessages.getCurrentMessagesForControl('consecuencia') or not empty facesMessages.getCurrentMessagesForControl('autopsia') or not empty facesMessages.getCurrentMessagesForControl('ingreso') or not empty facesMessages.getCurrentMessagesForControl('especifiqueOtros') or not empty facesMessages.getCurrentMessagesForControl('especifiqueAcont') or not empty facesMessages.getCurrentMessagesForControl('fechaReporte1') or not empty facesMessages.getCurrentMessagesForControl('direccion') or not empty facesMessages.getCurrentMessagesForControl('profesion')}" />
+									</a4j:outputPanel>
+								</s:div>
+							</f:facet>
+							<table>
+								<tr>
+									<td><h:outputText
+											value="#{messages.lbl_protocolo_codigo}:"
+											styleClass="normalText" /><br /> <h:inputText
+											styleClass="inputText"
+											value="#{crearReporteExpedito.codigoEst}" disabled="true" />
+									</td>
+									<td><rich:spacer width="25px" /></td>
+									<td><h:outputText
+											value="#{messages.lbl_iniciales_paciente}:"
+											styleClass="normalText" /><br /> <h:inputText
+											value="#{crearReporteExpedito.paciente}"
+											style="resize: vertical; width : 140px;" disabled="true" />
+									</td>
+									<td><rich:spacer width="25px" /></td>
+									<td><h:outputText value="#{messages.lbl_fechaReporteA}:"
+											styleClass="normalText" /><br /> <h:inputText
+											id="fechaReporteA"
+											value="#{crearReporteExpedito.fechaReporteA}"
+											styleClass="likedate" /> <script>
+											applyDateMask();
+										</script></td>
+								</tr>
+							</table>
+							<rich:spacer height="8px" />
+							<h:selectOneRadio layout="lineDirection" id="informe"
+								value="#{crearReporteExpedito.informe}">
+								<f:selectItem itemValue="#{messages.lbl_informeIni}"
+									itemLabel="#{messages.lbl_informeIni}" />
+								<f:selectItem itemValue="#{messages.lbl_informeAdd}"
+									itemLabel="#{messages.lbl_informeAdd}" />
+							</h:selectOneRadio>
+							<rich:spacer height="8px" />
+							<rich:simpleTogglePanel
+								label="#{messages.lbl_informacion_general}" switchType="client"
+								opened="true">
+								<a4j:outputPanel id="combosfase">
+									<table cellpadding="0px" cellspacing="0px" border="0px">
+										<tr>
+											<td><h:outputText
+													value="#{messages.lbl_protocolo_titulo}:"
+													styleClass="normalText" /><br /> <h:inputText
+													styleClass="inputText"
+													value="#{crearReporteExpedito.nombreEst}" disabled="true" />
+											</td>
+											<td><rich:spacer width="25px" /></td>
+											<td><h:outputText value="#{messages.lbl_fase}:"
+													styleClass="normalText" /> <rich:message for="fase"
+													showDetail="false" tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('fase').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <rich:comboBox
+													required="#{!empty param['idForm:aceptarr'] and (crearReporteExpedito.fase != null ? false : true)}"
+													disabled="#{crearReporteExpedito.fase == null ? false : true}"
+													suggestionValues="#{crearReporteExpedito.llenarFASES()}"
+													value="#{crearReporteExpedito.fase}"
+													defaultLabel="#{messages.cbxSeleccionPorDefecto}" id="fase" />
+											</td>
+											<td><rich:spacer width="25px" /></td>
+											<td><h:outputText value="#{messages.lbl_revisado_dir}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message
+													for="trazabilidaPromotornombreapellido" showDetail="false"
+													tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('trazabilidaPromotornombreapellido').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <h:inputText styleClass="inputText"
+													id="trazabilidaPromotornombreapellido"
+													required="#{!empty param['idForm:aceptarr']}"
+													validator="#{validations_sujeto.text}"
+													value="#{crearReporteExpedito.profesion}" disabled="false" />
+											</td>
+										</tr>
+										<tr>
+											<td colspan="8"><rich:spacer height="8px"
+													style="display: block" /></td>
+										</tr>
+										<tr>
+											<td><h:outputText value="#{messages.lbl_institucion}:"
+													styleClass="normalText" /><br /> <h:inputTextarea
+													value="#{crearReporteExpedito.institucion}"
+													style="resize: vertical; width : 180px;" disabled="true" />
+											</td>
+											<td><rich:spacer width="25px" /></td>
+											<td><h:outputText
+													value="#{messages.lbl_prod_investigacion}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message for="producInvs"
+													showDetail="false" tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('producInvs').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <h:inputTextarea
+													value="#{crearReporteExpedito.producInvs}" id="producInvs"
+													style="resize: vertical; width : 180px;"
+													required="#{!empty param['idForm:aceptarr']}"
+													validator="#{validations_sujeto.textnumber250}" /></td>
+											<td><rich:spacer width="25px" /></td>
+											<td><h:outputText value="#{messages.lbl_dosis_Admin}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message for="dosisAdmin"
+													showDetail="false" tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('dosisAdmin').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <h:inputTextarea
+													value="#{crearReporteExpedito.dosisAdmin}" id="dosisAdmin"
+													style="resize: vertical; width : 180px;"
+													required="#{!empty param['idForm:aceptarr']}"
+													validator="#{validations_sujeto.textnumber250}" /></td>
+										</tr>
+										<tr>
+											<td colspan="8"><rich:spacer height="8px"
+													style="display: block" /></td>
+										</tr>
+										<tr>
+											<td><h:outputText value="#{messages.lbl_presentacion}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message
+													for="presentacion" showDetail="false" tooltip="true"
+													style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('presentacion').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <h:inputText styleClass="inputText"
+													id="presentacion"
+													required="#{!empty param['idForm:aceptarr']}"
+													validator="#{validations_sujeto.textnumber250}"
+													value="#{crearReporteExpedito.presentacion}" /></td>
+											<td><rich:spacer width="25px" /></td>
+											<td><h:outputText value="#{messages.lbl_via_Admin}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message for="viaA"
+													showDetail="false" tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('viaA').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <rich:comboBox
+													suggestionValues="#{crearReporteExpedito.llenarVA()}"
+													value="#{crearReporteExpedito.viaA}"
+													required="#{!empty param['idForm:aceptarr']}"
+													defaultLabel="#{messages.cbxSeleccionPorDefecto}" id="viaA" />
+											</td>
+											<td><rich:spacer width="25px" /></td>
+											<td><h:outputText value="#{messages.lbl_investigador}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message
+													for="investigador" showDetail="false" tooltip="true"
+													style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('investigador').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <h:inputText styleClass="inputText"
+													id="investigador"
+													required="#{!empty param['idForm:aceptarr']}"
+													validator="#{validations_sujeto.text}"
+													value="#{crearReporteExpedito.nombreapellido}"
+													disabled="false" /></td>
+										</tr>
+									</table>
+								</a4j:outputPanel>
+							</rich:simpleTogglePanel>
+							<rich:simpleTogglePanel
+								label="#{messages.lbl_consecuencias_paciente}"
+								switchType="client" opened="true">
+								<a4j:outputPanel id="consecuencias">
+									<table cellpadding="0px" cellspacing="0px" border="0px">
+										<tr>
+											<td><h:outputText
+													value="#{messages.lbl_consecuencias_paciente_single}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message
+													for="consecuencia" showDetail="false" tooltip="true"
+													style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('consecuencia').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br />
+												<table>
+													<tr>
+														<td style="vertical-align: top; padding: 0px;"><h:selectManyCheckbox
+																required="#{!empty param['idForm:aceptarr']}"
+																layout="pageDirection" id="consecuencia"
+																value="#{crearReporteExpedito.consecuencia}">
+																<f:selectItems
+																	value="#{crearReporteExpedito.ValoresConsecuencia()}" />
+																<a4j:support ajaxSingle="true" event="onclick"
+																	reRender="autopsiaDiasPanel, fechasIngresoAlta, fechaAlta, fechasAltaProlonga, acontecimientoImp, acontecimientoOtros"
+																	limitToList="true" />
+															</h:selectManyCheckbox></td>
+													</tr>
+												</table></td>
+											<td>
+												<table cellpadding="0px" cellspacing="0px" border="0px">
+													<tr>
+														<td colspan="8"><rich:spacer height="25px"
+																style="display: block" /></td>
+													</tr>
+													<tr>
+														<td style="vertical-align: center; padding: 0px;"><a4j:outputPanel
+																id="autopsiaDiasPanel">
+																<h:outputText value="#{messages.lbl_autopsia}:"
+																	styleClass="normalText" />
+																<span class="errorSpan" style="color: red;">*</span>
+																<rich:message for="autopsia" showDetail="false"
+																	tooltip="true" style="color:red;">
+																	<f:facet name="errorMarker">
+																		<h:outputText value="*"
+																			title="#{facesMessages.getCurrentMessagesForControl('autopsia').get(0).getDetail()}" />
+																	</f:facet>
+																</rich:message>
+																<h:selectOneRadio
+																	disabled="#{!crearReporteExpedito.esMuerte()}"
+																	required="#{crearReporteExpedito.esMuerte() and (!empty param['idForm:aceptarr'])}"
+																	layout="lineDirection" id="autopsia"
+																	value="#{crearReporteExpedito.autopsia}">
+																	<f:selectItem itemValue="#{messages.lbl_si}"
+																		itemLabel="#{messages.lbl_si}" />
+																	<f:selectItem itemValue="#{messages.lbl_no}"
+																		itemLabel="#{messages.lbl_no}" />
+																</h:selectOneRadio>
+															</a4j:outputPanel></td>
+													</tr>
+													<tr>
+														<td colspan="8"><rich:spacer height="40px"
+																style="display: block" /></td>
+													</tr>
+													<tr>
+														<td><a4j:outputPanel id="fechasIngresoAlta">
+																<h:outputText value="#{messages.lbl_fecha_ingreso}:"
+																	styleClass="normalText" />
+																<rich:message for="ingreso" showDetail="false"
+																	tooltip="true" style="color:red;">
+																	<f:facet name="errorMarker">
+																		<h:outputText value="*"
+																			title="#{facesMessages.getCurrentMessagesForControl('ingreso').get(0).getDetail()}" />
+																	</f:facet>
+																</rich:message>
+																<br />
+																<h:inputText id="ingreso"
+																	disabled="#{!crearReporteExpedito.requiereHosp()}"
+																	required="#{crearReporteExpedito.requiereHosp() and (!empty param['idForm:aceptarr'])}"
+																	value="#{crearReporteExpedito.fechaIngreso}"
+																	styleClass="likedate" />
+																<script>
+																	applyDateMask();
+																</script>
+															</a4j:outputPanel></td>
+														<td colspan="8"><rich:spacer width="8px"
+																style="display: block" /></td>
+														<td><a4j:outputPanel id="fechaAlta">
+																<h:outputText value="#{messages.lbl_fecha_alta}:"
+																	styleClass="normalText" />
+																<br />
+																<h:inputText id="alta"
+																	disabled="#{!crearReporteExpedito.requiereHosp()}"
+																	value="#{crearReporteExpedito.fechaAlta}"
+																	styleClass="likedate" />
+																<script>
+																	applyDateMask();
+																</script>
+															</a4j:outputPanel></td>
+													</tr>
+													<tr>
+														<td colspan="8"><rich:spacer height="1px"
+																style="display: block" /></td>
+													</tr>
+													<tr>
+														<td><a4j:outputPanel id="fechasAltaProlonga">
+																<h:outputText value="#{messages.lbl_fecha_alta}:"
+																	styleClass="normalText" />
+																<br />
+																<h:inputText id="fechaProlonga"
+																	disabled="#{!crearReporteExpedito.prolongaEstancia()}"
+																	value="#{crearReporteExpedito.fechaAltaSiProlonga}"
+																	styleClass="likedate" />
+																<script>
+																	applyDateMask();
+																</script>
+															</a4j:outputPanel></td>
+													</tr>
+													<tr>
+														<td colspan="8"><rich:spacer height="25px"
+																style="display: block" /></td>
+													</tr>
+													<tr>
+														<td><a4j:outputPanel id="acontecimientoImp">
+																<h:outputText value="#{messages.lbl_especifique}:"
+																	styleClass="normalText" />
+																<rich:message for="especifiqueAcont" showDetail="false"
+																	tooltip="true"
+																	style="color:red; width : 108px; height : 18px;">
+																	<f:facet name="errorMarker">
+																		<h:outputText value="*"
+																			title="#{facesMessages.getCurrentMessagesForControl('especifiqueAcont').get(0).getDetail()}" />
+																	</f:facet>
+																</rich:message>
+																<br />
+																<h:inputTextarea
+																	value="#{crearReporteExpedito.especifiqueAcont}"
+																	id="especifiqueAcont"
+																	style="resize: vertical; width : 180px; height : 12px;"
+																	disabled="#{!crearReporteExpedito.especifiqueAcontecimiento()}"
+																	required="#{crearReporteExpedito.especifiqueAcontecimiento() and !empty param['idForm:aceptarr']}"
+																	validator="#{validations_sujeto.textnumber250}" />
+															</a4j:outputPanel></td>
+													</tr>
+													<tr>
+														<td colspan="8"><rich:spacer height="1px"
+																style="display: block" /></td>
+													</tr>
+													<tr>
+														<td><a4j:outputPanel id="acontecimientoOtros">
+																<h:outputText value="#{messages.lbl_especifique}:"
+																	styleClass="normalText" />
+																<rich:message for="especifiqueOtros" showDetail="false"
+																	tooltip="true" style="color:red;">
+																	<f:facet name="errorMarker">
+																		<h:outputText value="*"
+																			title="#{facesMessages.getCurrentMessagesForControl('especifiqueOtros').get(0).getDetail()}" />
+																	</f:facet>
+																</rich:message>
+																<br />
+																<h:inputTextarea
+																	value="#{crearReporteExpedito.especifiqueOtros}"
+																	id="especifiqueOtros"
+																	style="resize: vertical; width : 180px; height : 12px;"
+																	disabled="#{!crearReporteExpedito.especifiqueOtros()}"
+																	required="#{crearReporteExpedito.especifiqueOtros() and !empty param['idForm:aceptarr']}"
+																	validator="#{validations_sujeto.textnumber250}" />
+															</a4j:outputPanel></td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+									</table>
+								</a4j:outputPanel>
+							</rich:simpleTogglePanel>
+							<rich:simpleTogglePanel
+								label="#{messages.lbl_datos_relacionados}" switchType="client"
+								opened="true">
+								<a4j:outputPanel id="datosRelacionados">
+									<table cellpadding="0px" cellspacing="0px" border="0px">
+										<tr>
+											<td><h:outputText
+													value="#{messages.lbl_nombre_apellidosN}:"
+													styleClass="normalText" /><br /> <h:inputTextarea
+													value="#{crearReporteExpedito.notificador}"
+													style="resize: vertical; width : 180px;" disabled="true" />
+											</td>
+											<td><rich:spacer width="25px" /></td>
+											<td><h:outputText value="#{messages.lbl_direccion}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message for="direccion"
+													showDetail="false" tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('direccion').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <h:inputTextarea styleClass="inputText"
+													id="direccion"
+													required="#{!empty param['idForm:aceptarr']}"
+													style="resize: vertical; width : 180px;"
+													validator="#{validations_sujeto.textnumber250}"
+													value="#{crearReporteExpedito.direccion}" disabled="false" />
+											</td>
+											<td><rich:spacer width="25px" /></td>
+
+											<td><h:outputText
+													value="#{messages.lbl_direccion_telefono}:"
+													styleClass="normalText"
+													validator="#{validations_sujeto.text}" /> <rich:message
+													for="email" showDetail="false" tooltip="true"
+													style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('email').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <a4j:outputPanel id="opEmail">
+													<h:inputTextarea
+														disabled="#{crearReporteExpedito.usuarioCambiar.telefono != null and !crearReporteExpedito.usuarioCambiar.telefono.equals('')}"
+														id="email" style="resize: vertical; width : 180px;"
+														value="#{crearReporteExpedito.email}"
+														required="#{(crearReporteExpedito.email == null) and (!empty param['idForm:aceptarr'])}">
+														<a4j:support ajaxSingle="true" event="onchange"
+															reRender="opEmailB,opEmailC,opEmailD,opEmail"
+															limitToList="true" />
+													</h:inputTextarea>
+												</a4j:outputPanel></td>
+
+										</tr>
+										<tr>
+											<td colspan="8"><rich:spacer height="8px"
+													style="display: block" /></td>
+										</tr>
+										<tr>
+											<td><h:outputText value="#{messages.lbl_profesion}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message for="profesion"
+													showDetail="false" tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('profesion').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <h:inputText styleClass="inputText" id="profesion"
+													required="#{!empty param['idForm:aceptarr']}"
+													value="#{crearReporteExpedito.profesion}"
+													validator="#{validations_sujeto.text}" /></td>
+											<td><rich:spacer width="25px" /></td>
+											<td><h:outputText value="#{messages.lbl_firma}:"
+													styleClass="normalText" /><br /> <h:inputText
+													styleClass="inputText" id="firma"
+													required="#{!empty param['idForm:aceptarr']}"
+													disabled="true" /></td>
+											<td><rich:spacer width="25px" /></td>
+											<td><h:outputText value="#{messages.lbl_fechaReporte1}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message
+													for="fechaReporte1" showDetail="false" tooltip="true"
+													style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('fechaReporte1').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <a4j:outputPanel id="opfechaReporte1">
+													<h:inputText id="fechaReporte1"
+														required="#{(!empty param['idForm:aceptarr'])}"
+														value="#{crearReporteExpedito.fechaReporte1}"
+														styleClass="likedate">
+														<a4j:support ajaxSingle="true" event="onchange"
+															reRender="opfechaReporte1,opfechaReporte2,opfechaReporte3,opfechaReporte4"
+															limitToList="true" />
+													</h:inputText>
+													<script>
+													applyDateMask();
+												</script>
+												</a4j:outputPanel></td>
+										</tr>
+									</table>
+								</a4j:outputPanel>
+							</rich:simpleTogglePanel>
+						</rich:tab>
+						<rich:tab>
+							<f:facet name="label">
+								<s:div>
+									<h:outputText value="#{messages.lbl_seccionB_ens}" />
+									<a4j:outputPanel ajaxRendered="true">
+										<h:outputText value="*" style="color:red;"
+											styleClass="errorLabel"
+											rendered="#{not empty facesMessages.getCurrentMessagesForControl('fechaNacimiento') or not empty facesMessages.getCurrentMessagesForControl('peso') or not empty facesMessages.getCurrentMessagesForControl('sexo') or not empty facesMessages.getCurrentMessagesForControl('talla') or not empty facesMessages.getCurrentMessagesForControl('raza') or not empty facesMessages.getCurrentMessagesForControl('especifiqueOtra') or not empty facesMessages.getCurrentMessagesForControl('evento') or not empty facesMessages.getCurrentMessagesForControl('fechaInicio') or not empty facesMessages.getCurrentMessagesForControl('horaInicio') or not empty facesMessages.getCurrentMessagesForControl('intensidad') or not empty facesMessages.getCurrentMessagesForControl('lugarOtro') or not empty facesMessages.getCurrentMessagesForControl('accion') or not empty facesMessages.getCurrentMessagesForControl('causalidad') or not empty facesMessages.getCurrentMessagesForControl('fuente') or not empty facesMessages.getCurrentMessagesForControl('fuenteOtra') or not empty facesMessages.getCurrentMessagesForControl('abandonado') or not empty facesMessages.getCurrentMessagesForControl('fechaReporte2') or not empty facesMessages.getCurrentMessagesForControl('direccionB') or not empty facesMessages.getCurrentMessagesForControl('profesionB') or not empty facesMessages.getCurrentMessagesForControl('emailB')}" />
+									</a4j:outputPanel>
+								</s:div>
+							</f:facet>
+							<table>
+								<tr>
+									<td><h:outputText
+											value="#{messages.lbl_protocolo_codigo}:"
+											styleClass="normalText" /><br /> <h:inputText
+											styleClass="inputText"
+											value="#{crearReporteExpedito.codigoEst}" disabled="true" />
+									</td>
+									<td><rich:spacer width="25px" /></td>
+									<td><h:outputText
+											value="#{messages.lbl_iniciales_paciente}:"
+											styleClass="normalText" /><br /> <h:inputText
+											value="#{crearReporteExpedito.paciente}"
+											style="resize: vertical; width : 140px;" disabled="true" />
+									</td>
+									<td><rich:spacer width="25px" /></td>
+									<td><h:outputText value="#{messages.lbl_fechaReporteA}:"
+											styleClass="normalText" /><br /> <h:inputText
+											id="fechaReporteB"
+											value="#{crearReporteExpedito.fechaReporteB}"
+											styleClass="likedate" /> <script>
+											applyDateMask();
+										</script></td>
+								</tr>
+							</table>
+							<rich:spacer height="8px" />
+							<rich:simpleTogglePanel
+								label="#{messages.lbl_informacion_datos_demograficos}"
+								switchType="client" opened="true">
+								<a4j:outputPanel id="combosfaseB">
+									<table cellpadding="0px" cellspacing="0px" border="0px">
+										<tr>
+											<td><h:outputText value="#{messages.lbl_iniciales}:"
+													styleClass="normalText" /><br /> <h:inputText
+													styleClass="inputText" id="iniciales"
+													value="#{crearReporteExpedito.iniciales}" disabled="true" />
+											</td>
+											<td><rich:spacer width="25px" /></td>
+											<td><h:outputText
+													value="#{messages.lbl_fecha_nacimiento}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message
+													for="fechaNacimiento" showDetail="false" tooltip="true"
+													style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('fechaNacimiento').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <h:inputText id="fechaNacimiento"
+													required="#{(!empty param['idForm:aceptarr'])}"
+													value="#{crearReporteExpedito.fechaNac}"
+													styleClass="likedate" /> <script>
+													applyDateMask();
+												</script></td>
+											<td></td>
+											<td><h:outputText value="#{messages.lbl_sexo}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message for="sexo"
+													showDetail="false" tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('sexo').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <h:selectOneRadio
+													required="#{(!empty param['idForm:aceptarr'])}"
+													layout="lineDirection" id="sexo"
+													value="#{crearReporteExpedito.sexo}">
+													<f:selectItem itemLabel="Masculino" itemValue="Masculino" />
+													<f:selectItem itemLabel="Femenino" itemValue="Femenino" />
+												</h:selectOneRadio></td>
+										</tr>
+										<tr>
+											<td colspan="8"><rich:spacer height="8px"
+													style="display: block" /></td>
+										</tr>
+										<tr>
+											<td><h:outputText value="#{messages.lbl_peso}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message for="peso"
+													showDetail="false" tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('peso').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <h:inputText value="#{crearReporteExpedito.peso}"
+													id="peso" styleClass="inputText"
+													required="#{(!empty param['idForm:aceptarr'])}"
+													validator="#{validations_sujeto.validarDoubleNoMasMenos}" />
+											</td>
+											<td><rich:spacer width="25px" /></td>
+											<td><h:outputText value="#{messages.lbl_talla}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message for="talla"
+													showDetail="false" tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('talla').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <h:inputText value="#{crearReporteExpedito.talla}"
+													id="talla" styleClass="inputText"
+													required="#{(!empty param['idForm:aceptarr'])}"
+													validator="#{validations_sujeto.validarDoubleNoMasMenos}" />
+											</td>
+											<td><rich:spacer width="25px" /></td>
+											<td><h:outputText value="#{messages.raza}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message for="raza"
+													showDetail="false" tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('raza').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <h:selectOneRadio
+													required="#{(!empty param['idForm:aceptarr'])}"
+													layout="lineDirection" id="raza"
+													value="#{crearReporteExpedito.raza}">
+													<f:selectItem itemLabel="Blanca" itemValue="Blanca" />
+													<f:selectItem itemLabel="Negra" itemValue="Negra" />
+													<f:selectItem itemLabel="Mestizo" itemValue="Mestizo" />
+													<f:selectItem itemLabel="Otra" itemValue="Otra" />
+													<a4j:support ajaxSingle="true" event="onclick"
+														reRender="especifiqueOtraPanel"
+														action="#{crearReporteExpedito.activarOtraRaza()}"
+														limitToList="true" />
+												</h:selectOneRadio></td>
+										</tr>
+										<tr>
+											<td colspan="8"><rich:spacer height="8px"
+													style="display: block" /></td>
+										</tr>
+										<tr>
+											<td><a4j:outputPanel id="especifiqueOtraPanel">
+													<h:outputText
+														rendered="#{crearReporteExpedito.especifiqueOtra()}"
+														value="#{messages.lbl_especifique}:"
+														styleClass="normalText" />
+													<span class="errorSpan" style="color: red;">*</span>
+													<rich:message for="especifiqueOtra" showDetail="false"
+														tooltip="true"
+														style="color:red; width : 108px; height : 18px;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('especifiqueOtra').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message>
+													<br />
+													<h:inputTextarea
+														value="#{crearReporteExpedito.especifiqueOtra}"
+														id="especifiqueOtra"
+														style="resize: vertical; width : 180px; height : 30px;"
+														rendered="#{crearReporteExpedito.especifiqueOtra()}"
+														required="#{crearReporteExpedito.especifiqueOtra() and !empty param['idForm:aceptarr']}"
+														validator="#{validations_sujeto.textnumber250}">
+
+													</h:inputTextarea>
+												</a4j:outputPanel></td>
+
+
+
+										</tr>
+
+
+
+
+									</table>
+								</a4j:outputPanel>
+							</rich:simpleTogglePanel>
+
+							<rich:simpleTogglePanel label="#{messages.lbl_evento_adverso}"
+								switchType="client" opened="true">
+								<a4j:outputPanel id="combosfaseB1">
+									<table cellpadding="0px" cellspacing="0px" border="0px">
+										<tr>
+											<td><h:outputText
+													value="#{messages.lbl_evento_adverso}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message for="evento"
+													showDetail="false" tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('evento').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message> <br /> <h:inputTextarea id="evento"
+													value="#{crearReporteExpedito.eAdverso}"
+													style="resize: vertical; width : 180px;"
+													required="#{(!empty param['idForm:aceptarr'])}"
+													validator="#{validations_sujeto.textnumber250}"></h:inputTextarea></td>
+											<td><rich:spacer width="25px"></rich:spacer></td>
+											<td><h:outputText value="#{messages.lbl_fechaInicio}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message for="fechaInicio"
+													showDetail="false" tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('fechaInicio').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message> <br /> <h:inputText id="fechaInicio"
+													required="#{(!empty param['idForm:aceptarr'])}"
+													value="#{crearReporteExpedito.fechaInicio}"
+													styleClass="likedate">
+
+												</h:inputText> <script>
+									applyDateMask();
+									</script></td>
+											<td><rich:spacer width="25px"></rich:spacer></td>
+
+											<td class="colSepGran"><s:label
+													value="#{messages.lbl_horaInicio}:">
+												</s:label> <rich:message for="horaInicio" showDetail="false">
+													<f:facet name="errorMarker">
+														<h:outputText
+															style="color: red;cursor: pointer !important;"
+															title="#{facesMessages.getCurrentMessagesForControl('horaInicio').get(0).getDetail()}"
+															value="*" />
+													</f:facet>
+												</rich:message> <br />
+												<table cellpadding="0" cellspacing="0" border="0">
+													<tr>
+														<td width="38"><rich:comboBox width="38"
+																id="horaInicio" enableManualInput="false"
+																value="#{crearReporteExpedito.horaInicio}"
+																defaultLabel="--">
+																<f:selectItem itemValue="01" itemLabel="01" />
+																<f:selectItem itemValue="02" itemLabel="02" />
+																<f:selectItem itemValue="03" itemLabel="03" />
+																<f:selectItem itemValue="04" itemLabel="04" />
+																<f:selectItem itemValue="05" itemLabel="05" />
+																<f:selectItem itemValue="06" itemLabel="06" />
+																<f:selectItem itemValue="07" itemLabel="07" />
+																<f:selectItem itemValue="08" itemLabel="08" />
+																<f:selectItem itemValue="09" itemLabel="09" />
+																<c:forEach begin="10" end="12" var="h">
+																	<f:selectItem itemValue="#{h}" itemLabel="#{h}" />
+																</c:forEach>
+																<a4j:support event="onselect" ajaxSingle="true"
+																	reRender="minutosOP">
+																</a4j:support>
+															</rich:comboBox></td>
+														<td><rich:message for="horaP" showDetail="false">
+																<f:facet name="errorMarker">
+																	<h:outputText value="*" styleClass="errorLabel"
+																		title="#{facesMessages.getCurrentMessagesForControl('horaP').get(0).detail}" />
+																</f:facet>
+															</rich:message></td>
+														<td><rich:spacer width="2" />:<rich:spacer width="2" /></td>
+														<td width="38"><a4j:outputPanel id="minutosOP">
+																<rich:comboBox
+																	disabled="#{empty crearReporteExpedito.horaInicio}"
+																	width="38" enableManualInput="false"
+																	value="#{crearReporteExpedito.minutosInicio}"
+																	defaultLabel="--">
+																	<f:selectItem itemValue="00" itemLabel="00" />
+																	<f:selectItem itemValue="01" itemLabel="01" />
+																	<f:selectItem itemValue="02" itemLabel="02" />
+																	<f:selectItem itemValue="03" itemLabel="03" />
+																	<f:selectItem itemValue="04" itemLabel="04" />
+																	<f:selectItem itemValue="05" itemLabel="05" />
+																	<f:selectItem itemValue="06" itemLabel="06" />
+																	<f:selectItem itemValue="07" itemLabel="07" />
+																	<f:selectItem itemValue="08" itemLabel="08" />
+																	<f:selectItem itemValue="09" itemLabel="09" />
+																	<c:forEach begin="10" end="59" var="m">
+																		<f:selectItem itemValue="#{m}" itemLabel="#{m}" />
+																	</c:forEach>
+																	<a4j:support event="onselect" ajaxSingle="true"
+																		reRender="am_pm_OP">
+																	</a4j:support>
+																</rich:comboBox>
+															</a4j:outputPanel></td>
+														<td><rich:message for="minP" showDetail="false">
+																<f:facet name="errorMarker">
+																	<h:outputText value="*" styleClass="errorLabel"
+																		title="#{facesMessages.getCurrentMessagesForControl('minP').get(0).detail}" />
+																</f:facet>
+															</rich:message></td>
+														<td><rich:spacer width="4" /></td>
+														<td width="43"><a4j:outputPanel id="am_pm_OP">
+																<rich:comboBox
+																	disabled="#{empty crearReporteExpedito.minutosInicio}"
+																	id="segP" width="43" enableManualInput="false"
+																	value="#{crearReporteExpedito.am_pmInicio}"
+																	defaultLabel="--">
+																	<f:selectItem itemValue="AM" itemLabel="AM" />
+																	<f:selectItem itemValue="PM" itemLabel="PM" />
+																</rich:comboBox>
+															</a4j:outputPanel></td>
+														<td><rich:message for="segP" showDetail="false">
+																<f:facet name="errorMarker">
+																	<h:outputText value="*" styleClass="errorLabel"
+																		title="#{facesMessages.getCurrentMessagesForControl('segP').get(0).detail}" />
+																</f:facet>
+															</rich:message></td>
+													</tr>
+												</table></td>
+
+
+										</tr>
+
+
+
+										<tr>
+											<td colspan="8"><rich:spacer height="8px"
+													style="display: block" /></td>
+										</tr>
+
+										<tr>
+
+											<td><h:outputText
+													value="#{messages.lbl_fechaFinalizacion}:"
+													styleClass="normalText" /> <rich:message
+													for="fechaFinalizacion" showDetail="false" tooltip="true"
+													style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('fechaFinalizacion').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <h:inputText id="fechaFinalizacion"
+													value="#{crearReporteExpedito.fechaFinalizacion}"
+													styleClass="likedate">
+
+												</h:inputText> <script>
+									applyDateMask();
+									</script></td>
+											<td><rich:spacer width="25px"></rich:spacer></td>
+
+											<td class="colSepGran"><s:label
+													value="#{messages.lbl_horaFinalizacion}:">
+												</s:label> <rich:message for="horaFinalizacion" showDetail="false">
+													<f:facet name="errorMarker">
+														<h:outputText
+															style="color: red;cursor: pointer !important;"
+															title="#{facesMessages.getCurrentMessagesForControl('horaFinalizacion').get(0).getDetail()}"
+															value="*" />
+													</f:facet>
+												</rich:message> <br />
+												<table cellpadding="0" cellspacing="0" border="0">
+													<tr>
+														<td width="38"><rich:comboBox width="38"
+																id="horaFinalizacion" enableManualInput="false"
+																value="#{crearReporteExpedito.horaFinalizacion}"
+																defaultLabel="--">
+																<f:selectItem itemValue="01" itemLabel="01" />
+																<f:selectItem itemValue="02" itemLabel="02" />
+																<f:selectItem itemValue="03" itemLabel="03" />
+																<f:selectItem itemValue="04" itemLabel="04" />
+																<f:selectItem itemValue="05" itemLabel="05" />
+																<f:selectItem itemValue="06" itemLabel="06" />
+																<f:selectItem itemValue="07" itemLabel="07" />
+																<f:selectItem itemValue="08" itemLabel="08" />
+																<f:selectItem itemValue="09" itemLabel="09" />
+																<c:forEach begin="10" end="12" var="h">
+																	<f:selectItem itemValue="#{h}" itemLabel="#{h}" />
+																</c:forEach>
+																<a4j:support event="onselect" ajaxSingle="true"
+																	reRender="minutosF">
+																</a4j:support>
+															</rich:comboBox></td>
+														<td><rich:message for="horaF" showDetail="false">
+																<f:facet name="errorMarker">
+																	<h:outputText value="*" styleClass="errorLabel"
+																		title="#{facesMessages.getCurrentMessagesForControl('horaF').get(0).detail}" />
+																</f:facet>
+															</rich:message></td>
+														<td><rich:spacer width="2" />:<rich:spacer width="2" /></td>
+														<td width="38"><a4j:outputPanel id="minutosF">
+																<rich:comboBox
+																	disabled="#{empty crearReporteExpedito.horaFinalizacion}"
+																	width="38" enableManualInput="false"
+																	value="#{crearReporteExpedito.minutosFinalizacion}"
+																	defaultLabel="--">
+																	<f:selectItem itemValue="00" itemLabel="00" />
+																	<f:selectItem itemValue="01" itemLabel="01" />
+																	<f:selectItem itemValue="02" itemLabel="02" />
+																	<f:selectItem itemValue="03" itemLabel="03" />
+																	<f:selectItem itemValue="04" itemLabel="04" />
+																	<f:selectItem itemValue="05" itemLabel="05" />
+																	<f:selectItem itemValue="06" itemLabel="06" />
+																	<f:selectItem itemValue="07" itemLabel="07" />
+																	<f:selectItem itemValue="08" itemLabel="08" />
+																	<f:selectItem itemValue="09" itemLabel="09" />
+																	<c:forEach begin="10" end="59" var="m">
+																		<f:selectItem itemValue="#{m}" itemLabel="#{m}" />
+																	</c:forEach>
+																	<a4j:support event="onselect" ajaxSingle="true"
+																		reRender="am_pm_F">
+																	</a4j:support>
+																</rich:comboBox>
+															</a4j:outputPanel></td>
+														<td><rich:message for="minF" showDetail="false">
+																<f:facet name="errorMarker">
+																	<h:outputText value="*" styleClass="errorLabel"
+																		title="#{facesMessages.getCurrentMessagesForControl('minF').get(0).detail}" />
+																</f:facet>
+															</rich:message></td>
+														<td><rich:spacer width="4" /></td>
+														<td width="43"><a4j:outputPanel id="am_pm_F">
+																<rich:comboBox
+																	disabled="#{empty crearReporteExpedito.minutosFinalizacion}"
+																	id="segF" width="43" enableManualInput="false"
+																	value="#{crearReporteExpedito.am_pmFinalizacion}"
+																	defaultLabel="--">
+																	<f:selectItem itemValue="AM" itemLabel="AM" />
+																	<f:selectItem itemValue="PM" itemLabel="PM" />
+																</rich:comboBox>
+															</a4j:outputPanel></td>
+														<td><rich:message for="segF" showDetail="false">
+																<f:facet name="errorMarker">
+																	<h:outputText value="*" styleClass="errorLabel"
+																		title="#{facesMessages.getCurrentMessagesForControl('segF').get(0).detail}" />
+																</f:facet>
+															</rich:message></td>
+													</tr>
+												</table></td>
+
+
+											<td><rich:spacer width="25px"></rich:spacer></td>
+
+											<td><h:outputText value="#{messages.lbl_intensidad}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message for="intensidad"
+													showDetail="false" tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('intensidad').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br />
+												<table>
+													<tr>
+														<td style="vertical-align: top; padding: 0px;"><h:selectOneRadio
+																required="#{(!empty param['idForm:aceptarr'])}"
+																layout="lineDirection" id="intensidad"
+																value="#{crearReporteExpedito.intensidad}">
+																<f:selectItems
+																	value="#{crearReporteExpedito.ValoresIntensidad()}" />
+															</h:selectOneRadio></td>
+													</tr>
+												</table></td>
+										</tr>
+
+										<tr>
+											<td colspan="8"><rich:spacer height="8px"
+													style="display: block" /></td>
+										</tr>
+
+										<tr>
+											<td><h:outputText value="#{messages.lbl_lugarOcurrio}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message for="lugar"
+													showDetail="false" tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('lugar').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br />
+												<table>
+													<tr>
+														<td style="vertical-align: top; padding: 0px;"><h:selectOneRadio
+																required="#{(!empty param['idForm:aceptarr'])}"
+																layout="pageDirection" id="lugar"
+																value="#{crearReporteExpedito.lugar}">
+																<f:selectItem itemLabel="Hogar" itemValue="1" />
+																<f:selectItem itemLabel="Hospital" itemValue="2" />
+																<f:selectItem itemLabel="#{messages.lbl_piliclinico}"
+																	itemValue="3" />
+																<f:selectItem itemLabel="Vacunatorio" itemValue="4" />
+																<f:selectItem itemLabel="Circulo infantil" itemValue="5" />
+																<f:selectItem itemLabel="Escuela" itemValue="6" />
+																<f:selectItem itemLabel="Asilo de ancianos"
+																	itemValue="7" />
+																<f:selectItem itemLabel="Otros" itemValue="8" />
+																<a4j:support ajaxSingle="true" event="onclick"
+																	reRender="lugarOtros"
+																	action="#{crearReporteExpedito.activarOtroLugar()}"
+																	limitToList="true" />
+
+															</h:selectOneRadio></td>
+
+
+													</tr>
+												</table></td>
+											<td><rich:spacer width="25px"></rich:spacer></td>
+
+
+
+											<td>
+												<table>
+													<tr>
+														<td colspan="8"><rich:spacer height="180px"
+																style="display: block" /></td>
+													</tr>
+												</table> <a4j:outputPanel id="lugarOtros">
+													<h:outputText value="#{messages.lbl_especifique}:"
+														styleClass="normalText" />
+													<rich:message for="lugarOtro" showDetail="false"
+														tooltip="true" style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('lugarOtro').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message>
+													<br />
+													<h:inputTextarea
+														value="#{crearReporteExpedito.lugarOtrosEsp}"
+														id="lugarOtro"
+														style="resize: vertical; width : 180px; height : 30px;"
+														disabled="#{!crearReporteExpedito.lugarOtros()}"
+														required="#{crearReporteExpedito.lugarOtros() and !empty param['idForm:aceptarr']}"
+														validator="#{validations_sujeto.textnumber250}"></h:inputTextarea>
+												</a4j:outputPanel>
+											</td>
+											<td><rich:spacer width="25px"></rich:spacer></td>
+
+											<td><h:outputText
+													value="#{messages.lbl_accionEmprendida}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message for="accion"
+													showDetail="false" tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('accion').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br />
+												<table>
+													<tr>
+														<td style="vertical-align: top; padding: 0px;"><h:selectOneRadio
+																required="#{(!empty param['idForm:aceptarr'])}"
+																layout="pageDirection" id="accion"
+																value="#{crearReporteExpedito.accion}">
+																<f:selectItems
+																	value="#{crearReporteExpedito.ValoresAccion()}" />
+															</h:selectOneRadio></td>
+													</tr>
+												</table></td>
+
+										</tr>
+
+										<tr>
+											<td colspan="8"><rich:spacer height="8px"
+													style="display: block" /></td>
+										</tr>
+										<tr>
+											<td><h:outputText
+													value="#{messages.lbl_acontecimientos}"
+													styleClass="normalText" /> <br /> <h:outputText
+													value="#{messages.lbl_continuacion_acont}:"
+													styleClass="normalText" /> <br />
+												<table>
+													<tr>
+														<td style="vertical-align: top; padding: 0px;"><h:selectOneRadio
+																layout="pageDirection" id="acontecimiento"
+																value="#{crearReporteExpedito.acontecimiento}">
+																<f:selectItem itemLabel="#{messages.lbl_reaparicion}"
+																	itemValue="#{messages.lbl_reaparicion}" />
+																<f:selectItem itemLabel="No reaparece el evento"
+																	itemValue="No reaparece el evento" />
+																<f:selectItem itemLabel="Desconocido por el momento"
+																	itemValue="Desconocido por el momento" />
+																<f:selectItem itemLabel="No procede"
+																	itemValue="No procede" />
+
+
+															</h:selectOneRadio></td>
+
+
+													</tr>
+												</table></td>
+											<td><rich:spacer width="25px"></rich:spacer></td>
+											<td><h:outputText
+													value="#{messages.lbl_relacioCausalidad}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message for="causalidad"
+													showDetail="false" tooltip="true"
+													style="color:red; width : 108px; height : 18px;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('causalidad').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message> <br /> <h:inputTextarea
+													value="#{crearReporteExpedito.causalidad}" id="causalidad"
+													style="resize: vertical; width : 180px; height : 30px;"
+													required="#{!empty param['idForm:aceptarr']}"
+													validator="#{validations_sujeto.textnumber250}">
+
+												</h:inputTextarea></td>
+											<td><rich:spacer width="25px"></rich:spacer></td>
+											<td><h:outputText value="#{messages.lbl_fuente}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message for="fuente"
+													showDetail="false" tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('fuente').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br />
+												<table>
+													<tr>
+														<td style="vertical-align: top; padding: 0px;"><h:selectOneRadio
+																required="#{(!empty param['idForm:aceptarr'])}"
+																layout="pageDirection" id="fuente"
+																value="#{crearReporteExpedito.fuente}">
+																<f:selectItem itemLabel="OMS" itemValue="OMS" />
+																<f:selectItem itemLabel="FDA" itemValue="FDA" />
+																<f:selectItem itemLabel="Otras" itemValue="Otras" />
+																<a4j:support ajaxSingle="true" event="onclick"
+																	reRender="otraFuente"
+																	action="#{crearReporteExpedito.activarOtraFuente()}"
+																	limitToList="true" />
+															</h:selectOneRadio></td>
+														<td><a4j:outputPanel id="otraFuente">
+																<rich:spacer height="50px"></rich:spacer>
+																<h:outputText value="#{messages.lbl_especifique}:"
+																	styleClass="normalText" />
+																<rich:message for="fuenteOtra" showDetail="false"
+																	tooltip="true"
+																	style="color:red; width : 108px; height : 18px;">
+																	<f:facet name="errorMarker">
+																		<h:outputText value="*"
+																			title="#{facesMessages.getCurrentMessagesForControl('fuenteOtra').get(0).getDetail()}" />
+																	</f:facet>
+																</rich:message>
+																<br />
+																<h:inputTextarea
+																	value="#{crearReporteExpedito.fuenteOtra}"
+																	id="fuenteOtra"
+																	style="resize: vertical; width : 180px; height : 30px;"
+																	disabled="#{!crearReporteExpedito.fuenteOtra()}"
+																	required="#{crearReporteExpedito.fuenteOtra() and !empty param['idForm:aceptarr']}"
+																	validator="#{validations_sujeto.textnumber250}">
+
+																</h:inputTextarea>
+															</a4j:outputPanel></td>
+
+
+													</tr>
+												</table></td>
+
+
+
+
+
+										</tr>
+
+
+										<tr>
+											<td colspan="8"><rich:spacer height="8px"
+													style="display: block" /></td>
+										</tr>
+										<tr>
+											<td><h:outputText value="#{messages.lbl_resultado}:"
+													styleClass="normalText" /> <br /> <h:selectOneRadio
+													layout="pageDirection" id="resultado"
+													value="#{crearReporteExpedito.tipoResultado}">
+													<f:selectItems
+														value="#{crearReporteExpedito.ValoresTipoResultado()}">
+													</f:selectItems>
+
+
+												</h:selectOneRadio></td>
+											<td><rich:spacer width="25px"></rich:spacer></td>
+											<td><h:outputText value="#{messages.lbl_abandonado}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message for="abandonado"
+													showDetail="false" tooltip="true"
+													style="color:red; width : 108px; height : 18px;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('abandonado').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message> <br /> <h:selectOneRadio layout="pageDirection"
+													required="#{!empty param['idForm:aceptarr']}"
+													id="abandonado" value="#{crearReporteExpedito.abandonado}">
+													<f:selectItem itemValue="#{messages.lbl_si}"
+														itemLabel="#{messages.lbl_si}" />
+													<f:selectItem itemValue="#{messages.lbl_no}"
+														itemLabel="#{messages.lbl_no}" />
+
+
+												</h:selectOneRadio></td>
+
+										</tr>
+
+
+
+
+
+									</table>
+								</a4j:outputPanel>
+							</rich:simpleTogglePanel>
+
+							<rich:simpleTogglePanel
+								label="#{messages.lbl_datos_relacionados}" switchType="client"
+								opened="true">
+								<a4j:outputPanel id="datosRelacionadosB">
+									<table cellpadding="0px" cellspacing="0px" border="0px">
+										<tr>
+											<td><h:outputText
+													value="#{messages.lbl_nombre_apellidosN}:"
+													styleClass="normalText" /><br /> <h:inputTextarea
+													value="#{crearReporteExpedito.notificador}"
+													style="resize: vertical; width : 180px;" disabled="true"></h:inputTextarea></td>
+											<td><rich:spacer width="25px"></rich:spacer></td>
+											<td><h:outputText value="#{messages.lbl_firma}:"
+													styleClass="normalText" /> <br /> <h:inputText
+													styleClass="inputText" id="firmaB"
+													required="#{!empty param['idForm:aceptarr']}"
+													disabled="true"></h:inputText></td>
+											<td><rich:spacer width="25px"></rich:spacer></td>
+
+											<td><h:outputText
+													value="#{messages.lbl_direccion_telefono}:"
+													styleClass="normalText" /> <rich:message for="emailB"
+													showDetail="false" tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('emailB').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <a4j:outputPanel id="opEmailB">
+													<h:inputTextarea id="emailB"
+														disabled="#{crearReporteExpedito.usuarioCambiar.telefono != null and !crearReporteExpedito.usuarioCambiar.telefono.equals('')}"
+														style="resize: vertical; width : 180px;"
+														value="#{crearReporteExpedito.email}"
+														required="#{(crearReporteExpedito.email == null) and (!empty param['idForm:aceptarr'])}">
+														<a4j:support ajaxSingle="true" event="onchange"
+															reRender="opEmailB,opEmailC,opEmailD,opEmail"
+															limitToList="true" />
+													</h:inputTextarea>
+												</a4j:outputPanel></td>
+
+
+										</tr>
+										<tr>
+											<td colspan="8"><rich:spacer height="8px"
+													style="display: block" /></td>
+										</tr>
+
+										<tr>
+											<td><h:outputText value="#{messages.lbl_fechaReporte1}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message
+													for="fechaReporte2" showDetail="false" tooltip="true"
+													style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('fechaReporte2').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <a4j:outputPanel id="opfechaReporte2">
+													<h:inputText id="fechaReporte2"
+														required="#{(!empty param['idForm:aceptarr'])}"
+														value="#{crearReporteExpedito.fechaReporte1}"
+														styleClass="likedate">
+														<a4j:support ajaxSingle="true" event="onchange"
+															reRender="opfechaReporte1,opfechaReporte2,opfechaReporte3,opfechaReporte4"
+															limitToList="true" />
+													</h:inputText>
+													<script>
+													applyDateMask();
+												</script>
+												</a4j:outputPanel></td>
+
+
+
+										</tr>
+
+
+
+
+
+
+									</table>
+								</a4j:outputPanel>
+							</rich:simpleTogglePanel>
+
+
+						</rich:tab>
+						<rich:tab>
+							<f:facet name="label">
+								<s:div>
+									<h:outputText value="#{messages.lbl_seccionC_ens}" />
+									<a4j:outputPanel ajaxRendered="true">
+										<h:outputText value="*" style="color:red;"
+											styleClass="errorLabel"
+											rendered="#{not empty facesMessages.getCurrentMessagesForControl('direccionC') or not empty facesMessages.getCurrentMessagesForControl('terminoTrat') or not empty facesMessages.getCurrentMessagesForControl('indicacion') or not empty facesMessages.getCurrentMessagesForControl('profesionC') or not empty facesMessages.getCurrentMessagesForControl('fechaReporte3')}" />
+									</a4j:outputPanel>
+								</s:div>
+							</f:facet>
+							<table>
+
+								<tr>
+									<td><h:outputText
+											value="#{messages.lbl_protocolo_codigo}:"
+											styleClass="normalText" /><br /> <h:inputText
+											styleClass="inputText"
+											value="#{crearReporteExpedito.codigoEst}" disabled="true"></h:inputText></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+									<td><h:outputText
+											value="#{messages.lbl_iniciales_paciente}:"
+											styleClass="normalText" /><br /> <h:inputText
+											value="#{crearReporteExpedito.paciente}"
+											style="resize: vertical; width : 140px;" disabled="true"></h:inputText></td>
+									<td><rich:spacer width="25px"></rich:spacer></td>
+
+									<td><h:outputText value="#{messages.lbl_fechaReporteA}:"
+											styleClass="normalText" /> <br /> <h:inputText
+											id="fechaReporteC"
+											value="#{crearReporteExpedito.fechaReporteC}"
+											styleClass="likedate">
+
+
+										</h:inputText> <script>
+																						applyDateMask();
+																						</script></td>
+								</tr>
+							</table>
+
+							<rich:spacer height="8px"></rich:spacer>
+
+
+
+							<rich:simpleTogglePanel label="#{messages.lbl_productos_estudio}"
+								switchType="client" opened="true">
+								<a4j:outputPanel id="datosP">
+									<a4j:region id="hacorgP">
+
+										<table cellpadding="0px" cellspacing="0px" border="0px"
+											id="entradaP">
+											<tr>
+												<td><h:outputText value="#{messages.lbl_producto}:"
+														styleClass="normalText" /> <rich:message
+														for="medicamentoP" showDetail="false" tooltip="true"
+														style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('medicamentoP').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message></td>
+
+												<td><rich:spacer width="25px" style="display: block" /></td>
+												<td><h:outputText value="#{messages.lbl_lote}:"
+														styleClass="normalText" /> <rich:message for="loteVacP"
+														showDetail="false" tooltip="true" style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('loteVacP').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message></td>
+												<td><rich:spacer width="25px" style="display: block" /></td>
+												<td><h:outputText value="#{messages.lbl_dosis}:"
+														styleClass="normalText" /> <rich:message for="dosisDiaP"
+														showDetail="false" tooltip="true" style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('dosisDiaP').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message></td>
+												<td><rich:spacer width="25px" style="display: block" /></td>
+												<td><h:outputText value="#{messages.lbl_frecuencia}:"
+														styleClass="normalText" /> <rich:message
+														for="frecuenciaP" showDetail="false" tooltip="true"
+														style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('frecuenciaP').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message></td>
+												<td><rich:spacer width="25px" style="display: block" /></td>
+												<td><h:outputText value="#{messages.lbl_via_Admin}:"
+														styleClass="normalText" /> <rich:message for="viaAP"
+														showDetail="false" tooltip="true" style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('viaAP').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message></td>
+												<td><rich:spacer width="25px" style="display: block" /></td>
+												<td><h:outputText value="#{messages.lbl_fechaAdm}:"
+														styleClass="normalText" /> <rich:message
+														for="lbl_fechaAdmP" showDetail="false" tooltip="true"
+														style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('lbl_fechaAdmP').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message></td>
+
+												<td><rich:spacer width="25px" style="display: block" /></td>
+												<td><h:outputText value="#{messages.lbl_horaAdm}:"
+														styleClass="normalText" /> <rich:message
+														for="lbl_horaAdmP" showDetail="false" tooltip="true"
+														style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('lbl_horaAdmP').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message></td>
+												<td><rich:spacer width="25px" style="display: block" /></td>
+											</tr>
+											<tr>
+												<td><h:inputText
+														value="#{crearReporteExpedito.medicamentoP}"
+														validator="#{validations_sujeto.textnumber250}"
+														styleClass="dataText" id="medicamentoP"
+														required="#{!empty param['idForm:addMedicacionP']}" /></td>
+
+												<td><rich:spacer width="25px" style="display: block" /></td>
+
+												<td><h:inputText
+														value="#{crearReporteExpedito.loteVacP}"
+														validator="#{validations_sujeto.todosCaracter}"
+														styleClass="dataText" id="loteVacP"
+														required="#{!empty param['idForm:addMedicacionP']}" /></td>
+
+												<td><rich:spacer width="25px" style="display: block" /></td>
+
+												<td><h:inputText
+														value="#{crearReporteExpedito.dosisDiaP}"
+														validator="#{validations_sujeto.todosCaracter}"
+														styleClass="dataText" id="dosisDiaP"
+														required="#{!empty param['idForm:addMedicacionP']}" /></td>
+
+												<td><rich:spacer width="25px" style="display: block" /></td>
+												<td><h:inputText
+														value="#{crearReporteExpedito.frecuenciaP}"
+														validator="#{validations_sujeto.todosCaracter}"
+														styleClass="dataText" id="frecuenciaP"
+														required="#{!empty param['idForm:addMedicacionP']}" /></td>
+												<td><rich:spacer width="25px" style="display: block" /></td>
+												<td><rich:comboBox
+														required="#{!empty param['idForm:addMedicacionP']}"
+														suggestionValues="#{crearReporteExpedito.llenarVA()}"
+														value="#{crearReporteExpedito.viaAdmonP}"
+														defaultLabel="#{messages.cbxSeleccionPorDefecto}"
+														id="viaAP">
+													</rich:comboBox></td>
+												<td><rich:spacer width="25px" style="display: block" /></td>
+												<td><h:inputText id="lbl_fechaAdmP"
+														value="#{crearReporteExpedito.fechaVacP}"
+														required="#{!empty param['idForm:addMedicacionP']}"
+														styleClass="likedate">
+
+													</h:inputText> <script>
+									             applyDateMask();
+									            </script></td>
+												<td><rich:spacer width="25px" style="display: block" /></td>
+
+												<td class="colSepGran"><rich:message for="horaVacP"
+														showDetail="false">
+														<f:facet name="errorMarker">
+															<h:outputText
+																style="color: red;cursor: pointer !important;"
+																title="#{facesMessages.getCurrentMessagesForControl('horaVacP').get(0).getDetail()}"
+																value="*" />
+														</f:facet>
+													</rich:message> <br />
+													<table cellpadding="0" cellspacing="0" border="0">
+														<tr>
+															<td width="38"><rich:comboBox width="38"
+																	id="horaVacP" enableManualInput="false"
+																	value="#{crearReporteExpedito.horaVacP}"
+																	defaultLabel="--">
+																	<f:selectItem itemValue="01" itemLabel="01" />
+																	<f:selectItem itemValue="02" itemLabel="02" />
+																	<f:selectItem itemValue="03" itemLabel="03" />
+																	<f:selectItem itemValue="04" itemLabel="04" />
+																	<f:selectItem itemValue="05" itemLabel="05" />
+																	<f:selectItem itemValue="06" itemLabel="06" />
+																	<f:selectItem itemValue="07" itemLabel="07" />
+																	<f:selectItem itemValue="08" itemLabel="08" />
+																	<f:selectItem itemValue="09" itemLabel="09" />
+																	<c:forEach begin="10" end="12" var="h">
+																		<f:selectItem itemValue="#{h}" itemLabel="#{h}" />
+																	</c:forEach>
+																	<a4j:support event="onselect" ajaxSingle="true"
+																		reRender="minutosV">
+																	</a4j:support>
+																</rich:comboBox></td>
+															<td><rich:message for="horaV" showDetail="false">
+																	<f:facet name="errorMarker">
+																		<h:outputText value="*" styleClass="errorLabel"
+																			title="#{facesMessages.getCurrentMessagesForControl('horaV').get(0).detail}" />
+																	</f:facet>
+																</rich:message></td>
+															<td><rich:spacer width="2" />:<rich:spacer
+																	width="2" /></td>
+															<td width="38"><a4j:outputPanel id="minutosV">
+																	<rich:comboBox
+																		disabled="#{empty crearReporteExpedito.horaVacP}"
+																		width="38" enableManualInput="false"
+																		value="#{crearReporteExpedito.minutosVacP}"
+																		defaultLabel="--">
+																		<f:selectItem itemValue="00" itemLabel="00" />
+																		<f:selectItem itemValue="01" itemLabel="01" />
+																		<f:selectItem itemValue="02" itemLabel="02" />
+																		<f:selectItem itemValue="03" itemLabel="03" />
+																		<f:selectItem itemValue="04" itemLabel="04" />
+																		<f:selectItem itemValue="05" itemLabel="05" />
+																		<f:selectItem itemValue="06" itemLabel="06" />
+																		<f:selectItem itemValue="07" itemLabel="07" />
+																		<f:selectItem itemValue="08" itemLabel="08" />
+																		<f:selectItem itemValue="09" itemLabel="09" />
+																		<c:forEach begin="10" end="59" var="m">
+																			<f:selectItem itemValue="#{m}" itemLabel="#{m}" />
+																		</c:forEach>
+																		<a4j:support event="onselect" ajaxSingle="true"
+																			reRender="am_pm_V">
+																		</a4j:support>
+																	</rich:comboBox>
+																</a4j:outputPanel></td>
+															<td><rich:message for="minV" showDetail="false">
+																	<f:facet name="errorMarker">
+																		<h:outputText value="*" styleClass="errorLabel"
+																			title="#{facesMessages.getCurrentMessagesForControl('minV').get(0).detail}" />
+																	</f:facet>
+																</rich:message></td>
+															<td><rich:spacer width="4" /></td>
+															<td width="43"><a4j:outputPanel id="am_pm_V">
+																	<rich:comboBox
+																		disabled="#{empty crearReporteExpedito.minutosVacP}"
+																		id="segV" width="43" enableManualInput="false"
+																		value="#{crearReporteExpedito.am_pmVacP}"
+																		defaultLabel="--">
+																		<f:selectItem itemValue="AM" itemLabel="AM" />
+																		<f:selectItem itemValue="PM" itemLabel="PM" />
+																	</rich:comboBox>
+																</a4j:outputPanel></td>
+															<td><rich:message for="segV" showDetail="false">
+																	<f:facet name="errorMarker">
+																		<h:outputText value="*" styleClass="errorLabel"
+																			title="#{facesMessages.getCurrentMessagesForControl('segV').get(0).detail}" />
+																	</f:facet>
+																</rich:message></td>
+														</tr>
+													</table></td>
+
+											</tr>
+
+										</table>
+
+
+										<div align="right">
+											<a4j:commandButton id="addMedicacionP"
+												value="#{messages.btn_adicionar}"
+												action="#{crearReporteExpedito.AdicionarP()}"
+												style="margin-bottom: 0px; margin-top:8px; margin-left:0px;"
+												reRender="esteprimosP,intervP,datosP,hacorgP">
+											</a4j:commandButton>
+										</div>
+									</a4j:region>
+								</a4j:outputPanel>
+								<rich:spacer height="5px" style="display: block" />
+								<a4j:outputPanel id="esteprimosP">
+									<rich:panel
+										rendered="#{empty crearReporteExpedito.ListaMedicacionSinEliminar2()}">
+										<f:facet name="header">
+											<h:outputText value="#{messages.lbl_listadoProductos}" />
+										</f:facet>
+										<h:outputText value="#{messages.msg_noInformacion_ens}" />
+									</rich:panel>
+									<a4j:region id="intervP">
+										<rich:dataTable
+											rendered="#{not empty crearReporteExpedito.ListaMedicacionSinEliminar2()}"
+											width="100%" id="listaP"
+											value="#{crearReporteExpedito.ListaMedicacionSinEliminar2()}"
+											var="result" columnsWidth="14%,14%,14%,14%,14%,14%,14%,2%"
+											rowKeyVar="row">
+											<f:facet name="header">
+												<h:outputText value="#{messages.lbl_listadoProductos}" />
+											</f:facet>
+											<h:column whidt="25%">
+												<f:facet name="header">
+													<s:div>
+														<s:div style="float: left; valign: bottom;">
+															<h:outputText value="#{messages.lbl_medicamento}" />
+														</s:div>
+														<s:div style="float: right;">
+
+
+
+														</s:div>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{result.medicamento}">
+
+												</h:outputText>
+											</h:column>
+
+											<h:column whidt="25%">
+												<f:facet name="header">
+													<s:div>
+														<s:div style="float: left; valign: bottom;">
+															<h:outputText value="#{messages.lbl_lote}" />
+														</s:div>
+														<s:div style="float: right;">
+
+
+
+														</s:div>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{result.lote}">
+
+												</h:outputText>
+											</h:column>
+											<h:column whidt="25%">
+												<f:facet name="header">
+													<s:div>
+														<s:div style="float: left; valign: bottom;">
+															<h:outputText value="#{messages.lbl_dosis}" />
+														</s:div>
+														<s:div style="float: right;">
+
+
+
+														</s:div>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{result.dosisxdia}">
+
+												</h:outputText>
+											</h:column>
+
+											<h:column whidt="25%">
+												<f:facet name="header">
+													<s:div>
+														<s:div style="float: left; valign: bottom;">
+															<h:outputText value="#{messages.lbl_frecuencia}" />
+														</s:div>
+														<s:div style="float: right;">
+
+
+
+														</s:div>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{result.frecuencia}">
+
+												</h:outputText>
+											</h:column>
+											<h:column whidt="25%">
+												<f:facet name="header">
+													<s:div>
+														<s:div style="float: left; valign: bottom;">
+															<h:outputText value="#{messages.lbl_via_admon}" />
+														</s:div>
+														<s:div style="float: right;">
+
+
+
+														</s:div>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{result.reViasadmi.descripcion}">
+
+												</h:outputText>
+											</h:column>
+											<h:column whidt="25%">
+												<f:facet name="header">
+													<s:div>
+														<s:div style="float: left; valign: bottom;">
+															<h:outputText value="#{messages.lbl_fechaAdm}" />
+														</s:div>
+														<s:div style="float: right;">
+
+
+
+														</s:div>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{result.fechaAdm}">
+
+												</h:outputText>
+											</h:column>
+											<h:column whidt="25%">
+												<f:facet name="header">
+													<s:div>
+														<s:div style="float: left; valign: bottom;">
+															<h:outputText value="#{messages.lbl_horaAdm}" />
+														</s:div>
+														<s:div style="float: right;">
+
+
+
+														</s:div>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{result.horaAdm}">
+
+												</h:outputText>
+											</h:column>
+
+											<h:column>
+												<div align="center">
+													<a4j:commandLink
+														action="#{crearReporteExpedito.eliminarMedicacion2(row)}"
+														reRender="intervP,esteprimosP">
+														<h:graphicImage title="#{messages.eliminar}"
+															value="/resources/icons/default/acciones/eliminar.png"
+															style="border: 0px; cursor:pointer;">
+
+														</h:graphicImage>
+													</a4j:commandLink>
+												</div>
+											</h:column>
+
+
+										</rich:dataTable>
+										<br />
+
+									</a4j:region>
+
+									<br />
+
+								</a4j:outputPanel>
+
+								<rich:spacer height="8px" style="display: block" />
+								<table>
+									<tr>
+										<td><h:outputText value="#{messages.lbl_terminoTrat}:"
+												styleClass="normalText" /> <span class="errorSpan"
+											style="color: red;">*</span> <rich:message for="terminoTrat"
+												showDetail="false" tooltip="true"
+												style="color:red; width : 108px; height : 18px;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('terminoTrat').get(0).getDetail()}" />
+												</f:facet>
+											</rich:message> <br /> <h:selectOneRadio layout="lineDirection"
+												required="#{!empty param['idForm:aceptarr']}"
+												id="terminoTrat" value="#{crearReporteExpedito.terminoTrat}">
+												<f:selectItem itemValue="#{messages.lbl_si}"
+													itemLabel="#{messages.lbl_si}" />
+												<f:selectItem itemValue="#{messages.lbl_no}"
+													itemLabel="#{messages.lbl_no}" />
+
+
+											</h:selectOneRadio></td>
+									</tr>
+									<tr>
+										<td><rich:spacer height="8px" style="display: block" />
+										</td>
+									</tr>
+
+									<tr>
+										<td><h:outputText value="#{messages.lbl_indicacion}:"
+												styleClass="normalText" /> <span class="errorSpan"
+											style="color: red;">*</span> <rich:message for="indicacion"
+												showDetail="false" tooltip="true"
+												style="color:red; width : 108px; height : 18px;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('indicacion').get(0).getDetail()}" />
+												</f:facet>
+											</rich:message> <br /> <h:inputTextarea
+												value="#{crearReporteExpedito.indicacion}" id="indicacion"
+												style="resize: vertical; width : 180px; height : 30px;"
+												required="#{!empty param['idForm:aceptarr']}"
+												validator="#{validations_sujeto.textnumber250}">
+
+											</h:inputTextarea></td>
+									</tr>
+								</table>
+
+							</rich:simpleTogglePanel>
+
+							<rich:spacer height="8px"></rich:spacer>
+
+							<rich:simpleTogglePanel
+								label="#{messages.lbl_vacunas_concamitante}" switchType="client"
+								opened="true">
+								<a4j:outputPanel id="datos">
+									<a4j:region id="hacorg">
+
+										<table cellpadding="0px" cellspacing="0px" border="0px"
+											id="entrada">
+											<tr>
+												<td><h:outputText value="#{messages.lbl_producto}:"
+														styleClass="normalText" /> <rich:message
+														for="medicamento" showDetail="false" tooltip="true"
+														style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('medicamento').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message></td>
+												<td><rich:spacer width="25px" style="display: block" /></td>
+												<td><h:outputText value="#{messages.lbl_presentacion}:"
+														styleClass="normalText" /> <rich:message
+														for="presentacionVac" showDetail="false" tooltip="true"
+														style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('presentacionVac').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message></td>
+												<td><rich:spacer width="25px" style="display: block" /></td>
+												<td><h:outputText value="#{messages.lbl_lote}:"
+														styleClass="normalText" /> <rich:message for="loteVac"
+														showDetail="false" tooltip="true" style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('loteVac').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message></td>
+												<td><rich:spacer width="25px" style="display: block" /></td>
+												<td><h:outputText value="#{messages.lbl_dosis}:"
+														styleClass="normalText" /> <rich:message for="dosisDia"
+														showDetail="false" tooltip="true" style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('dosisDia').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message></td>
+												<td><rich:spacer width="25px" style="display: block" /></td>
+												<td><h:outputText value="#{messages.lbl_frecuencia}:"
+														styleClass="normalText" /> <rich:message for="frecuencia"
+														showDetail="false" tooltip="true" style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('frecuencia').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message></td>
+												<td><rich:spacer width="25px" style="display: block" /></td>
+												<td><h:outputText value="#{messages.lbl_via_Admin}:"
+														styleClass="normalText" /> <rich:message for="viaA1"
+														showDetail="false" tooltip="true" style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('viaA1').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message></td>
+												<td><rich:spacer width="25px" style="display: block" /></td>
+												<td><h:outputText value="#{messages.lbl_fechaAdm}:"
+														styleClass="normalText" /> <rich:message
+														for="lbl_fechaAdm" showDetail="false" tooltip="true"
+														style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('lbl_fechaAdm').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message></td>
+
+												<td><rich:spacer width="25px" style="display: block" /></td>
+												<td><h:outputText value="#{messages.lbl_horaAdm}:"
+														styleClass="normalText" /> <rich:message
+														for="lbl_horaAdm" showDetail="false" tooltip="true"
+														style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('lbl_horaAdm').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message></td>
+												<td><rich:spacer width="25px" style="display: block" /></td>
+											</tr>
+											<tr>
+												<td><h:inputText
+														value="#{crearReporteExpedito.medicamento}"
+														validator="#{validations_sujeto.textnumber250}"
+														styleClass="dataText" id="medicamento"
+														required="#{!empty param['idForm:addMedicacion']}" /></td>
+												<td><rich:spacer width="25px" style="display: block" /></td>
+												<td><h:inputText
+														value="#{crearReporteExpedito.presentacionVac}"
+														validator="#{validations_sujeto.textnumber250}"
+														styleClass="dataText" id="presentacionVac"
+														required="#{!empty param['idForm:addMedicacion']}" /></td>
+												<td><rich:spacer width="25px" style="display: block" /></td>
+
+												<td><h:inputText
+														value="#{crearReporteExpedito.loteVac}"
+														validator="#{validations_sujeto.todosCaracter}"
+														styleClass="dataText" id="loteVac"
+														required="#{!empty param['idForm:addMedicacion']}" /></td>
+
+												<td><rich:spacer width="25px" style="display: block" /></td>
+
+												<td><h:inputText
+														value="#{crearReporteExpedito.dosisDia}"
+														validator="#{validations_sujeto.todosCaracter}"
+														styleClass="dataText" id="dosisDia"
+														required="#{!empty param['idForm:addMedicacion']}" /></td>
+
+												<td><rich:spacer width="25px" style="display: block" /></td>
+												<td><h:inputText
+														value="#{crearReporteExpedito.frecuencia}"
+														validator="#{validations_sujeto.todosCaracter}"
+														styleClass="dataText" id="frecuencia"
+														required="#{!empty param['idForm:addMedicacion']}" /></td>
+												<td><rich:spacer width="25px" style="display: block" /></td>
+												<td><rich:comboBox
+														required="#{!empty param['idForm:addMedicacion']}"
+														suggestionValues="#{crearReporteExpedito.llenarVA()}"
+														value="#{crearReporteExpedito.viaAdmon}"
+														defaultLabel="#{messages.cbxSeleccionPorDefecto}"
+														id="viaA1">
+													</rich:comboBox></td>
+												<td><rich:spacer width="25px" style="display: block" /></td>
+												<td><h:inputText id="lbl_fechaAdm"
+														value="#{crearReporteExpedito.fechaVac}"
+														required="#{!empty param['idForm:addMedicacion']}"
+														styleClass="likedate">
+
+													</h:inputText> <script>
+									applyDateMask();
+									</script></td>
+												<td><rich:spacer width="25px" style="display: block" /></td>
+
+												<td class="colSepGran"><rich:message for="horaVac"
+														showDetail="false">
+														<f:facet name="errorMarker">
+															<h:outputText
+																style="color: red;cursor: pointer !important;"
+																title="#{facesMessages.getCurrentMessagesForControl('horaVac').get(0).getDetail()}"
+																value="*" />
+														</f:facet>
+													</rich:message> <br />
+													<table cellpadding="0" cellspacing="0" border="0">
+														<tr>
+															<td width="38"><rich:comboBox width="38"
+																	id="horaVac" enableManualInput="false"
+																	value="#{crearReporteExpedito.horaVac}"
+																	defaultLabel="--">
+																	<f:selectItem itemValue="01" itemLabel="01" />
+																	<f:selectItem itemValue="02" itemLabel="02" />
+																	<f:selectItem itemValue="03" itemLabel="03" />
+																	<f:selectItem itemValue="04" itemLabel="04" />
+																	<f:selectItem itemValue="05" itemLabel="05" />
+																	<f:selectItem itemValue="06" itemLabel="06" />
+																	<f:selectItem itemValue="07" itemLabel="07" />
+																	<f:selectItem itemValue="08" itemLabel="08" />
+																	<f:selectItem itemValue="09" itemLabel="09" />
+																	<c:forEach begin="10" end="12" var="h">
+																		<f:selectItem itemValue="#{h}" itemLabel="#{h}" />
+																	</c:forEach>
+																	<a4j:support event="onselect" ajaxSingle="true"
+																		reRender="minutosVac">
+																	</a4j:support>
+																</rich:comboBox></td>
+															<td><rich:message for="horaVac" showDetail="false">
+																	<f:facet name="errorMarker">
+																		<h:outputText value="*" styleClass="errorLabel"
+																			title="#{facesMessages.getCurrentMessagesForControl('horaVac').get(0).detail}" />
+																	</f:facet>
+																</rich:message></td>
+															<td><rich:spacer width="2" />:<rich:spacer
+																	width="2" /></td>
+															<td width="38"><a4j:outputPanel id="minutosVac">
+																	<rich:comboBox
+																		disabled="#{empty crearReporteExpedito.horaVac}"
+																		width="38" enableManualInput="false"
+																		value="#{crearReporteExpedito.minutosVac}"
+																		defaultLabel="--">
+																		<f:selectItem itemValue="00" itemLabel="00" />
+																		<f:selectItem itemValue="01" itemLabel="01" />
+																		<f:selectItem itemValue="02" itemLabel="02" />
+																		<f:selectItem itemValue="03" itemLabel="03" />
+																		<f:selectItem itemValue="04" itemLabel="04" />
+																		<f:selectItem itemValue="05" itemLabel="05" />
+																		<f:selectItem itemValue="06" itemLabel="06" />
+																		<f:selectItem itemValue="07" itemLabel="07" />
+																		<f:selectItem itemValue="08" itemLabel="08" />
+																		<f:selectItem itemValue="09" itemLabel="09" />
+																		<c:forEach begin="10" end="59" var="m">
+																			<f:selectItem itemValue="#{m}" itemLabel="#{m}" />
+																		</c:forEach>
+																		<a4j:support event="onselect" ajaxSingle="true"
+																			reRender="am_pm_Vac">
+																		</a4j:support>
+																	</rich:comboBox>
+																</a4j:outputPanel></td>
+															<td><rich:message for="minVac" showDetail="false">
+																	<f:facet name="errorMarker">
+																		<h:outputText value="*" styleClass="errorLabel"
+																			title="#{facesMessages.getCurrentMessagesForControl('minVac').get(0).detail}" />
+																	</f:facet>
+																</rich:message></td>
+															<td><rich:spacer width="4" /></td>
+															<td width="43"><a4j:outputPanel id="am_pm_Vac">
+																	<rich:comboBox
+																		disabled="#{empty crearReporteExpedito.minutosVac}"
+																		id="segVac" width="43" enableManualInput="false"
+																		value="#{crearReporteExpedito.am_pmVac}"
+																		defaultLabel="--">
+																		<f:selectItem itemValue="AM" itemLabel="AM" />
+																		<f:selectItem itemValue="PM" itemLabel="PM" />
+																	</rich:comboBox>
+																</a4j:outputPanel></td>
+															<td><rich:message for="segVac" showDetail="false">
+																	<f:facet name="errorMarker">
+																		<h:outputText value="*" styleClass="errorLabel"
+																			title="#{facesMessages.getCurrentMessagesForControl('segVac').get(0).detail}" />
+																	</f:facet>
+																</rich:message></td>
+														</tr>
+													</table></td>
+
+											</tr>
+
+										</table>
+
+
+										<div align="right">
+											<a4j:commandButton id="addMedicacion"
+												value="#{messages.btn_adicionar}"
+												action="#{crearReporteExpedito.Adicionar()}"
+												style="margin-bottom: 0px; margin-top:8px; margin-left:0px;"
+												reRender="esteprimos,interv,datos,hacorg">
+											</a4j:commandButton>
+										</div>
+									</a4j:region>
+								</a4j:outputPanel>
+								<rich:spacer height="5px" style="display: block" />
+								<a4j:outputPanel id="esteprimos">
+									<rich:panel
+										rendered="#{empty crearReporteExpedito.ListaMedicacionSinEliminar()}">
+										<f:facet name="header">
+											<h:outputText value="#{messages.lbl_listadoMedicacion}" />
+										</f:facet>
+										<h:outputText value="#{messages.msg_noInformacion_ens}" />
+									</rich:panel>
+									<a4j:region id="interv">
+										<rich:dataTable
+											rendered="#{not empty crearReporteExpedito.ListaMedicacionSinEliminar()}"
+											width="100%" id="lista"
+											value="#{crearReporteExpedito.ListaMedicacionSinEliminar()}"
+											var="result"
+											columnsWidth="12%,12%,12%,12%,12%,12%,12%,12%,2%"
+											rowKeyVar="row">
+											<f:facet name="header">
+												<h:outputText value="#{messages.lbl_listadoMedicacion}" />
+											</f:facet>
+											<h:column whidt="25%">
+												<f:facet name="header">
+													<s:div>
+														<s:div style="float: left; valign: bottom;">
+															<h:outputText value="#{messages.lbl_medicamento}" />
+														</s:div>
+														<s:div style="float: right;">
+
+
+
+														</s:div>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{result.medicamento}">
+
+												</h:outputText>
+											</h:column>
+											<h:column whidt="25%">
+												<f:facet name="header">
+													<s:div>
+														<s:div style="float: left; valign: bottom;">
+															<h:outputText value="#{messages.lbl_presentacion}" />
+														</s:div>
+														<s:div style="float: right;">
+
+
+
+														</s:div>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{result.presentacion}">
+
+												</h:outputText>
+											</h:column>
+											<h:column whidt="25%">
+												<f:facet name="header">
+													<s:div>
+														<s:div style="float: left; valign: bottom;">
+															<h:outputText value="#{messages.lbl_lote}" />
+														</s:div>
+														<s:div style="float: right;">
+
+
+
+														</s:div>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{result.lote}">
+
+												</h:outputText>
+											</h:column>
+											<h:column whidt="25%">
+												<f:facet name="header">
+													<s:div>
+														<s:div style="float: left; valign: bottom;">
+															<h:outputText value="#{messages.lbl_dosis}" />
+														</s:div>
+														<s:div style="float: right;">
+
+
+
+														</s:div>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{result.dosisxdia}">
+
+												</h:outputText>
+											</h:column>
+
+											<h:column whidt="25%">
+												<f:facet name="header">
+													<s:div>
+														<s:div style="float: left; valign: bottom;">
+															<h:outputText value="#{messages.lbl_frecuencia}" />
+														</s:div>
+														<s:div style="float: right;">
+
+
+
+														</s:div>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{result.frecuencia}">
+
+												</h:outputText>
+											</h:column>
+											<h:column whidt="25%">
+												<f:facet name="header">
+													<s:div>
+														<s:div style="float: left; valign: bottom;">
+															<h:outputText value="#{messages.lbl_via_admon}" />
+														</s:div>
+														<s:div style="float: right;">
+
+
+
+														</s:div>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{result.reViasadmi.descripcion}">
+
+												</h:outputText>
+											</h:column>
+											<h:column whidt="25%">
+												<f:facet name="header">
+													<s:div>
+														<s:div style="float: left; valign: bottom;">
+															<h:outputText value="#{messages.lbl_fechaAdm}" />
+														</s:div>
+														<s:div style="float: right;">
+
+
+
+														</s:div>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{result.fechaAdm}">
+
+												</h:outputText>
+											</h:column>
+											<h:column whidt="25%">
+												<f:facet name="header">
+													<s:div>
+														<s:div style="float: left; valign: bottom;">
+															<h:outputText value="#{messages.lbl_horaAdm}" />
+														</s:div>
+														<s:div style="float: right;">
+
+
+
+														</s:div>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{result.horaAdm}">
+
+												</h:outputText>
+											</h:column>
+
+											<h:column>
+												<div align="center">
+													<a4j:commandLink
+														action="#{crearReporteExpedito.eliminarMedicacion(row)}"
+														reRender="interv,esteprimos">
+														<h:graphicImage title="#{messages.eliminar}"
+															value="/resources/icons/default/acciones/eliminar.png"
+															style="border: 0px; cursor:pointer;">
+
+														</h:graphicImage>
+													</a4j:commandLink>
+												</div>
+											</h:column>
+
+
+										</rich:dataTable>
+										<br />
+
+									</a4j:region>
+
+									<br />
+
+								</a4j:outputPanel>
+
+							</rich:simpleTogglePanel>
+							<rich:spacer height="8px"></rich:spacer>
+							<rich:simpleTogglePanel
+								label="#{messages.lbl_enfermedades_intecurrentes}"
+								switchType="client" opened="true">
+								<a4j:outputPanel id="datosE">
+									<a4j:region id="hacorgE">
+
+										<table cellpadding="0px" cellspacing="0px" border="0px"
+											id="entradaEnferm">
+											<tr>
+												<td><h:outputText value="#{messages.lbl_enfermedad}:"
+														styleClass="normalText" /> <rich:message for="enfermedad"
+														showDetail="false" tooltip="true" style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('enfermedad').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message></td>
+												<td><rich:spacer width="25px" style="display: block" /></td>
+												<td><h:outputText value="#{messages.lbl_persiste}:"
+														styleClass="normalText" /> <rich:message for="persiste"
+														showDetail="false" tooltip="true" style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('persiste').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message></td>
+												<td><rich:spacer width="25px" style="display: block" /></td>
+
+
+											</tr>
+											<tr>
+												<td><h:inputText
+														value="#{crearReporteExpedito.enfermedad}"
+														validator="#{validations_sujeto.textnumber250}"
+														styleClass="dataText" id="enfermedad"
+														required="#{!empty param['idForm:addEnfermedad']}" /></td>
+												<td><rich:spacer width="25px" style="display: block" /></td>
+												<td><h:selectOneRadio layout="lineDirection"
+														required="#{!empty param['idForm:addEnfermedad']}"
+														id="persiste" value="#{crearReporteExpedito.persiste}">
+														<f:selectItem itemValue="#{messages.lbl_si}"
+															itemLabel="#{messages.lbl_si}" />
+														<f:selectItem itemValue="#{messages.lbl_no}"
+															itemLabel="#{messages.lbl_no}" />
+
+
+													</h:selectOneRadio></td>
+
+
+
+											</tr>
+
+										</table>
+
+
+										<div align="right">
+											<a4j:commandButton id="addEnfermedad"
+												value="#{messages.btn_adicionar}"
+												action="#{crearReporteExpedito.AdicionarE()}"
+												style="margin-bottom: 0px; margin-top:8px; margin-left:0px;"
+												reRender="esteprimosE,intervE,datosE,hacorgE">
+											</a4j:commandButton>
+										</div>
+									</a4j:region>
+								</a4j:outputPanel>
+								<rich:spacer height="5px" style="display: block" />
+								<a4j:outputPanel id="esteprimosE">
+									<rich:panel
+										rendered="#{empty crearReporteExpedito.ListaMedicacionSinEliminar3()}">
+										<f:facet name="header">
+											<h:outputText value="#{messages.lbl_listadoEnfermedades}" />
+										</f:facet>
+										<h:outputText value="#{messages.msg_noInformacion_ens}" />
+									</rich:panel>
+									<a4j:region id="intervE">
+										<rich:dataTable
+											rendered="#{not empty crearReporteExpedito.ListaMedicacionSinEliminar3()}"
+											width="100%" id="listaE"
+											value="#{crearReporteExpedito.ListaMedicacionSinEliminar3()}"
+											var="result" columnsWidth="70%,28%,2%" rowKeyVar="row">
+											<f:facet name="header">
+												<h:outputText value="#{messages.lbl_listadoEnfermedades}" />
+											</f:facet>
+											<h:column whidt="25%">
+												<f:facet name="header">
+													<s:div>
+														<s:div style="float: left; valign: bottom;">
+															<h:outputText value="#{messages.lbl_enfermedad}" />
+														</s:div>
+														<s:div style="float: right;">
+
+
+
+														</s:div>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{result.medicamento}">
+
+												</h:outputText>
+											</h:column>
+											<h:column whidt="25%">
+												<f:facet name="header">
+													<s:div>
+														<s:div style="float: left; valign: bottom;">
+															<h:outputText value="#{messages.lbl_persiste}" />
+														</s:div>
+														<s:div style="float: right;">
+
+
+
+														</s:div>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{result.presentacion}">
+
+												</h:outputText>
+											</h:column>
+
+											<h:column>
+												<div align="center">
+													<a4j:commandLink
+														action="#{crearReporteExpedito.eliminarMedicacion3(row)}"
+														reRender="intervE,esteprimosE">
+														<h:graphicImage title="#{messages.eliminar}"
+															value="/resources/icons/default/acciones/eliminar.png"
+															style="border: 0px; cursor:pointer;">
+
+														</h:graphicImage>
+													</a4j:commandLink>
+												</div>
+											</h:column>
+
+
+										</rich:dataTable>
+										<br />
+
+									</a4j:region>
+
+									<br />
+
+								</a4j:outputPanel>
+
+							</rich:simpleTogglePanel>
+							<rich:spacer height="8px" />
+							<rich:simpleTogglePanel
+								label="#{messages.lbl_datos_relacionados}" switchType="client"
+								opened="true">
+								<a4j:outputPanel id="datosRelacionadosC">
+									<table cellpadding="0px" cellspacing="0px" border="0px">
+										<tr>
+											<td><h:outputText
+													value="#{messages.lbl_nombre_apellidosN}:"
+													styleClass="normalText" /><br /> <h:inputTextarea
+													value="#{crearReporteExpedito.notificador}"
+													style="resize: vertical; width : 180px;" disabled="true" />
+											</td>
+											<td><rich:spacer width="25px" /></td>
+											<td><h:outputText value="#{messages.lbl_firma}:"
+													styleClass="normalText" /><br /> <h:inputText
+													styleClass="inputText" id="firmaC"
+													required="#{!empty param['idForm:aceptarr']}"
+													disabled="true" /></td>
+											<td><rich:spacer width="25px" /></td>
+											<td><h:outputText
+													value="#{messages.lbl_direccion_telefono}:"
+													styleClass="normalText" /> <rich:message for="emailC"
+													showDetail="false" tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('emailC').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <a4j:outputPanel id="opEmailC">
+													<h:inputTextarea id="emailC"
+														disabled="#{crearReporteExpedito.usuarioCambiar.telefono != null and !crearReporteExpedito.usuarioCambiar.telefono.equals('')}"
+														style="resize: vertical; width : 180px;"
+														value="#{crearReporteExpedito.email}"
+														required="#{(crearReporteExpedito.email == null) and (!empty param['idForm:aceptarr'])}">
+														<a4j:support ajaxSingle="true" event="onchange"
+															reRender="opEmailB,opEmailC,opEmailD,opEmail"
+															limitToList="true" />
+													</h:inputTextarea>
+												</a4j:outputPanel></td>
+										</tr>
+										<tr>
+											<td colspan="8"><rich:spacer height="8px"
+													style="display: block" /></td>
+										</tr>
+
+										<tr>
+											<td><h:outputText value="#{messages.lbl_fechaReporte1}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message
+													for="fechaReporte3" showDetail="false" tooltip="true"
+													style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('fechaReporte3').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br />
+											<a4j:outputPanel id="opfechaReporte3">
+													<h:inputText id="fechaReporte3"
+														required="#{(!empty param['idForm:aceptarr'])}"
+														value="#{crearReporteExpedito.fechaReporte1}"
+														styleClass="likedate">
+														<a4j:support ajaxSingle="true" event="onchange"
+															reRender="opfechaReporte1,opfechaReporte2,opfechaReporte3,opfechaReporte4"
+															limitToList="true" />
+													</h:inputText>
+													<script>
+													applyDateMask();
+												</script>
+												</a4j:outputPanel></td>
+										</tr>
+									</table>
+								</a4j:outputPanel>
+							</rich:simpleTogglePanel>
+						</rich:tab>
+						<rich:tab>
+							<f:facet name="label">
+								<s:div>
+									<h:outputText value="#{messages.lbl_seccionD_ens}" />
+									<a4j:outputPanel ajaxRendered="true">
+										<h:outputText value="*" style="color:red;"
+											styleClass="errorLabel"
+											rendered="#{not empty facesMessages.getCurrentMessagesForControl('tratamientoQuir') or not empty facesMessages.getCurrentMessagesForControl('especTrat') or not empty facesMessages.getCurrentMessagesForControl('direccionD') or not empty facesMessages.getCurrentMessagesForControl('fechaReporte4') or not empty facesMessages.getCurrentMessagesForControl('profesionD') or not empty facesMessages.getCurrentMessagesForControl('emailD')}" />
+									</a4j:outputPanel>
+								</s:div>
+							</f:facet>
+							<table>
+								<tr>
+									<td><h:outputText
+											value="#{messages.lbl_protocolo_codigo}:"
+											styleClass="normalText" /><br /> <h:inputText
+											styleClass="inputText"
+											value="#{crearReporteExpedito.codigoEst}" disabled="true" />
+									</td>
+									<td><rich:spacer width="25px" /></td>
+									<td><h:outputText
+											value="#{messages.lbl_iniciales_paciente}:"
+											styleClass="normalText" /><br /> <h:inputText
+											value="#{crearReporteExpedito.paciente}"
+											style="resize: vertical; width : 140px;" disabled="true" />
+									</td>
+									<td><rich:spacer width="25px" /></td>
+									<td><h:outputText value="#{messages.lbl_fechaReporteA}:"
+											styleClass="normalText" /><br /> <h:inputText
+											id="fechaReporteD"
+											value="#{crearReporteExpedito.fechaReporteD}"
+											styleClass="likedate" /> <script>
+											applyDateMask();
+										</script></td>
+								</tr>
+							</table>
+							<rich:spacer height="8px" />
+							<rich:simpleTogglePanel label="#{messages.lbl_farmacos_otros}"
+								switchType="client" opened="true">
+								<a4j:outputPanel id="datosF">
+									<a4j:region id="hacorgF">
+										<table cellpadding="0px" cellspacing="0px" border="0px"
+											id="entradaF">
+											<tr>
+												<td><h:outputText value="#{messages.lbl_farmaco}:"
+														styleClass="normalText" /> <rich:message
+														for="medicamentoF" showDetail="false" tooltip="true"
+														style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('medicamentoF').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message></td>
+												<td><rich:spacer width="25px" style="display: block" />
+												</td>
+												<td><h:outputText value="#{messages.lbl_dosis}:"
+														styleClass="normalText" /> <rich:message for="dosisDiaF"
+														showDetail="false" tooltip="true" style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('dosisDiaF').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message></td>
+												<td><rich:spacer width="25px" style="display: block" />
+												</td>
+												<td><h:outputText value="#{messages.lbl_frecuencia}:"
+														styleClass="normalText" /> <rich:message
+														for="frecuenciaF" showDetail="false" tooltip="true"
+														style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('frecuenciaF').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message></td>
+												<td><rich:spacer width="25px" style="display: block" />
+												</td>
+												<td><h:outputText value="#{messages.lbl_via_Admin}:"
+														styleClass="normalText" /> <rich:message for="viaA1F"
+														showDetail="false" tooltip="true" style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('viaA1F').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message></td>
+												<td><rich:spacer width="25px" style="display: block" />
+												</td>
+												<td><h:outputText value="#{messages.lbl_fechaAdm}:"
+														styleClass="normalText" /> <rich:message
+														for="lbl_fechaAdmF" showDetail="false" tooltip="true"
+														style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('lbl_fechaAdmF').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message></td>
+												<td><rich:spacer width="25px" style="display: block" />
+												</td>
+												<td><h:outputText value="#{messages.lbl_horaAdm}:"
+														styleClass="normalText" /> <span class="errorSpan"
+													style="color: red;">*</span> <rich:message
+														for="lbl_horaAdmF" showDetail="false" tooltip="true"
+														style="color:red;">
+														<f:facet name="errorMarker">
+															<h:outputText value="*"
+																title="#{facesMessages.getCurrentMessagesForControl('lbl_horaAdmF').get(0).getDetail()}" />
+														</f:facet>
+													</rich:message></td>
+												<td><rich:spacer width="25px" style="display: block" />
+												</td>
+											</tr>
+											<tr>
+												<td><h:inputText
+														value="#{crearReporteExpedito.medicamentoF}"
+														validator="#{validations_sujeto.textnumber250}"
+														styleClass="dataText" id="medicamentoF"
+														required="#{!empty param['idForm:addMedicacionF']}" /></td>
+												<td><rich:spacer width="25px" style="display: block" />
+												</td>
+												<td><h:inputText
+														value="#{crearReporteExpedito.dosisDiaF}"
+														validator="#{validations_sujeto.todosCaracter}"
+														styleClass="dataText" id="dosisDiaF"
+														required="#{!empty param['idForm:addMedicacionF']}" /></td>
+												<td><rich:spacer width="25px" style="display: block" />
+												</td>
+												<td><h:inputText
+														value="#{crearReporteExpedito.frecuenciaF}"
+														validator="#{validations_sujeto.todosCaracter}"
+														styleClass="dataText" id="frecuenciaF"
+														required="#{!empty param['idForm:addMedicacionF']}" /></td>
+												<td><rich:spacer width="25px" style="display: block" />
+												</td>
+												<td><rich:comboBox
+														required="#{!empty param['idForm:addMedicacionF']}"
+														suggestionValues="#{crearReporteExpedito.llenarVA()}"
+														value="#{crearReporteExpedito.viaAdmonF}"
+														defaultLabel="#{messages.cbxSeleccionPorDefecto}"
+														id="viaA1F" /></td>
+												<td><rich:spacer width="25px" style="display: block" />
+												</td>
+												<td><h:inputText id="lbl_fechaAdmF"
+														value="#{crearReporteExpedito.fechaVacF}"
+														required="#{!empty param['idForm:addMedicacionF']}"
+														styleClass="likedate" /> <script>
+														applyDateMask();
+													</script></td>
+												<td><rich:spacer width="25px" style="display: block" />
+												</td>
+
+
+												<td class="colSepGran"><rich:message for="horaVacF"
+														showDetail="false">
+														<f:facet name="errorMarker">
+															<h:outputText
+																style="color: red;cursor: pointer !important;"
+																title="#{facesMessages.getCurrentMessagesForControl('horaVacF').get(0).getDetail()}"
+																value="*" />
+														</f:facet>
+													</rich:message> <br />
+													<table cellpadding="0" cellspacing="0" border="0">
+														<tr>
+															<td width="38"><rich:comboBox width="38"
+																	id="horaVacF" enableManualInput="false"
+																	value="#{crearReporteExpedito.horaVacF}"
+																	defaultLabel="--">
+																	<f:selectItem itemValue="01" itemLabel="01" />
+																	<f:selectItem itemValue="02" itemLabel="02" />
+																	<f:selectItem itemValue="03" itemLabel="03" />
+																	<f:selectItem itemValue="04" itemLabel="04" />
+																	<f:selectItem itemValue="05" itemLabel="05" />
+																	<f:selectItem itemValue="06" itemLabel="06" />
+																	<f:selectItem itemValue="07" itemLabel="07" />
+																	<f:selectItem itemValue="08" itemLabel="08" />
+																	<f:selectItem itemValue="09" itemLabel="09" />
+																	<c:forEach begin="10" end="12" var="h">
+																		<f:selectItem itemValue="#{h}" itemLabel="#{h}" />
+																	</c:forEach>
+																	<a4j:support event="onselect" ajaxSingle="true"
+																		reRender="minutosVacF">
+																	</a4j:support>
+																</rich:comboBox></td>
+															<td><rich:message for="horaVacF" showDetail="false">
+																	<f:facet name="errorMarker">
+																		<h:outputText value="*" styleClass="errorLabel"
+																			title="#{facesMessages.getCurrentMessagesForControl('horaVacF').get(0).detail}" />
+																	</f:facet>
+																</rich:message></td>
+															<td><rich:spacer width="2" />:<rich:spacer
+																	width="2" /></td>
+															<td width="38"><a4j:outputPanel id="minutosVacF">
+																	<rich:comboBox
+																		disabled="#{empty crearReporteExpedito.horaVacF}"
+																		width="38" enableManualInput="false"
+																		value="#{crearReporteExpedito.minutosVacF}"
+																		defaultLabel="--">
+																		<f:selectItem itemValue="00" itemLabel="00" />
+																		<f:selectItem itemValue="01" itemLabel="01" />
+																		<f:selectItem itemValue="02" itemLabel="02" />
+																		<f:selectItem itemValue="03" itemLabel="03" />
+																		<f:selectItem itemValue="04" itemLabel="04" />
+																		<f:selectItem itemValue="05" itemLabel="05" />
+																		<f:selectItem itemValue="06" itemLabel="06" />
+																		<f:selectItem itemValue="07" itemLabel="07" />
+																		<f:selectItem itemValue="08" itemLabel="08" />
+																		<f:selectItem itemValue="09" itemLabel="09" />
+																		<c:forEach begin="10" end="59" var="m">
+																			<f:selectItem itemValue="#{m}" itemLabel="#{m}" />
+																		</c:forEach>
+																		<a4j:support event="onselect" ajaxSingle="true"
+																			reRender="am_pm_VacF">
+																		</a4j:support>
+																	</rich:comboBox>
+																</a4j:outputPanel></td>
+															<td><rich:message for="minVacF" showDetail="false">
+																	<f:facet name="errorMarker">
+																		<h:outputText value="*" styleClass="errorLabel"
+																			title="#{facesMessages.getCurrentMessagesForControl('minVacF').get(0).detail}" />
+																	</f:facet>
+																</rich:message></td>
+															<td><rich:spacer width="4" /></td>
+															<td width="43"><a4j:outputPanel id="am_pm_VacF">
+																	<rich:comboBox
+																		disabled="#{empty crearReporteExpedito.minutosVacF}"
+																		id="segVacF" width="43" enableManualInput="false"
+																		value="#{crearReporteExpedito.am_pmVacF}"
+																		defaultLabel="--">
+																		<f:selectItem itemValue="AM" itemLabel="AM" />
+																		<f:selectItem itemValue="PM" itemLabel="PM" />
+																	</rich:comboBox>
+																</a4j:outputPanel></td>
+															<td><rich:message for="segVacF" showDetail="false">
+																	<f:facet name="errorMarker">
+																		<h:outputText value="*" styleClass="errorLabel"
+																			title="#{facesMessages.getCurrentMessagesForControl('segVacF').get(0).detail}" />
+																	</f:facet>
+																</rich:message></td>
+														</tr>
+													</table></td>
+
+											</tr>
+										</table>
+										<div align="right">
+											<a4j:commandButton id="addMedicacionF"
+												value="#{messages.btn_adicionar}"
+												action="#{crearReporteExpedito.Adicionar1()}"
+												style="margin-bottom: 0px; margin-top:8px; margin-left:0px;"
+												reRender="esteprimosF, intervF, datosF, hacorgF" />
+										</div>
+									</a4j:region>
+								</a4j:outputPanel>
+								<rich:spacer height="5px" style="display: block" />
+								<a4j:outputPanel id="esteprimosF">
+									<rich:panel
+										rendered="#{empty crearReporteExpedito.ListaMedicacionSinEliminar1()}">
+										<f:facet name="header">
+											<h:outputText value="#{messages.lbl_listadoFarmacos}" />
+										</f:facet>
+										<h:outputText value="#{messages.msg_noInformacion_ens}" />
+									</rich:panel>
+									<a4j:region id="intervF">
+										<rich:dataTable
+											rendered="#{not empty crearReporteExpedito.ListaMedicacionSinEliminar1()}"
+											width="100%" id="listaF"
+											value="#{crearReporteExpedito.ListaMedicacionSinEliminar1()}"
+											var="result" columnsWidth="16%,16%,16%,16%,16%,16%,2%"
+											rowKeyVar="row">
+											<f:facet name="header">
+												<h:outputText value="#{messages.lbl_listadoFarmacos}" />
+											</f:facet>
+											<h:column whidt="25%">
+												<f:facet name="header">
+													<s:div>
+														<s:div style="float: left; valign: bottom;">
+															<h:outputText value="#{messages.lbl_farmaco}" />
+														</s:div>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{result.medicamento}" />
+											</h:column>
+											<h:column whidt="25%">
+												<f:facet name="header">
+													<s:div>
+														<s:div style="float: left; valign: bottom;">
+															<h:outputText value="#{messages.lbl_dosis}" />
+														</s:div>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{result.dosisxdia}" />
+											</h:column>
+											<h:column whidt="25%">
+												<f:facet name="header">
+													<s:div>
+														<s:div style="float: left; valign: bottom;">
+															<h:outputText value="#{messages.lbl_frecuencia}" />
+														</s:div>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{result.frecuencia}" />
+											</h:column>
+											<h:column whidt="25%">
+												<f:facet name="header">
+													<s:div>
+														<s:div style="float: left; valign: bottom;">
+															<h:outputText value="#{messages.lbl_via_admon}" />
+														</s:div>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{result.reViasadmi.descripcion}" />
+											</h:column>
+											<h:column whidt="25%">
+												<f:facet name="header">
+													<s:div>
+														<s:div style="float: left; valign: bottom;">
+															<h:outputText value="#{messages.lbl_fechaAdm}" />
+														</s:div>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{result.fechaAdm}" />
+											</h:column>
+											<h:column whidt="25%">
+												<f:facet name="header">
+													<s:div>
+														<s:div style="float: left; valign: bottom;">
+															<h:outputText value="#{messages.lbl_horaAdm}" />
+														</s:div>
+													</s:div>
+												</f:facet>
+												<h:outputText value="#{result.horaAdm}" />
+											</h:column>
+											<h:column>
+												<div align="center">
+													<a4j:commandLink
+														action="#{crearReporteExpedito.eliminarMedicacion1(row)}"
+														reRender="intervF, esteprimosF">
+														<h:graphicImage title="#{messages.eliminar}"
+															value="/resources/icons/default/acciones/eliminar.png"
+															style="border: 0px; cursor:pointer;" />
+													</a4j:commandLink>
+												</div>
+											</h:column>
+										</rich:dataTable>
+										<br />
+									</a4j:region>
+									<br />
+								</a4j:outputPanel>
+								<rich:spacer height="8px" style="display: block" />
+								<table>
+									<tr>
+										<td><h:outputText
+												value="#{messages.lbl_tratamientoQuir}:"
+												styleClass="normalText" /> <span class="errorSpan"
+											style="color: red;">*</span> <rich:message
+												for="tratamientoQuir" showDetail="false" tooltip="true"
+												style="color:red; width : 108px; height : 18px;">
+												<f:facet name="errorMarker">
+													<h:outputText value="*"
+														title="#{facesMessages.getCurrentMessagesForControl('tratamientoQuir').get(0).getDetail()}" />
+												</f:facet>
+											</rich:message><br /> <h:selectOneRadio layout="lineDirection"
+												required="#{!empty param['idForm:aceptarr']}"
+												id="tratamientoQuir"
+												value="#{crearReporteExpedito.tratamientoQuir}">
+												<f:selectItem itemValue="#{messages.lbl_si}"
+													itemLabel="#{messages.lbl_si}" />
+												<f:selectItem itemValue="#{messages.lbl_no}"
+													itemLabel="#{messages.lbl_no}" />
+												<a4j:support ajaxSingle="true" event="onclick"
+													reRender="tratamientoEspecifique" limitToList="true" />
+											</h:selectOneRadio></td>
+									</tr>
+									<tr>
+										<td><rich:spacer height="8px" style="display: block" />
+										</td>
+									</tr>
+									<tr>
+										<td><a4j:outputPanel id="tratamientoEspecifique">
+												<h:outputText value="#{messages.lbl_especifique}:"
+													styleClass="normalText" />
+												<rich:message for="especTrat" showDetail="false"
+													tooltip="true"
+													style="color:red; width : 108px; height : 18px;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('especTrat').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message>
+												<br />
+												<h:inputTextarea value="#{crearReporteExpedito.especTrat}"
+													id="especTrat"
+													style="resize: vertical; width : 1000px; height : 70px;"
+													disabled="#{!crearReporteExpedito.lugarOtros1()}"
+													required="#{crearReporteExpedito.lugarOtros1() and !empty param['idForm:aceptarr']}"
+													validator="#{validations_sujeto.textnumber250}" />
+											</a4j:outputPanel></td>
+									</tr>
+								</table>
+							</rich:simpleTogglePanel>
+							<rich:simpleTogglePanel
+								label="#{messages.lbl_datos_relacionados}" switchType="client"
+								opened="true">
+								<a4j:outputPanel id="datosRelacionadosD">
+									<table cellpadding="0px" cellspacing="0px" border="0px">
+										<tr>
+											<td><h:outputText
+													value="#{messages.lbl_nombre_apellidosN}:"
+													styleClass="normalText" /><br /> <h:inputTextarea
+													value="#{crearReporteExpedito.notificador}"
+													style="resize: vertical; width : 180px;" disabled="true" />
+											</td>
+											<td><rich:spacer width="25px" /></td>
+											<td><h:outputText value="#{messages.lbl_firma}:"
+													styleClass="normalText" /><br /> <h:inputText
+													styleClass="inputText" id="firmaD"
+													required="#{!empty param['idForm:aceptarr']}"
+													disabled="true" /></td>
+											<td><rich:spacer width="25px" /></td>
+											<td><h:outputText
+													value="#{messages.lbl_direccion_telefono}:"
+													styleClass="normalText" /> <rich:message for="emailD"
+													showDetail="false" tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('emailD').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <a4j:outputPanel id="opEmailD">
+													<h:inputTextarea id="emailD"
+														disabled="#{crearReporteExpedito.usuarioCambiar.telefono != null and !crearReporteExpedito.usuarioCambiar.telefono.equals('')}"
+														style="resize: vertical; width : 180px;"
+														value="#{crearReporteExpedito.email}"
+														required="#{(crearReporteExpedito.email == null) and (!empty param['idForm:aceptarr'])}">
+														<a4j:support ajaxSingle="true" event="onchange"
+															reRender="opEmailB,opEmailC,opEmailD,opEmail"
+															limitToList="true" />
+													</h:inputTextarea>
+												</a4j:outputPanel></td>
+										</tr>
+										<tr>
+											<td colspan="8"><rich:spacer height="8px"
+													style="display: block" /></td>
+										</tr>
+										<tr>
+											<td><h:outputText value="#{messages.lbl_fechaReporte1}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message
+													for="fechaReporte4" showDetail="false" tooltip="true"
+													style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('fechaReporte4').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <a4j:outputPanel id="opfechaReporte4">
+													<h:inputText id="fechaReporte4"
+														required="#{(!empty param['idForm:aceptarr'])}"
+														value="#{crearReporteExpedito.fechaReporte1}"
+														styleClass="likedate">
+														<a4j:support ajaxSingle="true" event="onchange"
+															reRender="opfechaReporte1,opfechaReporte2,opfechaReporte3,opfechaReporte4"
+															limitToList="true" />
+													</h:inputText>
+													<script>
+													applyDateMask();
+												</script>
+												</a4j:outputPanel></td>
+										</tr>
+									</table>
+								</a4j:outputPanel>
+							</rich:simpleTogglePanel>
+						</rich:tab>
+						<rich:tab>
+							<f:facet name="label">
+								<s:div>
+									<h:outputText value="#{messages.lbl_seccionE_ens}" />
+									<a4j:outputPanel ajaxRendered="true">
+										<h:outputText value="*" style="color:red;"
+											styleClass="errorLabel"
+											rendered="#{not empty facesMessages.getCurrentMessagesForControl('lbldescripcion') or not empty facesMessages.getCurrentMessagesForControl('fechaReportepromotor') or not empty facesMessages.getCurrentMessagesForControl('horaReportepromotor') or not empty facesMessages.getCurrentMessagesForControl('nombreInvestigador') or not empty facesMessages.getCurrentMessagesForControl('fechaReporte5')}" />
+									</a4j:outputPanel>
+								</s:div>
+							</f:facet>
+							<table>
+								<tr>
+									<td><h:outputText
+											value="#{messages.lbl_protocolo_codigo}:"
+											styleClass="normalText" /><br /> <h:inputText
+											styleClass="inputText"
+											value="#{crearReporteExpedito.codigoEst}" disabled="true" />
+									</td>
+									<td><rich:spacer width="25px" /></td>
+									<td><h:outputText
+											value="#{messages.lbl_iniciales_paciente}:"
+											styleClass="normalText" /><br /> <h:inputText
+											value="#{crearReporteExpedito.paciente}"
+											style="resize: vertical; width : 140px;" disabled="true" />
+									</td>
+									<td><rich:spacer width="25px" /></td>
+								</tr>
+							</table>
+							<rich:spacer height="8px" />
+							<rich:simpleTogglePanel label="#{messages.lbl_descripcion}"
+								switchType="client" opened="true">
+								<a4j:outputPanel id="datosRelacionadosDesc">
+									<table cellpadding="0px" cellspacing="0px" border="0px">
+										<tr>
+											<td><h:outputText value="#{messages.lbl_descripcion}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message
+													for="lbldescripcion" showDetail="false" tooltip="true"
+													style="color:red; width : 108px; height : 18px;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('lbldescripcion').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <h:inputTextarea
+													value="#{crearReporteExpedito.lbldescripcion}"
+													id="lbldescripcion"
+													style="resize: vertical; width : 1000px; height : 150px;"
+													required="#{!empty param['idForm:aceptarr']}"
+													validator="#{validations_sujeto.textnumber1000}" /></td>
+										</tr>
+									</table>
+								</a4j:outputPanel>
+							</rich:simpleTogglePanel>
+							<rich:simpleTogglePanel
+								label="#{messages.lbl_datos_relacionados}" switchType="client"
+								opened="true">
+								<a4j:outputPanel id="datosRelacionadosE">
+									<table cellpadding="0px" cellspacing="0px" border="0px">
+										<tr>
+											<td><h:outputText
+													value="#{messages.lbl_fechaReportepromotor}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message
+													for="fechaReportepromotor" showDetail="false"
+													tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('fechaReportepromotor').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <h:inputText id="fechaReportepromotor"
+													required="#{(!empty param['idForm:aceptarr'])}"
+													value="#{crearReporteExpedito.fechaReportepromotor}"
+													styleClass="likedate" /> <script>
+													applyDateMask();
+												</script></td>
+											<td><rich:spacer width="25px" /></td>
+											<td><h:outputText
+													value="#{messages.lbl_horaReportepromotor}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message
+													for="horaReportepromotor" showDetail="false" tooltip="true"
+													style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('horaReportepromotor').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <rich:message for="horaReportepromotor"
+													showDetail="false">
+													<f:facet name="errorMarker">
+														<h:outputText
+															style="color: red;cursor: pointer !important;"
+															title="#{facesMessages.getCurrentMessagesForControl('horaReportepromotor').get(0).getDetail()}"
+															value="*" />
+													</f:facet>
+												</rich:message> <br />
+												<table cellpadding="0" cellspacing="0" border="0">
+													<tr>
+														<td width="38"><rich:comboBox width="38"
+																id="horaReportepromotor" enableManualInput="false"
+																value="#{crearReporteExpedito.horaReportepromotor}"
+																defaultLabel="--">
+																<f:selectItem itemValue="01" itemLabel="01" />
+																<f:selectItem itemValue="02" itemLabel="02" />
+																<f:selectItem itemValue="03" itemLabel="03" />
+																<f:selectItem itemValue="04" itemLabel="04" />
+																<f:selectItem itemValue="05" itemLabel="05" />
+																<f:selectItem itemValue="06" itemLabel="06" />
+																<f:selectItem itemValue="07" itemLabel="07" />
+																<f:selectItem itemValue="08" itemLabel="08" />
+																<f:selectItem itemValue="09" itemLabel="09" />
+																<c:forEach begin="10" end="12" var="h">
+																	<f:selectItem itemValue="#{h}" itemLabel="#{h}" />
+																</c:forEach>
+																<a4j:support event="onselect" ajaxSingle="true"
+																	reRender="minutosRP">
+																</a4j:support>
+															</rich:comboBox></td>
+														<td><rich:message for="horaReportepromotor"
+																showDetail="false">
+																<f:facet name="errorMarker">
+																	<h:outputText value="*" styleClass="errorLabel"
+																		title="#{facesMessages.getCurrentMessagesForControl('horaReportepromotor').get(0).detail}" />
+																</f:facet>
+															</rich:message></td>
+														<td><rich:spacer width="2" />:<rich:spacer width="2" /></td>
+														<td width="38"><a4j:outputPanel id="minutosRP">
+																<rich:comboBox
+																	disabled="#{empty crearReporteExpedito.horaReportepromotor}"
+																	width="38" enableManualInput="false"
+																	value="#{crearReporteExpedito.minutosReportepromotor}"
+																	defaultLabel="--">
+																	<f:selectItem itemValue="00" itemLabel="00" />
+																	<f:selectItem itemValue="01" itemLabel="01" />
+																	<f:selectItem itemValue="02" itemLabel="02" />
+																	<f:selectItem itemValue="03" itemLabel="03" />
+																	<f:selectItem itemValue="04" itemLabel="04" />
+																	<f:selectItem itemValue="05" itemLabel="05" />
+																	<f:selectItem itemValue="06" itemLabel="06" />
+																	<f:selectItem itemValue="07" itemLabel="07" />
+																	<f:selectItem itemValue="08" itemLabel="08" />
+																	<f:selectItem itemValue="09" itemLabel="09" />
+																	<c:forEach begin="10" end="59" var="m">
+																		<f:selectItem itemValue="#{m}" itemLabel="#{m}" />
+																	</c:forEach>
+																	<a4j:support event="onselect" ajaxSingle="true"
+																		reRender="am_pm_RP">
+																	</a4j:support>
+																</rich:comboBox>
+															</a4j:outputPanel></td>
+														<td><rich:message for="minRP" showDetail="false">
+																<f:facet name="errorMarker">
+																	<h:outputText value="*" styleClass="errorLabel"
+																		title="#{facesMessages.getCurrentMessagesForControl('minRP').get(0).detail}" />
+																</f:facet>
+															</rich:message></td>
+														<td><rich:spacer width="4" /></td>
+														<td width="43"><a4j:outputPanel id="am_pm_RP">
+																<rich:comboBox
+																	disabled="#{empty crearReporteExpedito.minutosReportepromotor}"
+																	id="segRP" width="43" enableManualInput="false"
+																	value="#{crearReporteExpedito.am_pmReportepromotor}"
+																	defaultLabel="--">
+																	<f:selectItem itemValue="AM" itemLabel="AM" />
+																	<f:selectItem itemValue="PM" itemLabel="PM" />
+																</rich:comboBox>
+															</a4j:outputPanel></td>
+														<td><rich:message for="segRP" showDetail="false">
+																<f:facet name="errorMarker">
+																	<h:outputText value="*" styleClass="errorLabel"
+																		title="#{facesMessages.getCurrentMessagesForControl('segRP').get(0).detail}" />
+																</f:facet>
+															</rich:message></td>
+													</tr>
+												</table></td>
+
+											<td><rich:spacer width="25px" /></td>
+											<td><h:outputText
+													value="#{messages.lbl_nombreInvestigador}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message
+													for="nombreInvestigador" showDetail="false" tooltip="true"
+													style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('nombreInvestigador').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <h:inputText styleClass="inputText"
+													id="nombreInvestigador"
+													required="#{!empty param['idForm:aceptarr']}"
+													value="#{crearReporteExpedito.nombreInvestigador}" /></td>
+										</tr>
+										<tr>
+											<td colspan="8"><rich:spacer height="8px"
+													style="display: block" /></td>
+										</tr>
+										<tr>
+											<td><h:outputText value="#{messages.lbl_firmaInv}:"
+													styleClass="normalText" /><br /> <h:inputText
+													styleClass="inputText" id="firmaInv"
+													required="#{!empty param['idForm:aceptarr']}"
+													disabled="true" /></td>
+											<td><rich:spacer width="25px" /></td>
+											<td><h:outputText value="#{messages.lbl_fechaReporte1}:"
+													styleClass="normalText" /> <span class="errorSpan"
+												style="color: red;">*</span> <rich:message
+													for="fechaReporte5" showDetail="false" tooltip="true"
+													style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('fechaReporte5').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <h:inputText id="fechaReporte5"
+													required="#{(!empty param['idForm:aceptarr'])}"
+													value="#{crearReporteExpedito.fechaReporte5}"
+													styleClass="likedate" /> <script>
+													applyDateMask();
+												</script></td>
+										</tr>
+									</table>
+								</a4j:outputPanel>
+							</rich:simpleTogglePanel>
+						</rich:tab>
+					</rich:tabPanel>
+					<s:div>
+						<div align="right">
+							<rich:spacer width="100%" height="8px" />
+						</div>
+					</s:div>
+					<div align="right">
+						<a4j:commandButton id="aceptarr" value="Aceptar"
+							action="#{crearReporteExpedito.persistir()}"
+							style="margin-bottom: 0px; margin-top:0px; margin-left:0px;"
+							onclick="hideErrorSpans();" />
+						<h:commandButton value="Cancelar"
+							style="margin-bottom: 0px; margin-top:0px; margin-right:0px;"
+							action="#{crearReporteExpedito.cancelar()}" immediate="true" />
+					</div>
+				</a4j:outputPanel>
+			</rich:panel>
+		</a4j:form>
+		<script
+			src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/reglas/vendor/jquery1.9.js"
+			type="text/javascript" />
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/toastr/toastr.min.css"
+			rel="stylesheet" type="text/css" />
+		<script
+			src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/toastr/toastr.min.js"
+			type="text/javascript" />
+		<script type="text/javascript" language="javascript"
+			src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/jquery-inputmask/jquery.inputmask.bundle.js" />
+		<script>
+			var $j = jQuery.noConflict(true);
+			$j(document).ready(function(){   	   
+				applyDateMask();
+			});
+			function applyDateMask(){
+				var allInputsLikeDate = $j(".likedate");
+				allInputsLikeDate.inputmask("y/[m]/[d]", { "placeholder": "*", greedy:false });	
+				allInputsLikeDate.attr("placeholder","aaaa/mm/dd");
+			}
+		</script>
+	</s:div>
+</s:div>

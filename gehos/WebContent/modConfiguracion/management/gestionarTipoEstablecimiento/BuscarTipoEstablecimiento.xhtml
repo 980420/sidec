@@ -1,0 +1,234 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- CSS -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/style/stylesheet.css"
+			rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+		<h:form id="form">
+			<rich:messages id="message" for="message" styleClass="message" ajaxRendered="true" />
+			<a4j:queue ignoreDupResponses="true"/>
+
+			<rich:simpleTogglePanel label="#{messages.criterios}"
+				opened="#{tipoEstablecimientoBuscarControlador.state}"
+				switchType="client" bodyClass="simpleTogglePanel">
+				<a4j:support event="oncollapse" ajaxSingle="true"
+					action="#{tipoEstablecimientoBuscarControlador.changeSimpleTogglePanelState()}" />
+				<a4j:support event="onexpand" ajaxSingle="true"
+					action="#{tipoEstablecimientoBuscarControlador.changeSimpleTogglePanelState()}" />
+
+				<table class="tabla lh-sint lv-comp-l lh-comp-b lv-text-r"
+					cellpadding="0px" cellspacing="0px">
+					<tr>
+						<td class="lvg-bet-comp"><h:outputText value="#{messages.crit1}:" /> <br />
+						<h:inputText id="nombre"
+							value="#{tipoEstablecimientoBuscarControlador.valor}"
+							styleClass="imputText" /></td>
+						<td class="lv-bet-botton" valign="bottom"><h:commandButton
+							value="#{messages.buscar}"
+							action="#{tipoEstablecimientoBuscarControlador.buscar()}"
+							styleClass="botton">
+							<s:defaultAction />
+						</h:commandButton></td>
+						<td valign="bottom"><s:button
+							view="/modCommons/modHome/home.gehos"
+							value="#{messages.cancelar}" styleClass="botton">
+							<f:param name="idFuncionalidad"
+								value="#{activeModule.activeModule.id}" />
+							<f:param name="idancestors"
+								value="#{activeModule.activeModule.id}a" />
+							<f:param name="moduleName"
+								value="#{activeModule.activeModuleName}" />
+						</s:button></td>
+					</tr>
+				</table>
+			</rich:simpleTogglePanel>
+
+			<br />
+
+			<div align="right">
+			<table class="tablaLinkAdd" cellpadding="0" cellspacing="0">
+				<tr>
+					<td><h:graphicImage title="#{messages.adicionarIcon}"
+						height="12" width="12"
+						value="/resources/icons/default/acciones/adicionar.png" /></td>
+					<td valign="middle" class="lv-link-add"><h:commandLink
+						action="#{tipoEstablecimientoCrearControlador.begin()}"
+						tabindex="4" value=" #{messages.adicionar}" /></td>
+				</tr>
+			</table>
+			</div>
+
+			<a4j:outputPanel id="tablas_id">
+				<rich:panel
+					rendered="#{tipoEstablecimientoBuscarControlador.resultList.size() == 0 and tipoEstablecimientoBuscarControlador.valor != ''}">
+					<f:facet name="header">	<h:outputText value="#{messages.listado}" /> </f:facet>
+					<div class="lh-cont lv-text-l lh-conb lv-text-r"><h:outputText
+						value="#{messages.noInf2}" /></div>
+				</rich:panel>
+				<rich:panel
+					rendered="#{tipoEstablecimientoBuscarControlador.resultList.size() == 0 and tipoEstablecimientoBuscarControlador.valor == ''}">
+					<f:facet name="header">	<h:outputText value="#{messages.listado}" /> </f:facet>
+					<div class="lh-cont lv-text-l lh-sinb lv-text-r"><h:outputText
+						value="#{messages.noInf}" /></div>
+				</rich:panel>
+
+				<rich:dataTable id="departamentoList_Table" style="width: 100%;"
+					var="establecimiento"
+					rendered="#{not empty tipoEstablecimientoBuscarControlador.resultList}"
+					value="#{tipoEstablecimientoBuscarControlador.resultList}"
+					columnsWidth="90%, 1%, 1%, 1%">
+					<f:facet name="header">
+							<h:outputText value="#{messages.listado}" />
+					</f:facet>
+					<rich:column>
+						<f:facet name="header">
+							<h:panelGrid columns="2"
+								style="width: 100%; padding:0px; margin:0px;" border="0"
+								cellpadding="0" cellspacing="0">
+								<s:div style="float: left;"><h:outputText value="#{messages.crit1}" /></s:div>
+								<s:div style="text-align: right; padding-left:3px;">
+									<h:graphicImage
+										rendered="#{not tipoEstablecimientoBuscarControlador.order.equals('valor asc') and not tipoEstablecimientoBuscarControlador.order.equals('valor desc')}"
+										value="/resources/icons/default/filtro/default.png" width="17"
+										height="17">
+										<rich:componentControl event="onclick" for="valorcontextmenu"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{tipoEstablecimientoBuscarControlador.order.equals('valor asc')}"
+										value="/resources/icons/default/filtro/asc_sort.png"
+										width="17" height="17">
+										<rich:componentControl event="onclick" for="valorcontextmenu"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{tipoEstablecimientoBuscarControlador.order.equals('valor desc')}"
+										value="/resources/icons/default/filtro/des_sort.png"
+										width="17" height="17">
+										<rich:componentControl event="onclick" for="valorcontextmenu"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+								</s:div>
+							</h:panelGrid>
+						</f:facet>
+						<h:outputText value="#{establecimiento.valor}" />							            	
+	        	</rich:column>
+
+					<rich:column>
+						<center><h:commandLink
+							action="#{tipoEstablecimientoVerDetallesControlador.setId(establecimiento.id)}">
+							<h:graphicImage title="#{messages.ver}" styleClass="select"
+								value="/resources/icons/default/acciones/ver.png" />
+						</h:commandLink></center>
+					</rich:column>
+					<rich:column>
+						<center><h:commandLink
+							action="#{tipoEstablecimientoModificarControlador.setId(establecimiento.id)}">
+							<h:graphicImage title="#{messages.modificar}" styleClass="select"
+								value="/resources/icons/default/acciones/modificar.png" />
+						</h:commandLink></center>
+					</rich:column>
+					<rich:column>
+						<center><a4j:commandLink
+							oncomplete="Richfaces.showModalPanel('panelE')"
+							action="#{tipoEstablecimientoBuscarControlador.seleccionar(establecimiento.id)}">
+
+							<h:graphicImage title="#{messages.eliminar}" styleClass="select"
+								value="/resources/icons/default/acciones/eliminar.png">
+							</h:graphicImage>
+						</a4j:commandLink></center>
+					</rich:column>
+					<rich:column>
+						<center><h:graphicImage
+							rendered="#{not establecimiento.eliminado}"
+							value="/resources/modConfiguracion/visible.png" width="14"
+							height="14" styleClass="select" title="#{messages.visibilidad}">
+							<a4j:support event="onclick" ajaxSingle="true"
+								action="#{tipoEstablecimientoBuscarControlador.cambiarVisibilidad(establecimiento.id)}"
+								reRender="tablas_id,departamentoList_Table" />
+						</h:graphicImage> <h:graphicImage rendered="#{establecimiento.eliminado}"
+							value="/resources/modConfiguracion/not-visible.png" width="14"
+							height="14" styleClass="select" title="#{messages.visibilidad}">
+							<a4j:support event="onclick" ajaxSingle="true"
+								action="#{tipoEstablecimientoBuscarControlador.cambiarVisibilidad(establecimiento.id)}"
+								reRender="departamentoList_Table" />
+						</h:graphicImage></center>
+					</rich:column>
+				</rich:dataTable>
+				<br />
+				<s:div styleClass="tableControl"
+					style="width: 100%; text-align:center" align="center"
+					rendered="#{not empty tipoEstablecimientoBuscarControlador.resultList}">
+					<h:graphicImage
+						value="/resources/icons/default/paginado/iniciod.png"
+						rendered="#{!tipoEstablecimientoBuscarControlador.previousExists}" />
+					<h:commandLink
+						action="#{tipoEstablecimientoBuscarControlador.setFirstResult(0)}"
+						tabindex="10"
+						rendered="#{tipoEstablecimientoBuscarControlador.previousExists}">
+						<h:graphicImage
+							value="/resources/icons/default/paginado/#{theme.color}/inicio.png"
+							title="#{messages.pag1}" styleClass="select" />
+					</h:commandLink>
+					<h:graphicImage
+						value="/resources/icons/default/paginado/anteriord.png"
+						rendered="#{!tipoEstablecimientoBuscarControlador.previousExists}" />
+						<h:commandLink action="#{tipoEstablecimientoBuscarControlador.setFirstResult(tipoEstablecimientoBuscarControlador.previousFirstResult)}"
+						rendered="#{tipoEstablecimientoBuscarControlador.previousExists}" tabindex="11">
+						<h:graphicImage value="/resources/icons/default/paginado/#{theme.color}/anterior.png"
+							title="#{messages.pag2}" styleClass="select" />
+					</h:commandLink>				
+					<h:graphicImage
+						value="/resources/icons/default/paginado/siguiented.png"
+						rendered="#{!tipoEstablecimientoBuscarControlador.nextExists}" />
+						
+						<h:commandLink action="#{tipoEstablecimientoBuscarControlador.setFirstResult(tipoEstablecimientoBuscarControlador.nextFirstResult)}"
+						rendered="#{tipoEstablecimientoBuscarControlador.nextExists}" tabindex="12">
+						<h:graphicImage value="/resources/icons/default/paginado/#{theme.color}/siguiente.png"
+							title="#{messages.pag3}" styleClass="select" />
+					</h:commandLink>					
+					<h:graphicImage value="/resources/icons/default/paginado/find.png"
+						rendered="#{!tipoEstablecimientoBuscarControlador.nextExists}" />
+						<h:commandLink action="#{tipoEstablecimientoBuscarControlador.setFirstResult(tipoEstablecimientoBuscarControlador.lastFirstResult)}"
+						rendered="#{tipoEstablecimientoBuscarControlador.nextExists}" tabindex="13">
+						<h:graphicImage value="/resources/icons/default/paginado/#{theme.color}/fin.png"
+							title="#{messages.pag4}" styleClass="select" />
+					</h:commandLink>
+				</s:div>
+			</a4j:outputPanel>
+		
+			<rich:contextMenu attached="false" id="valorcontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{tipoEstablecimientoBuscarControlador.setOrder('valor desc')}"
+					reRender="departamentoList_Table">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{tipoEstablecimientoBuscarControlador.setOrder('valor asc')}"
+					reRender="departamentoList_Table">
+				</rich:menuItem>
+			</rich:contextMenu>
+		</h:form>
+		<ui:include
+			src="/modConfiguracion/management/gestionarTipoEstablecimiento/modalspanel/ConfirmarEliminarTipoEstablecimientoBuscar.xhtml" />
+	</ui:define>
+</ui:composition>

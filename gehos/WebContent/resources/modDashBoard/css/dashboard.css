@@ -1,0 +1,50 @@
+.rich-table-dash {
+    /* Establece el color de fondo y el color del texto de la cuadrícula */
+    background-color: #0078D7;
+    color: white;
+
+    /* Establece el espaciado entre las celdas de la cuadrícula */
+    border-spacing: 10px;
+}
+
+.rich-table-dash  th, .rich-table-dash td {
+    /* Establece el color de fondo y el color del texto de las celdas */
+    background-color: #375D3E;
+    color: white;
+
+    /* Establece el espaciado interno de las celdas */
+    padding: 10px;
+
+    /* Establece el estilo de las esquinas redondeadas */
+    border-radius: 2px;
+}
+
+.rich-table-dash  th {
+    /* Establece el color de fondo y el color del texto del encabezado */
+    background-color: #005A9E;
+    color: white;
+}
+
+
+.icono-svg {
+
+        width: 40px; 
+        height: 40px; 
+        
+    object-fit: cover;
+    }
+    
+    
+    
+    .columna-dashboard::after {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 25%; /* Ajusta esto para cambiar dónde comienza la línea */
+        bottom: 25%; /* Ajusta esto para cambiar dónde termina la línea */
+        right: 0;
+        border-right: 1px solid #FFFFFF; /* Cambia esto por el color que desees */
+    }
+    .columna-dashboard {
+        position: relative;
+    }

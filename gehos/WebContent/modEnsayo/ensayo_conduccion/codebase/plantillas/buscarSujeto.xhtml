@@ -1,0 +1,439 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle('#{titulo}')</script>
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css"
+		rel="stylesheet" type="text/css" />
+	<a:form>
+		<a:jsFunction name="cambiar" action="#{controlador.cambiarBusqueda()}"></a:jsFunction>
+	</a:form>
+	<rich:messages globalOnly="true" styleClass="message"
+		id="globalMessage" ajaxRendered="true" />
+	<table class="Tabla" width="100%" cellpadding="0" cellspacing="0">
+		<tr>
+			<td><rich:simpleTogglePanel switchType="client"
+					label="#{messages.criterioBusqueda}">
+					<table width="100%" cellpadding="0" cellspacing="0">
+						<tr>
+							<td><h:form id="form1">
+									<table class="Tabla" id="buscarPacienteN" style="#{controlador.displayBN}"
+										cellspacing="0" cellpadding="0">
+										<tr id="A" class="filSepPeq">
+											<td id="A1" class="colSepGran"><h:outputText
+													value="#{messages.ident}:"
+													style="margin:0px; padding:0px; spacing:0px" /></td>
+										</tr>
+										<tr>
+											<td class="colSepGran"><h:inputText
+													styleClass="inputText" id="cedula1"
+													value="#{controlador.sujeto.codigoPaciente}">
+												</h:inputText></td>
+											<td><h:commandButton value="#{messages.buscar}"
+													action="#{controlador.buscar()}" style="margin:0px;" /> <rich:spacer
+													width="10" /> <h:commandButton
+													value="#{messages.cancelar}" action="cancelar"
+													style="margin:0px;" /></td>
+										</tr>
+										<tr class="filSepPeq">
+											<td colspan="2" align="right"><rich:spacer height="2px" />
+												<table cellpadding="0" cellspacing="0">
+													<tr>
+														<td><a href="javascript:void(0);"
+															onclick="document.getElementById('buscarPacienteA').style.display = 'block';document.getElementById('buscarPacienteN').style.display = 'none'; document.getElementById('form2:cedula2').value = document.getElementById('form1:cedula1').value; document.getElementById('form1:cedula1').value = '';cambiar()">
+																<table cellpadding="0" cellspacing="0">
+																	<tr>
+																		<td><img
+																			src="#{facesContext.externalContext.requestContextPath}/resources/icons/default/acciones/buscar.png"
+																			border="0" height="12px" width="12px" /></td>
+																		<td><rich:spacer width="2px" style="border:0px;" />
+																			<h:outputText value="#{messages.busquedaAvanzada}" />
+																		</td>
+																	</tr>
+																</table>
+														</a></td>
+													</tr>
+												</table></td>
+										</tr>
+									</table>
+								</h:form> <h:form id="form2">
+									<table class="Tabla" id="buscarPacienteA" cellpadding="0"
+										cellspacing="0" style="#{controlador.displayBA}">
+										<tr class="filSepPeq">
+											<td class="colSepGran"><h:outputText
+													value="#{messages.ident}:"
+													style="margin:0px; padding:0px; spacing:0px" /></td>
+											<td class="colSepGran"><h:outputText
+													value="#{messages.estadoInclucion}:" style="margin:0px;" />
+											</td>
+											<td><h:outputText value="#{messages.nombreG}:" /></td>
+
+										</tr>
+										<tr class="filSepGranRA">
+											<td class="colSepGran"><h:inputText
+													styleClass="inputText" id="cedula2"
+													value="#{controlador.sujeto.codigoPaciente}">
+												</h:inputText></td>
+											<td class="colSepGran"><rich:comboBox
+													value="#{controlador.estadoI}"
+													defaultLabel="#{messages.seleccione}" width="152px"
+													enableManualInput="false"
+													suggestionValues="#{controlador.listEstadoI()}">
+												</rich:comboBox></td>
+											<td class="colSepGran"><rich:comboBox
+													value="#{controlador.nombeGrup}"
+													defaultLabel="#{messages.seleccione}" width="152px"
+													enableManualInput="false"
+													suggestionValues="#{controlador.listNombreG()}">
+												</rich:comboBox></td>
+										</tr>
+										<tr class="filSepPeq">
+											
+											<td class="colSepGran"><h:outputText
+													value="#{messages.estadoTratamiento}:" style="margin:0px;" />
+											</td>
+										</tr>
+										<tr class="filSepGranRA">
+											
+											<td class="colSepGran"><rich:comboBox
+													value="#{controlador.estadoT}"
+													defaultLabel="#{messages.seleccione}" width="152px"
+													enableManualInput="false"
+													suggestionValues="#{controlador.listEstadoT()}">
+												</rich:comboBox></td>
+
+										</tr>
+										<tr>
+											<td colspan="3" style="padding-right: 25px" align="right"><h:commandButton
+													value="#{messages.buscar}" action="#{controlador.buscar()}"
+													style="margin:0px;" /> <rich:spacer width="10px"
+													style="border:0px;" /> <h:commandButton
+													value="#{messages.cancelar}" action="cancelar"
+													style="margin:0px;" /></td>
+										</tr>
+										<tr class="filSepPeq">
+											<td colspan="3" align="right" style="padding-right: 25px"><rich:spacer
+													height="2px" />
+												<table cellpadding="0" cellspacing="0">
+													<tr>
+														<td><a href="javascript:void(0);"
+															onclick="document.getElementById('buscarPacienteA').style.display = 'none';document.getElementById('buscarPacienteN').style.display = 'block'; document.getElementById('form1:cedula1').value = document.getElementById('form2:cedula2').value; document.getElementById('form2:cedula2').value = '';cambiar();">
+																<table cellpadding="0" cellspacing="0">
+																	<tr>
+																		<td><img
+																			src="#{facesContext.externalContext.requestContextPath}/resources/icons/default/acciones/buscar.png"
+																			border="0" height="12px" width="12px" /></td>
+																		<td><rich:spacer width="2px" style="border:0px;" />
+																			<h:outputText value="#{messages.busquedaSimple}" /></td>
+																	</tr>
+																</table>
+														</a></td>
+													</tr>
+												</table></td>
+										</tr>
+									</table>
+								</h:form></td>
+						</tr>
+					</table>
+				</rich:simpleTogglePanel> <br /></td>
+		</tr>
+		<tr>
+			<td><h:form>
+					<a:outputPanel id="tb1">
+						<table width="100%" cellpadding="0" cellspacing="0"
+							style="margin: 0px; padding: 0px;">
+							<tr>
+								<td width="100%"><s:div style="float: right;"
+										rendered="#{(sujetoCustomList.DevolverRol().codigo == 'ecCord' or sujetoCustomList.DevolverRol().codigo == 'ecInv') and !sujetoCustomList.pesquisajeHabilitado() and sujetoCustomList.seguridadEstudio.estudioEntidadActivo.estudio.estadoEstudio.codigo == 3}">
+										<h:commandLink action="crearSuj"
+											style="border: 0px; cursor:pointer;">
+											<h:panelGrid columns="2">
+												<h:graphicImage
+													value="/resources/icons/default/acciones/adicionar.png"
+													style="border:0;" />
+												<h:outputText value="#{messages.adicionarSujeto}" />
+											</h:panelGrid>
+										</h:commandLink>
+									</s:div></td>
+							</tr>
+						</table>
+
+						<rich:panel rendered="#{not controlador.existResultados}">
+							<f:facet name="header">#{messages.listadoSujetos}</f:facet>
+							<table class="Tabla">
+								<tr>
+									<td ><h:outputText
+											value="#{messages.noResults}" /></td>
+								</tr>
+							</table>
+						</rich:panel>
+						<rich:panel
+							rendered="#{empty controlador.resultList and controlador.existResultados}">
+							<f:facet name="header">#{messages.listadoSujetos}</f:facet>
+							<table class="Tabla">
+								<tr>
+									<td ><h:outputText
+											value="#{messages.noSujeto}" /></td>
+								</tr>
+							</table>
+						</rich:panel>
+						<div style="margin-left: 1px">
+							<rich:dataTable id="tb" value="#{controlador.resultList}"
+								var="subject" width="100%"
+								rendered="#{not empty controlador.resultList}">
+								<f:facet name="header">
+									<h:outputText value="#{messages.listadoSujetos}" />
+								</f:facet>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.ident}" styleClass="label" /></td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList" value="#{controlador}" />
+															<ui:param name="columna" value="sujeto.codigoPaciente" />
+															<ui:param name="nombreMenu" value="ordenarNombresMenu" />
+															<ui:param name="tablaRender" value="tb" />
+														</ui:include></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText value="#{subject.codigoPaciente}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.nombreG}" styleClass="label" /></td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList" value="#{controlador}" />
+															<ui:param name="columna"
+																value="sujeto.grupoSujetos.nombreGrupo" />
+															<ui:param name="nombreMenu" value="ordenarNombreGMenu" />
+															<ui:param name="tablaRender" value="tb" />
+														</ui:include></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText value="#{subject.grupoSujetos.nombreGrupo}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.estadoInclucion}" styleClass="label" />
+													</td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList" value="#{controlador}" />
+															<ui:param name="columna"
+																value="sujeto.estadoInclusion.nombre" />
+															<ui:param name="nombreMenu" value="ordenarPapellidoMenu" />
+															<ui:param name="tablaRender" value="tb" />
+														</ui:include></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText value="#{subject.estadoInclusion.nombre}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.estadoTratamiento}" styleClass="label" />
+													</td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList" value="#{controlador}" />
+															<ui:param name="columna"
+																value="sujeto.estadoTratamiento.nombre" />
+															<ui:param name="nombreMenu" value="ordenarPapellidoMenu1" />
+															<ui:param name="tablaRender" value="tb" />
+														</ui:include></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText value="#{subject.estadoTratamiento.nombre}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.estadoMonitoreo}" styleClass="label" />
+													</td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText
+										value="#{controlador.estadoMonitoreo(subject.id)}" />
+										
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.fechaMSAnterior}" styleClass="label" />
+													</td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<table width="100%">
+										<tr>
+											<td align="left"><h:outputText
+													rendered="#{controlador.obtenerfechaMSAnterior(subject.id) != null}"
+													value="#{controlador.momentoAnterior.fechaInicio}">
+													<s:convertDateTime pattern="#{messages.patronFecha}"></s:convertDateTime>
+												</h:outputText></td>
+										</tr>
+									</table>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.fechaProximoMS}" styleClass="label" />
+													</td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<table width="100%">
+										<tr>
+											<td align="left"><h:outputText
+													rendered="#{controlador.obtenerfechaProximoMS(subject.id) != null}"
+													value="#{controlador.momentoPosterior.fechaInicio}">
+													<s:convertDateTime pattern="#{messages.patronFecha}"></s:convertDateTime>
+												</h:outputText></td>
+										</tr>
+									</table>
+								</rich:column>
+								<rich:column rendered="#{sujetoCustomList.DevolverRol().codigo != 'ecLab'}" width="1px" styleClass="alineacionCentrada">
+									<h:commandLink title="#{messages.ver}" action="verSujeto"
+										rendered="#{controlador.ver}"
+										style="border: 0px; cursor:pointer;">
+										<h:graphicImage
+											value="/resources/icons/default/acciones/ver.png"
+											style="border:0;" />
+										<f:param name="idSujeto" value="#{subject.id}" />
+									</h:commandLink>
+								</rich:column>
+								<rich:column 
+									rendered="#{(sujetoCustomList.DevolverRol().codigo == 'ecCord' or sujetoCustomList.DevolverRol().codigo == 'ecMon' or sujetoCustomList.DevolverRol().codigo == 'ecInv')}" width="1px" styleClass="alineacionCentrada">
+									<h:commandLink action="modificar"
+										rendered="#{controlador.modificar}"
+										title="#{messages.modificar}"
+										style="border: 0px; cursor:pointer;">
+										<h:graphicImage
+											value="/resources/icons/default/acciones/modificar.png"
+											style="border:0;" />
+										<f:param name="idSujeto" value="#{subject.id}" />
+									</h:commandLink>
+								</rich:column>
+								<rich:column width="1px" styleClass="alineacionCentrada">
+									<h:commandLink action="gestionar"
+										rendered="#{controlador.gestionar}"
+										title="#{messages.gestionar}"
+										style="border: 0px; cursor:pointer;">
+										<h:graphicImage
+											value="/resources/modEnsayo/img/bt_EnterData.png"
+											style="border:0;" />
+										<f:param name="idSujeto" value="#{subject.id}" />
+									</h:commandLink>
+								</rich:column>
+								<rich:column rendered="#{(sujetoCustomList.DevolverRol().codigo == 'ecCord' or sujetoCustomList.DevolverRol().codigo == 'ecInv')}" width="1px" styleClass="alineacionCentrada">
+									<h:commandLink action="interrumpir"
+										rendered="#{subject.estadoTratamiento.id != 4 and (subject.estadoInclusion.id == 4 or subject.estadoInclusion.id == 2) and subject.fechaInclucion != null}"
+										title="#{messages.interrumpir}"
+										style="border: 0px; cursor:pointer;">
+										<h:graphicImage
+											value="/resources/modEnsayo/img/not-visible.png"
+											style="border:0;" />
+										<f:param name="idSujeto" value="#{subject.id}" />
+									</h:commandLink>
+									<h:commandLink action="interrumpirMod"
+										rendered="#{(subject.estadoTratamiento.id == 4 and (subject.estadoInclusion.id == 4 or subject.estadoInclusion.id == 2) and subject.fechaInclucion != null)}"
+										title="#{messages.interrumpirMod}"
+										style="border: 0px; cursor:pointer;">
+										<h:graphicImage
+											value="/resources/modEnsayo/img/pregunta.png"
+											style="border:0;" />
+										<f:param name="idSujeto" value="#{subject.id}" />
+									</h:commandLink>
+									<h:graphicImage rendered="#{(subject.fechaInclucion == null or  (subject.estadoInclusion.id != 4 and subject.estadoInclusion.id != 2))}"
+										style="border:0px; opacity: 0.4; "
+										value="/resources/modEnsayo/img/not-visible.png">
+									</h:graphicImage>
+								</rich:column>
+								<rich:column rendered="#{(sujetoCustomList.DevolverRol().codigo == 'ecCord' or sujetoCustomList.DevolverRol().codigo == 'ecInv')}" width="1px" styleClass="alineacionCentrada">
+									<a:commandLink rendered="#{sujetoCustomList.DevolverRol().codigo == 'ecCord' or sujetoCustomList.DevolverRol().codigo == 'ecInv'}" id="eliminarCommandLink"
+										action="#{controlador.SeleccionarInstanciaSuj(subject.id)}"
+										oncomplete="Richfaces.showModalPanel('mpAdvertenciaEliminarSuj')">
+										<h:graphicImage style="border:0px; cursor: pointer "
+											title="#{messages.eliminar}"
+											url="/resources/icons/default/acciones/eliminar.png">
+										</h:graphicImage>
+									</a:commandLink>
+									<!--  <h:graphicImage
+										rendered="#{subject.estadoSujeto.nombre=='Deshabilitado'}"
+										style="border:0px; opacity: 0.4; "
+										title="Debe restaurar el sujeto"
+										url="/resources/icons/default/acciones/eliminar.png">
+									</h:graphicImage>-->
+								</rich:column>
+
+
+							</rich:dataTable>
+						</div>
+					</a:outputPanel>
+				</h:form></td>
+		</tr>
+
+		<tr class="filSepGranRA">
+			<td align="center"><h:form>
+					<a:outputPanel id="paginado1" ajaxRendered="true">
+						<ui:include
+							src="/modEnsayo/codebase/plantillas/paginado_tabla_inferior_generico.xhtml/">
+							<ui:param name="vzPaginado"
+								value="#{sujetoCustomList.resultCount>10}" />
+							<ui:param name="nomControladorList" value="#{sujetoCustomList}" />
+							<ui:param name="idListado" value="tb" />
+						</ui:include>
+					</a:outputPanel>
+				</h:form> <br /></td>
+		</tr>
+	</table>
+	<ui:include
+		src="/modEnsayo/ensayo_conduccion/codebase/plantillas/AdvertenciaEliminarSuj.xhtml">
+		<ui:param name="control" value="#{sujetoCustomList}" />
+		<ui:param name="listaIdElementos" value="tb1" />
+
+	</ui:include>
+
+</ui:composition>

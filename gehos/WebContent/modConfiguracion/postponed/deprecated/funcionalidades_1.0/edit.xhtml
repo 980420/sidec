@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+      xmlns:rich="http://richfaces.org/rich"
+	  xmlns:a="http://richfaces.org/a4j">
+<head>    
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>edit</title>
+    <link href="#{facesContext.externalContext.requestContextPath}/stylesheet/theme.css" rel="stylesheet" type="text/css" />
+	<style type="text/css">
+		body{
+			font-size : small;
+		}
+	</style>
+</head>
+  
+  	<body>
+  		<rich:dragIndicator id="indicator" >
+  		</rich:dragIndicator>
+  		<h:form id="funcionalidadEditForm" styleClass="edit">
+  		<div style="position: relative; left: 15;">
+  			<h:outputLabel style="font-size:7" value="#{funcionalidadesEditController.funcionalidad.modulo.nombre}"></h:outputLabel>
+  			--
+  			<h:outputLabel style="font-size:7" value="#{funcionalidadesEditController.funcionalidad.label}"></h:outputLabel>
+  			<br/><br/>
+			<div>
+				Etiqueta: <br/><h:inputText value="#{funcionalidadesEditController.funcionalidad.label}" style=" width : 448px;"/>
+			</div>
+			<div>
+				Url: <br/><h:inputText value="#{funcionalidadesEditController.funcionalidad.url}" style=" width : 448px;"/>
+			</div>
+
+		    <br/>
+		    <div style="position: relative; left: -3px; text-align: center; vertical-align: top;">
+			    <table width="100%">
+			    	<tr style="text-align: left">
+			    		<td>Roles con permiso:</td>
+			    		<td style="text-align: center;">  </td>
+			    		<td>Roles sin permiso:</td>
+			    	</tr>
+			    	<tr style="font-size: smaller;">
+			    		<td style="vertical-align: top;">
+			    		
+			    		 <rich:panel>
+				               
+			                <rich:dropSupport id="roleskaka2" acceptedTypes="nopermitidos" dropValue="PHP"
+			                    dropListener="#{funcionalidadRolesController.processToPermitidosDrop}" 
+			                    reRender="funcNotAllowedRolesTable, funcAllowedRolesTable">
+			                </rich:dropSupport>
+			    		
+							<rich:dataTable id="funcAllowedRolesTable"
+											value="#{funcionalidadRolesController.getRoles()}"
+											var="role" align="center">
+								<h:column>
+									<f:facet name="header">Rol</f:facet>
+									<center>
+									
+									 <a:outputPanel style="width:100px;border:1px solid gray;padding:2px; cursor: pointer;" layout="block">
+			                            <rich:dragSupport dragIndicator=":indicator"
+			                                dragType="permitidos" dragValue="#{role}">
+			                                <rich:dndParam name="label" value="#{role.name}" />
+			                                <rich:dndParam name="marker" type="drag" >
+			                                	<h:graphicImage height="25" width="25" value="/img/desconocido.png"></h:graphicImage>
+			                                </rich:dndParam>
+			                                <rich:dndParam name="accept" type="drag" >
+			                                	<h:graphicImage height="25" width="25" value="/img/desconocidook.png"></h:graphicImage>
+			                                </rich:dndParam>
+			                            </rich:dragSupport>
+			                            <h:outputText value="#{role.name}"></h:outputText>
+			                        </a:outputPanel>
+									
+									</center>
+								</h:column>
+								<h:column>
+									<f:facet name="header">Eliminar</f:facet>
+									<h:commandLink action="#{funcionalidadRolesController.removeRole(role.id)}" 
+												   value="Eliminar">
+									</h:commandLink>
+									
+								</h:column>
+							</rich:dataTable>	
+						</rich:panel>	    			
+			    		</td>
+			    		<td style="text-align: center; vertical-align: top;"> 
+			    				<h:commandButton action="#{funcionalidadRolesController.allowAll()}"
+			    					value="   Permitir todos  "/>
+			    			
+			    				<br/><br/>
+			    				
+			    				<h:commandButton action="#{funcionalidadRolesController.denieAll()}"
+			    					value="Denegar todos"/>
+			    			
+			    		</td>
+			    		<td style="vertical-align: top;">
+							
+							  <rich:panel>
+				               
+				                <rich:dropSupport id="roleskaka" acceptedTypes="permitidos" dropValue="PHP"
+				                    dropListener="#{funcionalidadRolesController.processToNotPermitidosDrop}" 
+				                    reRender="funcNotAllowedRolesTable, funcAllowedRolesTable" >
+				                    <rich:dndParam name="DropIcon">
+										<h:graphicImage value="/img/desconocidook.png"/>
+									</rich:dndParam>	
+				                </rich:dropSupport>
+							
+							
+								<rich:dataTable id="funcNotAllowedRolesTable"
+												value="#{funcionalidadRolesController.getOtherRoles()}"
+												var="role">
+									<h:column>
+										<f:facet name="header">Adicionar</f:facet>
+					    				<h:commandLink action="#{funcionalidadRolesController.addRole(role.id)}" 
+													   value="Adicionar">
+										</h:commandLink>
+									</h:column>
+									<h:column>
+										<f:facet name="header">Rol</f:facet>
+										<center>
+											 <a:outputPanel 
+											 	style="width:100px;border:1px solid gray;padding:2px; cursor: pointer;" 
+											 	layout="block">
+					                            <rich:dragSupport dragIndicator=":indicator"
+					                                dragType="nopermitidos" dragValue="#{role}">
+					                                <rich:dndParam name="label" value="#{role.name}" />
+					                                <rich:dndParam name="dragging" type="drag" >
+			                                			<h:graphicImage height="40" width="40" value="/img/desconocido.png"></h:graphicImage>
+			                                		</rich:dndParam>
+					                            </rich:dragSupport>
+					                            <h:outputText value="#{role.name}"></h:outputText>
+					                        </a:outputPanel>
+										</center>
+									</h:column>
+								</rich:dataTable>	
+							
+							 </rich:panel>
+								    			
+			    		</td>
+			    	</tr>
+			    </table>
+			    <br/>
+			    <div style="text-align: right">
+				    M&#243;dulo:
+				    <h:selectOneMenu value="#{funcionalidadesEditController.funcionalidad.modulo}" required="true">
+						<s:selectItems value="#{moduloList_comun.resultList}" var="modulo"
+						label="#{modulo.nombre}"
+						noSelectionLabel="seleccione el modulo..."/>
+						<s:convertEntity />
+					</h:selectOneMenu>
+				</div>
+			</div>
+			
+			<div style="text-align: right">
+				<br/>
+				<s:div styleClass="actionButtons">
+			        <h:commandButton  value="Aceptar" action="#{funcionalidadesEditController.save()}" style=" "/>
+			        <s:button view="/modConfiguracion/funcionalidades/list.xhtml"
+			        	propagation="end"
+			        	value="Cancelar">
+			        	<f:param name="moduleId" 
+	                       value="#{funcionalidadesEditController.funcionalidad.modulo.id}"/>
+			        </s:button>
+			    </s:div>
+				
+
+  			</div>
+  		</div>	
+		</h:form>
+	</body>
+</html>
+

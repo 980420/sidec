@@ -1,0 +1,51 @@
+
+### Eclipse Generated File Tern plugin ### 
+*/.tern-project
+gehos/.tern-project
+gehos-ear/.tern-project
+gehos-ejb/.tern-project
+
+### Eclipse Build Path ####
+gehos/build
+gehos/WebContent/WEB-INF/classes
+gehos-ejb/build
+
+### Eclipse Settings ####
+gehos/.settings
+gehos-ear/.settings
+gehos-ejb/.settings
+
+# JDT-specific (Eclipse Java Development Tools)
+gehos/.classpath
+gehos-ejb/.classpath
+
+### JBoss Metadata & Files ####
+.metadata
+RemoteSystemsTempFiles
+
+### Java ###
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+### Linux ###
+*~
+
+# temporary files which can be created if a process still has a handle open of a deleted file
+.fuse_hidden*
+
+# KDE directory preferences
+.directory
+
+# Linux trash folder which might appear on any partition or disk
+.Trash-*
+
+# .nfs files are created when an open file is removed but is still being accessed
+.nfs*
+
+

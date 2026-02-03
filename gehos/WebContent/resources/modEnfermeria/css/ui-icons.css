@@ -1,0 +1,27 @@
+.ui-icon { border: 0; cursor: pointer; display: block; text-indent: -99999px; overflow: hidden; background-repeat: no-repeat; }
+.ui-icon { width: 16px; height: 16px; background-image: url(../images/estado.png); }
+
+.ui-icon-muygrave { background-position: 0px 0px; }
+.ui-icon-grave { background-position: -16px 0px; }
+.ui-icon-cuidado { background-position: -32px 0px; }
+.ui-icon-mejorado { background-position: -48px 0px; }
+.ui-icon-estudio { background-position: -64px 0px; }
+.ui-icon-sinvalorar { background-position: -80px 0px; }
+.ui-icon-depase { background-position: -96px 0px; }
+.ui-icon-notificacion { background-position: -112px 0px; }
+.ui-icon-transparente { background-position: -128px 0px; }
+.ui-icon-fueraservicio { background-position: 0px -16px; }
+.ui-icon-recuperacion { background-position: -16px -16px; }
+
+
+
+.rich-calendar-button{
+	width: 16px;
+	height: 16px;
+}
+.rich-calendar-input{
+	padding-right:0px;
+	border: 0px 0px 0px 0px;
+	spacing: 0px 0px 0px 0px;
+	width: 134px;	
+}

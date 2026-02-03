@@ -1,0 +1,72 @@
+<rich:modalPanel id="desasociar_entidad_panel" autosized="true" 
+	resizeable="false" style="white-space: nowrap"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+	<f:facet name="header">
+		<h:panelGroup>
+			<h:outputText value="#{messages.desasociar1}"></h:outputText>
+		</h:panelGroup>
+	</f:facet>
+	<f:facet name="controls">
+		<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+			style="cursor:pointer; position:relative; top:1px;"
+			onclick="Richfaces.hideModalPanel('desasociar_entidad_panel')" />
+	</f:facet>
+
+	<h:form id="desasociar_entidad_panel_form">
+
+		
+
+		<table cellpadding="0px" cellspacing="0px" border="0px" id="container"
+			title="">
+			<tr>
+				<td style="height: 12px;" colspan="6"></td>
+			</tr>
+			<tr style="vertical-align: top;">
+				<td><rich:spacer width="6px" /></td>
+				<td valign="top">
+				<table cellpadding="0px" cellspacing="0px" border="0">
+					<tr valign="top">
+						<td ><h:graphicImage
+							value="/resources/icons/default/acciones/advertencia.png" /></td>
+						<td><rich:spacer width="6px" /></td>
+						<td><h:outputText style="margin: 0px; padding: 0px"
+							value="#{messages.desasociar2}"></h:outputText><br />
+						<h:outputText style="margin: 0px; padding: 0px"
+							value="#{messages.desasociar3}"></h:outputText>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td><rich:spacer width="6px" /></td>
+			</tr>
+			<tr>
+				<td style="height: 7px;" colspan="6"></td>
+			</tr>
+			<tr>
+				<td colspan="3">
+				<div align="center"><a:commandButton ajaxSingle="true"
+					action="#{entidadSistemaSeleccionarControlador.eliminarAsociacion()}"
+					value="#{messages.desasociar4}"
+					reRender="entidadSistemaList,entidadSistemaSelect,entidadesList,aIncEntidadesNoAsociadasSelec"
+					oncomplete="Richfaces.hideModalPanel('desasociar_entidad_panel')"
+					style="margin-bottom: 0px; margin-top: 0px;" /> <input
+					type="button"
+					onclick="javascript:Richfaces.hideModalPanel('desasociar_entidad_panel');"
+					value="#{messages.desasociar5}"
+					style="margin-bottom: 0px; margin-top: 0px; margin-left: 2px; margin-right: 0px;" />
+				</div>
+				</td>
+			</tr>
+			<tr>
+				<td style="height: 6px;" colspan="6"></td>
+			</tr>
+		</table>
+
+	</h:form>
+	</rich:modalPanel>

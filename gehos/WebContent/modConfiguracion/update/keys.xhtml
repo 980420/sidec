@@ -1,0 +1,195 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
+		
+		<style type="text/css">.error_asterisco {color:#FF0000 ; offset:0px ; margin:0px ; width:10px}</style> 
+		<style type="text/css">
+			.rich-panel-body{padding-top:11px; padding-left:6px; padding-bottom:6px !important;}
+	        .table{border:0px; padding:0px !important; margin:0px;}
+	        .bb{padding-top:11px; padding-left:6px; padding-bottom:6px !important;}
+	        .rich-mpnl-body{padding-top:0px; padding-left:0px; padding-bottom:0px !important;}
+			.noAvailable{
+				text-decoration: line-through;
+				color: red;
+			}
+		</style>
+		<script type="text/javascript"   
+			language="javascript" 
+			src="#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/script/disableDay.js">
+		</script>
+		<script type="text/javascript"   
+			language="javascript" 
+			src="#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/script/printFunct.js">
+		</script>
+       <script type="text/javascript">
+       		setContentTitle("#{messages['titulo']}")
+       	</script> 
+
+       <h:form id="idForm"> 
+          <rich:messages globalOnly='true' styleClass='message' id='globalMessage' /> 
+
+      
+ 		  <rich:simpleTogglePanel> 
+ 		  	<f:facet name='header'> 
+               <h:outputText value="#{messages['ParametrosDeseados']}"/>	
+            </f:facet> 
+            <table cellpadding="0px" cellspacing="0px" border="0px" >
+                  <tr style="vertical-align: top;">
+                        <td>
+                             #{messages.Desde}:
+                             <rich:message for="fecha1" showDetail="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputLabel value="*" title="#{facesMessages.getCurrentMessagesForControl('fecha1').get(0).detail}" />
+								</f:facet>
+							</rich:message>
+                             <rich:spacer height="0px" style="display: block"></rich:spacer>
+                             <rich:calendar datePattern="dd/MM/yyyy" id="fecha1"
+                              	value="#{keysReport.desde}"  
+                              	isDayEnabled="disablementFunctionPreviousEx1" 
+								dayStyleClass="disabledClassesProvPreviousEx1"
+								required="true"
+								onexpand="previousDate(document.getElementById('idForm:fecha2').component.getSelectedDate());Richfaces.getComponent('calendar',this).nextMonth(); Richfaces.getComponent('calendar',this).prevMonth(); return true;"/>
+                        </td>
+                        <td style="width: 25px"></td>
+                        <td>
+                             #{messages.Hasta}:
+                             <rich:message for="fecha2" showDetail="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputLabel value="*" title="#{facesMessages.getCurrentMessagesForControl('fecha2').get(0).detail}" />
+								</f:facet>
+							</rich:message>
+                             <rich:spacer height="0px" style="display: block"></rich:spacer>
+                             <rich:calendar datePattern="dd/MM/yyyy" id="fecha2" 
+                             	value="#{keysReport.hasta}"  
+                             	isDayEnabled="disablementFunctionPreviousEx" 
+								dayStyleClass="disabledClassesProvPreviousEx"
+								required="true"
+								onexpand="previousDate(document.getElementById('idForm:fecha1').component.getSelectedDate());Richfaces.getComponent('calendar',this).nextMonth(); Richfaces.getComponent('calendar',this).prevMonth(); return true;"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: bottom;" align="right" colspan="5">
+                             <h:commandButton action="#{keysReport.export()}" value="#{messages.Generar}" style="margin-bottom: 0px;" ></h:commandButton>
+                             <s:button view="/modCommons/modHome/home.gehos" value="#{messages.cancelar}"
+								style="margin-right:0px; margin-left: 10px;">
+								<f:param name="idFuncionalidad"
+									value="#{activeModule.activeModule.id}" />
+								<f:param name="idancestors"
+									value="#{activeModule.activeModule.id}a" />
+								<f:param name="moduleName"
+									value="#{activeModule.activeModuleName}" />
+							</s:button>
+                     
+                        </td>
+                  </tr>
+            </table>
+ 		  </rich:simpleTogglePanel>
+ 		 <br/>
+ 		   <rich:panel rendered="#{not empty keysReport.pathExportedReport}" >
+		  <f:facet name='header'> 
+              #{messages['titulo']}
+            </f:facet>
+ 		   <iframe width="100%" height="800px"     
+ 		    src="#{facesContext.externalContext.requestContextPath}#{keysReport.pathExportedReport}"></iframe>
+ 		    <br/>
+ 		    <br/>
+ 		  <div align="right">
+ 		   	   <a4j:region id="exportEvent"> 		   	   
+ 		  	   <a4j:commandButton value="#{messages['Exportar2']}"   id="exportButton"   action="export" >
+ 		  	   </a4j:commandButton>
+ 		  	   </a4j:region>
+            	<h:commandButton style="margin-right:0px"  value="#{messages.salir}"  action="cancelar"/>
+            </div>
+ 		  </rich:panel>
+ 		   <a4j:status for="exportEvent" id="statSimpleEx" onstop="javascript:Richfaces.showModalPanel('exportPanel')"> 
+		           		<f:facet name="start">
+		           			<s:div>
+								<div align="right" style="width:100%" >
+									<h:graphicImage value="/resources/icons/default/acciones/loading_small.gif" />
+									<rich:spacer  width="4"/>
+									<h:outputText value="#{messages.Cargando}" styleClass="normalText"/>												
+								</div>		
+								<br/>																
+							</s:div>										
+		           		</f:facet>
+			</a4j:status> 
+       </h:form> 
+       
+       <rich:modalPanel id="exportPanel" onhide=""
+	width="360" height="75"  resizeable="false"
+	onshow="" >
+
+	<f:facet name="header">
+		            <h:panelGroup>
+		                <h:outputText value="#{messages['Exportar']}"></h:outputText>
+		            </h:panelGroup>
+		        </f:facet>
+		        <f:facet name="controls">
+		            <h:panelGroup>
+		                <h:graphicImage value="/resources/icons/default/acciones/cerrar.gif" styleClass="hidelink" id="hidelinkEx"/>
+		                <rich:componentControl for="exportPanel" attachTo="hidelinkEx" operation="hide" event="onclick"/>
+		            </h:panelGroup>
+		        </f:facet>
+		        <a4j:form ajaxSubmit="false" id="ajaxFormExport">
+		       
+		         <!-- a partir de aqui -->
+		            	<table cellpadding="0px" cellspacing="0px" border="0px" >
+									   <tr>
+									    <td style="height: 13px;" colspan="3">
+									   </td>
+									  </tr>
+									  <tr >
+									    <td style="width: 8px"></td>
+									    <td >
+									       		<h:outputText value="#{messages['Formato']}:" />
+									       		<rich:message for="fileComboExport" showDetail="false" tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputLabel value="*" title="#{facesMessages.getCurrentMessagesForControl('fileComboExport').get(0).detail}" />
+													</f:facet>
+												</rich:message>
+									       		<br/>    
+             									<rich:comboBox id="fileComboExport" defaultLabel="#{messages['seleccione']}"
+					        					directInputSuggestions="true" suggestionValues="#{keysReport.filesFormatCombo}"
+					        					enableManualInput = "false" value="#{keysReport.fileformatToExport}" required="true" >
+             									</rich:comboBox>               	
+									    </td>
+									    <td style="width: 25px"></td>
+									    
+									    <td valign="bottom">
+									    	
+									    	<a4j:commandButton value="#{messages['Aceptar']}" style="margin-bottom:0px" action="#{keysReport.exportReportToFileFormat()}"
+									    		oncomplete="#{keysReport.exportAccion()}" reRender="fileComboExport" id="aceptarRMP"/>
+											<!-- 
+											<input type="button" value="#{messages['aceptarRpt']}" onclick="exportFileFunction()" style="margin-bottom: 0px"/>									    	
+           									 -->
+           									<a4j:commandButton value="#{messages['Salir']}" style="text-align:center ;margin-top:0px;  margin-bottom:0px" action="exportar" id="cancelarRMP">
+           									<rich:componentControl for="exportPanel" attachTo="cancelarRMP" operation="hide" event="onclick"/>
+           									</a4j:commandButton>
+									    </td>
+									  </tr>
+									  
+									  <tr>
+									  
+									    <td style="height: 13px;" colspan="3">
+									   </td>
+									  </tr> 			                
+						</table>
+									
+             			<a4j:jsFunction  name="exportFileFunction" action="#{keysReport.exportReportToFileFormat()}" 
+             			oncomplete="window.open('#{facesContext.externalContext.requestContextPath}#{keysReport.pathExportedReport}'); Richfaces.hideModalPanel('exportPanel')"> 
+             			</a4j:jsFunction>
+		       	<!-- hasta aqui -->  
+		       	</a4j:form>
+		
+</rich:modalPanel>
+	</ui:define>
+</ui:composition>

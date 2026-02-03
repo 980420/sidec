@@ -1,0 +1,521 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
+		<!-- Estilos generales -->
+		<style type="text/css">
+		
+/*Estilo para el panel */.dr-tbpnl-cntnt,.rich-tabpanel-content {
+	/*arriba, derecha ,abajo ,izquierda*/
+	padding: 0px 0px 0px 0px;	
+}
+
+/*estilo para el modalPanel*/
+.dr-mpnl-pnl-b {
+	padding: 1px;
+}
+
+.dr-mpnl-pnl {
+	border: 1px !important;
+	border-style: solid !important;
+	border-color: #BED6F8 !important;
+}
+
+/*estilo para el calendar*/
+.rich-calendar-input {
+	width: 132px !important;
+}
+
+.noAvailable {
+	color: red;
+	text-decoration: line-through;
+}
+
+/*Estilo para el panel */
+.rich-panel-body {
+	padding: 0px 0px 0px 0px;
+	
+}
+
+/*Estilo para singletuglepanel */
+.rich-stglpanel-body {
+	padding: 0px
+}
+
+.custom-error {
+	border: 1px solid #FFCC00;
+	padding: 5px;
+	background-color: #F0F8FF;
+	font-size: 10px;
+	font-family: "Verdana";
+	position: relative;
+	left: 5px;
+	top: 5px;
+	margin-right: 10px;
+}
+
+</style>
+		<!-- Estilos de entidades -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/gestionarEntidadesSistema/styles/selector.css"
+			rel="stylesheet" type="text/css" />
+
+		<!-- JavaScript -->
+		<script type="text/javascript">
+	    	function cambia(elemento){
+	     		elemento.setAttribute("class","dr-pnl rich-panel panelRes2");
+	   		}
+	   		function cambia2(elemento){
+	     		elemento.setAttribute("class","dr-pnl rich-panel panelRes");
+	   		}	  
+	   		function desasociarJS(idEntidad , e){
+				e.cancelBubble = true;	
+				aDesasociar(idEntidad);			
+			}
+	   		function visibilidadJS(idEntidad,e){
+				e.cancelBubble = true;	
+				aVisibilidad(idEntidad);			
+			}
+	   		function eliminarJS(idEntidad,e){
+				e.cancelBubble = true;	
+				aEliminar(idEntidad);			
+			}
+		</script>
+
+		<!-- Ajax -->
+		<a4j:form>
+			<!-- Desasociar una entidad -->
+			<a4j:jsFunction
+				oncomplete="Richfaces.showModalPanel('desasociar_entidad_panel')"
+				name="aDesasociar" ignoreDupResponses="true"
+				reRender="aIncEntidadesNoAsociadasSelec">
+				<a4j:actionparam name="idEntidad"
+					assignTo="#{entidadSistemaSeleccionarControlador.idEntAsociada}" />
+			</a4j:jsFunction>
+			<!-- Cambiar visibilidad a una entidad -->
+			<a4j:jsFunction
+				action="#{entidadSistemaSeleccionarControlador.cambiarVisibilidad()}"
+				name="aVisibilidad" ignoreDupResponses="true"
+				reRender="entidadSistemaList">
+				<a4j:actionparam name="idEntidad"
+					assignTo="#{entidadSistemaSeleccionarControlador.idEntAsociada}" />
+			</a4j:jsFunction>
+
+			<!-- Eliminar una entidad -->
+			<a4j:jsFunction
+				oncomplete="Richfaces.showModalPanel('eliminar_entidad_panel')"
+				name="aEliminar" ignoreDupResponses="true"
+				reRender="aIncEntidadesNoAsociadasSelec">
+				<a4j:actionparam name="idEntidad"
+					assignTo="#{entidadSistemaSeleccionarControlador.entidadIdEliminar}" />
+			</a4j:jsFunction>
+
+			<!-- Seleccionar una entidad -->
+			<a4j:jsFunction
+				action="#{entidadSistemaSeleccionarControlador.selecEntidadAsociada()}"
+				name="selected" ignoreDupResponses="true"
+				reRender="aEntidadesNoAsosciadasSeleccionadas,aButtonAceptar,aCheckBox">
+				<a4j:actionparam name="id"
+					assignTo="#{entidadSistemaSeleccionarControlador.idEntidad}" />
+			</a4j:jsFunction>
+		</a4j:form>
+
+		<!-- Título -->
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+		<!-- Forma principal -->
+		<h:form id="entidadList" styleClass="edit">
+
+			<a4j:outputPanel ajaxRendered="true" id="errorOutputPanel">
+				<s:div style="height:30px;width:100%"
+					rendered="#{facesMessages.getCurrentMessagesForControl('btnSi').size() > 0 }">
+					<div class="custom-error">
+						<rich:message for="btnSi"></rich:message>
+					</div>
+				</s:div>
+			</a4j:outputPanel>
+			<a4j:outputPanel id="entidadSistemaSelect">
+				<rich:panel styleClass="whitespace"
+					rendered="#{!entidadSistemaSeleccionarControlador.noExistEntPerteneceARhio}">
+					<f:facet name="header">#{messages.datos}</f:facet>
+					<a4j:status id="funcSelectedStatus" forceId="true"
+						onstart="javascript:document.getElementById('entidadList:aTablaDatos').style.visibility = 'hidden'"
+						onstop="javascript:document.getElementById('entidadList:aTablaDatos').style.visibility = 'visible'">
+						<f:facet name="start">
+							<s:div style="text-align: center;width: 656px; height:0px;">
+								<br />
+								<br />
+								<h:graphicImage
+									url="/resources/icons/default/acciones/loading_small.gif" />
+							</s:div>
+						</f:facet>
+					</a4j:status>
+
+
+
+					<div class="results" id="roleList"><s:div id="aTablaDatos">
+						<table cellpadding="0" cellspacing="0" border="0">
+							<tr>
+								<td height="13px" />
+							</tr>
+							<tr valign="top">
+								<td rowspan="3"><s:link
+									view="/modConfiguracion/management/gestionarEntidadesSistema/VerDetallesEntidadSistema.gehos">
+									<f:param name="entidadId"
+										value="#{entidadSistemaSeleccionarControlador.idEntidadSelec}" />
+									<f:param name="from" value="listar" />
+									<h:graphicImage title="#{messages.ver}"
+										url="/resources/modCommon/entidades_logos/#{theme.name}/#{theme.color}/#{entidadSistemaSeleccionarControlador.entidadSelec.logo}"
+										border="0" style="width: 74px; height: 74px;"
+										rendered="#{not userTools.userImageExist(enfermeraDetails_custom.enfermera.usuario.username)}" />
+
+								</s:link></td>
+								<td width="8px" />
+								<td>#{messages.nombre}</td>
+								<td width="9px" />
+								<td><h:outputText
+									value="#{entidadSistemaSeleccionarControlador.entidadSelec.nombre}"
+									styleClass="dataText"></h:outputText></td>
+								<td width="25px" />
+								<td>#{messages.direccion}</td>
+								<td width="9px" />
+								<td><h:outputText
+									rendered="#{entidadSistemaSeleccionarControlador.entidadSelec.direccion != null and entidadSistemaSeleccionarControlador.entidadSelec.direccion != ''}"
+									value="#{entidadSistemaSeleccionarControlador.entidadSelec.direccion}"
+									styleClass="dataText"></h:outputText> <h:outputText value="-"
+									styleClass="dataText"
+									rendered="#{entidadSistemaSeleccionarControlador.entidadSelec.direccion == null || entidadSistemaSeleccionarControlador.entidadSelec.direccion == ''}"></h:outputText>
+								</td>
+								<td width="25px" />
+								<td>#{messages.correo}</td>
+								<td width="9px" />
+								<td><h:outputText
+									rendered="#{entidadSistemaSeleccionarControlador.entidadSelec.correo != '' and entidadSistemaSeleccionarControlador.entidadSelec.correo != null}"
+									value="#{entidadSistemaSeleccionarControlador.entidadSelec.correo}"
+									styleClass="dataText"></h:outputText> <h:outputLabel
+									rendered="#{entidadSistemaSeleccionarControlador.entidadSelec.correo == '' || entidadSistemaSeleccionarControlador.entidadSelec.correo == null}"
+									styleClass="dataText" value="-" /></td>
+								<td />
+							</tr>
+							<tr valign="top">
+								<td width="6px" />
+								<td>#{messages.telefono}</td>
+								<td />
+								<td><h:outputText
+									rendered="#{entidadSistemaSeleccionarControlador.entidadSelec.telefonos != '' and entidadSistemaSeleccionarControlador.entidadSelec.telefonos != null}"
+									value="#{entidadSistemaSeleccionarControlador.entidadSelec.telefonos}"
+									styleClass="dataText"></h:outputText> <h:outputText
+									rendered="#{entidadSistemaSeleccionarControlador.entidadSelec.telefonos == '' || entidadSistemaSeleccionarControlador.entidadSelec.telefonos == null}"
+									value="-" styleClass="dataText"></h:outputText></td>
+								<td width="25px" />
+								<td>#{messages.tipoEstablecimiento}</td>
+								<td width="9px" />
+								<td><h:outputText
+									value="#{entidadSistemaSeleccionarControlador.entidadSelec.tipoEntidad.valor}"
+									styleClass="dataText"></h:outputText></td>
+								<td width="25px" />
+								<td>#{messages.caracter}</td>
+								<td width="9px" />
+								<td><h:outputText value="#{messages.caracter1}"
+									styleClass="dataText"
+									rendered="#{entidadSistemaSeleccionarControlador.entidadSelec.esPublico}" />
+								<h:outputText value="#{messages.caracter2}"
+									styleClass="dataText"
+									rendered="#{not entidadSistemaSeleccionarControlador.entidadSelec.esPublico}" />
+								</td>
+								<td />
+							</tr>
+							<tr valign="top">
+								<td>&nbsp;</td>
+								<td><h:outputText
+									value="#{messages.provincia}" /></td>
+								<td width="6px" />
+								<td><h:outputText
+									rendered="#{entidadSistemaSeleccionarControlador.entidadSelec.estado.valor != '' and entidadSistemaSeleccionarControlador.entidadSelec.estado != null}"
+									value="#{entidadSistemaSeleccionarControlador.entidadSelec.estado.valor}"
+									styleClass="dataText"></h:outputText> <h:outputText
+									rendered="#{entidadSistemaSeleccionarControlador.entidadSelec.estado.valor == '' || entidadSistemaSeleccionarControlador.entidadSelec.estado == null}"
+									value="-" styleClass="dataText"></h:outputText></td>
+								<td width="25px" />
+								<td><h:outputText
+									value="#{messages.municipio}" /></td>
+								<td width="9px" />
+								<td><h:outputText
+									value="#{entidadSistemaSeleccionarControlador.entidadSelec.municipio.valor}"
+									styleClass="dataText"
+									rendered="#{entidadSistemaSeleccionarControlador.entidadSelec.municipio != null and entidadSistemaSeleccionarControlador.entidadSelec.municipio.valor != ''}" />
+								<h:outputText value="-" styleClass="dataText"
+									rendered="#{entidadSistemaSeleccionarControlador.entidadSelec.municipio == null || entidadSistemaSeleccionarControlador.entidadSelec.municipio.valor == ''}"></h:outputText>
+								</td>
+								<td width="25px" />
+								<!--td><h:outputText
+									value="#{messages.localidad}" /></td>
+								<td width="9px" />
+								<td><h:outputText
+									value="#{entidadSistemaSeleccionarControlador.entidadSelec.localidad.valor}"
+									styleClass="dataText"
+									rendered="#{entidadSistemaSeleccionarControlador.entidadSelec.localidad != null and entidadSistemaSeleccionarControlador.entidadSelec.localidad.valor != ''}" />
+								<h:outputText value="-" styleClass="dataText"
+									rendered="#{entidadSistemaSeleccionarControlador.entidadSelec.localidad == null || entidadSistemaSeleccionarControlador.entidadSelec.localidad.valor == ''}"></h:outputText>
+								</td>
+								<td /-->
+							</tr>
+						</table>
+					</s:div> <rich:spacer height="7px" style="display: block"></rich:spacer></div>
+
+				</rich:panel>
+				<rich:spacer
+					rendered="#{!entidadSistemaSeleccionarControlador.noExistEntPerteneceARhio}">
+					<rich:spacer height="10px" style="display: block" />
+				</rich:spacer>
+
+			</a4j:outputPanel>
+
+			<!-- Entidades referenciadas -->
+
+			<div align="right">
+			<table cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td style="margin-left: "><h:graphicImage height="12"
+						width="12" style="margin-right: 2px" title="#{messages.adicionarT}"
+						rendered="#{not funcionalidadesManager.editingOrders}"
+						value="/resources/icons/default/acciones/adicionar.png" /></td>
+					<td><h:commandLink action="crear" styleClass="whitespace">
+														#{messages.adicionarEntidad}													
+					</h:commandLink></td>
+					<td width="5px" />
+					<td><h:graphicImage height="15" width="15"
+						style="margin-right: 1px" title="#{messages.asociarEntidad}"
+						rendered="#{not funcionalidadesManager.editingOrders}"
+						value="/resources/icons/default/acciones/asociar.png" /></td>
+<!-- 						aqui -->
+						
+					<td><a4j:commandLink value="#{messages.asociarEntidad}"
+						styleClass="whitespace" style="margin-right:1px"
+						oncomplete="Richfaces.showModalPanel('adicionarEntidad', {width: '500px'})"
+						action="#{entidadSistemaSeleccionarControlador.crearEntidadAsociada()}"
+						
+						reRender="aIncEntidadesNoAsociadasSelec">
+
+
+					</a4j:commandLink></td>
+				</tr>
+
+			</table>
+
+			</div>
+
+			<a4j:outputPanel id="entidadSistemaList">
+				<rich:spacer height="1px" style="display: block"
+					rendered="#{entidadSistemaSeleccionarControlador.noExistEntPerteneceARhio}" />
+				<rich:panel styleClass="whitespace"
+					rendered="#{entidadSistemaSeleccionarControlador.noExistEntPerteneceARhio}">
+
+					<f:facet name="header">#{messages.listadoEntidadesAsociadas}</f:facet>
+					<rich:spacer height="13px" style="display: block" />
+					<div class="results" id="roleList"><rich:spacer width="7px" />
+					<h:outputText value="#{messages.noInf}" /></div>
+					<rich:spacer height="7px" style="display: block" />
+				</rich:panel>
+				<rich:panel styleClass="borde"
+					rendered="#{!entidadSistemaSeleccionarControlador.noExistEntPerteneceARhio}"
+					captionClass="borde" rowClasses="borde" columnClasses="borde">
+					<f:facet name="header">
+						<s:div id="detailspanelheader">
+							<table cellpadding="0" cellspacing="0" width="100%">
+								<tr>
+									<td>
+									<table cellpadding="0" cellspacing="0">
+										<tr>
+											<td><h:outputLabel styleClass="whitespace"
+												style="position: relative; left: 2px;"
+												value="#{messages.listadoEntidadesAsociadas}">
+											</h:outputLabel></td>
+										</tr>
+									</table>
+									</td>
+								</tr>
+							</table>
+						</s:div>
+					</f:facet>
+					<div class="results" id="roleList"><rich:dataGrid
+						styleClass="borde"
+						value="#{entidadSistemaSeleccionarControlador.entidadSistemaList}"
+						var="entSist" columns="5" captionClass="borde" rowClasses="borde"
+						columnClasses="borde">
+
+						<rich:panel styleClass="panelRes" onmousedown="cambia(this)"
+							onmouseup="cambia2(this)"
+							rendered="#{not empty entidadSistemaSeleccionarControlador.entidadSistemaList}">
+
+							<rich:spacer height="6px" style="display: block" />
+							<div style="float: center;">
+							<table cellpadding="0" cellspacing="0" border="0" width="100%">
+								<tr style="align: 'left'">
+									<td>
+									<div align="center"
+										style="text-align: center; padding-left: 0px;"><h:graphicImage
+										value="/resources/modCommon/entidades_logos/#{theme.name}/#{theme.color}/#{entSist.logo}"
+										style="border: 0px; width: 40px; height: 40px; margin-right: 0px " />
+									<br />
+									<div style="padding-right: 0px"><h:outputLabel
+										value="#{entSist.nombre}" /></div>
+									<a4j:support
+										action="#{entidadSistemaSeleccionarControlador.seleccionarEntidad(entSist.id)}"
+										event="onclick"
+										reRender="entidadSistemaSelect,aIncEntidadesNoAsociadasSelec" /></div>
+									</td>
+
+									<td valign="top" align="right" width="1px">
+									<table cellpadding="0" cellspacing="0" border="0">
+										<tr>
+											<td colspan="2" align="center"><s:link
+												view="/modConfiguracion/management/gestionarEntidadesSistema/ModificarEntidadSistema.gehos">
+												<h:graphicImage title="#{messages.msg_modificar_modConfig}"
+													style="border: 0px; opacity: 0.4; padding-right: 7px;  width: 13px; height: 14px;"
+													value="/resources/icons/default/acciones/modificar.png">
+													<rich:effect event="onmouseover" type="Opacity"
+														params="duration:0.3, from:0.4, to:1.0" />
+													<rich:effect event="onmouseout" type="Opacity"
+														params="duration:0.3, from:1.0, to:0.4" />
+												</h:graphicImage>
+												<f:param name="entidadId" value="#{entSist.id}" />
+											</s:link></td>
+										</tr>
+										<tr>
+											<td height="2px" />
+										</tr>
+										<tr>
+
+											<td align="center"><h:graphicImage
+												onclick="desasociarJS('#{entSist.id}', event)"
+												title="#{messages.desasociar}"
+												style="border: 0px; opacity: 0.4; padding-right: 7px; width: 16px; height: 16px;"
+												value="/resources/icons/default/acciones/desasociar.png">
+												<rich:effect event="onmouseover" type="Opacity"
+													params="duration:0.3, from:0.4, to:1.0" />
+												<rich:effect event="onmouseout" type="Opacity"
+													params="duration:0.3, from:1.0, to:0.4" />
+
+											</h:graphicImage></td>
+										</tr>
+										<tr>
+											<td height="2px" />
+										</tr>
+										<tr>
+											<td colspan="2" align="center"><h:graphicImage
+												title="#{messages.eliminar}"
+												onclick="eliminarJS('#{entSist.id}',event)"
+												style="border: 0px; opacity: 0.4; padding-right: 7px; width: 14px; height: 14px;"
+												value="/resources/icons/default/acciones/eliminar.png">
+												<rich:effect event="onmouseover" type="Opacity"
+													params="duration:0.3, from:0.4, to:1.0" />
+												<rich:effect event="onmouseout" type="Opacity"
+													params="duration:0.3, from:1.0, to:0.4" />
+											</h:graphicImage></td>
+										</tr>
+										<tr>
+											<td height="2px" />
+										</tr>
+										<tr>
+											<td colspan="2" align="center"><h:graphicImage
+												onclick="visibilidadJS('#{entSist.id}',event)"
+												rendered="#{not entSist.eliminado}"
+												title="#{messages.visibilidad}"
+												style="border: 0px; opacity: 0.4; padding-right: 7px; width: 12px; height: 12px;"
+												value="/resources/modConfiguracion/visible.png">
+												<rich:effect event="onmouseover" type="Opacity"
+													params="duration:0.3, from:0.4, to:1.0" />
+												<rich:effect event="onmouseout" type="Opacity"
+													params="duration:0.3, from:1.0, to:0.4" />
+
+											</h:graphicImage> <h:graphicImage rendered="#{entSist.eliminado}"
+												onclick="visibilidadJS('#{entSist.id}',event)"
+												title="#{messages.visibilidad}"
+												style="border: 0px; opacity: 0.4; padding-right: 7px; width: 11px; height: 11px;"
+												value="/resources/modConfiguracion/not-visible.png">
+												<rich:effect event="onmouseover" type="Opacity"
+													params="duration:0.3, from:0.4, to:1.0" />
+												<rich:effect event="onmouseout" type="Opacity"
+													params="duration:0.3, from:1.0, to:0.4" />
+											</h:graphicImage></td>
+										</tr>
+
+									</table>
+									</td>
+								</tr>
+
+							</table>
+
+
+
+							</div>
+
+						</rich:panel>
+					</rich:dataGrid></div>
+				</rich:panel>
+			</a4j:outputPanel>
+
+
+
+
+			<!-- modalpanel -->
+
+
+
+			<rich:modalPanel id="mpanelEliminar" width="290" height="125">
+				<f:facet name="header">
+					<h:outputText value="#{messages.lbl_elimEnt_modConfig}" />
+				</f:facet>
+				<f:facet name="controls">
+					<h:graphicImage
+						value="/resources/icons/default/acciones/cerrar.gif"
+						style="cursor:pointer"
+						onclick="Richfaces.hideModalPanel('mpanelEliminar')" />
+				</f:facet>
+				<s:div id="panelEliminarBody">
+					<div align="left"><h:graphicImage
+						value="/resources/icons/default/acciones/advertencia.png" /> <rich:componentControl
+						for="mpanel" attachTo="hidelink" operation="hide" event="onclick" />
+					<rich:spacer width="4px" /> <h:outputText
+						value="#{messages.msg_panelElim_modConfig}" />
+					<br />
+					<h:outputText value="#{messages.msg_continuar_modConfig}" /></div>
+					<br />
+					<div align="center"><a4j:commandButton ajaxSingle="true"
+						action="#{entidadSistemaSeleccionarControlador.eliminarAsociacion()}"
+						value="#{messages.btn_si_conf}"
+						reRender="entidadSistemaList,entidadSistemaSelect,entidadesList,aIncEntidadesNoAsociadasSelec"
+						oncomplete="Richfaces.hideModalPanel('mpanelEliminar')" /> <input
+						type="button" value="#{messages.btn_no_conf}" style="margin-left: 3px;"
+						onclick="Richfaces.hideModalPanel('mpanelEliminar', {width: '500px', height: '500px'} )" />
+					</div>
+				</s:div>
+			</rich:modalPanel>
+
+
+
+		</h:form>
+		<a4j:outputPanel id="aIncEntidadesNoAsociadasSelec">
+			<ui:include
+				src="/modConfiguracion/management/gestionarEntidadesSistema/modalspanel/AsociarEntidades_Seleccionar.xhtml" />
+
+		</a4j:outputPanel>
+		<ui:include
+			src="/modConfiguracion/management/gestionarEntidadesSistema/modalspanel/ConfirmarEliminarEntidadAsociada_Seleccionar.xhtml" />
+
+
+		<ui:include
+			src="/modConfiguracion/management/gestionarEntidadesSistema/modalspanel/ConfirmarDesasociarEntidad_Seleccionar.xhtml" />
+	</ui:define>
+</ui:composition>
+

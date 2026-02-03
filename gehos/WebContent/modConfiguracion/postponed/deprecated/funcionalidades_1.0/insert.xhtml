@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+      xmlns:rich="http://richfaces.org/rich"
+	  xmlns:a="http://richfaces.org/a4j">
+<head>    
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>edit</title>
+    <link href="#{facesContext.externalContext.requestContextPath}/stylesheet/theme.css" rel="stylesheet" type="text/css" />
+	<style type="text/css">
+		body{
+			font-size : small;
+		}
+	</style>
+</head>
+  
+  	<body>
+  		<h:form id="funcionalidadEditForm" styleClass="edit">
+  			<h:outputLabel style="font-size:7" value="#{menuBuilder.getModuleById(funcionalidadesInsertController.moduleId).nombre}"></h:outputLabel>
+			<div>
+				label: <h:inputText value="#{funcionalidadesInsertController.funcionalidad.label}" style=" width : 417px;"/>
+			</div>
+			<div>
+				url: <h:inputText value="#{funcionalidadesInsertController.funcionalidad.url}" style=" width : 413px;"/>
+			</div>
+			<s:div styleClass="actionButtons" style="position:relative; left:-5px;">
+		        <h:commandButton  value="Adicionar funcionalidad" action="#{funcionalidadesInsertController.Insert()}"/>
+		    </s:div>
+		   
+
+        	<s:link view="/modConfiguracion/funcionalidades/list.xhtml"
+                    id="cancelar"
+                    value="cancelar">
+               <f:param name="moduleId" 
+                       value="#{funcionalidadesInsertController.moduleId}"/>
+           </s:link>
+  			
+		</h:form>
+	</body>
+</html>
+

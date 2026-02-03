@@ -1,0 +1,63 @@
+<s:div xmlns:s="http://jboss.com/products/seam/taglib" styleClass="#{cssClass}"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:rich="http://richfaces.org/rich">	
+		<style>
+			.style-one
+			{
+				border: 1px rgb(158, 158, 158) solid;
+			  	border-style: dashed;
+			  	border-radius: 4px;
+			  	padding: 5px;
+			}
+			.style-two
+			{
+			  	padding: 5px;
+			}
+			.space-down
+			{
+				margin-bottom: 5px;
+			}
+			.space-up
+			{
+				margin-top: 5px;
+			}
+		</style>
+		<c:set var="dash" value="-" />
+		<table cellpadding="0" cellspacing="0">
+			<tr>
+				<td>Id:</td>
+				<td><rich:spacer styleClass="label-field-hor-space" width="0" height="0"/></td>				
+				<td class="table-value">
+					<h:outputText value="#{variable.id}" rendered="#{variable!=null}"/>
+					<h:outputText value="#{dash}" rendered="#{variable==null}"/>
+				</td>
+				<td><rich:spacer styleClass="button-margin-left" width="0" height="0"/></td>
+				<td>Nombre:</td>
+				<td><rich:spacer styleClass="label-field-hor-space" width="0" height="0"/></td>
+				<td class="table-value">
+					<h:outputText value="#{variable.nombreVariable}" rendered="#{variable!=null}" />
+					<h:outputText value="#{dash}" rendered="#{variable==null}"/>
+				</td>
+			</tr>
+			<tr>
+				<td><rich:spacer styleClass="field-hor-space" width="0" height="0"/></td>
+			</tr>
+			<tr>
+				<td>Tipo dato:</td>
+				<td><rich:spacer styleClass="label-field-hor-space" width="0" height="0"/></td>
+				<td class="table-value">
+					<h:outputText value="#{variable.tipoDato.nombre} (#{variable.tipoDato.codigo})" rendered="#{variable!=null}"/>
+					<h:outputText value="#{dash}" rendered="#{variable==null}"/>
+				</td>
+				<td><rich:spacer styleClass="button-margin-left" width="0" height="0"/></td>
+				<td>Presentación:</td>
+				<td><rich:spacer styleClass="label-field-hor-space" width="0" height="0"/></td>
+				<td class="table-value">
+					<h:outputText value="#{variable.presentacionFormulario.descripcion}" rendered="#{variable!=null}"/>
+					<h:outputText value="#{dash}" rendered="#{variable==null}"/>
+				</td>
+			</tr>
+		</table>
+
+</s:div>

@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="build" name="Project">
+
+<!-- ########### Activate Enviroment Variables ##################################################################################################################  -->
+<property environment="env"/>
+
+<!-- ########### Classpath Libs ###################################################################################################################  -->
+<path id="Web App Libraries.libraryclasspath">
+    <pathelement location="gehos/WebContent/WEB-INF/lib/XmlSchema-1.4.2.jar" />
+	<pathelement location="gehos/WebContent/WEB-INF/lib/activation-1.1.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/annogen-0.1.0.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/axiom-api-1.2.7.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/axiom-dom-1.2.7.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/axiom-impl-1.2.7.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/axis.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/backport-util-concurrent-3.1.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/bsh-2.0b4.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/commons-discovery-0.2.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/commons-fileupload-1.2.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/commons-io-1.4.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/darkX-3.3.0.GA.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/glassX-3.3.0.GA.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/jaxrpc.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/jboss-seam-debug.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/jboss-seam-excel.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/jboss-seam-ioc.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/jboss-seam-mail.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/jboss-seam-pdf.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/jboss-seam-remoting.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/jboss-seam-ui.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/jldap-4.3.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/jsf-facelets.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/laguna-3.3.0.GA.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/mail-1.4.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/neethi-2.0.4.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/richfaces-impl-3.3.0.GA.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/richfaces-ui-3.3.0.GA.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/spring-web-3.0.5.RELEASE.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/wsdl4j-1.6.2.jar" />
+    <pathelement location="gehos/WebContent/WEB-INF/lib/wstx-asl-3.2.4.jar" />
+</path>
+
+<path id="EAR Libraries.libraryclasspath">
+    <pathelement location="gehos-ejb" />
+    <pathelement location="gehos-ear/EarContent/antlr-runtime.jar" />
+    <pathelement location="gehos-ear/EarContent/drools-compiler.jar" />
+    <pathelement location="gehos-ear/EarContent/drools-core.jar" />
+    <pathelement location="gehos-ear/EarContent/jboss-el.jar" />
+    <pathelement location="gehos-ear/EarContent/jboss-seam.jar" />
+    <pathelement location="gehos-ear/EarContent/jbpm-jpdl.jar" />
+    <pathelement location="gehos-ear/EarContent/mvel14.jar" />
+    <pathelement location="gehos-ear/EarContent/richfaces-api.jar" />
+</path>
+
+<path id="JBoss 4.2 Runtime [JBoss 4.2 Runtime].libraryclasspath">
+    <pathelement location="${env.JBOSS_HOME}/lib/commons-codec.jar" />
+    <pathelement location="${env.JBOSS_HOME}/lib/commons-httpclient.jar" />
+    <pathelement location="${env.JBOSS_HOME}/lib/commons-logging.jar" />
+    <pathelement location="${env.JBOSS_HOME}/lib/concurrent.jar" />
+    <pathelement location="${env.JBOSS_HOME}/lib/endorsed/jaxb-api.jar" />
+    <pathelement location="${env.JBOSS_HOME}/lib/endorsed/serializer.jar" />
+    <pathelement location="${env.JBOSS_HOME}/lib/endorsed/xalan.jar" />
+    <pathelement location="${env.JBOSS_HOME}/lib/endorsed/xercesImpl.jar" />
+    <pathelement location="${env.JBOSS_HOME}/lib/getopt.jar" />
+    <pathelement location="${env.JBOSS_HOME}/lib/jboss-common.jar" />
+    <pathelement location="${env.JBOSS_HOME}/lib/jboss-jmx.jar" />
+    <pathelement location="${env.JBOSS_HOME}/lib/jboss-system.jar" />
+    <pathelement location="${env.JBOSS_HOME}/lib/jboss-xml-binding.jar" />
+    <pathelement location="${env.JBOSS_HOME}/lib/log4j-boot.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/HL7HIS.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/CertAPI.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/DynamicJasper-3.0.5.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/EvalEx-1.0.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/FastInfoset.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/GenericAPI.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/OcspAPI.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/PolicyAPI.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/TrustAPI.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/TspAPI.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/XadesAPI.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/activation.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/antlr-2.7.5.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/apache-commons-io-1.4.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/autonumber-plugin.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/avalon-framework-4.2.0.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/backport-util-concurrent-3.0.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/barbecue-1.5-beta1.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/barcode4j-2.0.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/batik-all-1.7.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/bcel.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/bcmail-jdk16-145.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/bcpg-jdk16-145.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/bcprov-jdk16-145.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/bctest-jdk16-145.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/bctsp-jdk16-145.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/bindingservice-plugin.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/bsf.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/bsh-deployer.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/bsh.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/cert-cvc.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/cglib.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/com.sun.mail_1.4.2.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/commons-beanutils-1.8.0.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/commons-codec-1.2.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/commons-dbcp-1.2.1.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/commons-digester-1.7.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/commons-httpclient-3.0.1.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/commons-io-1.3.1.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/commons-javaflow-20060411.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/commons-lang-2.4.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/commons-lang3-3.1.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/commons-logging-1.1.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/commons-pool-1.5.7.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/commons-vfs-20100924-pentaho.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/dom4j.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/dynamicreports-adhoc-2.5.1-sources.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/dynamicreports-adhoc-2.5.1.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/dynamicreports-core-2.5.1-javadoc.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/dynamicreports-core-2.5.1-sources.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/dynamicreports-core-2.5.1.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/dynamicreports-examples-2.5.1-sources.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/dynamicreports-examples-2.5.1.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/dynamicreports-googlecharts-2.5.1-sources.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/dynamicreports-googlecharts-2.5.1.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/ehcache-1.5.0.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/ejb3-persistence.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/ejbca-util.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/ejbcawscli.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/el-api.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/esapi-2.0.1.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/fontbox-1.6.0.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/fop-1.0.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/freemarker.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/groovy-all-1.0-RC-01.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/gson-2.2.2.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/guava-15.0.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/hermes-hl7-cda-v2.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/hermes-hl7-v_2_3_1.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/hibernate-annotations.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/hibernate-commons-annotations.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/hibernate-entitymanager.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/hibernate-validator-3.0.0.ga.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/hibernate3.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/hsqldb-plugin.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/hsqldb.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/http.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/httpclient-4.0.3.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/httpcore-4.0.1.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/iText-2.1.7.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/icu4j-charsetdetector-4_4_2.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/itextpdf-5.5.5.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jackson-annotations-2.1.4.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jackson-core-2.1.4.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jackson-core-2.8.6.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jackson-core-lgpl-1.7.4.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jackson-databind-2.1.4.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jackson-mapper-lgpl-1.7.4.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jasperreports-4.5.0.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jasperreports-applet-4.5.0.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jasperreports-fonts-4.5.0.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jasperreports-javaflow-4.5.0.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/javassist.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jaxb-api.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jaxb-impl.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jaxb-xjc.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jaxen.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jaxrs-api-2.1.0.GA.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jaxws-api.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jaxws-rt.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jboss-cache-jdk50.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jboss-common-jdbc-wrapper.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jboss-ejb3x.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jboss-hibernate.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jboss-j2ee.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jboss-jca.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jboss-jsr77.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jboss-jsr88.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jboss-management.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jboss-monitoring.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jboss-remoting-int.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jboss-remoting.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jboss-seam-resteasy-2.3.1.Final.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jboss-seam.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jboss-serialization.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jboss-srp.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jboss-transaction.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jboss-vfs.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jboss.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jbossjta-integration.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jbossjta.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jbossmq.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jbosssx.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jbossts-common.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jbossws-common.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jbossws-framework.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jbossws-jboss422.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jbossws-spi.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jcip-annotations-1.0.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jcommon-1.0.16.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jdom.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jdtcore-3.1.0.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jfreechart-1.0.13.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jmx-adaptor-plugin.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jnpserver.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/joda-time-2.6-javadoc.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/joda-time-2.6.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/joesnmp.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jpl-pattern.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jpl-util.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/js.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/json-20080701.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jsp-api.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jsr173_api.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jsr181-api.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jsr250-api.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jss-4.2.5.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jxl-2.6.10.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/jxl.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/kettle-core-5.0.1-stable.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/kettle-dbdialog-5.0.1-stable.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/kettle-engine-5.0.1-stable.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/kettle-jdbc-5.0.1-stable.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/kettle-ui-swt-5.0.1-stable.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/kettle5-log4j-plugin-5.0.1-stable.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/log4j-snmp-appender.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/log4j.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/mail-plugin.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/mail.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/metastore-5.0.1-stable.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/ojdbc6.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/org.apache.commons.collections.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/org.eclipse.core.contenttype_3.2.100.v20070319.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/org.eclipse.core.jobs_3.3.1.R33x_v20070709.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/org.eclipse.core.runtime_3.3.100.v20070530.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/org.eclipse.emf.common_2.3.2.v200802051830.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/org.eclipse.emf.ecore.xmi_2.3.2.v200802051830.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/org.eclipse.emf.ecore_2.3.2.v200802051830.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/org.eclipse.equinox.app_1.0.1.R33x_v20070828.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/org.eclipse.equinox.common_3.3.0.v20070426.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/org.eclipse.equinox.preferences_3.2.101.R33x_v20080117.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/org.eclipse.equinox.registry_3.3.1.R33x_v20070802.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/org.eclipse.osgi_3.3.2.R33x_v20080105.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/pdfbox-1.6.0.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/picketlink-bindings-1.0.2.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/picketlink-bindings-jboss-1.0.2.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/picketlink-fed-1.0.2.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/picketlink-idm-1.0.0.GA.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/poi-3.9.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/poi-ooxml-3.9.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/poi-ooxml-schemas-3.9.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/postgresql-9.1-902.jdbc3.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/properties-plugin.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/quartz.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/reflections-0.9.10.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/resolver.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/resteasy-jaxrs-2.1.0.GA.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/rhino-1.7.7.1-javadoc.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/rhino-1.7.7.1.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/runtime_registry_compatibility.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/saaj-api.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/saaj-impl.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/sapjco3.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/scannotation-1.0.3.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/scheduler-plugin-example.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/scheduler-plugin.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/serializer-2.7.1.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/servlet-api.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/sjsxp.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/smslib-3.5.2.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/spring-beans-2.5.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/spring-core-2.5.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/stax-api-1.0-2.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/velocity-1.7.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/xalan-2.7.1.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/xercesImpl-2.7.1.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/xml-apis-ext-1.3.04.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/xml-apis.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/xmlbeans-2.6.0.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/xmldb.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/xmlentitymgr.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/xmlgraphics-commons-1.4.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/xmlsec-1.4.3.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/XAVIA-IHE-0.9.0.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/slf4j-api-1.6.3.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/slf4j-log4j12-1.6.3.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/MathParser.org-mXparser-jdk16-4.1.1.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/MathParser.org-mXparser-4.1.1.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/lib/spssw-1.84.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/deploy/jboss-web.deployer/jsf-libs/jboss-faces.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/deploy/jboss-web.deployer/jsf-libs/jsf-api.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/deploy/jboss-web.deployer/jsf-libs/jsf-impl.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/deploy/jboss-aop-jdk50.deployer/jboss-aop-jdk50.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/deploy/jboss-aop-jdk50.deployer/jboss-aspect-library-jdk50.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/deploy/jboss-aop-jdk50.deployer/trove.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/deploy/ejb3.deployer/jboss-annotations-ejb3.jar" />
+    <pathelement location="${env.JBOSS_HOME}/server/default/deploy/ejb3.deployer/jboss-ejb3.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/FastInfoset.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/XmlSchema.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/activation.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/antlr.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/avalon-framework.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/commons-codec.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/commons-httpclient.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/commons-logging.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/concurrent.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/cxf-api.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/cxf-common-schemas.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/cxf-common-utilities.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/cxf-rt-bindings-coloc.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/cxf-rt-bindings-http.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/cxf-rt-bindings-object.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/cxf-rt-bindings-soap.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/cxf-rt-bindings-xml.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/cxf-rt-core.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/cxf-rt-databinding-jaxb.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/cxf-rt-frontend-jaxws.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/cxf-rt-frontend-simple.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/cxf-rt-management.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/cxf-rt-transports-http-jetty.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/cxf-rt-transports-http.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/cxf-rt-transports-jms.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/cxf-rt-transports-local.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/cxf-rt-ws-addr.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/cxf-rt-ws-policy.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/cxf-rt-ws-rm.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/cxf-rt-ws-security.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/cxf-tools-common.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/ejb3-persistence.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/geronimo-javamail_1.4_spec.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/geronimo-ws-metadata_2.0_spec.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/getopt.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/hibernate-annotations.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/hibernate-client.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jacorb.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/javassist.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jaxb-api.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jaxb-impl.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jaxb-xjc.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jaxws-api.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jaxws-rt.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jaxws-tools.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jboss-annotations-ejb3.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jboss-aop-jdk50-client.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jboss-aspect-jdk50-client.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jboss-client.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jboss-common-client.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jboss-deployment.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jboss-ejb3-client.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jboss-ejb3x.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jboss-iiop-client.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jboss-j2ee.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jboss-jsr77-client.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jboss-remoting.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jboss-serialization.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jboss-srp-client.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jboss-system-client.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jboss-transaction-client.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jboss-xml-binding.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jbossall-client.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jbosscx-client.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jbossha-client.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jbossjmx-ant.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jbossmq-client.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jbosssx-client.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jbossws-client.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jbossws-common.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jbossws-cxf-client.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jbossws-framework.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jbossws-jboss422.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jbossws-spi.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jmx-client.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jmx-invoker-adaptor-client.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/jnp-client.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/log4j.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/logkit.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/mail.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/neethi.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/saaj-api.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/saaj-impl.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/scout.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/servlet-api.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/spring-beans.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/spring-context.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/spring-core.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/stax-api.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/stax-ex.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/streambuffer.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/trove.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/wsdl4j.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/wss4j.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/wstx.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/xml-resolver.jar" />
+    <pathelement location="${env.JBOSS_HOME}/client/xmlsec.jar" />
+</path>
+
+<path id="gehos.classpath">
+	<pathelement location="WebContent/WEB-INF/classes" />
+	<path refid="Web App Libraries.libraryclasspath" />
+	<path refid="EAR Libraries.libraryclasspath" />
+	<path refid="JBoss 4.2 Runtime [JBoss 4.2 Runtime].libraryclasspath" />
+</path>
+
+<!-- ########### Deploy ###################################################################################################################  -->
+ <property name="jboss.deploy.dir" value="${env.JBOSS_HOME}/server/default/deploy"/>
+
+<!-- ########### Property Declarations ###################################################################################################################  -->
+<!-- ########### General ###################################################################################################################  -->
+<property name="debuglevel" value="source,lines,vars"/>
+<property name="target" value="1.5"/>
+<property name="source" value="1.5"/>
+<property name="builddir" value="build" />
+<property name="outputartifacts" value="out" />
+
+<!-- ########### Web ###################################################################################################################  -->
+<property name="web.name" value="gehos" />
+<property name="web.projectpath" value="${web.name}"/>
+<property name="web.src" value="${web.projectpath}/src" />
+<property name="web.builddir" value="${builddir}/web" />
+<property name="web.builddir.classes" value="${web.builddir}/WEB-INF/classes"/>
+
+<property name="web.web-inf.dir" value="${web.projectpath}/WebContent/WEB-INF"/>
+
+<!-- ########### EJB ###################################################################################################################  -->
+<property name="ejb.name" value="gehos-ejb" />
+<property name="ejb.projectpath" value="gehos-ejb"/>
+<property name="ejb.src" value="${ejb.projectpath}/ejbModule"/>
+<property name="ejb.builddir" value="${builddir}/ejb" />
+<property name="ejb.builddir.classes" value="${ejb.builddir}/classes" />
+
+<property name="ejb.meta-inf.dir" value="${ejb.src}/META-INF"/>
+
+<!-- ########### EAR ###################################################################################################################  -->
+<property name="ear.name" value="gehos-ear" />
+<property name="ear.dir" value="gehos-ear" />
+<property name="ear.meta-inf.dir" value="${ear.dir}/EarContent/META-INF"/>
+<property name="ear.content.dir" value="${ear.dir}/EarContent"/>
+
+<!-- ########### Main Targets ###################################################################################################################   -->
+
+<target name="clean">
+    <delete dir="${builddir}"/>
+    <delete dir="${outputartifacts}"/>
+</target>
+
+<target name="build" depends="cleanWorespase">
+</target>
+
+<target name="init" depends="clean">
+    <mkdir dir="${outputartifacts}" />
+</target>
+
+<!-- ########### EJB App ###################################################################################################################    -->
+<target name="init-ejb" depends="init">
+    <mkdir dir="${ejb.builddir}" /> 
+    <copy includeemptydirs="false" todir="${ejb.builddir.classes}">
+        <fileset dir="${ejb.src}">
+            <exclude name="**/*.java"/>
+        </fileset>
+    </copy>
+</target>
+<target name="build-ejb" depends="init-ejb">
+    <javac debug="true" debuglevel="${debuglevel}" 
+    destdir="${ejb.builddir.classes}" 
+    includeantruntime="false" 
+    nowarn="true"
+    deprecation="true"
+    source="${source}" 
+    target="${target}"
+    encoding="UTF-8">
+        <src path="${ejb.src}"/>
+        <classpath refid="gehos.classpath"/>
+    </javac>
+</target>
+
+<!-- ########### WEB App ###################################################################################################################    -->
+<target name="init-web" depends="init">
+    <mkdir dir="${web.builddir.classes}"/>  
+    <copy includeemptydirs="false" todir="${web.builddir}">
+        <fileset dir="${web.projectpath}/WebContent">
+        </fileset>
+    </copy>
+    <copy includeemptydirs="false" todir="${web.builddir.classes}">
+        <fileset dir="${web.src}">
+            <exclude name="**/*.java"/>
+        </fileset>
+    </copy>
+</target>
+
+<target name="build-web" depends="init-web">
+    <javac debug="true" debuglevel="${debuglevel}" destdir="${web.builddir.classes}" includeantruntime="false" source="${source}" target="${target}">
+        <src path="${web.src}"/>
+        <classpath refid="gehos.classpath"/>
+    </javac>
+</target>
+
+<!-- ############ CREATE ARCHIVES ################################################################################################################## -->
+<target name="create-web" depends="build-web">
+    <mkdir dir="${outputartifacts}/${web.name}.war"/>
+     <copy includeemptydirs="false" todir="${outputartifacts}/${web.name}.war">
+        <fileset dir="${web.builddir}" includes="**/*"/>
+    </copy>
+</target>
+
+<target name="create-ejb" depends="build-ejb">
+    <mkdir dir="${outputartifacts}/${ejb.name}.jar"/>
+    <copy includeemptydirs="false" todir="${outputartifacts}/${ejb.name}.jar">
+        <fileset dir="${ejb.builddir.classes}" includes="**/*"/>
+    </copy>
+</target>
+
+<target name="create-ear" depends="create-web,create-ejb">
+    <mkdir dir="${outputartifacts}/${ear.name}.ear"/>
+    <copy includeemptydirs="false" todir="${outputartifacts}/${ear.name}.ear">
+        <fileset dir="${ear.content.dir}" includes="**/*"/>
+        <fileset dir="${outputartifacts}" includes="**/*"/>
+    </copy>
+</target>
+<!--#####################   Comprime Compilado  ############################################################################################################-->
+
+<target name="comprimir" depends="create-ear">
+    <tar destfile="${outputartifacts}/gehos-ear.ear.tar" basedir="${outputartifacts}/${ear.name}.ear"/>
+</target>
+<!--#####################   Clean Worespase  ############################################################################################################-->
+<target name="cleanWorespase" depends="comprimir">
+    <delete dir="${builddir}"/>
+    <delete dir="${outputartifacts}/${ejb.name}.jar"/>
+    <delete dir="${outputartifacts}/${web.name}.war"/>
+</target>
+
+
+</project>

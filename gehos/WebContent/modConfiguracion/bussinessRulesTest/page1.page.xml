@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+      
+	
+	<navigation from-action="#{rulesTestController.checkAmount()}" 
+					evaluate="#{rulesTestController.ruleResult.value}">
+		<rule if-outcome="not-enough">
+			<redirect view-id="/modConfiguracion/bussinessRulesTest/page2.xhtml"></redirect>
+		</rule>
+		<rule if-outcome="sufficient">
+			<redirect view-id="/modConfiguracion/bussinessRulesTest/page3.xhtml"></redirect>
+		</rule>
+	</navigation>
+
+</page>

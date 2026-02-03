@@ -1,0 +1,207 @@
+<rich:modalPanel id="listadoPaciente" width="330" height="100"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+ <h:form id="frmsiaps">	
+    
+    <!-- empieza encabezado de criterios de b�squeda -->
+    
+    <rich:simpleTogglePanel switchType="ajax">
+				<f:facet name="header">Criterios de B�squeda</f:facet>
+				<a4j:outputPanel id="busquedas">
+					<a4j:outputPanel id="simplesearch"
+						rendered="#{!usuarioList_configuracionCustom.avanzada}">
+						<table width="100%" cellpadding="0px" cellspacing="0px" border="0px">
+							<tr>							
+								<td class="fileInput">Nombre:</td>															
+								<td class="fileInput"></td>								
+							</tr>
+							<tr>								
+								<td class="fileInput" >
+									<h:inputText  value="" style="width:150px;" />
+								</td>								
+																
+								<td class="fileInput"></td>
+								
+							</tr>							
+							<tr>
+								<td class="fileSpacer"  colspan="4"></td>
+							</tr>
+							<tr>
+								<td class="fileButton" colspan="4">
+									<h:commandButton style="margin-bottom: 0px;" value="Buscar" onclick=""  >
+									</h:commandButton> 
+									<h:commandButton style="margin-bottom: 0px;" value="Listar" action="#{usuarioList_configuracionCustom.Cancelar()}">
+									</h:commandButton>
+									
+								</td>
+							</tr>							
+							
+						</table>
+					</a4j:outputPanel>
+				</a4j:outputPanel>
+			</rich:simpleTogglePanel> 
+    
+    <!-- concluye encabezado de criterios de b�squeda -->
+    
+   <rich:spacer height="11px" style="display: block"/>
+   
+   <!--incluye mensaje aclarativo que contiene un modalPanel  -->
+   <ui:include src="/layouts/alas-layout/themes/template_auxiliares/mensaje_aclarativo.xhtml">
+                                      <ui:param name="nomEncabezado" value="Listado Alimento Dieta" />
+                                      <ui:param name="nomLlave" value="#{messages.mensaje_aclar_eliminar}" />
+                                      <ui:param name="nomIcono" value="/resources/icons/default/acciones/advertencia.png" />							    		
+   </ui:include>
+   <!--concluye mensaje aclarativo que contiene un modalPanel  -->
+   <!--incluye mensaje de confirmacion que contiene un modalPanel  -->
+   
+   <ui:include src="/layouts/alas-layout/themes/template_auxiliares/mensaje_confirmacion.xhtml">
+                                      <ui:param name="nomControlador" value="#{ceAlimentoDieta}" />
+                                      <ui:param name="nomMetodo" value="eliminar"/>
+                                      <ui:param name="nomEncabezado" value="Listado Alimento Dieta" />
+                                      <ui:param name="nomLlave" value="#{messages.mensaje_confir_eliminar}" />
+                                      <ui:param name="nomIcono" value="/resources/icons/default/acciones/advertencia.png" />							    		
+                                    </ui:include>
+    <!-- concluye mensaje de confirmacion que contiene un modalPanel -->
+   
+   <!-- incluye encabezado tabla superior que contiene los botones de las opciones-->
+    
+    	<ui:include src="/layouts/alas-layout/themes/template_auxiliares/encabezado_tabla_superior.xhtml">
+						    		<ui:param name="vzExportar" value="#{true}" />
+						    		<ui:param name="vzEliminar" value="#{true}" />
+						    		<ui:param name="vzAgregar" value="#{true}" />
+		</ui:include>    
+    <!-- concluye encabezado tabla superior que contiene los botones de las opciones-->   
+    
+    
+    <rich:spacer height="5px"/>
+    <h:outputText value="#{messages.mensaje_result_no_encont}"
+											rendered="#{empty clAlimentoDieta.resultList}" /> 
+											
+	<!-- incluir el datatable con la sigueinte propiedad id="id_datatable" -->										
+    <rich:dataTable id="id_datatable"
+					style="width: 100%;" var="dieta"
+					value="#{clAlimentoDieta.resultList}"
+					rendered="#{not empty clAlimentoDieta.resultList}"
+					columnsWidth="1%, 75%, 15%">
+					<f:facet name="header">
+						<s:div>
+							<div style="float: left;"><h:outputText
+								value="Listado de Alimentos de Dieta" styleClass="dataText" /></div>
+						</s:div>
+					</f:facet>
+					<h:column>
+						<f:facet name="header">
+					<h:selectBooleanCheckbox id="marcarTodos" onclick="marcarTodos()"/> 
+	            </f:facet>
+
+						<h:selectManyCheckbox id="elementoCheckbox" value="#{ceAlimentoDieta.listaids}" border="0" > <!-- readonly="#{(item.tbProvincias.size() > 0) ? 'readonly' : 'false'}" -->
+											<f:selectItem  itemValue="#{dieta.idAlimento}"/>
+						</h:selectManyCheckbox>
+
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:panelGrid columns="2"
+								style="width: 100%; padding:0px; margin:0px;" border="0"
+								cellpadding="0" cellspacing="0">
+								<s:div style="float: left;">Nombre</s:div>
+								<s:div style="text-align: right; padding-left:3px;">
+									<h:graphicImage
+										rendered="#{not clAlimentoDieta.order.equals('descripcion asc') and not clAlimentoDieta.order.equals('descripcion desc')}"
+										value="/resources/icons/default/filtro/default.png" width="12"
+										height="17">
+										<rich:componentControl event="onclick" for="nombrecontextmenu"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{clAlimentoDieta.order.equals('descripcion asc')}"
+										value="/resources/icons/default/filtro/asc_sort.png"
+										width="12" height="17">
+										<rich:componentControl event="onclick" for="nombrecontextmenu"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{clAlimentoDieta.order.equals('descripcion desc')}"
+										value="/resources/icons/default/filtro/des_sort.png"
+										width="12" height="17">
+										<rich:componentControl event="onclick" for="nombrecontextmenu"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+								</s:div>
+							</h:panelGrid>
+						</f:facet>
+	           <h:outputText  value="#{dieta.descripcion}" />  
+	        </h:column>
+			
+
+					
+					<h:column>
+						<div align="center" style="border: 0px; vertical-align: middle;">
+						<s:link
+							view="/modConfiguracion/management/gestionar_usuarios/user_edit.gehos">
+							<h:graphicImage title="Modificar" style="border: 0px;"
+								value="/resources/icons/default/acciones/modificar.png" />
+							<s:link value="Modificar" action="IrModificar" propagation="none">  
+							<f:param name="idAlimentoMarcado" value="#{dieta.idAlimento}"/>
+							</s:link>
+						</s:link></div>
+					</h:column>
+					
+
+				</rich:dataTable>
+				<br />
+	<!-- concluye el datatable con la sigueinte propiedad id="id_datatable" -->										
+    
+    <!-- comienza el ordenar -->
+    
+    	<rich:contextMenu attached="false" id="nombrecontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="Ordenar de mayor a menor" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{usuarioList_configuracionCustom.setOrder('nombre desc')}"
+					reRender="userList_security_datatable">
+				</rich:menuItem>
+				<rich:menuItem value="Ordenar de menor a mayor" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{usuarioList_configuracionCustom.setOrder('nombre asc')}"
+					reRender="userList_security_datatable">
+				</rich:menuItem>
+			</rich:contextMenu>
+			<rich:contextMenu attached="false" id="usercontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="Ordenar de mayor a menor" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{usuarioList_configuracionCustom.setOrder('username desc')}"
+					reRender="userList_security_datatable">
+				</rich:menuItem>
+				<rich:menuItem value="Ordenar de menor a mayor" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{usuarioList_configuracionCustom.setOrder('username asc')}"
+					reRender="userList_security_datatable">
+				</rich:menuItem>
+			</rich:contextMenu>
+    
+   <!-- termina el ordenar -->
+   <!-- incluye encabezado tabla inferior que contiene lo referente al paginado-->	
+				<rich:spacer height="5px"/>
+				 
+    	<ui:include src="/layouts/alas-layout/themes/template_auxiliares/encabezado_tabla_inferior.xhtml">
+						    		<ui:param name="nomControladorList" value="#{clAlimentoDieta}" />
+						    		<ui:param name="vzExportar" value="#{true}" />
+									<ui:param name="vzPaginado" value="#{true}" />
+						    		</ui:include>    
+   
+	<!-- termina encabezado tabla inferior que contiene lo referente al paginado-->							 
+	</h:form>  
+
+</rich:modalPanel>
+

@@ -1,0 +1,878 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- css -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/gestionarEntidadesSistema/styles/selector2.css"
+			rel="stylesheet" type="text/css" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+
+		<style type="text/css">
+.rich-tabpanel {
+	white-space: nowrap !IMPORTANT;
+}
+</style>
+
+		<s:div
+			rendered="#{not entidadSistemaVerDetallesControlador.from.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+		</s:div>
+
+		<s:div
+			rendered="#{entidadSistemaVerDetallesControlador.from.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.titulo2}')</script>
+		</s:div>
+
+		<h:messages globalOnly="true" styleClass="custom-error" id="globalMessages" />
+
+
+
+		<h:form id="fromEntidadCrear" styleClass="edit"
+			enctype="multipart/form-data">
+			<a4j:outputPanel ajaxRendered="true">
+				<rich:messages styleClass="custom-error" ajaxRendered="true" for="btnSi" />
+			</a4j:outputPanel>
+			<rich:tabPanel switchType="client"
+				selectedTab="#{entidadSistemaVerDetallesControlador.selectedTab}">
+				<rich:tab label="#{messages.tab1}" name="tabEntidad">
+					<a4j:support event="onlabelclick" ajaxSingle="true"
+						action="#{entidadSistemaVerDetallesControlador.cambiarTabSelected('tabEntidad')}" />
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr>
+							<td><rich:spacer height="13px" style="display: block" /></td>
+						</tr>
+						<tr>
+							<td width="8px" />
+							<td><h:graphicImage id="idLogoNoExist"
+								url="/resources/modCommon/entidades_logos/#{theme.name}/#{theme.color}/#{entidadSistemaVerDetallesControlador.entidad.logo}"
+								border="0" style="width: 74px; height: 74px;" /></td>
+							<td><rich:spacer width="7px" /></td>
+							<td style="vertical-align: top">
+							<table cellpadding="0px" cellspacing="0px" border="0px"
+								width="100%">
+								<tr>
+									<td>#{messages.nombre}</td>
+									<td width="9px" />
+									<td><h:outputLabel styleClass="dataText"
+										value="#{entidadSistemaVerDetallesControlador.entidad.nombre}" /></td>
+									<td width="25px"></td>
+									<td>#{messages.direccion}</td>
+									<td width="9px" />
+									<td><h:outputLabel
+										rendered="#{entidadSistemaVerDetallesControlador.entidad.direccion != '' and entidadSistemaVerDetallesControlador.entidad.direccion != null}"
+										styleClass="dataText"
+										value="#{entidadSistemaVerDetallesControlador.entidad.direccion}" />
+									<h:outputLabel
+										rendered="#{entidadSistemaVerDetallesControlador.entidad.direccion == '' || entidadSistemaVerDetallesControlador.entidad.direccion == null}"
+										styleClass="dataText" value="-" /></td>
+									<td width="25px"></td>
+									<td>#{messages.area}</td>
+									<td width="9px" />
+									<td><h:outputLabel styleClass="dataText"
+										value="#{entidadSistemaVerDetallesControlador.poblacionAreaInfluencia()}"
+										rendered="#{entidadSistemaVerDetallesControlador.poblacionAreaInfluencia() != 0}" />
+									<h:outputLabel
+										rendered="#{entidadSistemaVerDetallesControlador.poblacionAreaInfluencia() == 0}"
+										styleClass="dataText" value="-" /></td>
+								</tr>
+								<tr>
+									<td height="8px" />
+								</tr>
+								<tr>
+									<td>#{messages.correo}</td>
+									<td />
+									<td><h:outputLabel
+										rendered="#{entidadSistemaVerDetallesControlador.entidad.correo != '' and entidadSistemaVerDetallesControlador.entidad.correo != null}"
+										styleClass="dataText"
+										value="#{entidadSistemaVerDetallesControlador.entidad.correo}" />
+									<h:outputLabel
+										rendered="#{entidadSistemaVerDetallesControlador.entidad.correo == '' || entidadSistemaVerDetallesControlador.entidad.correo == null}"
+										styleClass="dataText" value="-" /></td>
+									<td />
+									<td>#{messages.telefono}</td>
+									<td />
+									<td><h:outputLabel
+										rendered="#{entidadSistemaVerDetallesControlador.entidad.telefonos != '' and entidadSistemaVerDetallesControlador.entidad.telefonos != null}"
+										styleClass="dataText"
+										value="#{entidadSistemaVerDetallesControlador.entidad.telefonos}" />
+									<h:outputLabel
+										rendered="#{entidadSistemaVerDetallesControlador.entidad.telefonos == '' || entidadSistemaVerDetallesControlador.entidad.telefonos == null}"
+										styleClass="dataText" value="-" /></td>
+									<td />
+									<td>#{messages.inicialesEnt}</td>
+									<td />
+									<td><h:outputText
+										value="#{entidadSistemaVerDetallesControlador.entidad.fax}"
+										styleClass="dataText"></h:outputText> <h:outputLabel
+										rendered="#{entidadSistemaVerDetallesControlador.entidad.fax == '' || entidadSistemaVerDetallesControlador.entidad.fax == null}"
+										styleClass="dataText" value="-" /></td>
+								</tr>
+								<tr>
+								</tr>
+							</table>
+							</td>
+						</tr>
+					</table>
+
+					<table cellpadding="0px" cellspacing="0px" border="0px"
+						width="100%">
+						<tr>
+							<td height="8px" />
+						</tr>
+
+						<tr>
+							<td width="8px" />
+							<td><rich:panel>
+								<f:facet name="header">#{messages.lbl_otrosDatos_modConfig}</f:facet>
+								<table cellpadding="0px" cellspacing="0px" border="0px">
+									<tr>
+										<td style="height: 13px;" />
+									</tr>
+									<tr>
+										<td width="7px" />
+										<td>#{messages.tipoEntidad}</td>
+										<td width="9px" />
+										<td><h:outputLabel
+											styleClass="dataText"
+											value="#{entidadSistemaVerDetallesControlador.entidad.tipoEntidad.valor}" />
+										</td>
+										<td width="25px" />
+										<td>#{messages.fechaApertura}</td>
+										<td width="9px" />
+										<td><h:outputLabel
+											rendered="#{entidadSistemaVerDetallesControlador.entidad.fechaApertura != '' and entidadSistemaVerDetallesControlador.entidad.fechaApertura != null}"
+											styleClass="dataText"
+											value="#{entidadSistemaVerDetallesControlador.entidad.fechaApertura}">
+											<s:convertDateTime pattern="dd/MM/yyyy" />
+										</h:outputLabel> <h:outputLabel
+											rendered="#{entidadSistemaVerDetallesControlador.entidad.fechaApertura == '' || entidadSistemaVerDetallesControlador.entidad.fechaApertura == null}"
+											styleClass="dataText" value="-" /></td>
+
+										<td width="25px" />
+										<td>#{messages.caracter}</td>
+										<td width="9px" />
+										<td><h:outputText value="#{messages.caracter1}"
+											styleClass="dataText"
+											rendered="#{entidadSistemaVerDetallesControlador.entidad.esPublico}" />
+										<h:outputText value="#{messages.caracter2}"
+											styleClass="dataText"
+											rendered="#{not entidadSistemaVerDetallesControlador.entidad.esPublico}" /></td>
+									</tr>
+									<tr>
+										<td height="8px" />
+									</tr>
+									<tr>
+										<td width="7px" />
+										<td>#{messages.camasArquitectonicas}</td>
+										<td width="9px" />
+										<td><h:outputLabel
+											rendered="#{entidadSistemaVerDetallesControlador.entidad.camasArquitectonicas != '' and entidadSistemaVerDetallesControlador.entidad.camasArquitectonicas != null}"
+											styleClass="dataText"
+											value="#{entidadSistemaVerDetallesControlador.entidad.camasArquitectonicas}" />
+										<h:outputLabel
+											rendered="#{entidadSistemaVerDetallesControlador.entidad.camasArquitectonicas == '' || entidadSistemaVerDetallesControlador.entidad.camasArquitectonicas == null}"
+											styleClass="dataText" value="-" /></td>
+										<td width="25px" />
+										<td>#{messages.camasPresupuestadas}</td>
+										<td width="9px" />
+										<td><h:outputLabel
+											rendered="#{entidadSistemaVerDetallesControlador.entidad.camasPresupuestadas != '' and entidadSistemaVerDetallesControlador.entidad.camasPresupuestadas != null}"
+											styleClass="dataText"
+											value="#{entidadSistemaVerDetallesControlador.entidad.camasPresupuestadas}" />
+										<h:outputLabel
+											rendered="#{entidadSistemaVerDetallesControlador.entidad.camasPresupuestadas == '' || entidadSistemaVerDetallesControlador.entidad.camasPresupuestadas == null}"
+											styleClass="dataText" value="-" /></td>
+										<td width="25px" />
+										<td>#{messages.pais}</td>
+										<td width="9px" />
+										<td><h:outputLabel styleClass="dataText"
+											value="#{entidadSistemaVerDetallesControlador.entidad.estado.nacion.valor}" />
+										</td>
+										<td width="24px" />
+
+									</tr>
+									<tr>
+										<td height="8px" />
+									</tr>
+									<tr>
+										<td width="7px" />
+										<td><h:outputText
+											value="#{messages.provincia}" /></td>
+										<td width="9px" />
+										<td><h:outputLabel styleClass="dataText"
+											value="#{entidadSistemaVerDetallesControlador.entidad.estado.valor}" />
+										</td>
+										<td width="25px" />
+										<td><h:outputText
+											value="#{messages.municipio}" /></td>
+										<td width="9px" />
+										<td><h:outputLabel styleClass="dataText"
+											value="#{entidadSistemaVerDetallesControlador.entidad.municipio.valor}" />
+										</td>
+										<td width="25px" />
+										<td><h:outputText value="#{messages.lbl_cantTrab_modConfig}:" /></td>
+										<td width="9px" />
+										<td><h:outputLabel styleClass="dataText"
+											value="#{entidadSistemaVerDetallesControlador.entidad.cantidadTrabajadores}"
+											rendered="#{entidadSistemaVerDetallesControlador.entidad.cantidadTrabajadores != null}" />
+										<h:outputLabel styleClass="dataText" value="-"
+											rendered="#{entidadSistemaVerDetallesControlador.entidad.cantidadTrabajadores == null}" />
+										</td>
+										
+										
+									</tr>
+									<tr>
+										<td height="7px" />
+									</tr>
+									<tr>
+										<td width="7px" />
+										<td><h:outputText value="#{messages.lbl_camasFunc_modConfig}:" /></td>
+										<td width="9px" />
+										<td><h:outputLabel styleClass="dataText"
+											value="#{entidadSistemaVerDetallesControlador.entidad.camasFuncionales}"
+											rendered="#{entidadSistemaVerDetallesControlador.entidad.camasFuncionales != null}" />
+										<h:outputLabel styleClass="dataText" value="-"
+											rendered="#{entidadSistemaVerDetallesControlador.entidad.camasFuncionales == null}" />
+										</td>
+										<td width="25px" />
+										<td><h:outputText value="#{messages.lbl_cantMed_modConfig}:" /></td>
+										<td width="9px" />
+										<td><h:outputLabel styleClass="dataText"
+											value="#{entidadSistemaVerDetallesControlador.entidad.cantidadMedicos}"
+											rendered="#{entidadSistemaVerDetallesControlador.entidad.cantidadMedicos != null }" />
+										<h:outputLabel styleClass="dataText" value="-"
+											rendered="#{entidadSistemaVerDetallesControlador.entidad.cantidadMedicos == null }" />
+										</td>
+										<td width="25px" />
+										<td><h:outputText value="#{messages.lbl_cantEnf_modConfig}:" /></td>
+										<td width="9px" />
+										<td><h:outputText
+											value="#{entidadSistemaVerDetallesControlador.entidad.cantidadEnfermeros}"
+											styleClass="dataText"></h:outputText> <h:outputLabel
+											rendered="#{entidadSistemaVerDetallesControlador.entidad.cantidadEnfermeros == null}"
+											styleClass="dataText" value="-" /></td>
+									</tr>
+									<tr>
+										<td height="7px" />
+									</tr>
+									<tr>
+										<td width="7px" />
+										<td><h:outputText value="#{messages.lbl_codigoReeup}:" /></td>
+										<td width="9px" />
+										<td>
+											<h:outputLabel styleClass="dataText" value="#{entidadSistemaVerDetallesControlador.entidad.codigoReeup}" rendered="#{entidadSistemaVerDetallesControlador.entidad.codigoReeup != null }" />
+											<h:outputLabel styleClass="dataText" value="-" rendered="#{entidadSistemaVerDetallesControlador.entidad.codigoReeup == null }" />
+										</td>
+										<td width="25px" />
+										<td><h:outputText value="#{messages.lbl_organismo}:" /></td>
+										<td width="9px" />
+										<td>
+											<h:outputText value="#{entidadSistemaVerDetallesControlador.entidad.organismo.valor}" styleClass="dataText" rendered="#{entidadSistemaVerDetallesControlador.entidad.organismo != null and entidadSistemaVerDetallesControlador.entidad.organismo.valor != null}" />
+											<h:outputLabel rendered="#{entidadSistemaVerDetallesControlador.entidad.organismo == null or entidadSistemaVerDetallesControlador.entidad.organismo.valor == null}" styleClass="dataText" value="-" />
+										</td>
+										<td width="25px" />
+										<td><h:outputText value="#{messages.lbl_siglas}:" /></td>
+										<td width="9px" />
+										<td>
+											<h:outputLabel styleClass="dataText" value="#{entidadSistemaVerDetallesControlador.entidad.siglas}" rendered="#{entidadSistemaVerDetallesControlador.entidad.siglas != null}" />
+											<h:outputLabel styleClass="dataText" value="-" rendered="#{entidadSistemaVerDetallesControlador.entidad.siglas == null}" />
+										</td>
+									</tr>
+									<tr>
+										<td height="7px" />
+									</tr>
+								</table>
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td width="9px" />
+										<td width="99%">
+											<table border="0" cellpadding="0" cellspacing="0" width="100%">
+												<tr>
+													<td width="99%">
+														#{messages.lbl_observaciones_com}:<br />
+														<h:inputTextarea id="inputObservaciones" value="#{entidadSistemaVerDetallesControlador.entidad.observaciones}" style="width: 99%;" rows="5" disabled="true" />
+													</td>
+												</tr>
+											</table>
+										</td>
+										<td width="9px" />
+									</tr>
+									<tr>
+										<td height="7px" />
+									</tr>
+								</table>
+							</rich:panel></td>
+							<td width="8px" />
+						</tr>
+						<tr>
+							<td><rich:spacer height="8px" style="display: block" /></td>
+						</tr>
+					</table>
+				</rich:tab>
+			<!-- 	<rich:tab label="#{messages.tab2}" name="tabEstablecimientos">
+					<a4j:support event="onlabelclick" ajaxSingle="true"
+						action="#{entidadSistemaVerDetallesControlador.cambiarTabSelected('tabEstablecimientos')}" />
+					<table cellpadding="0" cellspacing="0" border="0" width="100%">
+						<tr>
+							<td height="13px" />
+						</tr>
+						<tr>
+							<td width="8px" />
+							<td><a4j:outputPanel id="aTablaEstablecimientos">
+								<rich:panel
+									rendered="#{empty entidadSistemaVerDetallesControlador.establecimientosAreaInfluenciaHosp_controler.resultList}">
+									<f:facet name="header">
+										<table cellpadding="0" cellspacing="0" border="0" width="100%">
+											<tr>
+												<td>#{messages.listadoEstablecimientos}</td>
+											</tr>
+										</table>
+									</f:facet>
+									<rich:spacer height="13px" style="display: block" />
+									<div class="results" id="roleList"><rich:spacer
+										width="7px" /> <h:outputText value="#{messages.noInf}" /></div>
+									<rich:spacer height="7px" style="display: block" />
+								</rich:panel>
+								<s:div
+									rendered="#{not empty entidadSistemaVerDetallesControlador.establecimientosAreaInfluenciaHosp_controler.resultList}">
+
+									<s:div id="idDivEstablecimientos">
+										<s:div style="margin-left:1px;margin-top:1px"
+											rendered="#{not empty entidadSistemaVerDetallesControlador.establecimientosAreaInfluenciaHosp_controler.resultList}">
+											<rich:dataTable id="establecimientosAreaInf"
+												name="establecimientosAreaInf"
+												style="FONT-SIZE: xx-small; width: 100%;"
+												columnsWidth="70%, 30%" var="establecimiento"
+												value="#{entidadSistemaVerDetallesControlador.establecimientosAreaInfluenciaHosp_controler.resultList}">
+												<f:facet name="header">
+													<div style="float: left;">#{messages.listadoEstablecimientos}</div>
+												</f:facet>
+												<h:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.nombreEstablecimiento}</s:div>
+														</h:panelGrid>
+													</f:facet>
+			            						#{establecimiento.nombre}
+			       							</h:column>
+												<h:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.tipoEntidadEstablecimientos}</s:div>
+														</h:panelGrid>
+													</f:facet>
+												#{establecimiento.tipoEstablecimientoSalud.valor}
+											</h:column>
+											</rich:dataTable>
+										</s:div>
+									</s:div>
+									<rich:spacer height="11px" />
+									<div class="tableControl" style="width: 100%; height: 14px"
+										align="center"><h:graphicImage title="#{messages.pag1}"
+										style="cursor:pointer; border: 0px;"
+										rendered="#{entidadSistemaVerDetallesControlador.establecimientosAreaInfluenciaHosp_controler.previousExists}"
+										value="/resources/icons/default/paginado/#{theme.color}/inicio.png">
+										<a4j:support ajaxSingle="true" event="onclick"
+											reRender="aTablaEstablecimientos"
+											action="#{entidadSistemaVerDetallesControlador.establecimientosAreaInfluenciaHosp_controler.setFirstResult(0)}" />
+									</h:graphicImage> <h:graphicImage
+										value="/resources/icons/default/paginado/iniciod.png"
+										rendered="#{!entidadSistemaVerDetallesControlador.establecimientosAreaInfluenciaHosp_controler.previousExists}" />
+									<h:graphicImage title="#{messages.pag2}"
+										style="cursor:pointer; border: 0px;"
+										rendered="#{entidadSistemaVerDetallesControlador.establecimientosAreaInfluenciaHosp_controler.previousExists}"
+										value="/resources/icons/default/paginado/#{theme.color}/anterior.png">
+										<a4j:support ajaxSingle="true" event="onclick"
+											reRender="aTablaEstablecimientos"
+											action="#{entidadSistemaVerDetallesControlador.establecimientosAreaInfluenciaHosp_controler.setFirstResult(entidadSistemaVerDetallesControlador.establecimientosAreaInfluenciaHosp_controler.previousFirstResult)}" />
+									</h:graphicImage> <h:graphicImage
+										value="/resources/icons/default/paginado/anteriord.png"
+										rendered="#{!entidadSistemaVerDetallesControlador.establecimientosAreaInfluenciaHosp_controler.previousExists}" />
+									<h:graphicImage title="#{messages.pag3}"
+										style="cursor:pointer; border: 0px;"
+										rendered="#{entidadSistemaVerDetallesControlador.establecimientosAreaInfluenciaHosp_controler.nextExists}"
+										value="/resources/icons/default/paginado/#{theme.color}/siguiente.png">
+										<a4j:support ajaxSingle="true" event="onclick"
+											reRender="aTablaEstablecimientos"
+											action="#{entidadSistemaVerDetallesControlador.establecimientosAreaInfluenciaHosp_controler.setFirstResult(entidadSistemaVerDetallesControlador.establecimientosAreaInfluenciaHosp_controler.nextFirstResult)}" />
+									</h:graphicImage> <h:graphicImage
+										value="/resources/icons/default/paginado/siguiented.png"
+										rendered="#{!entidadSistemaVerDetallesControlador.establecimientosAreaInfluenciaHosp_controler.nextExists}" />
+									<h:graphicImage title="#{messages.pag4}"
+										style="cursor:pointer; border: 0px;"
+										rendered="#{entidadSistemaVerDetallesControlador.establecimientosAreaInfluenciaHosp_controler.nextExists}"
+										value="/resources/icons/default/paginado/#{theme.color}/fin.png">
+										<a4j:support ajaxSingle="true" event="onclick"
+											reRender="aTablaEstablecimientos"
+											action="#{entidadSistemaVerDetallesControlador.establecimientosAreaInfluenciaHosp_controler.setFirstResult(entidadSistemaVerDetallesControlador.establecimientosAreaInfluenciaHosp_controler.lastFirstResult)}" />
+									</h:graphicImage> <h:graphicImage
+										rendered="#{!entidadSistemaVerDetallesControlador.establecimientosAreaInfluenciaHosp_controler.nextExists}"
+										value="/resources/icons/default/paginado/find.png" /></div>
+								</s:div>
+							</a4j:outputPanel></td>
+							<td width="8px" />
+						</tr>
+						<tr>
+							<td height="8px" />
+						</tr>
+					</table>
+
+
+
+
+				</rich:tab>
+				<rich:tab label="#{messages.tab3}" name="tabAsignaciones">
+					<a4j:support event="onlabelclick" ajaxSingle="true"
+						action="#{entidadSistemaVerDetallesControlador.cambiarTabSelected('tabAsignaciones')}" />
+					<table cellpadding="0" cellspacing="0" border="0" width="100%">
+						<tr>
+							<td height="13px" />
+						</tr>
+						<tr>
+							<td width="8px" />
+							<td><a4j:outputPanel id="aTablaAsignaciones">
+								<rich:panel
+									rendered="#{empty entidadSistemaVerDetallesControlador.asignacionFinancieraList_controler.resultList}">
+									<f:facet name="header">
+										<table cellpadding="0" cellspacing="0" border="0" width="100%">
+											<tr>
+												<td>#{messages.listadoAsignacionesFinancieras}</td>
+											</tr>
+										</table>
+									</f:facet>
+									<rich:spacer height="13px" style="display: block" />
+									<div class="results" id="roleList"><rich:spacer
+										width="7px" /> <h:outputText value="#{messages.noInf}" /></div>
+									<rich:spacer height="7px" style="display: block" />
+								</rich:panel>
+								<s:div
+									rendered="#{not empty entidadSistemaVerDetallesControlador.asignacionFinancieraList_controler.resultList}">
+
+									<s:div id="idDivAsignaciones">
+										<s:div style="margin-left:1px;margin-top:1px"
+											rendered="#{not empty entidadSistemaVerDetallesControlador.asignacionFinancieraList_controler.resultList}">
+											<rich:dataTable id="asignacionesFinancieras"
+												name="establecimientosAreaInf" style="width: 100%;"
+												columnsWidth="20%, 80%" var="asignacion"
+												value="#{entidadSistemaVerDetallesControlador.asignacionFinancieraList_controler.resultList}">
+												<f:facet name="header">
+													<div style="float: left;">#{messages.listadoAsignacionesFinancieras}</div>
+												</f:facet>
+												<h:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.cantidad}</s:div>
+														</h:panelGrid>
+													</f:facet>
+													<div align="right">#{asignacion.cantidad}</div>
+												</h:column>
+												<h:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.entidadOrganizacional}</s:div>
+														</h:panelGrid>
+													</f:facet>
+												#{asignacion.entidadOrganizacional.valor}
+											</h:column>
+											</rich:dataTable>
+										</s:div>
+										<rich:spacer height="11px" />
+										<div class="tableControl" style="width: 100%; height: 14px"
+											align="center"><h:graphicImage title="#{messages.pag1}"
+											style="cursor:pointer; border: 0px;"
+											rendered="#{entidadSistemaVerDetallesControlador.asignacionFinancieraList_controler.previousExists}"
+											value="/resources/icons/default/paginado/#{theme.color}/inicio.png">
+											<a4j:support ajaxSingle="true" event="onclick"
+												reRender="aTablaAsignaciones"
+												action="#{entidadSistemaVerDetallesControlador.asignacionFinancieraList_controler.setFirstResult(0)}" />
+										</h:graphicImage> <h:graphicImage
+											value="/resources/icons/default/paginado/iniciod.png"
+											rendered="#{!entidadSistemaVerDetallesControlador.asignacionFinancieraList_controler.previousExists}" />
+										<h:graphicImage title="#{messages.pag2}"
+											style="cursor:pointer; border: 0px;"
+											rendered="#{entidadSistemaVerDetallesControlador.asignacionFinancieraList_controler.previousExists}"
+											value="/resources/icons/default/paginado/#{theme.color}/anterior.png">
+											<a4j:support ajaxSingle="true" event="onclick"
+												reRender="aTablaAsignaciones"
+												action="#{entidadSistemaVerDetallesControlador.asignacionFinancieraList_controler.setFirstResult(entidadSistemaVerDetallesControlador.asignacionFinancieraList_controler.previousFirstResult)}" />
+										</h:graphicImage> <h:graphicImage
+											value="/resources/icons/default/paginado/anteriord.png"
+											rendered="#{!entidadSistemaVerDetallesControlador.asignacionFinancieraList_controler.previousExists}" />
+										<h:graphicImage title="#{messages.pag3}"
+											style="cursor:pointer; border: 0px;"
+											rendered="#{entidadSistemaVerDetallesControlador.asignacionFinancieraList_controler.nextExists}"
+											value="/resources/icons/default/paginado/#{theme.color}/siguiente.png">
+											<a4j:support ajaxSingle="true" event="onclick"
+												reRender="aTablaAsignaciones"
+												action="#{entidadSistemaVerDetallesControlador.asignacionFinancieraList_controler.setFirstResult(entidadSistemaVerDetallesControlador.asignacionFinancieraList_controler.nextFirstResult)}" />
+										</h:graphicImage> <h:graphicImage
+											value="/resources/icons/default/paginado/siguiented.png"
+											rendered="#{!entidadSistemaVerDetallesControlador.asignacionFinancieraList_controler.nextExists}" />
+										<h:graphicImage title="#{messages.pag4}"
+											style="cursor:pointer; border: 0px;"
+											rendered="#{entidadSistemaVerDetallesControlador.asignacionFinancieraList_controler.nextExists}"
+											value="/resources/icons/default/paginado/#{theme.color}/fin.png">
+											<a4j:support ajaxSingle="true" event="onclick"
+												reRender="aTablaAsignaciones"
+												action="#{entidadSistemaVerDetallesControlador.asignacionFinancieraList_controler.setFirstResult(entidadSistemaVerDetallesControlador.asignacionFinancieraList_controler.lastFirstResult)}" />
+										</h:graphicImage> <h:graphicImage
+											rendered="#{!entidadSistemaVerDetallesControlador.asignacionFinancieraList_controler.nextExists}"
+											value="/resources/icons/default/paginado/find.png" /></div>
+									</s:div>
+								</s:div>
+							</a4j:outputPanel></td>
+							<td width="8px" />
+						</tr>
+						<tr>
+							<td height="8px" />
+						</tr>
+					</table>
+
+
+
+
+				</rich:tab>
+
+				<rich:tab label="#{messages.tab4}" name="tabPartidas">
+					<a4j:support event="onlabelclick" ajaxSingle="true"
+						action="#{entidadSistemaVerDetallesControlador.cambiarTabSelected('tabPartidas')}" />
+					<table cellpadding="0" cellspacing="0" border="0" width="100%">
+						<tr>
+							<td height="13px" />
+						</tr>
+						<tr>
+							<td width="8px" />
+							<td><a4j:outputPanel id="aTablaPartidas">
+								<rich:panel
+									rendered="#{empty entidadSistemaVerDetallesControlador.partidaPresupuestariaList_controler.resultList}">
+									<f:facet name="header">
+										<table cellpadding="0" cellspacing="0" border="0" width="100%">
+											<tr>
+												<td>#{messages.listadoPartidasPresupuestarias}</td>
+											</tr>
+										</table>
+									</f:facet>
+									<rich:spacer height="13px" style="display: block" />
+									<div class="results" id="roleList"><rich:spacer
+										width="7px" /> <h:outputText value="#{messages.noInf}" /></div>
+									<rich:spacer height="7px" style="display: block" />
+								</rich:panel>
+								<s:div
+									rendered="#{not empty entidadSistemaVerDetallesControlador.partidaPresupuestariaList_controler.resultList}">
+
+									<s:div id="idDivPartidas">
+										<s:div style="margin-left:1px;margin-top:1px"
+											rendered="#{not empty entidadSistemaVerDetallesControlador.partidaPresupuestariaList_controler.resultList}">
+											<rich:dataTable id="partidasPresupuetarias"
+												name="establecimientosAreaInf" style="width: 100%;"
+												columnsWidth="10%, 30%, 30%, 30%" var="partida"
+												value="#{entidadSistemaVerDetallesControlador.partidaPresupuestariaList_controler.resultList}">
+												<f:facet name="header">
+													<div style="float: left;">#{messages.listadoPartidasPresupuestarias}</div>
+												</f:facet>
+												<h:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.cantidad}</s:div>
+														</h:panelGrid>
+													</f:facet>
+													<div align="right">#{partida.cantidad}</div>
+												</h:column>
+												<h:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.entidadOrganizacional}</s:div>
+														</h:panelGrid>
+													</f:facet>
+												#{partida.entidadOrganizacional.valor}
+											</h:column>
+												<h:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.departamentoCol}</s:div>
+														</h:panelGrid>
+													</f:facet>
+												#{partida.departamento.nombre}
+											</h:column>
+												<h:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.servicioCol}</s:div>
+														</h:panelGrid>
+													</f:facet>
+												#{partida.servicio.nombre}
+											</h:column>
+											</rich:dataTable>
+										</s:div>
+										<rich:spacer height="11px" />
+										<div class="tableControl" style="width: 100%; height: 14px"
+											align="center"><h:graphicImage title="#{messages.pag1}"
+											style="cursor:pointer; border: 0px;"
+											rendered="#{entidadSistemaVerDetallesControlador.partidaPresupuestariaList_controler.previousExists}"
+											value="/resources/icons/default/paginado/#{theme.color}/inicio.png">
+											<a4j:support ajaxSingle="true" event="onclick"
+												reRender="aTablaPartidas"
+												action="#{entidadSistemaVerDetallesControlador.partidaPresupuestariaList_controler.setFirstResult(0)}" />
+										</h:graphicImage> <h:graphicImage
+											value="/resources/icons/default/paginado/iniciod.png"
+											rendered="#{!entidadSistemaVerDetallesControlador.partidaPresupuestariaList_controler.previousExists}" />
+										<h:graphicImage title="#{messages.pag2}"
+											style="cursor:pointer; border: 0px;"
+											rendered="#{entidadSistemaVerDetallesControlador.partidaPresupuestariaList_controler.previousExists}"
+											value="/resources/icons/default/paginado/#{theme.color}/anterior.png">
+											<a4j:support ajaxSingle="true" event="onclick"
+												reRender="aTablaPartidas"
+												action="#{entidadSistemaVerDetallesControlador.partidaPresupuestariaList_controler.setFirstResult(entidadSistemaVerDetallesControlador.partidaPresupuestariaList_controler.previousFirstResult)}" />
+										</h:graphicImage> <h:graphicImage
+											value="/resources/icons/default/paginado/anteriord.png"
+											rendered="#{!entidadSistemaVerDetallesControlador.partidaPresupuestariaList_controler.previousExists}" />
+										<h:graphicImage title="#{messages.pag3}"
+											style="cursor:pointer; border: 0px;"
+											rendered="#{entidadSistemaVerDetallesControlador.partidaPresupuestariaList_controler.nextExists}"
+											value="/resources/icons/default/paginado/#{theme.color}/siguiente.png">
+											<a4j:support ajaxSingle="true" event="onclick"
+												reRender="aTablaPartidas"
+												action="#{entidadSistemaVerDetallesControlador.partidaPresupuestariaList_controler.setFirstResult(entidadSistemaVerDetallesControlador.partidaPresupuestariaList_controler.nextFirstResult)}" />
+										</h:graphicImage> <h:graphicImage
+											value="/resources/icons/default/paginado/siguiented.png"
+											rendered="#{!entidadSistemaVerDetallesControlador.partidaPresupuestariaList_controler.nextExists}" />
+										<h:graphicImage title="#{messages.pag4}"
+											style="cursor:pointer; border: 0px;"
+											rendered="#{entidadSistemaVerDetallesControlador.partidaPresupuestariaList_controler.nextExists}"
+											value="/resources/icons/default/paginado/#{theme.color}/fin.png">
+											<a4j:support ajaxSingle="true" event="onclick"
+												reRender="aTablaPartidas"
+												action="#{entidadSistemaVerDetallesControlador.partidaPresupuestariaList_controler.setFirstResult(entidadSistemaVerDetallesControlador.partidaPresupuestariaList_controler.lastFirstResult)}" />
+										</h:graphicImage> <h:graphicImage
+											rendered="#{!entidadSistemaVerDetallesControlador.partidaPresupuestariaList_controler.nextExists}"
+											value="/resources/icons/default/paginado/find.png" /></div>
+									</s:div>
+								</s:div>
+							</a4j:outputPanel></td>
+							<td width="8px" />
+						</tr>
+						<tr>
+							<td height="8px" />
+						</tr>
+					</table>
+
+
+
+
+				</rich:tab>
+				<rich:tab label="#{messages.tab5}" name="tabActividades">
+					<a4j:support event="onlabelclick" ajaxSingle="true"
+						action="#{entidadSistemaVerDetallesControlador.cambiarTabSelected('tabActividades')}" />
+					<table cellpadding="0" cellspacing="0" border="0" width="100%">
+						<tr>
+							<td height="13px" />
+						</tr>
+						<tr>
+							<td width="8px" />
+							<td><a4j:outputPanel id="aTablaActividades">
+								<rich:panel
+									rendered="#{empty entidadSistemaVerDetallesControlador.actividadInvestigacionDocenteList_controler.resultList}">
+									<f:facet name="header">
+										<table cellpadding="0" cellspacing="0" border="0" width="100%">
+											<tr>
+												<td>#{messages.listadoActividades}</td>
+											</tr>
+										</table>
+									</f:facet>
+									<rich:spacer height="13px" style="display: block" />
+									<div class="results" id="roleList"><rich:spacer
+										width="7px" /> <h:outputText value="#{messages.noInf}" /></div>
+									<rich:spacer height="7px" style="display: block" />
+								</rich:panel>
+								<s:div
+									rendered="#{not empty entidadSistemaVerDetallesControlador.actividadInvestigacionDocenteList_controler.resultList}">
+
+									<s:div id="idDivActividades">
+										<s:div style="margin-left:1px;margin-top:1px"
+											rendered="#{not empty entidadSistemaVerDetallesControlador.actividadInvestigacionDocenteList_controler.resultList}">
+											<rich:dataTable id="actividades" name="actividad"
+												style="width: 100%;" var="actividad"
+												value="#{entidadSistemaVerDetallesControlador.actividadInvestigacionDocenteList_controler.resultList}">
+												<f:facet name="header">
+													<div style="float: left;">#{messages.listadoActividades}</div>
+												</f:facet>
+												<h:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.actividadNombre}</s:div>
+														</h:panelGrid>
+													</f:facet>
+			            						#{actividad.valor}
+			       							</h:column>
+											</rich:dataTable>
+										</s:div>
+										<rich:spacer height="11px" />
+										<div class="tableControl" style="width: 100%; height: 14px"
+											align="center"><h:graphicImage title="#{messages.pag1}"
+											style="cursor:pointer; border: 0px;"
+											rendered="#{entidadSistemaVerDetallesControlador.actividadInvestigacionDocenteList_controler.previousExists}"
+											value="/resources/icons/default/paginado/#{theme.color}/inicio.png">
+											<a4j:support ajaxSingle="true" event="onclick"
+												reRender="aTablaActividades"
+												action="#{entidadSistemaVerDetallesControlador.actividadInvestigacionDocenteList_controler.setFirstResult(0)}" />
+										</h:graphicImage> <h:graphicImage
+											value="/resources/icons/default/paginado/iniciod.png"
+											rendered="#{!entidadSistemaVerDetallesControlador.actividadInvestigacionDocenteList_controler.previousExists}" />
+										<h:graphicImage title="#{messages.pag2}"
+											style="cursor:pointer; border: 0px;"
+											rendered="#{entidadSistemaVerDetallesControlador.actividadInvestigacionDocenteList_controler.previousExists}"
+											value="/resources/icons/default/paginado/#{theme.color}/anterior.png">
+											<a4j:support ajaxSingle="true" event="onclick"
+												reRender="aTablaActividades"
+												action="#{entidadSistemaVerDetallesControlador.actividadInvestigacionDocenteList_controler.setFirstResult(entidadSistemaVerDetallesControlador.actividadInvestigacionDocenteList_controler.previousFirstResult)}" />
+										</h:graphicImage> <h:graphicImage
+											value="/resources/icons/default/paginado/anteriord.png"
+											rendered="#{!entidadSistemaVerDetallesControlador.actividadInvestigacionDocenteList_controler.previousExists}" />
+										<h:graphicImage title="#{messages.pag3}"
+											style="cursor:pointer; border: 0px;"
+											rendered="#{entidadSistemaVerDetallesControlador.actividadInvestigacionDocenteList_controler.nextExists}"
+											value="/resources/icons/default/paginado/#{theme.color}/siguiente.png">
+											<a4j:support ajaxSingle="true" event="onclick"
+												reRender="aTablaActividades"
+												action="#{entidadSistemaVerDetallesControlador.actividadInvestigacionDocenteList_controler.setFirstResult(entidadSistemaVerDetallesControlador.actividadInvestigacionDocenteList_controler.nextFirstResult)}" />
+										</h:graphicImage> <h:graphicImage
+											value="/resources/icons/default/paginado/siguiented.png"
+											rendered="#{!entidadSistemaVerDetallesControlador.actividadInvestigacionDocenteList_controler.nextExists}" />
+										<h:graphicImage title="#{messages.pag4}"
+											style="cursor:pointer; border: 0px;"
+											rendered="#{entidadSistemaVerDetallesControlador.actividadInvestigacionDocenteList_controler.nextExists}"
+											value="/resources/icons/default/paginado/#{theme.color}/fin.png">
+											<a4j:support ajaxSingle="true" event="onclick"
+												reRender="aTablaActividades"
+												action="#{entidadSistemaVerDetallesControlador.actividadInvestigacionDocenteList_controler.setFirstResult(entidadSistemaVerDetallesControlador.actividadInvestigacionDocenteList_controler.lastFirstResult)}" />
+										</h:graphicImage> <h:graphicImage
+											rendered="#{!entidadSistemaVerDetallesControlador.actividadInvestigacionDocenteList_controler.nextExists}"
+											value="/resources/icons/default/paginado/find.png" /></div>
+									</s:div>
+								</s:div>
+							</a4j:outputPanel></td>
+							<td width="8px" />
+						</tr>
+						<tr>
+							<td height="8px" />
+						</tr>
+					</table>
+
+
+
+
+				</rich:tab> -->
+			</rich:tabPanel>
+
+
+
+			<div align="right">
+			<table cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td><h:commandButton tabindex="1"
+						value="#{messages.modificar}"
+						rendered="#{not entidadSistemaVerDetallesControlador.from.equals('listar')}"
+						style="margin-bottom: 0px; margin-right: 5px; margin-top: 8px;  margin-left: 0px"
+						action="modificar" /></td>
+					<td><a4j:commandButton tabindex="2"
+						rendered="#{not entidadSistemaVerDetallesControlador.from.equals('listar')}"
+						onclick="Richfaces.showModalPanel('eliminar_entidad_panel')"
+						style="margin-bottom: 0px; margin-right: 5px; margin-left: 5px; margin-top: 8px"
+						value="#{messages.eliminar}">
+						<s:conversationPropagation type="end"></s:conversationPropagation>
+					</a4j:commandButton></td>
+					<td><h:commandButton value="#{messages.salir}" action="salir"
+						tabindex="3"
+						style="margin-right: 0px; margin-left: 5px; margin-top: 8px;margin-bottom: 0px;">
+					</h:commandButton></td>
+				</tr>
+			</table>
+			</div>
+
+
+
+
+
+		</h:form>
+
+		<s:div>
+			<!-- etimodal panel para eliminar una entidad referenciada -->
+			<a4j:outputPanel id="crearEntidadModalPanel">
+				<rich:modalPanel id="panelEliminar" width="290" height="125">
+					<f:facet name="header" id="panelEliminarHeader">
+						<h:outputText value="Eliminar rol" />
+					</f:facet>
+					<f:facet name="controls">
+						<h:graphicImage
+							value="/resources/icons/default/acciones/cerrar.gif"
+							style="cursor:pointer"
+							onclick="Richfaces.hideModalPanel('panelEliminar')" />
+					</f:facet>
+					<s:div id="panelEliminarBody">
+						<div align="left"><h:graphicImage
+							value="/resources/icons/default/acciones/advertencia.png" /> <rich:componentControl
+							for="mpanel" attachTo="hidelink" operation="hide" event="onclick" />
+						<rich:spacer width="4px" /> <h:outputText
+							value="Al seleccionar S&#237; se eliminara la referencia a" /> <br />
+						<h:outputText value="&#191;Desea continuar?" /></div>
+						<br />
+						<div align="center"><h:commandButton value="S&#237;"
+							style="margin-right: 0px">
+							<a4j:support ajaxSingle="true" event="onclick"
+								action="#{entidadSistemaVerDetallesControlador.eliminarReferencia()}"
+								reRender="tablasEnitdadesNoReferenciadas, tablasEnitdadesReferenciadas, tablaServiciosInEntidades"
+								oncomplete="Richfaces.hideModalPanel('panelEliminar')" />
+						</h:commandButton> <input type="button" value="No" style="margin-left: 3px;"
+							onclick="Richfaces.hideModalPanel('panelEliminar')" /></div>
+					</s:div>
+				</rich:modalPanel>
+			</a4j:outputPanel>
+		</s:div>
+		<br />
+
+		<s:div id="modalpanelsdiv">
+
+		</s:div>
+
+		<ui:include
+			src="/modConfiguracion/management/gestionarEntidadesSistema/modalspanel/ConfirmarEliminarEntidadAsociada_VerDetalles.xhtml" />
+
+	</ui:define>
+</ui:composition>
+

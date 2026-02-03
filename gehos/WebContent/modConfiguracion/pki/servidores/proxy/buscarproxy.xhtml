@@ -1,0 +1,272 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/pkiStyles/pkistyles.css"
+			rel="stylesheet" type="text/css" />
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+		<a4j:outputPanel ajaxRendered="true">
+			<rich:messages styleClass="message" ajaxRendered="true" for="btnSi" />
+		</a4j:outputPanel>
+		<h:form id="form1" styleClass="edit">
+			<rich:simpleTogglePanel switchType="client"
+				action="#{buscarProxyControlador.abrirCerrar()}"
+				opened="#{buscarProxyControlador.open}"
+				bodyClass="rich-stglpanel-body-custom">
+				<a4j:support event="oncollapse" ajaxSingle="true"
+					action="#{buscarProxyControlador.abrirCerrar()}"
+					reRender="tablas_id" />
+				<a4j:support event="onexpand" ajaxSingle="true"
+					action="#{buscarProxyControlador.abrirCerrar()}"
+					reRender="tablas_id" />
+				<f:facet name="header">#{messages.lbl_criterioBusqueda_conf}</f:facet>
+				<table cellpadding="0px" cellspacing="0px" border="0px"
+					id="simplesearch">
+					<tr style="vertical-align: top;">
+						<td>#{messages.url}: <br />
+						<h:inputText id="nombre"
+							value="#{buscarProxyControlador.direccion}" style="width:150px;" /></td>
+						<td><rich:spacer styleClass="h-spacer-between-2c" /></td>
+<td style="vertical-align: bottom;"><h:commandButton
+									value="#{messages.buscar}"
+									style="margin-left: 0px; margin-bottom: 0px;"
+									action="#{buscarProxyControlador.buscar()}">
+									<s:defaultAction />
+								</h:commandButton> <s:button view="/modCommons/modHome/home.gehos"
+									propagation="end" value="#{messages.cancelar}"
+									style="margin-right:0px;margin-bottom: 0px;">
+									<f:param name="idFuncionalidad"
+										value="#{activeModule.activeModule.id}" />
+									<f:param name="idancestors"
+										value="#{activeModule.activeModule.id}a" />
+									<f:param name="moduleName"
+										value="#{activeModule.activeModuleName}" />
+								</s:button></td>
+					</tr>
+					
+				</table>
+				
+			</rich:simpleTogglePanel>
+			<rich:spacer height="8px" />
+			<div align="right">
+			<table cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td><h:graphicImage title="#{messages.Adicionar}"
+						style="margin-right: 1px" height="12" width="12"
+						value="/resources/icons/default/acciones/adicionar.png" /></td>
+					<td><h:commandLink action="crearproxy"
+						value="#{messages.adicionar}" style="cursor: pointer"
+						title="#{messages.adicionar}" /></td>
+
+
+				</tr>
+			</table>
+			</div>
+
+		</h:form>
+		<h:form id="form2">
+			<a4j:outputPanel id="tablas_id">
+
+				<rich:panel
+					rendered="#{empty buscarProxyControlador.resultList and !buscarProxyControlador.direccion.equals('')}">
+					<f:facet name="header">#{messages.listado}</f:facet>
+					<div class="results" id="userList"><rich:spacer height="22" />
+					<rich:spacer width="7px" /> <h:outputText
+						value="#{messages.info1}" /></div>
+					<rich:spacer height="5px" />
+				</rich:panel>
+				<rich:panel
+					rendered="#{empty buscarProxyControlador.resultList and buscarProxyControlador.direccion.equals('')}">
+					<f:facet name="header">	#{messages.listado} </f:facet>
+					<div class="results" id="camasList"><rich:spacer height="22" />
+					<rich:spacer width="8px" /> <h:outputText
+						value="#{messages.info2}" /></div>
+					<rich:spacer height="5px" />
+				</rich:panel>
+				<s:div style="margin-left:0px;margin-top:0px"
+					rendered="#{not empty buscarProxyControlador.resultList}">
+					<rich:dataTable id="proxyList_Table" style="width: 100%;"
+						var="proxy" value="#{buscarProxyControlador.resultList}"
+						columnsWidth="33%, 32%, 1%, 1%, 1%">
+						<f:facet name="header">
+							#{messages.listado}
+					</f:facet>
+
+						<rich:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.url}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not buscarProxyControlador.order.equals('proxy.direccion asc') and not buscarProxyControlador.order.equals('proxy.direccion desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="dircontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{buscarProxyControlador.order.equals('proxy.direccion asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="dircontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{buscarProxyControlador.order.equals('proxy.direccion desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="dircontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+	            	#{proxy.direccion}
+	        	</rich:column>
+						
+						<rich:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.puerto}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not buscarProxyControlador.order.equals('proxy.puerto asc') and not buscarProxyControlador.order.equals('proxy.puerto desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="puertocontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{buscarProxyControlador.order.equals('proxy.puerto asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="puertocontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{buscarProxyControlador.order.equals('proxy.puerto desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="puertocontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+	            	#{proxy.puerto}
+	        	</rich:column>
+						<rich:column>
+							<div align="center"><s:link
+								view="/modConfiguracion/pki/servidores/proxy/verdetalleproxy.xhtml">
+								<h:graphicImage title="#{messages.ver}" style="border: 0px;"
+									value="/resources/icons/default/acciones/ver.png" />
+								<f:param name="id" value="#{proxy.id}" />
+								<f:param name="from" value="#{messages.lbl_listar_modConfig}" />
+
+							</s:link></div>
+						</rich:column>
+						<rich:column>
+							<div align="center"><h:commandLink
+								action="#{modificarProxyControlador.setId(proxy.id)}">
+								<h:graphicImage
+									value="/resources/icons/default/acciones/modificar.png"
+									title="#{messages.modificar}" style="border: 0px;" />
+
+							</h:commandLink></div>
+						</rich:column>
+						<rich:column>
+							<div align="center"><a4j:commandLink
+								oncomplete="Richfaces.showModalPanel('panelEliminarproxy')"
+								action="#{buscarProxyControlador.seleccionar(proxy.id)}">
+
+								<h:graphicImage title="#{messages.eliminar}"
+									style="border: 0px; cursor:pointer;"
+									value="/resources/icons/default/acciones/eliminar.png">
+								</h:graphicImage>
+							</a4j:commandLink></div>
+						</rich:column>
+
+					</rich:dataTable>
+				</s:div>
+				<rich:spacer height="11px" />
+				<ui:include src="/modEnsayo/codebase/plantillas/paginado_tabla_inferior_generico.xhtml/" >
+					<ui:param name="vzPaginado" value="#{buscarProxyControlador.resultCount>10}"/>
+					<ui:param name="nomControladorList" value="#{buscarProxyControlador}" />
+					<ui:param name="idListado" value="tablas_id" />
+				</ui:include>
+				</a4j:outputPanel>
+		</h:form>
+		<h:form id="form3">
+			<rich:contextMenu attached="false" id="dircontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.lbl_ordenDesc_modConfig}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{buscarProxyControlador.setOrder('proxy.direccion desc')}"
+					reRender="proxyList_Table">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.lbl_ordenAsc_modConfig}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{buscarProxyControlador.setOrder('proxy.direccion asc')}"
+					reRender="proxyList_Table">
+				</rich:menuItem>
+			</rich:contextMenu>
+
+		</h:form>
+		<h:form id="form4">
+			<rich:contextMenu attached="false" id="usuariocontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.lbl_ordenDesc_modConfig}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{buscarProxyControlador.setOrder('proxy.usuario desc')}"
+					reRender="proxyList_Table">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.lbl_ordenAsc_modConfig}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{buscarProxyControlador.setOrder('proxy.usuario asc')}"
+					reRender="proxyList_Table">
+				</rich:menuItem>
+			</rich:contextMenu>
+
+		</h:form>
+		<h:form id="form5">
+			<rich:contextMenu attached="false" id="puertocontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.lbl_ordenDesc_modConfig}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{buscarProxyControlador.setOrder('proxy.puerto desc')}"
+					reRender="proxyList_Table">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.lbl_ordenAsc_modConfig}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{buscarProxyControlador.setOrder('proxy.puerto asc')}"
+					reRender="proxyList_Table">
+				</rich:menuItem>
+			</rich:contextMenu>
+
+		</h:form>
+		<ui:include
+			src="/modConfiguracion/pki/servidores/proxy/modalspanel/confirmareliminarproxy.xhtml" />
+
+	</ui:define>
+</ui:composition>

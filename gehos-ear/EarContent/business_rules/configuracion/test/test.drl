@@ -1,0 +1,25 @@
+package gehos
+
+#list any import classes here.
+import gehos.reglasdelnegocio.test.Entity;
+import gehos.reglasdelnegocio.test.ChildEntity;
+import gehos.reglasdelnegocio.test.RuleResult;
+#declare any global variables here
+
+rule "Your First Rule"
+	when
+		Entity(name == "test")
+		ChildEntity(amount < 1000)
+		$result : RuleResult()
+	then 
+        $result.setValue("not-enough");
+end
+
+rule "Your Second Rule"
+	when
+		Entity(name == "test")
+		ChildEntity(amount >= 1000)
+		$result : RuleResult()
+	then 
+        $result.setValue("sufficient");
+end

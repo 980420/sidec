@@ -1,0 +1,63 @@
+<s:div id="varSelForm"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">	
+	
+	<a4j:form>	
+		<s:div id="selvar" style="box-shadow: 0px 2px 3px #747474;">
+	<rich:message for="varChange"
+													showDetail="false" tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('varChange').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message>
+		<h:inputHidden id="varChange" value="#{RuleConditionsManager.nameVariableToChange}" required="true"/>												
+		<ui:include	src="/modEnsayo/ensayo_disenno/codebase/reglas/template_variable.xhtml">
+			<ui:param name="variable" value="#{RuleConditionsManager.variableToChange}" />
+			<ui:param name="cssClass" value="style-two space-down"/>
+		</ui:include>
+	</s:div>	
+		<ui:include
+			src="/modEnsayo/ensayo_disenno/codebase/reglas/dependencies/studyGenericTree.xhtml">
+			<ui:param name="estudio" value="#{ReglasControlador.estudio}" />
+			<ui:param name="reRender" value="selvar" />
+			<ui:param name="bean"
+				value="#{yEL.GetELMethodCall(RuleConditionsManager,'setVariableToChange','variable')}" />
+			<ui:param name="treeHeight" value="500" />
+			
+		</ui:include>
+		
+		<s:div id="buttons">
+				<div align="right"
+					style="background: #BCBCBC; box-shadow: 0px -1px 3px #747474;">
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr style="text-align: right">
+							<td colspan="9"><a4j:commandButton value="Aceptar"
+									tabindex="3" styleClass="standard-button"
+									action="#{ReglasControlador.ChangeVariable(RuleConditionsManager.variableToChange)}"									
+									oncomplete="closeVariableSelectionModal(data,'variableSelection')" reRender="ruleform,opValues,readableConds"
+									data="#{RuleConditionsManager.nameVariableToChange}">
+								</a4j:commandButton> 
+								<!--victor: puse esta linea de codigo porque cuando se usa a4j se crea un boton que si se cierra y no s eha elegido ningun campo da error, momentaneamente-->
+								<input class="standard-button" id="j_id396:j_id461" name="j_id396:j_id461" onclick="Richfaces.hideModalPanel('variableSelection')" value="Cancelar" tabindex="3" type="button">
+								</input>
+								</td>
+						</tr>
+					</table>
+				</div>
+			</s:div>
+
+	</a4j:form>
+	<script>
+		function closeVariableSelectionModal(data, modalid)
+		{
+			if(data)
+				Richfaces.hideModalPanel(modalid)
+		}
+	</script>
+</s:div>

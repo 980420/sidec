@@ -1,0 +1,147 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle('#{messages.seleccionarCentro}')</script>
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css"
+		rel="stylesheet" type="text/css" />
+	
+	<rich:messages globalOnly="true" styleClass="message"
+		id="globalMessage" ajaxRendered="true" />
+	<table class="Tabla" width="100%" cellpadding="0" cellspacing="0">
+		<tr>
+			<td><rich:simpleTogglePanel switchType="client"
+					label="#{messages.criterioBusqueda}">
+					<table width="100%" cellpadding="0" cellspacing="0">
+						<tr>
+							<td><h:form id="form1">
+									<table class="Tabla" id="buscarPacienteN" style="#{listarCentros.displayBN}"
+										cellspacing="0" cellpadding="0">
+										<tr id="A" class="filSepPeq">
+											<td id="A1" class="colSepGran"><h:outputText
+													value="#{messages.nombreCentro}:"
+													style="margin:0px; padding:0px; spacing:0px" /></td>
+										</tr>
+										<tr>
+											<td class="colSepGran"><h:inputText
+													styleClass="inputText" id="cedula1"
+													value="#{listarCentros.nombreEstudioCentro}">
+												</h:inputText></td>
+											<td><h:commandButton value="#{messages.btn_buscar_ens}"
+													action="#{listarCentros.buscar()}" style="margin:0px;" /> <rich:spacer
+													width="10" /> <h:commandButton
+													value="#{messages.btn_cancelar_ens}" action="cancelar"
+													style="margin:0px;" /></td>
+										</tr>
+									</table>
+								</h:form></td>
+						</tr>
+					</table>
+				</rich:simpleTogglePanel> <br /></td>
+		</tr>
+		<tr>
+			<td><h:form>
+					<a:outputPanel id="tb1">
+						<rich:panel rendered="#{not listarCentros.existResultados}">
+							<f:facet name="header">#{messages.listadoCentros}</f:facet>
+							<table class="Tabla">
+								<tr>
+									<td ><h:outputText
+											value="#{messages.noResults}" /></td>
+								</tr>
+							</table>
+						</rich:panel>
+						<rich:panel
+							rendered="#{empty listarCentros.resultList and listarCentros.existResultados}">
+							<f:facet name="header">#{messages.listadoCentros}</f:facet>
+							<table class="Tabla">
+								<tr>
+									<td ><h:outputText
+											value="#{messages.noCentros}" /></td>
+								</tr>
+							</table>
+						</rich:panel>
+						<rich:simpleTogglePanel rendered="#{not empty listarCentros.resultList}">
+						<f:facet name="header">#{messages.listadoCentros}</f:facet>
+						<div style="margin-left: 1px">
+							<rich:dataTable id="tb" value="#{listarCentros.resultList}"
+								var="centro" width="100%"
+								rendered="#{not empty listarCentros.resultList}">
+								<f:facet name="header">
+									<h:outputText value="#{messages.seleccionar}" />
+								</f:facet>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.nombreCentro}" styleClass="label" /></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText value="#{centro.entidad.nombre}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.nombreEstudio}" styleClass="label" />
+													</td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText value="#{centro.estudio.nombre}" />
+								</rich:column>
+								<rich:column width="1px" styleClass="alineacionCentrada">
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.seleccionar}" styleClass="label" />
+													</td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<a:commandLink action="#{listarCentros.SeleccionarInstanciaCentro(centro.id)}"
+										rendered="true"
+										title="#{messages.seleccionar}"
+										style="border: 0px; cursor:pointer;">
+										<h:graphicImage style="border:0px; cursor: pointer "
+											title="#{messages.seleccionar}"
+											url="/resources/icons/default/acciones/seleccionar_uno.png">
+										</h:graphicImage>
+									</a:commandLink>
+								</rich:column>
+							</rich:dataTable>
+						</div>
+						</rich:simpleTogglePanel>
+					</a:outputPanel>
+				</h:form></td>
+		</tr>
+
+		<tr class="filSepGranRA">
+			<td align="center"><h:form>
+					<a:outputPanel id="paginado1" ajaxRendered="true">
+						<ui:include src="/modEnsayo/codebase/plantillas/paginado_tabla_inferior_generico.xhtml/" >
+						<ui:param name="vzPaginado" value="#{listarCentros.resultCount>10}"/>
+						<ui:param name="nomControladorList" value="#{listarCentros}" />
+						<ui:param name="idListado" value="tb" />
+						</ui:include>
+					</a:outputPanel>
+				</h:form> <br /></td>
+		</tr>
+	</table>
+
+</ui:composition>

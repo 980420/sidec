@@ -1,0 +1,63 @@
+#created on: 15-may-2009
+package disponibilidadQx
+
+#list any import classes here.
+
+import gehos.hospitalizacion.session.utilidades.reglasNegocio.DisponibilidadQuirofanoRule_hospitalizacion;
+import gehos.hospitalizacion.session.utilidades.reglasNegocio.RuleResult_hospitalizacion;
+#declare any global variables here
+
+rule "dia_lleno"
+	
+	when
+		#conditions
+		DisponibilidadQuirofanoRule_hospitalizacion(totalHoras > 6)
+		$result : RuleResult_hospitalizacion()
+	then 
+		#actions
+		$result.setValue("fullDay");
+end
+
+rule "tres_cuarto_dia"
+	when
+		#conditions
+		DisponibilidadQuirofanoRule_hospitalizacion(totalHoras > 4 && totalHoras <= 6)
+		$result : RuleResult_hospitalizacion()
+	then 
+		#actions
+		$result.setValue("threeQuarterDay");
+		
+end
+
+rule "dos_cuarto_dia"
+	when
+		#conditions
+		DisponibilidadQuirofanoRule_hospitalizacion(totalHoras > 2 && totalHoras <= 4)
+		$result : RuleResult_hospitalizacion()
+	then 
+		#actions
+		$result.setValue("twoQuarterDay");
+		
+end
+
+rule "un_cuarto_dia"
+	when
+		#conditions
+		DisponibilidadQuirofanoRule_hospitalizacion(totalHoras > 0 && totalHoras <= 2)
+		$result : RuleResult_hospitalizacion()
+	then 
+		#actions
+		$result.setValue("oneQuarterDay");
+		
+end
+
+rule "dia_disponible"
+	when
+		#conditions
+		DisponibilidadQuirofanoRule_hospitalizacion(totalHoras == 0 )
+		$result : RuleResult_hospitalizacion()
+	then 
+		#actions
+		$result.setValue("holeDay");
+		
+end

@@ -1,0 +1,182 @@
+/*estilos configuracion-----------------------------------------*/
+/*estilo para los mensajes de error
+*/
+.custom-error {
+	border: 1px solid #FFCC00;
+	padding: 5px;
+	background-color: #F0F8FF;
+	font-size: 10px;
+	font-family: "Verdana";
+	position: relative;
+	left: 5px;
+	top: 5px;
+	margin-right: 10px;
+}
+
+.message {
+	background-color: #f0f8ff;
+	border: 1px solid #ffcc00;
+	font-family: "Verdana";
+	font-size: 10px;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	padding: 5px;
+}
+/*estilos para el label del paginado
+*/
+.paginadoLabel {
+	height: 12px;
+	margin: 1px 0 0;
+	padding: 0;
+	text-align: center;
+	vertical-align: top;
+	width: 28px;
+}
+/*estilos para tabPanel*/
+.dr-tbpnl-cntnt,.rich-tabpanel-content {
+	/*arriba, derecha ,abajo ,izquierda*/
+	padding: 0px 0px 0px 0px;
+}
+
+/*estilo para el modalPanel*/
+.dr-mpnl-pnl-b {
+	padding: 1px;
+}
+
+.dr-mpnl-pnl {
+	border: 1px !important;
+	border-style: solid !important;
+	border-color: #BED6F8 !important;
+}
+
+/*estilo para el calendar*/
+.rich-calendar-input {
+	width: 132px !important;
+}
+
+.noAvailable {
+	color: red;
+	text-decoration: line-through;
+}
+
+/*Estilo para el panel */
+.rich-panel-body {
+	padding: 0px 0px 0px 0px;
+	white-space: nowrap;
+}
+
+/*Estilo para singletuglepanel */
+.rich-stglpanel-body {
+	padding: 0px;
+	white-space: nowrap;
+}
+
+.rich-table {
+	white-space: nowrap;
+}
+/*
+pauta del espacio vertical entre panel y el grupo de componentes
+*/
+.espacio_vertical {
+	padding-bottom: 11px;
+}
+/*
+pauta del espacio horizontal entre  panel y componente
+*/
+.espacio_corto_h {
+	padding-right: 6px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+}
+/*
+pauta del espacio al final del panel
+*/
+.espacio_final {
+	padding-bottom: 8px;
+}
+
+.rich-tabpanel {
+	white-space: nowrap !IMPORTANT;
+}
+
+.filSepPeq {
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+.filSepPeq td {
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+.colSepGran {
+	padding-right: 25px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+.colSepPeq {
+	padding-right: 9px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+.colSepImg {
+	padding-right: 6px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+filSepGran td {
+	padding-bottom: 8px;
+	vertical-align: top;
+}
+
+.filSepGranRA td {
+	/*padding-bottom:10px; inicialmente yo lo cambie por 8*/
+	padding-bottom: 8px;
+	vertical-align: top;
+}
+
+.Tabla {
+	border: 0px;
+	vertical-align: top;
+	text-align: left;
+	padding: 0px;
+	spacing: 0px;
+}
+
+.margenSupIzq {
+	padding-right: 7px;
+	padding-top: 10px;
+	padding-bottom: 8px;
+	padding-left: 8px;
+}
+
+.noAvailableDay {
+	color: red !important;
+	text-decoration: line-through;
+}

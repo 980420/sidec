@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle("#{messages.msg_titulo_panelControl}")</script>
+
+	<rich:simpleTogglePanel switchType="client" label="Panel de control">
+
+		<input type="hidden" id="evaluadosProcesoInclusion"
+			value="#{panelControlController.evaluadosProcesoInclusion()}" />
+
+		<input type="hidden" id="incluidosProcesoInclusion"
+			value="#{panelControlController.incluidosProcesoInclusion()}" />
+
+		<!--  <input type="hidden" id="porCientoReclutamientoProcesoInclusion"
+			value="#{panelControlController.porCientoReclutamientoProcesoInclusion()}" />-->
+
+		<input type="hidden" id="porCientoInclusionProcesoInclusion"
+			value="#{panelControlController.porCientoInclusionProcesoInclusion()}" />
+
+
+
+		<input type="hidden" id="sujetosEnEvaluacionProcesoEvaluacion"
+			value="#{panelControlController.sujetosEnEvaluacionProcesoEvaluacion()}" />
+
+		<input type="hidden"
+			id="sujetosEnTratamientoEvaluacionProcesoEvaluacion"
+			value="#{panelControlController.sujetosEnTratamientoEvaluacionProcesoEvaluacion()}" />
+
+		<input type="hidden"
+			id="sujetosEnSeguimientoEvaluacionProcesoEvaluacion"
+			value="#{panelControlController.sujetosEnSeguimientoEvaluacionProcesoEvaluacion()}" />
+
+		<input type="hidden" id="sujetosTerminadosEvaluacionProcesoEvaluacion"
+			value="#{panelControlController.sujetosTerminadosEvaluacionProcesoEvaluacion()}" />
+
+		<input type="hidden"
+			id="sujetosInterrumpidosEvaluacionProcesoEvaluacion"
+			value="#{panelControlController.sujetosInterrumpidosEvaluacionProcesoEvaluacion()}" />
+
+
+
+		<input type="hidden" id="noIniciadosProcesoCompletamientoDatos"
+				value="#{panelControlController.getNoIniciadosProcesoCompletamientoDatos()}" />
+
+			<input type="hidden" id="iniciadosProcesoCompletamientoDatos"
+				value="#{panelControlController.getIniciadosProcesoCompletamientoDatos()}" />
+
+			<input type="hidden" id="completadosProcesoCompletamientoDatos"
+				value="#{panelControlController.getCompletadosProcesoCompletamientoDatos()}" />
+
+			<input type="hidden" id="atrasadosProcesoCompletamientoDatos"
+				value="#{panelControlController.getAtrasadosProcesoCompletamientoDatos()}" />
+
+			<input type="hidden" id="firmadosProcesoCompletamientoDatos"
+				value="#{panelControlController.getFirmadosProcesoCompletamientoDatos()}" />
+				
+				
+				
+				
+			<input type="hidden" id="iniciadosProcesoMonitoreo"
+				value="#{panelControlController.getIniciadosProcesoMonitoreo()}" />
+				
+			<input type="hidden" id="noIniciadosProcesoMonitoreo"
+				value="#{panelControlController.getNoIniciadosProcesoMonitoreo()}" />
+				
+			<input type="hidden" id="completadosProcesoMonitoreo"
+				value="#{panelControlController.getCompletadosProcesoMonitoreo()}" />
+				
+			<input type="hidden" id="completadosPendienteFirmaProcesoMonitoreo"
+				value="#{panelControlController.getCompletadosPendienteFirmaProcesoMonitoreo()}" />
+				
+			<input type="hidden" id="notasSinResolverProcesoMonitoreo"
+				value="#{panelControlController.getNotasSinResolverProcesoMonitoreo()}" />
+
+
+
+		<div style="display: flex; justify-content: space-around;">
+			<iframe id="procesoInclusionSujetoChartIframe"
+				src="#{request.contextPath}/resources/modDashBoard/chartjs/proceso_inclusion_sujetos.html"
+				width="400" height="400" onload="procesoInclusionSujetoChart()"
+				style="border: 0"></iframe>
+
+			<iframe id="procesoEvaluacionSujetoChartIframe"
+				src="#{request.contextPath}/resources/modDashBoard/chartjs/proceso_evaluacion_sujetos.html"
+				width="400" height="400" onload="procesoEvaluacionSujetoChart()"
+				style="border: 0"></iframe>
+		</div>
+
+
+		<div style="display: flex; justify-content: space-around;">
+			<iframe id="procesoCompletamientoDatosCRDChartIframe"
+				src="#{request.contextPath}/resources/modDashBoard/chartjs/proceso_completamientos_datos_crd.html"
+				width="400" height="400" onload="procesoCompletamientoDatosCRD()"
+				style="border: 0"></iframe>
+
+
+			<iframe id="procesoMonitoreoChartIframe"
+				src="#{request.contextPath}/resources/modDashBoard/chartjs/proceso_monitoreo.html"
+				width="400" height="400" onload="procesoMonitoreo()"
+				style="border: 0"></iframe>
+		</div>
+
+	</rich:simpleTogglePanel>
+</ui:composition>

@@ -1,0 +1,83 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- CSS -->
+				<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/style/stylesheet_configuracion.css"
+			rel="stylesheet" type="text/css" />
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+		<s:div
+			rendered="#{not rolVerDetallesControlador.from.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.titulo1}')</script>
+		</s:div>
+
+		<s:div rendered="#{rolVerDetallesControlador.from.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.titulo2}')</script>
+		</s:div>
+
+		<rich:messages id="message" styleClass="custom-error" ajaxRendered="true"
+			for="message" />
+
+		<h:form id="form" styleClass="create" enctype="multipart/form-data">
+
+			<rich:panel>
+				<f:facet name="header">#{messages.datos}</f:facet>
+
+				<table cellpadding="0px" cellspacing="0px"
+					class="tabla fil-mt-sint col-mt-izq fil-mt-sinb col-mt-der">
+					<tr>
+						<td class="colp-t"><h:outputLabel value="#{messages.nombre}"></h:outputLabel>
+						</td>
+						<td><h:outputText id="valor"
+							value="#{rolVerDetallesControlador.rol.name}"
+							styleClass="inputText" /></td>
+							<td><rich:spacer width="24px" /></td>
+						<td class="colp-t"><h:outputLabel value="#{messages.codigo}"></h:outputLabel>
+						</td>
+						<td><h:outputText id="valorCOde"
+							value="#{rolVerDetallesControlador.rol.codigo}"
+							styleClass="inputText" /></td>
+					</tr>
+					
+				</table>
+			</rich:panel>		
+
+			<div align="right">
+			<table cellpadding="0" cellspacing="0" class="table fil-c">
+				<tr>
+					<td class="col-botton"><h:commandButton
+						value="#{messages.modificar}" styleClass="botton"
+						rendered="#{not rolVerDetallesControlador.from.equals('listar')}"
+						action="#{rolModificarControlador.setId(rolVerDetallesControlador.rol.id)}"
+						propagation="end" /></td>
+					<td class="col-botton"><a4j:commandButton id="btnEliminar"
+						onclick="Richfaces.showModalPanel('eliminar_rol')"
+						value="#{messages.eliminar}" styleClass="botton"
+						rendered="#{not rolVerDetallesControlador.from.equals('listar')}">
+					</a4j:commandButton></td>
+					<td><h:commandButton styleClass="botton"
+						value="#{messages.salir}" action="salir" propagation="end" /></td>
+				</tr>
+			</table>
+			</div>					
+		</h:form>
+
+		<ui:include
+			src="/modConfiguracion/management/gestionarRoles/modalspanel/ConfirmarEliminarRolVerDetalles.xhtml" />
+			
+	</ui:define>
+</ui:composition>

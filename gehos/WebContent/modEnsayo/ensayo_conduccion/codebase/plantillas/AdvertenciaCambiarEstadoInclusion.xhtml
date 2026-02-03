@@ -1,0 +1,73 @@
+<!-- Advertencia cambiar estado de inclusion  -->
+<rich:modalPanel resizeable="false"
+	id="mpAdvertenciaCambiarEstadoInclusion" width="320" autosized="true"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<f:facet name="header">
+		<h:outputText value="Cambiar estado de inclusion"></h:outputText>
+	</f:facet>
+	<f:facet name="controls">
+	<a4j:form>
+		<a4j:commandButton id="btnCerrarDescompletarHoja"
+			reRender="estadoInclusionMonitor,estadoInclusion"
+			action="#{controlador.resetEstadoInclusion()}"
+			oncomplete="Richfaces.hideModalPanel('mpAdvertenciaCambiarEstadoInclusion')"
+			image="/resources/icons/default/acciones/cerrar.gif">
+		</a4j:commandButton>
+	</a4j:form>
+	</f:facet>
+	<h:form id="formAdvertenciaCambiarEstado">
+		<table cellpadding="0px" cellspacing="0px">
+			<tr>
+				<td style="height: 9px;" colspan="6"></td>
+			</tr>
+			<tr style="vertical-align: top;">
+				<td><rich:spacer width="6px" /></td>
+				<td valign="top">
+					<table cellpadding="0px" cellspacing="0px" border="0">
+						<tr valign="top">
+							<td>
+								<!-- Imagen de advertencia --> <h:graphicImage
+									value="/resources/icons/default/acciones/advertencia.png" />
+							</td>
+							<td><rich:spacer width="6px" /></td>
+							<td><h:outputText
+									value="El estado de inclusión del sujeto cambiará. Por favor, introduzca la causa:" />
+								<br /> <h:inputTextarea id="caus"
+									value="#{controlador.descripcionCausaCambioEstado}"
+									style="width:100%;resize: vertical" /> <br /> <h:outputText
+									 />
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td><rich:spacer width="12px" /></td>
+			</tr>
+			<tr>
+				<td style="height: 7px;" colspan="6"></td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					<div align="center">
+						<a4j:commandButton value="Si" 
+							oncomplete="Richfaces.hideModalPanel('mpAdvertenciaCambiarEstadoInclusion')" />
+						<rich:spacer width="10" />
+						<a4j:commandButton value="No"
+							action="#{controlador.resetEstadoInclusion()}"
+							reRender="estadoInclusionMonitor,estadoInclusion"
+							oncomplete="Richfaces.hideModalPanel('mpAdvertenciaCambiarEstadoInclusion')" />
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td style="height: 6px;" colspan="6"></td>
+			</tr>
+		</table>
+	</h:form>
+</rich:modalPanel>

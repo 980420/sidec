@@ -1,0 +1,15 @@
+Configuracion=>Gestionar Diccionarios
+
+Cosas pendientes:
+-Cuando se borra un diccionario no refresca la tabla
+-Mover la descripcion del diccionario a otra posicion de la hoja excel
+-Por diccionario, no repetir la categoria. Si cuando voy a crear un diccionario, tiene varios terminos de una misma categoria, solo creo una categoria PARA ESE DICCIONARIO y asocio los terminos correspondientes
+-PENSAR TODAS LAS POSIBLES VALIDACIONES
+-Mostrar errores custom, por ejemplo si en el codigo metra hay una letra, debe indicar ese error, y asi, buscar errores. VER CON JOSE QUE SE PONE TIQUINMIKIS
+-Hacer UI para modificar nombre y descripcion
+
+
+
+MODIFICACIONES EN LAS TABLAS Y BASES DE DATOS
+
+correr los script de los txt

@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<begin-conversation flush-mode="manual" join="true" />
+	
+	<param name="idcrd" value="#{gestionarHoja.idcrd}" />
+	<param name="idMS" value="#{gestionarHoja.idMS}" />
+	<param name="idSujeto" value="#{gestionarHoja.idSujeto}" />
+	<param name="idGrupo" value="#{gestionarHoja.idGrupo}" />
+	<action if="#{!gestionarHoja.inicializado}" execute="#{gestionarHoja.initConversation()}" />
+	<param name="from" />
+	<param name="fromP" value="#{gestionarHoja.fromP}" />
+	
+	<navigation from-action="#{gestionarHoja.descompletarHoja()}">
+			<end-conversation before-redirect="true" />
+			<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCRD/listarCRD.gehos">
+				<param name="idFuncionalidad" value="#{activeModule.activeModule.id}" />
+				<param name="idancestors" value="#{activeModule.activeModule.id}a" />
+				<param name="idMS" value="#{gestionarHoja.idMS}" />
+				<param name="fromP" value="#{gestionarHoja.fromP}"/>
+				<param name="idSujeto" value="#{gestionarHoja.idSujeto}" />
+			</redirect>	
+	</navigation>
+	
+	<navigation from-action="#{gestionarHoja.reiniciarHoja()}">
+			<end-conversation before-redirect="true" />
+			<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCRD/listarCRD.gehos">
+				<param name="idFuncionalidad" value="#{activeModule.activeModule.id}" />
+				<param name="idancestors" value="#{activeModule.activeModule.id}a" />
+				<param name="idMS" value="#{gestionarHoja.idMS}" />
+				<param name="fromP" value="#{gestionarHoja.fromP}"/>
+				<param name="idSujeto" value="#{gestionarHoja.idSujeto}" />
+			</redirect>	
+	</navigation>
+
+	<navigation from-action="#{ruleManager.save()}">
+		<rule if-outcome="ok" if="#{from == 'listarNotas'}">
+			<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/buscarNotas/listarNotasMonitoreo.gehos">
+				<param name="idSujeto" value="#{gestionarHoja.idSujeto}" />
+				<param name="idGrupo" value="#{gestionarHoja.idGrupo}" />
+			</redirect>
+		</rule>
+		<rule if-outcome="ok" if="#{from == 'listarCRD' and !gestionarHoja.obtenerMomentoPesquisaje()}">
+			<end-conversation before-redirect="true" />
+			<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCRD/listarCRD.gehos">
+				<param name="idFuncionalidad" value="#{activeModule.activeModule.id}" />
+				<param name="idancestors" value="#{activeModule.activeModule.id}a" />
+				<param name="idMS" value="#{gestionarHoja.idMS}" />
+				<param name="fromP" value="#{gestionarHoja.fromP}"/>
+				<param name="idSujeto" value="#{gestionarHoja.idSujeto}" />
+			</redirect>
+		</rule>
+		<rule if-outcome="ok" if="#{from == 'listarCRD' and gestionarHoja.obtenerMomentoPesquisaje()}">
+			<end-conversation before-redirect="true" />
+			<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCRD/listarCRD.gehos">
+				<param name="idFuncionalidad" value="#{activeModule.activeModule.id}" />
+				<param name="idancestors" value="#{activeModule.activeModule.id}a" />
+				<param name="idMS" value="#{gestionarHoja.idMS}" />
+				<param name="fromP" value="#{gestionarHoja.fromP}"/>
+				<param name="idSujeto" value="#{gestionarHoja.idSujeto}" />
+			</redirect>
+		</rule>
+		<rule if-outcome="ok" if="#{from == 'listarReSujeto'}">
+			<end-conversation before-redirect="true" />
+			<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarReporteExpedito/listarReSujeto.gehos">
+				<param name="idSujeto" value="#{gestionarHoja.idSujeto}" />
+			</redirect>
+		</rule>
+		<rule if-outcome="ok" if="#{from == 'listarNotitificaciones'}">
+			<end-conversation before-redirect="true" />
+			<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotificaciones/listarNotitificaciones.gehos">
+				<param name="idSujeto" value="#{gestionarHoja.idSujeto}" />
+			</redirect>
+		</rule>
+	</navigation>
+	
+	<navigation from-action="#{crearNota.assignValuesSite(gestionarHoja.mapWD.get(seccion.id).data.get(v.id).section.id, gestionarHoja.mapWD.get(seccion.id).data.get(v.id).variable.id)}">
+		<rule if-outcome="access">
+			<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/crearNota/crearNota.gehos">
+				<param name="idFuncionalidad" value="#{activeModule.activeModule.id}" />
+				<param name="idancestors" value="#{activeModule.activeModule.id}a" />
+				<param name="from" value="#{from}" />
+				<param name="idcrd" value="#{gestionarHoja.idcrd}" />
+				<param name="idMS" value="#{gestionarHoja.idMS}" />
+				<param name="idSujeto" value="#{gestionarHoja.idSujeto}" />
+			</redirect>	
+		</rule>	
+	</navigation>
+	
+	<navigation from-action="#{crearNota.assignValuesSite(wgd.data.get(v.id).section.id, wgd.data.get(v.id).group.id, wgd.data.get(v.id).repetition, wgd.data.get(v.id).variable.id)}">
+		<rule if-outcome="access">
+			<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/crearNota/crearNota.gehos">
+				<param name="idFuncionalidad" value="#{activeModule.activeModule.id}" />
+				<param name="idancestors" value="#{activeModule.activeModule.id}a" />
+				<param name="from" value="#{from}" />
+				<param name="idcrd" value="#{gestionarHoja.idcrd}" />
+				<param name="idMS" value="#{gestionarHoja.idMS}" />
+				<param name="idSujeto" value="#{gestionarHoja.idSujeto}" />
+			</redirect>	
+		</rule>	
+	</navigation>
+	
+	<navigation from-action="#{crearNota.assignValuesMonitoring(gestionarHoja.mapWD.get(seccion.id).data.get(v.id).section.id, gestionarHoja.mapWD.get(seccion.id).data.get(v.id).variable.id)}">
+		<rule if-outcome="access">
+			<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/crearNota/crearNota.gehos">
+				<param name="idFuncionalidad" value="#{activeModule.activeModule.id}" />
+				<param name="idancestors" value="#{activeModule.activeModule.id}a" />
+				<param name="from" value="#{from}" />
+				<param name="idcrd" value="#{gestionarHoja.idcrd}" />
+				<param name="idMS" value="#{gestionarHoja.idMS}" />
+				<param name="idSujeto" value="#{gestionarHoja.idSujeto}" />
+			</redirect>	
+		</rule>
+	</navigation>
+	
+	<navigation from-action="#{crearNota.assignValuesMonitoring(wgd.data.get(v.id).section.id, wgd.data.get(v.id).group.id, wgd.data.get(v.id).repetition, wgd.data.get(v.id).variable.id)}">
+		<rule if-outcome="access">
+			<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/crearNota/crearNota.gehos">
+				<param name="idFuncionalidad" value="#{activeModule.activeModule.id}" />
+				<param name="idancestors" value="#{activeModule.activeModule.id}a" />
+				<param name="from" value="#{from}" />
+				<param name="idcrd" value="#{gestionarHoja.idcrd}" />
+				<param name="idMS" value="#{gestionarHoja.idMS}" />
+				<param name="idSujeto" value="#{gestionarHoja.idSujeto}" />
+			</redirect>	
+		</rule>	
+	</navigation>
+	
+	<navigation from-action="#{verNotaSitio.assignValues(gestionarHoja.mapWD.get(seccion.id).data.get(v.id).section.id, gestionarHoja.mapWD.get(seccion.id).data.get(v.id).variable.id)}">
+		<rule if-outcome="access">
+			<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/verNota/verNotaSitio.gehos">
+				<param name="from" value="#{from}" />
+				<param name="idcrd" value="#{gestionarHoja.idcrd}" />
+				<param name="desde" value="gestionarHoja" />
+				<param name="idMS" value="#{gestionarHoja.idMS}" />
+				<param name="idSujeto" value="#{gestionarHoja.idSujeto}" />
+			</redirect>				
+		</rule>	
+	</navigation>
+	
+	<navigation from-action="#{verNotaSitio.assignValues(wgd.data.get(v.id).section.id, wgd.data.get(v.id).group.id, wgd.data.get(v.id).repetition, wgd.data.get(v.id).variable.id)}">
+		<rule if-outcome="access">
+			<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/verNota/verNotaSitio.gehos">
+				<param name="from" value="#{from}" />
+				<param name="idcrd" value="#{gestionarHoja.idcrd}" />
+				<param name="desde" value="gestionarHoja" />
+				<param name="idMS" value="#{gestionarHoja.idMS}" />
+				<param name="idSujeto" value="#{gestionarHoja.idSujeto}" />
+			</redirect>				
+		</rule>
+	</navigation>
+	
+	<navigation from-action="#{verNotaMonitoreo.assignValues(gestionarHoja.mapWD.get(seccion.id).data.get(v.id).section.id, gestionarHoja.mapWD.get(seccion.id).data.get(v.id).variable.id)}">
+		<rule if-outcome="access">
+			<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/verNota/verNotaMonitoreo.gehos">
+				<param name="from" value="#{from}" />
+				<param name="idcrd" value="#{gestionarHoja.idcrd}" />
+				<param name="desde" value="gestionarHoja" />
+				<param name="idMS" value="#{gestionarHoja.idMS}" />
+				<param name="idSujeto" value="#{gestionarHoja.idSujeto}" />
+			</redirect>	
+		</rule>
+	</navigation>
+	
+	<navigation from-action="#{verNotaMonitoreo.assignValues(wgd.data.get(v.id).section.id, wgd.data.get(v.id).group.id, wgd.data.get(v.id).repetition, wgd.data.get(v.id).variable.id)}">
+		<rule if-outcome="access">
+			<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/verNota/verNotaMonitoreo.gehos">
+				<param name="from" value="#{from}" />
+				<param name="idcrd" value="#{gestionarHoja.idcrd}" />
+				<param name="desde" value="gestionarHoja" />
+				<param name="idMS" value="#{gestionarHoja.idMS}" />
+				<param name="idSujeto" value="#{gestionarHoja.idSujeto}" />
+			</redirect>	
+		</rule>
+	</navigation>
+
+	<navigation from-action="#{gestionarHoja.SeleccionarInstanciaHoja(gestionarHoja.hoja)}">
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCRD/causaDescompletarMonitoreo.gehos">
+			<param name="from" value="#{from}" />
+		</redirect>
+	</navigation>
+
+	<navigation from-action="#{crearReporteExpedito.assignValues(wgd.section.id, wgd.group.id, wgd.repetition)}">
+		<rule if-outcome="access">
+			<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarReporteExpedito/crearReporteExpedito.gehos">
+				<param name="idcrd" value="#{gestionarHoja.idcrd}"/>
+				<param name="from" value="#{from}" />
+			</redirect>
+		</rule>			
+	</navigation>
+
+	<navigation from-action="cancelar">
+		<rule if="#{from == 'listarNotas'}">
+			<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/buscarNotas/listarNotasMonitoreo.gehos">
+				<param name="idSujeto" value="#{gestionarHoja.idSujeto}" />
+				<param name="idGrupo" value="#{gestionarHoja.idGrupo}" />
+			</redirect>
+		</rule>
+		<rule if="#{from == 'listarCRD'}">
+			<end-conversation before-redirect="true" />
+			<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCRD/listarCRD.gehos">
+				<param name="idFuncionalidad" value="#{activeModule.activeModule.id}" />
+				<param name="idancestors" value="#{activeModule.activeModule.id}a" />
+				<param name="idMS" value="#{gestionarHoja.idMS}" />
+				<param name="fromP" value="#{gestionarHoja.fromP}"/>
+				<param name="idSujeto" value="#{gestionarHoja.idSujeto}" />
+			</redirect>
+		</rule>
+		<rule if="#{from == 'listarReSujeto'}">
+			<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarReporteExpedito/listarReSujeto.gehos">
+				<param name="idSujeto" value="#{gestionarHoja.idSujeto}" />				
+			</redirect>
+		</rule>
+		<rule if="#{from == 'listarNotitificaciones'}">
+			<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotificaciones/listarNotitificaciones.gehos">
+				<param name="idSujeto" value="#{gestionarHoja.idSujeto}" />				
+			</redirect>
+		</rule>
+	</navigation>
+	
+	<navigation from-action="#{gestionarHojaGrupoControlador_ec.assignValues(seccion.id, group.id, null)}">
+		<rule if-outcome="access">
+			<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCRD/adicionarGrupo.gehos">
+				<param name="from" value="#{from}" />
+			</redirect>
+		</rule>
+	</navigation>
+	
+	<navigation from-action="#{gestionarHojaGrupoControlador_ec.assignValues(wgd.section.id, wgd.group.id, wgd.repetition)}">
+		<rule if-outcome="access">
+			<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCRD/adicionarGrupo.gehos">
+				<param name="from" value="#{from}" />
+			</redirect>
+		</rule>
+	</navigation>
+	
+</page>

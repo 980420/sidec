@@ -1,0 +1,73 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+<rich:panel>
+		<f:facet name="header">#{messages.datosAdmision}</f:facet>
+    	<table class="Tabla" cellspacing="0" cellpadding="0" width="100%">
+			<tr>
+				<td class="margenSupIzq" width="100%">
+					<table cellpadding="0" cellspacing="0">
+						<tr class="filSepGranRA">
+							<td class="colSepPeq">
+								<h:outputText value="#{messages.servicioUbicacion}:"  style="margin:0px; padding:0px;"/>
+							</td>														
+							<td class="colSepGran">
+								<h:outputText styleClass="dataText"
+											  value="#{(not empty admision.cama.servicioInEntidadByIdServicioFlotante.servicio.nombre) ? admision.cama.servicioInEntidadByIdServicioFlotante.servicio.nombre : ((not empty admision.cama.servicioInEntidadByIdServicio.servicio.nombre) ? admision.cama.servicioInEntidadByIdServicio.servicio.nombre : messages.vacio)}"
+											  style="margin:0px; padding:0px;">									
+								</h:outputText>
+							</td>
+							<td class="colSepPeq">
+								<h:outputText value="#{messages.ubicacion}:"  style="margin:0px; padding:0px;"/>
+							</td>														
+							<td class="colSepGran">
+								<h:outputText styleClass="dataText"
+											  value="#{(not empty admision.cama.ubicacion) ? utiles_admision.getUbicacion(admision.cama.ubicacion.id) : messages.vacio}"
+											  style="margin:0px; padding:0px;">									
+								</h:outputText>
+							</td>
+							<td class="colSepPeq">
+								<h:outputText value="#{messages.cama}:"  style="margin:0px; padding:0px;"/>
+							</td>														
+							<td class="colSepGran">
+								<h:outputText styleClass="dataText"
+											  value="#{(not empty admision.cama.descripcion) ? admision.cama.descripcion : messages.vacio}"
+											  style="margin:0px; padding:0px;">									
+								</h:outputText>
+							</td>
+						</tr>
+						<tr class="filSepGranRA">
+							<td class="colSepPeq">
+								<h:outputText value="#{messages.fechaIngreso}:"  style="margin:0px; padding:0px;"/>
+							</td>														
+							<td class="colSepGran">
+								<h:outputText styleClass="dataText"
+											  value="#{(not empty admision.fecha) ? admision.fecha : messages.vacio}"
+											  style="margin:0px; padding:0px;">
+									<s:convertDateTime pattern="#{messages.patronFecha}" />
+								</h:outputText>
+							</td>
+						</tr>										
+					</table>
+					<table class="Tabla" cellspacing="0" cellpadding="0" width="100%">
+						<tr class="filSepPeq">
+							<td class="colSepPeq">
+								<h:outputText value="#{messages.observaciones}:"  style="margin:0px; padding:0px;"/>
+							</td>	
+						</tr>
+						<tr>													
+							<td>
+								<h:inputTextarea styleClass="dataText" style="width:99%;" rows="4"  readonly="true"
+									value="#{admision.observaciones}" />
+							</td>
+						</tr>	
+					</table>
+				</td>
+			</tr>
+		</table>								
+    </rich:panel>
+    </s:div>

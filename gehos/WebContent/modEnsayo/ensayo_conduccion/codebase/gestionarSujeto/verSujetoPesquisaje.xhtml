@@ -1,0 +1,124 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" xmlns:a4j="http://richfaces.org/a4j">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('#{messages.verDatosSujeto}')</script>
+	<script type="text/javascript" language="javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/javascript.js" />
+
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+		type='text/css' />
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css'
+		type='text/css' />
+	<rich:messages styleClass="message" globalOnly="true">
+	</rich:messages>
+	<h:form id="idForm">
+		<ui:include
+			src="/modEnsayo/ensayo_conduccion/codebase/plantillas/datosSujetoPesquisaje.xhtml">
+			<ui:param name="sujeto" value="#{verSujeto.sujeto}" />
+		</ui:include>
+		<div align="right">
+			<br></br>
+			<h:commandButton value="#{messages.salir}" style="margin:0px;"
+				rendered="#{!verSujeto.sujeto.cronogramaEspecifico}"
+				action="#{verSujeto.salir()}" immediate="true" />
+		</div>
+
+	</h:form>
+
+	<h:form>
+		<rich:simpleTogglePanel label="#{messages.P_TITULO}"
+			switchType="client"
+			rendered="#{verSujeto.sujeto.cronogramaEspecifico}">
+
+			<div align="right">
+				<table class="tablaLinkAdd" cellpadding="0" cellspacing="0">
+					<tr>
+						<td><a4j:commandLink status="showModalStatus"
+								onclick="javascript:Richfaces.showModalPanel('exportPanel');">
+								<h:graphicImage title="#{messages.exportar}" height="12"
+									width="12" style="cursor: pointer"
+									value="/resources/icons/default/acciones/imprimir_pdf.png" />
+							</a4j:commandLink></td>
+						<td valign="middle" class="lv-link-add"><a4j:commandLink
+								onclick="javascript:Richfaces.showModalPanel('exportPanel');"
+								style="cursor: pointer; margin-left:2px;"
+								title="#{messages.exportar}" action="crear" tabindex="4"
+								value=" #{messages.exportar}" /></td>
+					</tr>
+				</table>
+			</div>
+			<rich:dataTable id="idCronogramaEspecifico" width="100%"
+				value="#{verCronogramaEspecifico.nombresMomentos()}" border="0"
+				cellpadding="0" cellspacing="0" var="nombremomento">
+				<f:facet name="header">
+					<rich:columnGroup>
+						<rich:column rowspan="2">
+							<h:outputText value="" />
+						</rich:column>
+
+						<rich:column
+							style="broder:1px;border-style :solid; text-align: center;"
+							colspan="#{verCronogramaEspecifico.momentos.size()}">
+							<h:outputText value="#{messages.etapas}" />
+						</rich:column>
+
+						<rich:column breakBefore="true" colspan="#{verCronogramaEspecifico.tamannoEtapas.get(0)}"
+							style="broder:1px;border-style :solid; text-align: center;">
+							<h:outputText value="#{messages.evaluacion}" />
+						</rich:column>
+						<rich:column rendered="#{verCronogramaEspecifico.tamannoEtapas.get(1) != 0}"
+							colspan="#{verCronogramaEspecifico.tamannoEtapas.get(1)}"
+							style="broder:1px;border-style :solid;text-align: center;">
+							<h:outputText value="#{messages.tratamiento}" />
+						</rich:column>
+						<rich:column rendered="#{verCronogramaEspecifico.tamannoEtapas.get(2) != 0}"
+							colspan="#{verCronogramaEspecifico.tamannoEtapas.get(2)}"
+							style="broder:1px;border-style :solid; text-align: center;">
+							<h:outputText value="#{messages.seguimiento}" />
+						</rich:column>
+
+					</rich:columnGroup>
+				</f:facet>
+
+				<rich:column style="border-right-width: 1px;">
+					<f:facet name="header">
+						<h:outputText value="#{messages.momentosdias}" />
+					</f:facet>
+
+					<h:outputText value="#{nombremomento}">
+					</h:outputText>
+				</rich:column>
+				<rich:columns width="16px"
+					style="border-right-width: 1px; text-align: center;"
+					value="#{verCronogramaEspecifico.momentos}" var="momento">
+					<f:facet name="header">
+						<h:outputText value="#{momento.fechaInicio}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</f:facet>
+					<h:commandButton title="#{momento.estadoMomentoSeguimiento.nombre}"
+						alt="Ver" image="#{verCronogramaEspecifico.estadoIconMomento(momento.estadoMomentoSeguimiento)}"
+						rendered="#{verCronogramaEspecifico.PerteneceMomento(momento,nombremomento,momento.fechaInicio)}"
+						style="FONT-SIZE: large; width : 16px; broder:1px;" />
+				</rich:columns>
+
+			</rich:dataTable>
+			<div align="right">
+				<br/>
+				<h:commandButton value="#{messages.salir}" style="margin:0px;"
+					action="#{verSujeto.salir()}" immediate="true" />
+			</div>
+		</rich:simpleTogglePanel>
+	</h:form>
+
+	<ui:include src="/modEnsayo/codebase/plantillas/exportModalPanel.xhtml">
+		<ui:param name="controlador" value="#{verCronogramaEspecifico}" />
+	</ui:include>
+</s:div>

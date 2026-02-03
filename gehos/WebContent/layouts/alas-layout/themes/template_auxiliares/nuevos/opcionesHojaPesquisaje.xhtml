@@ -1,0 +1,105 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+	<script type="text/javascript">
+	function SetVisible(){
+		document.getElementById('accionesRe').style.display='none';
+		document.getElementById('accionesRe2').style.display='';
+		document.getElementById('accionesRe3').style.display='';
+	 }
+	 function SetInvisible(){
+	 	document.getElementById('accionesRe2').style.display='none';
+	 	document.getElementById('accionesRe3').style.display='none';
+	 	document.getElementById('accionesRe').style.display='';
+	 }
+</script>
+	<a:outputPanel id="partesuperior">
+		<div>
+		<div style="float: left">
+		<table cellpadding="0" cellspacing="0" border="0">
+			<tr>
+				<td><h:outputText value="Fecha:" /></td>
+				<td style="padding-left: 6px"><h:outputText
+					value="#{currentDate}" styleClass="dataText">
+					<s:convertDateTime pattern="dd/MM/yyyy"></s:convertDateTime>
+				</h:outputText></td>
+				<td style="padding-left: 25px"><h:outputText
+					value="Hora de Inicio:" /></td>
+				<td style="padding-left: 6px"><h:outputText
+					value="#{currentTime}" styleClass="dataText">
+					<s:convertDateTime pattern="hh:mm a"></s:convertDateTime>
+				</h:outputText></td>
+			</tr>
+		</table>
+		</div>
+		<div align="right">
+		<table cellpadding="0" cellspacing="0" align="right">
+			<tr>
+				<td>
+				<div align="right" id="accionesRe"><a onclick="SetVisible()"
+					href="javascript:void(0);">Ver opciones</a></div>
+				<div align="right" id="accionesRe3" style="display: none;"><a
+					onclick="SetInvisible()" href="javascript:void(0);">Ocultar
+				opciones</a></div>
+				</td>
+				
+			</tr>
+		</table>
+		</div>
+		</div>
+	</a:outputPanel>
+	<br />
+	<a:outputPanel id="parteinferior">
+		<div id="accionesRe2" style="display: none;"><rich:panel>
+			<table cellpadding="0" cellspacing="0" border="0">
+				
+				<tr>
+				  <td style="padding-bottom: 8px" ><h:outputText
+						value="Laboratorio" style="font-weight:bold;" /><br />
+						<a:commandLink value="&#8226; Crear solicitud de análisis de laboratorio"
+						style="font-weight:normal;" action="complementarios"
+						ajaxSingle="true" />
+						
+						<rich:spacer height="0px" style="display: block" />
+						<h:commandLink value="&#8226; Consultar análisis de laboratorio"
+						style="font-weight:normal;" action="APP"
+						disabled="#{ccCitaLogopedia.pacienteSeleccionado}" /> 
+				</td>
+				
+				<td style="padding-bottom: 8px; padding-left: 25px;">
+				<h:outputText
+						value="Signos Vitales" style="font-weight:bold;" /><br />
+						
+				<rich:spacer height="0px" style="display: block" /><a:commandLink
+						value="&#8226; Crear signos vitales" style="font-weight:normal;"
+						action="crearSignosVitales" reRender="parteinferior" ajaxSingle="true"
+							 />
+						
+						 
+						 <rich:spacer height="0px" style="display: block" /><a:commandLink
+						value="&#8226; Consultar signos vitales" style="font-weight:normal;"
+						action="signosVitales" ajaxSingle="true"
+							 />		
+						
+						
+						
+						<rich:spacer height="0px" style="display: block" /><a:commandLink
+						value="&#8226; Graficar signos vitales" style="font-weight:normal;"
+						action="graficarSignosVitales"
+						ajaxSingle="true"	 />		
+				
+				</td>
+					
+				</tr>
+				
+				
+				
+			</table>
+		</rich:panel></div>
+	</a:outputPanel>
+	<br />
+</s:div>

@@ -1,0 +1,461 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css">
+.rich-stglpanel-body {
+	padding: 0px
+}
+</style>
+		<style type="text/css">
+.rich-panel-body {
+	padding: 0px
+}
+</style>
+		<script type="text/javascript">setContentTitle('#{messages.adminMedicos}')</script>
+
+		<!-- eticJavaFuntion -->
+		<a4j:form>
+			<a4j:jsFunction action="createMedico" name="selected"
+				ignoreDupResponses="true">
+				<a4j:actionparam name="id"
+					assignTo="#{usuarioMedicoList_configuracionCustom.idUserSelec}" />
+			</a4j:jsFunction>
+		</a4j:form>
+
+		<h:form id="medico_create" styleClass="edit">
+
+			<a4j:outputPanel id="usuario_list_id">
+
+				<rich:simpleTogglePanel switchType="ajax"
+					action="#{usuarioMedicoList_configuracionCustom.abrirCerrar()}"
+					opened="#{usuarioMedicoList_configuracionCustom.open}">
+					<f:facet name="header">#{messages.crit}</f:facet>
+
+					<a4j:outputPanel id="busquedas">
+						<a4j:outputPanel id="advancedsearch"
+							rendered="#{usuarioMedicoList_configuracionCustom.avanzada == true}">
+							<table cellpadding="0px" cellspacing="0px" border="0px"
+								id="simplesearch">
+
+								<tr>
+									<td style="height: 10px"></td>
+								</tr>
+								<tr style="vertical-align: top;">
+									<td style="width: 7px;"></td>
+									<td>
+									<table cellpadding="0" cellspacing="0" border="0">
+										<tr>
+											<td>#{messages.user} <br />
+											<h:inputText id="apellido"
+												value="#{usuarioMedicoList_configuracionCustom.username}"
+												style="width:150px;" /></td>
+
+											<td style="width: 25px;"></td>
+											<td>#{messages.nombre} <br />
+											<h:inputText id="nombre"
+												value="#{usuarioMedicoList_configuracionCustom.nombre}"
+												style="width:150px;" /></td>
+											<td style="width: 25px;"></td>
+											<td>#{messages.pApellido} <br />
+											<h:inputText id="primerApellido"
+												value="#{usuarioMedicoList_configuracionCustom.primerapellido}"
+												style="width:150px;" /></td>
+										</tr>
+										<tr height="6px"></tr>
+										<tr>
+											<td>#{messages.sApellido} <br />
+											<h:inputText id="segundoApellido"
+												value="#{usuarioMedicoList_configuracionCustom.segundoapellido}"
+												style="width:150px;" /></td>
+											<td style="width: 25px;"></td>
+											<td></td>
+											<td style="width: 25px;"></td>
+											<td></td>
+										</tr>
+										<tr>
+											<td height="3px"></td>
+										</tr>
+										<tr>
+											<td></td>
+											<td style="width: 25px;"></td>
+											<td></td>
+											<td style="width: 25px;"></td>
+											<td style="vertical-align: bottom;"><h:commandButton
+												value="#{messages.buscar}"
+												style="margin-left: 0px; margin-bottom: 0px;"
+												action="#{usuarioMedicoList_configuracionCustom.buscar(true)}">
+												<s:defaultAction />
+											</h:commandButton> <h:commandButton value="#{messages.cancelar}"
+												style="margin-right:0px; margin-bottom: 0px;" action="salir"
+												propagation="end" immediate="true" /></td>
+
+										</tr>
+										<tr>
+											<td style="width: 7px;"></td>
+											<td align="right" colspan="5">
+											<table cellpadding="0" cellspacing="0" border="0">
+												<tr>
+													<td><h:graphicImage height="12"
+														style="margin-top:2px;margin-right:2px;"
+														value="/resources/icons/default/acciones/buscar.png" /></td>
+													<td><a4j:commandLink
+														style="margin-top:0px; "
+														action="#{usuarioMedicoList_configuracionCustom.cambiar(false)}"
+														value="#{messages.bSimple}" reRender="busquedas,tablas_id">
+													</a4j:commandLink></td>
+												</tr>
+											</table>
+											</td>
+										</tr>
+										<tr height="6px"></tr>
+									</table>
+									</td>
+									<td style="width: 7px;"></td>
+								</tr>
+							</table>
+						</a4j:outputPanel>
+
+						<a4j:outputPanel id="simplesearch"
+							rendered="#{!usuarioMedicoList_configuracionCustom.avanzada}">
+
+							<table cellpadding="0px" cellspacing="0px" border="0px"
+								id="simplesearch">
+
+								<tr>
+									<td style="height: 10px"></td>
+								</tr>
+								<tr style="vertical-align: top;">
+									<td style="width: 7px;"></td>
+									<td>
+									<table cellpadding="0" cellspacing="0" border="0">
+										<tr>
+											<td>#{messages.user} <br />
+											<h:inputText id="nick"
+												value="#{usuarioMedicoList_configuracionCustom.nicik}"
+												style="width:150px;" /></td>
+
+											<td></td>
+											<td></td>
+											<td style="width: 25px;"></td>
+											<td style="vertical-align: bottom;"><h:commandButton
+												value="#{messages.buscar}"
+												style="margin-left: 0px; margin-bottom: 0px;"
+												action="#{usuarioMedicoList_configuracionCustom.buscar(false)}">
+												<s:defaultAction />
+											</h:commandButton> <h:commandButton value="#{messages.cancelar}"
+												style="margin-right:0px;margin-bottom: 0px;" action="salir"
+												propagation="end" immediate="true" /></td>
+										</tr>
+										<tr>
+											<td style="width: 7px;"></td>
+											<td></td>
+											<td align="right" colspan="3">
+											<table cellpadding="0" cellspacing="0" border="0">
+												<tr>
+													<td><h:graphicImage height="12"
+														style="margin-top:2px;margin-right:2px;"
+														value="/resources/icons/default/acciones/buscar.png" /></td>
+													<td><a4j:commandLink 
+														action="#{usuarioMedicoList_configuracionCustom.cambiar(true)}"
+														value="#{messages.bAvanzada}"
+														reRender="busquedas,tablas_id">
+													</a4j:commandLink></td>
+												</tr>
+											</table>
+											</td>
+										</tr>
+										<tr height="6px"></tr>
+
+
+
+									</table>
+									</td>
+									<td style="width: 7px;"></td>
+								</tr>
+							</table>
+
+						</a4j:outputPanel>
+
+					</a4j:outputPanel>
+
+					<!-- /////////////// -->
+
+					<rich:spacer height="2px" />
+				</rich:simpleTogglePanel>
+
+				<a4j:outputPanel id="tablas_id">
+					<s:div>
+						<br />
+						<rich:panel
+							rendered="#{usuarioMedicoList_configuracionCustom.resultList.size()==0 and (usuarioMedicoList_configuracionCustom.nicik != '' || usuarioMedicoList_configuracionCustom.segundoapellido != '' || usuarioMedicoList_configuracionCustom.username != '' || usuarioMedicoList_configuracionCustom.nombre != '' || usuarioMedicoList_configuracionCustom.primerapellido != '')}">
+							<f:facet name="header">#{messages.listUser}</f:facet>
+							<div class="results" id="userList"><br />
+							<rich:spacer width="8px" /> <h:outputText
+								value="#{messages.noSeEncontro}" />
+							</div>
+							<rich:spacer height="5px" />
+						</rich:panel>
+						<rich:panel
+							rendered="#{usuarioMedicoList_configuracionCustom.resultList.size() == 0 and usuarioMedicoList_configuracionCustom.nicik == '' and usuarioMedicoList_configuracionCustom.segundoapellido == '' and usuarioMedicoList_configuracionCustom.username == '' and usuarioMedicoList_configuracionCustom.nombre == '' and usuarioMedicoList_configuracionCustom.primerapellido == ''}">
+							<f:facet name="header">#{messages.listUser}</f:facet>
+							<div class="results" id="userList"><br />
+							<rich:spacer width="8px" /> <h:outputText
+								value="#{messages.noInf}" /></div>
+							<rich:spacer height="7px" />
+						</rich:panel>
+
+						<rich:dataTable id="usuario_list" style="width: 100%;" var="user"
+							value="#{usuarioMedicoList_configuracionCustom.resultList}"
+							columnsWidth="0*, 30%,75%, 0*, 0*, 0*"
+							rendered="#{not empty usuarioMedicoList_configuracionCustom.resultList}">
+							<f:facet name="header">
+								<div>#{messages.listUser}</div>
+							</f:facet>
+							<h:column>
+								<f:facet name="header">
+					#{messages.foto}
+	            	</f:facet>
+								<h:graphicImage height="25" width="25"
+									rendered="#{userTools.userImageExist(user.username)}"
+									url="/resources/modCommon/userphotos/#{user.username}.png">
+								</h:graphicImage>
+								<h:graphicImage height="25" width="25"
+									rendered="#{not userTools.userImageExist(user.username)}"
+									value="/resources/modCommon/unknown/soto-layout/generico/desconocido.png">
+
+								</h:graphicImage>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:panelGrid columns="2"
+										style="width: 100%; padding:0px; margin:0px;" border="0"
+										cellpadding="0" cellspacing="0">
+										<s:div style="float: left;">#{messages.usuario}</s:div>
+										<s:div style="text-align: right; padding-left:3px;">
+											<h:graphicImage
+												rendered="#{not usuarioMedicoList_configuracionCustom.order.equals('username asc') and not usuarioMedicoList_configuracionCustom.order.equals('username desc')}"
+												value="/resources/icons/default/filtro/default.png"
+												width="17" height="17">
+												<rich:componentControl event="onclick" for="usercontextmenu"
+													operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+											<h:graphicImage
+												rendered="#{usuarioMedicoList_configuracionCustom.order.equals('username asc')}"
+												value="/resources/icons/default/filtro/asc_sort.png"
+												width="17" height="17">
+												<rich:componentControl event="onclick" for="usercontextmenu"
+													operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+											<h:graphicImage
+												rendered="#{usuarioMedicoList_configuracionCustom.order.equals('username desc')}"
+												value="/resources/icons/default/filtro/des_sort.png"
+												width="17" height="17">
+												<rich:componentControl event="onclick" for="usercontextmenu"
+													operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+										</s:div>
+									</h:panelGrid>
+								</f:facet>
+	            #{user.username}
+	        </h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:panelGrid columns="2"
+										style="width: 100%; padding:0px; margin:0px;" border="0"
+										cellpadding="0" cellspacing="0">
+										<s:div style="float: left;">#{messages.colum1}</s:div>
+										<s:div style="text-align: right; padding-left:3px;">
+											<h:graphicImage
+												rendered="#{not usuarioMedicoList_configuracionCustom.order.equals('nombre asc') and not usuarioMedicoList_configuracionCustom.order.equals('nombre desc')}"
+												value="/resources/icons/default/filtro/default.png"
+												width="17" height="17" style=" width : 17px;">
+												<rich:componentControl event="onclick"
+													for="nombrecontextmenu" operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+											<h:graphicImage
+												rendered="#{usuarioMedicoList_configuracionCustom.order.equals('nombre asc')}"
+												value="/resources/icons/default/filtro/asc_sort.png"
+												width="17" height="17">
+												<rich:componentControl event="onclick"
+													for="nombrecontextmenu" operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+											<h:graphicImage
+												rendered="#{usuarioMedicoList_configuracionCustom.order.equals('nombre desc')}"
+												value="/resources/icons/default/filtro/des_sort.png"
+												width="17" height="17">
+												<rich:componentControl event="onclick"
+													for="nombrecontextmenu" operation="show">
+												</rich:componentControl>
+											</h:graphicImage>
+										</s:div>
+									</h:panelGrid>
+								</f:facet>
+						#{user.nombre}
+						<h:outputLabel styleClass="dataText; font-weight: bold"
+									value="  #{user.primerApellido}" />
+								<h:outputLabel styleClass="dataText; font-weight: bold"
+									value="  #{user.segundoApellido}" />
+							</h:column>
+
+
+							
+
+							<h:column>
+								<div align="center"><h:graphicImage title="#{messages.seleccionar}"
+									onclick="selected('#{user.id}');" 
+									style="border: 0px; cursor:pointer;"
+									value="/resources/icons/default/acciones/seleccionar_uno.png">
+								</h:graphicImage></div>
+
+							</h:column>
+						</rich:dataTable>
+						<br />
+						<s:div id="pagingcontrols" styleClass="tableControl"
+							style="width: 100%; text-align:center" align="center"
+							rendered="#{not empty usuarioMedicoList_configuracionCustom.resultList}">
+
+
+							<h:graphicImage
+								value="/resources/icons/default/paginado/iniciod.png"
+								rendered="#{!usuarioMedicoList_configuracionCustom.previousExists}" />
+
+							
+			
+							<h:graphicImage title="#{messages.primera}"
+							style="cursor:pointer; border: 0px;"
+							rendered="#{usuarioMedicoList_configuracionCustom.previousExists}"
+							value="/resources/icons/default/paginado/#{theme.color}/inicio.png">
+							<a4j:support ajaxSingle="true" event="onclick"
+								action="#{usuarioMedicoList_configuracionCustom.setFirstResult(0)}"
+								reRender="tablas_id" />
+						</h:graphicImage>
+							
+							<h:graphicImage
+								value="/resources/icons/default/paginado/anteriord.png"
+								rendered="#{!usuarioMedicoList_configuracionCustom.previousExists}" />
+
+
+							
+							
+							<h:graphicImage title="#{messages.anterior}"
+							style="cursor:pointer; border: 0px;"
+							rendered="#{usuarioMedicoList_configuracionCustom.previousExists}"
+							value="/resources/icons/default/paginado/#{theme.color}/anterior.png">
+							<a4j:support ajaxSingle="true" event="onclick"
+								action="#{usuarioMedicoList_configuracionCustom.setFirstResult(usuarioMedicoList_configuracionCustom.previousFirstResult)}"
+								reRender="tablas_id" />
+						</h:graphicImage>
+
+							<h:graphicImage
+								value="/resources/icons/default/paginado/siguiented.png"
+								rendered="#{!usuarioMedicoList_configuracionCustom.nextExists}" />
+
+
+							
+							
+							<h:graphicImage title="#{messages.siguiente}"
+							style="cursor:pointer; border: 0px;"
+							rendered="#{usuarioMedicoList_configuracionCustom.nextExists}"
+							value="/resources/icons/default/paginado/#{theme.color}/siguiente.png">
+							<a4j:support ajaxSingle="true" event="onclick"
+								action="#{usuarioMedicoList_configuracionCustom.setFirstResult(usuarioMedicoList_configuracionCustom.nextFirstResult)}"
+								reRender="tablas_id" />
+						</h:graphicImage>
+							
+							<h:graphicImage
+								value="/resources/icons/default/paginado/find.png"
+								rendered="#{!usuarioMedicoList_configuracionCustom.nextExists}" />
+
+
+							
+							
+							<h:graphicImage title="#{messages.ultima}"
+							style="cursor:pointer; border: 0px;"
+							rendered="#{usuarioMedicoList_configuracionCustom.nextExists}"
+							value="/resources/icons/default/paginado/#{theme.color}/fin.png">
+							<a4j:support ajaxSingle="true" event="onclick"
+								action="#{usuarioMedicoList_configuracionCustom.setFirstResult(usuarioMedicoList_configuracionCustom.lastFirstResult)}"
+								reRender="tablas_id" />
+						</h:graphicImage>
+							
+						</s:div>
+					</s:div>
+				</a4j:outputPanel>
+			</a4j:outputPanel>
+		</h:form>
+
+		<h:form>
+			<rich:contextMenu attached="false" id="nombrecontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.ordMenorMayor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{usuarioMedicoList_configuracionCustom.setOrder('nombre asc')}"
+					reRender="usuario_list">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.ordMayorMenor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{usuarioMedicoList_configuracionCustom.setOrder('nombre desc')}"
+					reRender="usuario_list">
+				</rich:menuItem>
+				
+			</rich:contextMenu>
+			<rich:contextMenu attached="false" id="primerapellidocontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.ordMenorMayor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{usuarioMedicoList_configuracionCustom.setOrder('primerApellido asc')}"
+					reRender="usuario_list">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.ordMayorMenor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{usuarioMedicoList_configuracionCustom.setOrder('primerApellido desc')}"
+					reRender="usuario_list">
+				</rich:menuItem>
+				
+			</rich:contextMenu>
+			<rich:contextMenu attached="false" id="segundoapellidocontextmenu"
+				submitMode="ajax">				
+				<rich:menuItem value="#{messages.ordMenorMayor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{usuarioMedicoList_configuracionCustom.setOrder('segundoApellido asc')}"
+					reRender="usuario_list">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.ordMayorMenor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{usuarioMedicoList_configuracionCustom.setOrder('segundoApellido desc')}"
+					reRender="usuario_list">
+				</rich:menuItem>
+			</rich:contextMenu>
+			<rich:contextMenu attached="false" id="usercontextmenu"
+				submitMode="ajax">				
+				<rich:menuItem value="#{messages.ordMenorMayor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{usuarioMedicoList_configuracionCustom.setOrder('username asc')}"
+					reRender="usuario_list">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.ordMayorMenor}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{usuarioMedicoList_configuracionCustom.setOrder('username desc')}"
+					reRender="usuario_list">
+				</rich:menuItem>
+			</rich:contextMenu>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+

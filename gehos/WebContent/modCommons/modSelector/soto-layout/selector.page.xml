@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+    
+    <param name="entityId" value="#{modSelectorController.selectedEntityId}" />
+
+    <param name="idFuncionalidad" value="#{funSelectorController.idFuncionalidad}" />
+	<param name="idancestors" value="#{funSelectorController.listaAncestros}" /> 
+	<param name="moduleName" value="#{activeModule.activeModuleName}" /> 
+      
+	<navigation from-action="gotomodhome">
+		<redirect view-id="/modCommons/modHome/home.xhtml"></redirect>
+	</navigation>
+     
+    <navigation >
+    	<rule if="#{modSelectorController.selectedEntityId == null}">
+    		<redirect view-id="/modCommons/entitySelector/selector.xhtml" />
+    	</rule>
+    	<rule if="#{activeModule.activeModule.moduloFisico}" >
+    		<redirect view-id="/modCommons/modHome/home.xhtml">
+    		 	<param name="idFuncionalidad" value="#{activeModule.activeModule.id}" />
+				<param name="idancestors" value="#{activeModule.activeModule.id}a" />
+    			<param name="moduleName" value="#{activeModule.activeModule.nombre}" />
+    		</redirect>
+    	</rule>
+    </navigation>  
+       
+	
+	<param name="moduleid" value="#{modSelectorController.selectedModuleTypeId}"/>
+     
+	<navigation from-action="gotomodselector">
+		<redirect view-id="#{theme.modSelector}" />
+	</navigation>
+	    
+</page>

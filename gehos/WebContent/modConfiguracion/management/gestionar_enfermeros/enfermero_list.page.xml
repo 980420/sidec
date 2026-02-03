@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+							
+	<param name="open"        value="#{enfermeroList_custom.openSimpleTogglePanel}" />
+	<param name="avz"         value="#{enfermeroList_custom.avanzada}" />							
+	<param name="order"       value="#{enfermeroList_custom.order}" />
+	<param name="firstResult" value="#{enfermeroList_custom.firstResult}" />
+	<param name="critB1"      value="#{enfermeroList_custom.nombre}" />
+	<param name="critB2"      value="#{enfermeroList_custom.primerApellido}" />
+	<param name="critB3"      value="#{enfermeroList_custom.segundoApellido}" />
+	<param name="critB4"      value="#{enfermeroList_custom.matriculaEnfermeria}" />
+
+	<action execute="#{enfermeroList_custom.begin()}" />
+
+	<navigation from-action="adicionar">
+		<redirect
+			view-id="/modConfiguracion/management/gestionar_enfermeros/enfermero_usuario_create.gehos">								
+			<param name="open"        value="#{enfermeroList_custom.openSimpleTogglePanel}" />
+			<param name="avz"         value="#{enfermeroList_custom.avanzada}" />							
+			<param name="order"       value="#{enfermeroList_custom.order}" />
+			<param name="firstResult" value="#{enfermeroList_custom.firstResult}" />
+			<param name="critB1"      value="#{parameters.encodec(enfermeroList_custom.nombre)}" />
+			<param name="critB2"      value="#{parameters.encodec(enfermeroList_custom.primerApellido)}" />
+			<param name="critB3"      value="#{parameters.encodec(enfermeroList_custom.segundoApellido)}" />
+			<param name="critB4"      value="#{parameters.encodec(enfermeroList_custom.matriculaEnfermeria)}" />
+		</redirect>
+	</navigation>
+
+	<navigation from-action="asociar">
+		<redirect
+			view-id="/modConfiguracion/management/gestionar_enfermeros/enfermero_usuario_select.gehos">								
+			<param name="open"        value="#{enfermeroList_custom.openSimpleTogglePanel}" />
+			<param name="avz"         value="#{enfermeroList_custom.avanzada}" />							
+			<param name="order"       value="#{enfermeroList_custom.order}" />
+			<param name="firstResult" value="#{enfermeroList_custom.firstResult}" />
+			<param name="critB1"      value="#{parameters.encodec(enfermeroList_custom.nombre)}" />
+			<param name="critB2"      value="#{parameters.encodec(enfermeroList_custom.primerApellido)}" />
+			<param name="critB3"      value="#{parameters.encodec(enfermeroList_custom.segundoApellido)}" />
+			<param name="critB4"      value="#{parameters.encodec(enfermeroList_custom.matriculaEnfermeria)}" />
+		</redirect>
+	</navigation>
+	
+	<navigation from-action="#{enfermeroList_custom.seleccionarModificar()}" evaluate="#{enfermeroList_custom.error}">
+		<rule if-outcome="0">
+		<redirect
+			view-id="/modConfiguracion/management/gestionar_enfermeros/enfermero_edit.xhtml">	
+			<param name="enfermeroId" value="#{enfermeroList_custom.enfermeroId}"/>		
+			<param name="selectedTab" value="usuario" />					
+			<param name="open"        value="#{enfermeroList_custom.openSimpleTogglePanel}" />
+			<param name="avz"         value="#{enfermeroList_custom.avanzada}" />							
+			<param name="order"       value="#{enfermeroList_custom.order}" />
+			<param name="firstResult" value="#{enfermeroList_custom.firstResult}" />
+			<param name="critB1"      value="#{parameters.encodec(enfermeroList_custom.nombre)}" />
+			<param name="critB2"      value="#{parameters.encodec(enfermeroList_custom.primerApellido)}" />
+			<param name="critB3"      value="#{parameters.encodec(enfermeroList_custom.segundoApellido)}" />
+			<param name="critB4"      value="#{parameters.encodec(enfermeroList_custom.matriculaEnfermeria)}" />			
+			
+		</redirect>
+		</rule>
+	</navigation>
+	
+	<navigation from-action="#{enfermeroList_custom.seleccionarVer()}" evaluate="#{enfermeroList_custom.error}">
+		<rule if-outcome="0">
+		<redirect
+			view-id="/modConfiguracion/management/gestionar_enfermeros/enfermero_details.xhtml">	
+			<param name="enfermeroId" value="#{enfermeroList_custom.enfermeroId}"/>							
+			<param name="open"        value="#{enfermeroList_custom.openSimpleTogglePanel}" />
+			<param name="avz"         value="#{enfermeroList_custom.avanzada}" />							
+			<param name="order"       value="#{enfermeroList_custom.order}" />
+			<param name="firstResult" value="#{enfermeroList_custom.firstResult}" />
+			<param name="critB1"      value="#{parameters.encodec(enfermeroList_custom.nombre)}" />
+			<param name="critB2"      value="#{parameters.encodec(enfermeroList_custom.primerApellido)}" />
+			<param name="critB3"      value="#{parameters.encodec(enfermeroList_custom.segundoApellido)}" />
+			<param name="critB4"      value="#{parameters.encodec(enfermeroList_custom.matriculaEnfermeria)}" />			
+			<param name="from" value="listar"/>
+		</redirect>
+		</rule>
+	</navigation>
+</page>

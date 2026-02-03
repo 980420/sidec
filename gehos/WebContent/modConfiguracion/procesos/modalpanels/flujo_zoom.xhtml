@@ -1,0 +1,60 @@
+<rich:modalPanel id="flujo_zoom" onhide=""
+	autosized="true" resizeable="false"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j"
+	onshow="">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
+
+	<f:facet name="header">
+		<h:panelGroup id="flujo_zoom_header">
+			<h:outputText value="Diagrama del proceso" />
+		</h:panelGroup>
+	</f:facet>
+	<f:facet name="controls">
+		<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+			style="cursor:pointer; position:relative; top:2px;"
+			onclick="Richfaces.hideModalPanel('flujo_zoom')" />
+	</f:facet>
+	
+	<h:form id="flujo_zoom_form">
+	
+		<script src="#{facesContext.externalContext.requestContextPath}/modConfiguracion/procesos/js/picturesUtils.js"  >
+		</script>
+		
+		<a:status forceId="true"
+			onstart="document.getElementById('modificar_ubicacion_form:acpbtn').style.cursor='wait'"
+			id="modificUbicstatus"
+			onstop="document.getElementById('modificar_ubicacion_form:acpbtn').style.cursor='default'">
+		</a:status>
+		
+		<div style="overflow: auto; height: 480px;">
+			<h:graphicImage id="pic" value="/modConfiguracion/procesos/tmp/#{processRepositoryManager.tempImgUUID}.png"
+				 style="border:0px; " >
+				 <rich:contextMenu event="oncontextmenu" attachTo="pic" submitMode="none">
+                    <rich:menuItem value="Acercar" onclick="enlarge('flujo_zoom_form:pic');" id="zin"></rich:menuItem>
+                    <rich:menuItem value="Alejar" onclick="decrease('flujo_zoom_form:pic');" id="zout"></rich:menuItem>
+                 </rich:contextMenu>
+			</h:graphicImage>	
+		</div>
+		<br/>
+		<div align="right">
+			<input type="button"
+				onclick="javascript:Richfaces.hideModalPanel('flujo_zoom');"
+				value="Salir"
+				style="margin-bottom: 6px; margin-top: 0px; margin-left: 2px; margin-right: 6px;" />
+		</div>
+				
+
+	</h:form>
+
+	
+
+</rich:modalPanel>

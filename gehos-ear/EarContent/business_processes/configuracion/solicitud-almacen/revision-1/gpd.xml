@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="solicitud-almacen" width="903" height="740">
+  <node name="inicio" x="223" y="13" width="132" height="36">
+    <edge>
+      <label x="10" y="-9"/>
+    </edge>
+  </node>
+  <node name="definir-productos-solicitud" x="194" y="74" width="190" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="-1" y="-19"/>
+    </edge>
+  </node>
+  <node name="crear-licitacion" x="224" y="197" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="crear-adjudicacion-directa" x="48" y="279" width="176" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="gestionar-solicitud" x="404" y="143" width="141" height="36">
+    <edge>
+      <label x="8" y="2"/>
+    </edge>
+    <edge>
+      <label x="-60" y="-13"/>
+    </edge>
+    <edge>
+      <label x="-54" y="-26"/>
+      <bendpoint w1="-95" h1="0" w2="-95" h2="0"/>
+      <bendpoint w1="-95" h1="-24" w2="-95" h2="-24"/>
+    </edge>
+  </node>
+  <node name="registrar-proveedores-y-ofertas" x="357" y="354" width="234" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="crear-cuadro-adjudicacion-buena-pro" x="348" y="421" width="251" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="aprobar-adjudicacion" x="386" y="533" width="174" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="11" y="4"/>
+    </edge>
+  </node>
+  <node name="gestionar-cuadro-adjudicacion" x="693" y="491" width="209" height="36">
+    <edge>
+      <label x="-45" y="-8"/>
+      <bendpoint w1="-129" h1="0" w2="-129" h2="0"/>
+      <bendpoint w1="-129" h1="-22" w2="-129" h2="-22"/>
+    </edge>
+    <edge>
+      <label x="-55" y="-14"/>
+    </edge>
+    <edge>
+      <label x="-26" y="-22"/>
+    </edge>
+  </node>
+  <node name="necesidad-de-contrato" x="395" y="611" width="158" height="36">
+    <edge>
+      <label x="-2" y="-18"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="crear-orden-de-compra" x="43" y="611" width="186" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="crear-contrato" x="407" y="703" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="aceptar-solicitud" x="408" y="273" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="fin" x="69" y="700" width="132" height="36"/>
+</root-container>

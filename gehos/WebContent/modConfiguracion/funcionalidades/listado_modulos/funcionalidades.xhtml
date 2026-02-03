@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+      xmlns:a4j="http://richfaces.org/a4j"
+      template="#{theme.template}"
+                xmlns:rich="http://richfaces.org/rich">
+                
+<ui:define name="body" >
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('#{messages.lbl_funcionalidadesModulo_conf}')</script>
+	<style type="text/css">.rich-stglpanel-body{padding:0px}</style>
+	<style type="text/css">.rich-panel-body{padding:0px}</style>
+	
+	<h:form>
+
+		<rich:panel>
+			<f:facet name="header">#{messages.lbl_listadoFuncionalidades_conf}</f:facet>
+			
+			<h:outputText value="#{messages.msg_noExistenFuncionalidades_conf}." 
+	               rendered="#{empty moduleListController.moduleFunctionalities}"/>
+	               
+			<rich:dataTable value="#{moduleListController.moduleFunctionalities}" var="module" 
+							columnsWidth="0*, 0*, 30%, 70%"
+							rendered="#{not empty moduleListController.moduleFunctionalities}" 
+							id="funcsDataTable" rows="10" >
+				<rich:column>
+					#{module.id}
+				</rich:column>
+				<rich:column>
+					<h:graphicImage height="15" width="15" 
+						value="/resources/funcionalidadesIcons/#{funcionalidadesManager.moduleByFuncionality(module).nombre}/#{module.imagen}" />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">#{messages.lbl_label_conf}</f:facet>
+					#{module.label}
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">#{messages.lbl_Url_conf}</f:facet>
+					#{module.url}
+				</rich:column>
+			</rich:dataTable>
+		</rich:panel>
+		<br/>
+		<div align="center">
+			<rich:datascroller for="funcsDataTable"  />
+		</div>			
+		
+		<div align="right">
+			<a4j:commandButton value="#{messages.lbl_Salir_conf}" onclick="history.go(-1)" 
+						style="margin-right: 0px; margin-bottom: 0px;" >
+			</a4j:commandButton>
+		</div>
+	</h:form>
+
+</ui:define>
+
+</ui:composition>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

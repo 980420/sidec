@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<param name="enfermeroId" value="#{enfermeroDetails_custom.enfermeroId}" />
+	<param name="from" value="#{enfermeroDetails_custom.from}" />
+	<param name="open" />
+	<param name="avz" />
+	<param name="order" />
+	<param name="firstResult" />
+	<param name="critB1" />
+	<param name="critB2" />
+	<param name="critB3" />
+	<param name="critB4" />
+
+	<navigation from-action="salir">
+		<redirect
+			view-id="/modConfiguracion/management/gestionar_enfermeros/enfermero_list.xhtml">
+			<param name="open" value="#{open}" />
+			<param name="avz" value="#{avz}" />
+			<param name="order" value="#{order}" />
+			<param name="firstResult" value="#{firstResult}" />
+			<param name="critB1" value="#{critB1}" />
+			<param name="critB2" value="#{critB2}" />
+			<param name="critB3" value="#{critB3}" />
+			<param name="critB4" value="#{critB4}" />
+		</redirect>
+		<end-conversation before-redirect="true" />
+	</navigation>
+	<navigation from-action="#{enfermeroDetails_custom.eliminar()}">
+		<redirect
+			view-id="/modConfiguracion/management/gestionar_enfermeros/enfermero_list.xhtml">
+			<param name="open" value="#{open}" />
+			<param name="avz" value="#{avz}" />
+			<param name="order" value="#{order}" />
+			<param name="firstResult" value="#{firstResult}" />
+			<param name="critB1" value="#{critB1}" />
+			<param name="critB2" value="#{critB2}" />
+			<param name="critB3" value="#{critB3}" />
+			<param name="critB4" value="#{critB4}" />
+		</redirect>
+		<end-conversation before-redirect="true" />
+	</navigation>
+	<navigation from-action="modificar">
+		<redirect
+			view-id="/modConfiguracion/management/gestionar_enfermeros/enfermero_edit.gehos">
+			<param name="enfermeroId" value="#{enfermeroDetails_custom.enfermeroId}" />
+			<param name="selectedTab" value="#{enfermeroDetails_custom.selectedTab}" />
+			<param name="open" value="#{open}" />
+			<param name="avz" value="#{avz}" />
+			<param name="order" value="#{order}" />
+			<param name="firstResult" value="#{firstResult}" />
+			<param name="critB1" value="#{critB1}" />
+			<param name="critB2" value="#{critB2}" />
+			<param name="critB3" value="#{critB3}" />
+			<param name="critB4" value="#{critB4}" />
+		</redirect>
+		<end-conversation before-redirect="true" />
+	</navigation>
+</page>

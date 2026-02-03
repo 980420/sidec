@@ -1,0 +1,107 @@
+<rich:modalPanel id="modulo_agregar_cat" 
+				 onhide="" autosized="true" resizeable="false"
+				 xmlns="http://www.w3.org/1999/xhtml"
+				 xmlns:ui="http://java.sun.com/jsf/facelets"
+				 xmlns:h="http://java.sun.com/jsf/html"
+				 xmlns:f="http://java.sun.com/jsf/core"
+				 xmlns:s="http://jboss.com/products/seam/taglib"
+				 xmlns:rich="http://richfaces.org/rich"
+				 xmlns:a="http://richfaces.org/a4j" >
+				 
+	 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	 
+	 <a:keepAlive beanName="funcionalidadesManager" />
+	 
+	 <f:facet name="header">
+		<h:panelGroup id="modulo_agregar_cat_header">
+			<h:outputText value="#{messages.btn_Adicionarcategoria_conf}" />
+		</h:panelGroup>
+	</f:facet>
+	<f:facet name="controls">
+		<h:graphicImage 
+			value="/resources/icons/default/acciones/cerrar.gif" 
+			style="cursor:pointer; position: relative; top: 2px;"
+			onclick="Richfaces.hideModalPanel('modulo_agregar_cat')" />
+	</f:facet>
+	
+	<a:outputPanel id="modulo_agregar_cat_panel">
+	<div style="margin-left: 6px; margin-right: 6px; margin-top: 10px; margin-bottom: 1px;">
+		<h:form id="modulo_agregar_cat_form" >
+
+			<a:status forceId="true"
+				onstart="document.getElementById('modulo_agregar_cat_form:acpbtn').style.cursor='wait'"
+				id="nuevocatstatus"
+				onstop="document.getElementById('modulo_agregar_cat_form:acpbtn').style.cursor='default'">
+			</a:status>
+			
+			<s:validateAll>
+
+			<h:outputLabel>#{messages.lbl_nombre_conf}:</h:outputLabel>
+			
+			<rich:message for="catlabelinput" style="color: red;"
+					id="catlabelinputMessage" 
+					showDetail="false" showSummary="false" >
+					<f:facet name="errorMarker">
+						<span title="#{facesMessages.getCurrentMessagesForControl('catlabelinput').get(0).getDetail()}">*</span>
+					</f:facet>
+			</rich:message>
+			
+			<br/>
+			<h:inputText value="#{funcionalidadesManager.catLabel}" 
+				required="true" id="catlabelinput"
+				style="width:148px;">
+			</h:inputText>
+			
+			</s:validateAll>
+			
+			<rich:spacer height="8" style="display: block;"></rich:spacer>
+			<h:outputLabel>#{messages.lbl_icono_conf}:</h:outputLabel><br/>
+			<s:div id="iconspanel" >
+				<div style="overflow: auto; width: 180px; height: 120px">
+					<rich:dataGrid columns="3" value="#{funcionalidadesManager.getExistingModuleIcons()}" 
+											   var="icon">		   
+						<s:div style="float: left;" rendered="#{funcionalidadesManager.isSelected(icon)}">
+							<input type="radio" onclick="var icn='#{icon}'; updateIcon(icn);" 
+								style="visibility: visible;" name="musictype2" checked="checked">
+							</input>
+						</s:div>
+						<s:div style="float: left;" rendered="#{not funcionalidadesManager.isSelected(icon)}">
+							<input type="radio" onclick="var icn='#{icon}'; updateIcon(icn);" 
+								style="visibility: visible;" name="musictype2"  >
+							</input>
+						</s:div>
+
+						<h:graphicImage width="20" height="20" title="#{icon}"
+						   url="/resources/funcionalidadesIcons/#{funcionalidadesManager.moduleByFuncionality(funcionalidadesManager.selectedFunctionality.value).nombre}/#{icon}" />
+					</rich:dataGrid>
+				</div>						
+			</s:div>
+	
+			<rich:spacer height="3" style="display: block;"></rich:spacer>
+			
+			<div align="right">
+			<a:commandButton value="#{messages.btn_aceptar_conf}" style="" id="acpbtn"
+							 action="#{funcionalidadesManager.uploadCategoryToModuleAndSave}"
+							 status="nuevocatstatus"
+							 oncomplete="#{funcionalidadesManager.onAdicionarCatComplete('modulo_agregar_cat')}"
+							 reRender="catlabelinputMessage, settingsdiv, detailspanelheader" >
+			</a:commandButton>
+			<input type="button"
+				onclick="clean(); javascript:Richfaces.hideModalPanel('modulo_agregar_cat');" 
+				value="#{messages.btn_cancelar_conf}"
+				style="margin-bottom:0px;margin-top:2px;margin-left:2px;margin-right:0px;" />
+			</div>	
+			
+						
+		</h:form>
+		
+		<a:form>
+			<a:jsFunction name="updateIcon" limitToList="true" reRender="existingIconName_label">
+			    <a:actionparam name="icn" assignTo="#{funcionalidadesManager.existingCategoryIconName}"  />                  
+			</a:jsFunction>					
+		</a:form>
+	
+	</div>							
+    </a:outputPanel>
+	 
+</rich:modalPanel>

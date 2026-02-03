@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<page    xmlns               ="http://jboss.com/products/seam/pages"  
+         xmlns:xsi           ="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">  
+           
+    <begin-conversation flush-mode="manual" join="true"/>
+    
+	<param name="IdEstudiom" value="#{modificarEstudioControlador.estudyId}"/>
+	<action execute="#{modificarEstudioControlador.inimodificarestudio()}" if="#{modificarEstudioControlador.flag}"/>
+	
+	<navigation from-action="#{modificarEstudioControlador.cancelarEstudio()}">
+		<end-conversation/>
+      <redirect view-id="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarEstudio/buscarEstudio.xhtml">
+		</redirect>
+    </navigation>   
+   
+    <navigation from-action="#{modificarEstudioControlador.modificarEstudio()}">
+    	<rule if-outcome="ok">
+    	<end-conversation before-redirect = "true" />
+      <redirect view-id="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarEstudio/verEstudio.xhtml">
+		<param name="IdEstudiov" value="#{modificarEstudioControlador.estudio.id}"/>
+		<param name="desde" value="modificar"/>
+	</redirect>
+	</rule>
+	</navigation>   
+	
+</page>

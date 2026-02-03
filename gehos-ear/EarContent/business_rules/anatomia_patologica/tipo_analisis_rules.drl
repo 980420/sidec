@@ -1,0 +1,30 @@
+package anatomiapatologica;
+
+#list any import classes here.
+import gehos.anatomiapatologica.entity.analisis.TipoAnalisisAnatomia;
+import gehos.anatomiapatologica.session.analisis.common.RuleResult;
+#declare any global variables here
+
+rule "Biopsia"
+	when
+		TipoAnalisisAnatomia( codigo == "Bx" )
+		$result : RuleResult()
+	then 
+        $result.setValue("Bx");
+end
+
+rule "Citología"
+	when
+		TipoAnalisisAnatomia( codigo == "Cx" )
+		$result : RuleResult()
+	then 
+        $result.setValue("Cx");
+end
+
+rule "Citología ginecológica"
+	when
+		TipoAnalisisAnatomia( codigo == "CxG" )
+		$result : RuleResult()
+	then 
+        $result.setValue("CxG");
+end

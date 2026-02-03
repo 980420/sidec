@@ -1,0 +1,103 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}">
+	<s:div>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript">setContentTitle('#{crearNota.devolverTitulo()}')</script>
+		<link href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css" rel="stylesheet" type="text/css" />
+		<rich:messages globalOnly="true" styleClass="message" id="globalMessage" ajaxRendered="true" />
+		<h:form id="idForm">
+			<rich:panel switchType="client">
+				<f:facet name="header">
+					<s:div>
+						<h:outputText value="#{messages.datosGenerales}" />
+					</s:div>
+				</f:facet>
+				<table border="0" cellpadding="0" cellspacing="0">
+					<tr class="filSepGranRA">
+						<td rowspan="15" />
+						<td class="colSepPeq">
+							<h:outputText value="#{messages.idSujeto}:" style="margin:0px; padding:0px;" />
+						</td>
+						<td class="colSepGran">
+							<h:outputText styleClass="dataText" value="#{crearNota.devolverCRD().momentoSeguimientoEspecifico.sujeto.codigoPaciente}" style="margin:0px; padding:0px;" />
+						</td>
+						<td class="colSepPeq">
+							<h:outputText value="#{messages.momento}:" style="margin:0px; padding:0px;" />
+						</td>
+						<td class="colSepGran">
+							<h:outputText styleClass="dataText" value="#{crearNota.devolverCRD().momentoSeguimientoEspecifico.momentoSeguimientoGeneral.nombre}" style="margin:0px; padding:0px;" />
+						</td>
+						<td class="colSepPeq">
+							<h:outputText value="#{messages.momentoFecha}:" style="margin:0px; padding:0px;" />
+						</td>
+						<td class="colSepGran">
+							<h:outputText styleClass="dataText" value="#{crearNota.devolverCRD().momentoSeguimientoEspecifico.fechaInicio}" style="margin:0px; padding:0px;">
+								<s:convertDateTime pattern="#{messages.patronFecha}" />
+							</h:outputText>
+						</td>
+					</tr>
+					<tr>
+						<td class="colSepPeq">
+							<h:outputText value="#{messages.nombreHoja}:" style="margin:0px; padding:0px;" />
+						</td>
+						<td class="colSepGran">
+							<h:outputText styleClass="dataText" value="#{crearNota.devolverCRD().hojaCrd.nombreHoja}" style="margin:0px; padding:0px;" />
+						</td>
+						<td class="colSepPeq">
+							<h:outputText value="#{messages.nombreVariable}:" style="margin:0px; padding:0px;" />
+						</td>
+						<td class="colSepGran">
+							<h:outputText styleClass="dataText" value="#{crearNota.devolverVariableNombre()}" style="margin:0px; padding:0px;" />
+						</td>
+					</tr>
+				</table>
+			</rich:panel>
+			<rich:panel style="margin-top:8px" switchType="client">
+				<f:facet name="header">
+					<s:div>
+						<h:outputText value="#{messages.descripcioDetalles}" />
+					</s:div>
+				</f:facet>
+				<table width="100%" cellpadding="0px" cellspacing="0px">
+					<tr>
+						<td class="colSepGran">
+							<s:label styleClass="#{invalid ? 'labelErrors' : ''}" value="#{messages.descripcion}:">
+								<rich:message for="descripcion" showDetail="false">
+									<f:facet name="errorMarker">
+										<h:outputText style="color: red;cursor: pointer !important;" title="#{facesMessages.getCurrentMessagesForControl('descripcion').get(0).getDetail()}" value="*" />
+									</f:facet>
+								</rich:message>
+							</s:label><br />
+							<h:inputTextarea id="descripcion" 
+							validator="#{validations_sujeto.causaEnBlanco}" 
+							value="#{crearNota.nota.descripcion}" 
+							required="#{!empty param['idForm:aceptarr']}" 
+							style="#{!empty param['idForm:aceptarr'] and validations_sujeto.causaEnBlanco} ? 'border: 1px solid red;' : ''}"/>
+						</td>
+						<td>
+							<s:label value="#{messages.detallesNota}:">
+								<rich:message for="detalles" showDetail="false">
+									<f:facet name="errorMarker">
+										<h:outputText style="color: red;cursor: pointer !important;" title="#{facesMessages.getCurrentMessagesForControl('detalles').get(0).getDetail()}" value="*" />
+									</f:facet>
+								</rich:message>
+							</s:label><br />
+							<h:inputTextarea value="#{crearNota.nota.detallesNota}" id="detalles" validator="#{validations_sujeto.causaEnBlanco}" style="width:100%;resize: vertical" />
+						</td>
+					</tr>
+				</table>
+			</rich:panel>
+			<br />
+			<div align="right">
+				<a4j:commandButton id="aceptarr" onclick="#{rich:component('ajaxLoadingModalBox')}.show()" action="#{crearNota.crear()}" oncomplete="#{rich:component('ajaxLoadingModalBox')}.hide();" value="#{messages.aceptar}" style="margin-right:10px; margin-top:0px;" />
+				<h:commandButton value="#{messages.cancelar}" style="margin:0px;" action="#{crearNota.cancelar()}" />
+			</div>
+			<ui:include src="/modEnsayo/ensayo_conduccion/codebase/plantillas/modalPanelSalvandoHoja.xhtml" />
+		</h:form>
+	</s:div>
+</s:div>

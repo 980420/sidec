@@ -1,0 +1,487 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+<ui:composition>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+	<link rel='stylesheet' href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css' type='text/css' />
+	<link rel='stylesheet' href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/tag-input/tageditor.css' type='text/css' />
+	<script	src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/tag-input/caret.js"	type="text/javascript"></script>
+	<script	src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/tag-input/tageditor.js"	type="text/javascript"></script>
+	<style>
+		.tag-editor input
+		{			
+			vertical-align: baseline;
+		}
+		.tag-editor{
+		 	/* font-size: 12px; */
+		 	border: 1px solid #c7c7c7;
+		}
+		.tag-editor .tag-editor-tag
+		{
+		  color: #FFFFFF;
+  		  background: #50885B;  		 
+		}
+		.tag-editor-delete
+		{  
+			display: list-item;
+		}
+		.tag-editor .tag-editor-delete
+		{
+			background: #50885B;
+		}
+		.tag-editor .tag-editor-delete i:before{
+			  color: #8EC8AB;
+		}
+	</style>
+<script type="text/javascript">					
+
+		//funcion para cambiar el tamano de la lista del combobox
+		function cambiarStyle(id,size)
+		{
+		var size2=''+size+'px';
+		var n=new String(id);
+		var idN=n.replace('combobox','list');
+		
+		var com=document.getElementById(idN);
+		var parent=com.parentNode;
+		var gran=parent.parentNode;
+		parent.style.width=size2;
+		gran.style.width=size2;
+		com.style.width=size2;
+		
+		} 
+
+		var curDtN = new Date();
+		 var calDtN=null;
+
+		 function previousDate(date){
+			calDtN = date;
+		 }
+
+		 function disablementFunction(day){
+			 if(calDtN == null){
+				 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+						return true; 
+					else 
+						return false; 
+			 }
+			 else {
+				 if (calDtN.getTime() - day.date.getTime() &#62;= 0 ) 
+						return true; 
+					else 
+						return false;
+			 }					 
+		 }
+
+		 function disabledClassesProv(day){
+			 if(calDtN == null){
+				 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+						return ''; 
+					else 
+						return 'noavailable'; 
+			 }
+			 else {
+				 if (calDtN.getTime() - day.date.getTime() &#62;= 0) 
+						return ''; 
+					else 
+						return 'noavailable';
+			 }				
+		 }
+
+		 function resetSecondDate(first,second) {
+			 var firstDate = first.getSelectedDate().getTime();
+			 var secondDate = second.getSelectedDate().getTime();
+
+			 if(firstDate - secondDate &#62; 0)
+				 second.resetSelectedDate();
+		 }
+ 		 
+		 function disablementFunctionPreviousEx(day){
+			if(calDtN == null){
+				if (curDtN.getTime() - day.date.getTime() &#62; 0) return true; else return false;
+			}
+			if ((curDtN.getTime() - day.date.getTime() &#62; 0) &#38;&#38; (calDtN.getTime() - day.date.getTime() &#60;= 0)){
+				return true;
+			}
+			else 
+				return false;
+		  }
+
+		function disabledClassesProvPreviousEx(day){
+			if(calDtN == null){
+				if (curDtN.getTime() - day.date.getTime() &#60; 0)
+					return 'noavailable';
+				else 
+					return '';
+			}
+			if ((curDtN.getTime() - day.date.getTime() &#60; 0) || (calDtN.getTime() - day.date.getTime() &#62; 0))
+				return 'noavailable';
+			else 
+				return '';
+		}
+	</script>
+		
+
+<rich:simpleTogglePanel switchType="client" style="margin-top:10px;" bodyClass="simpleTogPanel">
+			<f:facet name="header">
+				<h:outputLabel value="Datos del correo" style="cursor:pointer;"/>
+			</f:facet>
+
+					<table cellpadding="0" cellspacing="0" border="0" width="100%">
+						<tr>
+							<td>
+								<h:outputLabel styleClass='normalText' value='Asunto:' />
+								<ui:include src="/modEnsayo/ensayo_disenno/codebase/reglas/smartReuse/required_sign.xhtml">
+									<ui:param name="target" value="subject" />
+								</ui:include>
+								<h:inputText id="subject" maxlength="100" required="true" styleClass="inputText" value='#{action.subject}' style=" width : 100%;">
+									
+								</h:inputText>
+							</td>							
+							
+						</tr>							
+						<tr>
+							<td colspan="5"> 
+								<rich:spacer styleClass="field-hor-space" width="0" height="0"/>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="5">
+								<h:outputLabel styleClass='normalText' value='Mensaje:' />
+								<ui:include src="/modEnsayo/ensayo_disenno/codebase/reglas/smartReuse/required_sign.xhtml">
+									<ui:param name="target" value="msg" />
+								</ui:include>								
+								<h:inputTextarea id="message" maxlength="2000" required="true" styleClass="inputText" value='#{action.msg}' style=" width : 100%; height : 50px;">
+									
+								</h:inputTextarea>
+							</td>												
+							
+						</tr>
+						<tr>
+							<td colspan="5"> 
+								<rich:spacer styleClass="field-hor-space" width="0" height="0"/>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="5">
+								<h:outputLabel styleClass='normalText' value='Destinatarios externos:' />
+								<ui:include src="/modEnsayo/ensayo_disenno/codebase/reglas/smartReuse/required_sign.xhtml">
+									<ui:param name="target" value="emails" />
+								</ui:include>
+								<h:inputTextarea id="emails" title="Use ; como separador" styleClass="inputText likeMultEmail" validator="#{valida.validateEmails}" maxlength="1000" value='#{action.destinations}' style=" width : 100%; height : 50px;">
+									
+								</h:inputTextarea>
+							</td>												
+							
+						</tr>
+										
+					</table>			
+		</rich:simpleTogglePanel> 
+<a4j:region id="region">
+<rich:simpleTogglePanel switchType="client" style="margin-top:10px;" bodyClass="simpleTogPanel">
+			<f:facet name="header">
+				<h:outputLabel value="Destinatarios del sistema" style="cursor:pointer;"/>
+			</f:facet>	
+		<rich:simpleTogglePanel switchType="client" style="margin-top:10px;" bodyClass="simpleTogPanel">
+			<f:facet name="header">
+				<h:outputLabel value="#{messages.criterios}" style="cursor:pointer;"/>
+			</f:facet>				
+					<table cellpadding="0" cellspacing="0" border="0">
+						<tr style="vertical-align: top;">
+							<td>
+								#{messages.nombre}:
+								<br/>
+								<h:inputText styleClass="inputText" maxlength="30" value='#{action.listadosujetosList.nombreUsuario}'>									
+								</h:inputText>
+							</td>	
+							<td><rich:spacer styleClass="button-margin-left" width="0" height="0"/></td>
+							<td style="vertical-align: bottom;">
+								<a4j:commandButton reRender="listadoGruposujetos" style="margin-left: 0px; margin-bottom:  0px; margin-top: 0px;"									
+									value="Buscar" limitToList="true">	
+									<s:defaultAction id="searchit"></s:defaultAction>								
+									</a4j:commandButton>
+															
+							</td>						
+						</tr>							
+						<tr>
+							<td colspan="5"> 
+								<rich:spacer height="11px"  width="100%"/>
+							</td>
+						</tr>										
+					</table>				
+			
+		</rich:simpleTogglePanel>
+	
+	<rich:spacer height="11px" width="100%"/>	
+
+	<a4j:outputPanel id="listadoGruposujetos">
+	
+	<rich:panel
+		rendered="#{action.listadosujetosList.resultList.size() == 0 and action.listadosujetosList.nombreUsuario == ''}">
+		<f:facet name="header">
+			<h:outputText value="Listado de usuarios" />
+		</f:facet>
+		<h:outputText value="#{messages.msg_noResultados_ens}" />
+	</rich:panel>
+	
+	<rich:panel
+		rendered="#{action.listadosujetosList.resultList.size() == 0 and action.listadosujetosList.nombreUsuario != ''}">
+		<f:facet name="header">
+			<h:outputText value="Listado de usuarios" />
+		</f:facet>
+		<h:outputText value="#{messages.msg_noResultados_match}" />
+	</rich:panel>
+	
+	
+		<rich:dataTable rendered="#{not empty action.listadosujetosList.resultList}"
+			width="100%" value="#{action.listadosujetosList.resultList}" var="u">
+			<f:facet name="header">
+				<h:outputLabel value="Listado de usuarios" />
+			</f:facet>	
+			<rich:column>
+				<f:facet name="header">
+					<h:panelGrid columns="2" width="100%" cellpadding="0"
+						cellspacing="0" border="0">
+						<s:div style="float: left;">
+							<h:outputLabel value="#{messages.nombre}" />
+						</s:div>
+						
+					</h:panelGrid>
+				</f:facet>
+				<h:outputLabel value='#{u.nombre}' />
+			</rich:column>
+			
+			<rich:column width="40%">
+				<f:facet name="header">
+					<h:panelGrid columns="2" width="100%" cellpadding="0"
+						cellspacing="0" border="0">
+						<s:div style="float: left;">
+							<h:outputLabel value="Primer apellido" />
+						</s:div>
+						
+					</h:panelGrid>
+				</f:facet>
+				<h:outputLabel value='#{u.primerApellido}' />
+			</rich:column>
+			
+			
+			
+			<rich:column>
+				<f:facet name="header">
+					<h:panelGrid columns="2" width="100%" cellpadding="0"
+						cellspacing="0" border="0">
+						<s:div style="float: left;">
+							<h:outputLabel value="Segundo apellido" />
+						</s:div>
+						
+					</h:panelGrid>
+				</f:facet>
+				
+				<h:outputLabel value='#{u.segundoApellido}'>
+					<s:convertDateTime pattern='dd/MM/yyyy'/>
+				</h:outputLabel>
+
+			</rich:column>
+
+			<rich:column width="1px">
+				<div align="center">
+					<a4j:commandButton title="#{messages.seleccionar}" ajaxSingle="true" limitToList="true"
+						action="#{action.usuariosSeleccionados.add(u)}" reRender="listadoGruposujetos" rendered="#{!action.usuariosSeleccionados.contains(u)}"
+						image="/resources/icons/default/acciones/seleccionar_uno.png" />
+				</div>
+			</rich:column>
+		</rich:dataTable>
+
+		<rich:spacer height="11px" />
+
+		<ui:include src="/modEnsayo/codebase/plantillas/paginado_tabla_inferior_generico.xhtml/" >
+			<ui:param name="vzPaginado" value="#{action.listadosujetosList.resultCount>10}"/>
+			<ui:param name="nomControladorList" value="#{action.listadosujetosList}" />
+			<ui:param name="idListado" value="listadoGruposujetos" />
+			
+		</ui:include>
+		
+		<rich:dataTable rendered="#{not empty action.usuariosSeleccionados}"
+			width="100%" value="#{action.usuariosSeleccionados}" var="u">
+			<f:facet name="header">
+				<h:outputLabel value="Listado de usuarios seleccionados" />
+			</f:facet>	
+			<rich:column>
+				<f:facet name="header">
+					<h:panelGrid columns="2" width="100%" cellpadding="0"
+						cellspacing="0" border="0">
+						<s:div style="float: left;">
+							<h:outputLabel value="#{messages.nombre}" />
+						</s:div>
+						
+					</h:panelGrid>
+				</f:facet>
+				<h:outputLabel value='#{u.username}' />
+			</rich:column>
+			
+			<rich:column width="40%">
+				<f:facet name="header">
+					<h:panelGrid columns="2" width="100%" cellpadding="0"
+						cellspacing="0" border="0">
+						<s:div style="float: left;">
+							<h:outputLabel value="Primer apellido" />
+						</s:div>
+						
+					</h:panelGrid>
+				</f:facet>
+				<h:outputLabel value='#{u.nombre}' />
+			</rich:column>
+			
+			
+			
+			<rich:column>
+				<f:facet name="header">
+					<h:panelGrid columns="2" width="100%" cellpadding="0"
+						cellspacing="0" border="0">
+						<s:div style="float: left;">
+							<h:outputLabel value="Segundo apellido" />
+						</s:div>
+						
+					</h:panelGrid>
+				</f:facet>
+				
+				<h:outputLabel value='#{u.primerApellido}'>
+					<s:convertDateTime pattern='dd/MM/yyyy'/>
+				</h:outputLabel>
+
+			</rich:column>
+
+			<rich:column width="1px">
+				<div align="center">
+					<a4j:commandButton title="#{messages.eliminar}"
+						action="#{action.usuariosSeleccionados.remove(u)}" reRender="listadoGruposujetos"
+						image="/resources/icons/default/acciones/eliminar.png" />
+				</div>
+			</rich:column>
+		</rich:dataTable>
+		</a4j:outputPanel>
+
+</rich:simpleTogglePanel>
+</a4j:region>
+<style>
+.multipleInput-container {
+     border:1px #ccc solid;
+     padding:1px;
+     padding-bottom:0;
+     cursor:text;
+     font-size:13px;
+     width:100%;
+}
+ 
+.multipleInput-container input {
+     font-size:13px;
+     clear:both;
+     width:250px;
+     height:24px;
+     border:0;
+     margin-bottom:1px;
+}
+ 
+.multipleInput-container ul {
+     list-style-type:none;
+}
+ 
+li.multipleInput-email {
+     float:left;
+     margin-right:2px;
+     margin-bottom:1px;
+     border:1px #BBD8FB solid;
+     padding:2px;
+     background:#F3F7FD;
+}
+ 
+.multipleInput-close {
+     width:16px;
+     height:16px;
+     background:url(close.png);
+     display:block;
+     float:right;
+     margin:0 3px;
+}
+</style>
+<script>
+/* (function( $ ){
+	 
+    $.fn.multipleInput = function() {
+
+         return this.each(function() {
+
+              // create html elements
+
+              // list of email addresses as unordered list
+              $list = $('<ul />');
+
+              // input
+              var $input = $('<input type="text" />').keyup(function(event) {
+
+                   if(event.which == 32 || event.which == 188) {
+                        // key press is space or comma
+                        var val = $(this).val().slice(0, -1); // remove space/comma from value
+
+                        // append to list of emails with remove button
+                        $list.append($('<li class="multipleInput-email"><span>' + val + '</span></li>')
+                             .append($('<a href="#" class="multipleInput-close" title="Remove" />')
+                                  .click(function(e) {
+                                       $(this).parent().remove();
+                                       e.preventDefault();
+                                  })
+                             )
+                        );
+                        $(this).attr('placeholder', '');
+                        // empty input
+                        $(this).val('');
+                   }
+
+              });
+
+              // container div
+              var $container = $('<div class="multipleInput-container" />').click(function() {
+                   $input.focus();
+              });
+
+              // insert elements into DOM
+              $container.append($list).append($input).insertAfter($(this));
+
+              // add onsubmit handler to parent form to copy emails into original input as csv before submitting
+              var $orig = $(this);
+              $(this).closest('form').submit(function(e) {
+
+                   var emails = new Array();
+                   $('.multipleInput-email span').each(function() {
+                        emails.push($(this).html());
+                   });
+                   emails.push($input.val());
+
+                   $orig.val(emails.join());
+
+              });
+
+              return $(this).hide();
+
+         });
+
+    };
+})( $j );
+applyEmailMask(); */
+$j('.likeMultEmail').tagEditor({delimiter:';',placeholder: 'Entre correos ...', clickDelete: true});
+//var likeEmail = $j(".likeMultEmail");
+//likeEmail.attr("placeholder","aaa@bbb.ccc[;xxx@yyy.zzz]..."); 
+
+//likeEmail.inputmask("y/[m]/[d]", { "placeholder": "*", greedy:false });	
+
+</script>
+</ui:composition>
+
+</html>

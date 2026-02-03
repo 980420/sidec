@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 4.5.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportNotificacion" language="groovy" pageWidth="700" pageHeight="950" columnWidth="700" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.100000000000001"/>
+	<property name="ireport.x" value="27"/>
+	<property name="ireport.y" value="192"/>
+	<parameter name="lbl_n_tituloEstudio" class="java.lang.String"/>
+	<parameter name="lbl_n_codEstudio" class="java.lang.String"/>
+	<parameter name="lbl_n_datosGSuj" class="java.lang.String"/>
+	<parameter name="lbl_n_ini" class="java.lang.String"/>
+	<parameter name="lbl_n_edad" class="java.lang.String"/>
+	<parameter name="lbl_n_producto" class="java.lang.String"/>
+	<parameter name="lbl_n_sitio" class="java.lang.String"/>
+	<parameter name="lbl_n_investigador" class="java.lang.String"/>
+	<parameter name="lbl_n_promotor" class="java.lang.String"/>
+	<parameter name="lbl_n_evento" class="java.lang.String"/>
+	<parameter name="lbl_n_fechaO" class="java.lang.String"/>
+	<parameter name="lbl_n_fechaU" class="java.lang.String"/>
+	<parameter name="lbl_n_fechaN" class="java.lang.String"/>
+	<parameter name="parameter1" class="java.lang.String"/>
+	<parameter name="lbl_n_descripE" class="java.lang.String"/>
+	<parameter name="lbl_n_accion" class="java.lang.String"/>
+	<parameter name="encabezado" class="java.lang.String"/>
+	<parameter name="lbl_n_datosNotifica" class="java.lang.String"/>
+	<parameter name="lbl_n_nombre" class="java.lang.String"/>
+	<parameter name="lbl_n_ape" class="java.lang.String"/>
+	<parameter name="lbl_n_telefono" class="java.lang.String"/>
+	<parameter name="lbl_n_cargo" class="java.lang.String"/>
+	<parameter name="lbl_n_direccion" class="java.lang.String"/>
+	<parameter name="lbl_n_opinion" class="java.lang.String"/>
+	<parameter name="lbl_n_notifico" class="java.lang.String"/>
+	<parameter name="lbl_n_sii" class="java.lang.String"/>
+	<parameter name="lbl_n_no" class="java.lang.String"/>
+	<parameter name="lbl_n_mes" class="java.lang.String"/>
+	<parameter name="lbl_n_anno" class="java.lang.String"/>
+	<parameter name="cuadroDialogImpr_Applet" class="java.lang.String"/>
+	<parameter name="tituloEs" class="java.lang.String"/>
+	<parameter name="codigoEs" class="java.lang.String"/>
+	<parameter name="iniciales" class="java.lang.String"/>
+	<parameter name="edad" class="java.lang.String"/>
+	<parameter name="productoIn" class="java.lang.String"/>
+	<parameter name="sitioIn" class="java.lang.String"/>
+	<parameter name="investigador" class="java.lang.String"/>
+	<parameter name="promotor" class="java.lang.String"/>
+	<parameter name="fechaOC" class="java.lang.String"/>
+	<parameter name="fechaAD" class="java.lang.String"/>
+	<parameter name="fechaN" class="java.lang.String"/>
+	<parameter name="descripEV" class="java.lang.String"/>
+	<parameter name="accionTom" class="java.lang.String"/>
+	<parameter name="nomb" class="java.lang.String"/>
+	<parameter name="apell" class="java.lang.String"/>
+	<parameter name="cargo" class="java.lang.String"/>
+	<parameter name="telefono" class="java.lang.String"/>
+	<parameter name="direccion" class="java.lang.String"/>
+	<parameter name="opinion" class="java.lang.String"/>
+	<parameter name="m" class="java.lang.String"/>
+	<parameter name="a" class="java.lang.String"/>
+	<parameter name="s" class="java.lang.String"/>
+	<parameter name="n" class="java.lang.String"/>
+	<parameter name="lbl_n_dias" class="java.lang.String"/>
+	<parameter name="d" class="java.lang.String"/>
+	<parameter name="lbl_n_viaN" class="java.lang.String"/>
+	<parameter name="viaNoti" class="java.lang.String"/>
+	<columnHeader>
+		<band height="950">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="0" width="700" height="20" forecolor="#666666" backcolor="#99FF99"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cuadroDialogImpr_Applet}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="30" width="391" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lbl_n_tituloEstudio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="478" y="30" width="188" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lbl_n_codEstudio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="50" width="391" height="35"/>
+				<textFieldExpression><![CDATA[$P{tituloEs}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="478" y="50" width="188" height="35"/>
+				<textFieldExpression><![CDATA[$P{codigoEs}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="97" width="226" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lbl_n_datosGSuj}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="124" width="226" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lbl_n_ini}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="124" width="127" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lbl_n_edad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="430" y="144" width="37" height="20"/>
+				<textFieldExpression><![CDATA[$P{lbl_n_mes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="369" y="144" width="29" height="20"/>
+				<textFieldExpression><![CDATA[$P{lbl_n_anno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="144" width="226" height="20"/>
+				<textFieldExpression><![CDATA[$P{iniciales}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="144" width="40" height="20"/>
+				<textFieldExpression><![CDATA[$P{edad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="232" width="226" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lbl_n_producto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="252" width="610" height="23"/>
+				<textFieldExpression><![CDATA[$P{productoIn}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="180" width="226" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lbl_n_sitio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="200" width="226" height="20"/>
+				<textFieldExpression><![CDATA[$P{sitioIn}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="180" width="168" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lbl_n_investigador}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="200" width="168" height="20"/>
+				<textFieldExpression><![CDATA[$P{investigador}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="486" y="180" width="179" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lbl_n_promotor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="486" y="200" width="179" height="20"/>
+				<textFieldExpression><![CDATA[$P{promotor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="295" width="226" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lbl_n_evento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="324" width="226" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lbl_n_fechaO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="344" width="226" height="20"/>
+				<textFieldExpression><![CDATA[$P{fechaOC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="324" width="127" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lbl_n_fechaU}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="344" width="127" height="20"/>
+				<textFieldExpression><![CDATA[$P{fechaAD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="374" width="226" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lbl_n_fechaN}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="54" y="394" width="226" height="20"/>
+				<textFieldExpression><![CDATA[$P{fechaN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="469" y="324" width="178" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lbl_n_notifico}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="500" y="344" width="36" height="20"/>
+				<textFieldExpression><![CDATA[$P{lbl_n_sii}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="560" y="344" width="29" height="20"/>
+				<textFieldExpression><![CDATA[$P{lbl_n_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="435" width="300" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lbl_n_descripE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="455" width="300" height="120">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{descripEV}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="365" y="435" width="300" height="20">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lbl_n_accion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="365" y="455" width="300" height="120">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{accionTom}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="595" width="226" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lbl_n_datosNotifica}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="625" width="226" height="20"/>
+				<textElement>
+					<font size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lbl_n_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="645" width="226" height="20"/>
+				<textFieldExpression><![CDATA[$P{nomb}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="625" width="226" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lbl_n_ape}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="645" width="226" height="20"/>
+				<textFieldExpression><![CDATA[$P{apell}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="678" width="226" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lbl_n_cargo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="698" width="226" height="20"/>
+				<textFieldExpression><![CDATA[$P{cargo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="678" width="226" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lbl_n_telefono}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="698" width="226" height="20"/>
+				<textFieldExpression><![CDATA[$P{telefono}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="730" width="226" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lbl_n_direccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="750" width="226" height="35"/>
+				<textFieldExpression><![CDATA[$P{direccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="730" width="365" height="20">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lbl_n_opinion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="750" width="365" height="170">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{opinion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="414" y="144" width="15" height="15" forecolor="#FFFFFF" backcolor="#999999"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{m}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="353" y="144" width="15" height="15" forecolor="#FFFFFF" backcolor="#999999"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{a}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="484" y="344" width="15" height="15" forecolor="#FFFFFF" backcolor="#999999"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{s}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="544" y="344" width="15" height="15" forecolor="#FFFFFF" backcolor="#999999"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{n}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="483" y="144" width="15" height="15" forecolor="#FFFFFF" backcolor="#999999"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{d}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="499" y="144" width="37" height="20"/>
+				<textFieldExpression><![CDATA[$P{lbl_n_dias}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="374" width="127" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lbl_n_viaN}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="300" y="394" width="364" height="20"/>
+				<textFieldExpression><![CDATA[$P{viaNoti}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+</jasperReport>

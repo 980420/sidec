@@ -1,0 +1,176 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+	<s:div>
+		<script type="text/javascript">setContentTitle('#{messages.lbl_titulo_ens}')</script>
+		<link rel='stylesheet'
+			href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+			type='text/css' />
+
+		<h:form>
+			<rich:spacer height="11px" />
+
+			<a4j:outputPanel id="tablas_hojaCrd">
+				<rich:panel styleClass="whitespace"
+					rendered="#{listadoHojasCRDCustomList_ensayo.resultList.size() == 0 and listadoHojasCRDCustomList_ensayo.nombre == ''}">
+					<f:facet name="header">#{messages.lbl_listadoHojasCrd_ens}</f:facet>
+
+					<div class="results" id="roleList">
+						<h:outputText value="#{messages.msg_listaVacia_ens}" />
+					</div>
+
+				</rich:panel>
+				<rich:panel
+					rendered="#{listadoHojasCRDCustomList_ensayo.resultList.size() == 0 and listadoHojasCRDCustomList_ensayo.nombre != ''}">
+					<f:facet name="header">#{messages.lbl_listadoHojasCrd_ens}</f:facet>
+
+					<div class="results" id="roleList">
+						<h:outputText value="#{messages.msg_noResultados_ens}" />
+					</div>
+
+				</rich:panel>
+				<s:div style="margin-left:1px;margin-top:1px"
+					rendered="#{not empty listadoHojasCRDCustomList_ensayo.resultList}">
+					<rich:dataTable id="tabla_listado_hojaCrd" style="width: 100%;"
+						var="hojaCrd"
+						value="#{listadoHojasCRDCustomList_ensayo.resultList}"
+						columnsWidth="20%, 60%, 10%, 10%">
+						<f:facet name="header">
+							<div>#{messages.lbl_listadoHojasCrd_ens}</div>
+						</f:facet>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_nombre_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{hojaCrd.nombreHoja}
+	        			</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_descripcion_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+
+							<h:outputText value="#{hojaCrd.descripcion}"
+								rendered="#{hojaCrd.descripcion !=null}" />
+							<h:outputText value="-" rendered="#{hojaCrd.descripcion ==null}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_dateCreac_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+							<h:outputText value='#{hojaCrd.fechaCreacion}'>
+								<s:convertDateTime pattern='dd/MM/yyyy' />
+							</h:outputText>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_dateAc_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+							<h:outputText value="#{hojaCrd.fechaActualizacion}"
+								rendered="#{hojaCrd.fechaActualizacion !=null}">
+								<s:convertDateTime pattern='dd/MM/yyyy' />
+							</h:outputText>
+							<h:outputText value="-"
+								rendered="#{hojaCrd.fechaActualizacion ==null}" />
+						</h:column>
+
+
+
+					</rich:dataTable>
+				</s:div>
+				<rich:spacer height="11px" />
+
+				<!-- Paginado -->
+				<ui:include
+					src="/layouts/alas-layout/themes/template_auxiliares/paginado_tabla_inferior_generico.xhtml/">
+					<ui:param name="vzPaginado"
+						value="#{listadoHojasCRDCustomList_ensayo.resultCount>10}" />
+					<ui:param name="nomControladorList"
+						value="#{listadoHojasCRDCustomList_ensayo}" />
+					<ui:param name="idListado" value="tablas_hojaCrd" />
+
+				</ui:include>
+
+				<!-- END Paginado -->
+				<div align="right">
+					<a4j:commandButton action="cancelar"
+						value="#{messages.btn_salir_ens}"
+						style="margin-right:0px;margin-bottom:  0px; margin-top: 0px;"
+						tabindex="4">
+					</a4j:commandButton>
+				</div>
+			</a4j:outputPanel>
+
+
+
+
+		</h:form>
+		<!-- Modal Panel Eliminar HojaCrd-->
+		<rich:modalPanel id="eliminar_hojaCrd" width="350" height="85"
+			resizeable="false">
+			<f:facet name="header">
+				<h:outputLabel value="#{messages.msg_modalEliminarInfo_ens}" />
+			</f:facet>
+
+			<f:facet name="controls">
+				<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+					style="cursor:pointer;"
+					onclick="#{rich:component('eliminar_hojaCrd')}.hide()" />
+
+			</f:facet>
+			<h:form>
+				<table cellpadding="0" cellspacing="0" border="0" align="center">
+					<tr>
+						<td rowspan="2"><h:graphicImage
+								value="/resources/icons/default/acciones/advertencia.png" /> <rich:spacer
+								width="8px" /></td>
+					</tr>
+					<tr align="center">
+						<td><h:outputLabel value="#{messages.msg_eliminarInfo_ens}" />
+							<br /> <h:outputLabel value="#{messages.msg_eliminarInfo2_ens}" /></td>
+					</tr>
+
+					<tr>
+						<td colspan="2"><rich:spacer height="8px" /></td>
+					</tr>
+
+					<tr>
+						<td colspan="2" align="center"><h:commandButton
+								style="margin:0px" action="#{buscarHojaCrd.eliminar()}"
+								value="#{messages.msg_siEliminar_ens}" /> <rich:spacer
+								width="8px" /> <a4j:commandButton style="margin:0px"
+								value="#{messages.msg_noEliminar_ens}"
+								onclick="#{rich:component('eliminar_hojaCrd')}.hide()" /></td>
+					</tr>
+				</table>
+			</h:form>
+		</rich:modalPanel>
+
+		<!-- Fin Modal Panel Eliminar HojaCrd-->
+
+
+	</s:div>
+</s:div>

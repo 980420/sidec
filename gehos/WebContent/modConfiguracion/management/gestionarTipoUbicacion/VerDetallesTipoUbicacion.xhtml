@@ -1,0 +1,111 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+		<h:form id="userSearch" styleClass="edit">
+
+
+			<a4j:outputPanel ajaxRendered="true">
+				<rich:messages id="error" styleClass="message" ajaxRendered="true"
+					for="error" />
+			</a4j:outputPanel>
+
+			<s:div
+				rendered="#{not tipoUbicacionVerDetallesControlador.from.equals('listar')}">
+				<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+			</s:div>
+			<s:div
+				rendered="#{tipoUbicacionVerDetallesControlador.from.equals('listar')}">
+				<script type="text/javascript">setContentTitle('#{messages.titulo1}')</script>
+			</s:div>
+
+			<rich:panel id="detalles">
+				<f:facet name="header">#{messages.titulo}</f:facet>
+
+				<table cellpadding="0px" cellspacing="0px" border="0px">
+					<tr>
+						<td style="height: 13px;" colspan="6"></td>
+					</tr>
+					<tr style="vertical-align: top;">
+						<td style="width: 7px;"></td>
+						<td><h:outputLabel value="#{messages.icono}"></h:outputLabel>
+						<rich:spacer width="9px"></rich:spacer></td>
+						<td><h:graphicImage
+							value="/resources/modCommon/ubicacionesimages/#{tipoUbicacionVerDetallesControlador.tipo.icono}"
+							width="15" height="15" /></td>
+						<td style="width: 24px"></td>
+						<td><h:outputLabel value="#{messages.codigo}"></h:outputLabel>
+						<rich:spacer width="9px"></rich:spacer></td>
+						<td><h:outputLabel styleClass="dataText"
+							value="#{tipoUbicacionVerDetallesControlador.tipo.codigo}"></h:outputLabel>
+						<h:outputLabel styleClass="dataText" value="-"
+							rendered="#{medicoDetail_Controlador.medico.usuario.nombre== ''}"></h:outputLabel>
+
+
+
+						</td>
+
+						<td style="width: 24px"></td>
+
+						<td><h:outputLabel value="#{messages.descripcion}"></h:outputLabel>
+						<rich:spacer width="9px"></rich:spacer></td>
+
+						<td><h:outputLabel styleClass="dataText"
+							value="#{tipoUbicacionVerDetallesControlador.tipo.descripcion}"></h:outputLabel>
+
+						</td>
+					</tr>
+				</table>
+				<rich:spacer height="7px"></rich:spacer>
+			</rich:panel>
+		</h:form>
+		<h:form>
+
+			<div align="right">
+			<table cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td><h:commandButton tabindex="1"
+						rendered="#{tipoUbicacionVerDetallesControlador.from != 'listar'}"
+						style="margin-bottom: 0px; margin-right: 10px; margin-top: 8px"
+						value="#{messages.modificar}"
+						action="#{tipoUbicacionModificarControlador.setId(tipoUbicacionVerDetallesControlador.tipo.id)}"
+						propagation="end" /></td>
+					<td><a4j:commandButton tabindex="2"
+						rendered="#{tipoUbicacionVerDetallesControlador.from != 'listar'}"
+						id="btnEliminar"
+						onclick="Richfaces.showModalPanel('eliminar_tipo_ubicacion_panel')"
+						style="margin-bottom: 0px; margin-right: 10px; margin-left: 0px; margin-top: 8px"
+						value="#{messages.eliminar}">
+
+					</a4j:commandButton></td>
+					<td><s:button tabindex="3"
+						style="margin-right: 0px; margin-left: 0px; margin-top: 8px;margin-bottom: 0px;"
+						value="#{messages.salir}" action="salir" propagation="end" /></td>
+				</tr>
+			</table>
+			</div>
+
+		</h:form>
+
+		<ui:include
+			src="/modConfiguracion/management/gestionarTipoUbicacion/modalspanel/ConfirmarEliminarTipoUbicacionVerDetalles.xhtml" />
+	</ui:define>
+
+</ui:composition>
+

@@ -1,0 +1,351 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+<ui:composition>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+	<link rel='stylesheet' href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css' type='text/css' />
+
+
+<script type="text/javascript">					
+
+		//funcion para cambiar el tamano de la lista del combobox
+		function cambiarStyle(id,size)
+		{
+		var size2=''+size+'px';
+		var n=new String(id);
+		var idN=n.replace('combobox','list');
+		
+		var com=document.getElementById(idN);
+		var parent=com.parentNode;
+		var gran=parent.parentNode;
+		parent.style.width=size2;
+		gran.style.width=size2;
+		com.style.width=size2;
+		
+		} 
+
+		var curDtN = new Date();
+		 var calDtN=null;
+
+		 function previousDate(date){
+			calDtN = date;
+		 }
+
+		 function disablementFunction(day){
+			 if(calDtN == null){
+				 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+						return true; 
+					else 
+						return false; 
+			 }
+			 else {
+				 if (calDtN.getTime() - day.date.getTime() &#62;= 0 ) 
+						return true; 
+					else 
+						return false;
+			 }					 
+		 }
+
+		 function disabledClassesProv(day){
+			 if(calDtN == null){
+				 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+						return ''; 
+					else 
+						return 'noavailable'; 
+			 }
+			 else {
+				 if (calDtN.getTime() - day.date.getTime() &#62;= 0) 
+						return ''; 
+					else 
+						return 'noavailable';
+			 }				
+		 }
+
+		 function resetSecondDate(first,second) {
+			 var firstDate = first.getSelectedDate().getTime();
+			 var secondDate = second.getSelectedDate().getTime();
+
+			 if(firstDate - secondDate &#62; 0)
+				 second.resetSelectedDate();
+		 }
+ 		 
+		 function disablementFunctionPreviousEx(day){
+			if(calDtN == null){
+				if (curDtN.getTime() - day.date.getTime() &#62; 0) return true; else return false;
+			}
+			if ((curDtN.getTime() - day.date.getTime() &#62; 0) &#38;&#38; (calDtN.getTime() - day.date.getTime() &#60;= 0)){
+				return true;
+			}
+			else 
+				return false;
+		  }
+
+		function disabledClassesProvPreviousEx(day){
+			if(calDtN == null){
+				if (curDtN.getTime() - day.date.getTime() &#60; 0)
+					return 'noavailable';
+				else 
+					return '';
+			}
+			if ((curDtN.getTime() - day.date.getTime() &#60; 0) || (calDtN.getTime() - day.date.getTime() &#62; 0))
+				return 'noavailable';
+			else 
+				return '';
+		}
+	</script>
+	
+	<h:form id="busquedasForm">
+		<a4j:outputPanel ajaxRendered="true">
+			<s:div
+				rendered="#{facesMessages.getCurrentMessagesForControl('listOfGruposujetos').size() > 0 }"
+				styleClass="custom-error">
+				<div><rich:message for="listOfGruposujetos" /></div>
+			</s:div>
+		</a4j:outputPanel>
+
+		<rich:simpleTogglePanel switchType="client" style="margin-top:10px;" bodyClass="simpleTogPanel">
+			<f:facet name="header">
+				<h:outputLabel value="#{messages.criterios}" style="cursor:pointer;"/>
+			</f:facet>
+			<a4j:outputPanel id="busquedas">
+				<a4j:outputPanel rendered="#{not listadosujetosList.busquedaAvanzada}">
+					<table cellpadding="0" cellspacing="0" border="0">
+						<tr>
+							<td>
+								<h:outputLabel styleClass='normalText' value='#{messages.nombre}:' />
+								<br/>
+								<h:inputText styleClass="inputText" value='#{listadosujetosList.nombreUsuario}' />
+							</td>
+							<td>
+								<rich:spacer width="25px" />
+							</td>
+							<td>
+								<h:outputLabel styleClass='normalText' value='#{messages.desde}:' />
+								<br/>
+								
+							</td>
+							<td>
+								<rich:spacer width="25px" />
+							</td>
+							<td>
+								<h:outputLabel styleClass='normalText' value='#{messages.hasta}:' />
+								<br/>
+								
+							</td>
+						</tr>							
+						<tr>
+							<td colspan="5"> 
+								<rich:spacer height="11px"  width="100%"/>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="5" align="right">
+								<a4j:commandButton reRender="listadoGruposujetos" 
+									style="margin:0px" 
+									value="#{messages.buscar}" >
+									<s:defaultAction />
+									</a4j:commandButton>
+								<rich:spacer width="8px"/>
+								<h:commandButton action="#{listadosujetosList.cancelarBusqueda()}" 
+									style="margin:0px" 
+									value="#{messages.cancelar}" />
+							</td>
+						</tr>				
+					</table>
+				</a4j:outputPanel>
+			</a4j:outputPanel>
+		</rich:simpleTogglePanel>
+	</h:form>
+	<rich:spacer height="11px" width="100%"/>	
+	<a4j:form id="listOfGruposujetos">
+	<a4j:outputPanel id="listadoGruposujetos">
+	
+	<rich:panel
+		rendered="#{listadosujetosList.resultList.size() == 0 and listadosujetosList.nombreUsuario == null}">
+		<f:facet name="header">
+			<h:outputText value="#{messages.listado}" />
+		</f:facet>
+		<h:outputText value="#{messages.listaVacia}" />
+	</rich:panel>
+	
+	<rich:panel
+		rendered="#{listadosujetosList.resultList.size() == 0 and (listadosujetosList.nombreUsuario != null)}">
+		<f:facet name="header">
+			<h:outputText value="#{messages.listado}" />
+		</f:facet>
+		<h:outputText value="#{messages.noResultados}" />
+	</rich:panel>
+		<rich:dataTable rendered="#{not empty listadosujetosList.resultList}"
+			width="100%" value="#{listadosujetosList.resultList}" var="u">
+			<f:facet name="header">
+				<h:outputLabel value="#{messages.listado}" />
+			</f:facet>	
+			<rich:column>
+				<f:facet name="header">
+					<h:panelGrid columns="2" width="100%" cellpadding="0"
+						cellspacing="0" border="0">
+						<s:div style="float: left;">
+							<h:outputLabel value="#{messages.nombre}" />
+						</s:div>
+						<s:div style="text-align: right;">							
+							<ui:include src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/" >
+								<ui:param name="controladorList" value="#{listadosujetosList}" />
+								<ui:param name="atributo" value="username" />
+								<ui:param name="listado" value="listadoGruposujetos" />
+							</ui:include>
+						</s:div>
+					</h:panelGrid>
+				</f:facet>
+				<h:outputLabel value='#{u.username}' />
+			</rich:column>
+			
+			<rich:column width="40%">
+				<f:facet name="header">
+					<h:panelGrid columns="2" width="100%" cellpadding="0"
+						cellspacing="0" border="0">
+						<s:div style="float: left;">
+							<h:outputLabel value="#{messages.lbl_descripcionGS_ensDis}" />
+						</s:div>
+						<s:div style="text-align: right;">							
+							<ui:include src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/" >
+								<ui:param name="controladorList" value="#{listadosujetosList}" />
+								<ui:param name="atributo" value="nombre" />
+								<ui:param name="listado" value="listadoGruposujetos" />
+							</ui:include>
+						</s:div>
+					</h:panelGrid>
+				</f:facet>
+				<h:outputLabel value='#{u.nombre}' />
+			</rich:column>
+			
+			
+			
+			<rich:column>
+				<f:facet name="header">
+					<h:panelGrid columns="2" width="100%" cellpadding="0"
+						cellspacing="0" border="0">
+						<s:div style="float: left;">
+							<h:outputLabel value="#{messages.fechacreacion}" />
+						</s:div>
+						<s:div style="text-align: right;">							
+							<ui:include src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/" >
+								<ui:param name="controladorList" value="#{listadosujetosList}" />
+								<ui:param name="atributo" value="primerApellido" />
+								<ui:param name="listado" value="listadoGruposujetos" />
+							</ui:include>
+						</s:div>
+					</h:panelGrid>
+				</f:facet>
+				
+				<h:outputLabel value='#{u.primerApellido}'>
+					<s:convertDateTime pattern='dd/MM/yyyy'/>
+				</h:outputLabel>
+
+			</rich:column>
+
+			<rich:column width="1px">
+				<div align="center">
+					<h:commandButton title="#{messages.ver}"
+						action="a"
+						image="/resources/icons/default/acciones/seleccionar_uno.png" />
+				</div>
+			</rich:column>
+		</rich:dataTable>
+
+		<rich:spacer height="11px" />
+
+		<ui:include src="/modEnsayo/codebase/plantillas/paginado_tabla_inferior_generico.xhtml/" >
+			<ui:param name="vzPaginado" value="#{listadosujetosList.resultCount>10}"/>
+			<ui:param name="nomControladorList" value="#{listadosujetosList}" />
+			<ui:param name="idListado" value="listadoGruposujetos" />
+			
+		</ui:include>
+		
+		<rich:dataTable rendered="#{not empty listadosujetosList.resultList}"
+			width="100%" value="#{listadosujetosList.resultList}" var="u">
+			<f:facet name="header">
+				<h:outputLabel value="Usuarios seleccionados" />
+			</f:facet>	
+			<rich:column>
+				<f:facet name="header">
+					<h:panelGrid columns="2" width="100%" cellpadding="0"
+						cellspacing="0" border="0">
+						<s:div style="float: left;">
+							<h:outputLabel value="#{messages.nombre}" />
+						</s:div>
+						<s:div style="text-align: right;">							
+							<ui:include src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/" >
+								<ui:param name="controladorList" value="#{listadosujetosList}" />
+								<ui:param name="atributo" value="username" />
+								<ui:param name="listado" value="listadoGruposujetos" />
+							</ui:include>
+						</s:div>
+					</h:panelGrid>
+				</f:facet>
+				<h:outputLabel value='#{u.username}' />
+			</rich:column>
+			
+			<rich:column width="40%">
+				<f:facet name="header">
+					<h:panelGrid columns="2" width="100%" cellpadding="0"
+						cellspacing="0" border="0">
+						<s:div style="float: left;">
+							<h:outputLabel value="#{messages.lbl_descripcionGS_ensDis}" />
+						</s:div>
+						<s:div style="text-align: right;">							
+							<ui:include src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/" >
+								<ui:param name="controladorList" value="#{listadosujetosList}" />
+								<ui:param name="atributo" value="nombre" />
+								<ui:param name="listado" value="listadoGruposujetos" />
+							</ui:include>
+						</s:div>
+					</h:panelGrid>
+				</f:facet>
+				<h:outputLabel value='#{u.nombre}' />
+			</rich:column>
+			
+			
+			
+			<rich:column>
+				<f:facet name="header">
+					<h:panelGrid columns="2" width="100%" cellpadding="0"
+						cellspacing="0" border="0">
+						<s:div style="float: left;">
+							<h:outputLabel value="#{messages.fechacreacion}" />
+						</s:div>
+						<s:div style="text-align: right;">							
+							<ui:include src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/" >
+								<ui:param name="controladorList" value="#{listadosujetosList}" />
+								<ui:param name="atributo" value="primerApellido" />
+								<ui:param name="listado" value="listadoGruposujetos" />
+							</ui:include>
+						</s:div>
+					</h:panelGrid>
+				</f:facet>
+				
+				<h:outputLabel value='#{u.primerApellido}'>
+					<s:convertDateTime pattern='dd/MM/yyyy'/>
+				</h:outputLabel>
+
+			</rich:column>
+
+			<rich:column width="1px">
+				<div align="center">
+					<h:commandButton title="#{messages.ver}"
+						action="a"
+						image="/resources/icons/default/acciones/eliminar.png" />
+				</div>
+			</rich:column>
+		</rich:dataTable>
+		</a4j:outputPanel>
+	</a4j:form>	
+</ui:composition>
+
+</html>

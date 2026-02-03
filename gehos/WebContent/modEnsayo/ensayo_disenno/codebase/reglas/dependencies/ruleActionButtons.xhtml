@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core">
+<ui:composition>
+	<style>
+.manage-action-button {
+	vertical-align: sub;
+	width: 14px;
+	padding-right: 1px;
+}
+</style>
+	<div align="right" style="border-#{position}: 1px solid;padding-#{position}: 4px;">
+		<table cellpadding="0" cellspacing="1" border="0">
+			<tr>
+				<td><a4j:commandLink title="Guardar" 
+						reRender="dtAvailActions"
+						action="#{ReglasControlador.SaveActionConf()}">
+						<h:graphicImage
+							value="/resources/modEnsayo/img/iconos/save-action.png"
+							styleClass="manage-action-button" />Guardar
+										</a4j:commandLink></td>
+				<td><a4j:commandLink title="#{messages.cancelar}"
+						action="#{ReglasControlador.CancelActionConf()}" ajaxSingle="true"
+						style="margin-left: 5px;">
+						<h:graphicImage
+							value="/resources/modEnsayo/img/iconos/cancel-action.png"
+							styleClass="manage-action-button" />Cancelar
+							</a4j:commandLink></td>
+			</tr>
+		</table>
+	</div>
+</ui:composition>
+</html>

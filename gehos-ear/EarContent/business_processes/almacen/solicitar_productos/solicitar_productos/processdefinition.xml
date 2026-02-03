@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition  xmlns=""  name="solicitar_productos">
+
+
+	<start-state name="inicio">
+		<transition to="tipo_de_solicitud"></transition>
+	</start-state>
+
+
+	<decision name="tipo_de_solicitud">
+		<handler class="org.jboss.seam.drools.DroolsDecisionHandler">
+			<workingMemoryName>solicitarProductosWorkingMemory</workingMemoryName>
+			<assertObjects>
+				<element>#{crearSolicitudControlador_almacen.tipo}</element>
+			</assertObjects>	
+		</handler>
+		<transition to="otro_almacen" name="to_otro_almacen"></transition>
+		<transition to="detalles_de_solicitud_de_compra" name="to_aceptar_solicitud_de_compra"></transition>
+		<transition to="detalles_de_solicitud_de_licitacion" name="to_procesar_solicitud_de_productos"></transition>
+	</decision>
+
+	<node name="otro_almacen">
+		<transition to="fin"></transition>
+	</node>
+
+	<task-node name="aceptar_solicitud_de_compra">
+		<task name="aceptar_solicitud_de_compra" description = "Aceptar solicitud de compra">
+			<assignment pooled-actors="admin"></assignment>
+		</task>
+		<transition to="fin"></transition>
+	</task-node>
+
+	<task-node name="procesar_solicitud_de_productos">
+		<task name="procesar_solicitud_de_productos" description = "Aprobar la solicitud de licitación">
+			<assignment pooled-actors="admin,comite_de_licitacion_1"></assignment>
+		</task>
+		<transition to="registrar_ofertas" name="to_registrar_ofertas"></transition>
+		<transition to="fin" name="to_fin"></transition>
+	</task-node>
+
+	<task-node name="registrar_ofertas">
+		<task name="registrar_ofertas" description = "Registrar ofertas para la solicitud">
+			<assignment pooled-actors="admin,comite_de_licitacion_1"></assignment>
+		</task>
+		<transition to="procesar_ofertas"></transition>
+	</task-node>
+
+	<task-node name="procesar_ofertas">
+		<task name="procesar_ofertas" description = "Procesar las ofertas existentes">
+			<assignment pooled-actors="admin"></assignment>
+		</task>
+		<transition to="fin"></transition>
+	</task-node>
+
+	<task-node name="detalles_de_solicitud_de_compra">
+		<task name="detalles_de_solicitud_de_compra" description = "Detalles de solicitud de compra">
+			<assignment pooled-actors="admin"></assignment>
+		</task>
+		<transition to="aceptar_solicitud_de_compra" name="to_procesar_solicitud_de_compra"></transition>
+		<transition to="fin" name="to_fin"></transition>
+	</task-node>
+
+	<task-node name="detalles_de_solicitud_de_licitacion">
+		<task name="detalles_de_solicitud_de_licitacion" description = "Detalles de solicitud para licitación">
+			<assignment pooled-actors="admin,#{assigmentRoleTask.nameLogicModule}"></assignment>
+		</task>
+		<transition to="procesar_solicitud_de_productos" name="to_procesar_solicitud_de_productos"></transition>
+		<transition to="fin" name="to_fin"></transition>
+	</task-node>
+
+
+	<end-state name="fin"></end-state>
+
+
+</process-definition>

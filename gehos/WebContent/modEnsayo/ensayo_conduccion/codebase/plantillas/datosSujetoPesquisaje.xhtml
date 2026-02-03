@@ -1,0 +1,213 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core">
+	<style>
+
+
+.Tabla {
+	border: 0px;
+	vertical-align: top;
+	text-align: left;
+	padding: 0px;
+	spacing: 0px;
+}
+
+.margenSupIzq {
+	padding-right: 8px;
+	padding-top: 13px;
+	padding-bottom: 8px;
+	padding-left: 8px;
+}
+
+.filSepPeq {
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+.filSepPeq td {
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+.colSepGran {
+	padding-right: 25px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+.colSepPeq {
+	padding-right: 9px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+.colSepImg {
+	padding-right: 6px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+filSepGran td {
+	padding-bottom: 8px;
+	vertical-align: top;
+}
+
+.filSepGranRA td {
+	/*padding-bottom:10px; inicialmente yo lo cambie por 8*/
+	padding-bottom: 8px;
+	vertical-align: top;
+}
+
+.moduleIMGContent {
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 62px;
+    position: relative;
+}
+
+.moduleIMG {
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 62px;
+}
+
+.moduleName {
+    color: #000000 !important;
+    font-size: 10px;
+    left: 1px;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+}
+.resetear
+</style>
+	<rich:panel>
+		<f:facet name="header">
+			<h:panelGroup>
+				<div>
+					<div align="left">
+						#{messages.datosSujeto}
+					</div>
+				</div>
+			</h:panelGroup>
+		</f:facet>
+		<table class="Tabla" cellspacing="0" cellpadding="0" width="100%">
+			<tr>
+				<td>
+					<table cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td>
+								<table cellpadding="0" cellspacing="0">
+									<tr>
+										<td class="">
+											<table cellpadding="0" cellspacing="0">
+												<tr class="filSepGranRA">
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.iniciales}" style="margin:0px; padding:0px;" />
+													</td>
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText"
+														value="#{(not empty sujeto.inicialesPaciente) ? sujeto.inicialesPaciente : messages.vacio}"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.numinclusion}:" style="margin:0px; padding:0px;" />
+													</td>
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText"
+														value="#{(not empty sujeto.numeroInclucion) ? sujeto.numeroInclucion : messages.vacio}"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.estadoInclusion}:" style="margin:0px; padding:0px;" />
+													</td>
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText" value="#{(not empty sujeto.estadoInclusion.nombre) ? sujeto.estadoInclusion.nombre : messages.vacio}"
+														style="margin:0px; padding:0px;" /></td>
+												</tr>
+												<tr class="filSepGranRA">
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.inicialesCentro}"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText"
+														value="#{(not empty sujeto.inicialesCentro) ? sujeto.inicialesCentro : messages.vacio}"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.codigoSuj}:" style="margin:0px; padding:0px;" /></td>
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText"
+														value="#{(not empty sujeto.codigoPaciente) ? sujeto.codigoPaciente : messages.vacio}"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.grupodelSujeto}:" style="margin:0px; padding:0px;" /></td>
+					
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText"
+														value="#{(not empty sujeto.grupoSujetos.nombreGrupo) ? sujeto.grupoSujetos.nombreGrupo : messages.vacio}"
+														style="margin:0px; padding:0px;" /></td>
+													
+												</tr>
+												<tr>
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.fechaInclusion}:"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText"
+														value="#{(not empty sujeto.fechaInclucion) ? sujeto.fechaInclucion : messages.vacio}"
+														style="margin:0px; padding:0px;">
+														<s:convertDateTime pattern="#{messages.patronFecha}">
+														</s:convertDateTime>
+													</h:outputText></td>
+													<td class="colSepPeq"><h:outputText
+														value="#{messages.horaInclusion}:" style="margin:0px; padding:0px;" /></td>
+													<td class="colSepGran"><h:outputText
+														styleClass="dataText"
+														value="#{(not empty sujeto.nombre) ? sujeto.nombre : messages.vacio}"
+														style="margin:0px; padding:0px;" /></td>
+													<td class="colSepPeq"><h:outputText
+																		value="#{messages.nombreEntidad}:"
+																		style="margin:0px; padding:0px;" /></td>
+
+																<td class="colSepGran"><h:outputText
+																		styleClass="dataText"
+																		value="#{(not empty sujeto.entidad) ? sujeto.entidad.nombre : messages.vacio}"
+																		style="margin:0px; padding:0px;" /></td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</rich:panel>
+</s:div>

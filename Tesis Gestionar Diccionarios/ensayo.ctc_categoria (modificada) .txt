@@ -1,0 +1,28 @@
+CREATE TABLE ensayo.ctc_categoria
+(
+    id bigint NOT NULL DEFAULT nextval('ensayo.ctc_categoria_id_seq'::regclass),
+    nombre_categoria character varying(255) COLLATE pg_catalog."default",
+    descripcion character varying(255) COLLATE pg_catalog."default",
+    id_diccionarios bigint,
+    CONSTRAINT categoria_pkey PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE ensayo.ctc_categoria
+    OWNER to postgres;
+
+-- Trigger: ensayo_ctc_categoria_tr
+
+-- DROP TRIGGER ensayo_ctc_categoria_tr ON ensayo.ctc_categoria;
+
+CREATE TRIGGER ensayo_ctc_categoria_tr
+    AFTER INSERT OR DELETE OR UPDATE 
+    ON ensayo.ctc_categoria
+    FOR EACH ROW
+    EXECUTE PROCEDURE bitacora.trigger_manager();
+
+ALTER TABLE ensayo.ctc_categoria
+    DISABLE TRIGGER ensayo_ctc_categoria_tr;

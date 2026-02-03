@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core">
+<head>
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/stylesheet/#{theme.color}.css"
+		rel="stylesheet"
+		type="text/css" />	
+
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/layouts/#{theme.name}/themes/#{theme.color}/stylesheet/styleTemplate.css"
+		rel="stylesheet"
+		type="text/css" />
+	
+	<style >
+		html{
+			background-image: none;
+			background: none;
+		}
+	</style>
+</head>
+
+<body>
+  <a:form>
+	<rich:tree changeExpandListener="#{funcionalidadesManager.codeBaseTreeBuilder.OnNodeCollapseExpand}"
+		    id="codebasetree" switchType="ajax" ajaxSingle="true"
+		    preserveModel="state" preserveDataInRequest="true" 
+			value="#{funcionalidadesManager.codeBaseTreeBuilder.treeData}"
+			var="item"  nodeFace="#{item.toString()}" >
+		<rich:treeNode type="directorio" 
+				icon="/img/folder#{theme.color}.png" >	
+				<h:outputLabel title="#{item.getVirtualPath()}" 
+							   value="#{item.value.name}" 
+							   style="cursor: pointer">
+				</h:outputLabel>
+		</rich:treeNode>
+		<rich:treeNode type="archivo" >
+				<a:commandLink value="#{item.value.name}" title="#{item.getVirtualPath()}"
+					limitToList="true" status="funcstatus2" 
+					ajaxSingle="true" immediate="true"
+					event="onclick" style="cursor: pointer"
+					action="#{funcionalidadesManager.setFuncionalityUrl(item.getVirtualPath())}"
+					onbeforedomupdate="javascript:window.parent.updateUrlInput()" >
+				</a:commandLink>		
+		</rich:treeNode>
+	</rich:tree>
+  </a:form>
+</body>
+
+</html>

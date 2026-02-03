@@ -1,0 +1,293 @@
+/*CLASE PARA EL CONTENIDO DE LOS TAB DEL TABPANEL*/
+.dr-tbpnl-cntnt {
+	padding-bottom: 8px !important;
+	padding-left: 8px !important;
+	padding-top: 12px !important;
+}
+
+.noavailable {
+	color: red !important;
+	text-decoration: line-through;
+}
+
+.message {
+	border: 1px solid #FFCC00;
+	padding: 5px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	background-color: #F0F8FF;
+	font-size: 10px;
+	font-family: "Verdana";
+}
+.inputError {
+    border: 1px solid red;
+}
+.dr-sdt-hc {
+	background-position: left top;
+	background-repeat: repeat-x;
+	background-image: url('../images/componentes/panel-h.png');
+	background-color: #3C6B44;
+	font-size: 10px;
+	font-family: Verdana, Arial, sans-serif;
+	font-weight: bold;
+	color: #FFF;
+	vertical-align: middle;
+	text-align: left;
+}
+
+.tbx {
+	width: 148px;
+}
+
+.cbx {
+	width: 154px;
+	font-size: 10px;
+	font-family: Verdana;
+}
+
+.separacionHor {
+	padding-left: 27px;
+}
+
+.separacionVert {
+	padding-bottom: 8px;
+	vertical-align: top;
+}
+
+.separacionDato {
+	padding-left: 9px;
+}
+
+.errorLabel {
+	color: red;
+	cursor: pointer !important;
+}
+
+.rich-calendar-button {
+	width: 16px;
+	height: 16px;
+}
+
+.rich-calendar-input {
+	padding-right: 0px;
+	border: 0px 0px 0px 0px;
+	spacing: 0px 0px 0px 0px;
+	width: 134px;
+}
+
+/*Este es para el encabezado de las celdas de los subtables*/
+.dr-subtable-headercell {
+	text-align: left;
+	font-family: Verdana;
+	font-size: 10px;
+}
+
+/*Este es para las celdas de las subtablas*/
+.dr-subtable-cell {
+	font-family: Verdana;
+	font-size: 10px;
+}
+
+/*Este es para el contenido de los simpletooglepanel*/
+.simpleTogPanel {
+	padding-left: 7px;
+	padding-top: 11px;
+	padding-bottom: 8px;
+	padding-right: 8px;
+}
+
+/*Este es para el contenido de los simpletooglepanel con un dataTable dentro*/
+.simpleTogPanelTable {
+	padding-left: 7px;
+	padding-top: 11px;
+	padding-bottom: 8px;
+	padding-right: 8px;
+}
+
+/*CUERPO DE LOS MODAL PANELS*/
+.dr-mpnl-pnl-b {
+	padding-left: 7px;
+	padding-top: 11px;
+	padding-bottom: 8px;
+	padding-right: 8px;
+}
+
+/*CONTENIDO DE LOS RICHPANEL*/
+.dr-pnl-b {
+	padding-left: 7px;
+	padding-top: 11px;
+	padding-bottom: 8px;
+	padding-right: 8px;
+}
+
+/*Este es para el contenido de los rich panel de los horarios en la planificacion*/
+.dr-pnl-b-horario {
+	padding-left: 7px;
+	padding-top: 11px;
+	padding-bottom: 0px;
+	padding-right: 8px;
+}
+
+/*CONTENIDO DE LOS RICHPANEL CON SELECT MANY CHECK BOX*/
+.dr-pnl-b-box {
+	padding-left: 0px;
+	padding-top: 6px;
+	padding-bottom: 3px;
+	padding-right: 8px;
+}
+
+/*CONTENIDO DE LOS RICHPANEL CON SELECT RADIO BUTTON*/
+.dr-pnl-b-radio {
+	padding-left: 0px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	padding-right: 8px;
+}
+
+/*Select radio button*/
+.radioButton td {
+	padding-right: 9px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	padding-top: 0px;
+	vertical-align: top;
+	text-align: top;
+}
+
+.radioButton input[type='radio'] {
+	margin: 0px;
+}
+
+.radioButton label {
+	vertical-align: top;
+}
+
+.cupoextra {
+	background-color: #FFE0A3;
+}
+
+.medFuera {
+	background-color: #D7A8A9;
+}
+
+.textareaRight {
+	width: 2px;
+}
+
+.widthUnidadMedida {
+	padding-left: 2px;
+}
+
+/*
+pauta del espacio vertical entre panel y el grupo de componentes
+*/
+.espacio_vertical {
+	padding-bottom: 11px;
+}
+
+/*
+pauta del espacio al final del panel
+*/
+.espacio_final {
+	padding-bottom: 8px;
+}
+
+/*
+pauta del espacio horizontal entre  panel y componente
+*/
+.espacio_corto_h {
+	padding-right: 6px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+}
+
+/*
+pauta del espacio vertical entre  grupo de componente y otro
+*/
+.espacio_corto_v {
+	padding-bottom: 8px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-left: 0px;
+}
+
+.numberInputText {
+	text-align: right;
+}
+
+.inputTextWidth {
+	width: 148px;
+}
+
+.colGran {
+	padding-left: 25px;
+	padding-bottom: 8px;
+}
+
+.colPeq {
+	padding-left: 8px;
+	padding-bottom: 8px;
+}
+/**Medicamentos inactivos**/
+.medInactivo {
+	background-color: #66FFFF;
+}
+/**Matching system-style fieldset**/
+fieldset {
+	border: 1px solid #9D9A9A;
+	padding: 10px;
+}
+
+fieldset>legend {
+	padding: 4px;
+	color: white;
+	background-color: rgb(66, 117, 75);
+	font-weight: bold;
+}
+
+.dr-mpnl-mask-div {
+	background-color: rgba(23, 32, 52, 0.4);
+}
+
+.dr-mpnl-panel {
+	z-index: 100;
+}
+
+/**Mas espacios de las pautas**/
+.espacio_botones {
+	padding-bottom: 0px;
+	padding-right: 10px;
+	padding-top: 0px;
+	padding-left: 0px;
+}
+
+.button-margin-left {
+	padding-bottom: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-left: 25px;
+}
+
+.field-hor-space {
+	padding-bottom: 0px;
+	padding-right: 0px;
+	padding-top: 8px;
+	padding-left: 0px;
+}
+
+.label-field-hor-space {
+	padding-bottom: 0px;
+	padding-right: 8px;
+	padding-top: 0px;
+	padding-left: 0px;
+}
+
+.standard-button {
+	width: 70px;
+	height: 15px;
+}
+
+.table-value {
+	color: #898989;
+}

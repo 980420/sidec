@@ -1,0 +1,607 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+		<a4j:outputPanel ajaxRendered="true">
+			<rich:messages styleClass="custom-error" ajaxRendered="true"
+				for="eliminar_usuario_panel_form:btnSi" />
+		</a4j:outputPanel>
+		<script>
+								 function redi1()
+				                   {
+				                      document.getElementById('spinner').style.display="none";
+					                 
+				                    }
+								 function redi2()
+			                    	{
+			                    			document.getElementById('spinner').style.display="";
+			                    			
+			                    	}
+						</script>
+		<h:form id="userSearch" styleClass="edit">
+			<rich:simpleTogglePanel switchType="client" styleClass="whitespace"
+				opened="#{identidadesDigitalesControlador.openSimpleTogglePanel}">
+				<a4j:support event="oncollapse" ajaxSingle="true"
+					action="#{identidadesDigitalesControlador.cambiarEstadoSimpleTogglePanel()}"
+					reRender="tablas_id" />
+				<a4j:support event="onexpand" ajaxSingle="true"
+					action="#{identidadesDigitalesControlador.cambiarEstadoSimpleTogglePanel()}"
+					reRender="tablas_id" />
+				<f:facet name="header">#{messages.criterios}</f:facet>
+				<a4j:outputPanel id="busquedas">
+					<a4j:outputPanel id="simplesearch"
+						rendered="#{!identidadesDigitalesControlador.busquedaTipo}">
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+							<tr>
+								<td style="height: 13px;" colspan="6"></td>
+							</tr>
+							<tr style="vertical-align: top;">
+								<td><rich:spacer width="8px" /></td>
+								<td>#{messages.crit1}<br />
+								<h:inputText id="username" tabindex="1"
+									value="#{identidadesDigitalesControlador.nombreUsuario}"
+									style="width:148px;" /></td>
+								<td><rich:spacer width="25px" /></td>
+								<td style="vertical-align: bottom;"><br />
+								<h:commandButton id="search" value="#{messages.buscar}"
+									tabindex="3"
+									action="#{identidadesDigitalesControlador.busqueda(false)}"
+									style="margin-left: 0px; margin-bottom:  0px; margin-top: 0px;">
+									<s:defaultAction />
+								</h:commandButton></td>
+								<td style="vertical-align: bottom;"><br />
+								<s:button view="/modCommons/modHome/home.gehos"
+									value="#{messages.cancelar}" tabindex="4"
+									style="margin-right:0px;margin-bottom:  0px; margin-top: 0px;"
+									rendered="#{not identificadorManager.editing}">
+									<f:param name="idFuncionalidad"
+										value="#{activeModule.activeModule.id}" />
+									<f:param name="idancestors"
+										value="#{activeModule.activeModule.id}a" />
+									<f:param name="moduleName"
+										value="#{activeModule.activeModuleName}" />
+								</s:button></td>
+								<td><rich:spacer width="7px" /></td>
+							</tr>
+							<tr>
+								<td style="width: 8px;"></td>
+								<td align="right" colspan="4"><h:panelGrid columns="2"
+									cellpadding="0" cellspacing="0" border="0">
+									<h:graphicImage height="12"
+										style="margin-top:2px;margin-right:2px;"
+										value="/resources/icons/default/acciones/buscar.png" />
+									<a4j:commandLink tabindex="5"
+										action="#{identidadesDigitalesControlador.cambiar(true)}"
+										value="#{messages.busquedaAvanzada}"
+										reRender="busquedas,tablas_id">
+									</a4j:commandLink>
+								</h:panelGrid> <rich:spacer height="8px" /></td>
+								<td></td>
+							</tr>
+						</table>
+					</a4j:outputPanel>
+					<a4j:outputPanel id="advancedsearch"
+						rendered="#{identidadesDigitalesControlador.busquedaTipo == true}">
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+							<tr>
+								<td style="height: 13px;" colspan="6"></td>
+							</tr>
+							<tr style="vertical-align: top;">
+								<td><rich:spacer width="8x" /></td>
+								<td>#{messages.crit1}<br />
+								<h:inputText id="advusername" tabindex="6"
+									value="#{identidadesDigitalesControlador.nombreUsuario}"
+									style="width:148px;" /> <rich:spacer height="8px"
+									style="display:block"></rich:spacer> #{messages.crit4}<br />
+								<h:inputText
+									value="#{identidadesDigitalesControlador.segundoApellido}"
+									tabindex="9" style="width:148px;" /></td>
+								<td><rich:spacer width="25px" /></td>
+								<td>#{messages.crit2}<br />
+								<h:inputText id="advname" tabindex="7"
+									value="#{identidadesDigitalesControlador.nombre}"
+									style="width:148px;" /> 
+									<rich:spacer height="8px"
+									style="display:block"></rich:spacer> #{messages.vencidas}<br />
+								<rich:comboBox id="activo"
+								suggestionValues="#{identidadesDigitalesControlador.vencidasList()}"
+								defaultLabel="#{messages.seleccione}" enableManualInput="false"
+								style=" width : 150px;"
+								value="#{identidadesDigitalesControlador.vencidas}">
+
+							</rich:comboBox>
+								</td>
+								<td><rich:spacer width="25px" /></td>
+								<td>#{messages.crit3}<br />
+								<h:inputText
+									value="#{identidadesDigitalesControlador.primerApellido}"
+									tabindex="8" style="width:148px;" /></td>
+								<td><rich:spacer width="8px" /></td>
+							</tr>
+							<tr>
+								<td height="3px" />
+							</tr>
+							<tr>
+								<td style="width: 8px;"></td>
+								<td colspan="5" align="right">
+								<table cellpadding="0" cellspacing="0" border="0">
+									<tr>
+										<td><a4j:commandButton value="#{messages.buscar}"
+											tabindex="10"
+											action="#{identidadesDigitalesControlador.busqueda(true)}"
+											style="margin-left: 0px; margin-bottom:  0px; margin-top: 0px;"
+											reRender="tablas_id,userList_security_datatable">
+											<s:defaultAction />
+										</a4j:commandButton></td>
+										<td><s:button view="/modCommons/modHome/home.gehos"
+											value="#{messages.cancelar}" tabindex="11"
+											style="margin-right:0px;margin-bottom:  0px; margin-top: 0px;"
+											rendered="#{not identificadorManager.editing}">
+											<f:param name="idFuncionalidad"
+												value="#{activeModule.activeModule.id}" />
+											<f:param name="idancestors"
+												value="#{activeModule.activeModule.id}a" />
+											<f:param name="moduleName"
+												value="#{activeModule.activeModuleName}" />
+										</s:button></td>
+									</tr>
+								</table>
+								</td>
+								<td><rich:spacer width="8px" /></td>
+							</tr>
+							<tr>
+								<td style="width: 8px;"></td>
+								<td align="right" colspan="5"><h:panelGrid columns="2">
+
+								</h:panelGrid>
+								<table cellpadding="0" cellspacing="0" border="0">
+									<tr>
+										<td><h:graphicImage height="12"
+											style="margin-top:2px;margin-right:2px;"
+											value="/resources/icons/default/acciones/buscar.png" /></td>
+										<td><a4j:commandLink tabindex="12"
+											action="#{identidadesDigitalesControlador.cambiar(false)}"
+											value="#{messages.busquedaSimple}"
+											
+											reRender="busquedas,tablas_id">
+										</a4j:commandLink></td>
+									</tr>
+								</table>
+								<rich:spacer height="7px" /></td>
+								<td style="width: 7px;"></td>
+							</tr>
+						</table>
+					</a4j:outputPanel>
+				</a4j:outputPanel>
+			</rich:simpleTogglePanel>
+		</h:form>
+		<rich:spacer height="8px" />
+
+		<div align="right">
+		<table cellpadding="0" cellspacing="1" border="0">
+			<tr>
+				<td>
+				<div id="spinner"
+					style="float: right; padding-right: 7px; display: none">
+
+
+				<table cellpadding="0px" cellspacing="0px" border="0px">
+					<tr>
+						<td><h:graphicImage
+							value="/resources/icons/default/acciones/loading_small.gif" /></td>
+						<td><h:outputText value="#{messages.generandocert}" /></td>
+					</tr>
+				</table>
+
+				</div>
+				</td>
+
+
+			</tr>
+		</table>
+		</div>
+
+
+		<h:form>
+			<a4j:outputPanel id="tablas_id">
+				<rich:panel styleClass="whitespace"
+					rendered="#{identidadesDigitalesControlador.resultList.size() == 0 and identidadesDigitalesControlador.nombreUsuario == '' and identidadesDigitalesControlador.nombre == '' and identidadesDigitalesControlador.primerApellido == '' and identidadesDigitalesControlador.segundoApellido == ''
+					 and identidadesDigitalesControlador.vencidas.equals('')}">
+
+					<f:facet name="header">#{messages.listado}</f:facet>
+					<rich:spacer height="11px" style="display: block" />
+					<div class="results" id="roleList"><rich:spacer width="6px" />
+					<h:outputText value="#{messages.noInf}" /></div>
+					<rich:spacer height="6px" style="display: block" />
+				</rich:panel>
+
+				<rich:panel
+					rendered="#{identidadesDigitalesControlador.resultList.size() == 0 and (identidadesDigitalesControlador.nombreUsuario != '' || identidadesDigitalesControlador.nombre != '' || identidadesDigitalesControlador.primerApellido != '' || identidadesDigitalesControlador.segundoApellido != ''
+					 || !identidadesDigitalesControlador.vencidas.equals(''))}">
+
+					<f:facet name="header">#{messages.listado}</f:facet>
+					<rich:spacer height="11px" style="display: block" />
+					<div class="results" id="roleList"><rich:spacer width="6px" />
+					<h:outputText value="#{messages.noInf2}" /></div>
+					<rich:spacer height="6px" style="display: block" />
+				</rich:panel>
+				
+				<div align="right">
+					<h:panelGrid columns="2"
+						cellpadding="0" cellspacing="0">
+						<a4j:status id="crearmodulosfisicosstatus" forceId="true">
+							<f:facet name="stop">
+								<h:graphicImage height="12" width="12"
+									value="/resources/icons/default/acciones/adicionar.png" 
+									style="margin: 2px 2px 2px 2px; cursor: pointer;" >
+									<a4j:support event="onclick" 
+										action="#{raFunctions.generateCertificatesAutomatically()}" 
+										status="crearmodulosfisicosstatus" />
+								</h:graphicImage>
+							</f:facet>
+							<f:facet name="start">
+								<h:graphicImage
+									url="/resources/icons/default/acciones/loading_small.gif" />
+							</f:facet>
+						</a4j:status>
+						<a4j:commandLink action="#{raFunctions.generateCertificatesAutomatically()}" 
+							value="#{messages.lbl_genCertAuto_modConfig}"  
+							status="crearmodulosfisicosstatus" />
+					</h:panelGrid>
+				</div>
+
+				
+				<s:div style="margin-left:1px;margin-top:1px"
+					rendered="#{not empty identidadesDigitalesControlador.resultList}">
+					<rich:dataTable id="userList_security_datatable"
+						style="width: 100%;" var="user"
+						value="#{identidadesDigitalesControlador.resultList}"
+						columnsWidth="1%, 30%, 50%, 10%, 10%, 0*">
+						<f:facet name="header">
+							<div>#{messages.listado}</div>
+						</f:facet>
+						<h:column>
+							<f:facet name="header">
+					#{messages.col1}
+	            </f:facet>
+
+							<h:graphicImage height="25" width="25"
+								rendered="#{userTools.userImageExist(user.usuario.username)}"
+								url="/resources/modCommon/userphotos/#{user.usuario.username}.png">
+							</h:graphicImage>
+							<h:graphicImage height="25" width="25"
+								rendered="#{not userTools.userImageExist(user.usuario.username)}"
+								value="/resources/modCommon/unknown/#{theme.name}/generico/desconocido.png">
+
+							</h:graphicImage>
+
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.col3}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not identidadesDigitalesControlador.order.equals('usuario_keystore.usuario.username asc') and not identidadesDigitalesControlador.order.equals('usuario_keystore.usuario.username desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="usercontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{identidadesDigitalesControlador.order.equals('usuario_keystore.usuario.username asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="usercontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{identidadesDigitalesControlador.order.equals('usuario_keystore.usuario.username desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="usercontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+	            #{user.usuario.username}
+	        </h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.col2}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not identidadesDigitalesControlador.order.equals('usuario_keystore.usuario.nombre asc') and not identidadesDigitalesControlador.order.equals('usuario_keystore.usuario.nombre desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="nombrecontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{identidadesDigitalesControlador.order.equals('usuario_keystore.usuario.nombre asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="nombrecontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{identidadesDigitalesControlador.order.equals('usuario_keystore.usuario.nombre desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="nombrecontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+
+							<h:outputLabel styleClass="dataText; font-weight: bold"
+								value="#{user.usuario.nombre}" />
+							<h:outputLabel styleClass="dataText; font-weight: bold"
+								value=" #{user.usuario.primerApellido}" />
+							<h:outputLabel styleClass="dataText; font-weight: bold"
+								value=" #{user.usuario.segundoApellido}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.inicio}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not identidadesDigitalesControlador.order.equals('usuario_keystore.fechacreado asc') and not identidadesDigitalesControlador.order.equals('usuario_keystore.fechacreado desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="fechacreadocontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{identidadesDigitalesControlador.order.equals('usuario_keystore.fechacreado asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="fechacreadocontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{identidadesDigitalesControlador.order.equals('usuario_keystore.fechacreado desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="fechacreadocontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+	            #{identidadesDigitalesControlador.DateFormat(user.fechacreado)}
+	        </h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.vencido}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not identidadesDigitalesControlador.order.equals('usuario_keystore.fechavencimiento asc') and not identidadesDigitalesControlador.order.equals('usuario_keystore.fechavencimiento desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="fechavencidocontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{identidadesDigitalesControlador.order.equals('usuario_keystore.fechavencimiento asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="fechavencidocontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{identidadesDigitalesControlador.order.equals('usuario_keystore.fechavencimiento desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="fechavencidocontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+	            #{identidadesDigitalesControlador.DateFormat(user.fechavencimiento)}
+	        </h:column>
+
+						<h:column>
+						
+							<div align="center">
+
+							<table cellpadding="0px" cellspacing="0px" border="0px">
+								<tr>
+									
+									<td><a4j:commandLink
+										action="#{raFunctions.modUserKeyStore(user.usuario.id)}"
+										onclick="redi2()" oncomplete="redi1()" style="cursor: pointer"
+										reRender="tablas_id">
+										<h:graphicImage
+										value="/resources/modConfiguracion/actualizar.png"
+										title="#{messages.actualizar}" />
+									</a4j:commandLink></td>
+								</tr>
+							</table>
+
+							</div>
+						</h:column>
+					</rich:dataTable>
+				</s:div>
+				<rich:spacer height="11px" />
+
+				<s:div
+					rendered="#{not empty identidadesDigitalesControlador.resultList}">
+					<s:div id="pagingcontrols" styleClass="tableControl"
+						style="width: 100%; text-align:center" align="center">
+
+						<h:graphicImage
+							value="/resources/icons/default/paginado/iniciod.png"
+							rendered="#{!identidadesDigitalesControlador.previousExists}" />
+
+						<h:commandLink
+							rendered="#{identidadesDigitalesControlador.previousExists}"
+							id="firstPage"
+							action="#{identidadesDigitalesControlador.setFirstResult(0)}">
+							<h:graphicImage title="#{messages.pag1}"
+								style="border: 0px;cursor:pointer;"
+								value="/resources/icons/default/paginado/#{theme.color}/inicio.png" />
+
+						</h:commandLink>
+
+						<h:graphicImage
+							value="/resources/icons/default/paginado/anteriord.png"
+							rendered="#{!identidadesDigitalesControlador.previousExists}" />
+
+
+						<h:commandLink
+							rendered="#{identidadesDigitalesControlador.previousExists}"
+							id="previousPage"
+							action="#{identidadesDigitalesControlador.setFirstResult(
+						identidadesDigitalesControlador.previousFirstResult)}">
+							<h:graphicImage title="#{messages.pag2}"
+								style="border: 0px;cursor:pointer;"
+								value="/resources/icons/default/paginado/#{theme.color}/anterior.png" />
+
+						</h:commandLink>
+
+
+						<h:graphicImage
+							value="/resources/icons/default/paginado/siguiented.png"
+							rendered="#{!identidadesDigitalesControlador.nextExists}" />
+
+
+						<h:commandLink
+							rendered="#{identidadesDigitalesControlador.nextExists}"
+							id="nextPage"
+							action="#{identidadesDigitalesControlador.setFirstResult(identidadesDigitalesControlador.nextFirstResult)}">
+							<h:graphicImage title="#{messages.pag3}"
+								style="border: 0px;cursor:pointer;"
+								value="/resources/icons/default/paginado/#{theme.color}/siguiente.png" />
+						</h:commandLink>
+
+						<h:graphicImage value="/resources/icons/default/paginado/find.png"
+							rendered="#{!identidadesDigitalesControlador.nextExists}" />
+
+
+						<h:commandLink
+							rendered="#{identidadesDigitalesControlador.nextExists}"
+							id="lastPage"
+							action="#{identidadesDigitalesControlador.setFirstResult(identidadesDigitalesControlador.lastFirstResult)}">
+							<h:graphicImage title="#{messages.pag4}"
+								style="border: 0px;cursor:pointer;"
+								value="/resources/icons/default/paginado/#{theme.color}/fin.png" />
+
+						</h:commandLink>
+					</s:div>
+				</s:div>
+			</a4j:outputPanel>
+		</h:form>
+
+
+		<h:form>
+			<rich:contextMenu attached="false" id="nombrecontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{identidadesDigitalesControlador.setOrder('usuario_keystore.usuario.nombre desc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{identidadesDigitalesControlador.setOrder('usuario_keystore.usuario.nombre asc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+			</rich:contextMenu>
+		</h:form>
+		<h:form>
+			<rich:contextMenu attached="false" id="usercontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{identidadesDigitalesControlador.setOrder('usuario_keystore.usuario.username desc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{identidadesDigitalesControlador.setOrder('usuario_keystore.usuario.username asc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+			</rich:contextMenu>
+		</h:form>
+
+		<h:form>
+			<rich:contextMenu attached="false" id="fechacreadocontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{identidadesDigitalesControlador.setOrder('usuario_keystore.fechacreado desc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{identidadesDigitalesControlador.setOrder('usuario_keystore.fechacreado asc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+			</rich:contextMenu>
+		</h:form>
+
+		<h:form>
+			<rich:contextMenu attached="false" id="fechavencidocontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{identidadesDigitalesControlador.setOrder('usuario_keystore.fechavencimiento desc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{identidadesDigitalesControlador.setOrder('usuario_keystore.fechavencimiento asc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+			</rich:contextMenu>
+		</h:form>
+
+
+
+	</ui:define>
+
+</ui:composition>
+

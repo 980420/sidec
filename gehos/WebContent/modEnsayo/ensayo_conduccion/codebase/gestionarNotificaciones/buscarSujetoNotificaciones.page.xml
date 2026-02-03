@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<navigation evaluate="#{seguridadEstudio.CanSeeThisFunctionalityNow()}">
+		<rule if-outcome="not-selected">
+			<redirect
+				view-id="/modEnsayo/codebase/seleccionar_estudio/seleccionarEstudio.xhtml">
+				<param name="direccion"
+					value="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotificaciones/buscarSujetoNotificaciones.xhtml" />
+			</redirect>
+		</rule>
+		<rule if-outcome="not-authorized">
+			<redirect view-id="/error.xhtml">
+				<message>Su usuario no puede acceder a este recurso en el estudio
+					activo actualmente</message>
+			</redirect>
+		</rule>
+	</navigation>
+
+	<begin-conversation flush-mode="manual" join="true" />
+
+	<action execute="#{sujetoCustomListNotificacion.refresh()}" />
+
+	<param name="idSujeto" />
+
+	<navigation from-action="gestionar">
+		<end-conversation before-redirect="true" />
+		<redirect
+			view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotificaciones/listarNotitificaciones.xhtml">
+			<param name="idSujeto" value="#{idSujeto}" />
+		</redirect>
+	</navigation>
+
+
+	<navigation from-action="cancelar">
+		<end-conversation before-redirect="true" />
+		<redirect view-id="/modCommons/modHome/home.xhtml">
+			<param name="idFuncionalidad" value="#{activeModule.activeModule.id}" />
+			<param name="idancestors" value="#{activeModule.activeModule.id}a" />
+		</redirect>
+	</navigation>
+
+
+</page>

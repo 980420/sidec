@@ -1,0 +1,95 @@
+<s:div   xmlns="http://www.w3.org/1999/xhtml" 
+	    xmlns:ui="http://java.sun.com/jsf/facelets" 
+	    xmlns:h="http://java.sun.com/jsf/html" 
+	    xmlns:f="http://java.sun.com/jsf/core" 
+	    xmlns:s="http://jboss.com/products/seam/taglib" 
+	    xmlns:rich="http://richfaces.org/rich" 
+	    xmlns:a4j ="http://richfaces.org/a4j"> 
+  <s:div > 
+		 <link href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css"  rel="stylesheet" type="text/css" />
+		 <script type="text/javascript" language="javascript" src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/dosCalendars.js"></script>
+		 <script type="text/javascript">setContentTitle("#{messages.TITULO}")</script>
+	   <style>
+         .rich-panel-body {
+                 padding: 0px;
+         }
+        </style>          
+   		<h:form id="idForm"> 
+     <s:validateAll>
+         <rich:messages  styleClass="message" globalOnly="true" id="globalMessage"  ajaxRendered="true"/>
+       		<rich:simpleTogglePanel switchType="client" label="#{messages.criteriosDeBusqueda}">
+       		     <table width="100%" cellpadding="0" cellspacing="0">
+       					<tr>
+       						<td class="margenSupIzq">	
+						       		<table class="Tabla" cellpadding="0" cellspacing="0">
+										       <tr class="filSepGran">     
+												  <td class="colSepGran">
+												  	<s:decorate  template="/modEnsayo/codebase/plantillas/decorateCalendar.xhtml">
+												  		<ui:define name="label">#{messages.desde}:</ui:define>
+													    <rich:calendar popup="true" styleClass="dataText" datePattern="dd/MM/yyyy" style="margin-top:0px; padding:0px;"
+								       			                   id="fechaDesdeCal"
+								       			                    value="#{notasMonitoreoEstadoSujeto.fechaIni}"
+								       			                     onexpand="previousDate(document.getElementById('idForm:fechaHastaCal').component.getSelectedDate());Richfaces.getComponent('calendar',this).nextMonth(); Richfaces.getComponent('calendar',this).prevMonth(); return true;"
+								       			                     isDayEnabled="disablementFunction"
+								       			                     dayStyleClass="disabledClassesProv"
+								       			                     required="true"
+								       			                     requiredMessage="#{messages.valorRequerido}">
+								       			          </rich:calendar>
+								       			          <ui:param name="forControl" value="fechaDesdeCal" />		
+								       			  	</s:decorate>
+											      </td>										            
+											      <td class="colSepGran">
+											      	<s:decorate  template="/modEnsayo/codebase/plantillas/decorateCalendar.xhtml">
+															<ui:define name="label">#{messages.hasta}:</ui:define>
+													    <rich:calendar popup="true" styleClass="dataText" datePattern="dd/MM/yyyy" style="margin-top:0px; padding:0px;" 
+												                  id="fechaHastaCal"
+										       			          value="#{notasMonitoreoEstadoSujeto.fechaFin}"
+										       			          isDayEnabled="disablementFunctionPreviousEx"
+								       			                    dayStyleClass="disabledClassesProvPreviousEx"
+								       			                    onexpand="previousDate(document.getElementById('idForm:fechaDesdeCal').component.getSelectedDate());Richfaces.getComponent('calendar',this).nextMonth(); Richfaces.getComponent('calendar',this).prevMonth(); return true;"
+								       			                    required="true"
+								       			                    requiredMessage="#{messages.valorRequerido}">
+								       			          </rich:calendar>
+								       			          <ui:param name="forControl" value="fechaHastaCal" />	
+							       			          </s:decorate>	
+											      </td>												  
+										      </tr>
+									</table>
+									<table class="Tabla" cellpadding="0" cellspacing="0" style="width:500px">
+									             
+									  <tr class="filSepPeq">
+						                 <td colspan="4" align="right" >
+							       		        <h:commandButton value="#{messages.generar}" 
+							       		                         action="#{notasMonitoreoEstadoSujeto.GenerarReporte()}"
+									       			             style="margin: 0 0 0 0;"/>										 	       								       				
+				       					      <rich:spacer width="4">
+				       					  </rich:spacer>											       				
+							       		 <h:commandButton value="#{messages.cancelar}" 
+													  style="margin-top: 0; margin-bottom: 0; margin-right: -5px"
+													  action="cancelar"	 immediate="true"  />	
+									     </td>  
+						               </tr>
+									</table>
+						    </td>		
+       					</tr>
+       			</table>		
+		    </rich:simpleTogglePanel>
+		    <br/>		      	
+				<ui:include src="/modEnsayo/ensayo_estadisticas/codebase/comun/noExisteInformacionReport.xhtml">
+			    	<ui:param name="rendered" value="#{empty notasMonitoreoEstadoSujeto.pathToReport}" />
+			    	<ui:param name="titulo" value="#{messages.nombreReport}" />
+			    </ui:include>
+		        <ui:include src="/modEnsayo/ensayo_estadisticas/codebase/comun/panelReporteGenerado.xhtml">
+			    	<ui:param name="rendered" value="#{not empty notasMonitoreoEstadoSujeto.pathToReport}" />
+			    	<ui:param name="titulo" value="#{messages.nombreReport}" />
+			    	<ui:param name="urlToReport" value="#{nota.pathToReport}" />	    	
+			    </ui:include>
+		  </s:validateAll>
+     </h:form>
+      <s:div id="modalpanelsdiv">
+			<ui:include	src="/modEnsayo/ensayo_estadisticas/codebase/comun/exportModalPanel.xhtml">
+				<ui:param name="controlador" value="#{notasMonitoreoEstadoSujeto}" />
+			</ui:include>
+	  </s:div>
+   </s:div>
+</s:div>

@@ -1,0 +1,137 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" xmlns:a4j="http://richfaces.org/a4j">
+
+
+	<script type="text/javascript">setContentTitle("#{messages.msg_titulo_ensClin}")</script>
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+		type='text/css' />
+
+	<rich:messages styleClass="message" globalOnly="true">
+
+	</rich:messages>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/modEnsayo/styles/stylesheet.css"
+		rel="stylesheet" type="text/css" />
+
+
+
+	<h:form id="mainForm">
+
+		
+
+
+
+		<rich:panel id="entidadesPanel">
+
+			<f:facet name="header">
+				#{messages.msg_seleccionar_ensClin} #{permisosEstudiosPorUsuarioController.NombreEstudio()}
+			</f:facet>
+
+			<table cellpadding="0px" cellspacing="0px" border="0px">
+				<tr>
+					<td>#{messages.msg_seleccionarRol_ensClin} <rich:message
+							for="roles" showDetail="false" tooltip="true"
+							style="color:red;cursor:pointer;">
+							<f:facet name="errorMarker">
+								<h:outputText value="*"
+									title="#{facesMessages.getCurrentMessagesForControl('roles').get(0).getDetail()}" />
+							</f:facet>
+						</rich:message><br /> <rich:comboBox
+							suggestionValues="#{permisosEstudiosPorUsuarioController.roles}"
+							defaultLabel="#{messages.lbl_selectRol_ensClin}"
+							enableManualInput="false"
+							selectFirstOnUpdate="true" style="width: 150px;" id="roles"
+							required="#{!empty param['mainForm:buttonAceptar']}" requiredMessage="#{messages.msg_valorRequerido_ensClin}"
+							value="#{permisosEstudiosPorUsuarioController.selectedRol}">
+							<a:support event="onselect" 
+								action="#{permisosEstudiosPorUsuarioController.updateRoles()}"
+								 reRender="tablaEntidades, comboUsers" />
+						</rich:comboBox></td>
+					<td><rich:spacer width="25px" /></td>
+					<td><a4j:outputPanel id="comboUsers">
+								#{messages.msg_seleccionarUser_ensClin}
+								<rich:message for="usuarios" showDetail="false" tooltip="true"
+								style="color:red;cursor:pointer;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('usuarios').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message>
+							<br />
+							<rich:comboBox
+								suggestionValues="#{permisosEstudiosPorUsuarioController.usuarios}"
+								defaultLabel="#{messages.lbl_selectRol_ensClin}"
+								required="#{!empty param['mainForm:buttonAceptar']}" requiredMessage="#{messages.msg_valorRequerido_ensClin}"
+								selectFirstOnUpdate="true" style="width: 150px;" id="usuarios"
+								directInputSuggestions="true"
+								value="#{permisosEstudiosPorUsuarioController.selectedUsuario}">
+								<a:support event="onselect" 
+									action="#{permisosEstudiosPorUsuarioController.update()}"
+									reRender="tablaEntidades" />
+							</rich:comboBox>
+						</a4j:outputPanel></td>
+				</tr>
+			</table>
+
+			<a:outputPanel id="tablaEntidades">
+				<s:div id="divEntidades">
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tr height="11px" />
+						<tr valign="top">
+							<td><rich:listShuttle id="ListShuttleEntidades"
+									listsHeight="125" sourceListWidth="300px"
+									targetListWidth="300px"
+									sourceValue="#{permisosEstudiosPorUsuarioController.listaEntidadSource}"
+									targetValue="#{permisosEstudiosPorUsuarioController.listaEntidadTarget}"
+									var="entidad"
+									sourceCaptionLabel="#{messages.msg_entidades_ensClin}"
+									targetCaptionLabel="#{messages.msg_entidadesSeleccionadas_ensClin}"									
+									showButtonLabels="false" fastOrderControlsVisible="false"
+									orderControlsVisible="false">
+
+									<s:convertEntity />
+									<rich:column>
+
+										<f:facet name="header">
+											<h:panelGrid columns="2"
+												style="width: 100%; padding:0px; margin:0px;" border="0"
+												cellpadding="0" cellspacing="0">
+												<s:div style="float: left;">#{messages.msg_nombreEntidad_ensClin}</s:div>
+											</h:panelGrid>
+										</f:facet>
+
+										<h:outputText style="vertical-align: 25%; margin-left: 2px; "
+											value="#{entidad.nombre}" />
+
+									</rich:column>
+								</rich:listShuttle></td>
+						</tr>
+					</table>
+				</s:div>
+			</a:outputPanel>
+		</rich:panel>
+		<table cellpadding="0" cellspacing="0" border="0" align="right"
+			style="margin: 5px;">
+			<tr>
+				<td><a:commandButton value="#{messages.btn_aceptar_ensClin}"
+						id="buttonAceptar"
+						style="margin-bottom: 0px; margin-right: 10px; margin-left: 0px; margin-top: 8px"
+						action="#{permisosEstudiosPorUsuarioController.salvar()}" /></td>
+
+				<td><a:commandButton value="#{messages.btn_salir_ens}"
+						immediate="true"
+						style="margin-bottom: 0px; margin-right: 0px; margin-left: 0px; margin-top: 8px"
+						action="salir" /></td>
+			</tr>
+		</table>
+	</h:form>
+</s:div>

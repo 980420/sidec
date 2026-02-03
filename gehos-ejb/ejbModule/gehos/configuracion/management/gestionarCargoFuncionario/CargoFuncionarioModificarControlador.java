@@ -1,0 +1,155 @@
+package gehos.configuracion.management.gestionarCargoFuncionario;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import gehos.bitacora.session.traces.IBitacora;
+import gehos.configuracion.management.entity.CargoFuncionario_configuracion;
+import gehos.configuracion.management.entity.TipoFuncionario_configuracion;
+
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+
+import org.jboss.seam.ScopeType;
+import org.jboss.seam.annotations.Begin;
+import org.jboss.seam.annotations.End;
+import org.jboss.seam.annotations.FlushModeType;
+import org.jboss.seam.annotations.In;
+import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.annotations.Transactional;
+import org.jboss.seam.core.SeamResourceBundle;
+import org.jboss.seam.faces.FacesMessages;
+import org.jboss.seam.international.LocaleSelector;
+import org.jboss.seam.international.StatusMessage.Severity;
+
+@Name("cargoFuncionarioModificarControlador")
+@Scope(ScopeType.CONVERSATION) 
+public class CargoFuncionarioModificarControlador {
+	
+	@In EntityManager entityManager;
+	@In LocaleSelector localeSelector;
+	@In FacesMessages facesMessages;
+	@In IBitacora bitacora;
+	
+	private String nombre;
+	private String tipoFuncionarioSeleccionado;
+	private CargoFuncionario_configuracion cargoFuncionario;
+	
+	@In(required = false, value = "cargoFuncionarioBuscarControlador", scope = ScopeType.CONVERSATION)	
+	CargoFuncionarioBuscarControlador cargoFuncionarioBuscarControlador;
+
+	// other functions 
+	private Integer cargoId;
+	private int error;
+	private Long cid = -1l;
+	
+	// Methods --------------------------------------------------------
+	@Begin(flushMode = FlushModeType.MANUAL, nested = true)
+	public void setCargoId(Integer cargoId) {
+		error = 0;
+		this.cargoId = cargoId;
+		cid = -1l;
+		
+		try {
+			cargoFuncionario = (CargoFuncionario_configuracion)
+					entityManager.createQuery("select cf from CargoFuncionario_configuracion cf " +
+											  "where cf.id = :id")
+								 .setParameter("id", this.cargoId)
+								 .getSingleResult();
+			
+			nombre = cargoFuncionario.getValor();
+			tipoFuncionarioSeleccionado = cargoFuncionario.getTipoFuncionario().getValor();
+			
+			cid = bitacora.registrarInicioDeAccion(SeamResourceBundle.getBundle().getString("bitModificar"));
+		} catch (NoResultException e) {
+			error = 1;
+			facesMessages.addToControlFromResourceBundle("message", Severity.ERROR, "eliminado");
+			e.printStackTrace();
+		} catch (Exception e) {
+			error = 1;
+			facesMessages.addToControlFromResourceBundle("message", Severity.ERROR, "errorInesperado");
+			e.printStackTrace();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<String> listadoTipoFuncionario()
+	{	
+		try {
+			return entityManager.createQuery("select f.valor from TipoFuncionario_configuracion f order by f.valor")
+								.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<String>();
+		}
+	}	
+
+	@End
+	public void end() {		
+	}
+	
+	@Transactional
+	public void modificar() {
+		error = 0;
+		try {			
+			TipoFuncionario_configuracion t = (TipoFuncionario_configuracion) 
+			  								  entityManager.createQuery("select t from TipoFuncionario_configuracion t " +
+			  								  							"where t.valor = :tf and t.eliminado = false")
+			  								  			   .setParameter("tf", this.tipoFuncionarioSeleccionado)
+			  								  			   .getSingleResult();
+
+			this.cargoFuncionario.setValor(nombre.trim());
+			this.cargoFuncionario.setTipoFuncionario(t);
+			this.cargoFuncionario.setCid(cid);
+			
+			entityManager.persist(cargoFuncionario);
+			entityManager.flush();
+			
+			cargoFuncionarioBuscarControlador.refresh();
+			
+			this.end();
+		} catch (Exception e) {
+			error = 1;
+			e.printStackTrace();
+			facesMessages.addToControlFromResourceBundle("message", Severity.ERROR, "errorInesperado");
+		}		
+	}
+
+	// Properties ---------------------------------------------------------
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}	
+
+	public int getError() {
+		return error;
+	}
+
+	public void setError(int error) {
+		this.error = error;
+	}	
+
+	public String getTipoFuncionarioSeleccionado() {
+		return tipoFuncionarioSeleccionado;
+	}
+
+	public void setTipoFuncionarioSeleccionado(String tipoFuncionarioSeleccionado) {
+		this.tipoFuncionarioSeleccionado = tipoFuncionarioSeleccionado;
+	}
+
+	public CargoFuncionario_configuracion getCargoFuncionario() {
+		return cargoFuncionario;
+	}
+
+	public void setCargoFuncionario(CargoFuncionario_configuracion cargoFuncionario) {
+		this.cargoFuncionario = cargoFuncionario;
+	}
+
+	public Integer getCargoId() {
+		return cargoId;
+	}	
+}

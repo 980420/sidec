@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich">
+	<rich:modalPanel id="advertencia_modal" width="300" height="89" resizeable="false">
+		<f:facet name="header">
+			<h:panelGroup>
+				<h:outputText value="#{titulo}"></h:outputText>
+			</h:panelGroup>
+		</f:facet>
+		<f:facet name="controls" id="cerrar">
+			<h:panelGroup>
+				<h:graphicImage
+					value="/resources/icons/default/acciones/cerrar.gif"
+					style="cursor:pointer" id="hidelink" />
+				<rich:componentControl for="advertencia_modal" attachTo="hidelink"
+					operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>		
+		<table cellpadding="0" cellspacing="0"  width="100%" >					   
+			   <tr>
+			   		<td class="margenSupIzq">			   		
+			   			<table cellpadding="0"  cellspacing="0" id="controles"  width="100%">
+			   				<tr class="filSepGran">
+			   					<td class="colSepPeq">
+			   						<h:graphicImage value="/resources/icons/default/acciones/advertencia.png"/>
+			   					</td>			   					
+			   					<td valign="top">
+		   							<h:outputText value="#{mensaje}">
+									</h:outputText>	
+									<br />
+			   					</td>
+			   				</tr>			   				
+			   				<tr>
+			   					<td colspan="2">			   								
+		   							<div align="center">
+		   								<h:commandLink id="aceptar" action="#{actionn.persistir()}" style="margin:0px" onclick="mostrarProcesando();">	
+		   									<input type="button" value="#{messages.si_admision}" style="margin:0px"/> 
+		   								</h:commandLink>	   								
+										<rich:spacer width="10">
+										</rich:spacer>
+										<input type="button" value="#{messages.no_admision}" onclick="#{rich:component('advertencia_modal')}.hide()"
+												 style="margin:0px"/>										
+									</div>																	
+			   					</td>
+			   				</tr>
+			   			</table>			   						   		
+  						<div  style="width: 100px; display: none; margin: 0 auto; padding-top: 10px;" id="procesando">  							
+							<h:panelGrid columns="2">
+								<h:graphicImage url="/resources/icons/default/acciones/loading_small.gif" />
+								<h:outputLabel value="#{messages.procesando}..." styleClass="normalText" />
+							</h:panelGrid>	
+					   </div>							   
+				   </td>
+			   </tr>
+			</table>
+	</rich:modalPanel>
+</ui:composition>

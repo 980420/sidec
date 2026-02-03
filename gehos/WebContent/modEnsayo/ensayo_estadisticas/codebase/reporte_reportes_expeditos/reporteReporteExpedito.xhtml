@@ -1,0 +1,653 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+		type='text/css' />
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css'
+		type='text/css' />
+	<script type="text/javascript">					
+	//funcion para cambiar el tamano de la lista del combobox
+		function cambiarStyle(id,size)
+		{
+		var size2=''+size+'px';
+		var n=new String(id);
+		var idN=n.replace('combobox','list');
+		
+		var com=document.getElementById(idN);
+		var parent=com.parentNode;
+		var gran=parent.parentNode;
+		parent.style.width=size2;
+		gran.style.width=size2;
+		com.style.width=size2;
+		
+		} 
+
+		var curDtN = new Date();
+		 var calDtN=null;
+
+		 function previousDate(date){
+			calDtN = date;
+		 }
+
+		 function disablementFunction(day){
+			 if(calDtN == null){
+				 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+						return true; 
+					else 
+						return false; 
+			 }
+			 else {
+				 if (calDtN.getTime() - day.date.getTime() &#62;= 0 ) 
+						return true; 
+					else 
+						return false;
+			 }					 
+		 }
+
+		 function disabledClassesProv(day){
+			 if(calDtN == null){
+				 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+						return ''; 
+					else 
+						return 'noavailable'; 
+			 }
+			 else {
+				 if (calDtN.getTime() - day.date.getTime() &#62;= 0) 
+						return ''; 
+					else 
+						return 'noavailable';
+			 }				
+		 }
+
+		 function resetSecondDate(first,second) {
+			 var firstDate = first.getSelectedDate().getTime();
+			 var secondDate = second.getSelectedDate().getTime();
+
+			 if(firstDate - secondDate &#62; 0)
+				 second.resetSelectedDate();
+		 }
+ 		 
+		 function disablementFunctionPreviousEx(day){
+			if(calDtN == null){
+				if (curDtN.getTime() - day.date.getTime() &#62; 0) return true; else return false;
+			}
+			if ((curDtN.getTime() - day.date.getTime() &#62; 0) &#38;&#38; (calDtN.getTime() - day.date.getTime() &#60;= 0)){
+				return true;
+			}
+			else 
+				return false;
+		  }
+
+		function disabledClassesProvPreviousEx(day){
+			if(calDtN == null){
+				if (curDtN.getTime() - day.date.getTime() &#60; 0)
+					return 'noavailable';
+				else 
+					return '';
+			}
+			if ((curDtN.getTime() - day.date.getTime() &#60; 0) || (calDtN.getTime() - day.date.getTime() &#62; 0))
+				return 'noavailable';
+			else 
+				return '';
+		}
+	</script>
+	<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+	<ui:include src="/modEnsayo/codebase/plantillas/exportModalPanel.xhtml">
+
+		<ui:param name="controlador" value="#{reporteReporteExpedito}" />
+	</ui:include>
+
+	<h:form id="busquedasForm">
+		
+		<a4j:outputPanel>
+		<rich:messages globalOnly="true" styleClass="message"
+			id="globalMessage" ajaxRendered="true" />
+			<rich:modalPanel id="bloqueo" width="0" height="0" top="0" left="0" style="opacity: -10000" shadowOpacity="-10000" />
+		</a4j:outputPanel>
+		
+		<rich:simpleTogglePanel switchType="client"
+				label="#{messages.generarReporteEstadoSujetos}" opened="true">
+				
+				<table cellpadding="0px" cellspacing="0px" border="0px"
+					id="simplesearch">
+					
+					<td style="height: 8px" rowspan="9"></td>
+					
+					
+					<tr valign="top">
+						<td width="8px" />
+						<td><h:outputText value="#{messages.fechaInicio}"
+								styleClass="normalText" /> <rich:message for="fechaDesde"
+								showDetail="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('fechaDesde').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message> <rich:spacer style="display:block" /> <rich:calendar
+								datePattern="dd/MM/yyyy"
+								value="#{reporteReporteExpedito.fechaInicio}"
+								enableManualInput="false" required="true"
+								requiredMessage="#{messages.valorRequerido}" id='fechaDesde'
+								isDayEnabled='disablementFunction'
+								dayStyleClass='disabledClassesProv'
+								onexpand="previousDate(document.getElementById('busquedasForm:fechaHasta').component.getSelectedDate());Richfaces.getComponent('calendar',this).nextMonth(); Richfaces.getComponent('calendar',this).prevMonth(); return true;">
+								<a4j:support event="onchanged" ajaxSingle="true"
+									action="#{reporteReporteExpedito.grupos_Sujetos()}"
+									reRender="ListShuttleGrupo" />
+							</rich:calendar></td>
+						<td width="25px" />
+
+						<td><h:outputText value="#{messages.fechaFin}"
+								styleClass="normalText" /> <rich:message for="fechaHasta"
+								showDetail="false" tooltip="true" style="color:red;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('fechaHasta').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message> <rich:spacer style="display:block" /> <rich:calendar
+								datePattern="dd/MM/yyyy"
+								value="#{reporteReporteExpedito.fechaFin}"
+								enableManualInput="false"
+								required="#{empty param['form2:generar']}"
+								requiredMessage="#{messages.valorRequerido}" id='fechaHasta'
+								isDayEnabled='disablementFunctionPreviousEx'
+								dayStyleClass='disabledClassesProvPreviousEx'
+								onexpand="previousDate(document.getElementById('busquedasForm:fechaDesde').component.getSelectedDate());Richfaces.getComponent('calendar',this).nextMonth(); Richfaces.getComponent('calendar',this).prevMonth(); return true;">
+								<a4j:support event="onchanged" ajaxSingle="true"
+									action="#{reporteReporteExpedito.grupos_Sujetos()}"
+									reRender="ListShuttleGrupo" />
+							</rich:calendar></td>
+
+					</tr>									
+				
+		        </table>
+		        
+		        <table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td><rich:spacer style="height: 8px;"></rich:spacer></td>
+					</tr>
+					
+					<tr valign="top">
+					
+										<td width="8px" />		
+										
+										
+										<td><rich:listShuttle id="ListShuttleNacion" style="pa"
+												targetRequired="#{!empty param['form:generar']}"
+												listsHeight="125" sourceListWidth="300px"
+												targetListWidth="300px"
+												sourceValue="#{reporteReporteExpedito.listadoNacion}"
+												targetValue="#{reporteReporteExpedito.listadoNacionSelecionadas}"
+												var="nacion" sourceCaptionLabel="#{messages.naciones}"
+																								
+												showButtonLabels="false" fastOrderControlsVisible="false"
+												orderControlsVisible="false">
+
+												<f:facet name="targetCaption">
+													<s:div>
+														<div style="float: left">
+															<h:outputText value="#{messages.nacionesSeleccionadas}" />
+														</div>
+														<div>
+															<rich:message for="ListShuttleNacion" showDetail="false"
+																tooltip="true" style="color:red;">
+																<f:facet name="errorMarker">
+																	<h:outputText value="*"
+																		title="#{facesMessages.getCurrentMessagesForControl('ListShuttleNacion').get(0).getDetail()}" />
+																</f:facet>
+															</rich:message>
+														</div>
+													</s:div>
+												</f:facet>
+
+
+
+												<a4j:support event="onlistchanged" ajaxSingle="true"
+													action="#{reporteReporteExpedito.estadosNacion()}"
+													reRender="ListShuttleEstados,ListShuttleEntidad,ListShuttleEstudio,ListShuttleGrupo" />
+												<s:convertEntity />
+												<rich:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.nombreNacion}</s:div>
+														</h:panelGrid>
+													</f:facet>
+													<h:outputText
+														style="vertical-align: 25%; margin-left: 2px; "
+														value="#{nacion.valor}">
+													</h:outputText>
+												</rich:column>
+
+
+											</rich:listShuttle></td>
+										<td width="8px" />
+									</tr>
+									
+									<tr>
+										<td height="8px" />
+									</tr>
+									<tr>
+										<td />
+										<td><rich:listShuttle id="ListShuttleEstados"
+												listsHeight="126" sourceListWidth="300px"
+												targetListWidth="300px"
+												sourceValue="#{reporteReporteExpedito.listadoEstados}"
+												targetValue="#{reporteReporteExpedito.listadoEstadosSelecionadas}"
+												var="estado" sourceCaptionLabel="#{messages.estados}"
+												targetCaptionLabel="#{messages.estadosSeleccionados}"
+												showButtonLabels="false" fastOrderControlsVisible="false"
+												orderControlsVisible="false">
+												<a4j:support event="onlistchanged" ajaxSingle="true"
+													action="#{reporteReporteExpedito.entidades()}"
+													reRender="ListShuttleEntidad,ListShuttleEstudio,ListShuttleGrupo" />
+												<s:convertEntity />
+
+												<rich:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.nombreEstado}</s:div>
+														</h:panelGrid>
+													</f:facet>
+													<h:outputText
+														style="vertical-align: 25%; margin-left: 2px; "
+														value="#{estado.valor}">
+													</h:outputText>
+												</rich:column>
+												<rich:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.nacion}</s:div>
+														</h:panelGrid>
+													</f:facet>
+													<h:outputText
+														style="vertical-align: 25%; margin-left: 2px; "
+														value="#{estado.nacion.valor}">
+													</h:outputText>
+												</rich:column>
+											</rich:listShuttle></td>
+
+									</tr>
+									
+									<tr>
+										<td height="8px" />
+									</tr>
+									<tr>
+										<td></td>
+										<td><rich:listShuttle id="ListShuttleEntidad"
+												listsHeight="125px" sourceListWidth="300px"
+												targetListWidth="300px"
+												sourceValue="#{reporteReporteExpedito.listadoEntidades}"
+												targetValue="#{reporteReporteExpedito.listadoEntidadesSeleccionadas}"
+												var="entidades" sourceCaptionLabel="#{messages.entidades}"
+												showButtonLabels="false" fastOrderControlsVisible="false"
+												orderControlsVisible="false"
+												style="padding: 0px 0px 0px 0px">
+
+												<f:facet name="targetCaption">
+													<s:div>
+														<div style="float: left">
+															<h:outputText value="#{messages.entidadesSeleccionadas}" />
+														</div>
+														<div>
+															<rich:message for="ListShuttleEntidad" showDetail="false"
+																tooltip="true" style="color:red;">
+																<f:facet name="errorMarker">
+																	<h:outputText value="*"
+																		title="#{facesMessages.getCurrentMessagesForControl('ListShuttleEntidad').get(0).getDetail()}" />
+																</f:facet>
+															</rich:message>
+														</div>
+													</s:div>
+												</f:facet>
+
+												<s:convertEntity />
+												<a4j:support event="onlistchanged" ajaxSingle="true"
+													action="#{reporteReporteExpedito.estudios()}"
+													reRender="ListShuttleEstudio,ListShuttleGrupo" />
+												<rich:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.nombreEntidad}</s:div>
+														</h:panelGrid>
+													</f:facet>
+													<h:outputText
+														style="vertical-align: 25%; margin-left: 2px; "
+														value="#{entidades.nombre}">
+													</h:outputText>
+												</rich:column>
+												<rich:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.provincia}</s:div>
+														</h:panelGrid>
+													</f:facet>
+													<h:outputText
+														style="vertical-align: 25%; margin-left: 2px; "
+														value="#{entidades.estado.valor}">
+													</h:outputText>
+												</rich:column>
+												<rich:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.nacion}</s:div>
+														</h:panelGrid>
+													</f:facet>
+													<h:outputText
+														style="vertical-align: 25%; margin-left: 2px; "
+														value="#{entidades.estado.nacion.valor}">
+													</h:outputText>
+												</rich:column>
+
+											</rich:listShuttle></td>
+										<td></td>
+									</tr>
+									
+									<tr>
+										<td height="8px" />
+									</tr>
+									<tr>
+										<td></td>
+										<td><rich:listShuttle id="ListShuttleEstudio"
+												listsHeight="125px" sourceListWidth="300px"
+												targetListWidth="300px"
+												sourceValue="#{reporteReporteExpedito.listadoEstudios}"
+												targetValue="#{reporteReporteExpedito.listadoEstudiosSeleccionados}"
+												var="estudio" sourceCaptionLabel="#{messages.estudios}"
+												showButtonLabels="false" fastOrderControlsVisible="false"
+												orderControlsVisible="false"
+												style="padding: 0px 0px 0px 0px">
+
+												<f:facet name="targetCaption">
+													<s:div>
+														<div style="float: left">
+															<h:outputText value="#{messages.estudiosSeleccionadas}" />
+														</div>
+														<div>
+															<rich:message for="ListShuttleEstudio" showDetail="false"
+																tooltip="true" style="color:red;">
+																<f:facet name="errorMarker">
+																	<h:outputText value="*"
+																		title="#{facesMessages.getCurrentMessagesForControl('ListShuttleEstudio').get(0).getDetail()}" />
+																</f:facet>
+															</rich:message>
+														</div>
+													</s:div>
+												</f:facet>
+
+												<s:convertEntity />
+												<a4j:support event="onlistchanged" ajaxSingle="true"
+													action="#{reporteReporteExpedito.grupos_Sujetos()}"
+													reRender="ListShuttleGrupo" />
+												<rich:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.nombreEstudio}</s:div>
+														</h:panelGrid>
+													</f:facet>
+													<h:outputText
+														style="vertical-align: 25%; margin-left: 2px; "
+														value="#{estudio.nombre}">
+													</h:outputText>
+												</rich:column>
+												<rich:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.entidad}</s:div>
+														</h:panelGrid>
+													</f:facet>
+													<h:outputText
+														style="vertical-align: 25%; margin-left: 2px; "
+														value="#{estudio.entidad.nombre}">
+													</h:outputText>
+												</rich:column>
+												<rich:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.provincia}</s:div>
+														</h:panelGrid>
+													</f:facet>
+													<h:outputText
+														style="vertical-align: 25%; margin-left: 2px; "
+														value="#{estudio.entidad.estado.valor}">
+													</h:outputText>
+												</rich:column>
+												<rich:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.nacion}</s:div>
+														</h:panelGrid>
+													</f:facet>
+													<h:outputText
+														style="vertical-align: 25%; margin-left: 2px; "
+														value="#{estudio.entidad.estado.nacion.valor}">
+													</h:outputText>
+												</rich:column>
+
+											</rich:listShuttle></td>
+										<td></td>
+									</tr>
+									
+									<tr>
+										<td height="8px" />
+									</tr>
+									<tr>
+										<td></td>
+										<td><rich:listShuttle id="ListShuttleGrupo"
+												listsHeight="125px" sourceListWidth="300px"
+												targetListWidth="300px"
+												sourceValue="#{reporteReporteExpedito.listadoGrupos}"
+												targetValue="#{reporteReporteExpedito.listadoGruposSeleccionados}"
+												var="grupo" sourceCaptionLabel="#{messages.grupos}"
+												showButtonLabels="false" fastOrderControlsVisible="false"
+												orderControlsVisible="false"
+												style="padding: 0px 0px 0px 0px">
+
+												<f:facet name="targetCaption">
+													<s:div>
+														<div style="float: left">
+															<h:outputText value="#{messages.gruposSeleccionadas}" />
+														</div>
+														<div>
+															<rich:message for="ListShuttleGrupo" showDetail="false"
+																tooltip="true" style="color:red;">
+																<f:facet name="errorMarker">
+																	<h:outputText value="*"
+																		title="#{facesMessages.getCurrentMessagesForControl('ListShuttleGrupo').get(0).getDetail()}" />
+																</f:facet>
+															</rich:message>
+														</div>
+													</s:div>
+												</f:facet>
+
+												<s:convertEntity />
+												<a4j:support event="onlistchanged" ajaxSingle="true"
+													action="#{usuarioEditarConrolador.subirServicios()}"
+													reRender="ListShuttleGrupo" />
+
+												<rich:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.nombreGrupo}</s:div>
+														</h:panelGrid>
+													</f:facet>
+													<h:outputText
+														style="vertical-align: 25%; margin-left: 2px; "
+														value="#{grupo.nombreGrupo}">
+													</h:outputText>
+												</rich:column>
+
+												<rich:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.estudio}</s:div>
+														</h:panelGrid>
+													</f:facet>
+													<h:outputText
+														style="vertical-align: 25%; margin-left: 2px; "
+														value="#{grupo.estudio.nombre}">
+													</h:outputText>
+												</rich:column>
+												<rich:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.entidad}</s:div>
+														</h:panelGrid>
+													</f:facet>
+													<h:outputText
+														style="vertical-align: 25%; margin-left: 2px; "
+														value="#{grupo.estudio.entidad.nombre}">
+													</h:outputText>
+												</rich:column>
+												<rich:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.provincia}</s:div>
+														</h:panelGrid>
+													</f:facet>
+													<h:outputText
+														style="vertical-align: 25%; margin-left: 2px; "
+														value="#{grupo.estudio.entidad.estado.valor}">
+													</h:outputText>
+												</rich:column>
+												<rich:column>
+													<f:facet name="header">
+														<h:panelGrid columns="2"
+															style="width: 100%; padding:0px; margin:0px;" border="0"
+															cellpadding="0" cellspacing="0">
+															<s:div style="float: left;">#{messages.nacion}</s:div>
+														</h:panelGrid>
+													</f:facet>
+													<h:outputText
+														style="vertical-align: 25%; margin-left: 2px; "
+														value="#{grupo.estudio.entidad.estado.nacion.valor}">
+													</h:outputText>
+												</rich:column>
+
+											</rich:listShuttle></td>
+										</tr>
+					</table>
+		</rich:simpleTogglePanel>
+		
+		<div align="right">  
+			<table  >
+			
+						<td colspan="9"><a4j:commandButton
+												value="#{messages.generar}" tabindex="3"
+												style="margin-right: 10px; margin-bottom: 0px;"
+												action="#{reporteReporteExpedito.reporteMonitoreo()}"
+												reRender="wrapperPanel, wrapperPanel1">
+											</a4j:commandButton> <s:button view="/modCommons/modHome/home.gehos"
+												value="#{messages.cancelar}" style="margin-right:0px"
+												rendered="#{not identificadorManager.editing}">
+												<f:param name="idFuncionalidad"
+													value="#{activeModule.activeModule.id}" />
+												<f:param name="idancestors"
+													value="#{activeModule.activeModule.id}a" />
+												<f:param name="moduleName"
+													value="#{activeModule.activeModuleName}" />
+											</s:button></td>
+			</table>
+			</div>
+		
+		<div align="right"><a4j:status id="status" onstart="#{rich:component('bloqueo')}.show()" onstop="#{rich:component('bloqueo')}.hide()">
+                        <f:facet name="start">
+                                <s:div>
+                                        <table>
+                                                <tr>
+                                                        <td><h:graphicImage width="12" height="12"
+                                                                value="/resources/icons/default/acciones/loading_big.gif" /></td>
+                                                        <td><h:outputText value="#{messages.lblProcesando_ap}" /></td>
+                                                </tr>
+                                        </table>
+                                </s:div>
+                        </f:facet>
+                </a4j:status></div>
+		
+		<s:div>
+			<h:panelGroup id="wrapperPanel1">
+				<h:panelGroup id="noResultRenderPanel" rendered="true">
+
+					<rich:panel rendered="#{reporteReporteExpedito.flag2}">
+						<f:facet name="header">#{messages.titulo}</f:facet>
+						<table class="Tabla" width="100%" cellpadding="0" cellspacing="0">
+							<tr>
+								<td><h:outputText
+										value="#{reporteReporteExpedito.noResult}" /></td>
+							</tr>
+						</table>
+					</rich:panel>
+
+				</h:panelGroup>
+			</h:panelGroup>
+		</s:div>
+		
+		<s:div>
+			<h:panelGroup id="wrapperPanel">
+				<h:panelGroup id="reportRenderPanel" rendered="true">
+					<rich:panel rendered="#{reporteReporteExpedito.flag}">
+						<f:facet name="header">#{messages.titulo}</f:facet>
+						<iframe width="100%" height="800px"
+							src="#{facesContext.externalContext.requestContextPath}#{reporteReporteExpedito.nombreReport}"></iframe>
+						<div align="right">
+							<rich:spacer height="8px" style="display: block" />
+							<input type="button" value="#{messages.exportar}"
+								onclick="javascript:Richfaces.showModalPanel('exportPanel');"
+								title="#{messages.exportar}"
+								style="text-align: center; margin-right: 10px;"
+								id="exportButton" action="export" />
+							<s:button view="/modCommons/funSelector/selector.gehos"
+								value="#{messages.salir}" style="margin-right:0px"
+								rendered="#{not identificadorManager.editing}">
+								<f:param name="idFuncionalidad"
+									value="#{activeModule.activeModule.id}" />
+								<f:param name="idancestors"
+									value="#{activeModule.activeModule.id}a" />
+								<f:param name="moduleName"
+									value="#{activeModule.activeModuleName}" />
+							</s:button>
+						</div>
+					</rich:panel>
+				</h:panelGroup>
+			</h:panelGroup>
+		</s:div>
+		
+	</h:form>
+</s:div>

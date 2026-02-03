@@ -1,0 +1,212 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"	
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle('#{messages.listNotifBySujeto}')</script>
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css"
+		rel="stylesheet" type="text/css" />
+
+	<rich:messages globalOnly="true" styleClass="message"
+		id="globalMessage" ajaxRendered="true" />
+		<a4j:status id="statusGeneral"
+								onstart="#{rich:component('mpBloqueo')}.show()"
+								onstop="#{rich:component('mpBloqueo')}.hide()">
+								<f:facet name="start">
+									<s:div>
+										<div align="center" style="width: 100%; height: 100%;">
+											<table border="0" cellpadding="0" cellspacing="0">
+												<tr>
+													<td style="padding-right: 4px;"><h:graphicImage
+															value="/resources/icons/default/acciones/loading_small.gif" />
+													</td>
+													<td><h:outputText value="#{messages.procesando}"
+															styleClass="normalText" /></td>
+												</tr>
+											</table>
+										</div>
+									</s:div>
+								</f:facet>
+							</a4j:status>
+	<table class="Tabla" width="100%" cellpadding="0" cellspacing="0">
+				<tr>
+			<td><h:form>
+					<a:outputPanel id="tbNotas1">
+						<rich:panel
+							rendered="#{empty notificacionCustomList.resultList and notificacionCustomList.existResultados}">
+							<f:facet name="header">#{messages.listadoNotificaciones}</f:facet>
+							<table class="Tabla">
+								<tr>
+									<td ><h:outputText
+											value="#{messages.noNotas}" /></td>
+								</tr>
+							</table>
+						</rich:panel>
+						<div rendered="#{not empty notificacionCustomList.resultList}"
+							style="margin-left: 1px">
+							<rich:dataTable id="tbNotas"
+								value="#{notificacionCustomList.resultList}" var="notif"
+								width="100%"
+								rendered="#{not empty notificacionCustomList.resultList}">
+								<f:facet name="header">
+									<h:outputText value="#{messages.listadoNotificaciones}" />
+								</f:facet>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.indentificadorSujeto}" styleClass="label" /></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText
+										value="#{notif.crdEspecifico.momentoSeguimientoEspecifico.sujeto.codigoPaciente}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.mometoAndEstado}" styleClass="label" /></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<table width="100%">
+										<tr>
+											<td align="left"><h:outputText
+													value="#{notificacionCustomList.MomentoSegEstado(notif.crdEspecifico.momentoSeguimientoEspecifico.momentoSeguimientoGeneral.nombre, notif.crdEspecifico.momentoSeguimientoEspecifico.estadoMomentoSeguimiento.nombre)}">
+													</h:outputText></td>
+										</tr>
+									</table>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.hojacrd}" styleClass="label" /></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<table width="100%">
+										<tr>
+											<td align="left"><h:outputText
+													value="#{notif.crdEspecifico.hojaCrd.nombreHoja}">	
+												</h:outputText></td>
+										</tr>
+									</table>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.eventoadverso}" styleClass="label" /></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<table width="100%">
+										<tr>
+											<td align="left"><h:outputText
+													value="#{notificacionCustomList.evenetoAnombre(notif.variableDato.cid)}">
+													
+												</h:outputText></td>
+										</tr>
+									</table>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.fechaOcurrido}" styleClass="label" />
+															
+													</td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText
+										value="#{notif.fechaOcu}" />
+								</rich:column>
+								<rich:column width="1px" styleClass="alineacionCentrada">
+									<!-- Exportar reporte de notificaciones -->
+									<a4j:commandLink id="exportarNotificacion"
+										title="Exportar Notificación"
+										action="#{notificacionCustomList.exportarDesdeAfuera(notif.id)}"
+										onclick="javascript:Richfaces.showModalPanel('exportPanel');"
+										style="border: 0px; cursor:pointer;"
+										status="statusGeneral" ignoreDupResponses="true">
+										<h:graphicImage height="18" width="15"
+										value="/resources/icons/default/acciones/exportarNotificacion.png"
+										style="border:0;" />
+									</a4j:commandLink>
+								</rich:column>
+								<rich:column width="1px" styleClass="alineacionCentrada">
+									<div align="middle">
+										<s:link title="#{messages.verDetalles}" action="verDetalles"
+											rendered="true" style="border: 0px; cursor:pointer;">
+											<h:graphicImage
+												value="/resources/icons/default/acciones/ver.png" 
+												style="border:0;" />
+											<f:param name="idcrd" value="#{notif.crdEspecifico.id}" />
+											<f:param name="idMS" value="#{notif.crdEspecifico.momentoSeguimientoEspecifico.id}" />
+										</s:link>
+									</div>
+								</rich:column>
+							</rich:dataTable>
+						</div>
+					</a:outputPanel>					
+				</h:form></td>
+		</tr>
+
+		<tr class="filSepGranRA">
+			<td align="center"><h:form>
+					<a:outputPanel id="paginado1" ajaxRendered="true">
+						<ui:include
+							src="/modEnsayo/codebase/plantillas/paginado_tabla_inferior_generico.xhtml/">
+							<ui:param name="vzPaginado"
+								value="#{notificacionCustomList.resultCount>10}" />
+							<ui:param name="nomControladorList"
+								value="#{notificacionCustomList}" />
+							<ui:param name="idListado" value="tbNotas" />
+						</ui:include>
+					</a:outputPanel>
+				</h:form> <br /></td>
+		</tr>
+		<tr>
+		  <td><h:form>
+					<div align="right">
+						<br />
+						<h:commandButton value="#{messages.salir}" style="margin:0px;"
+							action="salir" immediate="true" />
+					</div>
+				</h:form></td>
+		</tr>
+	</table>
+<ui:include
+				src="/modEnsayo/codebase/plantillas/exportModalPanel.xhtml">
+				<link rel='stylesheet'
+					href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+					type='text/css' />
+				<link rel='stylesheet'
+					href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css'
+					type='text/css' />
+				<ui:param name="controlador" value="#{notificacionCustomList}" />
+			</ui:include>
+</ui:composition>

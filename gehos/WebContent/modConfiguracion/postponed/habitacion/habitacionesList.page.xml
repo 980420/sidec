@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+      
+   <param name="firstResult" value="#{habitacionList_common.firstResult}" />
+   <param name="order" value="#{habitacionList_common.order}" />
+   
+   <param name="tipohab" value="#{habitacionList_common.habitacion.tipoHabitacion.valor}" />
+   <param name="servicio" value="#{habitacionList_common.habitacion.servicio.descripcion}" />
+   <param name="desc" value="#{habitacionList_common.habitacion.descripcion}" />
+
+</page>

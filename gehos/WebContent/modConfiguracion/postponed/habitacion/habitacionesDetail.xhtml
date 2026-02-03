@@ -1,0 +1,72 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                template="#{theme.template}">
+                       
+<ui:define name="body">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style type="text/css">.rich-stglpanel-body{padding:0px}</style>
+	<style type="text/css">.rich-panel-body{padding:0px}</style>
+    <script type="text/javascript">setContentTitle('#{messages.detalleshabitacion}')</script>
+    <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
+    
+    <h:form id="habitacionSearch" styleClass="edit">
+    
+    <rich:panel switchType="client" >
+		<f:facet name="header">#{messages.datoshabitacion}</f:facet>
+		<table cellpadding="0px" cellspacing="0px" border="0px" >
+			<tr>
+				<td style="height: 11px;" colspan="6">
+				</td>
+			</tr>
+			<tr style="vertical-align: top;">
+				<td style="width: 6px;"></td>
+				<td>
+					#{messages.tipohabitacion}:
+					<rich:spacer width="6px"></rich:spacer>
+					<rich:spacer height="6px" style="display: block"></rich:spacer>
+					<h:outputLabel value="#{messages.servicio}:" style="margin-right: 0px"></h:outputLabel>
+					<rich:spacer width="6px"></rich:spacer>
+					<rich:spacer height="6px" style="display: block"></rich:spacer>
+				</td>
+				<td>
+					<h:outputLabel styleClass="dataText" value="#{habitacionesDetails_common.habitacion.tipoHabitacion.valor}"></h:outputLabel>
+					<rich:spacer height="6px" style="display: block"></rich:spacer>
+					<h:outputLabel styleClass="dataText" value="#{habitacionesDetails_common.habitacion.servicio.descripcion}" style="margin-left: 0px"></h:outputLabel>
+				</td>
+				<td style="width: 23px"></td>
+				<td valign="top">
+					#{messages.descripcion}:
+					<rich:spacer width="6px"></rich:spacer>
+					<rich:spacer height="6px" style="display: block"></rich:spacer>
+				</td>
+				<td>
+					<h:outputLabel styleClass="dataText" value="#{habitacionesDetails_common.habitacion.descripcion}"></h:outputLabel>
+					<rich:spacer height="6px" style="display: block"></rich:spacer>
+					
+				</td>
+			</tr>
+		</table>
+	</rich:panel>
+	<div align="right">
+		<s:button value="#{messages.modificar}" view="/modConfiguracion/habitacion/habitacionesEdit.xhtml">
+			<f:param name="habitacionId" value="#{habitacionesDetails_common.habitacion.id}" />	
+		</s:button>
+		<s:button value="#{messages.salir}" view="/modConfiguracion/habitacion/habitacionesList.xhtml" 
+			style="margin-right: 0px"></s:button>
+	</div>
+    </h:form>
+        
+    <br/>
+  
+</ui:define>
+
+</ui:composition>
+

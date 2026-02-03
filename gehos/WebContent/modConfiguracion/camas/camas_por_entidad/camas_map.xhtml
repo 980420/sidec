@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core">
+<head>
+<style>
+	.dr-mpnl-mask-div {
+	      background-color: transparent;
+	}
+</style>
+<script
+	src="#{facesContext.externalContext.requestContextPath}/js/scriptaculous/prototype.js"
+	type="text/javascript" ></script>
+<script
+	src="#{facesContext.externalContext.requestContextPath}/js/scriptaculous/scriptaculous.js"
+	type="text/javascript" ></script>
+	
+<script type="text/javascript" language="javascript">
+// <![CDATA[
+    function update(){
+    	updateIframe();
+    }
+    function updateWithoutHiding(){
+    	updateIframeWithoutHiding();
+    }
+    function saveActionActive(active){
+        window.parent.saveActionActive(getChanges(false) != "");
+    }
+	var elem = new Array();
+	function init(id,t,l){
+		var dr = new Draggable(id, { scroll: window , snap:[snapsize, snapsize],
+			onEnd: function(object, event) {  
+					saveActionActive();
+					//camaX  = object.element.style.left.replace("px", ""); camaY  = object.element.style.top.replace("px", "");
+					//camaId = object.element.id.replace("cama", ""); changeCamaPosition(camaId, camaX, camaY);
+       			}
+			}
+		);  
+		var obj = new DraggableWrapper(dr,t,l);
+		elem.push(obj);
+	}
+	function getChanges(saving){
+		var result="";
+		for(var i=0; i < elem.length; i++)
+		{
+			if(elem[i].hasChanged()){
+			  result+=("-"+elem[i].toStringValue());
+			  if(saving)
+			  	elem[i].makeEquals();
+			}
+		}
+		return result;
+	}
+	var DraggableWrapper = Class.create({
+		initialize: function(d, t,l) {
+		    this.draggable   = d;
+		    this.top  = t * snapsize;
+		    this.left =l * snapsize;			
+	    },
+		hasChanged:function(){
+			return (this.draggable.element.style.top != this.top+"px" || this.draggable.element.style.left != this.left+"px");
+		},		
+		makeEquals:function(){
+		    this.top  = this.draggable.element.style.top.replace("px","");
+		    this.left = this.draggable.element.style.left.replace("px","");			
+		},		
+		toStringValue:function(){
+			return this.draggable.element.id + "," + this.draggable.element.style.top.replace("px","")/snapsize + "," + this.draggable.element.style.left.replace("px","")/snapsize;
+		}		
+	});
+// ]]>
+</script>
+
+</head>
+
+<body style="background-image: url('#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/floor3.png');
+			 margin: 0;">
+
+<rich:hotKey key="esc" handler="window.parent.changeIframeVisibility(false); window.parent.subir()"/>
+
+<div style="background-image: url('#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/compasses/compass.png');
+			background-position: right; height: 120px; background-repeat: no-repeat;
+			margin-top: -6px; margin-right: 2px;">
+
+</div>
+
+<a:form>
+	<a:jsFunction name="updateIframe" ajaxSingle="true" limitToList="true"
+		status="camasUpdatingStatus" reRender="camasOutputPanel" >
+	</a:jsFunction>
+	<a:jsFunction name="updateIframeWithoutHiding" ajaxSingle="true" limitToList="true"
+		reRender="camasOutputPanel" >
+	</a:jsFunction>
+</a:form>
+
+<a:status id="camasUpdatingStatus" forceId="true" 
+	  onstart="javascript:document.getElementById('camasdiv').style.visibility = 'hidden'"
+	  onstop="javascript:document.getElementById('camasdiv').style.visibility = 'visible'">
+  <f:facet name="start">
+  	  <s:div>
+  	  	  <div style="font-size: 10px; position: absolute; 
+  	  	  	top: 0px; left: 0px; background-color: ##{theme.headercolor};">
+  	  	  	#{messages.cargandocamas}
+  	  	  </div>
+	  	  <s:div style="text-align: center; width: 100%" rendered="false">
+		  <br/><br/>
+			 <h:graphicImage url="/resources/icons/default/acciones/loading_small.gif" />
+		  <br/><br/>	 
+		  </s:div>	 
+  	  </s:div>
+  </f:facet>
+</a:status>
+   
+<div id="camasdiv" style="display: inline;">
+
+<s:div id="camasOutputPanel"  >
+
+<c:set var="snapsize" value="48"></c:set>
+
+<script type="text/javascript" language="javascript">
+	elem = new Array();
+	var snapsize = #{snapsize};
+</script>
+
+<h:form>
+
+<rich:modalPanel id="loadingModalBox" minHeight="10" minWidth="10" 
+        height="10" width="10" zindex="2000" >
+</rich:modalPanel> 	
+<a:status id="timerStatus" rendered="true"
+  	onstart="document.body.style.cursor='wait'; 
+	  			Richfaces.showModalPanel('loadingModalBox',{left:1, top:-20});" 
+		  onstop="document.body.style.cursor='default'; 
+		  			Richfaces.hideModalPanel('loadingModalBox');">
+</a:status>
+
+<c:forEach items="#{camasManager.camasPorUbicacion()}" var="cma">
+
+	<div id="#{cma.id}" align="center"
+		style="cursor: move; width: 1%; position: absolute; left: #{cma.x * snapsize}px; top: #{cma.y * snapsize}px;">
+		<img height="30px" style="cursor: move; margin: 2px;"
+			src="#{facesContext.externalContext.requestContextPath}/resources/funcionalidadesIcons/configuracion/camas.png" />
+		<br />
+		<div style="font-size: 8px; position: relative; top: 0px; left: 6px;">
+			<c:set var="camamodificada" value="#{camasManager.esCamaModificada(cma.id)}" />
+			<h:outputLabel value="C#{cma.tipoCama.codigo}#{cma.descripcion}" 
+					rendered="#{not camamodificada}" />
+			<s:span rendered="#{camamodificada}">			
+				<strong>C#{cma.tipoCama.codigo}#{cma.descripcion}</strong>
+			</s:span>
+		</div>
+		<div align="center">
+		<a:commandLink rendered="true" status="timerStatus" timeout="2000"
+			action="#{camasManager.putCamaToModify(cma)}" ajaxSingle="true" 
+			oncomplete="window.parent.modifySeletedCama()"  
+			view="/modConfiguracion/departamentos/clinicos/home.xhtml">
+
+			<h:graphicImage title="#{messages.modf}" height="12"
+			style="border: 0px; opacity: 0.4; cursor:pointer; position:relative; top:-40px; left:32px;"
+				value="/resources/icons/default/acciones/modificar.png">
+				<rich:effect event="onmouseover" type="Opacity"
+					params="duration:0.3, from:0.4, to:1.0" />
+				<rich:effect event="onmouseout" type="Opacity"
+					params="duration:0.3, from:1.0, to:0.4" />
+			</h:graphicImage>
+		</a:commandLink>	
+		</div>
+		<rich:spacer height="2px" style="display: block"></rich:spacer>
+		<div align="center">
+		<a:commandLink rendered="true" status="timerStatus" timeout="2000"
+			action="#{camasManager.putCamaToDelete(cma.id)}" ajaxSingle="true" 
+			oncomplete="window.parent.deleteSeletedCama()" 
+			view="/modConfiguracion/departamentos/clinicos/home.xhtml">
+
+			<h:graphicImage	title="#{messages.eliminar}" height="12"
+			style="border: 0px; opacity: 0.4; cursor:pointer; position:relative; top:-40px; left:32px;"
+				value="/resources/icons/default/acciones/eliminar.png">
+				<rich:effect event="onmouseover" type="Opacity"
+					params="duration:0.3, from:0.4, to:1.0" />
+				<rich:effect event="onmouseout" type="Opacity"
+					params="duration:0.3, from:1.0, to:0.4" />
+			</h:graphicImage>
+		</a:commandLink>	
+		</div>
+	</div>
+
+	<script type="text/javascript" language="javascript">
+		init("#{cma.id}", #{cma.y}, #{cma.x});
+	</script>
+
+</c:forEach>
+
+<s:div rendered="#{camasManager.cleanCamasModificadas()}"> </s:div>
+
+</h:form>
+
+</s:div>
+
+</div>
+
+<a:form>
+	<a:jsFunction name="changeCamaPosition" ajaxSingle="true" limitToList="true"
+		status="funcstatus2" action="#{camasManager.changeCamaPosition()}">
+		<a:actionparam name="camaId" assignTo="#{camasManager.camaId}" />
+		<a:actionparam name="camaX" assignTo="#{camasManager.camaX}" />
+		<a:actionparam name="camaY" assignTo="#{camasManager.camaY}" />
+	</a:jsFunction>
+</a:form>
+
+</body>
+
+</html>
+

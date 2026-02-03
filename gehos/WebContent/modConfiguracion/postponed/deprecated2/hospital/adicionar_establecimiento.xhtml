@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+      xmlns:a4j="http://richfaces.org/a4j"
+      template="#{theme.template}"
+                xmlns:rich="http://richfaces.org/rich">
+                
+<ui:define name="body" >
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('Adicionar establecimiento')</script>
+	<style type="text/css">.rich-stglpanel-body{padding:0px}</style>
+	<style type="text/css">.rich-panel-body{padding:0px}</style>
+	<h:form>
+	<rich:panel >
+		<f:facet name="header">Datos del establecimiento</f:facet>
+		<table cellpadding="0px" cellspacing="0px" border="0px" >
+			<tr>
+				<td style="height: 11px;" colspan="6">
+				</td>
+			</tr>
+			<tr style="vertical-align: top;">
+				<td style="width: 7px;"></td>
+				<td>
+					<h:outputLabel value="Nombre:"></h:outputLabel><br />
+					<h:inputText style="width:150px;" />	
+				</td>
+				<td style="width: 25px"></td>
+				<td>
+					<h:outputLabel value="Tipo:"></h:outputLabel><br />
+					<rich:comboBox suggestionValues="#{hospitalData.establecimientosAreaInfluencia()}"
+						defaultLabel="&lt;Seleccione&gt;" width="152" >
+					</rich:comboBox>	
+				</td>
+				<td style="width: 25px"></td>
+				<td style="vertical-align: bottom;">
+					<s:button view="/modConfiguracion/hospital/configuracionhospital.xhtml"	value="Aceptar" style="margin-left: 0px; margin-bottom: 0px;" />
+					<s:button view="/modConfiguracion/hospital/configuracionhospital.xhtml"	value="Cancelar" style="margin-right: 0px; margin-bottom: 0px;" />
+				</td>
+			</tr>
+		</table>
+		<br/>
+	</rich:panel>
+	</h:form>
+</ui:define>
+
+</ui:composition>

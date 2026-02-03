@@ -1,0 +1,78 @@
+<rich:modalPanel id="eliminarEspecialidadPanel" width="351" height="90"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"  
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+	<f:facet name="header">
+		<h:panelGroup>
+			<h:outputText value="#{messages.deleespe}"></h:outputText>
+		</h:panelGroup>
+	</f:facet>
+	<f:facet name="controls">
+		<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+			style="cursor:pointer; position:relative; top:1px;"
+			onclick="Richfaces.hideModalPanel('eliminarEspecialidadPanel')" />
+	</f:facet>
+	
+	<h:form id="eliminar_especialidad_form">
+	
+	
+	
+	<a:status forceId="true"
+		onstart="document.getElementById('eliminar_especialidad_form:delservacpbtn').style.cursor='wait'"
+		id="delespstatus"
+		onstop="document.getElementById('eliminar_especialidad_form:delservacpbtn').style.cursor='default'">
+	</a:status>
+	
+	<table cellpadding="0px" cellspacing="0px" border="0px" id="container"
+		title="" >
+		<tr>
+			<td style="height: 9px;" colspan="6"></td>
+		</tr>
+		<tr style="vertical-align: top;">
+			<td style="width: 6px;"></td>
+			<td valign="top">
+				<table cellpadding="0px" cellspacing="0px">
+					<tr valign="top">
+						<td>
+							<h:graphicImage
+								value="/resources/icons/default/acciones/advertencia.png" />
+						</td>
+						<td style="width: 6px;"></td>
+						<td>
+							<h:outputText value="#{messages.eliminar_especialidad}"></h:outputText>
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td style="width: 4px;"></td>
+		</tr>
+		<tr>
+			<td style="height: 7px;" colspan="6"></td>
+		</tr>
+		<tr>
+			<td colspan="3">
+			<div align="center">
+				<a:commandButton value="#{messages.si}" id="delservacpbtn"
+					action="#{departamentosYServiciosManager.eliminarEspecialidad()}"
+					status="delespstatus"
+					oncomplete="javascript:Richfaces.hideModalPanel('eliminarEspecialidadPanel'); "
+					reRender="settingsdiv" style="margin-bottom: 0px; margin-top: 0px;">
+					<s:defaultAction />
+				</a:commandButton> <input type="button"
+					onclick="javascript:Richfaces.hideModalPanel('eliminarEspecialidadPanel');"
+					value="#{messages.no}"
+					style="margin-bottom: 0px; margin-top: 0px; margin-left: 2px; margin-right: 0px;" />
+			</div>
+			</td>
+		</tr>
+		<tr>
+			<td style="height: 6px;" colspan="6"></td>
+		</tr>
+	</table>
+	
+	</h:form>
+</rich:modalPanel>

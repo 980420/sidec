@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+      xmlns:a4j="http://richfaces.org/a4j"
+      template="#{theme.template}"
+                xmlns:rich="http://richfaces.org/rich">
+                
+<ui:define name="body" >
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('#{messages.lbl_listadoModulos_conf}')</script>
+	<style type="text/css">.rich-stglpanel-body{padding:0px}</style>
+	<style type="text/css">.rich-panel-body{padding:0px}</style>
+	
+	<h:form>
+
+		<div align="right">
+			<h:commandButton  value="#{messages.lbl_reorganizarModulosFuncionalidades_conf}" 
+						action="#{funcionalidadesOrganizer.change()}"
+						style="width: 250px; margin-right: 0px;" />
+		</div>
+
+		<rich:panel>
+			<f:facet name="header">#{messages.lbl_listadoModulos_conf}</f:facet>
+			<rich:dataTable value="#{moduleListController.allModules()}" var="module" 
+							columnsWidth="0*, 0*, 50%, 40%, 10%"
+							id="modulesDataTable" rows="8">
+				<rich:column>
+					#{module.id}
+				</rich:column>
+				<rich:column>
+					<h:graphicImage height="20" width="20" 
+						value="/resources/modCommon/moduleimages/#{theme.name}/#{theme.color}/#{module.imagen}" />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">#{messages.lbl_label_conf}</f:facet>
+					#{module.label}
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">#{messages.lbl_moduloPadre_conf}</f:facet>
+					<h:outputLabel value="#{module.funcionalidadPadre.label}" 
+						rendered="#{module.funcionalidadPadre.id > 0}" />
+					<s:div style="text-align:center;" rendered="#{not (module.funcionalidadPadre.id > 0) }" >
+						<h:outputLabel value="-" 
+							 />
+					</s:div>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">#{messages.lbl_funcionalidades_conf}</f:facet>
+					<div align="center">
+						<s:link value="" 
+							view="/modConfiguracion/funcionalidades/listado_modulos/funcionalidades.xhtml">
+							<h:graphicImage title="#{messages.lbl_ver_conf}" style="border: 0px;"
+		                   					value="/resources/icons/default/acciones/ver.png"/>
+							<f:param name="moduleid" value="#{module.id}" />
+						</s:link>
+					</div>
+				</rich:column>
+			
+			</rich:dataTable>
+		</rich:panel>
+		<br/>
+		<div align="center">
+			<rich:datascroller for="modulesDataTable"  />
+		</div>	
+	</h:form>
+
+</ui:define>
+
+</ui:composition>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

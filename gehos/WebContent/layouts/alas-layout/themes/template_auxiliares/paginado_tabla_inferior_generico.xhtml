@@ -1,0 +1,79 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />    
+    <rich:panel id="paginado" style="border:0px; padding:0px; vertical-align: top;" > 
+    <a4j:outputPanel rendered="#{vzPaginado}" id="pagingcontrols">	
+    	 <div id="infopaginado" align="right" style="float: right;">
+   			<rich:spacer width="50px" />	
+				<h:outputText style="cursor: pointer" styleClass="linksBar" value="#{(not nomControladorList.previousExists) ? '1' : nomControladorList.firstResult+1}" />
+				<h:outputText style="cursor: pointer" styleClass="linksBar" value=" - " />
+				<h:outputText style="cursor: pointer" styleClass="linksBar" value="#{(nomControladorList.resultCount>nomControladorList.maxResults) ? nomControladorList.firstResult + nomControladorList.resultList.size() : nomControladorList.resultList.size()}">
+					<f:convertNumber type="number" integerOnly="true" />
+				</h:outputText>
+				<h:outputText style="cursor: pointer" styleClass="linksBar" value="/" />
+				<h:outputText style="cursor: pointer" styleClass="linksBar" value="#{nomControladorList.resultCount}" />
+				<rich:spacer width="10px" />
+		</div>
+									
+									<!-- aqui empiza  -->
+		<s:div  style="width: 100%; text-align:center; vertical-align: top;" align="center">		
+			<h:graphicImage value="/resources/icons/default/paginado/iniciod.png"
+						rendered="#{!nomControladorList.previousExists}"  />
+	
+			<a4j:commandLink id="firstPageI" rendered="#{nomControladorList.previousExists}"
+						reRender="pagingcontrols,#{idListado}"
+						ajaxSingle="false"
+						action="#{nomControladorList.setFirstResult(0)}" >
+				<h:graphicImage title="Primera p&#225;gina" style="border: 0px; ; width : 16px;"
+						value="/resources/icons/default/paginado/#{theme.color}/inicio.png" />
+			</a4j:commandLink>
+			<h:graphicImage value="/resources/icons/default/paginado/anteriord.png"
+						rendered="#{!nomControladorList.previousExists}"  />
+			<a4j:commandLink id="previousPageI" rendered="#{nomControladorList.previousExists}" 
+						reRender="pagingcontrols,#{idListado}"
+						ajaxSingle="false"			
+						action="#{nomControladorList.setFirstResult(nomControladorList.previousFirstResult)}" >
+				<h:graphicImage title="Anterior" style="border: 0px;"
+							value="/resources/icons/default/paginado/#{theme.color}/anterior.png" />
+			</a4j:commandLink>
+			
+			<rich:spacer width="5px"/>
+			
+			<h:inputText value="#{nomControladorList.pagina}" styleClass="paginadoLabel" > 
+				<a4j:support event="onblur" reRender="#{idListado},paginado" ajaxSingle="true" />
+			</h:inputText>
+			
+			<rich:spacer width="5px"/>
+            <h:graphicImage value="/resources/icons/default/paginado/siguiented.png"
+						rendered="#{!nomControladorList.nextExists}"  />
+			<a4j:commandLink id="nextPageI" rendered="#{nomControladorList.nextExists}" 
+						reRender="pagingcontrols,#{idListado}"
+						ajaxSingle="false"
+						action="#{nomControladorList.setFirstResult(nomControladorList.nextFirstResult)}">
+				<h:graphicImage title="Siguiente" style="border: 0px;" 
+						value="/resources/icons/default/paginado/#{theme.color}/siguiente.png" />
+			</a4j:commandLink>
+
+			<h:graphicImage value="/resources/icons/default/paginado/find.png"
+						rendered="#{!nomControladorList.nextExists}"  />
+
+			<a4j:commandLink id="ultimaPaginaI" rendered="#{nomControladorList.nextExists}" 
+						reRender="pagingcontrols,#{idListado}"
+						ajaxSingle="false"
+						action="#{nomControladorList.setFirstResult(nomControladorList.lastFirstResult)}" >
+				<h:graphicImage title="&#218;ltima p&#225;gina" style="border: 0px;"
+							value="/resources/icons/default/paginado/#{theme.color}/fin.png" />
+			</a4j:commandLink>
+									
+		</s:div>
+			<!-- termina -->
+									
+ 	</a4j:outputPanel>
+	</rich:panel>		
+</s:div>
+

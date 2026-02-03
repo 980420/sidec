@@ -1,0 +1,53 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:rich="http://richfaces.org/rich">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+<div align="left" style="width:100%;"  >
+					<table width="100%" border="0" cellpadding="1" cellspacing="0">
+						<tr>
+							<td width="100%" align="left" style="vertical-align: middle;"></td>	
+							<td align="left" style="vertical-align: middle;">
+								<h:graphicImage title="Exportar" style="border: 0px;"
+							height="12" width="12"
+							value="/resources/icons/default/acciones/imprimir.png" rendered="#{vzExportar}"/>
+							</td>
+							<td align="left" style="vertical-align: middle; padding: 5px; padding-right: 0px;">
+								<s:link value="Exportar" action="exportar" rendered="#{vzExportar}" title="Exportar"/>
+							</td>
+							<td align="left" style="vertical-align: middle; padding: 5px; padding-right: 0px;">
+								<h:graphicImage title="Agregar" style="border: 0px;"
+								height="12" width="12"
+								value="/resources/icons/default/acciones/adicionar.png" rendered="#{vzAgregar}"/>
+							</td>
+							<td align="left" style="vertical-align: middle; padding-right: 5px;">
+								<s:link style="vertical-align: 2px;" value="Agregar" action="agregar" rendered="#{vzAgregar}" title="Agregar"/> 
+							</td>
+							<td align="left" style="vertical-align: middle; padding: 5px; padding-right: 0px;">
+								<h:graphicImage title="Modificar" style="border: 0px;"
+								height="12" width="12"
+								value="/resources/icons/default/acciones/modificar.png" rendered="#{vzModificar}" />
+							</td>
+							<td align="left" style="vertical-align: middle; padding-right: 5px;">									
+							<s:link value="Modificar" action="modificar" rendered="#{vzModificar}" title="Modificar"/> 
+							</td>
+							<td align="left" style="vertical-align: middle; padding: 5px; padding-right: 0px;">
+								<h:graphicImage title="Eliminar" style="border: 0px;"
+								height="12" width="12"
+								value="/resources/icons/default/acciones/eliminar.png" rendered="#{vzEliminar}"/>
+							</td>
+							<td align="left" style="vertical-align: middle;">									
+								<a4j:commandLink rendered="#{vzEliminar}" onclick="#{pagina == 'detalles' || pagina == 'editar' ? 'mostrarPanelModificar()' : 'mostrarPanelEliminar()'}" value="Eliminar" title="Eliminar" /> 
+							</td>
+							<td width="100%" align="left" style="vertical-align: middle; padding: 5px; padding-right: 0px;">
+							</td>
+						</tr>
+					</table>				
+				</div>
+
+</s:div>
+

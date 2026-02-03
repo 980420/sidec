@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<param name="entidadId" value="#{entidadSistemaModificarControlador.entidadId}" />
+	<param name="selectedTab" value="#{entidadSistemaModificarControlador.tabSeleccionado}" />
+
+	<navigation from-action="#{entidadSistemaModificarControlador.modificar()}">
+		<rule if-outcome="gotodetails">
+			<redirect
+				view-id="/modConfiguracion/management/gestionarEntidadesSistema/VerDetallesEntidadSistema.xhtml">
+				<param name="entidadId" value="#{entidadSistemaModificarControlador.entidad.id}" />
+				<param name="from" value="modificar" />
+			</redirect>
+			<end-conversation before-redirect="true" />
+		</rule>
+	</navigation>
+
+	<navigation from-action="#{entidadSistemaModificarControlador.cancelar()}">
+		<redirect
+			view-id="/modConfiguracion/management/gestionarEntidadesSistema/SeleccionarEntidadSistema.gehos" >
+			<param name="entidadId" value="#{entidadSistemaModificarControlador.entidadId}" />
+			</redirect>
+		<end-conversation before-redirect="true" />
+	</navigation>
+
+	<navigation from-action="#{entidadSistemaModificarControlador.subirDatos()}">
+		<rule if-outcome="tabEstablecimientos">
+			<redirect
+				view-id="/modConfiguracion/management/establecimientosAreaInfluenciaHospital/BuscarEstablecimientoAreaInfluenciaHospital.gehos">
+				<param name="from" value="modificar" />
+			</redirect>
+		</rule>
+		<rule if-outcome="tabAsignaciones">
+			<redirect
+				view-id="/modConfiguracion/management/gestionarAsignacionesFinancieras/CrearAsignacionesFinancieras.xhtml">
+				<param name="from" value="modificar" />
+			</redirect>
+		</rule>
+		<rule if-outcome="tabPartidas">
+			<redirect
+				view-id="/modConfiguracion/management/gestionarPartidasPresupuestarias/CrearPartidasPresupuestarias.xhtml">
+				<param name="from" value="modificar" />
+			</redirect>
+		</rule>
+		<rule if-outcome="tabActividades">
+			<redirect
+				view-id="/modConfiguracion/management/gestionarActividadesInvestigacionDocencia/BuscarActividadesInvestigacionDocencia.xhtml">
+				<param name="from" value="modificar" />
+			</redirect>
+		</rule>
+	</navigation>
+
+	<navigation
+		from-action="#{entidadSistemaModificarControlador.setAsignacionFinanciera(asignacion)}">
+		<redirect
+			view-id="/modConfiguracion/management/gestionarAsignacionesFinancieras/ModificarAsignacionesFinancieras.xhtml">
+			<param name="from" value="modificar" />
+		</redirect>
+	</navigation>
+
+
+
+	<navigation
+		from-action="#{entidadSistemaModificarControlador.setPartidaPresupuestaria(partida)}">
+		<redirect
+			view-id="/modConfiguracion/management/gestionarPartidasPresupuestarias/ModificarPartidasPresupuestarias.xhtml">
+			<param name="from" value="modificar" />
+		</redirect>
+	</navigation>
+
+
+
+
+</page>

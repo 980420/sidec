@@ -1,0 +1,181 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+		
+		<style type="">
+					.custom-error {
+			border: 1px solid #FFCC00;
+			padding: 5px;
+			background-color: #F0F8FF;
+			font-size: 10px;
+			font-family: "Verdana";
+			position: relative;	left: 5px; top: 5px; 
+			margin-right: 10px;
+		}	
+		</style>
+
+		<h:form id="form" styleClass="edit">
+		<a4j:outputPanel ajaxRendered="true" id="errorOutputPanel">
+			<s:div style="height:30px;width:100%"
+				rendered="#{facesMessages.getCurrentMessagesForControl('error').size() > 0 }">
+				<div class="custom-error">
+					<rich:message for="error"></rich:message>
+				</div>	
+			</s:div>
+		</a4j:outputPanel>
+			<s:validateAll>
+				<rich:panel id="error">
+					<f:facet name="header">#{messages.datos}</f:facet>
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr>
+							<td style="height: 13px;" colspan="6"></td>
+						</tr>
+						<tr style="vertical-align: top;">
+							<td><rich:spacer width="7px" /></td>
+							<td>#{messages.identificador} <rich:message
+								for="identificador" showDetail="false" tooltip="true"
+								style="color:red;cursor:pointer;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('identificador').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message> <br />
+							<h:inputText id="identificador" style=" width : 148px;"
+								tabindex="1" required="#{!empty param['form:buttonAceptar']}"
+								requiredMessage="#{messages.valorRequerido}"
+								validator="#{validations_configuracion.textnumber}"								
+								value="#{ubicacionCrearControlador.identificador}" /></td>
+							<td><rich:spacer width="25px" /></td>
+							<td>#{messages.entidad} <rich:message for="entidad"
+								showDetail="false" tooltip="true"
+								style="color:red;cursor:pointer;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('entidad').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message> <br />
+							<rich:comboBox id="entidad"
+								required="#{!empty param['form:buttonAceptar']}"
+								requiredMessage="#{messages.valorRequerido}" tabindex="2"
+								suggestionValues="#{ubicacionCrearControlador.listadoEntidades()}"
+								defaultLabel="#{messages.seleccione}" enableManualInput="false"
+								style=" width : 150px;"
+								value="#{ubicacionCrearControlador.entidadSeleccionada}">
+								<a4j:support event="onselect" ajaxSingle="true"
+									limitToList="true"
+									reRender="modalPanelUbicacion, ubicacionTree"
+									action="#{ubicacionCrearControlador.cargarUbicaciones()}" />
+							</rich:comboBox></td>
+							<td><rich:spacer width="25px" /></td>
+							<td>#{messages.ubicacion} <rich:message
+								for="ubicacionEnModificacionInput" showDetail="false"
+								tooltip="true" style="color:red;cursor:pointer;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('ubicacionEnModificacionInput').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message> <br />
+							<h:panelGrid columns="3" cellpadding="0" cellspacing="0">
+								<a4j:outputPanel id="ubicacionTree">
+									<h:panelGrid columns="2" cellpadding="0" cellspacing="0"
+										border="0">
+										<h:inputText style="width: 148px; margin-right:5px"
+											disabled="#{ubicacionCrearControlador.entidadSeleccionada == ''  || ubicacionCrearControlador.entidadSeleccionada == null}"
+											id="ubicacionEnModificacionInput"
+											value="#{ubicacionCrearControlador.fatherLocationSelected}" />
+										<a4j:commandButton value="..." ajaxSingle="true" tabindex="3"
+											disabled="#{ubicacionCrearControlador.entidadSeleccionada == '' || ubicacionCrearControlador.entidadSeleccionada == null}"
+											style="width: 30px; margin: 0px 0px 0px 0px;"
+											onclick="Richfaces.showModalPanel('escoger_ubicacion_panel');">
+										</a4j:commandButton>
+									</h:panelGrid>
+								</a4j:outputPanel>
+							</h:panelGrid></td>
+							<td><rich:spacer width="7px" /></td>
+						</tr>
+						<tr>
+							<td height="8px" />
+						</tr>
+						<tr>
+							<td style="width: 7px;"></td>
+
+
+							<td>#{messages.tipoUbicacion} <rich:message
+								for="tipoUbicacion" showDetail="false" tooltip="true"
+								style="color:red;cursor:pointer;">
+								<f:facet name="errorMarker">
+									<h:outputText value="*"
+										title="#{facesMessages.getCurrentMessagesForControl('tipoUbicacion').get(0).getDetail()}" />
+								</f:facet>
+							</rich:message> <br />
+							<rich:comboBox id="tipoUbicacion"
+								required="#{!empty param['form:buttonAceptar']}"
+								requiredMessage="#{messages.valorRequerido}" tabindex="4"
+								suggestionValues="#{ubicacionCrearControlador.listadoTipoUbicacion()}"
+								defaultLabel="#{messages.seleccione}" enableManualInput="false"
+								style=" width : 150px;"
+								value="#{ubicacionCrearControlador.tipoUbicacionSeleccionada}">
+							</rich:comboBox></td>
+
+
+							<td style="width: 25px"></td>
+
+							<td style="width: 25px"></td>
+
+
+						</tr>
+						<tr>
+							<td height="9px" />
+						</tr>
+					</table>
+				</rich:panel>
+			</s:validateAll>
+			<rich:spacer height="8px" style="display: block"></rich:spacer>
+
+			<div align="right">
+			<table cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td><h:commandButton id="buttonAceptar"
+						value="#{messages.aceptar}" tabindex="5"
+						action="#{ubicacionCrearControlador.crear()}"
+						style="margin-bottom: 0px; margin-right: 5px; margin-left: 0px; margin-top: 0px">
+					</h:commandButton></td>
+					<td><h:commandButton immediate="true"
+						value="#{messages.cancelar}" action="cancelar" tabindex="6"
+						style="margin-bottom: 0px; margin-right: 0px; margin-left: 5px; margin-top: 0px"
+						propagation="end"></h:commandButton></td>
+				</tr>
+			</table>
+			<rich:spacer height="8px" style="display: block"></rich:spacer></div>
+
+		</h:form>
+
+
+		<br />
+		<a4j:outputPanel id="modalPanelUbicacion">
+			<ui:include
+				src="/modConfiguracion/management/gestionarUbicacion/modalspanel/SeleccionarUbicacionCrear.xhtml" />
+		</a4j:outputPanel>
+	</ui:define>
+
+</ui:composition>
+

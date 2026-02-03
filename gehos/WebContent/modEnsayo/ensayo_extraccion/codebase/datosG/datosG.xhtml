@@ -1,0 +1,288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:a4j="http://richfaces.org/a4j" 
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+		type='text/css' />
+	<link rel='stylesheet'
+		href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css'
+		type='text/css' />
+		<ui:include src="/modEnsayo/codebase/plantillas/exportModalPanel.xhtml">
+       
+   			<ui:param name="controlador" value="#{controladoraDatosG}" />
+		</ui:include>	
+	<script type="text/javascript">					
+
+		//funcion para cambiar el tamano de la lista del combobox
+		function cambiarStyle(id,size)
+		{
+		var size2=''+size+'px';
+		var n=new String(id);
+		var idN=n.replace('combobox','list');
+		
+		var com=document.getElementById(idN);
+		var parent=com.parentNode;
+		var gran=parent.parentNode;
+		parent.style.width=size2;
+		gran.style.width=size2;
+		com.style.width=size2;
+		
+		} 
+
+		var curDtN = new Date();
+		 var calDtN=null;
+
+		 function previousDate(date){
+			calDtN = date;
+		 }
+
+		 function disablementFunction(day){
+			 if(calDtN == null){
+				 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+						return true; 
+					else 
+						return false; 
+			 }
+			 else {
+				 if (calDtN.getTime() - day.date.getTime() &#62;= 0 ) 
+						return true; 
+					else 
+						return false;
+			 }					 
+		 }
+
+		 function disabledClassesProv(day){
+			 if(calDtN == null){
+				 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+						return ''; 
+					else 
+						return 'noavailable'; 
+			 }
+			 else {
+				 if (calDtN.getTime() - day.date.getTime() &#62;= 0) 
+						return ''; 
+					else 
+						return 'noavailable';
+			 }				
+		 }
+
+		 function resetSecondDate(first,second) {
+			 var firstDate = first.getSelectedDate().getTime();
+			 var secondDate = second.getSelectedDate().getTime();
+
+			 if(firstDate - secondDate &#62; 0)
+				 second.resetSelectedDate();
+		 }
+ 		 
+		 function disablementFunctionPreviousEx(day){
+			if(calDtN == null){
+				if (curDtN.getTime() - day.date.getTime() &#62; 0) return true; else return false;
+			}
+			if ((curDtN.getTime() - day.date.getTime() &#62; 0) &#38;&#38; (calDtN.getTime() - day.date.getTime() &#60;= 0)){
+				return true;
+			}
+			else 
+				return false;
+		  }
+
+		function disabledClassesProvPreviousEx(day){
+			if(calDtN == null){
+				if (curDtN.getTime() - day.date.getTime() &#60; 0)
+					return 'noavailable';
+				else 
+					return '';
+			}
+			if ((curDtN.getTime() - day.date.getTime() &#60; 0) || (calDtN.getTime() - day.date.getTime() &#62; 0))
+				return 'noavailable';
+			else 
+				return '';
+		}
+	</script>
+		
+	<h:form id="busquedasForm">
+	<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+	
+	<rich:modalPanel id="bloqueo" width="0" height="0" top="0" left="0" style="opacity: -10000" shadowOpacity="-10000" />
+	
+    <rich:simpleTogglePanel switchType="client" label="#{messages.lbl_trazas_diseno}"
+				opened="true">
+
+				<table cellpadding="0px" cellspacing="0px" border="0px"
+				id="simplesearch">
+				<td style="height: 8px" rowspan="9"></td>
+			
+				<tr>
+					<td><h:outputLabel styleClass='normalText'
+							value='#{messages.lbl_desde_enExt}' /> <br /> 
+							<rich:calendar datePattern='dd/MM/yyyy' value="#{controladoraDatosG.fechaIni}"
+							isDayEnabled='disablementFunction' 
+							dayStyleClass='disabledClassesProv' 
+							id='fechaDesde'	
+							onexpand="previousDate(document.getElementById('busquedasForm:fechaHasta').component.getSelectedDate());Richfaces.getComponent('calendar',this).nextMonth(); Richfaces.getComponent('calendar',this).prevMonth(); return true;" />
+					</td>
+					<td><rich:spacer width="25px" /></td>
+					<td><h:outputLabel styleClass='normalText'
+							value='#{messages.lbl_hasta_enExt}' /> <br /> 
+							<rich:calendar datePattern='dd/MM/yyyy' value="#{controladoraDatosG.fechaFin}"
+							isDayEnabled='disablementFunctionPreviousEx' 
+							dayStyleClass='disabledClassesProvPreviousEx' 
+							id='fechaHasta'	
+							onexpand="previousDate(document.getElementById('busquedasForm:fechaDesde').component.getSelectedDate());Richfaces.getComponent('calendar',this).nextMonth(); Richfaces.getComponent('calendar',this).prevMonth(); return true;" />
+					</td>
+					<td><rich:spacer width="25px" /></td>
+					<td><h:outputLabel styleClass='normalText'
+							value='#{messages.lbl_usuario_enExt}' /> <br /> <rich:comboBox
+							suggestionValues="#{controladoraDatosG.llenarUsersG()}"
+							value="#{controladoraDatosG.usuario}"
+							defaultLabel="#{messages.cbxSeleccionPorDefecto}" id="usuario">
+						</rich:comboBox></td>
+
+				</tr>
+				<tr style="height: 8px;" />
+				<tr>
+				<td>
+					<h:outputLabel styleClass='normalText'
+							value='#{messages.lbl_gSujeto_enExt}' /> <br /> <rich:comboBox
+							suggestionValues="#{controladoraDatosG.llenarGSujetos()}"
+							value="#{controladoraDatosG.gruSujetos}"
+							defaultLabel="#{messages.cbxSeleccionPorDefecto}" id="gSujeto">
+						</rich:comboBox></td>
+				
+					<td><rich:spacer width="25px" /></td>
+					<td><h:outputLabel styleClass='normalText'
+							value='#{messages.lbl_msGeneral_enExt}' /> <br /> <rich:comboBox
+							suggestionValues="#{controladoraDatosG.llenarMsGeneG()}"
+							onclick="cambiarStyle(this.id,#{controladoraDatosG.sizeMaxString(controladoraDatosG.llenarMsGeneG())})"
+							value="#{controladoraDatosG.msGeneral}"
+							defaultLabel="#{messages.cbxSeleccionPorDefecto}" id="msGeneral">
+							<a4j:support event="onselect" ajaxSingle="true"
+										reRender="crdEspecifico,variable">										
+									</a4j:support>
+						</rich:comboBox></td>
+					
+					<td><rich:spacer width="25px" /></td>
+					<td><h:outputLabel styleClass='normalText'
+							value='#{messages.lbl_hojaCRD_enExt}' /> <br /> 
+							<a4j:outputPanel id="crdEspecifico">
+							<rich:comboBox
+							suggestionValues="#{controladoraDatosG.crdHoja}"
+								onclick="cambiarStyle(this.id,#{controladoraDatosG.sizeMaxString(controladoraDatosG.crdHoja)})"
+							value="#{controladoraDatosG.crdSpe}"
+							defaultLabel="#{messages.cbxSeleccionPorDefecto}">
+							<a4j:support event="onselect" ajaxSingle="true"
+										reRender="variable">										
+									</a4j:support>
+						</rich:comboBox>
+						</a4j:outputPanel>
+						</td>										
+			    </tr>	
+			    <tr style="height: 8px;" />
+			    <tr>
+					<td>
+					<h:outputLabel styleClass='normalText'
+							value='#{messages.lbl_variableV_enExt}' /> <br /> 
+							<a4j:outputPanel  id="variable">
+							<rich:comboBox
+							suggestionValues="#{controladoraDatosG.idVariable()}"
+							onclick="cambiarStyle(this.id,#{controladoraDatosG.sizeMaxString(controladoraDatosG.nombreVariable)})"
+							value="#{controladoraDatosG.variable}"
+							defaultLabel="#{messages.cbxSeleccionPorDefecto}">
+						</rich:comboBox>
+						</a4j:outputPanel>
+						</td>
+				</tr>											
+			</table>
+		    </rich:simpleTogglePanel>
+			
+			<div align="right">  
+			<table  >
+			
+						<td colspan="9">
+						<a4j:commandButton value="#{messages.generar}"
+							tabindex="3"
+							style="margin-right: 10px; margin-bottom: 0px;"
+							action="#{controladoraDatosG.Generar()}" reRender="tree,treenode,wrapperPanel1,wrapperPanel">
+						</a4j:commandButton>
+						<s:button view="/modCommons/modHome/home.gehos" value="#{messages.cancelar}"
+					style="margin-right:0px"
+					rendered="#{not identificadorManager.editing}">
+					<f:param name="idFuncionalidad"
+						value="#{activeModule.activeModule.id}" />
+					<f:param name="idancestors"
+						value="#{activeModule.activeModule.id}a" />
+					<f:param name="moduleName" value="#{activeModule.activeModuleName}" />
+				</s:button>
+					</td>
+									
+			</table>
+			</div>
+			
+			<div align="right"><a4j:status id="status" onstart="#{rich:component('bloqueo')}.show()" onstop="#{rich:component('bloqueo')}.hide()">
+                        <f:facet name="start">
+                                <s:div>
+                                        <table>
+                                                <tr>
+                                                        <td><h:graphicImage width="12" height="12"
+                                                                value="/resources/icons/default/acciones/loading_big.gif" /></td>
+                                                        <td><h:outputText value="#{messages.lblProcesando_ap}" /></td>
+                                                </tr>
+                                        </table>
+                                </s:div>
+                        </f:facet>
+                </a4j:status></div>
+			    
+	</h:form>
+	<s:div>
+			<h:panelGroup id="wrapperPanel1">
+			<h:panelGroup id="noResultRenderPanel" rendered="true">
+			
+						<rich:panel  rendered="#{controladoraDatosG.flag2}">
+		<f:facet name="header">#{messages.titulo}</f:facet>
+			<table class="Tabla" width="100%" cellpadding="0" cellspacing="0">
+   				<tr><td>
+					<h:outputText value="#{controladoraDatosG.noResult}"/>
+				</td></tr>
+			</table>
+	</rich:panel>
+	
+	</h:panelGroup>
+			</h:panelGroup>
+						</s:div>
+						
+	<s:div >
+			<h:panelGroup id="wrapperPanel">
+			<h:panelGroup id="reportRenderPanel" rendered="true">
+			<rich:panel	rendered="#{controladoraDatosG.flag}">
+		<f:facet name="header">#{messages.titulo}</f:facet>
+		<iframe width="100%" height="800px" src="#{facesContext.externalContext.requestContextPath}#{controladoraDatosG.pathToReport}"></iframe>
+		<div align="right">			
+		<!-- Se implementa el requisito funcional 5: Permite exportar las trazas generadas en el sistema al formato WORD, EXCEL y PDF. -->
+			<rich:spacer height="8px" style="display: block" />
+			<input type="button" value="#{messages.exportar}" onclick="javascript:Richfaces.showModalPanel('exportPanel');"
+				title="#{messages.exportar}" style="text-align:center; margin-right: 10px;"
+				id="exportButton" action="export"/>						
+			<s:button view="/modCommons/modHome/home.gehos" value="#{messages.salir}"
+					style="margin-right:0px"
+					rendered="#{not identificadorManager.editing}">
+					<f:param name="idFuncionalidad"
+						value="#{activeModule.activeModule.id}" />
+					<f:param name="idancestors"
+						value="#{activeModule.activeModule.id}a" />
+					<f:param name="moduleName" value="#{activeModule.activeModuleName}" />
+				</s:button>
+		</div>
+	</rich:panel>
+			    </h:panelGroup>
+			    </h:panelGroup>
+			    </s:div>
+
+</s:div>

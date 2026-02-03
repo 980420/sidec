@@ -1,0 +1,87 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<!-- CSS -->
+		<style type="text/css">
+			/*Panel*/
+			.rich-panel-body {
+				padding: 0px;white-space: nowrap !IMPORTANT;
+			}
+		</style>
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+		<!-- eticErroresGlobales -->
+
+
+		<h:form id="form" styleClass="create"
+			enctype="multipart/form-data">
+			<a4j:outputPanel ajaxRendered="true">
+				<rich:messages id="error" styleClass="message" ajaxRendered="true" for="error" />
+			</a4j:outputPanel>
+			<s:validateAll>
+				<rich:panel>
+					<f:facet name="header">#{messages.datos}</f:facet>
+
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr>
+							<td style="height: 10px;" colspan="6"></td>
+						</tr>
+						<tr style="vertical-align: top;">
+							<td style="width: 8px;"></td>
+							<td><h:outputLabel value="#{messages.nombre}"></h:outputLabel>
+							<rich:message for="valor" showDetail="false" showSummary="false"
+								tooltip="true">
+								<f:facet name="errorMarker">
+									<h:outputText
+										title="#{facesMessages.getCurrentMessagesForControl('valor').get(0).getDetail()}"
+										style="color : red;cursor:pointer;" value="*"
+										styleClass="nombre" />
+								</f:facet>
+							</rich:message><br />
+							<h:inputText id="valor"
+								value="#{entidadOrganizacionalModificarControlador.valor}" required="true"
+								validator="#{validations_configuracion.text}"
+								requiredMessage="#{messages.valorRequerido}"
+								style="width:148px;" /> <rich:spacer height="7"
+								style="display:block"></rich:spacer></td>
+								<td style="width: 8px;"></td>
+						</tr>
+					</table>
+
+				</rich:panel>
+
+
+
+
+				<s:div styleClass="actionButtons" rendered="#{empty from}"
+					style="text-align: right">
+
+					<div align="right"><h:commandButton
+						value="#{messages.aceptar}" id="buttonAceptar"
+						style="margin-bottom: 0px; margin-right: 5px; margin-top: 8px"
+						action="#{entidadOrganizacionalModificarControlador.modificar()}">
+					</h:commandButton>  <h:commandButton
+						value="#{messages.cancelar}"
+						style="margin-right: 0px; margin-left: 5px; margin-top: 8px"
+						immediate="true" action="salir" propagation="end" /></div>
+				</s:div>
+			</s:validateAll>
+		</h:form>
+
+
+
+
+
+	</ui:define>
+
+</ui:composition>
+

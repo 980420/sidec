@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core">		
+	<style>
+		table.checkTable td {
+	  		display: block;
+		}
+		table.checkTable td > label{
+	  		vertical-align: 3px;
+		}
+		
+	</style>
+			
+	<s:div>
+	<table cellpadding="0" cellspacing="0">
+	<tr>
+	<td  width='130px;'><div style="width: 130px;overflow: hidden; text-overflow: ellipsis;">#{tv.variable.nombreVariable}</div></td>
+	<td width='4px;'>
+	
+	<rich:message for="varFloat" showDetail="false" tooltip="true"
+											style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title='#{facesMessages.getCurrentMessagesForControl("varFloat").get(0).getDetail()}' />
+											</f:facet>
+										</rich:message>
+		<rich:message for="varSt" showDetail="false" tooltip="true"
+											style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title='#{facesMessages.getCurrentMessagesForControl("varSt").get(0).getDetail()}' />
+											</f:facet>
+										</rich:message>
+										
+										<rich:message for="varInt" showDetail="false" tooltip="true"
+											style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title='#{facesMessages.getCurrentMessagesForControl("varInt").get(0).getDetail()}' />
+											</f:facet>
+										</rich:message>
+										
+										<rich:message for="varDate" showDetail="false" tooltip="true"
+											style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title='#{facesMessages.getCurrentMessagesForControl("varDate").get(0).getDetail()}' />
+											</f:facet>
+										</rich:message>
+										
+										<rich:message for="varCombo" showDetail="false" tooltip="true"
+											style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title='#{facesMessages.getCurrentMessagesForControl("varCombo").get(0).getDetail()}' />
+											</f:facet>
+										</rich:message>																				
+										<rich:message for="fileInputHidden" showDetail="false" tooltip="true"
+											style="color:red;">
+											<f:facet name="errorMarker">
+												<h:outputText value="*"
+													title='#{facesMessages.getCurrentMessagesForControl("fileInputHidden").get(0).getDetail()}' />
+											</f:facet>
+										</rich:message>
+		</td>
+		<td>
+			
+			<h:inputText id="varFloat" value="#{tv.value}" styleClass="inputTextWidth" 
+			required="true" rendered="#{tv.variable.tipoDato.codigo=='REAL'}" 
+			validator="#{valida.validarDouble}"
+			maxlength="10">
+				<a4j:support event="onblur" ajaxSingle="true"></a4j:support>
+			</h:inputText>
+						
+			<h:inputText id="varInt" value="#{tv.value}" styleClass="inputTextWidth" 
+			required="true" 
+			rendered="#{tv.variable.tipoDato.codigo=='INT'}" 
+			validator="#{valida.validateInteger}"
+			maxlength="10">
+				<a4j:support event="onblur" ajaxSingle="true"></a4j:support>
+			</h:inputText>
+			
+			<h:inputText id="varSt" value="#{tv.value}" styleClass="inputTextWidth" required="true" 
+			rendered="#{tv.variable.tipoDato.codigo=='ST'}"
+			maxlength="30">
+				<a4j:support event="onblur" ajaxSingle="true"></a4j:support>
+			</h:inputText>
+			
+			<h:inputText id="varDate" value="#{tv.value}" required="true"
+						styleClass="inputTextWidth likedate"
+						rendered="#{(tv.variable.tipoDato.codigo=='DATE')}"
+						validator="#{valida.validateDateSigec}">
+						<a4j:support event="onblur" ajaxSingle="true"></a4j:support>		
+			</h:inputText>	
+			
+			<h:selectBooleanCheckbox value="#{tv.value}" required="true" rendered="#{tv.variable.tipoDato.codigo=='BL'}">
+				<a4j:support event="onchange" ajaxSingle="true"></a4j:support>
+			</h:selectBooleanCheckbox>		
+			
+			<rich:comboBox id="varCombo" styleClass="inputText" rendered="#{tv.variable.tipoDato.codigo=='NOM' and tv.variable.presentacionFormulario.nombre != 'checkbox'}" value="#{tv.value}" required="true" suggestionValues="#{RuleConditionsManager.SuggestionValues(tv.variable)}" enableManualInput="false">
+				<a4j:support event="onselect" ajaxSingle="true"></a4j:support>
+			</rich:comboBox>
+																												
+			<h:selectManyCheckbox value="#{tv.value}" rendered="#{tv.variable.tipoDato.codigo=='NOM' and tv.variable.presentacionFormulario.nombre == 'checkbox'}" styleClass="checkTable">						
+				<f:selectItems value="#{RuleConditionsManager.SuggestionValuesAsSelectItem(tv.variable)}"/>		
+				<a4j:support event="onchange" ajaxSingle="true"></a4j:support>																																										
+			</h:selectManyCheckbox>
+			
+			<s:div styleClass="file-holder" rendered="#{tv.variable.tipoDato.codigo=='FILE'}">
+				<div class="file-container" >																								
+					<h:graphicImage
+							value="/resources/modEnsayo/img/iconos/fileup.png"
+							style="vertical-align: middle;height: 15px;margin-left: 3px;" />
+					<span style="display: inline-block;vertical-align: middle;">Seleccionar</span>
+					<s:fileUpload id="fileInput" accept="*.*" onchange="pickFileData(this,null,'#{tv.variable.id}')"	required="true" data="null" fileName="null">				
+					</s:fileUpload>
+					<!-- this hidden field (must be nex to the fileUpload) is only used to be able to show the '*' required --> 
+					<h:inputHidden id="fileInputHidden" value="#{tv.value}" required="true" />
+					<s:div rendered="#{tv.value!=null}">
+						<script>
+						    var fi = document.getElementById("#{rich:clientId('fileInput')}");
+						    //alert(fi.id);
+						    pickFileData(fi, #{tv.value.valueAsjsonString()}, '#{tv.variable.id}');							
+						</script>
+					</s:div>
+				</div>
+				<div class="file-details" style="display: none;">
+					<span class="file-name">File name</span>
+					<span class="file-size">File size</span>
+					<span>
+					<h:graphicImage rendered="false"
+						value="/resources/modEnsayo/img/iconos/remove-cross.png"
+						styleClass="remove-file" onclick="removeFile(this)"/>
+					</span>
+				</div>	
+				
+			</s:div>			
+		</td>
+		
+				
+	</tr>
+	<tr>
+		<td>
+			<rich:spacer height="5px"></rich:spacer>
+		</td>
+	</tr>
+	</table>
+		
+		
+		
+	</s:div>
+	
+
+</s:div>

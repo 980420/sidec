@@ -1,0 +1,256 @@
+<!--CU 11 Visualizar listado de hojas CRD por MS del sujeto.... Pemite visualizar las hojas CRD por momentos de seguimientos-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle('#{messages.listadoCRD}')</script>
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css"
+		rel="stylesheet" type="text/css" />
+	<table class="Tabla" width="100%" cellpadding="0" cellspacing="0">
+		<tr>
+			<td><h:form>
+					<a:outputPanel id="tb1">
+						<rich:panel
+							rendered="#{empty listarCRD.resultList}">							
+							<f:facet name="header">#{messages.listadoHojasCRD} #{listarCRD.NombreMomentoById()} #{messages.para} #{listarCRD.NombreSujetoById()}</f:facet>
+							<table class="Tabla">
+								<tr>
+									<td class="margenSupIzq"><h:outputText
+											value="#{messages.noCRD}" /></td>
+								</tr>
+							</table>
+						</rich:panel>
+						<div style="margin-left: 1px">
+							<rich:dataTable id="tb" value="#{listarCRD.resultList}" var="CRD"
+								width="100%" rendered="#{not empty listarCRD.resultList}" columnsWidth="25%,25%,25%,15%,10%,0*,0*,0*">
+								<f:facet name="header">
+									<h:outputText value="#{messages.listadoHojasCRD} #{listarCRD.NombreMomentoById()} #{messages.para} #{listarCRD.NombreSujetoById()}" />
+								</f:facet>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.nombre}" styleClass="label" /></td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList" value="#{listarCRD}" />
+															<ui:param name="columna" value="crd.hojaCrd.nombreHoja" />
+															<ui:param name="nombreMenu" value="ordenarNombresMenu" />
+															<ui:param name="tablaRender" value="tb1" />
+														</ui:include></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText value="#{CRD.hojaCrd.nombreHoja}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.estado}" styleClass="label" />
+													</td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList" value="#{listarCRD}" />
+															<ui:param name="columna" value="crd.estadoHojaCrd.nombre" />
+															<ui:param name="nombreMenu" value="ordenarEstadoMenu" />
+															<ui:param name="tablaRender" value="tb1" />
+														</ui:include></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:graphicImage
+										title="#{CRD.estadoHojaCrd.nombre}"
+										height="16"
+										style="position: relative; vertical-align: middle;"
+										value="#{gestionarHoja.estadoIcon(CRD.estadoHojaCrd)}" />
+									<rich:spacer width="4px" />
+									<h:outputText value="#{CRD.estadoHojaCrd.nombre}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.estadoMonitoreo}" styleClass="label" />
+													</td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList" value="#{listarCRD}" />
+															<ui:param name="columna" value="crd.estadoMonitoreo.nombre" />
+															<ui:param name="nombreMenu" value="ordenarEstadoM" />
+															<ui:param name="tablaRender" value="tb1" />
+														</ui:include></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:graphicImage
+										title="#{CRD.estadoMonitoreo.nombre}"
+										height="16"
+										style="position: relative; vertical-align: middle;"
+										value="#{visualizarEstadoMonitoreo.estadoMomentoMonitoreo(CRD.estadoMonitoreo)}" />
+									<rich:spacer width="4px" />
+									<h:outputText value="#{CRD.estadoMonitoreo.nombre}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.fechaI}" styleClass="label" />
+													</td>
+													<td align="right"><ui:include
+															src="/modEnsayo/codebase/plantillas/ordenar.xhtml">
+															<ui:param name="customList" value="#{listarCRD}" />
+															<ui:param name="columna" value="crd.momentoSeguimientoEspecifico.fechaInicio" />
+															<ui:param name="nombreMenu"
+																value="ordenarFechaIMenu" />
+															<ui:param name="tablaRender" value="tb1" />
+														</ui:include></td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<table width="100%">
+										<tr>
+											<td align="left"><h:outputText
+													value="#{CRD.momentoSeguimientoEspecifico.fechaInicio}">
+													<s:convertDateTime pattern="#{messages.patronFecha}"></s:convertDateTime>
+												</h:outputText></td>
+										</tr>
+									</table>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<s:div>
+											<table width="100%" cellpadding="0" cellspacing="0">
+												<tr>
+													<td align="left" width="40px"><h:outputText
+															value="#{messages.notas}" styleClass="label" />
+													</td>
+												</tr>
+											</table>
+										</s:div>
+									</f:facet>
+									<h:outputText value="#{listarCRD.CantidadNotas(CRD.id)}" />
+								</rich:column>
+								<rich:column width="1px" styleClass="alineacionCentrada">
+									<h:commandLink title="#{messages.visualizar}" action="visualizarHoja" rendered="#{listarCRD.ver}"
+										style="border: 0px; cursor:pointer;">
+										<h:graphicImage
+											value="/resources/modEnsayo/img/ver.png"
+											width="16px" height="16px"
+											style="border:0;" />
+										<f:param name="idcrd" value="#{CRD.id}" />
+									</h:commandLink>
+								</rich:column>
+								<!-- Exportar datos de la hoja CRD --> 
+								<rich:column width="1px" styleClass="alineacionCentrada">
+									<h:commandLink target="_blank" title="#{messages.imprimir}" action="imprimirhoja" 
+										style="border: 0px; cursor:pointer;">
+										<h:graphicImage
+											value="/resources/icons/default/acciones/vistaImpCRD.png" 
+											width="16px" height="16px"
+											style="border:0;" />
+										<f:param name="idcrd" value="#{CRD.id}" />
+									</h:commandLink>
+								</rich:column>
+								<rich:column width="1px" styleClass="alineacionCentrada">
+									<h:commandLink action="gestionarHoja" title="#{messages.gestionarHoja}" style="border: 0px; cursor:pointer;" rendered="#{((listarCRD.DevolverRol().getCodigo() == 'ecCord' or listarCRD.DevolverRol().getCodigo() == 'ecInv' or listarCRD.DevolverRol().getCodigo() == 'ecLab' or listarCRD.DevolverRol().getCodigo() == 'ecMon'))}">
+										<h:graphicImage value="/resources/modEnsayo/img/bt_EnterData.png" style="border:0;" />
+										<f:param name="idcrd" value="#{CRD.id}" />
+									</h:commandLink>
+									<h:graphicImage value="/resources/modEnsayo/img/bt_EnterData.png" style="border:0; opacity: 0.5;" rendered="#{!((listarCRD.DevolverRol().getCodigo() == 'ecCord' or listarCRD.DevolverRol().getCodigo() == 'ecInv' or listarCRD.DevolverRol().getCodigo() == 'ecLab' or listarCRD.DevolverRol().getCodigo() == 'ecMon'))}" />
+								</rich:column>
+								<rich:column rendered="#{listarCRD.DevolverRol().codigo != 'ecLab'}" width="1px" styleClass="alineacionCentrada">
+									<a:commandLink
+										rendered="#{(listarCRD.DevolverRol().getCodigo() == 'ecInv' and CRD.estadoHojaCrd.codigo == 3 and CRD.estadoMonitoreo.codigo == 3)}"
+										id="firmarHoja"
+										action="#{listarCRD.SeleccionarInstanciaHoja(CRD.id)}"
+										oncomplete="Richfaces.showModalPanel('mpAdvertenciaFirmarHoja')">
+										<h:graphicImage style="border:0px; cursor: pointer "
+											title="#{messages.firmar}"
+											width="16px" height="16px"
+											url="/resources/funcionalidadesIcons/ensayo/firmar_hoja_crd.png">
+										</h:graphicImage>
+									</a:commandLink>
+									<a:commandLink
+										rendered="#{(listarCRD.DevolverRol().getCodigo() == 'ecInv' and CRD.estadoHojaCrd.codigo == 4)}"
+										id="eliminarFirma"
+										action="#{listarCRD.SeleccionarHoja(CRD)}"
+										>
+										<h:graphicImage style="border:0px; cursor: pointer "
+											title="#{messages.eliminarFirma}"
+											width="16px" height="16px"
+											url="/resources/funcionalidadesIcons/ensayo/eliminar_firma_hoja_crd.png">
+										</h:graphicImage>
+									</a:commandLink>
+									  <h:graphicImage
+										rendered="#{(CRD.estadoHojaCrd.codigo != 3 and CRD.estadoHojaCrd.codigo != 4) and (listarCRD.DevolverRol().getCodigo() != 'ecInv')}"
+										style="border:0px; opacity: 0.4; "
+										
+										width="16px" height="16px"
+										url="/resources/funcionalidadesIcons/ensayo/firmar_hoja_crd.png">
+									</h:graphicImage>
+									
+									<h:graphicImage
+										rendered="#{(CRD.estadoMonitoreo.codigo != 3 and (CRD.estadoHojaCrd.codigo == 3 or CRD.estadoHojaCrd.codigo == 4))}"
+										style="border:0px; opacity: 0.4; "
+										
+										width="16px" height="16px"
+										url="/resources/funcionalidadesIcons/ensayo/firmar_hoja_crd.png">
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{listarCRD.DevolverRol().getCodigo() != 'ecInv' and CRD.estadoHojaCrd.codigo == 4}"
+										style="border:0px; opacity: 0.4; "
+										
+										width="16px" height="16px"
+										url="/resources/funcionalidadesIcons/ensayo/eliminar_firma_hoja_crd.png">
+									</h:graphicImage>
+									
+								</rich:column>
+
+							</rich:dataTable>
+						</div>
+					</a:outputPanel>
+					
+				</h:form></td>
+		</tr>
+
+		<tr class="filSepGranRA">
+			<td align="center"><h:form>
+					<a:outputPanel id="paginado12" ajaxRendered="true">
+						<ui:include src="/modEnsayo/codebase/plantillas/paginado_tabla_inferior_generico.xhtml/" >
+						<ui:param name="vzPaginado" value="#{listarCRD.resultCount>10}"/>
+						<ui:param name="nomControladorList" value="#{listarCRD}" />
+						<ui:param name="idListado" value="tb1" />
+						</ui:include>
+					</a:outputPanel>
+				</h:form></td>
+		</tr>
+	</table>
+	<h:form>
+		<rich:spacer height="8px" width="100%" />
+		<div align="right" style="width: 100%">
+			<h:commandButton value="#{messages.salir}" style="margin-top:0px; margin-bottom:0px; margin-right:0px;" action="atras" immediate="true" />
+		</div>
+	</h:form>
+	<ui:include src="/modEnsayo/ensayo_conduccion/codebase/plantillas/AdvertenciaFirmarHoja.xhtml">
+		<ui:param name="control" value="#{listarCRD}" />
+		<ui:param name="listaIdElementos" value="tb" />
+	</ui:include>
+</ui:composition>

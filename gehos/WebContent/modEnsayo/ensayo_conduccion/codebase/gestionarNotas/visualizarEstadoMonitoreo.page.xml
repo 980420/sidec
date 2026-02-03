@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<page    xmlns               ="http://jboss.com/products/seam/pages"  
+         xmlns:xsi           ="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">  
+           
+    <begin-conversation flush-mode="manual" join="true"/>
+    <action execute="#{listarNotasGenerales.refresh()}"/>
+    <param name="idSujeto"/>
+    <param name="idNota"/>
+    <param name="idGrupo" value="#{visualizarEstadoMonitoreo.idGrupo}"/>
+    <param name="idGrupo" value="#{listarNotasGenerales.idGrupo}"/>
+    <action execute="#{visualizarEstadoMonitoreo.initConversation()}"/>
+    
+    
+	<navigation from-action="listarNotasMonitoreo">	
+		<end-conversation before-redirect="true"/>
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/buscarNotas/listarNotasMonitoreo.xhtml">
+		<param name="idSujeto" value="#{idSujeto}"/>
+		<param name="idGrupo" value="#{visualizarEstadoMonitoreo.idGrupo}"/>
+		</redirect>
+	</navigation>
+	
+	<navigation from-action="responderNota">
+		<end-conversation before-redirect="true"/>
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/crearNota/responderNotaGeneral.xhtml">
+		<param name="idNota" value="#{idNota}"/>
+		<param name="idGrupo" value="#{visualizarEstadoMonitoreo.idGrupo}"/>	
+		</redirect>
+	</navigation>
+	
+	<navigation from-action="listarNotasSitio">	
+    <end-conversation before-redirect="true"/>
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/buscarNotas/listarNotasSitio.xhtml">
+		<param name="idSujeto" value="#{idSujeto}"/>
+		<param name="idGrupo" value="#{visualizarEstadoMonitoreo.idGrupo}"/>
+		</redirect>
+	</navigation>
+	
+	<navigation from-action="crearNotaGeneral">	
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/crearNota/crearNotaGeneral.xhtml">
+		<param name="idGrupo" value="#{visualizarEstadoMonitoreo.idGrupo}"/>
+		</redirect>
+	</navigation>
+	
+	<navigation from-action="verDetalles">	
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/verNota/verNotaGeneral.xhtml">
+		<param name="idNota" value="#{idNota}"/>
+		<param name="idGrupo" value="#{visualizarEstadoMonitoreo.idGrupo}"/>
+		</redirect>
+	</navigation>
+	
+	
+	<navigation from-action="modificarNota">
+	<end-conversation before-redirect="true"/>
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/modificarNota/modificarNotaGeneral.xhtml">
+		<param name="idNota" value="#{idNota}"/>
+		<param name="idGrupo" value="#{visualizarEstadoMonitoreo.idGrupo}"/>
+		</redirect>
+	</navigation>
+	
+	<navigation from-action="salir">
+		<end-conversation before-redirect="true"/>
+           <redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarNotas/seleccionarGrupoSujeto.xhtml" >	           		
+           </redirect>
+	</navigation>
+</page>

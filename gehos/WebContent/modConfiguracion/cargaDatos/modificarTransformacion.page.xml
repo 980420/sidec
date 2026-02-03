@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.1.xsd">
+
+
+	<navigation>
+		<rule if-outcome="cancelar">
+			<redirect view-id="/modConfiguracion/cargaDatos/buscarTransformacion.xhtml" />
+		</rule>
+	</navigation>
+	
+	<navigation from-action="#{editTransf.modificarTransf()}">
+	<rule if-outcome="ok">
+		<redirect view-id="/modConfiguracion/cargaDatos/buscarTransformacion.xhtml" />
+	</rule>
+		
+	</navigation>
+
+</page>

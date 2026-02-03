@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<begin-conversation flush-mode="manual" join="true" />
+	<action execute="#{raFunctions.init()}" if="#{raFunctions.execute}" />
+
+	<navigation>
+		<rule if="#{raFunctions.ca_keystore != null}">
+			<end-conversation before-redirect="true" />
+			<redirect view-id="/modConfiguracion/pki/caroot/verdetallescaraiz.xhtml"></redirect>
+		</rule>
+	</navigation>
+
+	<navigation from-action="#{raFunctions.createcaKeystore()}"
+		evaluate="#{raFunctions.error}">
+		<rule if-outcome="false">
+			<end-conversation before-redirect="true" />
+			<redirect view-id="/modConfiguracion/pki/caroot/verdetallescaraiz.xhtml"></redirect>
+
+		</rule>
+	</navigation>
+
+	<navigation from-action="cancelar">
+
+		<end-conversation before-redirect="true" />
+		<redirect view-id="/modCommons/modHome/home.gehos">
+			<param name="idFuncionalidad" value="#{activeModule.activeModule.id}" />
+			<param name="idancestors" value="#{activeModule.activeModule.id}a" />
+			<param name="moduleName" value="#{activeModule.activeModuleName}" />
+		</redirect>
+
+	</navigation>
+</page>

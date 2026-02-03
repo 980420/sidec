@@ -1,0 +1,146 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+
+  <div id="favoritesContent"  class="realContent" style="display: none;">
+          		<div  class="borderMarginR">
+               		 <div  class="borderMarginL">
+                        <div  class="backGradient">
+                             <div id="favoritess">
+                                <div style="padding-top:5px;width:705px;margin-bottom:5px;">
+                                                                             <!--  favorites -->
+                                        <table id="favorites" cellpadding="0" cellspacing="0" style="float:left; margin-right:5px;">
+                                             <tr>
+                                                <td class="buttonEntitysL"></td>
+                                               <td class="buttonEntitysBack">
+                                                 <div style="background-image:url(#{theme.color}/images/icons/favoritestar.png)" class="iconBar">
+                                                   
+                                                   </div>
+                                                </td>
+                                               <td class="buttonEntitysBack">
+                                                  <div class="nameButtonE" style="padding-right:5px;">
+                                                    <a class="single">#{messages.lbl_Favoritos_com}</a>
+                                                  </div>
+                                               </td>
+                                                <td class="buttonEntitysR"></td>
+                                             </tr>
+                                       </table>
+                                        
+                                       <!-- end favorites --> 
+                                        <!--  trace loop -->
+                                        <table id="trace2"  cellpadding="0" cellspacing="0"  >
+                                             <tr>
+                                                <td class="buttonModulesL"></td>
+                                               <td class="buttonModulesBack">
+                                                 <div style="background-image:url(#{theme.color}/images/icons/modulos_azul.png)" class="iconBar">
+                                                   
+                                                   </div>
+                                                </td>
+                                               <td class="buttonModulesBack">
+                                                  <div class="nameButtonE" style="padding-right:5px;">
+                                                    <a href="#"  class="mylinksEntitys" onclick="showFavorites(false,event)" >#{messages.lbl_Modulos_com}</a>
+                                                  </div>
+                                               </td>
+                                                <td class="buttonModulesR"></td>
+                                             </tr>
+                                       </table>
+                                        
+                                       <!-- end trace loop -->
+
+                                </div>
+                                <h:form>
+                                <a:outputPanel id="favoritos" ajaxRendered="true">
+                                <s:div rendered="#{viewSelectorBuilder.favoritos().size()==0}" style="text-align:center">
+                                    #{messages.msg_noExistenElementos_com}
+                                </s:div>
+                                <rich:dataGrid value="#{viewSelectorBuilder.favoritos()}" var="modu" columns="3" width="100%" rendered="#{viewSelectorBuilder.favoritos().size()!=0}">
+                                <c:set var="conc"
+											value="/resources/modCommon/moduleimages/#{theme.name}/#{modu.image}"></c:set>
+				
+				                  
+				                  <c:if test="#{not viewSelectorBuilder.existFile(conc)}">
+				                  	<c:set var="conc"
+											value="/resources/modCommon/moduleimages/#{theme.name}/generic.png"></c:set>
+				                  </c:if>
+				                  <s:div rendered="#{not viewSelectorBuilder.isGroup(modu.id)}">
+				                            <div class="deleteFav" style="z-index:2000" >
+                                                   
+                                                   <h:graphicImage onclick="addToFavorites2('#{modu.id}','#{modu.entityId}',event)" title="#{messages.tit_quitarFav_com}"
+									            		style="opacity: 0.4;border:0px;" 
+									            		url="/resources/icons/default/acciones/eliminar.png" 
+									            		>
+									            		<rich:effect event="onmouseover" type="Opacity" params="duration:0.3, from:0.4, to:1.0" />
+								        				<rich:effect event="onmouseout"  type="Opacity" params="duration:0.3, from:1.0, to:0.4" />
+									            	</h:graphicImage>
+                                                   
+                                                   </div>
+                                       	  <div class="bgFav" onclick="javascript:gotourl('#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}','#{rewriteFilter.viewMapping}','#{modu.name}','#{modu.id}');">
+
+                                              <div class="moduleFavIMG" style="background-image:url(#{theme.color}/images/icons/bg.png);">
+                                                								<s:div styleClass="bgModFav"
+																					style="background-image:url(#{facesContext.externalContext.requestContextPath}#{conc})"
+																					rendered="#{viewSelectorBuilder.existFile(conc)}"></s:div>
+																			    <s:div
+																					styleClass="bgModFav"
+																					style="background-image:url(#{facesContext.externalContext.requestContextPath}/resources/modCommon/moduleimages/#{theme.name}/generic.png)"
+																					rendered="#{not viewSelectorBuilder.existFile(conc)}"></s:div>
+                                              </div>
+                                              <div class="moduleDescr">
+                                                 
+                                                 <div class="contentFav">#{modu.label}</div>
+                                                 <div class="sepFav contentFav"></div>
+                                                 <s:div styleClass="entiFav contentFav" rendered="#{not modu.children}">#{modu.parentName}</s:div>
+                                                 <div class="entiFav contentFav" >#{modu.entityName}</div>
+                                                   
+                                              </div>
+                                               
+                                          </div> 
+                                          </s:div>
+                                        
+                                           <s:div rendered="#{viewSelectorBuilder.isGroup(modu.id)}">
+				                            <div class="deleteFav" style="z-index:2000" >
+                                                   
+                                                   <h:graphicImage onclick="addToFavorites2('#{modu.id}','#{modu.entityId}',event)" title="#{messages.tit_quitarFav_com}"
+									            		style="opacity: 0.4;border:0px;" 
+									            		url="/resources/icons/default/acciones/eliminar.png" 
+									            		>
+									            		<rich:effect event="onmouseover" type="Opacity" params="duration:0.3, from:0.4, to:1.0" />
+								        				<rich:effect event="onmouseout"  type="Opacity" params="duration:0.3, from:1.0, to:0.4" />
+									            	</h:graphicImage>
+                                                   
+                                                   </div>
+                                       	  <div class="bgFav" onclick="javascript:click2('#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}','#{rewriteFilter.viewMapping}','#{theme.name}','#{modu.id}','#{modu.entityId}')">
+
+                                              <div class="moduleFavIMG" style="background-image:url(#{theme.color}/images/icons/bg.png);">
+                                                								<s:div styleClass="bgModFav"
+																					style="background-image:url(#{facesContext.externalContext.requestContextPath}#{conc})"
+																					rendered="#{viewSelectorBuilder.existFile(conc)}"></s:div>
+																			    <s:div
+																					styleClass="bgModFav"
+																					style="background-image:url(#{facesContext.externalContext.requestContextPath}/resources/modCommon/moduleimages/#{theme.name}/generic.png)"
+																					rendered="#{not viewSelectorBuilder.existFile(conc)}"></s:div>
+                                              </div>
+                                              <div class="moduleDescr">
+                                                 
+                                                 <div class="contentFav">#{modu.label}</div>
+                                                 <div class="sepFav contentFav"></div>
+                                                 <s:div styleClass="entiFav contentFav" rendered="#{not modu.children}">#{modu.parentName}</s:div>
+                                                 <div class="entiFav contentFav" >#{modu.entityName}</div>
+                                                   
+                                              </div>
+                                               
+                                          </div> 
+                                          </s:div>
+                                </rich:dataGrid>
+                                </a:outputPanel>
+                                 </h:form>
+                             </div>
+                        </div></div></div></div>
+
+</s:div>

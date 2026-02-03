@@ -1,0 +1,146 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css">
+.rich-stglpanel-body {
+	padding: 0px
+}
+</style>
+		<style type="text/css">
+.dr-mpnl-pnl-b {
+	padding: 1px;
+}
+
+.dr-mpnl-pnl {
+	border: 1px !important;
+	border-style: solid !important;
+	border-color: #BED6F8 !important;
+}
+</style>
+		<style type="text/css">
+.rich-panel-body {
+	padding: 0px
+}
+</style>
+		<style type="text/css">
+.aliCh {
+	vertical-align: text-top !important;
+}
+</style>
+
+		<s:div
+			rendered="#{not ubicacionVerDetallesControlador.from.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+		</s:div>
+		<s:div
+			rendered="#{ubicacionVerDetallesControlador.from.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.titulo1}')</script>
+		</s:div>
+
+		<a4j:outputPanel ajaxRendered="true">
+			<rich:messages id="error" styleClass="message" for="error" ajaxRendered="true" />
+		</a4j:outputPanel>
+
+		<h:form id="camaSearch" styleClass="edit">
+			<s:validateAll>
+				<rich:panel>
+					<f:facet name="header">#{messages.datos}</f:facet>
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr>
+							<td style="height: 13px;" colspan="6"></td>
+						</tr>
+						<tr style="vertical-align: top;">
+							<td style="width: 7px;"></td>
+							<td>#{messages.identificador}</td>
+							<td><rich:spacer width="9px" /> <h:outputText id="nombre"
+								style=" width : 148px;" styleClass="dataText"
+								value="#{ubicacionVerDetallesControlador.ubicacion.identificador}" /></td>
+							<td style="width: 25px"></td>
+							<td>#{messages.entidad}</td>
+							<td><rich:spacer width="9px" /> <h:outputText id="tipocama"
+								style=" width : 148px;" styleClass="dataText"
+								value="#{ubicacionVerDetallesControlador.ubicacion.entidad.nombre}" 
+								rendered="#{ubicacionVerDetallesControlador.ubicacion.entidad != null}" />
+								<h:outputText rendered="#{ubicacionVerDetallesControlador.ubicacion.entidad == null}"
+									style=" width : 148px;" styleClass="dataText"
+									value="-" />
+
+							</td>
+
+							<td style="width: 25px"></td>
+							<td>#{messages.ubicacion}</td>
+							<td><rich:spacer width="9px" /> <h:outputText
+								id="ubicacion" style=" width : 148px;" styleClass="dataText"
+								value="#{ubicacionVerDetallesControlador.location}" 
+								rendered="#{ubicacionVerDetallesControlador.ubicacion.entidad != null and ubicacionVerDetallesControlador.ubicacion.ubicacion != null }" />
+							<h:outputText style=" width : 148px;" styleClass="dataText"
+								rendered="#{ not(ubicacionVerDetallesControlador.ubicacion.entidad != null and ubicacionVerDetallesControlador.ubicacion.ubicacion != null) }" 
+								value="-" /></td>
+						</tr>
+						<tr>
+							<td height="8px" />
+						</tr>
+						<tr>
+							<td style="width: 7px;"></td>
+							<td>#{messages.tipoUbicacion}</td>
+							<td><rich:spacer width="9px" /> <h:outputText id="estado"
+								style=" width : 148px;" styleClass="dataText"
+								value="#{ubicacionVerDetallesControlador.ubicacion.tipoUbicacion.descripcion}" />
+
+							</td>
+
+
+						</tr>
+						<tr>
+							<td height="7px" />
+						</tr>
+
+					</table>
+				</rich:panel>
+			</s:validateAll>
+			<rich:spacer height="8px" style="display: block"></rich:spacer>
+
+			<div align="right">
+			<table cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td><h:commandButton id="modificar" tabindex="2"
+						rendered="#{ubicacionVerDetallesControlador.from != 'listar'}"
+						value="#{messages.modificar}" action="#{ubicacionModificarControlador.setUbicacionId(ubicacionVerDetallesControlador.ubicacionId)}"
+						style="margin-bottom: 0px; margin-right: 0px; margin-left: 0px; margin-top: 0px">
+					</h:commandButton></td>
+					<td><a4j:commandButton
+						rendered="#{ubicacionVerDetallesControlador.from != 'listar'}"
+						id="btnEliminar" tabindex="1"
+						style="margin-bottom: 0px; margin-right: 5px; margin-left: 10px; margin-top: 0px"
+						onclick="Richfaces.showModalPanel('eliminar_ubicacion')"
+						value="#{messages.eliminar}">
+					</a4j:commandButton></td>
+					<td><h:commandButton immediate="true"
+						value="#{messages.salir}" action="salir"
+						style="margin-bottom: 0px; margin-right: 0px; margin-left: 5px; margin-top: 0px"
+						tabindex="3" propagation="end"></h:commandButton></td>
+				</tr>
+			</table>
+			<rich:spacer height="8px" style="display: block"></rich:spacer></div>
+
+		</h:form>
+
+
+		<ui:include
+			src="/modConfiguracion/management/gestionarUbicacion/modalspanel/ConfirmarEliminarUbicacionVerDetalles.xhtml" />
+	</ui:define>
+
+</ui:composition>
+

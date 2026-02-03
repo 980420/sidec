@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<action execute="#{nacionBuscarControlador.begin()}"/>
+
+	<!-- go to create -->
+	<navigation from-action="#{nacionCrearControlador.begin()}" evaluate="#{nacionCrearControlador.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarNaciones/CrearNacion.xhtml" />
+		</rule>
+	</navigation>
+	
+	<!-- go to view details -->
+	<navigation from-action="#{nacionVerDetallesControlador.setNacionId(nacion.id)}" evaluate="#{nacionVerDetallesControlador.error}">
+		<rule if-outcome="0">		
+			<redirect view-id="/modConfiguracion/management/gestionarNaciones/VerDetallesNacion.xhtml">			
+				<param name="from" value="listar" />
+			</redirect>
+		</rule>		
+	</navigation>
+	
+	<!-- go to modify -->
+	<navigation from-action="#{nacionModificarControlador.setNacionId(nacion.id)}" evaluate="#{nacionModificarControlador.error}">		
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarNaciones/ModificarNacion.xhtml" />
+		</rule>
+	</navigation>
+</page>

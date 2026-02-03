@@ -1,0 +1,30 @@
+<rich:toolBar 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:rich="http://richfaces.org/rich">
+    <rich:toolBarGroup>
+        <h:outputText value="#{projectName}:"/>
+        <s:link view="/toolsgenerated/pharmacy/home.xhtml" value="Home"/>
+    </rich:toolBarGroup>
+    <s:link view="/toolsgenerated/pharmacy/PharmacyMedicineRequestList.xhtml" 
+           value="PharmacyMedicineRequest List" 
+     propagation="none"/>
+    <s:link view="/toolsgenerated/pharmacy/CtgAreaList.xhtml" 
+           value="CtgArea List" 
+     propagation="none"/>
+    <s:link view="/toolsgenerated/pharmacy/CtgMeasuresList.xhtml" 
+           value="CtgMeasures List" 
+     propagation="none"/>
+    <s:link view="/toolsgenerated/pharmacy/CtgMedicineList.xhtml" 
+           value="CtgMedicine List" 
+     propagation="none"/>
+    <!-- @newMenuItem@ -->
+    <rich:toolBarGroup location="right">
+        <h:outputText value="Welcome, #{identity.username}!" rendered="#{identity.loggedIn}"/>
+        <s:link view="/toolsgenerated/pharmacy/login.xhtml" value="Login" rendered="#{not identity.loggedIn}"/>
+        <s:link view="/toolsgenerated/pharmacy/home.xhtml" action="#{identity.logout}" value="Logout" rendered="#{identity.loggedIn}"/>
+    </rich:toolBarGroup>
+</rich:toolBar>

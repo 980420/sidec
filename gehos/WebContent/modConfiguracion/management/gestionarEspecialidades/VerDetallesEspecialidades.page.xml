@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<param name="especialidadId" value="#{especialidadVerDetallesControlador.especialidadId}"/>
+	<param name="from" value="#{especialidadVerDetallesControlador.from}" />
+	<param name="open" />
+	<param name="order" />
+	<param name="firstResult" />
+	<param name="critB1" />
+	<param name="critB2" />
+
+	<navigation from-action="modificar">
+		<rule>
+			<redirect
+				view-id="/modConfiguracion/management/gestionarEspecialidades/ModificarEspecialidades.xhtml">
+				<param name="especialidadId"
+					value="#{especialidadVerDetallesControlador.especialidadId}" />
+				<param name="open" value="#{open}" />
+				<param name="firstResult" value="#{firstResult}" />
+				<param name="order" value="#{order}" />
+				<param name="critB1" value="#{critB1}" />
+				<param name="critB2" value="#{critB2}" />
+			</redirect>
+			<end-conversation before-redirect="true" />
+		</rule>
+	</navigation>
+
+	<navigation from-action="salir">
+		<rule>
+			<redirect
+				view-id="/modConfiguracion/management/gestionarEspecialidades/BuscarEspecialidades.xhtml">
+				<param name="open" value="#{open}" />
+				<param name="firstResult" value="#{firstResult}" />
+				<param name="order" value="#{order}" />
+				<param name="critB1" value="#{critB1}" />
+				<param name="critB2" value="#{critB2}" />
+			</redirect>
+			<end-conversation before-redirect="true" />
+		</rule>
+	</navigation>
+
+	<navigation from-action="#{especialidadVerDetallesControlador.eliminar()}">
+		<rule if-outcome="eliminar">
+			<redirect
+				view-id="/modConfiguracion/management/gestionarEspecialidades/BuscarEspecialidades.xhtml">
+				<param name="open" value="#{open}" />
+				<param name="firstResult" value="#{firstResult}" />
+				<param name="order" value="#{order}" />
+				<param name="critB1" value="#{critB1}" />
+				<param name="critB2" value="#{critB2}" />
+			</redirect>
+			<end-conversation before-redirect="true" />
+		</rule>
+	</navigation>
+
+</page>

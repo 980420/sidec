@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE datasources
+    PUBLIC "-//JBoss//DTD JBOSS JCA Config 1.5//EN"
+    "http://www.jboss.org/j2ee/dtd/jboss-ds_1_5.dtd">
+
+<datasources>
+
+	<local-tx-datasource>
+		<jndi-name>gehosDatasource</jndi-name>
+
+
+		<!-- <connection-url>jdbc:postgresql://localhost/PDVSA_STAGE</connection-url> -->
+
+		<!-- <connection-url>jdbc:postgresql://localhost/PDVSA</connection-url> -->
+
+
+		<!-- <connection-url>jdbc:postgresql://10.13.9.59/HIS</connection-url> 
+			<user-name>postgres</user-name> <password>qweasdzxc</password> -->
+
+		<!-- <connection-url>jdbc:postgresql://167.175.105.36/his_prueba</connection-url> 
+			<user-name>his</user-name> <password>gehosBD</password> -->
+		<!-- <connection-url>jdbc:postgresql://10.172.253.15/orip107?autoReconnect=false</connection-url> 
+			<user-name>usuario_sis_his</user-name> <password>123*</password> -->
+		
+		<connection-url>jdbc:postgresql://localhost/sidec_cencec_110325</connection-url> 
+		<user-name>postgres</user-name>
+		<password>1234</password> 
+		<!-- 
+		<connection-url>jdbc:postgresql://localhost/sidec_cencec_20250225</connection-url> 
+		<user-name>postgres</user-name>
+		<password>admin</password>-->
+		
+		
+		
+		
+	     <!-- <connection-url>jdbc:postgresql://10.56.8.174/xavia_his</connection-url> 
+		<user-name>componentes</user-name>
+		<password>C0mp0n3nt3s</password>-->
+		
+		<driver-class>org.postgresql.Driver</driver-class>
+		<new-connection-sql>select 1</new-connection-sql>
+		<check-valid-connection-sql>select 1</check-valid-connection-sql>
+		<min-pool-size>1</min-pool-size>
+		<max-pool-size>1</max-pool-size>
+
+		<!-- <exception-sorter-class-name> org.jboss.resource.adapter.jdbc.vendor.MySQLExceptionSorter 
+			</exception-sorter-class-name> <metadata> <type-mapping>mySQL</type-mapping> 
+			</metadata> -->
+	</local-tx-datasource>
+
+</datasources>
+

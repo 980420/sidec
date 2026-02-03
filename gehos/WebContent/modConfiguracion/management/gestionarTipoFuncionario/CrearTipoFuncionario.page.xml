@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<!-- validation -->	
+	<navigation>
+		<rule if="#{tipoFuncionarioCrearControlador.tipoFuncionario == null}">
+			<redirect view-id="/modConfiguracion/management/gestionarTipoFuncionario/BuscarTipoFuncionario.xhtml" />			
+		</rule>			
+	</navigation>
+
+	<navigation from-action="#{tipoFuncionarioCrearControlador.crear()}" evaluate="#{tipoFuncionarioCrearControlador.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarTipoFuncionario/VerDetallesTipoFuncionario.xhtml">
+				<param name="id" value="#{tipoFuncionarioCrearControlador.tipoFuncionario.id}" />
+				<param name="from" value="crear" />
+			</redirect>
+			<end-conversation before-redirect="true" />
+		</rule>
+	</navigation>
+
+	<navigation from-action="cancelar">
+		<redirect view-id="/modConfiguracion/management/gestionarTipoFuncionario/BuscarTipoFuncionario.xhtml" />		
+	</navigation>
+</page>

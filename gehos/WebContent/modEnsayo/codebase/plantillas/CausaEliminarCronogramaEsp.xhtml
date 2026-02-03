@@ -1,0 +1,84 @@
+<rich:modalPanel resizeable="false" id="mpCausaEliminarCronogramaEsp" width="150"
+   autosized="true"
+   			      xmlns     ="http://www.w3.org/1999/xhtml" 
+ 			      xmlns:ui  ="http://java.sun.com/jsf/facelets" 
+      		      xmlns:h   ="http://java.sun.com/jsf/html" 
+			      xmlns:f   ="http://java.sun.com/jsf/core" 
+			      xmlns:s   ="http://jboss.com/products/seam/taglib" 
+			      xmlns:rich="http://richfaces.org/rich" 
+                  xmlns:a4j ="http://richfaces.org/a4j" 
+ > 
+  
+			<f:facet name="header">				
+				<h:outputText value="#{messages.causaEliminarCronogramaEspecifico}"></h:outputText>		
+			</f:facet>			
+			<f:facet name="controls">
+				<a4j:commandButton id="botonCerrar" 
+					image="/resources/icons/default/acciones/cerrar.gif">
+					<rich:componentControl 
+						for="mpCausaEliminarCronogramaEsp" 
+						event="onclick" 
+						operation="hide"
+						attachTo="botonCerrar">
+					</rich:componentControl>
+				</a4j:commandButton>
+			</f:facet>
+			<h:form id="elim_funcionalidad_panel_form">			
+			<table cellpadding="0px" cellspacing="0px" width="100%" >
+				<tr>
+					<td style="height: 12px;" colspan="6">
+                    </td>
+				</tr>	
+				
+				<tr>
+				<td><rich:spacer></rich:spacer></td>
+				<td colspan="3">
+				<s:div >
+				<h:outputLabel styleClass='normalText' value='#{messages.causaEliminar}' />
+				<rich:message for="causa" showDetail="false" tooltip="true" style="color:red;"> 
+										<f:facet name="errorMarker"> 
+											<h:outputText value="*" title="#{facesMessages.getCurrentMessagesForControl('causa').get(0).getDetail()}" /> 
+										</f:facet> 
+									</rich:message><br />
+								<br />
+				<h:inputTextarea  id='causa' style='width:90%' value='#{eliminarCronogramaEspecifico.causaDescripcion}' 
+								required="#{!empty param['elim_funcionalidad_panel_form:elim']}"
+								requiredMessage="#{messages.obligatorio}" />					
+				</s:div>
+				</td>
+				</tr>
+					
+					                  
+				
+				<tr>
+			<td style="height: 7px;" colspan="6"></td>
+		      </tr>
+				<tr>
+					<td colspan="3">
+						<s:div style="text-align:center">
+																	
+							
+							
+							
+							<a4j:commandButton id="elim"
+								value="#{messages['aceptar']}" 
+								oncomplete="javascript:Richfaces.showModalPanel('mpCausaEliminarCronogramaEsp');"
+								reRender="#{listado}">
+							</a4j:commandButton>
+								
+												
+							<a4j:commandButton id="btnNo" value="#{messages['cancelar']}" >
+								<rich:componentControl 
+									for="mpCausaEliminarCronogramaEsp" 
+									event="onclick" 
+									operation="hide"
+									attachTo="btnNo">
+								</rich:componentControl>
+							</a4j:commandButton>								
+						</s:div>
+					</td>
+				</tr>
+			</table>
+			</h:form>
+		</rich:modalPanel>
+		

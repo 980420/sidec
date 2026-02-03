@@ -1,0 +1,555 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core" template="#{theme.template}">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+		<!-- Estilo para los mensajes -->
+		<style type="text/css">
+		.custom-error {
+					border: 1px solid #FFCC00;
+					padding: 5px;
+					background-color: #F0F8FF;
+					font-size: 10px;
+					font-family: "Verdana";
+					position: relative;	left: 5px; top: 5px; 
+					margin-right: 10px;
+				}	
+		</style>
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+
+		<h:form id="camaSearch" styleClass="edit">
+			<a4j:outputPanel ajaxRendered="true" id="errorOutputPanel">
+				<s:div style="height:30px;width:100%"
+					rendered="#{facesMessages.getCurrentMessagesForControl('camaSearch').size() > 0 }">
+					<div class="custom-error">
+						<rich:message for="camaSearch"></rich:message>
+					</div>	
+				</s:div>
+			</a4j:outputPanel>
+			<rich:simpleTogglePanel label="#{messages.criterios}"
+				switchType="client"
+				opened="#{servicioClinicoBuscarControlador.state}">
+				<a4j:support event="oncollapse" ajaxSingle="true"
+					action="#{servicioClinicoBuscarControlador.changeStateSimpleTogglePanel()}"
+					reRender="aServicioList" />
+				<a4j:support event="onexpand" ajaxSingle="true"
+					action="#{servicioClinicoBuscarControlador.changeStateSimpleTogglePanel()}"
+					reRender="aServicioList" />
+
+				<s:div id="searchCriteria">
+				<table cellpadding="0px" cellspacing="0px" border="0px">
+					<tr>
+						<td style="height: 13px;" colspan="6"></td>
+					</tr>
+					<tr style="vertical-align: top;">
+						<td><rich:spacer width="7px" /></td>
+						<td><h:outputLabel value="#{messages.codigoB}" /> <br />
+						<h:inputText style=" width : 148px"
+							tabindex="1" value="#{servicioNoClinicoBuscarControlador.codigo}" /></td>
+
+						<td><rich:spacer width="25px" /></td>
+						<td><h:outputLabel value="#{messages.nombreB}" /><br />
+						<h:inputText style=" width : 148px;" tabindex="2"
+							value="#{servicioNoClinicoBuscarControlador.nombre}" /></td>
+						<td><rich:spacer width="25px" /></td>
+						<td><h:outputLabel value="#{messages.departamentoClinicoB}" /><br />
+						<rich:comboBox id="departamento" enableManualInput="false"
+							tabindex="3"
+							suggestionValues="#{servicioNoClinicoBuscarControlador.departamentos()}"
+							style=" width: 150px;" defaultLabel="#{messages.seleccione}"
+							value="#{servicioNoClinicoBuscarControlador.departamentoSeleccionado}">
+
+							<a4j:support ajaxSingle="true" event="onselect"
+								action="#{servicioNoClinicoBuscarControlador.filtrarDepartamento()}"
+								reRender="comboCategorias,subCategorias,botones" />
+						</rich:comboBox></td>
+						<td><rich:spacer width="7px" /></td>
+					</tr>
+					<tr>
+						<td height="8px" />
+					</tr>
+					<tr>
+						<td style="width: 7px;"></td>
+						<td><a4j:outputPanel id="comboCategorias">
+							<rich:spacer
+								rendered="#{servicioNoClinicoBuscarControlador.categorias().size() > 1}">
+								<h:outputLabel value="#{messages.servicioClinicoB}" />
+								<br />
+								<rich:comboBox
+									suggestionValues="#{servicioNoClinicoBuscarControlador.categorias()}"
+									style="width: 150px;" defaultLabel="#{messages.seleccione}"
+									enableManualInput="false" tabindex="4"
+									value="#{servicioNoClinicoBuscarControlador.categoriaSeleccionada}">
+
+									<a4j:support ajaxSingle="true" event="onselect"
+										action="#{servicioNoClinicoBuscarControlador.buscarSubCategorias('cat',0)}"
+										reRender="subCategorias" />
+								</rich:comboBox>
+
+								<rich:spacer height="9px" style="display: block"></rich:spacer>
+							</rich:spacer>
+						</a4j:outputPanel></td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td align="right"><a4j:outputPanel id="subCategorias">
+							<c:forEach varStatus="i" 
+								items="#{servicioNoClinicoBuscarControlador.subCategorias}"
+								var="sub_categoria">
+								
+								<s:div rendered="#{sub_categoria.categorias.size() > 1}">
+
+								<rich:comboBox suggestionValues="#{sub_categoria.categorias}"
+									immediate="true" style=" width : 150px;" tabindex="5"
+									enableManualInput="false" defaultLabel="#{messages.seleccione}"
+									value="#{sub_categoria.padre}">
+
+									<a4j:support event="onselect" ajaxSingle="true"
+										action="#{servicioNoClinicoBuscarControlador.buscarSubCategorias('sub',sub_categoria.pos)}"
+										reRender="subCategorias" />
+								</rich:comboBox>
+								<rich:spacer height="10px" style="display: block" />
+								</s:div>
+							</c:forEach>
+						</a4j:outputPanel></td>
+					</tr>
+					<tr style="vertical-align: top;">
+						<td style="width: 7px;"></td>
+						<td colspan="4"></td>
+						<td>
+						<div align="right"><a4j:outputPanel id="botones">
+							<rich:spacer height="2px" style="display: block"
+								rendered="#{empty servicioNoClinicoBuscarControlador.categorias()}" />
+							<table cellpadding="0" cellspacing="0" border="0">
+								<tr>
+									<td><h:commandButton id="search"
+										action="#{servicioNoClinicoBuscarControlador.buscar()}"
+										value="#{messages.buscar}" tabindex="6"
+										style="margin-bottom: 0px; margin-right: 5px; margin-left: 0px; margin-top: 0px" />
+									</td>
+									<td><s:button view="/modCommons/modHome/home.gehos"
+										value="#{messages.cancelar}" tabindex="7"
+										style="margin-bottom: 0px; margin-right: 0px; margin-left: 5px; margin-top: 0px"
+										rendered="#{not identificadorManager.editing}">
+										<f:param name="idFuncionalidad"
+											value="#{activeModule.activeModule.id}" />
+										<f:param name="idancestors"
+											value="#{activeModule.activeModule.id}a" />
+										<f:param name="moduleName"
+											value="#{activeModule.activeModuleName}" />
+									</s:button></td>
+								</tr>
+							</table>
+						</a4j:outputPanel></div>
+						</td>
+					</tr>
+				</table> </s:div>
+				<rich:spacer height="7px" style="display: block"></rich:spacer>
+			</rich:simpleTogglePanel>
+			<rich:spacer height="11px" style="display: block" />
+
+
+			<div align="right"><h:panelGrid columns="2" cellpadding="1"
+				cellspacing="0" border="0">
+				<a4j:commandLink action="#{servicioNoClinicoCrearControlador.begin()}"
+				status="showModalStatus">
+				<h:graphicImage style="border: 0px;cursor: pointer" height="12" width="12"
+					title="#{messages.adicionar}" 
+					value="/resources/icons/default/acciones/adicionar.png" />
+				</a4j:commandLink>
+				<a4j:commandLink value="#{messages.adicionar}" 
+					title="#{messages.adicionar}"
+					action="#{servicioNoClinicoCrearControlador.begin()}" tabindex="8"  
+					style="cursor: pointer" status="showModalStatus"/>
+			</h:panelGrid></div>
+			<a4j:outputPanel id="aServicioList">
+				<rich:panel
+					rendered="#{servicioNoClinicoBuscarControlador.resultList.size() == 0 and servicioNoClinicoBuscarControlador.nombre == '' and servicioNoClinicoBuscarControlador.codigo == '' and servicioNoClinicoBuscarControlador.departamentoSeleccionado == ''}">
+
+					<f:facet name="header">#{messages.listado}</f:facet>
+					<rich:spacer height="13px" style="display: block" />
+					<div class="results" id="roleList"><rich:spacer width="7px" />
+					<h:outputText value="#{messages.noInf}" /></div>
+					<rich:spacer height="7px" style="display: block" />
+				</rich:panel>
+				<rich:panel
+					rendered="#{servicioNoClinicoBuscarControlador.resultList.size() == 0 and (servicioNoClinicoBuscarControlador.nombre != '' || servicioNoClinicoBuscarControlador.codigo != '' || servicioNoClinicoBuscarControlador.departamentoSeleccionado != '')}">
+					<f:facet name="header">#{messages.listado}</f:facet>
+					<rich:spacer height="13px" style="display: block" />
+					<div class="results" id="roleList"><rich:spacer width="7px" />
+					<h:outputText value="#{messages.noInf2}" /></div>
+					<rich:spacer height="7px" style="display: block" />
+				</rich:panel>
+				<s:div style="margin-left:1px;margin-top:1px"
+					rendered="#{not empty servicioNoClinicoBuscarControlador.resultList}">
+					<rich:dataTable id="serviciosList_datatable" style="width:100%"
+						var="servicio"
+						value="#{servicioNoClinicoBuscarControlador.resultList}"
+						columnsWidth="10%, 40%, 50%,  0*, 0*, 0*">
+						<f:facet name="header">
+							<s:div>
+								<div style="float: left;">#{messages.listado}</div>
+							</s:div>
+						</f:facet>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.codigo}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not servicioNoClinicoBuscarControlador.order.equals('servicio.codigo asc') and not servicioNoClinicoBuscarControlador.order.equals('servicio.codigo desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="fCodigo"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{servicioNoClinicoBuscarControlador.order.equals('servicio.codigo asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="fCodigo"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{servicioNoClinicoBuscarControlador.order.equals('servicio.codigo desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="fCodigo"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+							#{servicio.codigo}
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.nombre}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not servicioNoClinicoBuscarControlador.order.equals('servicio.nombre asc') and not servicioNoClinicoBuscarControlador.order.equals('servicio.nombre desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="fNombre"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{servicioNoClinicoBuscarControlador.order.equals('servicio.nombre asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="fNombre"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{servicioNoClinicoBuscarControlador.order.equals('servicio.nombre desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="fNombre"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+            #{servicio.nombre}
+        </h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.departamentoClinico}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not servicioNoClinicoBuscarControlador.order.equals('servicio.departamento.nombre asc') and not servicioNoClinicoBuscarControlador.order.equals('servicio.departamento.nombre desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="fDepartamento"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{servicioNoClinicoBuscarControlador.order.equals('servicio.departamento.nombre asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="fDepartamento"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{servicioNoClinicoBuscarControlador.order.equals('servicio.departamento.nombre desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="fDepartamento"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+            #{servicio.departamento.nombre}
+        </h:column>
+
+						<h:column>
+							<div align="center"><a4j:commandLink
+								status="showModalStatus" 
+								ajaxSingle="true" immediate="true"
+								onclick="SeleccionarVer('#{servicio.id}')">
+								
+								<h:graphicImage title="#{messages.ver}" style="border: 0px;"
+									value="/resources/icons/default/acciones/ver.png" />
+							</a4j:commandLink></div>
+						</h:column>
+						<h:column>
+							<div align="center"><a4j:commandLink 
+								onclick="SeleccionarModif('#{servicio.id}')"
+								status="showModalStatus">
+								<h:graphicImage title="#{messages.modificar}"
+									style="border: 0px;"
+									value="/resources/icons/default/acciones/modificar.png" />
+							</a4j:commandLink></div>
+						</h:column>
+						<h:column>
+							<div align="center">
+							<a4j:commandLink
+								onclick="SeleccionarStat('#{servicio.id}')" 
+								status="showModalStatus">
+							<h:graphicImage
+								title="#{messages.eliminar}"
+								style="border: 0px; cursor:pointer;"
+								value="/resources/icons/default/acciones/eliminar.png">								
+							</h:graphicImage></a4j:commandLink></div>
+						</h:column>
+						<h:column>
+							<div align="center"><h:graphicImage
+								rendered="#{not servicio.eliminado}"
+								value="/resources/modConfiguracion/visible.png" width="14"
+								height="14" style="border:0px; cursor:pointer"
+								title="#{messages.visibilidad}">
+								<a4j:support event="onclick" ajaxSingle="true"
+									action="#{servicioNoClinicoBuscarControlador.cambiarVisibilidad(servicio.id)}"
+									reRender="aServicioList" status="showModalStatus"/>
+							</h:graphicImage> <h:graphicImage rendered="#{servicio.eliminado}"
+								value="/resources/modConfiguracion/not-visible.png" width="14"
+								height="14" style="border:0px; cursor:pointer"
+								title="#{messages.visibilidad}">
+								<a4j:support event="onclick" ajaxSingle="true"
+									action="#{servicioNoClinicoBuscarControlador.cambiarVisibilidad(servicio.id)}"
+									reRender="aServicioList" status="showModalStatus"/>
+							</h:graphicImage></div>
+						</h:column>
+					</rich:dataTable>
+					
+					<a4j:jsFunction name="SeleccionarStat" action="#{servicioNoClinicoBuscarControlador.seleccionarServicio()}" 
+									oncomplete="Richfaces.showModalPanel('eliminar_servicio_panel')" ajaxSingle="true">
+						<a4j:actionparam name="pos" assignTo="#{servicioNoClinicoBuscarControlador.servicioClinicoEliminarId}"/>
+					</a4j:jsFunction>
+					
+					<a4j:jsFunction name="SeleccionarModif" action="#{servicioNoClinicoBuscarControlador.seleccionarModificar()}" 
+									ajaxSingle="true">
+						<a4j:actionparam name="pos" assignTo="#{servicioNoClinicoBuscarControlador.servicioClinicoEliminarId}"/>
+					</a4j:jsFunction>
+					
+					<a4j:jsFunction name="SeleccionarVer" action="#{servicioNoClinicoBuscarControlador.seleccionarVer()}" 
+									ajaxSingle="true">
+						<a4j:actionparam name="pos" assignTo="#{servicioNoClinicoBuscarControlador.servicioClinicoEliminarId}"/>
+					</a4j:jsFunction>
+					
+					<a4j:status id="showModalStatus" forceId="true" 
+					  onstart="Richfaces.showModalPanel('ajaxLoadingModalBox',{left:1, top:-15});
+					  		   document.body.style.cursor='wait';"
+					  onstop="Richfaces.hideModalPanel('ajaxLoadingModalBox');
+					  		  document.body.style.cursor='default';">
+					</a4j:status>
+					
+					<rich:spacer height="11px" style="display: block" />
+
+					<div class="tableControl" style="width: 100%" align="center"><s:link
+						view="/modConfiguracion/management/gestionarServiciosNoClinicos/BuscarServiciosNoClinicos.gehos"
+						rendered="#{servicioNoClinicoBuscarControlador.previousExists}"
+						id="firstPage">
+						<h:graphicImage title="#{messages.pag1}" style="border: 0px;"
+							value="/resources/icons/default/paginado/#{theme.color}/inicio.png" />
+						<f:param name="open"
+							value="#{servicioNoClinicoBuscarControlador.state}" />
+						<f:param name="firstResult" value="0" />
+						<f:param name="order"
+							value="#{servicioNoClinicoBuscarControlador.order}" />
+						<f:param name="critB1"
+							value="#{parameters.encodec(servicioNoClinicoBuscarControlador.codigo)}" />
+						<f:param name="critB2"
+							value="#{parameters.encodec(servicioNoClinicoBuscarControlador.nombre)}" />
+						<f:param name="critB3"
+							value="#{parameters.encodec(servicioNoClinicoBuscarControlador.departamentoSeleccionado)}" />
+						<f:param name="critB4"
+							value="#{parameters.encodec(servicioNoClinicoBuscarControlador.categoriaSeleccionada)}" />
+						<f:param name="critB5"
+							value="#{parameters.encodec(servicioNoClinicoBuscarControlador.subCateogoriaSeleccionada)}" />
+					</s:link> <h:graphicImage
+						value="/resources/icons/default/paginado/iniciod.png"
+						rendered="#{!servicioNoClinicoBuscarControlador.previousExists}" />
+					<s:link
+						view="/modConfiguracion/management/gestionarServiciosNoClinicos/BuscarServiciosNoClinicos.gehos"
+						rendered="#{servicioNoClinicoBuscarControlador.previousExists}"
+						id="previousPage">
+						<h:graphicImage title="#{messages.pag2}" style="border: 0px;"
+							value="/resources/icons/default/paginado/#{theme.color}/anterior.png" />
+						<f:param name="open"
+							value="#{servicioNoClinicoBuscarControlador.state}" />
+						<f:param name="firstResult"
+							value="#{servicioNoClinicoBuscarControlador.previousFirstResult}" />
+						<f:param name="order"
+							value="#{servicioNoClinicoBuscarControlador.order}" />
+						<f:param name="critB1"
+							value="#{parameters.encodec(servicioNoClinicoBuscarControlador.codigo)}" />
+						<f:param name="critB2"
+							value="#{parameters.encodec(servicioNoClinicoBuscarControlador.nombre)}" />
+						<f:param name="critB3"
+							value="#{parameters.encodec(servicioNoClinicoBuscarControlador.departamentoSeleccionado)}" />
+						<f:param name="critB4"
+							value="#{parameters.encodec(servicioNoClinicoBuscarControlador.categoriaSeleccionada)}" />
+						<f:param name="critB5"
+							value="#{parameters.encodec(servicioNoClinicoBuscarControlador.subCateogoriaSeleccionada)}" />
+					</s:link> <h:graphicImage
+						value="/resources/icons/default/paginado/anteriord.png"
+						rendered="#{!servicioNoClinicoBuscarControlador.previousExists}" />
+					<s:link
+						view="/modConfiguracion/management/gestionarServiciosNoClinicos/BuscarServiciosNoClinicos.gehos"
+						rendered="#{servicioNoClinicoBuscarControlador.nextExists}"
+						id="nextPage">
+						<h:graphicImage title="#{messages.pag3}" style="border: 0px;"
+							value="/resources/icons/default/paginado/#{theme.color}/siguiente.png" />
+						<f:param name="open"
+							value="#{servicioNoClinicoBuscarControlador.state}" />
+						<f:param name="firstResult"
+							value="#{servicioNoClinicoBuscarControlador.nextFirstResult}" />
+						<f:param name="order"
+							value="#{servicioNoClinicoBuscarControlador.order}" />
+						<f:param name="critB1"
+							value="#{parameters.encodec(servicioNoClinicoBuscarControlador.codigo)}" />
+						<f:param name="critB2"
+							value="#{parameters.encodec(servicioNoClinicoBuscarControlador.nombre)}" />
+						<f:param name="critB3"
+							value="#{parameters.encodec(servicioNoClinicoBuscarControlador.departamentoSeleccionado)}" />
+						<f:param name="critB4"
+							value="#{parameters.encodec(servicioNoClinicoBuscarControlador.categoriaSeleccionada)}" />
+						<f:param name="critB5"
+							value="#{parameters.encodec(servicioNoClinicoBuscarControlador.subCateogoriaSeleccionada)}" />
+					</s:link> <h:graphicImage
+						value="/resources/icons/default/paginado/siguiented.png"
+						rendered="#{!servicioNoClinicoBuscarControlador.nextExists}" /> <s:link
+						view="/modConfiguracion/management/gestionarServiciosNoClinicos/BuscarServiciosNoClinicos.gehos"
+						rendered="#{servicioNoClinicoBuscarControlador.nextExists}"
+						id="lastPage">
+						<h:graphicImage title="#{messages.pag4}" style="border: 0px;"
+							value="/resources/icons/default/paginado/#{theme.color}/fin.png" />
+						<f:param name="open"
+							value="#{servicioNoClinicoBuscarControlador.state}" />
+						<f:param name="firstResult"
+							value="#{servicioNoClinicoBuscarControlador.lastFirstResult}" />
+						<f:param name="order"
+							value="#{servicioNoClinicoBuscarControlador.order}" />
+						<f:param name="critB1"
+							value="#{parameters.encodec(servicioNoClinicoBuscarControlador.codigo)}" />
+						<f:param name="critB2"
+							value="#{parameters.encodec(servicioNoClinicoBuscarControlador.nombre)}" />
+						<f:param name="critB3"
+							value="#{parameters.encodec(servicioNoClinicoBuscarControlador.departamentoSeleccionado)}" />
+						<f:param name="critB4"
+							value="#{parameters.encodec(servicioNoClinicoBuscarControlador.categoriaSeleccionada)}" />
+						<f:param name="critB5"
+							value="#{parameters.encodec(servicioNoClinicoBuscarControlador.subCateogoriaSeleccionada)}" />
+					</s:link> <h:graphicImage value="/resources/icons/default/paginado/find.png"
+						rendered="#{!servicioNoClinicoBuscarControlador.nextExists}" /></div>
+				</s:div>
+			</a4j:outputPanel>
+
+
+			<rich:contextMenu attached="false" id="fNombre" submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{servicioNoClinicoBuscarControlador.setOrder('servicio.nombre asc')}"
+					reRender="aServicioList">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{servicioNoClinicoBuscarControlador.setOrder('servicio.nombre desc')}"
+					reRender="aServicioList">
+				</rich:menuItem>
+				
+			</rich:contextMenu>
+
+			<rich:contextMenu attached="false" id="fDepartamento"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{servicioNoClinicoBuscarControlador.setOrder('servicio.departamento.nombre asc')}"
+					reRender="aServicioList">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{servicioNoClinicoBuscarControlador.setOrder('servicio.departamento.nombre desc')}"
+					reRender="aServicioList">
+
+				</rich:menuItem>
+				
+			</rich:contextMenu>
+
+			<rich:contextMenu attached="false" id="fCodigo" submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{servicioNoClinicoBuscarControlador.setOrder('servicio.codigo asc')}"
+					reRender="aServicioList">
+				</rich:menuItem>
+				
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{servicioNoClinicoBuscarControlador.setOrder('servicio.codigo desc')}"
+					reRender="aServicioList">
+				</rich:menuItem>
+				
+			</rich:contextMenu>
+		</h:form>
+		<ui:include
+			src="/modConfiguracion/management/gestionarServiciosNoClinicos/modalspanel/ConfirmarEliminarServiciosNoClinicos.xhtml" />
+			
+		<rich:modalPanel id="ajaxLoadingModalBox" minHeight="10" minWidth="10" 
+	        height="10" width="10" zindex="2000">
+	     <s:div rendered="false">  
+	           <img id="favsloadingdiv" 
+	        	src="#{facesContext.externalContext.requestContextPath}/resources/icons/default/acciones/loading_small.gif"
+	        	style="position: absolute; top: 0px; left: 0px;" />
+	     </s:div>  
+	</rich:modalPanel>
+
+	</ui:define>
+
+</ui:composition>
+

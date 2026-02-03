@@ -1,0 +1,93 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- CSS -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/style/stylesheet.css"
+			rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+		<h:form id="form">
+			<rich:messages id="message" styleClass="message" ajaxRendered="true"
+				for="message" />
+
+			<s:validateAll>
+				<rich:panel>
+					<f:facet name="header">#{messages.datos}</f:facet>
+					<table cellpadding="0px" cellspacing="0px"
+						class="table lh-sint lv-comp-l lh-comp-b lv-comp-r">
+						<tr style="vertical-align: top;">
+							<td class="lvg-bet-comp">#{messages.codigo} <rich:message
+								for="codigo" showDetail="false" showSummary="false"
+								tooltip="true">
+								<f:facet name="errorMarker">
+									<h:outputText
+										title="#{facesMessages.getCurrentMessagesForControl('codigo').get(0).getDetail()}"
+										value="*" styleClass="errorLabel" />
+								</f:facet>
+							</rich:message> <br />
+							<h:inputText id="codigo"
+								validator="#{estadoValidarControlador.codigo}" required="true"
+								requiredMessage="#{messages.valorRequerido}"
+								styleClass="imputText" value="#{estadoCrearControlador.codigo}" />
+							</td>
+							<td class="lvg-bet-comp">#{messages.nombre} <rich:message
+								for="nombre" showDetail="false" showSummary="false"
+								tooltip="true">
+								<f:facet name="errorMarker">
+									<h:outputText
+										title="#{facesMessages.getCurrentMessagesForControl('nombre').get(0).getDetail()}"
+										value="*" styleClass="errorLabel" />
+								</f:facet>
+							</rich:message> <br />
+							<h:inputText id="nombre"
+								validator="#{estadoValidarControlador.valor}" required="true"
+								requiredMessage="#{messages.valorRequerido}"
+								styleClass="imputText" value="#{estadoCrearControlador.valor}" />
+							</td>
+							<td>#{messages.nacion} <rich:message for="nacion"
+								showDetail="false" showSummary="false" tooltip="true">
+								<f:facet name="errorMarker">
+									<h:outputText
+										title="#{facesMessages.getCurrentMessagesForControl('nacion').get(0).getDetail()}"
+										value="*" styleClass="errorLabel" />
+								</f:facet>
+							</rich:message> <br />
+							<rich:comboBox id="nacion"
+								suggestionValues="#{estadoCrearControlador.listNaciones()}"
+								required="true" requiredMessage="#{messages.valorRequerido}"
+								defaultLabel="#{messages.seleccione}" enableManualInput="false"
+								tabindex="2" value="#{estadoCrearControlador.nacionSelecc}">
+							</rich:comboBox></td>
+						</tr>
+					</table>
+				</rich:panel>
+				<div align="right">
+				<table cellpadding="0" cellspacing="0" class="table">
+					<tr>
+						<td class="lv-bet-botton"><h:commandButton id="buttonAceptar"
+							value="#{messages.aceptar}" styleClass="botton"
+							action="#{estadoCrearControlador.crear()}" tabindex="2" /></td>
+						<td><h:commandButton value="#{messages.cancelar}"
+							immediate="true" tabindex="3" action="cancelar"
+							styleClass="botton" /></td>
+					</tr>
+				</table>
+				</div>
+			</s:validateAll>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

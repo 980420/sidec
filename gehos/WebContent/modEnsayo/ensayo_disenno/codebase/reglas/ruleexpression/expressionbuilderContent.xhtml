@@ -1,0 +1,99 @@
+<a4j:form id="form" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+    <rich:messages styleClass="message"
+			ajaxRendered="true" for="form"/>
+	<h:panelGrid columnClasses="panelc" columns="1" width="100%">
+		<rich:panel styleClass="dropTargetPanel">
+			<f:facet name="header">
+				<h:outputText value="Expresión" />
+			</f:facet>
+			<rich:dropSupport id="php" acceptedTypes="*" dropValue="PHP"
+				data="#{dragDropBean.lastItem}" oncomplete="hola(data);" action="#{dragDropBean.PrepareVariableSelection()}"
+				dropListener="#{dragDropBean.processDrop}" reRender="phptable,src,ruleexpModal,literalInputForm">
+			</rich:dropSupport>
+
+			<a4j:outputPanel id="phptable" ajaxRendered="true">
+				<ui:repeat var="fm" value="#{dragDropBean.target}">
+					<s:div styleClass="exp-item">
+						<h:outputText value="#{fm.label}"></h:outputText>
+						<a4j:commandLink value="x"
+							action="#{dragDropBean.removeExpItem(fm)}"
+							styleClass="remove-exp-item"></a4j:commandLink>
+					</s:div>
+				</ui:repeat>
+				<h:outputText style="
+    font-size: 20px;
+    font-style: italic;
+    color: rgb(188, 188, 188);
+" value="Arrastre símbolos aquí" rendered="#{empty dragDropBean.target}"/>
+			</a4j:outputPanel>
+
+
+
+		</rich:panel>
+		<a4j:commandButton action="#{dragDropBean.reset}" value="Reiniciar"
+		reRender="src,phptable" />
+		<rich:panel>
+			<f:facet name="header">
+				<h:outputText value="Símbolos" />
+			</f:facet>
+			<h:dataTable id="src" columns="1" value="#{dragDropBean.source}"
+				var="fm">
+
+				<h:column>
+					<a4j:outputPanel
+						style="width:100px;border:1px solid gray;padding:2px"
+						layout="block">
+						<rich:dragSupport dragIndicator=":indicator" dragType="*"
+							dragValue="#{fm}">
+							<rich:dndParam name="label" value="#{fm.label}" />
+						</rich:dragSupport>
+						<h:outputText value="#{fm.label}"></h:outputText>
+					</a4j:outputPanel>
+				</h:column>
+
+			</h:dataTable>
+		</rich:panel>
+
+	</h:panelGrid>
+	<rich:spacer height="2px"></rich:spacer>
+	<s:div id="buttons">
+				<div align="right"
+					style="background: #BCBCBC; box-shadow: 0px -1px 3px #747474;">
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr style="text-align: right">
+							<td colspan="9">
+							<a4j:commandButton 
+								action="#{dragDropBean.save()}" 
+								value="Aceptar"								
+								ajaxSingle="true" reRender="ruleform,opValues" 
+								oncomplete="closeExpBuilderModal(data)"
+								data="#{dragDropBean.expValid}"
+								/>
+							 <a4j:commandButton value="Cancelar" styleClass="standard-button"
+									onclick="Richfaces.hideModalPanel('expressionbuilder')" tabindex="3">
+								</a4j:commandButton></td>
+						</tr>
+					</table>
+				</div>
+			</s:div>
+			<script>
+		function closeExpBuilderModal(data)
+		{
+			if(data)
+				Richfaces.hideModalPanel('expressionbuilder');
+		}
+
+		function closeLiteralModal(data)
+		{
+			if(data)
+				Richfaces.hideModalPanel('literalInput');
+		}
+	</script>
+	
+</a4j:form>

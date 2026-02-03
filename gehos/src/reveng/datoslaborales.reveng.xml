@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+	  <table-filter match-name="persona" match-schema="hc_local"></table-filter>
+    <table-filter match-name="datos_laborales" match-schema="hc_local"></table-filter>
+    <table-filter match-name="formacion" match-schema="nomencladores"></table-filter>
+    <table-filter match-name="grupo_personal" match-schema="nomencladores"></table-filter>
+    <table-filter match-name="unidad_tiempo" match-schema="nomencladores"></table-filter>
+    <table-filter match-name="mano_dominante" match-schema="nomencladores"></table-filter>    
+    <table-filter match-name="tipo_zona_laboral" match-schema="nomencladores"></table-filter>    
+    <table-filter match-name="estado_laboral" match-schema="nomencladores"></table-filter>    
+    <table-filter match-name="tipo_nomina" match-schema="nomencladores"></table-filter>    
+    <table-filter match-name="division_personal" match-schema="nomencladores"></table-filter>        
+    <table-filter match-name="division" match-schema="nomencladores"></table-filter>        
+    <table-filter match-name="subdivision_personal" match-schema="nomencladores"></table-filter>        
+    <table-filter match-name="sociedad" match-schema="nomencladores"></table-filter>    
+    <table-filter match-name="unidad_organizativa" match-schema="nomencladores"></table-filter>    
+    <table-filter match-name="posicion" match-schema="nomencladores"></table-filter>
+    <table-filter match-name="status" match-schema="nomencladores"></table-filter>
+    <table-filter match-name="titular_beneficiario" match-schema="hc_local"></table-filter>
+    <table-filter match-name="usuario" match-schema="comun"></table-filter>
+    
+</hibernate-reverse-engineering>

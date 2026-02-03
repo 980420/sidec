@@ -1,0 +1,31 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml" 	   
+	   xmlns:h="http://java.sun.com/jsf/html"
+	   xmlns:f="http://java.sun.com/jsf/core"	
+	   xmlns:s="http://jboss.com/products/seam/taglib" 
+	   xmlns:c="http://java.sun.com/jstl/core"  
+	   rendered="#{not empty customList.resultList}">
+    <h:commandLink action="#" 
+               disabled="#{not customList.previousExists}" >
+	               <h:graphicImage rendered="#{customList.previousExists}" value="/resources/icons/default/paginado/#{theme.color}/inicio.png" style="border:0;"/>
+	               <h:graphicImage rendered="#{not customList.previousExists}" value="/resources/icons/default/paginado/iniciod.png" style="border:0;"/>
+	               <f:param name="firstResultt" value="0"/>
+	</h:commandLink>
+	<h:commandLink action="#"   
+	        disabled="#{not customList.previousExists}" >
+	           <h:graphicImage rendered="#{customList.previousExists}" value="/resources/icons/default/paginado/#{theme.color}/anterior.png" style="border:0;"/>
+	           <h:graphicImage rendered="#{not customList.previousExists}" value="/resources/icons/default/paginado/anteriord.png" style="border:0;"/> 
+	           <f:param name="firstResultt"  value="#{customList.previousFirstResult}"/>
+	</h:commandLink>	       				
+	<h:commandLink action="#" 
+               disabled="#{not customList.nextExists}" >	       				  
+	        <h:graphicImage rendered="#{customList.nextExists}" value="/resources/icons/default/paginado/#{theme.color}/siguiente.png" style="border:0;"/> 
+	        <h:graphicImage rendered="#{not customList.nextExists}" value="/resources/icons/default/paginado/siguiented.png" style="border:0;"/>
+	        <f:param name="firstResultt" value="#{customList.nextFirstResult}"/>
+	</h:commandLink>        	       				 
+	<h:commandLink action="#" 
+               disabled="#{not customList.nextExists}" >  
+	        <h:graphicImage rendered="#{customList.nextExists}" value="/resources/icons/default/paginado/#{theme.color}/fin.png" style="border:0;"/>
+	        <h:graphicImage rendered="#{not customList.nextExists}" value="/resources/icons/default/paginado/find.png" style="border:0;"/>    
+	        <f:param name="firstResultt" value="#{customList.lastFirstResult}"/>
+	</h:commandLink>          
+</s:div>  

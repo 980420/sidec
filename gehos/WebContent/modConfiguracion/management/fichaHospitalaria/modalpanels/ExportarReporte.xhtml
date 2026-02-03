@@ -1,0 +1,67 @@
+<rich:modalPanel id="exportPanel" onhide=""
+	autosized="true" width="341"  resizeable="false"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	onshow="" >
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<f:facet name="header">
+		            <h:panelGroup>
+		                <h:outputText value="#{messages['exportarRpt']}"></h:outputText>
+		            </h:panelGroup>
+		        </f:facet>
+		        <f:facet name="controls">
+		            <h:panelGroup>
+		                <h:graphicImage value="/resources/icons/default/acciones/cerrar.gif" styleClass="hidelink" id="hidelinkEx"/>
+		                <rich:componentControl for="exportPanel" attachTo="hidelinkEx" operation="hide" event="onclick"/>
+		            </h:panelGroup>
+		        </f:facet>
+		        <a4j:form ajaxSubmit="false" id="ajaxFormExport">
+		       
+		         <!-- a partir de aqui -->
+		            	<table cellpadding="0px" cellspacing="0px" border="0px" >
+									   <tr>
+									    <td style="height: 8px;" colspan="3">
+									   </td>
+									  </tr>
+									  <tr valign="middle">
+									    <td style="width: 7px;"></td>
+									    <td valign="top">
+									         <h:outputText value="#{messages['formatArch']}:" />               
+									         <br/>									       		
+             									<rich:comboBox id="fileComboExport" defaultLabel="#{messages['seleccione']}"
+					        					directInputSuggestions="true" suggestionValues="#{controlador.filesFormatCombo}" 
+					        					enableManualInput = "false" value="#{controlador.fileformatToExport}" >
+             									</rich:comboBox>  
+             									<rich:spacer height="1"/>             	
+									    </td>
+									    <td style="width: 20px"></td>
+									    
+									    <td valign="bottom">
+									    <s:div >
+											<input type="button" value="#{messages['Exportar']}" style="text-align:center ;margin-bottom:0px;" onclick="exportFileFunction()"/>									    	
+           									<a4j:commandButton value="#{messages['salir_Est']}" style="text-align:center ;margin-bottom:0px;" action="exportar" id="cancelarRMP">
+           									<rich:componentControl for="exportPanel" attachTo="cancelarRMP" operation="hide" event="onclick"/>
+           									</a4j:commandButton>
+           								</s:div>
+									    </td>
+									  </tr>	
+									   <tr>
+									    <td style="height: 6px;" colspan="3"/>
+									 	</tr>					  
+											                
+						</table>
+									
+             			<a4j:jsFunction  name="exportFileFunction" action="#{controlador.exportReportToFileFormat()}" 
+             			oncomplete="window.open('#{facesContext.externalContext.requestContextPath}#{controlador.pathExportedReport}')"> 
+             			</a4j:jsFunction>
+		       	<!-- hasta aqui -->  
+		       	</a4j:form>
+		
+</rich:modalPanel>

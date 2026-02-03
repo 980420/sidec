@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<page    xmlns               ="http://jboss.com/products/seam/pages"  
+         xmlns:xsi           ="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd"> 
+           
+     <navigation evaluate="#{seguridadEstudio.CanSeeThisFunctionalityNow()}">	
+		<rule if-outcome="not-selected">
+			<redirect view-id="/modEnsayo/codebase/seleccionar_estudio/seleccionarEstudio.xhtml">
+				<!-- Colocal el valor la direccion a la que se debe redireccionar al seleccionar el estudio -->
+				<param name="direccion" value="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarSujeto/buscarSujetoPesquisaje.xhtml" />
+			</redirect>
+		</rule>
+		<rule if-outcome="not-authorized">
+			<redirect view-id="/error.xhtml">
+				<message>Su usuario no puede acceder a este recurso en el estudio activo actualmente</message>
+			</redirect>
+		</rule>		
+	</navigation> 
+           
+    <begin-conversation flush-mode="manual" join="true"/>
+	<action execute="#{sujetoCustomListPesquisaje.refresh()}"/>
+	
+	<param name="idSujeto"/>	
+	<param name="idMS"/>	
+  	
+  	
+  	<navigation from-action="crearSuj">	
+  		<end-conversation before-redirect="true"/>
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarSujeto/crearSujetoPesquisaje.xhtml">
+		</redirect>
+	</navigation>
+	
+	<navigation from-action="verSujeto">
+		<end-conversation before-redirect="true"/>	
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarSujeto/verSujetoPesquisaje.xhtml">
+	  		<param name="idSujeto" value="#{idSujeto}"/>
+	  		<param name="idSujeto1" value="#{idSujeto}"/>
+	  		<param name="idSujetoCronograma" value="#{idSujetoCronograma}"/>		 
+		</redirect>
+	</navigation>
+		
+	<navigation from-action="modificar">	
+		<end-conversation before-redirect="true"/>
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarSujeto/modificarSujetoPesquisaje.xhtml">
+		  <param name="idSujeto" value="#{idSujeto}"/>
+		</redirect>
+	</navigation>
+	
+	<navigation from-action="gestionar">	
+		<end-conversation before-redirect="true"/>
+		<redirect
+			view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCRD/listarCRD.xhtml">
+			<param name="fromP" value="sujetoPesquisaje"/>
+			<param name="idMS" value="#{idMS}" />
+			<param name="idSujeto" value="#{idSujeto}" />
+		</redirect>
+	</navigation>
+	
+	 <navigation from-action="cancelar">
+	 	<end-conversation before-redirect="true"/>	
+		<redirect view-id="/modCommons/modHome/home.xhtml">
+			 <param name="idFuncionalidad" value="#{activeModule.activeModule.id}" />
+   			 <param name="idancestors" value="#{activeModule.activeModule.id}a" />
+		</redirect>			
+	</navigation>
+	
+	
+</page>

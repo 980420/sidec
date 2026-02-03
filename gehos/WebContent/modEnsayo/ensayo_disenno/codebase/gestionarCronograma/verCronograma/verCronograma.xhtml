@@ -1,0 +1,164 @@
+<s:div   xmlns     ="http://www.w3.org/1999/xhtml" 
+ 			      xmlns:ui  ="http://java.sun.com/jsf/facelets" 
+      		      xmlns:h   ="http://java.sun.com/jsf/html" 
+			      xmlns:f   ="http://java.sun.com/jsf/core" 
+			      xmlns:s   ="http://jboss.com/products/seam/taglib" 
+			      xmlns:rich="http://richfaces.org/rich" 
+                  xmlns:a4j   ="http://richfaces.org/a4j"                  
+                  template  ="#{theme.template}">
+	<s:div >  
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+		<script type="text/javascript">setContentTitle('#{messages.lbl_titulo_ens}')</script>	
+    <link href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css"  rel="stylesheet" type="text/css" />
+     <rich:messages globalOnly="true" styleClass="message"  id="globalMessage" ajaxRendered="true"/>	    
+     <h:form id="modificarCronograma">
+     	<rich:panel>
+     		
+     		<rich:simpleTogglePanel label="#{messages.lbl_datosCronograma_ens}" switchType="client" opened="true" >
+		         		
+					<table cellpadding="0px" cellspacing="0px" border="0px" class="margenSupIzq">
+						<tr>							
+							
+							
+									
+							<td class="colSepGran">
+							<h:outputText value="#{messages.lbl_duracion_ens}:" styleClass="normalText" />
+							</td>
+							<td><rich:spacer width="8px" style="display: block" /></td>
+								<td>
+								<h:outputText value="#{modificarCronograma.tiempoDuracionDias()}" id="tiempoduracion" disabled="true"/>
+								</td>								
+								<td><rich:spacer width="25px" style="display: block" /></td>
+								<td class="colSepGran">
+							<h:outputText value="#{messages.lbl_fechaCreacion_ens}:" styleClass="normalText" />
+							</td>
+							<td><rich:spacer width="8px" style="display: block" /></td>
+								<td>
+								<h:outputLabel  value="#{modificarCronograma.cronograma.fechaCreacion}" id="fechaCreacion" disabled="true">
+									<s:convertDateTime pattern='dd/MM/yyyy'/>
+								</h:outputLabel>
+								</td>
+								<td><rich:spacer width="25px" style="display: block" /></td>
+								<td class="colSepGran">
+								<h:outputText value="#{messages.lbl_estadoCronograma_ens}:" styleClass="normalText" />
+							
+							</td>
+							<td><rich:spacer width="8px" style="display: block" /></td>
+								<td>
+								<h:outputText value="#{modificarCronograma.cronograma.estadoCronograma.nombre}" id="estadoCreacion" disabled="true"/>
+								</td>
+						</tr>
+						
+							
+						 	
+						
+					</table>
+					<rich:spacer height="8px"></rich:spacer>
+					<table cellpadding="0px" cellspacing="0px" border="0px" width="100%" >
+					<tr>
+     			<td class="colSepGran">
+     				<h:outputText value="#{messages.lbl_descripcion_ens}:" styleClass="normalText" />
+     				<br/>
+     				<h:inputTextarea id="descripcion" value="#{modificarCronograma.cronograma.descripcion}" 
+						style="width:50%;resize: vertical" disabled="true" >
+					</h:inputTextarea>
+     			</td>
+     			
+     		</tr>
+     		</table>
+		         	</rich:simpleTogglePanel>	
+		         	<rich:simpleTogglePanel label="#{messages.lbl_etapas_ens}" switchType="client" opened="true" >
+					
+
+			
+			
+			<a4j:outputPanel>
+				<table cellpadding="0px" cellspacing="0px" border="0px" width="100%" class="margenSupIzq">
+				<tr>
+				<td>
+				
+				<s:div style="margin-left:1px;margin-top:1px"
+					rendered="#{not empty etapasCustomList_ensayo.resultList}">
+					<rich:dataTable
+						style="width: 100%;" var="etapa"
+						value="#{etapasCustomList_ensayo.resultList}"
+						columnsWidth="30%, 20%, 20%, 30%, 0*">
+						<f:facet name="header">
+							<div>#{messages.lbl_listadoEtapas_ens}</div>
+						</f:facet>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_nombre_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{etapa.nombreEtapa}
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_fechaIni_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{etapa.inicioEtapa}
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_fechaFin_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{etapa.finEtapa}
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_descripcion_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{etapa.descripcion}
+	        			</h:column>
+	        			
+						
+						
+					</rich:dataTable>
+				</s:div>
+				
+					</td>
+					</tr>
+					
+				</table>
+			</a4j:outputPanel>
+			
+	 		</rich:simpleTogglePanel>
+     	</rich:panel>
+     	<br/>
+	 <div align="right">
+				
+		
+							
+									<a4j:commandButton 		
+					action="cancelar"
+			
+					value="#{messages.btn_salir_ens}" 
+					style="margin-right:0px;margin-bottom:  0px; margin-top: 0px;" tabindex="4">
+				</a4j:commandButton>
+									
+	</div>
+	
+     </h:form>
+     
+	</s:div>
+</s:div>

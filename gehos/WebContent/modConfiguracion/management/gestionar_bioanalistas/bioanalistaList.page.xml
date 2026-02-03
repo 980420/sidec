@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<action execute="#{bioanalistaList_configuracionCustom.begin()}" />
+
+	<param name="firstResult" value="#{bioanalistaList_configuracionCustom.firstResult}" />
+	<param name="order" value="#{bioanalistaList_configuracionCustom.POrder}" />
+	<param name="avz" value="#{bioanalistaList_configuracionCustom.avanzada}" />
+	<param name="open" value="#{bioanalistaList_configuracionCustom.open}" />
+	
+	<param name="critB2" value="#{bioanalistaList_configuracionCustom.nombre}" />
+	<param name="critB3" value="#{bioanalistaList_configuracionCustom.apellido}" />
+	<param name="critB4" value="#{bioanalistaList_configuracionCustom.segundoapellido}" />
+	<param name="critB5" value="#{bioanalistaList_configuracionCustom.matriculaColegio}" />
+
+	<navigation from-action="adicionar">
+		<rule>
+			<redirect
+				view-id="/modConfiguracion/management/gestionar_bioanalistas/bioanalista_user_create.xhtml">
+				<param name="firstResult" value="#{bioanalistaList_configuracionCustom.firstResult}" />
+				<param name="order" value="#{bioanalistaList_configuracionCustom.order}" />
+				<param name="avz" value="#{bioanalistaList_configuracionCustom.avanzada}" />
+				<param name="open" value="#{bioanalistaList_configuracionCustom.open}" />
+				
+				<param name="critB2"
+					value="#{parameters.encodec(bioanalistaList_configuracionCustom.nombre)}" />
+				<param name="critB3"
+					value="#{parameters.encodec(bioanalistaList_configuracionCustom.apellido)}" />
+				<param name="critB4"
+					value="#{parameters.encodec(bioanalistaList_configuracionCustom.segundoapellido)}" />
+				<param name="critB5"
+					value="#{parameters.encodec(bioanalistaList_configuracionCustom.matriculaColegio)}" />
+			</redirect>
+		</rule>
+	</navigation>
+
+	<navigation from-action="asociar">
+		<rule>
+			<redirect
+				view-id="/modConfiguracion/management/gestionar_bioanalistas/bioanalista_select_user_create.xhtml">
+				<param name="firstResult" value="#{bioanalistaList_configuracionCustom.firstResult}" />
+				<param name="order" value="#{bioanalistaList_configuracionCustom.order}" />
+				<param name="avz" value="#{bioanalistaList_configuracionCustom.avanzada}" />
+				<param name="open" value="#{bioanalistaList_configuracionCustom.open}" />
+				
+				<param name="critB2"
+					value="#{parameters.encodec(bioanalistaList_configuracionCustom.nombre)}" />
+				<param name="critB3"
+					value="#{parameters.encodec(bioanalistaList_configuracionCustom.apellido)}" />
+				<param name="critB4"
+					value="#{parameters.encodec(bioanalistaList_configuracionCustom.segundoapellido)}" />
+				<param name="critB5"
+					value="#{parameters.encodec(bioanalistaList_configuracionCustom.matriculaColegio)}" />
+			</redirect>
+		</rule>
+	</navigation>
+
+
+	<navigation from-action="#{usuarioList_configuracionCustom.eliminar()}">
+		<rule>
+			<redirect
+				view-id="/modConfiguracion/management/gestionar_usuarios/userList.xhtml">
+				<param name="firstResult" value="#{bioanalistaList_configuracionCustom.firstResult}" />
+				<param name="order" value="#{bioanalistaList_configuracionCustom.order}" />
+				<param name="avz" value="#{bioanalistaList_configuracionCustom.avanzada}" />
+				<param name="open" value="#{bioanalistaList_configuracionCustom.open}" />
+				
+				<param name="critB2"
+					value="#{parameters.encodec(bioanalistaList_configuracionCustom.nombre)}" />
+				<param name="critB3"
+					value="#{parameters.encodec(bioanalistaList_configuracionCustom.apellido)}" />
+				<param name="critB4"
+					value="#{parameters.encodec(bioanalistaList_configuracionCustom.segundoapellido)}" />
+				<param name="critB5"
+					value="#{parameters.encodec(bioanalistaList_configuracionCustom.matriculaColegio)}" />
+			</redirect>
+		</rule>
+	</navigation>
+	
+	<navigation from-action="#{bioanalistaList_configuracionCustom.seleccionarModificar()}">
+		<rule if-outcome="good">
+			<redirect
+				view-id="/modConfiguracion/management/gestionar_bioanalistas/modificar_bioanalista.xhtml">
+				<param name="userId" value="#{bioanalistaList_configuracionCustom.idmedico}"/>				
+				<param name="firstResult" value="#{bioanalistaList_configuracionCustom.firstResult}" />
+				<param name="order" value="#{bioanalistaList_configuracionCustom.order}" />
+				<param name="avz" value="#{bioanalistaList_configuracionCustom.avanzada}" />
+				<param name="open" value="#{bioanalistaList_configuracionCustom.open}" />
+				
+				<param name="critB2"
+					value="#{parameters.encodec(bioanalistaList_configuracionCustom.nombre)}" />
+				<param name="critB3"
+					value="#{parameters.encodec(bioanalistaList_configuracionCustom.apellido)}" />
+				<param name="critB4"
+					value="#{parameters.encodec(bioanalistaList_configuracionCustom.segundoapellido)}" />
+				<param name="critB5"
+					value="#{parameters.encodec(bioanalistaList_configuracionCustom.matriculaColegio)}" />
+			</redirect>
+		</rule>
+	</navigation>
+	
+	<navigation from-action="#{bioanalistaList_configuracionCustom.seleccionarVer()}">
+		<rule if-outcome="good">
+			<redirect
+				view-id="/modConfiguracion/management/gestionar_bioanalistas/bioanalista_detail.xhtml">
+				<param name="userId" value="#{bioanalistaList_configuracionCustom.idmedico}"/>
+				<param name="from" value="listar"/>
+				<param name="firstResult" value="#{bioanalistaList_configuracionCustom.firstResult}" />
+				<param name="order" value="#{bioanalistaList_configuracionCustom.order}" />
+				<param name="avz" value="#{bioanalistaList_configuracionCustom.avanzada}" />
+				<param name="open" value="#{bioanalistaList_configuracionCustom.open}" />
+				
+				<param name="critB2"
+					value="#{parameters.encodec(bioanalistaList_configuracionCustom.nombre)}" />
+				<param name="critB3"
+					value="#{parameters.encodec(bioanalistaList_configuracionCustom.apellido)}" />
+				<param name="critB4"
+					value="#{parameters.encodec(bioanalistaList_configuracionCustom.segundoapellido)}" />
+				<param name="critB5"
+					value="#{parameters.encodec(bioanalistaList_configuracionCustom.matriculaColegio)}" />
+			</redirect>
+		</rule>
+	</navigation>
+	
+
+</page>

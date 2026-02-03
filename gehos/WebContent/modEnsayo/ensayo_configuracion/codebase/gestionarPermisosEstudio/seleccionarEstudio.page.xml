@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+ 	
+ 	<action execute="#{permisosSeleccionarEstudio.begin()}" />
+	
+	<param name="idEstudio" />
+	
+	<navigation from-action="permisosEntidad">
+		<end-conversation before-redirect="true"/>	
+		<redirect view-id="/modEnsayo/ensayo_configuracion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarPermisosEstudio/permisos_estudios_por_centros.xhtml">
+	  		<param name="idEstudio" value="#{idEstudio}"/>		 
+		</redirect>
+	</navigation>
+	
+	<navigation from-action="permisosUsuarios">
+		<end-conversation before-redirect="true"/>	
+		<redirect view-id="/modEnsayo/ensayo_configuracion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarPermisosEstudio/permisos_estudios_por_usuarios.xhtml">
+	  		<param name="idEstudio" value="#{idEstudio}"/>		 
+		</redirect>
+	</navigation>
+	
+	<navigation from-action="cancelar">
+	 	<end-conversation before-redirect="true"/>	
+		<redirect view-id="/modCommons/modHome/home.xhtml">
+			 <param name="idFuncionalidad" value="#{activeModule.activeModule.id}" />
+   			 <param name="idancestors" value="#{activeModule.activeModule.id}a" />
+		</redirect>			
+	</navigation>
+	
+ 
+</page>

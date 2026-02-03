@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+   
+  <action execute="#{tipoFuncionarioCrearControlador.begin()}"/>
+   
+  <!-- Create -->
+	<navigation from-action="#{tipoFuncionarioCrearControlador.begin()}" evaluate="#{tipoFuncionarioCrearControlador.error}">	
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarTipoFuncionario/CrearTipoFuncionario.xhtml" />
+		</rule>
+	</navigation>
+	
+	<!-- View details -->    
+	<navigation from-action="#{tipoFuncionarioVerDetallesControlador.setId(tipoFuncionario.id)}" evaluate="#{tipoFuncionarioVerDetallesControlador.error}">
+		<rule if-outcome="0"> 
+			<redirect view-id="/modConfiguracion/management/gestionarTipoFuncionario/VerDetallesTipoFuncionario.xhtml" >
+				<param name="from" value="listar" />
+			</redirect>
+		</rule>
+	</navigation>	
+	
+	<!-- Modify -->
+	<navigation from-action="#{tipoFuncionarioModificarControlador.setId(tipoFuncionario.id)}" evaluate="#{tipoFuncionarioModificarControlador.error}">
+		<rule if-outcome="0">
+			<redirect view-id="/modConfiguracion/management/gestionarTipoFuncionario/ModificarTipoFuncionario.xhtml" />
+		</rule>
+	</navigation>
+</page>

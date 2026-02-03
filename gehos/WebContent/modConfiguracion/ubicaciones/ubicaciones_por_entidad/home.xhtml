@@ -1,0 +1,553 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:a="http://richfaces.org/a4j" template="#{theme.template}"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript">setContentTitle('#{messages.ubicacionesPorEntidad}')</script>
+		<style type="text/css">
+.rich-stglpanel-body {
+	padding: 0px
+}
+</style>
+		<style type="text/css">
+.rich-panel-body {
+	padding: 0px
+}
+</style>
+		<style>
+.functpanelbody {
+	padding: 0px;
+}
+
+.functpanelbody2 {
+	padding: 5px;
+}
+
+.dr-mpnl-pnl-b {
+	padding: 1px;
+}
+
+.dr-mpnl-pnl {
+	border: 1px !important;
+	border-style: solid !important;
+	border-color: #BED6F8 !important;
+}
+
+.strech40 {
+	width: 30%;
+}
+
+.strech {
+	width: 60%;
+}
+
+.nostrech {
+	width: 1%;
+}
+
+.custom-error {
+	border: 1px solid #FFCC00;
+	padding: 5px;
+	background-color: #F0F8FF;
+	font-size: 10px;
+	font-family: "Verdana";
+	position: relative;
+	left: 5px;
+	top: 5px;
+	margin-right: 10px;
+}
+</style>
+
+		<rich:hotKey key="esc" handler="subir()" />
+
+		<a:form>
+			<a:jsFunction name="subir" ajaxSingle="true"
+				status="funcSelectedStatus" action="#{ubicacionesManager.subir()}"></a:jsFunction>
+		</a:form>
+
+		<h:form id="ubicacionesForm">
+
+			<a:outputPanel ajaxRendered="true" id="errorOutputPanel">
+				<s:div style="height:30px;width:100%"
+					rendered="#{facesMessages.getCurrentMessagesForControl('error').size() > 0 }">
+					<div class="custom-error"><rich:message for="error"></rich:message>
+					</div>
+				</s:div>
+			</a:outputPanel>
+
+			<a:status id="blockingStatus" rendered="true"
+				onstart="document.body.style.cursor='wait'; 
+			  			Richfaces.showModalPanel('ajaxLoadingModalBox',{left:1, top:-15});"
+				onstop="document.body.style.cursor='default'; 
+ 			  			Richfaces.hideModalPanel('ajaxLoadingModalBox');">
+			</a:status>
+
+			<rich:modalPanel id="ajaxLoadingModalBox" minHeight="10"
+				minWidth="10" height="10" width="10" zindex="2000">
+			</rich:modalPanel>
+
+			<a:keepAlive beanName="ubicacionesManager" />
+
+			<table width="100%" cellpadding="5px" cellspacing="0px"
+				style="vertical-align: top;">
+				<tr>
+
+					<td style="vertical-align: top; width: 40%;"><rich:panel
+						bodyClass="functpanelbody2">
+						<f:facet name="header">
+							<a:status stopText="#{messages.ubicaciones}" for="functsstree"
+								startText="#{messages.actualizando}..." id="funcstatus"></a:status>
+						</f:facet>
+						<div style="border: 1px;"><a:region id="functsstree">
+							<a:outputPanel ajaxRendered="true">
+
+								<rich:dragIndicator id="treeDragIndicator">
+									<f:facet name="single">
+										<h:panelGrid columns="2">
+											<h:graphicImage styleClass="indicatorPicture"
+												value="/resources/modCommon/ubicacionesimages/{iconname}" />
+											<h:outputLabel value="{label}" />
+										</h:panelGrid>
+									</f:facet>
+								</rich:dragIndicator>
+								<div style="position: relative; top: -2px;"><s:div
+									style="margin-left:1px; ">
+									<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+										<h:graphicImage
+											value="/resources/modConfiguracion/habitaciones.png"
+											height="18" />
+										<a:commandLink
+											action="#{ubicacionesManager.setSelectedItem(null, null)}"
+											value="Ubicaciones por entidad" style="margin-left:1px;"
+											status="funcSelectedStatus" ajaxSingle="true"
+											reRender="settingsdiv, errorOutputPanel" />
+									</h:panelGrid>
+								</s:div> <rich:tree
+									changeExpandListener="#{ubicacionesManager.treeBuilder.OnNodeCollapseExpand}"
+									value="#{ubicacionesManager.treeBuilder.treeData}"
+									switchType="ajax" preserveModel="state"
+									preserveDataInRequest="true" treeNodeVar="treenode"
+									dragIndicator="treeDragIndicator" style="width:200px"
+									nodeFace="#{node.toString()}" var="node" id="functree"
+									dropListener="#{ubicacionesManager.processDrop}"
+									componentState="#{treeStateController.ubicacionesTreeState}">
+
+									<rich:treeNode acceptedTypes="ubicacion" type="entidad"
+										icon="#{modulosPorEntidadManager.entidadIcon(node.value)}"
+										iconLeaf="#{modulosPorEntidadManager.entidadIcon(node.value)}">
+										<a:commandLink value="#{node.value.nombre}"
+											status="funcSelectedStatus" limitToList="true"
+											ajaxSingle="true" immediate="true" event="onclick"
+											action="#{ubicacionesManager.setSelectedItem(node, treenode)}"
+											reRender="settingsdiv, detailspanelheader, 
+											modalpanelsdiv, errorOutputPanel">
+										</a:commandLink>
+									</rich:treeNode>
+
+									<rich:treeNode type="ubicacion" dragType="ubicacion"
+										acceptedTypes="ubicacion"
+										icon="/resources/modCommon/ubicacionesimages/#{node.value.tipoUbicacion.icono}"
+										iconLeaf="/resources/modCommon/ubicacionesimages/#{node.value.tipoUbicacion.icono}">
+										<a:commandLink
+											value="#{node.value.tipoUbicacion.descripcion} #{node.value.identificador}"
+											status="funcSelectedStatus" limitToList="true"
+											ajaxSingle="true" immediate="true" event="onclick"
+											action="#{ubicacionesManager.setSelectedItem(node, treenode)}"
+											reRender="settingsdiv, detailspanelheader, 
+											modalpanelsdiv, errorOutputPanel">
+										</a:commandLink>
+										<rich:dndParam name="label" type="drag"
+											value="#{node.value.tipoUbicacion.descripcion} #{node.value.identificador}" />
+										<rich:dndParam name="iconname" type="drag"
+											value="#{node.value.tipoUbicacion.icono}" />
+									</rich:treeNode>
+								</rich:tree></div>
+							</a:outputPanel>
+						</a:region></div>
+					</rich:panel></td>
+
+					<td style="vertical-align: top; width: 60%;"><a:region>
+						<a:outputPanel ajaxRendered="true">
+							<rich:panel bodyClass="functpanelbody" id="childfuncspanel">
+								<f:facet name="header">
+									<s:div id="detailspanelheader">
+										<s:div rendered="#{ubicacionesManager.selectedItem == null}">
+							#{messages.entidades}
+						</s:div>
+										<s:div
+											rendered="#{ubicacionesManager.selectedItem.toString() == 'entidad'}">
+											<h:panelGrid columns="3" cellpadding="0" cellspacing="0">
+												<h:graphicImage
+													value="#{modulosPorEntidadManager.entidadIcon(ubicacionesManager.selectedItem.value)}"
+													height="16" width="16" />
+												<rich:spacer width="1" />
+												<h:outputLabel
+													value="#{ubicacionesManager.selectedItem.value.nombre}" />
+											</h:panelGrid>
+										</s:div>
+										<s:div
+											rendered="#{ubicacionesManager.selectedItem.toString() == 'ubicacion'}">
+											<h:panelGrid columns="3" cellpadding="0" cellspacing="0">
+												<h:graphicImage
+													value="/resources/modCommon/ubicacionesimages/#{ubicacionesManager.selectedItem.value.tipoUbicacion.icono}"
+													height="16" width="16" />
+												<rich:spacer width="3" />
+												<h:outputLabel
+													value="#{ubicacionesManager.getIdfromRules(ubicacionesManager.selectedItem)}" />
+											</h:panelGrid>
+										</s:div>
+									</s:div>
+								</f:facet>
+
+								<a:status id="funcSelectedStatus" forceId="true"
+									onstart="Richfaces.showModalPanel('ajaxLoadingModalBox',{left:1, top:-15});
+					  		   javascript:document.getElementById('ubicacionesForm:settsdiv').style.display = 'none';
+					  		   javascript:document.getElementById('ubicacionesForm:loadingdiv').style.display = ''"
+									onstop="Richfaces.hideModalPanel('ajaxLoadingModalBox');
+					  		  javascript:document.getElementById('ubicacionesForm:loadingdiv').style.display = 'none';
+					  		  javascript:document.getElementById('ubicacionesForm:settsdiv').style.display = ''">
+									<f:facet name="start">
+									</f:facet>
+								</a:status>
+								<s:div id="loadingdiv"
+									style="text-align: center; width: 100%; display:none;">
+									<br />
+									<h:graphicImage
+										url="/resources/icons/default/acciones/loading_small.gif" />
+									<br />
+									<br />
+								</s:div>
+								<s:div id="settsdiv">
+									<s:div id="settingsdiv" style="display: inline;">
+										<s:div rendered="#{ubicacionesManager.selectedItem == null}">
+											<h:dataTable value="#{ubicacionesManager.entidades()}"
+												var="entidad" border="1" columnClasses="strech, nostrech"
+												style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+												cellspacing="0" cellpadding="0"
+												rowClasses="dr-table-firstrow2">
+												<h:column>
+													<f:facet name="header">
+														<div style="background-color: ##{theme.headercolor}; cursor: default;">#{messages.nombreSinDosPuntos}</div>
+													</f:facet>
+													<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+														<h:graphicImage
+															value="#{modulosPorEntidadManager.entidadIcon(entidad)}"
+															height="16" width="16" style="margin: 2px 2px 2px 2px;" />
+														<a:commandLink ajaxSingle="true"
+															reRender="settingsdiv, detailspanelheader"
+															limitToList="true" value="#{entidad.nombre}"
+															status="funcSelectedStatus"
+															action="#{ubicacionesManager.setSelectedItem(entidad)}"
+															style="color: #0F5FB9;" />
+
+													</h:panelGrid>
+												</h:column>
+											</h:dataTable>
+
+										</s:div>
+
+										<s:div rendered="#{ubicacionesManager.selectedItem != null}">
+											<table style="width: 100%; vertical-align: top;">
+												<tr valign="top">
+													<td align="right"><h:panelGrid columns="2"
+														cellpadding="0" cellspacing="0">
+														<h:graphicImage height="12" width="12"
+															style="cursor: pointer;"
+															value="/resources/icons/default/acciones/adicionar.png"
+															onclick="javascript:Richfaces.showModalPanel('agregar_ubicacion', {width: '166px', height: '96px', 'departamento': '#{departamentosYServiciosManager.selectedItem.value.nombre}' } )" />
+													
+														<h:outputLink value="#"
+															style="margin-left: 2px; margin-bottom: 4px; margin-top: 2px;">
+															#{messages.adicionarUbicacion}
+															<a:support event="onclick" limitToList="true"
+																ajaxSingle="true"
+																reRender="agregar_ubicacion_panel"
+																oncomplete="javascript:Richfaces.showModalPanel('agregar_ubicacion', {width: '166px', height: '96px', 'departamento': '#{departamentosYServiciosManager.selectedItem.value.nombre}' } )" />
+														</h:outputLink>
+														
+													</h:panelGrid></td>
+												</tr>
+											</table>
+										</s:div>
+
+										<s:div
+											rendered="#{ubicacionesManager.selectedItem.toString() == 'entidad'}">
+											<h:dataTable
+												value="#{ubicacionesManager.ubicacionesDeEntidadSeleccionada()}"
+												var="ubic" border="1"
+												columnClasses="strech, nostrech, nostrech"
+												style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+												cellspacing="0" cellpadding="0"
+												rowClasses="dr-table-firstrow2">
+												<h:column>
+													<f:facet name="header">
+														<div style="background-color: ##{theme.headercolor}; cursor: default;">#{messages.ubicaciones}</div>
+													</f:facet>
+													<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+														<h:graphicImage
+															value="/resources/modCommon/ubicacionesimages/#{ubic.tipoUbicacion.icono}"
+															height="16" width="16" />
+														<a:commandLink ajaxSingle="true"
+															reRender="settingsdiv, detailspanelheader, 
+											errorOutputPanel, modalpanelsdiv"
+															limitToList="true"
+															value="#{ubic.tipoUbicacion.descripcion} #{ubic.identificador}"
+															status="funcSelectedStatus"
+															action="#{ubicacionesManager.setSelectedItem(ubic)}"
+															style="margin-left: 1px; color: #0F5FB9;" />
+													</h:panelGrid>
+												</h:column>
+												<h:column rendered="#{not(ubicacionesManager.ubicacionesDeEntidadSeleccionada().size()==0)}" >
+													<f:facet name="header">
+														<div style="background-color: ##{theme.headercolor}; cursor: default; height: 14px;">
+														</div>
+													</f:facet>
+													<div align="center"><a:commandLink rendered="true"
+														status="blockingStatus" timeout="2000"
+														action="#{ubicacionesManager.putUbicacionToModify(ubic)}"
+														ajaxSingle="true"
+														oncomplete="javascript:Richfaces.showModalPanel('modificar_ubicacion')"
+														view="/modConfiguracion/departamentos/clinicos/home.xhtml"
+														reRender="modificar_ubicacion">
+														<h:graphicImage
+															style="border:0px; cursor: pointer; margin: 2px 2px 2px 2px;"
+															title="#{messages.modf}"
+															url="/resources/icons/default/acciones/modificar.png">
+														</h:graphicImage>
+													</a:commandLink></div>
+												</h:column>
+												<h:column rendered="#{not(ubicacionesManager.ubicacionesDeEntidadSeleccionada().size()==0)}" >
+													<f:facet name="header">
+														<div style="background-color: ##{theme.headercolor}; cursor: default; height: 14px;">
+														</div>
+													</f:facet>
+													<div align="center"><a:commandLink rendered="true"
+														status="blockingStatus"
+														action="#{ubicacionesManager.putUbicacionToDelete(ubic)}"
+														ajaxSingle="true"
+														oncomplete="javascript:Richfaces.showModalPanel('eliminar_ubicacion')"
+														view="/modConfiguracion/departamentos/clinicos/home.xhtml">
+														<h:graphicImage style="border:0px; cursor: pointer"
+															title="#{messages.eliminar}"
+															url="/resources/icons/default/acciones/eliminar.png">
+														</h:graphicImage>
+													</a:commandLink></div>
+												</h:column>
+											</h:dataTable>
+											<s:div
+												style="border-left: 1px solid #d0d7e5;
+									  border-right: 1px solid #d0d7e5;
+									  border-bottom: 1px solid #d0d7e5;"
+												rendered="#{ubicacionesManager.ubicacionesDeEntidadSeleccionada().size()==0}">
+												<rich:spacer height="10" style="display:block" />
+												<h:outputLabel value="#{messages.noInf}"
+													style="margin-left:7px;" />
+												<rich:spacer height="5" style="display:block" />
+											</s:div>
+										</s:div>
+
+										<s:div
+											rendered="#{ubicacionesManager.selectedItem.toString() == 'ubicacion'}">
+											<div style="font-weight: bold;"><h:outputLabel
+												rendered="false"
+												value="#{ubicacionesManager.getIdfromRules(ubicacionesManager.selectedItem)}">
+											</h:outputLabel></div>
+											<h:dataTable
+												value="#{ubicacionesManager.ubicacionesHijasDeUbicacionSeleccionada()}"
+												var="ubic" border="1"
+												columnClasses="strech, nostrech, nostrech"
+												style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+												cellspacing="0" cellpadding="0"
+												rowClasses="dr-table-firstrow2">
+												<h:column>
+													<f:facet name="header">
+														<div style="background-color: ##{theme.headercolor}; cursor: default;">#{messages.ubicacionesHijas}</div>
+													</f:facet>
+													<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+														<h:graphicImage
+															value="/resources/modCommon/ubicacionesimages/#{ubic.tipoUbicacion.icono}"
+															height="16" width="16" style="margin-left: 1px; " />
+														<a:commandLink ajaxSingle="true"
+															reRender="settingsdiv, detailspanelheader, 
+											errorOutputPanel, modalpanelsdiv"
+															limitToList="true"
+															value="#{ubic.tipoUbicacion.descripcion} #{ubic.identificador}"
+															status="funcSelectedStatus"
+															action="#{ubicacionesManager.setSelectedItem(ubic)}"
+															style="margin-left: 2px; color: #0F5FB9;" />
+													</h:panelGrid>
+												</h:column>
+												<h:column rendered="#{not(ubicacionesManager.ubicacionesHijasDeUbicacionSeleccionada().size()==0)}">
+													<f:facet name="header">
+														<div style="background-color: ##{theme.headercolor}; cursor: default; height: 14px;">
+														</div>
+													</f:facet>
+													<div align="center"><a:commandLink rendered="true"
+														status="blockingStatus" timeout="2000"
+														action="#{ubicacionesManager.putUbicacionToModify(ubic)}"
+														ajaxSingle="true"
+														oncomplete="javascript:Richfaces.showModalPanel('modificar_ubicacion')"
+														view="/modConfiguracion/departamentos/clinicos/home.xhtml"
+														reRender="modificar_ubicacion">
+														<h:graphicImage
+															style="border:0px; cursor: pointer; margin: 2px 2px 2px 2px;"
+															title="#{messages.modf}"
+															url="/resources/icons/default/acciones/modificar.png">
+														</h:graphicImage>
+													</a:commandLink></div>
+												</h:column>
+												<h:column rendered="#{not(ubicacionesManager.ubicacionesHijasDeUbicacionSeleccionada().size()==0)}" >
+													<f:facet name="header">
+														<div style="background-color: ##{theme.headercolor}; cursor: default; height: 14px;">
+														</div>
+													</f:facet>
+													<div align="center"><a:commandLink rendered="true"
+														status="blockingStatus"
+														action="#{ubicacionesManager.putUbicacionToDelete(ubic)}"
+														ajaxSingle="true"
+														oncomplete="javascript:Richfaces.showModalPanel('eliminar_ubicacion')"
+														view="/modConfiguracion/departamentos/clinicos/home.xhtml">
+														<h:graphicImage style="border:0px; cursor: pointer"
+															title="#{messages.eliminar}"
+															url="/resources/icons/default/acciones/eliminar.png">
+														</h:graphicImage>
+													</a:commandLink></div>
+												</h:column>
+											</h:dataTable>
+											<s:div
+												style="border-left: 1px solid #d0d7e5;
+									  border-right: 1px solid #d0d7e5;
+									  border-bottom: 1px solid #d0d7e5;"
+												rendered="#{ubicacionesManager.ubicacionesHijasDeUbicacionSeleccionada().size()==0}">
+												<rich:spacer height="10" style="display:block" />
+												<h:outputLabel value="#{messages.noInf}"
+													style="margin-left:7px;" />
+												<rich:spacer height="5" style="display:block" />
+											</s:div>
+										</s:div>
+
+										<rich:spacer height="8" style="display:block;"></rich:spacer>
+
+										<s:div
+											rendered="#{ubicacionesManager.selectedItem != null and ubicacionesManager.selectedItem.toString() != 'entidad'}">
+											<table style="width: 100%; vertical-align: top;">
+												<tr valign="top">
+													<td align="right"><h:panelGrid columns="2"
+														cellpadding="0" cellspacing="0">
+														<h:graphicImage height="12" width="12"
+															style="cursor: pointer;"
+															value="/resources/icons/default/acciones/adicionar.png">
+															<a:support event="onclick" reRender="adicionar_servicios"
+																oncomplete="javascript:Richfaces.showModalPanel('adicionar_servicios')"
+																status="blockingStatus" >
+															</a:support>
+														</h:graphicImage>
+														<a:commandLink value="#{messages.adicionarServicios}"
+															style="margin-left: 2px; margin-bottom: 4px; margin-top: 2px;"
+															event="onclick" reRender="adicionar_servicios"
+															oncomplete="javascript:Richfaces.showModalPanel('adicionar_servicios')"
+															status="blockingStatus" />
+													</h:panelGrid></td>
+												</tr>
+											</table>
+										</s:div>
+										<s:div
+											rendered="#{ubicacionesManager.selectedItem.toString() == 'ubicacion'}">
+											<div style="font-weight: bold;"><h:outputLabel
+												rendered="false"
+												value="#{ubicacionesManager.getIdfromRules(ubicacionesManager.selectedItem)}">
+											</h:outputLabel></div>
+											<h:dataTable
+												value="#{ubicacionesManager.serviciosAsigAUbicacionSeleccionada()}"
+												var="serv" border="1" columnClasses="strech, nostrech"
+												style="width:100%; text-align:left; border: 1px solid #d0d7e5; border-collapse:collapse;"
+												cellspacing="0" cellpadding="0"
+												rowClasses="dr-table-firstrow2">
+												<h:column>
+													<f:facet name="header">
+														<div style="background-color: ##{theme.headercolor}; cursor: default;">#{messages.serviciosAsignados}</div>
+													</f:facet>
+													<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+														<h:graphicImage
+															value="/resources/funcionalidadesIcons/configuracion/funcionalidades.png"
+															height="16" width="16" />
+														<h:outputLabel value="#{serv.servicio.nombre}"
+															style="margin-left: 3px;" />
+													</h:panelGrid>
+												</h:column>
+												<h:column rendered="#{not(ubicacionesManager.serviciosAsigAUbicacionSeleccionada().size()==0)}" >
+													<f:facet name="header">
+														<div style="background-color: ##{theme.headercolor}; cursor: default; height: 14px;">
+														</div>
+													</f:facet>
+													<div align="center"><a:commandLink rendered="true"
+														status="blockingStatus"
+														action="#{ubicacionesManager.putServicioToDelete(serv.id)}"
+														ajaxSingle="true"
+														oncomplete="javascript:Richfaces.showModalPanel('eliminar_servicio')"
+														view="/modConfiguracion/departamentos/clinicos/home.xhtml">
+														<h:graphicImage
+															style="border:0px; cursor: pointer; margin-bottom: 2px; margin-top: 2px;"
+															title="#{messages.eliminar}"
+															url="/resources/icons/default/acciones/eliminar.png">
+														</h:graphicImage>
+													</a:commandLink></div>
+												</h:column>
+											</h:dataTable>
+											<s:div
+												style="border-left: 1px solid #d0d7e5;
+									  border-right: 1px solid #d0d7e5;
+									  border-bottom: 1px solid #d0d7e5;"
+												rendered="#{ubicacionesManager.serviciosAsigAUbicacionSeleccionada().size()==0}">
+												<rich:spacer height="10" style="display:block" />
+												<h:outputLabel value="#{messages.noInf}"
+													style="margin-left:7px;" />
+												<rich:spacer height="5" style="display:block" />
+											</s:div>
+										</s:div>
+									</s:div>
+								</s:div>
+								<br />
+							</rich:panel>
+						</a:outputPanel>
+					</a:region></td>
+				</tr>
+			</table>
+
+			<s:span id="error"></s:span>
+
+		</h:form>
+
+		<s:div id="modalpanelsdiv">
+
+			<ui:include
+				src="/modConfiguracion/ubicaciones/ubicaciones_por_entidad/modalpanels/agregar_ubicacion.xhtml" />
+
+			<ui:include
+				src="/modConfiguracion/ubicaciones/ubicaciones_por_entidad/modalpanels/modificar_ubicacion.xhtml" />
+
+			<ui:include
+				src="/modConfiguracion/ubicaciones/ubicaciones_por_entidad/modalpanels/confirmar_eliminar_ubicacion.xhtml" />
+
+			<ui:include
+				src="/modConfiguracion/ubicaciones/ubicaciones_por_entidad/modalpanels/confirmar_eliminar_servicio.xhtml" />
+
+			<ui:include
+				src="/modConfiguracion/ubicaciones/ubicaciones_por_entidad/modalpanels/modificar_servicios.xhtml" />
+
+		</s:div>
+
+
+	</ui:define>
+
+</ui:composition>
+
+
+

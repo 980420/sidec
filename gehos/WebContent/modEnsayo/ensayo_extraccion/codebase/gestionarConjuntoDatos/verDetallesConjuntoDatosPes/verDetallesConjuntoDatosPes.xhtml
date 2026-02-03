@@ -1,0 +1,510 @@
+<s:div   xmlns     ="http://www.w3.org/1999/xhtml" 
+ 			      xmlns:ui  ="http://java.sun.com/jsf/facelets" 
+      		      xmlns:h   ="http://java.sun.com/jsf/html" 
+			      xmlns:f   ="http://java.sun.com/jsf/core" 
+			      xmlns:s   ="http://jboss.com/products/seam/taglib" 
+			      xmlns:rich="http://richfaces.org/rich" 
+                  xmlns:a4j   ="http://richfaces.org/a4j"                  
+                  template  ="#{theme.template}">
+	<s:div >  
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+		<s:div
+			rendered="#{verDetallesConjuntoDatosPes.from.equals('buscar')}">
+			<script type="text/javascript">setContentTitle('#{messages.lbl_titulo_ens}')</script>
+		</s:div>
+
+		<s:div
+			rendered="#{not verDetallesConjuntoDatosPes.from.equals('buscar')}">
+			<script type="text/javascript">setContentTitle('#{messages.lbl_tituloVerdatalles_ens}')</script>
+		</s:div>
+		<script type="text/javascript">
+
+	
+		
+	 var curDt = new Date();	 
+     var calDt=null;
+
+
+     var curDt = new Date();
+     var calDt=null;
+
+    function previousDate(date){
+       calDt = date;
+    }
+
+    function disablementFunction(day){
+
+		 if(calDt == null){
+			
+				return true;
+		 }
+		 
+		 else {
+			 if (calDt.getTime() - day.date.getTime() >= 0 ) 
+					return true; 
+				else 
+					return false;
+		 }	
+		 
+		 				 
+	 }
+	 
+    function disabledClassesProv(day){
+		
+		 if(calDt == null){
+			
+				return '';
+		 }
+		 
+		 else {
+			 if (calDt.getTime() - day.date.getTime() &#62;= 0) 
+					return ''; 
+				else 
+					return 'dateDisabled';
+		 }		
+		 
+		 
+	 }
+
+    function resetSecondDate(first,second) {
+		 var firstDate = first.getSelectedDate().getTime();
+		 var secondDate = second.getSelectedDate().getTime();
+
+		 if(firstDate - secondDate &#62; 0)
+			 second.resetSelectedDate();
+	 }
+	 
+    function disablementFunctionPreviousEx(day){
+		if(calDt == null){
+			
+			return true;
+		}
+		if ((calDt.getTime() - day.date.getTime() &#60;= 0)){
+			return true;
+		}
+		else 
+			return false;
+	  }
+
+    function disabledClassesProvPreviousEx(day){
+		if(calDt == null){
+			
+			return '';
+		}
+		if ((calDt.getTime() - day.date.getTime() &#62; 0))
+			return 'dateDisabled';
+		else 
+			return '';
+	}
+	
+		</script>	
+    <link href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css"  rel="stylesheet" type="text/css" />
+    <link rel='stylesheet' href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css' type='text/css' /> 
+       
+     <rich:messages globalOnly="true" styleClass="message"  id="globalMessage" ajaxRendered="true"/>	    
+     <h:form id="verDetallesConjuntoDatosPes">
+     	
+		<rich:panel>
+		<f:facet name="header">#{messages.lbl_datosGenerales_ens}</f:facet>
+				<table cellpadding="0px" cellspacing="0px" border="0px">
+							<tr>							
+										
+								<td>
+									<h:outputLabel value="#{messages.lbl_nombre_ens}:" styleClass="normalText" />
+									<br/>
+									<rich:spacer height="8px"></rich:spacer>
+								</td>	
+								<td class="colPeq">
+									<h:outputText value="#{verDetallesConjuntoDatosPes.conjuntoDatos.nombre}"	styleClass="dataText" />											
+									
+								</td>
+								<td class="colGran">
+								<h:outputLabel styleClass='normalText' value='#{messages.desde}:' />
+								</td>
+								<td class="colPeq"><h:outputText styleClass="dataText"
+											value="#{verDetallesConjuntoDatosPes.conjuntoDatos.fechaInicio}">
+											<s:convertDateTime pattern="dd/MM/yyyy" />
+										</h:outputText>
+								
+								</td>
+								<td class="colGran">
+								<h:outputLabel styleClass='normalText' value='#{messages.hasta}:' />
+								</td>
+								<td class="colPeq"><h:outputText styleClass="dataText"
+											value="#{verDetallesConjuntoDatosPes.conjuntoDatos.fechaFin}">
+											<s:convertDateTime pattern="dd/MM/yyyy" />
+										</h:outputText>
+								
+								</td>
+							
+									</tr>
+								</table>
+								
+								<table cellpadding="0px" cellspacing="0px" border="0px" width="100%">
+									<tr>
+								
+			     						<td>
+			     							<h:outputText value="#{messages.lbl_descripcion_ens}:" styleClass="normalText" />
+			     							
+																								
+											<br/>
+			     							<h:inputTextarea id="descripcion"  value="#{verDetallesConjuntoDatosPes.conjuntoDatos.descripcion}" required="#{!empty param['verDetallesConjuntoDatosPes:aceptarBtn']}"
+											style="width:50%;resize: vertical" styleClass="dataText" disabled="true" readonly="true">
+											</h:inputTextarea>
+			     						</td>
+			     			
+			     					</tr>
+			     				</table>
+			     				<rich:spacer height="8px"></rich:spacer>
+				<div style="border: 1px;" > 
+					<rich:panel>
+						<f:facet name="header">#{messages.lbl_atributosSujeto_ens}</f:facet>
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr>
+										<td>
+									
+											<h:outputLabel value="#{messages.lbl_estadoSujeto_ens}:" styleClass="normalText" />							 			
+	     															 
+											<br/>
+											<rich:spacer height="8px"></rich:spacer>
+										</td>
+										<td class="colPeq">
+											<h:selectBooleanCheckbox value="#{verDetallesConjuntoDatosPes.conjuntoDatos.mostrarEstadoSujeto}" style="margin: 0px;" styleClass="dataText" disabled="true" readonly="true"/>
+										</td>
+										
+										<td class="colGran" >
+											<h:outputLabel value="#{messages.lbl_fechaInclusion_ens}:" styleClass="normalText" />										
+											
+										</td>
+										<td class="colPeq">
+											<h:selectBooleanCheckbox value="#{verDetallesConjuntoDatosPes.conjuntoDatos.mostrarFechaInclusionSujeto}" style="margin: 0px;" styleClass="dataText" disabled="true" readonly="true"/>
+										</td>
+										
+										<td class="colGran" >
+											<h:outputLabel value="#{messages.lbl_inicialesSujeto_ens}:" styleClass="normalText" />										
+											
+										</td>
+										<td class="colPeq">
+											<h:selectBooleanCheckbox value="#{verDetallesConjuntoDatosPes.conjuntoDatos.mostrarInicialesSujeto}" style="margin: 0px;" styleClass="dataText" disabled="true" readonly="true"/>
+										</td>
+																				
+										
+									</tr>
+									
+									<tr>
+										<td>
+									
+											<h:outputLabel value="#{messages.lbl_numeroInclusion_ens}:" styleClass="normalText" />							 			
+	     															 
+											<br/>
+											<rich:spacer height="8px"></rich:spacer>
+										</td>
+										<td class="colPeq">
+											<h:selectBooleanCheckbox value="#{verDetallesConjuntoDatosPes.conjuntoDatos.mostrarNumeroInclusionSujeto}" style="margin: 0px;" styleClass="dataText" disabled="true" readonly="true"/>
+										</td>
+										
+										<td class="colGran" >
+											<h:outputLabel value="#{messages.lbl_sitioClinica_ens}:" styleClass="normalText" />										
+											
+										</td>
+										<td class="colPeq">
+											<h:selectBooleanCheckbox value="#{verDetallesConjuntoDatosPes.conjuntoDatos.mostrarSitioClinicaSujeto}" style="margin: 0px;" styleClass="dataText" disabled="true" readonly="true"/>
+										</td>
+										
+										<!-- Hora de inclusion -->
+										<td class="colGran" >
+											<h:outputLabel value="#{messages.lbl_horaInclusion_ens}:" styleClass="normalText" />										
+											
+										</td>
+										<td class="colPeq">
+											<h:selectBooleanCheckbox value="#{verDetallesConjuntoDatosPes.conjuntoDatos.mostrarHoraInclusionSujeto}" style="margin: 0px;" styleClass="dataText" disabled="true" readonly="true"/>
+										</td>
+																				
+										
+									</tr>
+									
+									
+						</table>
+					</rich:panel>
+					<rich:spacer height="8px" />
+					<rich:panel>
+						<f:facet name="header">#{messages.lbl_atributosCRD_ens}</f:facet>
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr>
+										
+										<td >
+											<h:outputLabel value="#{messages.lbl_estadoCRD_ens}:" styleClass="normalText" />							 			
+	     									<br/>
+	     									<rich:spacer height="8px"></rich:spacer>
+										</td>
+										<td class="colPeq">
+											<h:selectBooleanCheckbox value="#{verDetallesConjuntoDatosPes.conjuntoDatos.mostrarEstadoCrdEspecifico}" style="margin: 0px;" styleClass="dataText" disabled="true" readonly="true"/>
+										</td>
+										<td class="colGran">
+											<h:outputLabel value="#{messages.lbl_estadoMonitoreoCRD_ens}:" styleClass="normalText" />							 			
+	     								
+										</td>
+										<td class="colPeq">
+											<h:selectBooleanCheckbox value="#{verDetallesConjuntoDatosPes.conjuntoDatos.mostrarEstadoMonitoreoCrdEspecifico}" style="margin: 0px;" styleClass="dataText" disabled="true" readonly="true"/>
+										</td>
+									</tr>
+									
+									
+						</table>
+					</rich:panel>
+					<rich:spacer height="8px" />
+					<rich:panel>
+						<f:facet name="header">#{messages.lbl_atributosMS_ens}</f:facet>
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr>
+										<td>
+									
+											<h:outputLabel value="#{messages.lbl_fechaInicio_ens}:" styleClass="normalText" />
+																		 
+											<br/>
+											<rich:spacer height="8px"></rich:spacer>
+										</td>
+										<td class="colPeq">
+											<h:selectBooleanCheckbox value="#{verDetallesConjuntoDatosPes.conjuntoDatos.mostrarFechaInicioMs}" style="margin: 0px;" styleClass="dataText" disabled="true" readonly="true"/>
+										</td>
+										<td class="colGran">
+											<h:outputLabel value="#{messages.lbl_fechaFin_ens}:" styleClass="normalText" />							 			
+	     								
+										</td>
+										<td class="colPeq">
+											<h:selectBooleanCheckbox value="#{verDetallesConjuntoDatosPes.conjuntoDatos.mostrarFechaFinMs}" style="margin: 0px;" styleClass="dataText" disabled="true" readonly="true"/>
+										</td>
+										<td class="colGran" >
+											<h:outputLabel value="#{messages.lbl_estadoMS_ens}:" styleClass="normalText" />										
+																			
+											 			
+	     								
+										</td>
+										<td class="colPeq">
+											<h:selectBooleanCheckbox value="#{verDetallesConjuntoDatosPes.conjuntoDatos.mostrarEstadoMs}" style="margin: 0px;" styleClass="dataText" disabled="true" readonly="true"/>
+										</td>
+									</tr>
+									
+									
+						</table>
+					</rich:panel>
+					
+				</div>
+			</rich:panel>
+     	<rich:spacer height="8px" />
+		<rich:panel>
+		<f:facet name="header">#{messages.lbl_datosConjuntoDatos_ens}</f:facet>
+		<table width="100%" cellpadding="0px" cellspacing="0px" style="vertical-align: top;">
+		<tr>
+
+		<td style="vertical-align: top; width: 100%;">
+			<a4j:outputPanel id="variables">		
+				
+				
+						<s:div style="margin-left:1px;margin-top:1px"
+					rendered="#{verDetallesConjuntoDatosPes.listadoVariablesConjuntoDatos.resultList.size() > 0}">
+					<rich:dataTable id="tabla_listado_variables_seleccionadas" 
+						style="width: 100%;" var="variable"
+						value="#{verDetallesConjuntoDatosPes.listadoVariablesConjuntoDatos.resultList}"
+						columnsWidth="0*,0*,20%,30%, 20%, 20%,0*,0*,0*">
+						<f:facet name="header">
+							<div>#{messages.lbl_variablesSeleccionadas_ens}</div>
+						</f:facet>
+						
+	        			
+			        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_nombreMS_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{variable.momentoSeguimientoGeneral.nombre}
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_nombreHojaCRD_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{variable.variable.seccion.hojaCrd.nombreHoja}
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_nombre_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{variable.variable.nombreVariable}
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_descripcion_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{variable.variable.descripcionVariable}
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_seccionVariable_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			#{variable.variable.seccion.tituloSeccion}
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_grupoVariable_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			<h:outputText value="#{variable.variable.grupoVariables.encabezado}" rendered="#{variable.variable.grupoVariables!=null}"/>
+	            			<h:outputText value="-" rendered="#{variable.variable.grupoVariables ==null}"/>
+	            			
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_tipoDato_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			<h:outputText value="#{variable.variable.tipoDato.nombre}" rendered="#{variable.variable.tipoDato!=null}"/>
+	            			<h:outputText value="-" rendered="#{variable.variable.tipoDato ==null}"/>
+	            			
+	        			</h:column>
+	        			<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_unidadesVariable_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			<h:outputText value="#{variable.variable.unidadesVariable}" rendered="#{variable.variable.unidadesVariable!=null}"/>
+	            			<h:outputText value="-" rendered="#{variable.variable.unidadesVariable ==null}"/>
+	            			
+	        			</h:column>	
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.lbl_tipoRespuesta_ens}</s:div>
+									<s:div style="text-align: right; padding-left:3px;"></s:div>
+								</h:panelGrid>
+							</f:facet>
+	            			<h:outputText value="#{variable.variable.presentacionFormulario.nombre}" rendered="#{variable.variable.presentacionFormulario!=null}"/>
+	            			<h:outputText value="-" rendered="#{variable.variable.presentacionFormulario ==null}"/>
+	            			
+	        			</h:column>	
+						
+					</rich:dataTable>
+					
+				</s:div>
+				<rich:spacer height="8px" />
+
+				<!-- Paginado  -->
+				<ui:include src="/modEnsayo/codebase/plantillas/paginado_tabla_inferior_generico_segundo.xhtml/" >
+					<ui:param name="vzPaginado" value="#{verDetallesConjuntoDatosPes.listadoVariablesConjuntoDatos.resultCount>10}"/>					
+					<ui:param name="nomControladorList" value="#{verDetallesConjuntoDatosPes.listadoVariablesConjuntoDatos}" />
+					<ui:param name="idListado" value="variables" />
+					
+				</ui:include>
+			    <!--
+			     END Paginado -->
+				</a4j:outputPanel>	
+		</td>
+	
+		
+		</tr>
+		</table>
+     	</rich:panel>
+	 	<div align="right">
+				
+		<a4j:commandButton 	id="modificarBtn"	rendered="#{!verDetallesConjuntoDatosPes.from.equals('buscar')}"
+			action="modificar"
+			
+			value="#{messages.btn_modificar_ens}" 
+			style="margin-bottom: 0px; margin-right: 10px; margin-left: 0px; margin-top: 8px">
+		</a4j:commandButton>
+		<a4j:commandButton 	id="eliminarBtn"	rendered="#{!verDetallesConjuntoDatosPes.from.equals('buscar')}"
+			action="eliminar" oncomplete="Richfaces.showModalPanel('eliminar_conjuntoDatos')"
+			
+			value="#{messages.btn_eliminar_ens}" 
+			style="margin-bottom: 0px; margin-right:10px; margin-left: 0px; margin-top: 8px" >
+		</a4j:commandButton>					
+		
+									<a4j:commandButton 		
+					action="cancelar"
+			
+					value="#{messages.btn_salir_ens}" 
+					style="margin-bottom: 0px; margin-right: 0px; margin-left: 0px; margin-top: 8px">
+				</a4j:commandButton>
+	</div>
+	
+     </h:form>
+     <!-- Modal Panel Eliminar ConjuntoDatos-->
+			<rich:modalPanel id="eliminar_conjuntoDatos" width="350" height="85"
+		resizeable="false">
+		<f:facet name="header">
+			<h:outputLabel value="#{messages.msg_modalEliminarInfo_ens}" />
+		</f:facet>
+
+		<f:facet name="controls">
+			<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+				style="cursor:pointer;" onclick="#{rich:component('eliminar_conjuntoDatos')}.hide()"/>
+				
+		</f:facet>
+		<h:form>
+			<table cellpadding="0" cellspacing="0" border="0" align="center">
+				<tr>
+					<td rowspan="2"><h:graphicImage
+						value="/resources/icons/default/acciones/advertencia.png" /> 
+						<rich:spacer
+						width="8px" /></td>
+				</tr>
+				<tr align="center">
+					<td><h:outputLabel value="#{messages.msg_eliminarInfo_ens}" /> <br />
+					<h:outputLabel value="#{messages.msg_eliminarInfo2_ens}" /></td>
+				</tr>
+
+				<tr>
+					<td colspan="2"><rich:spacer height="8px" /></td>
+				</tr>
+
+				<tr>
+					<td colspan="2" align="center"><h:commandButton
+						style="margin:0px" action="#{verDetallesConjuntoDatosPes.eliminar()}"
+						value="#{messages.msg_siEliminar_ens}" /> <rich:spacer width="8px" /> <a4j:commandButton
+						style="margin:0px" value="#{messages.msg_noEliminar_ens}" onclick="#{rich:component('eliminar_conjuntoDatos')}.hide()"/>
+						</td>
+				</tr>
+			</table>
+		</h:form>
+	</rich:modalPanel>
+ 		  	
+ 		  	<!-- Fin Modal Panel Eliminar ConjuntoDatos-->
+	</s:div>
+</s:div>

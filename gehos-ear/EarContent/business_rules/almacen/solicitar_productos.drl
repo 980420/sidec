@@ -1,0 +1,30 @@
+package gehos
+
+#list any import classes here.
+import org.jboss.seam.drools.Decision;
+import gehos.almacen.entity.auto.Entidad_almacen;
+#declare any global variables here
+
+global Decision decision
+
+rule "otro almacen"
+	when
+		Entidad_almacen( nombre == "Otro almacen" )
+	then 
+        decision.setOutcome("to_otro_almacen");
+end
+
+rule "aceptar solicitud de compra"
+	when
+		Entidad_almacen( nombre == "Compras" )
+	then 
+        decision.setOutcome("to_aceptar_solicitud_de_compra");
+end
+
+rule "procesar solicitud de licitacion"
+	when
+		Entidad_almacen( nombre == "Licitacion" )
+	then 
+        decision.setOutcome("to_procesar_solicitud_de_productos");
+end
+

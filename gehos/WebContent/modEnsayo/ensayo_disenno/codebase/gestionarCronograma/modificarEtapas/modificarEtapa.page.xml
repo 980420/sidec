@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<page    xmlns               ="http://jboss.com/products/seam/pages"  
+         xmlns:xsi           ="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">  
+           
+  	<begin-conversation flush-mode="manual" join="true"/>
+    
+	<action execute="#{modificarEtapa.inicializarEtapa()}"/>
+	<param name="idEtapa" value="#{modificarEtapa.idEtapa}"/>
+	<param name="destino"/>
+	<navigation from-action="#{modificarEtapa.actualizarEtapas()}">	
+		<rule if-outcome="ok" if="#{destino.equals('crearCronograma')}">
+			<end-conversation before-redirect="true"/>	
+			<redirect view-id="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCronograma/modificarEtapas/listarEtapas.gehos">
+			<param name="idGrupoSujetoEtapas" value="#{modificarEtapa.etapa.cronograma.grupoSujetos.id}"/>
+			</redirect>
+		</rule>
+		<rule if-outcome="ok" if="#{destino.equals('modificarCronograma')}">
+			<end-conversation before-redirect="true"/>		
+			<redirect view-id="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCronograma/modificarCronograma/modificarCronograma.gehos">
+			<param name="idGrupoSujetoEtapas" value="#{modificarEtapa.etapa.cronograma.grupoSujetos.id}"/>
+			<param name="idGrupoSujeto" value="#{modificarEtapa.etapa.cronograma.grupoSujetos.id}"/>
+			</redirect>
+		</rule>
+	</navigation>
+	<navigation from-action="cancelar">	
+			<rule if="#{destino.equals('crearCronograma')}">
+			<end-conversation before-redirect="true"/> 		
+			<redirect view-id="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCronograma/modificarEtapas/listarEtapas.gehos">
+			<param name="idGrupoSujetoEtapas" value="#{modificarEtapa.etapa.cronograma.grupoSujetos.id}"/>
+			</redirect>
+			</rule>
+			<rule if="#{destino.equals('modificarCronograma')}">
+			<end-conversation before-redirect="true"/>		
+			<redirect view-id="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCronograma/modificarCronograma/modificarCronograma.gehos">
+			<param name="idGrupoSujetoEtapas" value="#{modificarEtapa.etapa.cronograma.grupoSujetos.id}"/>
+			<param name="idGrupoSujeto" value="#{modificarEtapa.etapa.cronograma.grupoSujetos.id}"/>
+			</redirect>
+			</rule>
+	</navigation>
+	
+	
+	
+	
+	
+</page>

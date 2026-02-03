@@ -1,0 +1,87 @@
+<rich:modalPanel id="servicio_agregar_servicio" onhide=""
+	autosized="true" resizeable="false"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j"
+	onshow="document.getElementById('servicio_agregar_servicio_form:name').value=''; document.getElementById('servicio_agregar_servicio_form:name').focus();">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<f:facet name="header">
+		<h:panelGroup id="servicio_agregar_servicio_header">
+			<h:outputText value="#{messages.addservicio}" />
+		</h:panelGroup>
+	</f:facet>
+	<f:facet name="controls">
+		<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+			style="cursor:pointer; position:relative; top:2px;"
+			onclick="Richfaces.hideModalPanel('servicio_agregar_servicio')" />
+	</f:facet>
+	
+	<a:outputPanel id="servicio_agregar_servicio_panel">
+
+		<h:form id="servicio_agregar_servicio_form">
+
+			<a:status forceId="true"
+				onstart="document.getElementById('servicio_agregar_servicio_form:acpbtn').style.cursor='wait'"
+				id="servtoservstatus"
+				onstop="document.getElementById('servicio_agregar_servicio_form:acpbtn').style.cursor='default'">
+			</a:status>
+
+			<table cellpadding="0px" cellspacing="0px" border="0px"
+				id="container" title="">
+				<tr>
+					<td style="height: 10px;" colspan="6"></td>
+				</tr>
+				<tr style="vertical-align: top;">
+					<td style="width: 6px;"></td>
+					<td>
+						<h:outputLabel value="#{messages.nombre}:"></h:outputLabel>
+						<rich:message for="inputServAServIdent" style="color: red;"
+							id="inputServAServIdentMessage" 
+							showDetail="false" showSummary="false" >
+							<f:facet name="errorMarker">
+								<span title="#{facesMessages.getCurrentMessagesForControl('inputServAServIdent').get(0).getDetail()}" 
+									style="cursor: default;">*</span>	
+							</f:facet>
+						</rich:message>
+						<br />
+						<h:inputText id="inputServAServIdent" required="true"
+							validator="#{validations_configuracion.textnumber50}"
+							value="#{departamentosYServiciosManager.servicioAServicio}"
+							style="width:148px;"  />
+					</td>
+				</tr>
+				<tr>
+					<td style="height: 8px;" colspan="6"></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+					<div align="right"><a:commandButton value="#{messages.aceptar}"
+						id="acpbtn"
+						action="#{departamentosYServiciosManager.adicionarServicioAServicio()}"
+						status="servtoservstatus" reRender="inputServAServIdentMessage"
+						oncomplete="#{departamentosYServiciosManager.onAddServAServComplete('servicio_agregar_servicio')}"
+						style="margin-bottom: 0px; margin-top: 0px;">
+					</a:commandButton> <input type="button"
+						onclick="javascript:Richfaces.hideModalPanel('servicio_agregar_servicio');"
+						value="#{messages.cancelar}"
+						style="margin-bottom: 0px; margin-top: 0px; margin-left: 2px; margin-right: 0px;" />
+					</div>
+					</td>
+				</tr>
+				<tr>
+					<td style="height: 6px;" colspan="6"></td>
+				</tr>
+			</table>
+
+
+		</h:form>
+
+	</a:outputPanel>
+
+</rich:modalPanel>

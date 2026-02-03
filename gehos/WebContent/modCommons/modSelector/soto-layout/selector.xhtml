@@ -1,0 +1,244 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j"
+ >
+
+<head>
+	<link rel="shortcut icon" href="#{facesContext.externalContext.requestContextPath}/img/gehos.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>XAVIA SIDEC - #{messages.modules}</title>
+	<meta http-equiv="pragma" content="no-cache" />
+	<style type="text/css">
+		html{
+			background-image:url('themes/fond.gif');
+			height: 100%;
+			vertical-align: middle;
+		}
+		body {
+			background-image: url('themes/fond.gif');
+		}
+		
+		.modulos {
+			width: 500px;
+			text-align : left;
+		}
+		
+		.headerMod {
+			height: 86px;
+			background-image: url('themes/#{theme.color}/modulo_01.png');
+			background-repeat: no-repeat;
+		}
+		
+		.headerLetters {
+			padding-left: 80px;
+			padding-top: 30px;
+			font-family: Tahoma;
+			font-size: 12px;
+			color: #939393;
+			font-weight: bold;
+			width: 100px;
+		}
+		
+		.headerLetterSmall {
+			font-size: 9px;
+			padding-left: 4px;
+		}
+		
+		.conteMod {
+			background-image: url('themes/#{theme.color}/modulo_02.png');
+			background-repeat: repeat-y;
+			padding-left: 15px;
+			padding-right: 15px;
+		}
+		
+		.footerMod {
+			height: 66px;
+			background-image: url('themes/#{theme.color}/modulo_03.png');
+			background-repeat: no-repeat;
+		}
+		
+		.blueback {
+			background: none !important;
+			border: 0px;
+		}
+		.log {
+			margin-top: 15px;
+			margin-left: 20%;
+			padding-top: 20px;
+			padding-left: 35px;
+		}
+		.btnclass{
+			background-repeat: no-repeat;
+			width: 18px; height: 18px;
+			opacity: 0.6; 
+		}
+		.btnclass:hover{
+			opacity: 0.9; 
+		}
+		
+	</style>
+	
+<script type="text/javascript">
+	document.onmousedown=coordinates;
+	document.onmouseup=mouseup;
+	
+	function coordinates(e)
+	{
+		if (e == null) { e = window.event;}
+		var sender = (typeof( window.event ) != "undefined" ) ? e.srcElement : e.target;
+		
+		if (sender.id=="moveMe" || sender.id=="moveMe2" || sender.id=="moveMe3")
+		{
+		  mouseover=true;
+		  pleft=parseInt(movMeId.style.left);
+		  ptop=parseInt(movMeId.style.top);
+		  xcoor=e.clientX;
+		  ycoor=e.clientY;
+		  document.onmousemove=moveImage;
+		  return false;
+		}
+		else { return false; }
+	}
+	
+	function moveImage(e)
+	{
+		if (e == null) { e = window.event;}
+		movMeId.style.left=pleft+e.clientX-xcoor+"px";
+		movMeId.style.top=ptop+e.clientY-ycoor+"px";
+		return false;
+	}
+	
+	function mouseup(e)
+	{
+		document.onmousemove=null;
+	}
+	</script>	
+	
+</head>
+
+<body style="height: 100%;">
+
+<rich:hotKey key="esc" handler="subir()"/>
+
+<a:form>
+	<a:jsFunction name="subir" ajaxSingle="true" 
+		action="#{modSelectorController.subir()}" ></a:jsFunction>
+</a:form>
+
+<h:form>
+
+<div align="center" >
+			<div class="log" style="position: absolute; cursor: pointer;" id="moveMe" >
+				<div class="modulos" style="">
+					<div style="position: relative; left: 430px; top:36px; opacity: 0.6; height: 24px; width:100px; overflow: hidden;">
+						<h:panelGrid columns="2" >
+							<s:div rendered="#{entities.size() == 2 and modSelectorController.selectedModuleTypeId == null }">
+									<rich:spacer width="18"/>
+							</s:div>
+							<s:link rendered="#{modSelectorController.selectedModuleTypeId != null }"
+									action="#{modSelectorController.setSelectedEntityId(modSelectorController.selectedEntityId)}"
+									view="/modCommons/modSelector/soto-layout/selector.xhtml"
+									style="text-decoration: none; border: 0px;">
+								<f:param name="entityid" value="#{modSelectorController.selectedEntityId}" />	
+								<s:div styleClass="btnclass" 
+									style="background-image: url('#{facesContext.externalContext.requestContextPath}/modCommons/modSelector/soto-layout/themes/blue/back-small.png')"/>
+							</s:link>
+							<s:link rendered="#{modSelectorController.selectedModuleTypeId == null and entities.size() > 2}"
+									view="/modCommons/entitySelector/selector.xhtml"
+									style="text-decoration: none; border: 0px;">
+								<f:param name="entityid" value="#{modSelectorController.selectedEntityId}" />	
+								<s:div styleClass="btnclass" style="background-image: url('#{facesContext.externalContext.requestContextPath}/modCommons/modSelector/soto-layout/themes/blue/back-small.png')"/>
+							</s:link>
+							<s:link  view="/index.html" action="#{identity.logout}" >
+								<s:div styleClass="btnclass" style="background-image: url('#{facesContext.externalContext.requestContextPath}/modCommons/modSelector/soto-layout/themes/blue/close-small.png')"/>
+							</s:link>
+						</h:panelGrid>
+					</div>	
+					<div class="headerMod" id="moveMe2">
+						<div class="headerLetters" id="moveMe3" style="cursor: default;">#{messages.upermodules} 
+							
+							<div class="headerLetterSmall" style="cursor: default;">
+								<h:outputLabel value="#{modSelectorController.selectedEntityShortName}" 
+									 title="#{modSelectorController.selectedEntityShortNameTitle}" /> 
+								<br />
+								<h:outputLabel value="#{modSelectorController.selectedModule.label}" 
+									rendered="#{modSelectorController.selectedModuleTypeId != null}" />
+								
+							</div>
+						</div>
+					</div>
+					<div class="conteMod">
+					<a:form>
+						<center >
+							<s:div rendered="#{modules.size() == 1}" 
+									style="font-family: verdana; font-size: 11px; position:relative; top:15px;">
+								#{messages.msg_noModulesVisibles_com} <br/><br/>
+								<s:button value="#{messages.btn_Regresar_com}"
+									view="/modCommons/entitySelector/selector.xhtml" />
+							</s:div>
+							<rich:dataGrid cellpadding="0" columnClasses="blueback"
+								styleClass="blueback" cellspacing="0"
+								value="#{modules}" var="modulo" columns="4">
+								<s:div rendered="#{modulo.nombre != 'configuracion'}">
+									<s:link rendered="#{modulo.moduloFisico}"
+											action="gotomodhome"
+											style="text-decoration: none; ">
+										<f:param value="#{modulo.nombre}" name="moduleName" /> 
+								        <f:param name="idFuncionalidad" value="#{modulo.id}" />
+								        <f:param name="idancestors" value="#{modulo.id}a" />
+										<div style="text-align: left;width:89px;height:90px;background-image:url('#{facesContext.externalContext.requestContextPath}/resources/modCommon/moduleimages/#{theme.name}/#{theme.color}/#{modulo.imagen}');background-repeat:no-repeat;border:0px;">
+											<div style="color: #ffffff; font-weight: bold; font-family: Verdana; padding: 6px;">
+												<h:outputLabel value="#{modulo.label}" 
+													style="font-size: #{modulo.labelSize}px;" />
+											</div>
+										</div>
+									</s:link>
+								</s:div>
+								<s:div rendered="#{modulo.nombre == 'configuracion' and entities.size() == 2}">
+									<s:link rendered="#{modulo.moduloFisico}"
+											action="gotomodhome"
+											style="text-decoration: none; ">
+										<f:param value="#{modulo.nombre}" name="moduleName" /> 
+								        <f:param name="idFuncionalidad" value="#{modulo.id}" />
+								        <f:param name="idancestors" value="#{modulo.id}a" />
+										<div style="text-align: left;width:89px;height:90px;background-image:url('#{facesContext.externalContext.requestContextPath}/resources/modCommon/modulethemes/#{theme.name}/#{theme.color}/#{modulo.imagen}');background-repeat:no-repeat;border:0px;">
+											<div style="color: #ffffff; font-weight: bold; font-family: Verdana; padding: 6px;">
+												<h:outputLabel value="#{modulo.label}" 
+													style="font-size: #{modulo.labelSize}px;" />
+											</div>
+										</div>
+									</s:link>
+								</s:div>
+								<s:link rendered="#{not modulo.moduloFisico}"
+										action="gotomodselector"
+										style="text-decoration: none; ">
+									<f:param name="moduleid" value="#{modulo.id}" />
+									<div style="text-align: left;width:89px;height:90px;background-image:url('#{facesContext.externalContext.requestContextPath}/resources/modCommon/moduleimages/#{theme.name}/#{theme.color}/#{modulo.imagen}');background-repeat:no-repeat;border:0px;">
+										<div style="color: #ffffff; font-weight: bold; font-family: Verdana; padding: 6px;">
+											<h:outputLabel value="#{modulo.label}" 
+												style="font-size: #{modulo.labelSize}px;" />
+										</div>
+									</div>
+								</s:link>
+							</rich:dataGrid>
+						</center>
+					</a:form>	
+					</div>
+					<div class="footerMod"></div>
+				</div>
+			</div>	
+</div>			
+<script type="text/javascript">
+	movMeId=document.getElementById("moveMe");
+	movMeId.style.top="1px";
+	movMeId.style.left="1px";
+</script>
+</h:form>	
+</body>
+</html>

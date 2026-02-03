@@ -1,0 +1,566 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}">
+	<s:div>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript">setContentTitle('#{messages.lbl_titulo_ens}');</script>
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css"
+			rel="stylesheet" type="text/css" />
+		<link rel='stylesheet'
+			href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+			type='text/css' />
+
+
+
+		<h:form id="exportarConjuntoDatos">
+
+			<a4j:outputPanel>
+				<rich:messages globalOnly="true" styleClass="message"
+					id="globalMessage" />
+				<rich:modalPanel id="bloqueo" width="0" height="0" top="0" left="0"
+					style="opacity: -10000" shadowOpacity="-10000" />
+
+			</a4j:outputPanel>
+			<rich:panel>
+				<f:facet name="header">#{messages.lbl_datosGenerales_ens}</f:facet>
+				<table cellpadding="0px" cellspacing="0px" border="0px">
+					<tr>
+
+						<td><h:outputLabel
+								value="#{messages.lbl_nombreConjuntoDatos_ens}:"
+								styleClass="normalText" /> <br /> <rich:spacer height="8px"></rich:spacer>
+						</td>
+						<td class="colPeq"><h:outputText
+								value="#{exportarConjuntoDatos.conjuntoDatos.nombre}"
+								styleClass="dataText" /></td>
+						<td class="colGran"><h:outputLabel styleClass='normalText'
+								value='#{messages.lbl_descripcionConjunto_ens}:' /></td>
+						<td class="colPeq"><h:outputText styleClass="dataText"
+								value="#{exportarConjuntoDatos.conjuntoDatos.descripcion}" /></td>
+						<td class="colGran"><h:outputLabel styleClass='normalText'
+								value='#{messages.lbl_nombreEstudio_ens}:' /></td>
+						<td class="colPeq"><h:outputText styleClass="dataText"
+								value="#{exportarConjuntoDatos.conjuntoDatos.estudio.nombre}" />
+
+
+						</td>
+
+
+					</tr>
+					<tr>
+
+						<td><h:outputLabel
+								value="#{messages.lbl_nombreIdEstudio_ens}:"
+								styleClass="normalText" /> <br /> <rich:spacer height="8px"></rich:spacer>
+						</td>
+						<td class="colPeq"><h:outputText
+								value="#{exportarConjuntoDatos.conjuntoDatos.estudio.identificador}"
+								styleClass="dataText" /></td>
+						<td class="colGran"><h:outputLabel styleClass='normalText'
+								value='#{messages.lbl_fechaExportar_ens}:' /></td>
+						<td class="colPeq"><h:outputText styleClass="dataText"
+								value="#{exportarConjuntoDatos.fechaExportar}">
+								<s:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText></td>
+						<td class="colGran"><h:outputLabel styleClass='normalText'
+								value='#{messages.lbl_cantGrupos_ens}:' /></td>
+						<td class="colPeq"><h:outputText styleClass="dataText"
+								value="#{exportarConjuntoDatos.listadoCronogramas.size()}">
+
+							</h:outputText></td>
+
+
+					</tr>
+					<tr>
+
+						<td><h:outputLabel value="#{messages.lbl_cantSujetos_ens}:"
+								styleClass="normalText" /> <br /> <rich:spacer height="8px"></rich:spacer>
+						</td>
+						<td class="colPeq"><h:outputText
+								value="#{exportarConjuntoDatos.listadoSujetos.size()}"
+								styleClass="dataText" /></td>
+						<td class="colGran"><h:outputLabel styleClass='normalText'
+								value='#{messages.lbl_cantMomentos_ens}:' /></td>
+						<td class="colPeq"><h:outputText styleClass="dataText"
+								value="#{exportarConjuntoDatos.listadoMomentos.size()}">
+
+							</h:outputText></td>
+						<td class="colGran"><h:outputLabel styleClass='normalText'
+								value='#{messages.lbl_cantHojas_ens}:' /></td>
+						<td class="colPeq"><h:outputText styleClass="dataText"
+								value="#{exportarConjuntoDatos.listadoHojasCRD.size()}">
+
+							</h:outputText></td>
+
+
+					</tr>
+				</table>
+
+
+			</rich:panel>
+			<rich:spacer height="8px" />
+			<rich:panel styleClass="whitespace"
+				rendered="#{exportarConjuntoDatos.listadoCronogramas.size() == 0}">
+				<f:facet name="header">#{messages.lbl_leyenda_ens}</f:facet>
+
+				<div class="results" id="roleList">
+					<h:outputText value="#{messages.msg_listaVacia_ens}" />
+				</div>
+
+			</rich:panel>
+			<rich:panel
+				rendered="#{exportarConjuntoDatos.listadoCronogramas.size() > 0}">
+				<f:facet name="header">#{messages.lbl_leyenda_ens}</f:facet>
+				<div style="border: 1px;">
+					<a4j:region id="cronogramasTree">
+						<a4j:outputPanel>
+							<rich:tree>
+
+								<rich:treeNodesAdaptor
+									nodes="#{exportarConjuntoDatos.listadoCronogramasConjuntoDatos}"
+									var="cronograma">
+									<rich:treeNode
+										icon="/resources/funcionalidadesIcons/ensayo/cronograma_aprobado.png">
+										<h:outputLabel
+											value="#{cronograma.cronograma.grupoSujetos.nombreGrupo}_#{cronograma.id}" />
+									</rich:treeNode>
+									<rich:treeNodesAdaptor nodes="#{cronograma.listadoMs}" var="ms">
+										<rich:treeNode
+											icon="/resources/funcionalidadesIcons/ensayo/gestionar_momentos.png">
+											<h:outputLabel value="#{ms.ms.nombre}_#{ms.id}" />
+
+										</rich:treeNode>
+										<rich:treeNodesAdaptor nodes="#{ms.listadoMsHojasCrd}"
+											var="msHojaCrd">
+											<rich:treeNode
+												icon="/resources/funcionalidadesIcons/ensayo/gestionar_hoja_crd.png">
+												<h:outputLabel
+													value="#{msHojaCrd.msHojaCrd.hojaCrd.nombreHoja}_#{msHojaCrd.id}" />
+
+											</rich:treeNode>
+
+										</rich:treeNodesAdaptor>
+									</rich:treeNodesAdaptor>
+								</rich:treeNodesAdaptor>
+
+
+							</rich:tree>
+						</a4j:outputPanel>
+					</a4j:region>
+				</div>
+			</rich:panel>
+
+			<rich:spacer height="8px" />
+			<div>
+				<rich:panel styleClass="whitespace"
+					rendered="#{exportarConjuntoDatos.listadoCronogramas.size() == 0}">
+					<f:facet name="header">#{messages.lbl_datosConjuntoDatos_ens}</f:facet>
+
+					<div class="results" id="roleList">
+						<h:outputText value="#{messages.msg_listaVacia_ens}" />
+					</div>
+
+				</rich:panel>
+				<s:div
+					rendered="#{exportarConjuntoDatos.listadoCronogramas.size() > 0}">
+					<a4j:region>
+						<div align="right">
+							<a4j:status id="status"
+								onstart="#{rich:component('bloqueo')}.show()"
+								onstop="#{rich:component('bloqueo')}.hide()">
+								<f:facet name="start">
+									<s:div>
+										<table>
+											<tr>
+												<td><h:graphicImage width="12" height="12"
+														value="/resources/icons/default/acciones/loading_big.gif" /></td>
+												<td><h:outputText value="#{messages.lblProcesando_ap}" /></td>
+											</tr>
+										</table>
+									</s:div>
+								</f:facet>
+							</a4j:status>
+						</div>
+
+						<div align="right">
+							<table cellpadding="0" cellspacing="0" border="0">
+								<tr>
+									<td><h:graphicImage
+											title="#{messages.lbl_exportarXls_ens}"
+											style="margin-right: 1px;" height="16" width="16"
+											value="/resources/modEnsayo/img/excel-xls-icon.png" /></td>
+									<td><a4j:commandLink
+											value="#{messages.lbl_exportarXls_ens}"
+											action="#{exportarConjuntoDatos.exportarExcel(exportarConjuntoDatos.rootpath)}"
+											oncomplete="window.open('#{facesContext.externalContext.requestContextPath}#{exportarConjuntoDatos.path}')">
+										</a4j:commandLink></td>
+									<td width="10px"></td>
+									<td><h:graphicImage
+											title="#{messages.lbl_exportarSpss_ens}"
+											style="margin-right: 1px;" height="16" width="16"
+											value="/resources/modEnsayo/img/logo_spss.png" /></td>
+									<td><a4j:commandLink
+											value="#{messages.lbl_exportarSpss_ens}"
+											action="#{exportarConjuntoDatos.exportarSpss()}"
+											oncomplete="window.open('#{facesContext.externalContext.requestContextPath}#{exportarConjuntoDatos.path}')">
+										</a4j:commandLink></td>
+
+								</tr>
+							</table>
+						</div>
+					</a4j:region>
+					<rich:panel>
+						<f:facet name="header">#{messages.lbl_datosConjuntoDatos_ens}
+			</f:facet>
+						<table  width="100%" cellspacing="0px" style="vertical-align: top;">
+							<tr>
+
+
+								<td style="vertical-align: top; width: 100%;"><a4j:outputPanel
+										id="tablas_variableDatos">
+										
+											<rich:scrollableDataTable 
+												rendered="#{exportarConjuntoDatos.vertical}"
+												height="200px"
+												frozenColCount="#{exportarConjuntoDatos.frozenColCount}"
+												width="100%"
+												rows="#{exportarConjuntoDatos.tuplasFiltradoVertical.size()}"
+												value="#{exportarConjuntoDatos.indicesTuplasVertical}"
+												var="tupla" columnClasses="col">
+													
+													<c:forEach items="#{exportarConjuntoDatos.obtenerTupla(tupla)}" var="celda">
+													<rich:column>
+														<f:facet name="header">
+															<h:panelGrid columns="2"
+																style="width: 100%; padding:0px; margin:0px;" border="0"
+																cellpadding="2" cellspacing="0">
+																<s:div style="float: left;">
+																	<h:outputText
+																		value="#{celda.get(0)}" />
+																</s:div>
+																<s:div style="text-align: right; padding-left:3px;"></s:div>
+															</h:panelGrid>
+														</f:facet>
+														<h:outputText
+															value="#{celda.get(1)}"
+															styleClass="normalText" style="padding:2px">
+														</h:outputText>
+													</rich:column>
+													</c:forEach>
+										</rich:scrollableDataTable>
+									
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										<rich:scrollableDataTable 
+											rendered="#{not exportarConjuntoDatos.vertical}"
+											height="200px"
+											frozenColCount="#{exportarConjuntoDatos.frozenColCount}"
+											width="100%"
+											rows="#{exportarConjuntoDatos.listadoSujetosConjuntoDatos.size()}"
+											id="tabla_listado_variableDatos2"
+											value="#{exportarConjuntoDatos.listadoSujetosConjuntoDatos}"
+											var="sujeto" columnClasses="col">
+
+											<rich:column>
+												<f:facet name="header">
+													<h:panelGrid columns="2"
+														style="width: 100%;  padding:0px; margin:0px;" border="0"
+														cellpadding="2" cellspacing="0">
+														<s:div style="float: left;">#{messages.lbl_nombreGrupo_ens}</s:div>
+														<s:div style="text-align: right; padding-left:3px;"></s:div>
+													</h:panelGrid>
+												</f:facet>
+												<h:outputText
+													value="#{sujeto.sujeto.grupoSujetos.nombreGrupo}"
+													styleClass="normalText" style="padding:2px" />
+											</rich:column>
+											<rich:column>
+												<f:facet name="header">
+													<h:panelGrid columns="2"
+														style="width: 100%; padding:0px; margin:0px;" border="0"
+														cellpadding="2" cellspacing="0">
+														<s:div style="float: left;">#{messages.lbl_idUnicaSujeto_ens}</s:div>
+														<s:div style="text-align: right; padding-left:3px;"></s:div>
+													</h:panelGrid>
+												</f:facet>
+												<h:outputText value="#{sujeto.sujeto.codigoPaciente}"
+													styleClass="normalText" style="padding:2px" />
+											</rich:column>
+											<rich:column
+												rendered="#{exportarConjuntoDatos.conjuntoDatos.mostrarFechaInclusionSujeto}">
+												<f:facet name="header">
+													<h:panelGrid columns="2"
+														style="width: 100%; padding:0px; margin:0px;" border="0"
+														cellpadding="2" cellspacing="0">
+														<s:div style="float: left;">#{messages.lbl_fechaInclusion_ens}</s:div>
+														<s:div style="text-align: right; padding-left:3px;"></s:div>
+													</h:panelGrid>
+												</f:facet>
+												<h:outputText value="#{sujeto.sujeto.fechaInclucion}"
+													rendered="#{sujeto.sujeto.fechaInclucion!=null}"
+													styleClass="normalText" style="padding:2px">
+													
+												</h:outputText>
+											</rich:column>
+											<rich:column
+												rendered="#{exportarConjuntoDatos.conjuntoDatos.mostrarEstadoSujeto}">
+												<f:facet name="header">
+													<h:panelGrid columns="2"
+														style="width: 100%; padding:0px; margin:0px;" border="0"
+														cellpadding="2" cellspacing="0">
+														<s:div style="float: left;">#{messages.lbl_estadoSujeto_ens}</s:div>
+														<s:div style="text-align: right; padding-left:3px;"></s:div>
+													</h:panelGrid>
+												</f:facet>
+												<h:outputText
+													value="#{sujeto.sujeto.estadoInclusion.nombre}"
+													rendered="#{sujeto.sujeto.estadoInclusion!=null}"
+													styleClass="normalText" style="padding:2px" />
+											</rich:column>
+											<rich:column
+												rendered="#{exportarConjuntoDatos.conjuntoDatos.mostrarInicialesSujeto}">
+												<f:facet name="header">
+													<h:panelGrid columns="2"
+														style="width: 100%; padding:0px; margin:0px;" border="0"
+														cellpadding="2" cellspacing="0">
+														<s:div style="float: left;">#{messages.lbl_inicialesSujeto_ens}</s:div>
+														<s:div style="text-align: right; padding-left:3px;"></s:div>
+													</h:panelGrid>
+												</f:facet>
+												<h:outputText
+													value="#{sujeto.sujeto.inicialesPaciente}"
+													rendered="#{sujeto.sujeto.inicialesPaciente!=null}"
+													styleClass="normalText" style="padding:2px" />
+											</rich:column>
+											<rich:column
+												rendered="#{exportarConjuntoDatos.conjuntoDatos.mostrarNumeroInclusionSujeto}">
+												<f:facet name="header">
+													<h:panelGrid columns="2"
+														style="width: 100%; padding:0px; margin:0px;" border="0"
+														cellpadding="2" cellspacing="0">
+														<s:div style="float: left;">#{messages.lbl_numeroInclusion_ens}</s:div>
+														<s:div style="text-align: right; padding-left:3px;"></s:div>
+													</h:panelGrid>
+												</f:facet>
+												<h:outputText
+													value="#{sujeto.sujeto.numeroInclucion}"
+													rendered="#{sujeto.sujeto.numeroInclucion!=null}"
+													styleClass="normalText" style="padding:2px" />
+											</rich:column>
+											<rich:column
+												rendered="#{exportarConjuntoDatos.conjuntoDatos.mostrarHoraInclusionSujeto}">
+												<f:facet name="header">
+													<h:panelGrid columns="2"
+														style="width: 100%; padding:0px; margin:0px;" border="0"
+														cellpadding="2" cellspacing="0">
+														<s:div style="float: left;">#{messages.lbl_horaInclusion_ens}</s:div>
+														<s:div style="text-align: right; padding-left:3px;"></s:div>
+													</h:panelGrid>
+												</f:facet>
+												<h:outputText
+													value="#{sujeto.sujeto.nombre}"
+													rendered="#{sujeto.sujeto.nombre!=null}"
+													styleClass="normalText" style="padding:2px" />
+											</rich:column>
+											<rich:column
+												rendered="#{exportarConjuntoDatos.conjuntoDatos.mostrarSitioClinicaSujeto}">
+												<f:facet name="header">
+													<h:panelGrid columns="2"
+														style="width: 100%; padding:0px; margin:0px;" border="0"
+														cellpadding="2" cellspacing="0">
+														<s:div style="float: left;">#{messages.lbl_sitioClinica_ens}</s:div>
+														<s:div style="text-align: right; padding-left:3px;"></s:div>
+													</h:panelGrid>
+												</f:facet>
+												<h:outputText
+													value="#{sujeto.sujeto.inicialesCentro}"
+													rendered="#{sujeto.sujeto.inicialesCentro!=null}"
+													styleClass="normalText" style="padding:2px" />
+											</rich:column>
+											<c:forEach
+												items="#{exportarConjuntoDatos.listadoCronogramasConjuntoDatos}"
+												var="cronograma">
+												<c:forEach items="#{cronograma.listadoMs}" var="ms">
+													<rich:column
+														rendered="#{exportarConjuntoDatos.conjuntoDatos.mostrarFechaInicioMs}">
+														<f:facet name="header">
+															<h:panelGrid columns="2"
+																style="width: 100%; padding:0px; margin:0px;" border="0"
+																cellpadding="2" cellspacing="0">
+																<s:div style="float: left;">
+																	<h:outputText
+																		value="#{messages.lbl_fechaInicio_ens}_#{cronograma.id}_#{ms.id}" />
+																</s:div>
+																<s:div style="text-align: right; padding-left:3px;"></s:div>
+															</h:panelGrid>
+														</f:facet>
+														<h:outputText
+															value="#{exportarConjuntoDatos.fechaInicioMs(ms.ms,sujeto)}"
+															styleClass="normalText" style="padding:2px">
+															<s:convertDateTime pattern="dd/MM/yyyy" />
+														</h:outputText>
+													</rich:column>
+													<rich:column
+														rendered="#{exportarConjuntoDatos.conjuntoDatos.mostrarFechaFinMs}">
+														<f:facet name="header">
+															<h:panelGrid columns="2"
+																style="width: 100%; padding:0px; margin:0px;" border="0"
+																cellpadding="2" cellspacing="0">
+																<s:div style="float: left;">
+																	<h:outputText
+																		value="#{messages.lbl_fechaFin_ens}_#{cronograma.id}_#{ms.id}" />
+																</s:div>
+																<s:div style="text-align: right; padding-left:3px;"></s:div>
+															</h:panelGrid>
+														</f:facet>
+														<h:outputText
+															value="#{exportarConjuntoDatos.fechaFinMs(ms.ms,sujeto)}"
+															styleClass="normalText" style="padding:2px">
+															<s:convertDateTime pattern="dd/MM/yyyy" />
+														</h:outputText>
+													</rich:column>
+													<rich:column
+														rendered="#{exportarConjuntoDatos.conjuntoDatos.mostrarEstadoMs}">
+														<f:facet name="header">
+															<h:panelGrid columns="2"
+																style="width: 100%; padding:0px; margin:0px;" border="0"
+																cellpadding="2" cellspacing="0">
+																<s:div style="float: left;">
+																	<h:outputText
+																		value="#{messages.lbl_estadoMs_ens}_#{cronograma.id}_#{ms.id}" />
+																</s:div>
+																<s:div style="text-align: right; padding-left:3px;"></s:div>
+															</h:panelGrid>
+														</f:facet>
+														<h:outputText
+															value="#{exportarConjuntoDatos.estadoMs(ms.ms,sujeto)}"
+															styleClass="normalText" style="padding:2px" />
+
+													</rich:column>
+													<c:forEach items="#{ms.listadoMsHojasCrd}" var="msHojaCrd">
+														<rich:column
+															rendered="#{exportarConjuntoDatos.conjuntoDatos.mostrarEstadoCrdEspecifico}">
+															<f:facet name="header">
+																<h:panelGrid columns="2"
+																	style="width: 100%; padding:0px; margin:0px;"
+																	border="0" cellpadding="2" cellspacing="0">
+																	<s:div style="float: left;">
+																		<h:outputText
+																			value="#{messages.lbl_estadoCrd_ens}_#{cronograma.id}_#{ms.id}_#{msHojaCrd.id}" />
+																	</s:div>
+																	<s:div style="text-align: right; padding-left:3px;"></s:div>
+																</h:panelGrid>
+															</f:facet>
+															<h:outputText
+																value="#{exportarConjuntoDatos.estadoCrd(msHojaCrd.msHojaCrd.hojaCrd,ms.ms,sujeto)}"
+																styleClass="normalText" style="padding:2px" />
+
+														</rich:column>
+														<rich:column
+															rendered="#{exportarConjuntoDatos.conjuntoDatos.mostrarEstadoMonitoreoCrdEspecifico}">
+															<f:facet name="header">
+																<h:panelGrid columns="2"
+																	style="width: 100%; padding:0px; margin:0px;"
+																	border="0" cellpadding="2" cellspacing="0">
+																	<s:div style="float: left;">
+																		<h:outputText
+																			value="#{messages.lbl_estadoMonitoreoCrd_ens}_#{cronograma.id}_#{ms.id}_#{msHojaCrd.id}" />
+																	</s:div>
+																	<s:div style="text-align: right; padding-left:3px;"></s:div>
+																</h:panelGrid>
+															</f:facet>
+															<h:outputText
+																value="#{exportarConjuntoDatos.estadoMonitoreoCrd(msHojaCrd.msHojaCrd.hojaCrd,ms.ms,sujeto)}"
+																styleClass="normalText" style="padding:2px" />
+
+														</rich:column>
+														<c:forEach items="#{msHojaCrd.listadoVariables}"
+															var="variable">
+															<c:choose>
+																<c:when
+																	test="#{exportarConjuntoDatos.isCheckboxNomenclador(variable)}">
+																	<c:forEach
+																		items="#{exportarConjuntoDatos.getNamesOfCheckBoxColums(variable,ms.ms)}"
+																		var="name">
+																		<rich:column>
+																			<f:facet name="header">
+																				<h:panelGrid columns="2"
+																					style="width: 100%; padding:0px; margin:0px;"
+																					border="0" cellpadding="2" cellspacing="0">
+																					<s:div style="float: left;">
+																						<h:outputLabel
+																							value="#{name}_#{cronograma.id}_#{ms.id}_#{msHojaCrd.id}" />
+																					</s:div>
+																					<s:div style="text-align: right; padding-left:3px;"></s:div>
+																				</h:panelGrid>
+																			</f:facet>
+																			<h:outputText
+																				value="#{exportarConjuntoDatos.getValueForChechBoxs(variable,ms.ms,sujeto,name,msHojaCrd.msHojaCrd.hojaCrd)}"
+																				styleClass="normalText" style="padding:2px" />
+																		</rich:column>
+																	</c:forEach>
+																</c:when>
+																<c:otherwise>
+																	<rich:column>
+																		<f:facet name="header">
+																			<h:panelGrid columns="2"
+																				style="width: 100%; padding:0px; margin:0px;"
+																				border="0" cellpadding="2" cellspacing="0">
+																				<s:div style="float: left;">
+																					<h:outputLabel
+																						value="#{variable.nombreVariable}_#{cronograma.id}_#{ms.id}_#{msHojaCrd.id}" />
+																				</s:div>
+																				<s:div style="text-align: right; padding-left:3px;"></s:div>
+																			</h:panelGrid>
+																		</f:facet>
+																		<h:outputText
+																			value="#{exportarConjuntoDatos.valorVariablePorCrdEspecifico(variable,ms.ms,sujeto,msHojaCrd.msHojaCrd.hojaCrd)}"
+																			styleClass="normalText" style="padding:2px" />
+																	</rich:column>
+																</c:otherwise>
+															</c:choose>
+
+														</c:forEach>
+													</c:forEach>
+												</c:forEach>
+											</c:forEach>
+
+
+
+
+										</rich:scrollableDataTable>
+									</a4j:outputPanel></td>
+							</tr>
+						</table>
+					</rich:panel>
+				</s:div>
+			</div>
+
+			<div align="right">
+				<a4j:commandButton action="cancelar"
+					value="#{messages.btn_salir_ens}"
+					style="margin-bottom: 0px; margin-right: 0px; margin-left: 0px; margin-top: 8px">
+				</a4j:commandButton>
+			</div>
+
+
+
+		</h:form>
+	</s:div>
+</s:div>

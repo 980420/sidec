@@ -1,0 +1,29 @@
+#created on: 06-ago-2011
+package intervaloValidezCronicismo
+
+#list any import classes here.
+import gehos.comun.util.reglasMedicamentos.IntervaloValidezCronicismo;
+
+
+#declare any global variables here
+
+
+rule "entidad1"
+	
+	when
+		IntervaloValidezCronicismo(idEntidad=="1")
+		$med: IntervaloValidezCronicismo()
+	then 
+		$med.setCantDiasAntes(2);
+		$med.setCantDiasDespues(5);		
+end
+
+rule "entidad2"
+	
+	when
+		IntervaloValidezCronicismo(idEntidad=="2")
+		$med: IntervaloValidezCronicismo()
+	then 
+		$med.setCantDiasAntes(2);
+		$med.setCantDiasDespues(5);		
+end

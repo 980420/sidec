@@ -1,0 +1,87 @@
+<rich:modalPanel id="departamento_agregar_clinico" onhide=""
+	autosized="true" resizeable="false"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j"
+	onshow="document.getElementById('departamento_agregar_clinico_form:name').value=''; document.getElementById('departamento_agregar_clinico_form:name').focus();">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<f:facet name="header">
+		<h:panelGroup id="departamento_agregar_clinico_header">
+			<h:outputText value="#{messages.adddpto}" />
+		</h:panelGroup>
+	</f:facet>
+	<f:facet name="controls">
+		<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+			style="cursor:pointer; position:relative; top:2px;"
+			onclick="Richfaces.hideModalPanel('departamento_agregar_clinico')" />
+	</f:facet>
+	
+	<a:outputPanel id="departamento_agregar_clinico_panel">
+
+		<h:form id="departamento_agregar_clinico_form">
+
+			<a:status forceId="true"
+				onstart="document.getElementById('departamento_agregar_clinico_form:acpbtn').style.cursor='wait'"
+				id="newdepstatus"
+				onstop="document.getElementById('departamento_agregar_clinico_form:acpbtn').style.cursor='default'">
+			</a:status>
+
+			<table cellpadding="0px" cellspacing="0px" border="0px"
+				id="container" title="">
+				<tr>
+					<td style="height: 10px;" colspan="6"></td>
+				</tr>
+				<tr style="vertical-align: top;">
+					<td style="width: 6px;"></td>
+					<td>
+						<h:outputLabel value="#{messages.nombre}:"></h:outputLabel>
+						<rich:message for="inputIdent" style="color: red;"
+							id="inputIdentMessage" 
+							showDetail="false" showSummary="false" >
+							<f:facet name="errorMarker">
+								<span title="#{facesMessages.getCurrentMessagesForControl('inputIdent').get(0).getDetail()}" 
+									style="cursor: default;">*</span>	
+							</f:facet>
+						</rich:message>
+						<br />
+						<h:inputText id="inputIdent" required="true"
+							validator="#{validations_configuracion.textnumber50}"
+							value="#{departamentosYServiciosManager.nuevoDepartamento}"
+							style="width:148px;"  />
+					</td>
+				</tr>
+				<tr>
+					<td style="height: 8px;" colspan="6"></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+					<div align="right"><a:commandButton value="#{messages.aceptar}"
+						id="acpbtn"
+						action="#{departamentosYServiciosManager.adicionarDepartamentoClinico()}"
+						status="newdepstatus" reRender="inputIdentMessage"
+						oncomplete="#{departamentosYServiciosManager.onModificarDepComplete('departamento_agregar_clinico')}"
+						style="margin-bottom: 0px; margin-top: 0px;">
+					</a:commandButton> <input type="button"
+						onclick="javascript:Richfaces.hideModalPanel('departamento_agregar_clinico');"
+						value="#{messages.cancelar}"
+						style="margin-bottom: 0px; margin-top: 0px; margin-left: 2px; margin-right: 0px;" />
+					</div>
+					</td>
+				</tr>
+				<tr>
+					<td style="height: 6px;" colspan="6"></td>
+				</tr>
+			</table>
+
+
+		</h:form>
+
+	</a:outputPanel>
+
+</rich:modalPanel>

@@ -1,0 +1,1 @@
+#12 Generar reporte estadístico de la cantidad de Modelos por estado de cada sujeto de un centro.

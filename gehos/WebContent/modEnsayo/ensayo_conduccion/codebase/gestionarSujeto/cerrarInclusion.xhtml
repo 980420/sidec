@@ -1,0 +1,90 @@
+
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" xmlns:a4j="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle('#{messages.cerrarInclusion}')</script>
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css"
+		rel="stylesheet" type="text/css" />
+
+
+
+	<h:form id="idForm" enctype="multipart/form-data">
+
+		<rich:panel
+			rendered="#{cerrarInclusion.seguridadEstudio.estudioEntidadActivo.estudio.estadoEstudio.codigo == 3}"
+			id="idInterrumpir" opened="true" switchType="client">
+			<f:facet name="header">
+				<h:panelGroup>
+					<div>
+						<div align="left">#{messages.cerrarInclusion}</div>
+					</div>
+				</h:panelGroup>
+			</f:facet>
+			<table width="100%" cellpadding="0px" cellspacing="0px">
+				<tr>
+					<td><s:label styleClass="#{invalid?'labelErrors':''}"
+							value="#{messages.causa}:">
+							<rich:message for="causa" showDetail="false">
+								<f:facet name="errorMarker">
+									<h:outputText style="color: red;cursor: pointer !important;"
+										title="#{facesMessages.getCurrentMessagesForControl('causa').get(0).getDetail()}"
+										value="*" />
+								</f:facet>
+							</rich:message>
+						</s:label><br /> <h:inputTextarea id="causa"
+							value="#{cerrarInclusion.causa}"
+							validator="#{validations_sujeto.causaEnBlanco}"
+							style="width:100%;resize: vertical"
+							required="#{!empty param['idForm:aceptarr'] and cerrarInclusion.causaRequired}">
+						</h:inputTextarea></td>
+				</tr>
+			</table>
+		</rich:panel>
+
+		<rich:panel
+			rendered="#{cerrarInclusion.seguridadEstudio.estudioEntidadActivo.estudio.estadoEstudio.codigo != 3}"
+			id="idInterrumpir1" opened="true" switchType="client">
+			<f:facet name="header">
+				<h:panelGroup>
+					<div>
+						<div align="left">#{messages.cerrarInclusion}</div>
+					</div>
+				</h:panelGroup>
+			</f:facet>
+
+			<table class="Tabla">
+				<tr>
+					<td><h:outputText value="#{messages.noEjecucion}" /></td>
+				</tr>
+			</table>
+
+
+		</rich:panel>
+
+
+		<div align="right">
+			<br />
+			<a:commandButton rendered="#{cerrarInclusion.seguridadEstudio.estudioEntidadActivo.estudio.estadoEstudio.codigo == 3}" style="margin:0px;" id="aceptarr"
+				value="#{messages.aceptar}"
+				oncomplete="#{cerrarInclusion.validarCampo()}" />
+			<rich:spacer width="10" />
+			<a:commandButton rendered="#{cerrarInclusion.seguridadEstudio.estudioEntidadActivo.estudio.estadoEstudio.codigo == 3}" value="#{messages.cancelar}" style="margin:0px;"
+				action="cancelar" immediate="true" />
+				<a:commandButton rendered="#{cerrarInclusion.seguridadEstudio.estudioEntidadActivo.estudio.estadoEstudio.codigo != 3}" value="#{messages.Salir}" style="margin:0px;"
+				action="cancelar" immediate="true" />
+		</div>
+
+
+
+	</h:form>
+	<ui:include
+		src="/modEnsayo/ensayo_conduccion/codebase/plantillas/AdvertenciaCerrarInclusion.xhtml">
+		<ui:param name="control" value="#{cerrarInclusion}" />
+	</ui:include>
+</s:div>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<action execute="#{tipoUbicacionBuscarControlador.begin()}" />
+
+	<param name="state" value="#{tipoUbicacionBuscarControlador.state}" />
+	<param name="firstResult" value="#{tipoUbicacionBuscarControlador.firstResult}" />
+	<param name="order" value="#{tipoUbicacionBuscarControlador.order}" />
+	<param name="critB1" value="#{tipoUbicacionBuscarControlador.codigo}" />
+	<param name="critB2" value="#{tipoUbicacionBuscarControlador.descripcion}" />
+
+	<!-- Create -->
+	<navigation from-action="#{tipoUbicacionCrearControlador.begin()}">
+		<redirect
+			view-id="/modConfiguracion/management/gestionarTipoUbicacion/CrearTipoUbicacion.xhtml">
+			<param name="state" value="#{tipoUbicacionBuscarControlador.state}" />
+			<param name="firstResult" value="#{tipoUbicacionBuscarControlador.firstResult}" />
+			<param name="order" value="#{tipoUbicacionBuscarControlador.order}" />
+			<param name="critB1"
+				value="#{parameters.encodec(tipoUbicacionBuscarControlador.codigo)}" />
+			<param name="critB2"
+				value="#{parameters.encodec(tipoUbicacionBuscarControlador.descripcion)}" />
+		</redirect>
+	</navigation>
+
+	<!-- View details -->
+	<navigation from-action="#{tipoUbicacionBuscarControlador.seleccionarVer()}"
+		evaluate="#{tipoUbicacionBuscarControlador.error}">
+		<rule if-outcome="0">
+			<redirect
+				view-id="/modConfiguracion/management/gestionarTipoUbicacion/VerDetallesTipoUbicacion.xhtml">
+				<param name="ubicationTypeId" value="#{tipoUbicacionBuscarControlador.idEliminar}" />
+				<param name="state" value="#{tipoUbicacionBuscarControlador.state}" />
+				<param name="firstResult" value="#{tipoUbicacionBuscarControlador.firstResult}" />
+				<param name="order" value="#{tipoUbicacionBuscarControlador.order}" />
+				<param name="critB1"
+					value="#{parameters.encodec(tipoUbicacionBuscarControlador.codigo)}" />
+				<param name="critB2"
+					value="#{parameters.encodec(tipoUbicacionBuscarControlador.descripcion)}" />
+				<param name="from" value="listar" />
+			</redirect>
+		</rule>
+	</navigation>
+
+	<!-- Modify -->
+	<navigation from-action="#{tipoUbicacionBuscarControlador.seleccionarModificar()}"
+		evaluate="#{tipoUbicacionBuscarControlador.error}">
+		<rule if-outcome="0">
+			<redirect
+				view-id="/modConfiguracion/management/gestionarTipoUbicacion/ModificarTipoUbicacion.xhtml">
+				<param name="ubicationTypeId" value="#{tipoUbicacionBuscarControlador.idEliminar}" />
+				<param name="state" value="#{tipoUbicacionBuscarControlador.state}" />
+				<param name="firstResult" value="#{tipoUbicacionBuscarControlador.firstResult}" />
+				<param name="order" value="#{tipoUbicacionBuscarControlador.order}" />
+				<param name="critB1" value="#{parameters.encodec(tipoUbicacionBuscarControlador.codigo)}" />
+				<param name="critB2" value="#{parameters.encodec(tipoUbicacionBuscarControlador.descripcion)}" />
+			</redirect>
+		</rule>
+	</navigation>
+
+</page>

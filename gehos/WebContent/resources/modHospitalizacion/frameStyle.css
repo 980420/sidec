@@ -1,0 +1,258 @@
+.header
+{
+	font-family: Verdana;
+	font-size: 10px;
+	font-size: 10px;
+	height: 20px;
+}
+.headerdias
+{
+
+	font-size: 10px;
+	width:20px;
+	height:18px;
+	font-weight: normal;
+	border-bottom: 1px solid #C0C0C0;
+}
+/*
+dias que no estan llenos
+*/
+.trcalendar
+{
+
+	font-size: 10px;
+	width:20px;
+	height:18px;
+	border-bottom: 1px solid #C0C0C0;
+}
+.calendar
+{
+	font-family: Verdana;
+	font-size: 10pt;
+	border-left:1px solid #C0C0C0;
+	border-right:1px solid #C0C0C0;
+	border-top:1px solid #C0C0C0;
+}
+.semanas
+{
+	width:20px;
+	height:18px;
+	background-color:#E2E2E2;
+	text-align: center;
+    vertical-align: middle;
+    border-bottom: 1px solid #C0C0C0;
+}
+/*
+Dias normales
+*/
+.normal
+{
+	width:20px;
+	height:18px;
+	text-align: center;
+	vertical-align: bottom;
+	border-right:1px solid #C0C0C0;
+	border-bottom: 1px solid #C0C0C0;
+}
+.normal7
+{
+	width:20px;
+	height:18px;
+	text-align: center;
+	vertical-align: middle;
+	border-bottom: 1px solid #C0C0C0;
+}
+/*dias del calendario que esten a menos de la mitad, dias pasados*/
+.underhalfpast
+{
+	 background-image:url("../modHospitalizacion/images/underhalfpast.jpg");
+	 background-repeat:repeat-x;
+     width:20px;
+	height:18px;
+     text-align: center;
+     vertical-align: middle;
+   
+     border-right:1px solid #C0C0C0;
+	 border-bottom: 1px solid #C0C0C0;
+}
+.underhalfpast7
+{
+	 background-image:url("../modHospitalizacion/images/underhalfpast.jpg");
+	 background-repeat:repeat-x;
+     width:20px;
+	height:18px;
+     text-align: center;
+     vertical-align: middle;
+   
+     
+	border-bottom: 1px solid #C0C0C0;
+}
+/*dias del calendario que esten a menos de la mitad, futuros*/
+.underhalffuture
+{
+	background-image:url("../modHospitalizacion/images/underhalffuture.jpg");
+	background-repeat:repeat-x;
+	width:20px;
+	height:18px;
+	text-align: center;
+	vertical-align: middle;
+	border-right:1px solid #C0C0C0;
+	border-bottom: 1px solid #C0C0C0;
+}
+.underhalffuture7
+{
+	background-image:url("../modHospitalizacion/images/underhalffuture.jpg");
+	background-repeat:repeat-x;
+	width:20px;
+	height:18px;
+	text-align: center;
+	vertical-align: middle;
+	
+	border-bottom: 1px solid #C0C0C0;
+}
+/*dias del calendario que esten por encima de la mitad, dias pasados*/
+.abovehalfpast
+{
+	background-image:url("../modHospitalizacion/images/abovehalfpast.jpg");
+	background-repeat:repeat-x;
+   width:20px;
+	height:18px;
+    text-align: center;
+    vertical-align: middle;
+    border-right:1px solid #C0C0C0;
+	border-bottom: 1px solid #C0C0C0;
+}
+.abovehalfpast7
+{
+	background-image:url("../modHospitalizacion/images/abovehalfpast.jpg");
+	background-repeat:repeat-x;
+    width:20px;
+	height:18px;
+    text-align: center;
+    vertical-align: middle;
+   
+	border-bottom: 1px solid #C0C0C0;
+}
+/*dias del calendario que esten por encima de la mitad, futuros*/
+.abovehalffuture
+{
+	background-image:url("../modHospitalizacion/images/abovehalffuture.jpg");
+	background-repeat:repeat-x;
+    width:20px;
+	height:18px;
+    text-align: center;
+    vertical-align: middle;
+    border-right:1px solid #C0C0C0;
+	border-bottom: 1px solid #C0C0C0;
+}
+.abovehalffuture7
+{
+	background-image:url("../modHospitalizacion/images/abovehalffuture.jpg");
+	background-repeat:repeat-x;
+    width:20px;
+	height:18px;
+    text-align: center;
+    vertical-align: middle;
+    
+	border-bottom: 1px solid #C0C0C0;
+}
+/*dias del calendario que esten a medias, dias pasados*/
+.halfpast
+{
+	background-image:url("../modHospitalizacion/images/halfpast.jpg");
+	background-repeat:repeat-x;
+   width:20px;
+	height:18px;
+    text-align: center;
+    vertical-align: middle;
+    border-right:1px solid #C0C0C0;
+	border-bottom: 1px solid #C0C0C0;
+}
+.halfpast7
+{
+	background-image:url("../modHospitalizacion/images/halfpast.jpg");
+	background-repeat:repeat-x;
+    width:20px;
+	height:18px;
+    text-align: center;
+    vertical-align: middle;
+    
+	border-bottom: 1px solid #C0C0C0;
+}
+/*dias del calendario que esten a medias, futuros*/
+.halffuture
+{
+	background-image:url("../modHospitalizacion/images/halffuture.jpg");
+	background-repeat:repeat-x;
+    width:20px;
+	height:18px;
+    text-align: center;
+    vertical-align: middle;
+    border-right:1px solid #C0C0C0;
+	border-bottom: 1px solid #C0C0C0;
+}
+.halffuture7
+{
+	background-image:url("../modHospitalizacion/images/halffuture.jpg");
+	background-repeat:repeat-x;
+    width:20px;
+	height:18px;
+    text-align: center;
+    vertical-align: middle;
+    
+	border-bottom: 1px solid #C0C0C0;
+}
+/*
+dias que estan a full
+*/
+
+/*dias que estan a full, dias pasados*/
+.fullpast
+{
+	background-image:url("../modHospitalizacion/images/fullpast.jpg");
+	background-repeat:repeat-x;
+   width:20px;
+	height:18px;
+    text-align: center;
+    vertical-align: middle;
+    color: #ffffff;
+    border-right:1px solid #C0C0C0;
+	border-bottom: 1px solid #C0C0C0;
+}
+.fullpast7
+{
+	background-image:url("../modHospitalizacion/images/fullpast.jpg");
+	background-repeat:repeat-x;
+    width:20px;
+	height:18px;
+    text-align: center;
+    vertical-align: middle;
+    color: #ffffff;
+    
+	border-bottom: 1px solid #C0C0C0;
+}
+/*dias que estan a full, futuros*/
+.fullfuture
+{
+	background-image:url("../modHospitalizacion/images/fullfuture.jpg");
+	background-repeat:repeat-x;
+    width:20px;
+	height:18px;
+    text-align: center;
+    vertical-align: middle;
+    color: #ffffff;
+    border-right:1px solid #C0C0C0;
+	border-bottom: 1px solid #C0C0C0;
+}
+.fullfuture7
+{
+	background-image:url("../modHospitalizacion/images/fullfuture.jpg");
+	background-repeat:repeat-x;
+    width:20px;
+	height:18px;
+    text-align: center;
+    vertical-align: middle;
+    color: #ffffff;
+   
+	border-bottom: 1px solid #C0C0C0;
+}

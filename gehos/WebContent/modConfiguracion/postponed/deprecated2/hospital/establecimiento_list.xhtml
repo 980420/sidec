@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+      xmlns:a4j="http://richfaces.org/a4j"
+      template="#{theme.template}"
+                xmlns:rich="http://richfaces.org/rich">
+                
+<ui:define name="body" >
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('Listado de establecimientos')</script>
+	<style type="text/css">.rich-stglpanel-body{padding:0px}</style>
+	<style type="text/css">.rich-panel-body{padding:0px}</style>
+	<h:form>
+	<rich:panel >
+		<f:facet name="header">Listado de establecimientos</f:facet>
+			<rich:dataTable value="#{hospitalData.listaEstablecimientos()}" 
+							var="est" width="100%" columnsWidth="100%, 0*, 0*">
+				
+				<rich:column>
+					<f:facet name="header">Nombre</f:facet>
+					#{est}
+				</rich:column>
+				<rich:column >
+					<div align="center">
+						<s:link  view="/modConfiguracion/hospital/establecimiento_edit.xhtml" >
+			                   <h:graphicImage title="Modificar" style="border: 0px;" value="/resources/icons/default/acciones/modificar.png"/>
+			             </s:link>
+					</div>
+		        </rich:column>
+				<h:column >
+					<div align="center">
+		                   <h:graphicImage title="Eliminar" style="border: 0px; cursor:pointer;"
+		                   		value="/resources/icons/default/acciones/eliminar.png"
+		                   		onclick="Richfaces.showModalPanel('panelEliminar')">
+		               		</h:graphicImage>
+					</div>
+		        </h:column>
+			</rich:dataTable>
+		<br/>
+	</rich:panel>
+	<div align="right">
+		
+		<s:button value="Salir" style="margin-right:0px;" 
+			view="/modConfiguracion/hospital/configuracionhospital.xhtml"/>
+	</div>
+	
+	</h:form>
+	
+	<rich:modalPanel id="panelEliminar" width="290" height="125">
+	<f:facet name="header" id="panelEliminarHeader" >
+			<h:outputText  value="Eliminar establecimiento" />
+	</f:facet>
+	<s:div id="panelEliminarBody" >
+		<div align="left">
+			<h:graphicImage	value="/resources/icons/default/acciones/advertencia.png" /> 
+			<rich:spacer width="4px" /> 
+			<h:outputText value="Se eliminará el establecimiento. Al seleccionar Sí se perderán todos los datos." />
+			<br />
+			<h:outputText value="¿Desea continuar?" />
+		</div>
+		<br />
+		<div align="center">
+			<input type="button" value="Sí" style="margin-right: 4px;"
+							 onclick="Richfaces.hideModalPanel('panelEliminar')" />
+			
+			<input type="button" value="No" style="margin-left: 3px;"
+				onclick="Richfaces.hideModalPanel('panelEliminar')" />
+		</div>
+	</s:div>
+
+	</rich:modalPanel>
+	
+</ui:define>
+
+</ui:composition>

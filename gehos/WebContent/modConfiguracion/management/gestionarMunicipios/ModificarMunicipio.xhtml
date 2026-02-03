@@ -1,0 +1,78 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- CSS -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modConfiguracion/style/stylesheet.css"
+			rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+		<h:form id="form" styleClass="create" enctype="multipart/form-data">
+			<rich:messages id="message" styleClass="message" ajaxRendered="true"
+				for="message" />
+
+			<s:validateAll>
+				<rich:panel>
+					<f:facet name="header">#{messages.datos}</f:facet>
+					<table cellpadding="0px" cellspacing="0px"
+					class="table lh-sint lv-comp-l lh-comp-b lv-comp-r">
+					<tr >
+						<td class="lvg-bet-comp lh-sinb">#{messages.crit1}:<br />
+						<h:inputText id="codigo" value="#{municipioCrearControlador.codigo}"
+							styleClass="imputText" /></td>
+
+						<td class="lvg-bet-comp lh-sinb">#{messages.crit2}: <br />
+						<h:inputText id="valor" value="#{municipioCrearControlador.valor}"
+							styleClass="imputText" /></td>
+
+
+
+						<td valign="top" class="lh-sinb">#{messages.crit3}: <br />
+						<rich:comboBox id="nacion"
+							suggestionValues="#{municipioCrearControlador.listNaciones()}"
+							value="#{municipioCrearControlador.nacion}"
+							defaultLabel="#{messages.seleccione}" enableManualInput="false"
+							tabindex="2" >
+							<a4j:support event="onselect" reRender="estado"/>
+							</rich:comboBox></td>
+					</tr>
+					<tr >
+						<td >
+						<h:outputText value="#{messages.crit4}:" />
+						<rich:comboBox id="estado"
+							suggestionValues="#{municipioCrearControlador.listEstados()}"
+							value="#{municipioCrearControlador.estado}"
+							defaultLabel="#{messages.seleccione}" enableManualInput="false"
+							tabindex="2" /></td>
+					</tr>					
+				</table>
+				</rich:panel>
+
+				<div align="right">
+				<table cellpadding="0" cellspacing="0" class="table">
+					<tr>
+						<td class="lv-bet-botton"><h:commandButton id="buttonAceptar"
+							value="#{messages.aceptar}" styleClass="botton"
+							action="#{municipioModificarControlador.modificar()}" tabindex="2" /></td>
+						<td><h:commandButton value="#{messages.cancelar}"
+							immediate="true" tabindex="3" action="cancelar"
+							styleClass="botton" /></td>
+					</tr>
+				</table>
+				</div>
+			</s:validateAll>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+      xmlns:a4j="http://richfaces.org/a4j"
+      template="#{theme.template}"
+                xmlns:rich="http://richfaces.org/rich">
+                
+<ui:define name="body" >
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('Ver detalles de configuraciones personales')</script>
+	<style type="text/css">.rich-stglpanel-body{padding:0px}</style>
+	<style type="text/css">.rich-panel-body{padding:0px}</style>
+	
+	<h:form enctype="multipart/form-data">	
+	<s:validateAll>
+		<a4j:outputPanel ajaxRendered="true">
+			<rich:messages styleClass="message" ajaxRendered="true" for="aceptar"/>
+	</a4j:outputPanel>
+	<rich:panel >
+		<f:facet name="header">#{messages.confTemaIdioma}</f:facet>
+		<table cellpadding="0px" cellspacing="0px" border="0px" >
+			<tr>
+				<td><rich:spacer height="11px"/></td>
+			</tr>						
+			<tr style="vertical-align: top;">
+				<td style="width: 7px;"></td>
+				<td>
+					<h:outputLabel value="#{messages.tema}"></h:outputLabel>
+				</td>
+				<td width="9px"></td>
+				<td>					
+					<h:outputLabel styleClass="dataText" value="#{verDetallesPreference.theme}"></h:outputLabel>					
+				</td>
+				<td style="width: 25px"></td>
+				<td>
+					<h:outputLabel value="#{messages.idioma}"></h:outputLabel>
+				</td>
+				<td width="9px"></td>
+				<td>	
+					<h:outputLabel styleClass="dataText" value="#{verDetallesPreference.culturaSelec}"></h:outputLabel>	
+				</td>
+				<td style="width: 25px"></td>
+				
+			</tr>
+		</table>
+		<rich:spacer height="8px"/>
+	</rich:panel>
+	<br/>
+	
+	
+	<rich:panel>
+	  <f:facet name="header">#{messages.confMenu}</f:facet>
+		<table cellpadding="0px" cellspacing="0px" border="0px" >
+			<tr>
+				<td style="height: 11px;" colspan="6">
+				</td>
+			</tr>
+			<tr style="vertical-align: top;">
+				<td style="width: 7px;"></td>
+				<td style="vertical-align: top; padding: 0px;">
+					#{messages.menuArbol}
+					<rich:spacer height="8px" ></rich:spacer>
+				</td>				
+				<td style="vertical-align: top; padding: 0px;">
+					
+					<h:selectBooleanCheckbox value="#{verDetallesPreference.treeLikeMenu}" style="margin-top: 0px; margin-right: 0px;" disabled="true">
+					</h:selectBooleanCheckbox>
+				</td>
+				<td style="width: 25px"></td>
+				
+			</tr>
+		</table>
+		<rich:spacer height="4px"/>
+	</rich:panel>
+	<rich:spacer  height="3px"/>
+	<s:div style="text-align: right;">
+		<s:button value="#{messages.modificar}" style="margin-right:0px;"
+				  view="/modConfiguracion/management/gestionar_preferencias/modificarPreference.gehos"></s:button>
+		<s:button value="#{messages.salir}" style="margin-right:0px;"
+				  view="/modCommons/modHome/home.xhtml"></s:button>
+	</s:div>	
+	
+	<br/>
+	
+	
+	
+	
+	
+	</s:validateAll>	 
+	</h:form>	
+</ui:define>
+
+</ui:composition>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

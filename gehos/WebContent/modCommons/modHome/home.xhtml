@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript">setContentTitle('#{messages.lbl_inicio_com}')</script>
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modCommons/modHome/styles/home.css"
+			rel="stylesheet" type="text/css" />
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modCommons/modHome/styles/dialog.css"
+			rel="stylesheet" type="text/css" />
+
+		<div class="dialog"
+			onmouseover="javascript:this.style.color='#000000'"
+			onmouseout="javascript:this.style.color='#15428b'">
+
+			<div style="padding: 6px;">
+				<table cellpadding="0" cellspacing="0" border="0">
+					<tr>
+						<td><h:graphicImage
+								value="/modCommons/modHome/styles/panelAc.png" /></td>
+						<td><span
+							style="padding-left: 4px; font-size: 12px; font-weight: bold;">
+								#{messages.lbl_bienv_com} #{activeModule.activeModule.label} </span></td>
+					</tr>
+				</table>
+
+				<div style="margin-top: 4px;">
+					#{activeModule.activeModule.descripcion} <br />
+				</div>
+				<s:div style="text-align:right;" rendered="false">
+					<a href="#">#{messages.lbl_leerMas_com}</a>
+				</s:div>
+			</div>
+
+		</div>
+
+		<a4j:outputPanel id="ensayo_ensayo_conduccion"
+			rendered="#{activeModule.activeModuleName.contains('ensayo_ensayo_conduccion')}">
+			<ui:include src="/modCommons/modDashboard/dashboard.xhtml" />
+		</a4j:outputPanel>
+
+
+		<ui:include src="/modCommons/funSelector/controls/selector.xhtml" />
+
+
+	</ui:define>
+
+</ui:composition>
+
+

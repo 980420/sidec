@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition xmlns="" name="desincorporar_productos">
+
+
+	<start-state name="inicio">
+		<transition to="desincorporar producto"></transition>
+	</start-state>
+
+
+	<task-node name="aprobar_desincorporacion">
+		<task name="aprobar_desincorporacion" description="Aprobar desincorporaci&#243;n para #{assigmentRoleTask.nameModule}">
+			<assignment pooled-actors="admin,administracion_1"></assignment>
+		</task>
+		<transition to="fin"></transition>
+	</task-node>
+
+	<task-node name="acta_de_desincorporacion">
+		<task name="acta_de_desincorporacion" description="Crear acta de desincorporaci&#243;n">
+			<assignment pooled-actors="admin,control_perceptivo_1"></assignment>
+		</task>
+		<transition to="aprobar_desincorporacion"></transition>
+	</task-node>
+
+	<node name="desincorporar producto">
+		<transition to="acta_de_desincorporacion"></transition>
+	</node>
+
+
+	<end-state name="fin"></end-state>
+
+
+</process-definition>

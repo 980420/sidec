@@ -1,0 +1,395 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+
+
+		<h:form id="userSearch" styleClass="edit">
+			<a4j:outputPanel ajaxRendered="true">
+				<rich:messages styleClass="message" ajaxRendered="true" for="btnSi" />
+			</a4j:outputPanel>
+
+			<rich:simpleTogglePanel switchType="client"
+				label="#{messages.criterios}"
+				opened="#{especialidadBuscarControler.openSimpleTogglePanel}">
+				<a4j:support event="oncollapse" ajaxSingle="true"
+					action="#{especialidadBuscarControler.cambiarEstadoSimpleTogglePanel()}"
+					reRender="tablas_id" />
+				<a4j:support event="onexpand" ajaxSingle="true"
+					action="#{especialidadBuscarControler.cambiarEstadoSimpleTogglePanel()}"
+					reRender="tablas_id" />
+				<table cellpadding="0px" cellspacing="0px" border="0px"
+					id="simplesearch">
+
+					<tr>
+						<td style="height: 13px"></td>       
+					</tr>
+					<tr style="vertical-align: top;">
+						<td><rich:spacer width="7px" /></td>
+						<td>
+						<table cellpadding="0" cellspacing="0" border="0">
+							<tr>
+								<td>#{messages.crit1}<br />
+								<h:inputText id="codigo" tabindex="1"
+									value="#{especialidadBuscarControler.codigo}"
+									style="width:150px;" /></td>
+								<td><rich:spacer width="25px" /></td>
+								<td>#{messages.crit2}<br />
+								<h:inputText id="nombre" tabindex="2"
+									value="#{especialidadBuscarControler.nombre}"
+									style="width:150px;" /></td>
+								<td><rich:spacer width="25px" /></td>
+
+
+								<td style="vertical-align: bottom;">
+								<table cellpadding="0" cellspacing="0" border="0">
+									<tr>
+										<td><h:commandButton value="#{messages.buscar}" tabindex="3"
+											style="margin-left: 0px; margin-right: 5px; margin-bottom: 0px;"
+											action="#{especialidadBuscarControler.buscar()}">
+											<s:defaultAction />
+										</h:commandButton></td>
+										<td><s:button view="/modCommons/modHome/home.gehos"
+											value="#{messages.cancelar}" tabindex="4"
+											style="margin-left: 5px; margin-bottom: 0px;"
+											rendered="#{not identificadorManager.editing}">
+											<f:param name="idFuncionalidad"
+												value="#{activeModule.activeModule.id}" />
+											<f:param name="idancestors"
+												value="#{activeModule.activeModule.id}a" />
+											<f:param name="moduleName"
+												value="#{activeModule.activeModuleName}" />
+										</s:button></td>
+										<td><rich:spacer width="7px" /></td>
+									</tr>
+								</table>
+								</td>
+							</tr>
+						</table>
+						</td>
+						<td style="width: 7px;"></td>
+					</tr>
+				</table>
+				<rich:spacer height="7px" />
+			</rich:simpleTogglePanel>
+			<rich:spacer height="11px" />
+			<div align="right"><h:panelGrid columns="2" cellpadding="1"
+				cellspacing="0" border="0">
+				<h:graphicImage  style="border: 0px; cursor: pointer;"
+					height="12" width="12" title="#{messages.adicionarT}"
+					value="/resources/icons/default/acciones/adicionar.png" >
+					<a4j:support action="crear" event="onclick" />
+				</h:graphicImage>
+				<h:commandLink value="#{messages.adicionar}" action="crear" tabindex="5" />
+			</h:panelGrid></div>
+			<a4j:outputPanel id="tablas_id">
+				<rich:panel
+					rendered="#{empty especialidadBuscarControler.resultList and (especialidadBuscarControler.nombre != '' || especialidadBuscarControler.codigo != '')}">
+					<f:facet name="header">#{messages.listado}</f:facet>
+					<rich:spacer height="11px" style="display: block" />
+					<div class="results" id="roleList"><rich:spacer width="6px" />
+					<h:outputText value="#{messages.noInf2}" /></div>
+					<rich:spacer height="6px" style="display: block" />
+
+				</rich:panel>
+				<rich:panel
+					rendered="#{especialidadBuscarControler.resultList.size() == 0 and especialidadBuscarControler.nombre == '' and especialidadBuscarControler.codigo == ''}">
+					<f:facet name="header">#{messages.listado}</f:facet>
+					<rich:spacer height="11px" style="display: block" />
+					<div class="results" id="roleList"><rich:spacer width="6px" />
+					<h:outputText value="#{messages.noInf}" /></div>
+					<rich:spacer height="6px" style="display: block" />
+				</rich:panel>
+				<s:div style="margin-left:1px;margin-top:1px"
+					rendered="#{not empty especialidadBuscarControler.resultList}">
+					<rich:dataTable id="departamentoList_Table" style="width: 100%;"
+						var="especialidad"
+						value="#{especialidadBuscarControler.resultList}"
+						columnsWidth="30%, 70%, 1%, 1%">
+						<f:facet name="header">
+							#{messages.listado}
+					</f:facet>
+<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.col2}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not especialidadBuscarControler.order.equals('especialidad.codigo asc') and not especialidadBuscarControler.order.equals('especialidad.codigo desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="codigoF"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{especialidadBuscarControler.order.equals('especialidad.codigo asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="codigoF"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{especialidadBuscarControler.order.equals('especialidad.codigo desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="codigoF"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>							
+	            	#{especialidad.codigo}	            	
+	        	</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.col1}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not especialidadBuscarControler.order.equals('especialidad.nombre asc') and not especialidadBuscarControler.order.equals('especialidad.nombre desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="nombreF"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{especialidadBuscarControler.order.equals('especialidad.nombre asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="nombreF"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{especialidadBuscarControler.order.equals('especialidad.nombre desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="nombreF"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+	            	#{especialidad.nombre}
+	        	</h:column>
+	        							<h:column>
+							<div align="center"><a4j:commandLink status="showModalStatus"
+								action="#{especialidadVerDetallesControlador.setEspecialidadId(especialidad.id)}">
+								<h:graphicImage title="#{messages.ver}" style="border: 0px;"
+									value="/resources/icons/default/acciones/ver.png" />								
+							</a4j:commandLink></div>
+						</h:column>
+						<h:column>
+							<div align="center"><a4j:commandLink status="showModalStatus"
+								action="#{especialidadModificarControlador.setEspecialidadId(especialidad.id)}">
+								<h:graphicImage title="#{messages.modificar}"
+									style="border: 0px;"
+									value="/resources/icons/default/acciones/modificar.png" />								
+							</a4j:commandLink></div>
+						</h:column>
+						<h:column>
+							<div align="center"><a4j:commandLink
+								oncomplete="Richfaces.showModalPanel('panelEliminar')"
+								action="#{especialidadBuscarControler.seleccionar(especialidad.id)}">
+
+								<h:graphicImage title="#{messages.eliminar}"
+									style="border: 0px; cursor:pointer;"
+									value="/resources/icons/default/acciones/eliminar.png">
+								</h:graphicImage>
+							</a4j:commandLink></div>
+						</h:column>
+						<h:column>
+							<div align="center"><h:graphicImage
+								rendered="#{not especialidad.eliminado}"
+								value="/resources/modConfiguracion/visible.png" width="14"
+								height="14" style="border:0px; cursor:pointer"
+								title="#{messages.visibilidad}">
+								<a4j:support event="onclick" ajaxSingle="true"
+									action="#{especialidadBuscarControler.cambiarVisibilidad(especialidad.id)}"
+									reRender="tablas_id,departamentoList_Table" status="showModalStatus"/>
+							</h:graphicImage> <h:graphicImage rendered="#{especialidad.eliminado}"
+								value="/resources/modConfiguracion/not-visible.png" width="14"
+								height="14" style="border:0px; cursor:pointer; height : 14px;"
+								title="#{messages.visibilidad}">
+								<a4j:support event="onclick" ajaxSingle="true"
+									action="#{especialidadBuscarControler.cambiarVisibilidad(especialidad.id)}"
+									reRender="tablas_id,departamentoList_Table" status="showModalStatus"/>
+							</h:graphicImage></div>
+						</h:column>
+
+					</rich:dataTable>
+					<a4j:status id="showModalStatus" forceId="true" 
+					  onstart="Richfaces.showModalPanel('ajaxLoadingModalBox',{left:1, top:-15});
+					  		   document.body.style.cursor='wait';"
+					  onstop="Richfaces.hideModalPanel('ajaxLoadingModalBox');
+					  		  document.body.style.cursor='default';">
+					</a4j:status>
+				</s:div>
+
+				<rich:spacer height="11px" />
+				<s:div id="pagingcontrols" styleClass="tableControl"
+					style="width: 100%; text-align:center" align="center"
+					rendered="#{not empty especialidadBuscarControler.resultList}">
+
+					<h:graphicImage
+						value="/resources/icons/default/paginado/iniciod.png"
+						rendered="#{!especialidadBuscarControler.previousExists}" />
+
+					<s:link
+						view="/modConfiguracion/management/gestionarEspecialidades/BuscarEspecialidades.gehos"
+						rendered="#{especialidadBuscarControler.previousExists}"
+						id="firstPage">
+						<h:graphicImage title="#{messages.pag1}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/inicio.png" />
+						<f:param name="firstResult" value="0" />
+						<f:param name="critB1"
+							value="#{parameters.encodec(especialidadBuscarControler.nombre)}" />
+							<f:param name="critB2"
+							value="#{parameters.encodec(especialidadBuscarControler.codigo)}" />
+						<f:param name="open"
+							value="#{especialidadBuscarControler.openSimpleTogglePanel}" />
+						<f:param name="order" value="#{especialidadBuscarControler.order}" />
+					</s:link>
+
+					<h:graphicImage
+						value="/resources/icons/default/paginado/anteriord.png"
+						rendered="#{!especialidadBuscarControler.previousExists}" />
+
+
+					<s:link
+						view="/modConfiguracion/management/gestionarEspecialidades/BuscarEspecialidades.gehos"
+						rendered="#{especialidadBuscarControler.previousExists}"
+						id="previousPage">
+						<h:graphicImage title="#{messages.pag2}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/anterior.png" />
+						<f:param name="firstResult"
+							value="#{especialidadBuscarControler.previousFirstResult}" />
+						<f:param name="critB1"
+							value="#{parameters.encodec(especialidadBuscarControler.nombre)}" />
+							<f:param name="critB2"
+							value="#{parameters.encodec(especialidadBuscarControler.codigo)}" />
+						<f:param name="open"
+							value="#{especialidadBuscarControler.openSimpleTogglePanel}" />
+						<f:param name="order" value="#{especialidadBuscarControler.order}" />
+					</s:link>
+
+
+					<h:graphicImage
+						value="/resources/icons/default/paginado/siguiented.png"
+						rendered="#{!especialidadBuscarControler.nextExists}" />
+
+
+					<s:link
+						view="/modConfiguracion/management/gestionarEspecialidades/BuscarEspecialidades.gehos"
+						rendered="#{especialidadBuscarControler.nextExists}" id="nextPage">
+						<h:graphicImage title="#{messages.pag3}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/siguiente.png" />
+						<f:param name="firstResult"
+							value="#{especialidadBuscarControler.nextFirstResult}" />
+						<f:param name="critB1"
+							value="#{parameters.encodec(especialidadBuscarControler.nombre)}" />
+							<f:param name="critB2"
+							value="#{parameters.encodec(especialidadBuscarControler.codigo)}" />
+						<f:param name="open"
+							value="#{especialidadBuscarControler.openSimpleTogglePanel}" />
+						<f:param name="order" value="#{especialidadBuscarControler.order}" />
+					</s:link>
+
+					<h:graphicImage value="/resources/icons/default/paginado/find.png"
+						rendered="#{!especialidadBuscarControler.nextExists}" />
+
+
+					<s:link
+						view="/modConfiguracion/management/gestionarEspecialidades/BuscarEspecialidades.gehos"
+						rendered="#{especialidadBuscarControler.nextExists}" id="lastPage">
+						<h:graphicImage title="#{messages.pag4}"
+							style="border: 0px;cursor:pointer;"
+							value="/resources/icons/default/paginado/#{theme.color}/fin.png" />
+						<f:param name="firstResult"
+							value="#{especialidadBuscarControler.lastFirstResult}" />
+						<f:param name="critB1"
+							value="#{parameters.encodec(especialidadBuscarControler.nombre)}" />
+							<f:param name="critB2"
+							value="#{parameters.encodec(especialidadBuscarControler.codigo)}" />
+						<f:param name="open"
+							value="#{especialidadBuscarControler.openSimpleTogglePanel}" />
+						<f:param name="order" value="#{especialidadBuscarControler.order}" />
+					</s:link>
+				</s:div>
+			</a4j:outputPanel>
+
+
+		</h:form>
+		
+		<h:form>
+			<rich:contextMenu attached="false" id="nombreF" submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{especialidadBuscarControler.setOrder('especialidad.nombre asc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{especialidadBuscarControler.setOrder('especialidad.nombre desc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+			</rich:contextMenu>
+
+			<rich:contextMenu attached="false" id="codigoF" submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{especialidadBuscarControler.setOrder('especialidad.codigo asc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{especialidadBuscarControler.setOrder('especialidad.codigo desc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+			</rich:contextMenu> 
+
+		</h:form>
+		
+			<ui:include
+			src="/modConfiguracion/management/gestionarEspecialidades/modalspanel/confirmar_eliminar_especialidad.xhtml" />
+
+	<rich:modalPanel id="ajaxLoadingModalBox" minHeight="10" minWidth="10" 
+	        height="10" width="10" zindex="2000">
+	     <s:div rendered="false">  
+	           <img id="favsloadingdiv" 
+	        	src="#{facesContext.externalContext.requestContextPath}/resources/icons/default/acciones/loading_small.gif"
+	        	style="position: absolute; top: 0px; left: 0px;" />
+	     </s:div>  
+	</rich:modalPanel>
+	</ui:define>
+
+</ui:composition>
+

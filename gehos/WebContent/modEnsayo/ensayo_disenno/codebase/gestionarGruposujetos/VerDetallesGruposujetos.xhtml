@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:s="http://jboss.com/products/seam/taglib"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:composition>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+			<!-- Se muestra cuando no vienes sel listar -->
+		<s:div
+			rendered="#{not verGruposujetos.desde.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.titulo1}')</script>
+		</s:div>
+
+		<!-- Se muestra cuando vienes sel listar -->
+		<s:div
+			rendered="#{verGruposujetos.desde.equals('listar')}">
+			<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+		</s:div>
+	<link rel='stylesheet' href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css' type='text/css' />
+	
+	<h:form id="viewGruposujetos">
+	<a4j:outputPanel ajaxRendered="true">
+			<s:div
+				rendered="#{facesMessages.getCurrentMessagesForControl('viewGruposujetos').size() > 0 }"
+				styleClass="custom-error">
+				<div><rich:message for="viewGruposujetos" /></div>
+			</s:div>
+		</a4j:outputPanel>
+		<rich:panel style="margin-top:10px;">
+			<f:facet name="header">
+				<h:outputLabel value="#{messages.tituloPanel}" />
+			</f:facet><table cellpadding='0' cellspacing='0' border='0'>
+						<tr>
+						<td>
+							<h:outputLabel styleClass='normalText' value='#{messages.nombregrupo}' />
+						</td>
+						<td width='9px'/>
+						<td>
+							<h:outputLabel styleClass='dataText' rendered='#{not empty verGruposujetos.gruposujetos.nombreGrupo}' value='#{verGruposujetos.gruposujetos.nombreGrupo}' />
+							<h:outputLabel rendered='#{empty verGruposujetos.gruposujetos.nombreGrupo}' value='-' styleClass='dataText'/>
+						</td>
+						<td width='25px' />
+						<td>
+							<h:outputLabel styleClass='normalText' value='#{messages.fechacreacion}' />
+						</td>
+							<td width='9px'/>
+						<td>
+							<h:outputLabel styleClass='dataText' rendered='#{not empty verGruposujetos.gruposujetos.fechaCreacion}' value='#{verGruposujetos.gruposujetos.fechaCreacion}'>
+								<s:convertDateTime pattern='dd/MM/yyyy'/>
+							</h:outputLabel>
+							<h:outputLabel rendered='#{empty verGruposujetos.gruposujetos.fechaCreacion}' value='-' styleClass='dataText'/>
+						</td>
+						<td width='25px' />
+						<td>
+							<h:outputLabel styleClass='normalText' value='#{messages.fechaactualizacion}' />
+						</td>
+							<td width='9px'/>
+						<td>
+							<h:outputLabel styleClass='dataText' rendered='#{not empty verGruposujetos.gruposujetos.fechaActualizacion}' value='#{verGruposujetos.gruposujetos.fechaActualizacion}'>
+								<s:convertDateTime pattern='dd/MM/yyyy'/>
+							</h:outputLabel>
+							<h:outputLabel rendered='#{empty verGruposujetos.gruposujetos.fechaActualizacion}' value='-' styleClass='dataText'/>
+						</td>
+					</tr>
+
+					<tr>
+
+						<td><rich:spacer height='8px'/></td>
+					</tr>
+					<tr>
+						<td colspan='20'>
+							<h:outputLabel styleClass='normalText' value='#{messages.descripcion}:' />
+							<br/>
+							<h:inputTextarea disabled='true' style='width:100%' value='#{verGruposujetos.gruposujetos.descripcion}' />
+						</td>
+					</tr>					</table>
+
+			<rich:spacer height="8px"/>
+		</rich:panel>
+		
+		<s:div>
+			<div align="right">
+				<rich:spacer width="100%" height="8px"/>
+			</div>
+		</s:div>
+		
+		<s:div>
+			<div align="right">
+				<h:commandButton rendered="#{not verGruposujetos.desde.equals('listar')}" style="margin:0px" action="modificar" value="#{messages.btn_modificar_ens}" />
+
+				<rich:spacer width="8px" />
+
+				<a4j:commandButton rendered="#{not verGruposujetos.desde.equals('listar')}" style="margin:0px" value="#{messages.btn_eliminar_ens}"
+									tabindex="2" onclick="Richfaces.showModalPanel('mpAdvertenciaEliminarGrupoSujVer')" >
+				</a4j:commandButton>
+
+				<rich:spacer width="8px"/>
+
+				<h:commandButton style="margin:0px" immediate="true" action="cancelar" value="#{messages.btn_salir_ens}" />
+			</div>
+		</s:div>
+	</h:form>	
+
+	<ui:include src="/modEnsayo/ensayo_disenno/codebase/gestionarGruposujetos/modalspanel/AdvertenciaEliminarVerDetalles.xhtml/" >
+	</ui:include>
+
+	</ui:composition>
+
+</html>

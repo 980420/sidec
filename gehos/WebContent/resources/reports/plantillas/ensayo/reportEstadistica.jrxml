@@ -1,0 +1,934 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 4.5.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportTazas" language="groovy" pageWidth="1070" pageHeight="800" orientation="Landscape" columnWidth="1030" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="0.683013455365075"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="net.sf.jasperreports.export.xls.exclude.origin.keep.first.band.1" value="pageHeader"/>
+	<property name="net.sf.jasperreports.export.xls.exclude.origin.keep.first.band.2" value="columnHeader"/>
+	<property name="net.sf.jasperreports.export.xls.exclude.origin.band.3" value="pageFooter"/>
+	<property name="net.sf.jasperreports.export.xls.exclude.origin.band.4" value="lastPageFooter"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.columns" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.white.page.background" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.ignore.graphics" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.ignore.cell.border" value="true"/>
+	<property name="net.sf.jasperreports.page.break.no.pagination" value="apply"/>
+	<property name="net.sf.jasperreports.export.xls.paginated" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.one.page.per.sheet" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.exclude.key.padding"/>
+	<property name="net.sf.jasperreports.export.xls.exclude.key.pages"/>
+	<property name="net.sf.jasperreports.export.xls.collapse.row.span" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.collapse.column.span" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.font.size.fix.enabled" value="true"/>
+	<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+	<property name="net.sf.jasperreports.consume.space.on.overflow" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.wrap.text" value="false"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="Title" fontName="SansSerif" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="SansSerif" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="SansSerif" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="SansSerif" fontSize="12"/>
+	<subDataset name="dataset1">
+		<parameter name="entidad" class="java.lang.String"/>
+		<parameter name="estudio" class="java.lang.String"/>
+		<parameter name="grupos" class="java.lang.String"/>
+		<parameter name="evaluado" class="java.lang.String"/>
+		<parameter name="noIncluido" class="java.lang.String"/>
+		<parameter name="incluido" class="java.lang.String"/>
+		<parameter name="malIncluido" class="java.lang.String"/>
+		<parameter name="interrumpido" class="java.lang.String"/>
+		<parameter name="totalEstudio" class="java.lang.String"/>
+		<parameter name="totalEntidad" class="java.lang.String"/>
+		<parameter name="totalEstado" class="java.lang.String"/>
+		<parameter name="provincia" class="java.lang.String"/>
+		<parameter name="estInclusion" class="java.lang.String"/>
+		<parameter name="estTrata" class="java.lang.String"/>
+		<parameter name="tratamiento" class="java.lang.String"/>
+		<parameter name="seguimiento" class="java.lang.String"/>
+		<parameter name="totalInclusion" class="java.lang.String"/>
+		<parameter name="totalTrata" class="java.lang.String"/>
+		<field name="valor" class="java.lang.String"/>
+		<field name="entidades" class="java.util.List"/>
+		<field name="totalSEEstado" class="java.lang.Long"/>
+		<field name="totalSNIEstado" class="java.lang.Long"/>
+		<field name="totalSIEstado" class="java.lang.Long"/>
+		<field name="totalSMIEstado" class="java.lang.Long"/>
+		<field name="totalSujIntEstado" class="java.lang.Long"/>
+		<field name="totalSujEvTEstado" class="java.lang.Long"/>
+		<field name="totalSujTraEstado" class="java.lang.Long"/>
+		<field name="totalSujSeEstado" class="java.lang.Long"/>
+		<field name="totalTIEstado" class="java.lang.Long"/>
+		<field name="totalSujTTEstado" class="java.lang.Long"/>
+	</subDataset>
+	<subDataset name="dataset2">
+		<parameter name="estudio" class="java.lang.String"/>
+		<parameter name="grupos" class="java.lang.String"/>
+		<parameter name="evaluado" class="java.lang.String"/>
+		<parameter name="noIncluido" class="java.lang.String"/>
+		<parameter name="incluido" class="java.lang.String"/>
+		<parameter name="malIncluido" class="java.lang.String"/>
+		<parameter name="interrumpido" class="java.lang.String"/>
+		<parameter name="totalEstudio" class="java.lang.String"/>
+		<parameter name="totalEntidad" class="java.lang.String"/>
+		<parameter name="estInclusion" class="java.lang.String"/>
+		<parameter name="estTrata" class="java.lang.String"/>
+		<parameter name="entidad" class="java.lang.String"/>
+		<parameter name="tratamiento" class="java.lang.String"/>
+		<parameter name="seguimiento" class="java.lang.String"/>
+		<parameter name="totalInclusion" class="java.lang.String"/>
+		<parameter name="totalTrata" class="java.lang.String"/>
+		<field name="nombre" class="java.lang.String"/>
+		<field name="estudios" class="java.util.List"/>
+		<field name="totalSEEntidad" class="java.lang.Long"/>
+		<field name="totalSNIEntidad" class="java.lang.Long"/>
+		<field name="totalSIEntidad" class="java.lang.Long"/>
+		<field name="totalSMIEntidad" class="java.lang.Long"/>
+		<field name="totalSujIntEntidad" class="java.lang.Long"/>
+		<field name="totalSujEvTEntidad" class="java.lang.Long"/>
+		<field name="totalSujTraEntidad" class="java.lang.Long"/>
+		<field name="totalSujSeEntidad" class="java.lang.Long"/>
+		<field name="totalITEntidad" class="java.lang.Long"/>
+		<field name="totalSujTTentidad" class="java.lang.Long"/>
+	</subDataset>
+	<subDataset name="dataset3">
+		<parameter name="grupos" class="java.lang.String"/>
+		<parameter name="evaluado" class="java.lang.String"/>
+		<parameter name="noIncluido" class="java.lang.String"/>
+		<parameter name="incluido" class="java.lang.String"/>
+		<parameter name="malIncluido" class="java.lang.String"/>
+		<parameter name="interrumpido" class="java.lang.String"/>
+		<parameter name="totalEstudio" class="java.lang.String"/>
+		<parameter name="estInclusion" class="java.lang.String"/>
+		<parameter name="estTrata" class="java.lang.String"/>
+		<parameter name="estudio" class="java.lang.String"/>
+		<parameter name="tratamiento" class="java.lang.String"/>
+		<parameter name="seguimiento" class="java.lang.String"/>
+		<parameter name="totalInclusion" class="java.lang.String"/>
+		<parameter name="totalTrata" class="java.lang.String"/>
+		<field name="nombreEstudio" class="java.lang.String"/>
+		<field name="grupos" class="java.util.List"/>
+		<field name="totalSujetoEvaluados" class="java.lang.Long"/>
+		<field name="totalSujetosNoInc" class="java.lang.Long"/>
+		<field name="totalSujetoInc" class="java.lang.Long"/>
+		<field name="totalSujetoMalINc" class="java.lang.Long"/>
+		<field name="totalSujetoInt" class="java.lang.Long"/>
+		<field name="totalsujetoEvaluT" class="java.lang.Long"/>
+		<field name="totalsujetoTratamiento" class="java.lang.Long"/>
+		<field name="totalsujetoSeguimiento" class="java.lang.Long"/>
+		<field name="totalSujetoTotalIn" class="java.lang.Long"/>
+		<field name="totalSujetoTotalTr" class="java.lang.Long"/>
+	</subDataset>
+	<subDataset name="dataset4">
+		<field name="nombreGrupo" class="java.lang.String"/>
+		<field name="sujEvaluados" class="java.lang.Long"/>
+		<field name="sujNoIncluidos" class="java.lang.Long"/>
+		<field name="sujIncluidos" class="java.lang.Long"/>
+		<field name="sujMalIncluidos" class="java.lang.Long"/>
+		<field name="sujInterrumpidos" class="java.lang.Long"/>
+		<field name="sujEvaluadoT" class="java.lang.Long"/>
+		<field name="sujTratamiento" class="java.lang.Long"/>
+		<field name="sujSeguimiento" class="java.lang.Long"/>
+		<field name="totalIn" class="java.lang.Long"/>
+		<field name="totalTr" class="java.lang.Long"/>
+	</subDataset>
+	<parameter name="LOGO_URL" class="java.lang.String"/>
+	<parameter name="SUBREPORTS" class="java.util.Map"/>
+	<parameter name="SUBREPORTS_DATASOURCES" class="java.util.Map"/>
+	<parameter name="SUBREPORTS_PARAMETERS" class="java.util.Map"/>
+	<parameter name="pais" class="java.lang.String"/>
+	<parameter name="provincia" class="java.lang.String"/>
+	<parameter name="sujetos" class="java.lang.String"/>
+	<parameter name="entidad" class="java.lang.String"/>
+	<parameter name="grupos" class="java.lang.String"/>
+	<parameter name="evaluado" class="java.lang.String"/>
+	<parameter name="noIncluido" class="java.lang.String"/>
+	<parameter name="incluido" class="java.lang.String"/>
+	<parameter name="malIncluido" class="java.lang.String"/>
+	<parameter name="interrumpido" class="java.lang.String"/>
+	<parameter name="estudio" class="java.lang.String"/>
+	<parameter name="totalNacion" class="java.lang.String"/>
+	<parameter name="totalEstado" class="java.lang.String"/>
+	<parameter name="totalEntidad" class="java.lang.String"/>
+	<parameter name="totalEstudio" class="java.lang.String"/>
+	<parameter name="estInclusion" class="java.lang.String"/>
+	<parameter name="estTrata" class="java.lang.String"/>
+	<parameter name="tratamiento" class="java.lang.String"/>
+	<parameter name="seguimiento" class="java.lang.String"/>
+	<parameter name="totalInclusion" class="java.lang.String"/>
+	<parameter name="totalTrata" class="java.lang.String"/>
+	<parameter name="LOGO1_URL" class="java.lang.String"/>
+	<field name="valorpais" class="java.lang.String"/>
+	<field name="estados" class="java.util.List"/>
+	<field name="totalSENacion" class="java.lang.Long"/>
+	<field name="totalSNINacion" class="java.lang.Long"/>
+	<field name="totalSINacion" class="java.lang.Long"/>
+	<field name="totalSMINacion" class="java.lang.Long"/>
+	<field name="totalSujIntNacion" class="java.lang.Long"/>
+	<field name="totalSujEvTNacion" class="java.lang.Long"/>
+	<field name="totalSujTraNacion" class="java.lang.Long"/>
+	<field name="totalSujSeNacion" class="java.lang.Long"/>
+	<field name="totalTINacion" class="java.lang.Long"/>
+	<field name="totalSujTTNacion" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="63" splitType="Stretch">
+			<image>
+				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" x="0" y="0" width="180" height="50"/>
+				<imageExpression><![CDATA[$P{LOGO_URL}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="190" y="0" width="830" height="50" forecolor="#1E2273"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte del estado de los sujetos en el estudio]]></text>
+			</staticText>
+			<line>
+				<reportElement x="183" y="0" width="1" height="50" forecolor="#002060">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement style="Detail" isPrintRepeatedValues="false" x="85" y="0" width="475" height="20"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valorpais}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" mode="Transparent" x="0" y="0" width="85" height="20" forecolor="#000000" backcolor="#99FF99">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pais}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="292">
+			<componentElement>
+				<reportElement x="0" y="0" width="1021" height="255" isPrintInFirstWholeBand="true">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="dataset1">
+						<datasetParameter name="entidad">
+							<datasetParameterExpression><![CDATA[$P{entidad}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="estudio">
+							<datasetParameterExpression><![CDATA[$P{estudio}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="grupos">
+							<datasetParameterExpression><![CDATA[$P{grupos}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="totalEstudio">
+							<datasetParameterExpression><![CDATA[$P{totalEstudio}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="totalEntidad">
+							<datasetParameterExpression><![CDATA[$P{totalEntidad}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="totalEstado">
+							<datasetParameterExpression><![CDATA[$P{totalEstado}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="provincia">
+							<datasetParameterExpression><![CDATA[$P{provincia}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="evaluado">
+							<datasetParameterExpression><![CDATA[$P{evaluado}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="noIncluido">
+							<datasetParameterExpression><![CDATA[$P{noIncluido}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="incluido">
+							<datasetParameterExpression><![CDATA[$P{incluido}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="malIncluido">
+							<datasetParameterExpression><![CDATA[$P{malIncluido}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="totalInclusion">
+							<datasetParameterExpression><![CDATA[$P{totalInclusion}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="tratamiento">
+							<datasetParameterExpression><![CDATA[$P{tratamiento}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="seguimiento">
+							<datasetParameterExpression><![CDATA[$P{seguimiento}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="interrumpido">
+							<datasetParameterExpression><![CDATA[$P{interrumpido}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="totalTrata">
+							<datasetParameterExpression><![CDATA[$P{totalTrata}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="estInclusion">
+							<datasetParameterExpression><![CDATA[$P{estInclusion}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="estTrata">
+							<datasetParameterExpression><![CDATA[$P{estTrata}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{estados})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="255" width="1021">
+						<textField>
+							<reportElement x="85" y="0" width="475" height="20">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							</reportElement>
+							<textElement>
+								<font size="10"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+						</textField>
+						<componentElement>
+							<reportElement x="0" y="30" width="1020" height="185">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							</reportElement>
+							<jr:list printOrder="Vertical">
+								<datasetRun subDataset="dataset2">
+									<datasetParameter name="estudio">
+										<datasetParameterExpression><![CDATA[$P{estudio}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="grupos">
+										<datasetParameterExpression><![CDATA[$P{grupos}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="totalEstudio">
+										<datasetParameterExpression><![CDATA[$P{totalEstudio}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="totalEntidad">
+										<datasetParameterExpression><![CDATA[$P{totalEntidad}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="entidad">
+										<datasetParameterExpression><![CDATA[$P{entidad}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="evaluado">
+										<datasetParameterExpression><![CDATA[$P{evaluado}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="noIncluido">
+										<datasetParameterExpression><![CDATA[$P{noIncluido}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="incluido">
+										<datasetParameterExpression><![CDATA[$P{incluido}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="malIncluido">
+										<datasetParameterExpression><![CDATA[$P{malIncluido}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="totalInclusion">
+										<datasetParameterExpression><![CDATA[$P{totalInclusion}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="tratamiento">
+										<datasetParameterExpression><![CDATA[$P{tratamiento}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="seguimiento">
+										<datasetParameterExpression><![CDATA[$P{seguimiento}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="interrumpido">
+										<datasetParameterExpression><![CDATA[$P{interrumpido}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="totalTrata">
+										<datasetParameterExpression><![CDATA[$P{totalTrata}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="estInclusion">
+										<datasetParameterExpression><![CDATA[$P{estInclusion}]]></datasetParameterExpression>
+									</datasetParameter>
+									<datasetParameter name="estTrata">
+										<datasetParameterExpression><![CDATA[$P{estTrata}]]></datasetParameterExpression>
+									</datasetParameter>
+									<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{entidades})]]></dataSourceExpression>
+								</datasetRun>
+								<jr:listContents height="185" width="1020">
+									<textField>
+										<reportElement x="85" y="0" width="475" height="20">
+											<property name="com.jaspersoft.studio.unit.height" value="px"/>
+										</reportElement>
+										<textElement>
+											<font size="10"/>
+										</textElement>
+										<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+									</textField>
+									<componentElement>
+										<reportElement x="0" y="30" width="1020" height="120">
+											<property name="com.jaspersoft.studio.unit.width" value="px"/>
+										</reportElement>
+										<jr:list printOrder="Vertical">
+											<datasetRun subDataset="dataset3">
+												<datasetParameter name="grupos">
+													<datasetParameterExpression><![CDATA[$P{grupos}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="totalEstudio">
+													<datasetParameterExpression><![CDATA[$P{totalEstudio}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="estudio">
+													<datasetParameterExpression><![CDATA[$P{estudio}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="evaluado">
+													<datasetParameterExpression><![CDATA[$P{evaluado}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="noIncluido">
+													<datasetParameterExpression><![CDATA[$P{noIncluido}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="incluido">
+													<datasetParameterExpression><![CDATA[$P{incluido}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="malIncluido">
+													<datasetParameterExpression><![CDATA[$P{malIncluido}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="totalInclusion">
+													<datasetParameterExpression><![CDATA[$P{totalInclusion}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="tratamiento">
+													<datasetParameterExpression><![CDATA[$P{tratamiento}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="seguimiento">
+													<datasetParameterExpression><![CDATA[$P{seguimiento}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="interrumpido">
+													<datasetParameterExpression><![CDATA[$P{interrumpido}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="totalTrata">
+													<datasetParameterExpression><![CDATA[$P{totalTrata}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="estInclusion">
+													<datasetParameterExpression><![CDATA[$P{estInclusion}]]></datasetParameterExpression>
+												</datasetParameter>
+												<datasetParameter name="estTrata">
+													<datasetParameterExpression><![CDATA[$P{estTrata}]]></datasetParameterExpression>
+												</datasetParameter>
+												<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{estudios})]]></dataSourceExpression>
+											</datasetRun>
+											<jr:listContents height="120" width="1020">
+												<textField>
+													<reportElement x="85" y="0" width="475" height="20"/>
+													<textElement>
+														<font size="10"/>
+													</textElement>
+													<textFieldExpression><![CDATA[$F{nombreEstudio}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement positionType="Float" mode="Opaque" x="0" y="90" width="120" height="20" forecolor="#666666" backcolor="#99FF99"/>
+													<textElement>
+														<font size="12" isBold="true"/>
+													</textElement>
+													<textFieldExpression><![CDATA[$P{totalEstudio}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement positionType="Float" x="120" y="90" width="100" height="20">
+														<property name="com.jaspersoft.studio.unit.width" value="px"/>
+													</reportElement>
+													<textElement textAlignment="Center"/>
+													<textFieldExpression><![CDATA[$F{totalSujetoEvaluados}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement positionType="Float" x="220" y="90" width="100" height="20"/>
+													<textElement textAlignment="Center"/>
+													<textFieldExpression><![CDATA[$F{totalSujetosNoInc}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement positionType="Float" x="480" y="90" width="80" height="20"/>
+													<textElement textAlignment="Center"/>
+													<textFieldExpression><![CDATA[$F{totalSujetoTotalIn}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement positionType="Float" x="400" y="90" width="80" height="20"/>
+													<textElement textAlignment="Center"/>
+													<textFieldExpression><![CDATA[$F{totalSujetoMalINc}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement positionType="Float" x="560" y="90" width="100" height="20">
+														<property name="com.jaspersoft.studio.unit.width" value="px"/>
+													</reportElement>
+													<textElement textAlignment="Center"/>
+													<textFieldExpression><![CDATA[$F{totalsujetoEvaluT}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement positionType="Float" x="660" y="90" width="100" height="20"/>
+													<textElement textAlignment="Center"/>
+													<textFieldExpression><![CDATA[$F{totalsujetoTratamiento}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement positionType="Float" x="850" y="90" width="90" height="20"/>
+													<textElement textAlignment="Center"/>
+													<textFieldExpression><![CDATA[$F{totalSujetoInt}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement positionType="Float" x="760" y="90" width="90" height="20"/>
+													<textElement textAlignment="Center"/>
+													<textFieldExpression><![CDATA[$F{totalsujetoSeguimiento}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement positionType="Float" x="320" y="90" width="80" height="20"/>
+													<textElement textAlignment="Center"/>
+													<textFieldExpression><![CDATA[$F{totalSujetoInc}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement mode="Transparent" x="0" y="0" width="85" height="20" forecolor="#000000" backcolor="#99FF99">
+														<property name="com.jaspersoft.studio.unit.width" value="px"/>
+													</reportElement>
+													<textElement>
+														<font size="10" isBold="false"/>
+													</textElement>
+													<textFieldExpression><![CDATA[$P{estudio}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement mode="Opaque" x="120" y="20" width="440" height="20" forecolor="#666666" backcolor="#99FF99"/>
+													<textElement textAlignment="Center">
+														<font size="12" isBold="true"/>
+													</textElement>
+													<textFieldExpression><![CDATA[$P{estInclusion}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement mode="Opaque" x="560" y="20" width="460" height="20" forecolor="#666666" backcolor="#33FFCC"/>
+													<textElement textAlignment="Center">
+														<font size="12" isBold="true"/>
+													</textElement>
+													<textFieldExpression><![CDATA[$P{estTrata}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement mode="Opaque" x="20" y="40" width="100" height="20" forecolor="#666666" backcolor="#99FF99">
+														<property name="net.sf.jasperreports.export.xls.auto.fit.column" value="true"/>
+													</reportElement>
+													<textElement>
+														<font size="12" isBold="true"/>
+													</textElement>
+													<textFieldExpression><![CDATA[$P{grupos}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement mode="Opaque" x="120" y="40" width="100" height="20" forecolor="#666666" backcolor="#99FF99">
+														<property name="com.jaspersoft.studio.unit.width" value="px"/>
+													</reportElement>
+													<textElement textAlignment="Center">
+														<font size="12" isBold="true"/>
+													</textElement>
+													<textFieldExpression><![CDATA[$P{evaluado}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement mode="Opaque" x="320" y="40" width="80" height="20" forecolor="#666666" backcolor="#99FF99"/>
+													<textElement textAlignment="Center">
+														<font size="12" isBold="true"/>
+													</textElement>
+													<textFieldExpression><![CDATA[$P{incluido}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement mode="Opaque" x="480" y="40" width="80" height="20" forecolor="#666666" backcolor="#99FF99"/>
+													<textElement textAlignment="Center">
+														<font size="12" isBold="true"/>
+													</textElement>
+													<textFieldExpression><![CDATA[$P{totalInclusion}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement mode="Opaque" x="400" y="40" width="80" height="20" forecolor="#666666" backcolor="#99FF99"/>
+													<textElement textAlignment="Center">
+														<font size="12" isBold="true"/>
+													</textElement>
+													<textFieldExpression><![CDATA[$P{malIncluido}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement mode="Opaque" x="220" y="40" width="100" height="20" forecolor="#666666" backcolor="#99FF99"/>
+													<textElement textAlignment="Center">
+														<font size="12" isBold="true"/>
+													</textElement>
+													<textFieldExpression><![CDATA[$P{noIncluido}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement mode="Opaque" x="560" y="40" width="100" height="20" forecolor="#666666" backcolor="#33FFCC">
+														<property name="com.jaspersoft.studio.unit.width" value="px"/>
+													</reportElement>
+													<textElement textAlignment="Center">
+														<font size="12" isBold="true"/>
+													</textElement>
+													<textFieldExpression><![CDATA[$P{evaluado}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement mode="Opaque" x="660" y="40" width="100" height="20" forecolor="#666666" backcolor="#33FFCC"/>
+													<textElement textAlignment="Center">
+														<font size="12" isBold="true"/>
+													</textElement>
+													<textFieldExpression><![CDATA[$P{tratamiento}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement mode="Opaque" x="760" y="40" width="90" height="20" forecolor="#666666" backcolor="#33FFCC"/>
+													<textElement textAlignment="Center">
+														<font size="12" isBold="true"/>
+													</textElement>
+													<textFieldExpression><![CDATA[$P{seguimiento}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement mode="Opaque" x="850" y="40" width="90" height="20" forecolor="#666666" backcolor="#33FFCC"/>
+													<textElement textAlignment="Center">
+														<font size="12" isBold="true"/>
+													</textElement>
+													<textFieldExpression><![CDATA[$P{interrumpido}]]></textFieldExpression>
+												</textField>
+												<textField>
+													<reportElement mode="Opaque" x="940" y="40" width="80" height="20" forecolor="#666666" backcolor="#33FFCC"/>
+													<textElement textAlignment="Center">
+														<font size="12" isBold="true"/>
+													</textElement>
+													<textFieldExpression><![CDATA[$P{totalTrata}]]></textFieldExpression>
+												</textField>
+												<componentElement>
+													<reportElement x="20" y="60" width="1000" height="20">
+														<property name="com.jaspersoft.studio.unit.width" value="px"/>
+													</reportElement>
+													<jr:list printOrder="Vertical">
+														<datasetRun subDataset="dataset4">
+															<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{grupos})]]></dataSourceExpression>
+														</datasetRun>
+														<jr:listContents height="20" width="1000">
+															<textField>
+																<reportElement x="0" y="0" width="100" height="20">
+																	<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+																</reportElement>
+																<textElement textAlignment="Left"/>
+																<textFieldExpression><![CDATA[$F{nombreGrupo}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement x="100" y="0" width="100" height="20">
+																	<property name="com.jaspersoft.studio.unit.width" value="px"/>
+																</reportElement>
+																<textElement textAlignment="Center"/>
+																<textFieldExpression><![CDATA[$F{sujEvaluados}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement x="200" y="0" width="100" height="20"/>
+																<textElement textAlignment="Center"/>
+																<textFieldExpression><![CDATA[$F{sujNoIncluidos}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement x="460" y="0" width="80" height="20"/>
+																<textElement textAlignment="Center"/>
+																<textFieldExpression><![CDATA[$F{totalIn}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement x="380" y="0" width="80" height="20"/>
+																<textElement textAlignment="Center"/>
+																<textFieldExpression><![CDATA[$F{sujMalIncluidos}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement x="540" y="0" width="100" height="20">
+																	<property name="com.jaspersoft.studio.unit.width" value="px"/>
+																</reportElement>
+																<textElement textAlignment="Center"/>
+																<textFieldExpression><![CDATA[$F{sujEvaluadoT}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement x="640" y="0" width="100" height="20"/>
+																<textElement textAlignment="Center"/>
+																<textFieldExpression><![CDATA[$F{sujTratamiento}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement x="830" y="0" width="90" height="20"/>
+																<textElement textAlignment="Center"/>
+																<textFieldExpression><![CDATA[$F{sujInterrumpidos}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement x="740" y="0" width="90" height="20"/>
+																<textElement textAlignment="Center"/>
+																<textFieldExpression><![CDATA[$F{sujSeguimiento}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement x="300" y="0" width="80" height="20"/>
+																<textElement textAlignment="Center"/>
+																<textFieldExpression><![CDATA[$F{sujIncluidos}]]></textFieldExpression>
+															</textField>
+															<textField>
+																<reportElement x="920" y="0" width="80" height="20"/>
+																<textElement textAlignment="Center"/>
+																<textFieldExpression><![CDATA[$F{totalTr}]]></textFieldExpression>
+															</textField>
+														</jr:listContents>
+													</jr:list>
+												</componentElement>
+												<textField>
+													<reportElement positionType="Float" x="940" y="90" width="80" height="20"/>
+													<textElement textAlignment="Center"/>
+													<textFieldExpression><![CDATA[$F{totalSujetoTotalTr}]]></textFieldExpression>
+												</textField>
+											</jr:listContents>
+										</jr:list>
+									</componentElement>
+									<textField>
+										<reportElement positionType="Float" mode="Opaque" x="0" y="160" width="120" height="20" forecolor="#666666" backcolor="#99FF99"/>
+										<textElement>
+											<font size="12" isBold="true"/>
+										</textElement>
+										<textFieldExpression><![CDATA[$P{totalEntidad}]]></textFieldExpression>
+									</textField>
+									<textField>
+										<reportElement positionType="Float" x="120" y="160" width="100" height="20">
+											<property name="com.jaspersoft.studio.unit.width" value="px"/>
+										</reportElement>
+										<textElement textAlignment="Center"/>
+										<textFieldExpression><![CDATA[$F{totalSEEntidad}]]></textFieldExpression>
+									</textField>
+									<textField>
+										<reportElement positionType="Float" x="220" y="160" width="100" height="20"/>
+										<textElement textAlignment="Center"/>
+										<textFieldExpression><![CDATA[$F{totalSNIEntidad}]]></textFieldExpression>
+									</textField>
+									<textField>
+										<reportElement positionType="Float" x="480" y="160" width="80" height="20"/>
+										<textElement textAlignment="Center"/>
+										<textFieldExpression><![CDATA[$F{totalITEntidad}]]></textFieldExpression>
+									</textField>
+									<textField>
+										<reportElement positionType="Float" x="400" y="160" width="80" height="20"/>
+										<textElement textAlignment="Center"/>
+										<textFieldExpression><![CDATA[$F{totalSMIEntidad}]]></textFieldExpression>
+									</textField>
+									<textField>
+										<reportElement positionType="Float" x="560" y="160" width="100" height="20">
+											<property name="com.jaspersoft.studio.unit.width" value="px"/>
+										</reportElement>
+										<textElement textAlignment="Center"/>
+										<textFieldExpression><![CDATA[$F{totalSujEvTEntidad}]]></textFieldExpression>
+									</textField>
+									<textField>
+										<reportElement positionType="Float" x="660" y="160" width="100" height="20"/>
+										<textElement textAlignment="Center"/>
+										<textFieldExpression><![CDATA[$F{totalSujTraEntidad}]]></textFieldExpression>
+									</textField>
+									<textField>
+										<reportElement positionType="Float" x="850" y="160" width="90" height="20"/>
+										<textElement textAlignment="Center"/>
+										<textFieldExpression><![CDATA[$F{totalSujIntEntidad}]]></textFieldExpression>
+									</textField>
+									<textField>
+										<reportElement positionType="Float" x="760" y="160" width="90" height="20"/>
+										<textElement textAlignment="Center"/>
+										<textFieldExpression><![CDATA[$F{totalSujSeEntidad}]]></textFieldExpression>
+									</textField>
+									<textField>
+										<reportElement positionType="Float" x="320" y="160" width="80" height="20"/>
+										<textElement textAlignment="Center"/>
+										<textFieldExpression><![CDATA[$F{totalSIEntidad}]]></textFieldExpression>
+									</textField>
+									<textField>
+										<reportElement mode="Transparent" x="0" y="0" width="85" height="20" forecolor="#000000" backcolor="#99FF99">
+											<property name="com.jaspersoft.studio.unit.width" value="px"/>
+										</reportElement>
+										<textElement>
+											<font size="10" isBold="false"/>
+										</textElement>
+										<textFieldExpression><![CDATA[$P{entidad}]]></textFieldExpression>
+									</textField>
+									<textField>
+										<reportElement positionType="Float" x="940" y="160" width="80" height="20"/>
+										<textElement textAlignment="Center"/>
+										<textFieldExpression><![CDATA[$F{totalSujTTentidad}]]></textFieldExpression>
+									</textField>
+								</jr:listContents>
+							</jr:list>
+						</componentElement>
+						<textField>
+							<reportElement positionType="Float" mode="Opaque" x="0" y="225" width="120" height="20" forecolor="#666666" backcolor="#99FF99"/>
+							<textElement>
+								<font size="12" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$P{totalEstado}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="120" y="225" width="100" height="20">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Center"/>
+							<textFieldExpression><![CDATA[$F{totalSEEstado}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="220" y="225" width="100" height="20"/>
+							<textElement textAlignment="Center"/>
+							<textFieldExpression><![CDATA[$F{totalSNIEstado}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="480" y="225" width="80" height="20"/>
+							<textElement textAlignment="Center"/>
+							<textFieldExpression><![CDATA[$F{totalTIEstado}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="400" y="225" width="80" height="20"/>
+							<textElement textAlignment="Center"/>
+							<textFieldExpression><![CDATA[$F{totalSMIEstado}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="560" y="225" width="100" height="20">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Center"/>
+							<textFieldExpression><![CDATA[$F{totalSujEvTEstado}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="660" y="225" width="100" height="20"/>
+							<textElement textAlignment="Center"/>
+							<textFieldExpression><![CDATA[$F{totalSujTraEstado}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="850" y="225" width="90" height="20"/>
+							<textElement textAlignment="Center"/>
+							<textFieldExpression><![CDATA[$F{totalSujIntEstado}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement mode="Transparent" x="0" y="0" width="85" height="20" forecolor="#000000" backcolor="#99FF99">
+								<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							</reportElement>
+							<textElement>
+								<font size="10" isBold="false"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$P{provincia}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="760" y="225" width="90" height="20"/>
+							<textElement textAlignment="Center"/>
+							<textFieldExpression><![CDATA[$F{totalSujSeEstado}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="320" y="225" width="80" height="20"/>
+							<textElement textAlignment="Center"/>
+							<textFieldExpression><![CDATA[$F{totalSIEstado}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="940" y="225" width="80" height="20"/>
+							<textElement textAlignment="Center"/>
+							<textFieldExpression><![CDATA[$F{totalSujTTEstado}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<textField>
+				<reportElement positionType="Float" mode="Opaque" x="0" y="265" width="120" height="20" forecolor="#666666" backcolor="#99FF99"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalNacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="120" y="265" width="100" height="20">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{totalSENacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="220" y="265" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{totalSNINacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="480" y="265" width="80" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{totalTINacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="400" y="265" width="80" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{totalSMINacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="940" y="265" width="80" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{totalSujTTNacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="560" y="265" width="100" height="20">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{totalSujEvTNacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="660" y="265" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{totalSujTraNacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="850" y="265" width="90" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{totalSujIntNacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="760" y="265" width="90" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{totalSujSeNacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="320" y="265" width="80" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{totalSINacion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="51" splitType="Stretch">
+			<image>
+				<reportElement x="820" y="0" width="200" height="51"/>
+				<imageExpression><![CDATA[$P{LOGO1_URL}]]></imageExpression>
+			</image>
+			<textField pattern="d/M/yyyy h:mm:ss a">
+				<reportElement x="366" y="10" width="125" height="20" forecolor="#002060"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="222" y="10" width="140" height="20" forecolor="#002060">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha y hora de creación: ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="210" y="10" width="1" height="30" forecolor="#002060">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<textField evaluationTime="Report">
+				<reportElement x="104" y="10" width="100" height="30" forecolor="#002060"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" de " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="10" width="100" height="30" forecolor="#002060"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

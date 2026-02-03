@@ -1,0 +1,204 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="#{theme.template}">
+
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<link rel='stylesheet'
+			href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+			type='text/css' />
+		<link rel='stylesheet'
+			href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css'
+			type='text/css' />
+
+		<script type="text/javascript">setContentTitle('#{messages.msg_title}')</script>
+		<h:form id="formBuscar">
+			<rich:simpleTogglePanel switchType="client"
+				label="#{messages.lbl_criterio_busqueda}">
+				<table class="Tabla" id="buscarTransf" cellspacing="0"
+					cellpadding="0">
+					<tr>
+						<td><h:outputText styleClass='normalText'
+								value="#{messages.lbl_nombre_trans}" /></td>
+					</tr>
+					<tr>
+						<td><h:inputText id="nombreTransf" styleClass="inputText"
+								value="#{buscarTransformacion.nombreTr}">
+							</h:inputText></td>
+						<td><rich:spacer width="25px" /></td>
+						<td><a4j:commandButton value="#{messages.lbl_buscar}"
+								action="#{buscarTransformacion.buscar()}" style="margin:0px">
+								<s:defaultAction />
+								<a4j:support event="oncomplete"
+									reRender="listadoTransformaciones" />
+							</a4j:commandButton> <rich:spacer width="8" /> <h:commandButton
+								value="#{messages.lbl_cancelar}" style="margin:0px"
+								action="#{buscarTransformacion.cancelar()}" /></td>
+					</tr>
+				</table>
+			</rich:simpleTogglePanel>
+			<rich:spacer height="11px" width="100%" />
+			<a4j:outputPanel id="listadoTransformaciones">
+				<div align="right">
+					<table class="tablaLinkAdd" cellpadding="0" cellspacing="0">
+						<tr>
+							<td><a4j:commandLink status="showModalStatus" action="addTr">
+									<h:graphicImage title="#{messages.lbl_add_trans}" height="12"
+										width="12" style="cursor: pointer"
+										value="/resources/icons/default/acciones/adicionar.png" />
+								</a4j:commandLink></td>
+							<td valign="middle" class="lv-link-add"><a4j:commandLink
+									style="cursor: pointer; margin-left:2px;"
+									title="#{messages.lbl_adicionar_enDis}" action="addTr"
+									tabindex="4" value=" #{messages.lbl_add_trans}" /></td>
+						</tr>
+					</table>
+				</div>
+				<rich:panel
+					rendered="#{buscarTransformacion.listaTransf.size()==0 and empty buscarTransformacion.nombreTr}">
+					<f:facet name="header">
+						<h:outputText value="#{messages.listado}" />
+					</f:facet>
+					<h:outputText styleClass='normalText' value="#{messages.listaVacia}" />
+				</rich:panel>
+
+				<rich:panel
+					rendered="#{buscarTransformacion.listaTransf.size()==0 and (not empty buscarTransformacion.nombreTr)}">
+					<f:facet name="header">
+						<h:outputText value="#{messages.listado}" />
+					</f:facet>
+					<h:outputText styleClass='normalText' value="#{messages.noResultados}" />
+				</rich:panel>
+				<rich:dataTable
+					rendered="#{buscarTransformacion.listaTransf.size()!=0}"
+					width="100%" value="#{buscarTransformacion.listaTransf}"
+					var="gruposujetos" columnsWidth="100%,0*,0*,0*">
+					<f:facet name="header">
+						<h:outputLabel value="#{messages.lbl_list_trans}" />
+					</f:facet>
+					<rich:column>
+						<f:facet name="header">
+							<h:panelGrid columns="2" style="padding: 0px;margin: -3px -3px;">
+								<h:outputText styleClass="headerText" style="text-align: left;"
+									value="#{messages.lbl_nomb_trans}" />
+								<s:div id="divordenar">
+									<rich:contextMenu attached="false" id="menuordenar">
+										<rich:menuItem value="Ordenar de menor a mayor"
+											ajaxSingle="true"
+											icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+											action="#{buscarTransformacion.ordenar('asc')}"
+											reRender="transfList">
+										</rich:menuItem>
+										<rich:menuItem value="Ordenar de mayor a menor"
+											ajaxSingle="true"
+											icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+											action="#{buscarTransformacion.ordenar('desc')}"
+											reRender="transfList">
+										</rich:menuItem>
+										<rich:menuItem value="Ordenar por orden de ejecución"
+											ajaxSingle="true"
+											icon="/resources/icons/default/filtro/menu_exe_sort.png"
+											action="#{buscarTransformacion.ordenar('no')}"
+											reRender="transfList">
+										</rich:menuItem>
+									</rich:contextMenu>
+									<h:graphicImage
+										rendered="#{buscarTransformacion.ordenado=='no'}"
+										value="/resources/icons/default/filtro/default.png">
+										<rich:componentControl event="onclick" for="menuordenar"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{buscarTransformacion.ordenado=='asc'}"
+										value="/resources/icons/default/filtro/asc_sort.png"
+										width="17" height="17">
+										<rich:componentControl event="onclick" for="menuordenar"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+									<h:graphicImage
+										rendered="#{buscarTransformacion.ordenado=='desc'}"
+										value="/resources/icons/default/filtro/des_sort.png"
+										width="17" height="17">
+										<rich:componentControl event="onclick" for="menuordenar"
+											operation="show">
+										</rich:componentControl>
+									</h:graphicImage>
+								</s:div>
+							</h:panelGrid>
+						</f:facet>
+						<h:outputLabel value='#{gruposujetos.nombre}' />
+					</rich:column>
+					<rich:column>
+						<div align="center">
+							<a4j:commandLink rendered="true" title="Ejecutar"
+								action="#{ejecutarTransformacion.setSeleccionada(gruposujetos)}"
+								oncomplete="Richfaces.showModalPanel('ejecutar_transformacion_panel')"
+								view="/cargaDatos/buscarTransformacion.xhtml">
+								<h:graphicImage style="border:0px; cursor: pointer"
+									value="/resources/icons/default/acciones/ejecutar.png"
+									width="16" />
+							</a4j:commandLink>
+						</div>
+					</rich:column>
+					<rich:column>
+						<div align="center">
+							<h:commandLink action="#{editTransf.setTransfSel(gruposujetos)}"
+								title="Modificar">
+								<h:graphicImage style="border:0px; cursor: pointer"
+									value="/resources/icons/default/acciones/modificar.png" />
+							</h:commandLink>
+						</div>
+					</rich:column>
+					<rich:column>
+						<div align="center">
+							<a4j:commandLink rendered="true" title="Eliminar"
+								action="#{buscarTransformacion.setSeleccionada(gruposujetos)}"
+								oncomplete="Richfaces.showModalPanel('eliminar_transformacion_panel')"
+								view="/cargaDatos/buscarTransformacion.xhtml">
+								<h:graphicImage style="border:0px; cursor: pointer"
+									title="Eliminar"
+									url="/resources/icons/default/acciones/eliminar.png">
+								</h:graphicImage>
+							</a4j:commandLink>
+						</div>
+					</rich:column>
+				</rich:dataTable>
+			</a4j:outputPanel>
+
+		</h:form>
+		<br />
+		<s:div style="text-align: center;margin: 0px 40%;">
+			<a4j:status>
+				<f:facet name="start">
+					<h:panelGrid columns="2">
+						<h:graphicImage
+							value="/resources/icons/default/acciones/loading.gif" width="20" />
+						<h:outputLabel value="#{messages.lbl_cargando}" />
+					</h:panelGrid>
+				</f:facet>
+			</a4j:status>
+		</s:div>
+
+		<s:div id="modalpanelsdiv">
+			<ui:include
+				src="/modConfiguracion/cargaDatos/modalpanels/confirmar_eliminar_transformacion.xhtml" />
+			<ui:include
+				src="/modConfiguracion/cargaDatos/modalpanels/confirmar_ejecutar_transformacion.xhtml" />
+			<ui:include
+				src="/modConfiguracion/cargaDatos/modalpanels/transf_ejecutada.xhtml" />
+			<ui:include
+				src="/modConfiguracion/cargaDatos/modalpanels/ver_logs.xhtml" />
+		</s:div>
+
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<action execute="#{listarRe.refresh()}" />	
+	<param name="idSujeto" value="#{listarRe.idSujeto}" />
+	<param name="idcrd"/>
+	<param name="idMS"/>
+	
+	
+
+	<navigation from-action="gestionar">	
+		<end-conversation before-redirect="true"/>
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarCRD/gestionarHoja.xhtml">
+		  <param name="idSujeto" value="#{idSujeto}"/>
+		  <param name="idcrd" value="#{idcrd}"/>
+		  <param name="idMS" value="#{idMS}"/>
+		  <param name="from" value="listarReSujeto"/>
+		</redirect>
+	</navigation>
+	
+	<navigation from-action="salir">	
+		<end-conversation before-redirect="true"/>
+		<redirect view-id="/modEnsayo/ensayo_conduccion/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarReporteExpedito/buscarSujetoRe.xhtml">		   
+		</redirect>
+	</navigation>
+
+
+	
+
+</page>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd"     
+      >
+    
+    
+  	
+    <param name="funcionalidadId" value="#{funcionalidadesEditController.funcionalidadId}"/>
+    
+    
+	<navigation from-action="#{funcionalidadesEditController.save()}">
+		<rule if-outcome="listar">
+			<redirect view-id="/modConfiguracion/funcionalidades/list.xhtml" >
+				<param name="moduleId" value="#{funcionalidadesEditController.funcionalidad.modulo.id}" />
+			</redirect>
+		</rule>
+	</navigation>
+	
+
+	
+</page>

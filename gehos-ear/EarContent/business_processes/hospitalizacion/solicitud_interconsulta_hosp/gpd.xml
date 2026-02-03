@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="solicitud_interconsulta_hosp" width="843" height="532">
+  <node name="inicio" x="292" y="10" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="asignar_solicitud_interconsulta_hosp" x="445" y="190" width="259" height="46">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="consultar_asignacion_solicitud_interconsulta_hosp" x="404" y="316" width="347" height="45">
+    <edge>
+      <label x="9" y="-45"/>
+      <bendpoint w1="2" h1="87" w2="217" h2="1"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="188" h1="-1" w2="198" h2="128"/>
+      <bendpoint w1="187" h1="-126" w2="197" h2="3"/>
+    </edge>
+  </node>
+  <node name="crear_hoja_interconsulta_hosp" x="252" y="400" width="220" height="49">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="realizar_asignacion" x="292" y="86" width="132" height="36">
+    <edge>
+      <label x="7" y="27"/>
+      <bendpoint w1="216" h1="1" w2="0" h2="-108"/>
+    </edge>
+    <edge>
+      <label x="-25" y="28"/>
+      <bendpoint w1="-169" h1="-2" w2="-2" h2="-111"/>
+    </edge>
+  </node>
+  <node name="aceptar_solicitud_interconsulta_hosp" x="62" y="191" width="258" height="45">
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="-1" h1="214" w2="-172" h2="3"/>
+    </edge>
+  </node>
+  <node name="fin" x="291" y="495" width="132" height="36"/>
+</root-container>

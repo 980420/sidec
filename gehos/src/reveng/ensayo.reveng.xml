@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+	<table-filter match-schema="ensayo" match-name="crd_especifico" />
+	<table-filter match-schema="ensayo" match-name="cronograma" />
+	<table-filter match-schema="ensayo" match-name="ctc" />
+	<table-filter match-schema="ensayo" match-name="ctc_categoria" />
+	<table-filter match-schema="ensayo" match-name="direccion_ip" />
+	<table-filter match-schema="ensayo" match-name="e_ajuste_temporal" />
+	<table-filter match-schema="ensayo" match-name="e_aleatorizacion" />
+	<table-filter match-schema="ensayo" match-name="e_asignacion" />
+	<table-filter match-schema="ensayo" match-name="e_control" />
+	<table-filter match-schema="ensayo" match-name="e_enmascaramiento" />
+	<table-filter match-schema="ensayo" match-name="e_fase_estudio" />
+	<table-filter match-schema="ensayo" match-name="e_intervencion" />
+	<table-filter match-schema="ensayo" match-name="e_patologias" />
+	<table-filter match-schema="ensayo" match-name="e_proposito" />
+	<table-filter match-schema="ensayo" match-name="e_punto_final" />
+	<table-filter match-schema="ensayo" match-name="e_seleccion" />
+	<table-filter match-schema="ensayo" match-name="e_sexo" />
+	<table-filter match-schema="ensayo" match-name="e_tipo_intervencion" />
+	<table-filter match-schema="ensayo" match-name="e_tipo_protocolo" />
+	<table-filter match-schema="ensayo" match-name="estado_cronograma" />
+	<table-filter match-schema="ensayo" match-name="estado_estudio" />
+	<table-filter match-schema="ensayo" match-name="estado_gruposujeto" />
+	<table-filter match-schema="ensayo" match-name="estado_hoja_crd" />
+	<table-filter match-schema="ensayo" match-name="estado_inclusion" />
+	<table-filter match-schema="ensayo" match-name="estado_momento_seguimiento" />
+	<table-filter match-schema="ensayo" match-name="estado_momento_seguimiento_general" />
+	<table-filter match-schema="ensayo" match-name="estado_monitoreo" />
+	<table-filter match-schema="ensayo" match-name="estado_nota" />
+	<table-filter match-schema="ensayo" match-name="estado_regla" />
+	<table-filter match-schema="ensayo" match-name="estado_sujeto" />
+	<table-filter match-schema="ensayo" match-name="estado_tratamiento" />
+	<table-filter match-schema="ensayo" match-name="estado_variable" />
+	<table-filter match-schema="ensayo" match-name="estado_variable_dato" />
+	<table-filter match-schema="ensayo" match-name="estados" />
+	<table-filter match-schema="ensayo" match-name="estudio" />
+	<table-filter match-schema="ensayo" match-name="estudio_entidad" />
+	<table-filter match-schema="ensayo" match-name="etapa" />
+	<table-filter match-schema="ensayo" match-name="grupo_sujetos" />
+	<table-filter match-schema="ensayo" match-name="grupo_variables" />
+	<table-filter match-schema="ensayo" match-name="hoja_crd" />
+	<table-filter match-schema="ensayo" match-name="momento_seguimiento_especifico" />
+	<table-filter match-schema="ensayo" match-name="momento_seguimiento_general" />
+	<table-filter match-schema="ensayo" match-name="momento_seguimiento_general_hoja_crd" />
+	<table-filter match-schema="ensayo" match-name="nomenclador" />
+	<table-filter match-schema="ensayo" match-name="nomenclador_valor" />
+	<table-filter match-schema="ensayo" match-name="nota" />
+	<table-filter match-schema="ensayo" match-name="nota_general" />
+	<table-filter match-schema="ensayo" match-name="presentacion_formulario" />
+	<table-filter match-schema="ensayo" match-name="regla" />
+	<table-filter match-schema="ensayo" match-name="seccion" />
+	<table-filter match-schema="ensayo" match-name="sujeto" />
+	<table-filter match-schema="ensayo" match-name="tipo_dato" />
+	<table-filter match-schema="ensayo" match-name="usuario_estudio" />
+	<table-filter match-schema="ensayo" match-name="variable" />
+	<table-filter match-schema="ensayo" match-name="variable_dato" />
+	<table-filter match-schema="ensayo" match-name="parametros" />	
+	
+	<table-filter match-schema="comun" match-name="entidad" />
+	<table-filter match-schema="comun" match-name="usuario" />
+	<table-filter match-schema="comun" match-name="tipo_entidad"/>
+	
+	<table-filter match-schema="seguridad" match-name="role" />
+	<table-filter match-schema="seguridad" match-name="user_in_role" />
+	
+	<table-filter match-schema="nomencladores" match-name="sexo" />
+	<table-filter match-schema="nomencladores" match-name="nacion" />
+	<table-filter match-schema="nomencladores" match-name="municipio" />
+	<table-filter match-schema="nomencladores" match-name="estado" />
+	
+	<table-filter match-schema="bitacora" match-name="traza_accion" />
+	<table-filter match-schema="bitacora" match-name="traza_atributo_modificado" />
+	<table-filter match-schema="bitacora" match-name="traza_modulo_accedido" />
+	<table-filter match-schema="bitacora" match-name="traza_session" />
+
+</hibernate-reverse-engineering>

@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:rich="http://richfaces.org/rich">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+<div align="right" style="width:100%;display:block"  >
+					<table cellpadding="0" cellspacing="0" >
+					<tr><td height="4px;"/></tr>
+					<tr>
+					<td colspan="6" width="100%" height="5px">
+						<s:div rendered="#{vzExportar}" style="padding-left:5px;float:left">						  
+							
+								<h:graphicImage title="#{messages['exportar']}" style="border: 0px;"
+							height="12" width="12"
+							value="/resources/icons/default/acciones/imprimir.png" />
+							
+								<s:link value="#{messages.exportar}" action="exportar" rendered="#{vzExportar}"/>
+						
+						</s:div>	
+						<s:div rendered="#{vzAgregar}" style="padding-left:5px;float:left">
+						
+								<h:graphicImage title="#{messages['agregar']}" style="border: 0px;"
+								height="12" width="12"
+								value="/resources/icons/default/acciones/adicionar.png" />
+							
+								<s:link style="vertical-align: 2px;" value="#{messages.agregar}" action="agregar" rendered="#{vzAgregar}"/> 
+							
+						</s:div>
+						
+						<s:div rendered="#{vzEliminar}" style="padding-left:5px;float:left">					
+						
+								<h:graphicImage title="#{messages.eliminar}" style="border: 0px;"
+								height="12" width="12"
+								value="/resources/icons/default/acciones/eliminar.png" />
+							
+								<a4j:commandLink style="vertical-align: 2px;" rendered="#{vzEliminar}" onclick="#{pagina == 'detalles' || pagina == 'editar' ? 'mostrarPanelModificar()' : 'mostrarPanelEliminar()'}" value="#{messages.eliminar}" /> 
+							
+						</s:div>
+							</td>
+							</tr>
+							</table>
+							
+								
+				
+												
+				</div>    
+
+
+</ui:composition>
+

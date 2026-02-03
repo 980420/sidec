@@ -1,0 +1,96 @@
+<s:div  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:s="http://jboss.com/products/seam/taglib"
+                 xmlns:rich="http://richfaces.org/rich">
+	<script type="text/javascript">
+	function SetVisible(){
+		document.getElementById('accionesRe').style.display='none';
+		showDiv();
+		//document.getElementById('accionesRe2').style.display='';
+		document.getElementById('accionesRe3').style.display='';
+	 }
+	 function SetInvisible(){
+		 hideDiv();
+	 	//document.getElementById('accionesRe2').style.display='none';
+	 	document.getElementById('accionesRe3').style.display='none';
+	 	document.getElementById('accionesRe').style.display='';
+	 }
+</script>
+<div>	
+	<rich:effect  name="hideDiv"  for="accionesRe2" type="BlindUp"  params="duration:0.2"/>
+	<rich:effect  name="showDiv"  for="accionesRe2" type="BlindDown"  params="duration:0.2"/>
+	<div align="right">
+		<table cellpadding="0" cellspacing="0" align="right">
+ 				<tr>
+				<td>
+					<div align="right" id="accionesRe" style="display: none;">
+						<a onclick="SetVisible()" href="javascript:void(0);">#{messages.verOpciones}</a>
+					</div>
+					<div align="right" id="accionesRe3" >
+						<a onclick="SetInvisible()" href="javascript:void(0);">#{messages.ocultarOpciones}</a>
+					</div>
+				</td>
+				<td style="padding-left: 25px">
+					<h:commandLink value="#{messages.consultarAccionesRealizadas}" style="font-weight:normal;" action="consultarAccionesRealizadasMomento"
+						rendered="#{asignarOtros.tieneAsignaciones()}" immediate="true"></h:commandLink>
+						<h:outputText value="#{messages.consultarAccionesRealizadas}" styleClass="dataText"
+						rendered="#{not asignarOtros.tieneAsignaciones()}"/>
+ 				</td>
+ 			</tr>
+ 		</table>		
+	</div>
+</div>
+
+			<br/>	
+		<div id="accionesRe2" >
+			<div style="border-style: solid; border-color: #C7C7C7; border-width: 1px; padding-left: 10px; padding-top: 10px;">
+					<table cellpadding="0" cellspacing="0" border="0">
+						<tr  style="vertical-align:top;">
+							<td style="padding-bottom: 8px">
+								<s:div style="text">
+									<h:graphicImage value="/resources/modAdmision/img/persona.png" style="padding-right: 3px; padding-bottom: 3px;" />
+									<h:outputText value="#{messages.familiares}" style="font-weight:bold; vertical-align: super;"/>
+								</s:div>
+								<h:commandLink value="&#8226; #{messages.datosPadre}" style="font-weight:normal;" action="crearPadre" rendered="#{empty asignarOtros.seleccionarPadre.personaSeleccionada}" />
+								<h:outputText value="&#8226; #{messages.datosPadre}" styleClass="dataText" rendered="#{not empty asignarOtros.seleccionarPadre.personaSeleccionada}"/>
+								<rich:spacer height="0px" style="display: block"/>	
+								<h:commandLink value="&#8226; #{messages.datosMadre}" style="font-weight:normal;" action="crearMadre" rendered="#{empty asignarOtros.seleccionarMadre.personaSeleccionada}" />								
+								<h:outputText value="&#8226; #{messages.datosMadre}" styleClass="dataText" rendered="#{not empty asignarOtros.seleccionarMadre.personaSeleccionada}" />
+								<rich:spacer height="0px" style="display: block"/>
+								<h:commandLink value="&#8226; #{messages.datosRepresentante}" style="font-weight:normal;" action="crearRepresentante" rendered="#{empty asignarOtros.seleccionarRepresentante.personaSeleccionada}" ></h:commandLink>
+								<h:outputText value="&#8226; #{messages.datosRepresentante}" styleClass="dataText" rendered="#{not empty asignarOtros.seleccionarRepresentante.personaSeleccionada}"/>
+								<rich:spacer height="0px" style="display: block"/>
+								<h:commandLink value="&#8226; #{messages.datosSupervisor}" style="font-weight:normal;" action="crearSupervisor" rendered="false" immediate="true"/>
+								<h:outputText value="&#8226; #{messages.datosSupervisor}" styleClass="dataText" rendered="false"/>
+								<rich:spacer height="0px" style="display: block"/>
+								<h:commandLink value="&#8226; #{messages.datosAvisarEmergencia}" style="font-weight:normal;" action="crearAvisarEmergencia" rendered="#{empty asignarOtros.seleccionarAvisarEmergencia.personaSeleccionada}" /><rich:spacer height="0px" style="display: block"/>
+								<h:outputText value="&#8226; #{messages.datosAvisarEmergencia}" styleClass="dataText" rendered="#{not empty asignarOtros.seleccionarAvisarEmergencia.personaSeleccionada}"/><rich:spacer height="0px" style="display: block"/>
+								<rich:spacer height="0px" style="display: block"/>
+							</td>
+							<td style="padding-left: 25px; padding-bottom: 8px">
+								<s:div style="text">
+									<h:graphicImage value="/resources/modAdmision/img/direcciones.png" style="padding-right: 3px; padding-bottom: 3px;" />
+									<h:outputText value="Direcciones" style="font-weight:bold; vertical-align: super;"/>
+								</s:div>								
+								<h:commandLink value="&#8226; #{messages.direccionNacimiento}" style="font-weight:normal;" action="crearDireccionNacimiento" rendered="#{empty asignarOtros.crearDireccionNacimiento.direccionNacimiento}" /><rich:spacer height="0px" style="display:block;"/>
+								<h:outputText value="&#8226; #{messages.direccionNacimiento}" styleClass="dataText" rendered="#{not empty asignarOtros.crearDireccionNacimiento.direccionNacimiento}"/>	<rich:spacer height="0px" style="display:block;"/>							
+								<h:commandLink value="&#8226; #{messages.direccionResidencia}" style="font-weight:normal;" action="crearDireccionResidencia" rendered="#{empty asignarOtros.crearDireccionResidencia.direccionResidencia}" /><rich:spacer height="0px" style="display:block;"/>
+								<h:outputText value="&#8226; #{messages.direccionResidencia}" styleClass="dataText" rendered="#{not empty asignarOtros.crearDireccionResidencia.direccionResidencia}"/><rich:spacer height="0px" style="display:block;"/>
+								<h:commandLink value="&#8226; #{messages.direccionParticular}" style="font-weight:normal;" action="crearDireccionParticular" rendered="#{empty asignarOtros.crearDireccionParticular.direccionParticular}" /><rich:spacer height="0px" style="display:block;"/>
+								<h:outputText value="&#8226; #{messages.direccionParticular}" styleClass="dataText" rendered="#{not empty asignarOtros.crearDireccionParticular.direccionParticular}"/><rich:spacer height="0px" style="display:block;"/>
+							</td>
+						</tr>
+						<tr  style="vertical-align:top;">
+							<td style="padding-bottom: 8px">
+								<h:commandLink value="&#8226; #{messages.gestionarBeneficiarios}" style="font-weight:normal;" action="gestionarBeneficiarios"  rendered="false">									
+								</h:commandLink><rich:spacer height="0px" style="display: block" />
+								<h:outputText value="&#8226; #{messages.gestionarBeneficiarios}" styleClass="dataText" rendered="false"/>			
+							</td>							
+						</tr>											
+					</table>				
+				</div>
+		</div>
+		<br/>
+</s:div>

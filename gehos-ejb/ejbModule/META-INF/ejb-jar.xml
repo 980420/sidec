@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejb-jar xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd"
+	version="3.0">
+
+<!--
+	<enterprise-beans>  
+		<message-driven>
+			<ejb-name>sendMessage</ejb-name>
+			<ejb-class>gehos.interfaces.job.SendMessage</ejb-class>
+			<activation-config> <activation-config-property>
+			<activation-config-property-name>cronTrigger</activation-config-property-name>
+			<activation-config-property-value>0 0/5 * * * ?</activation-config-property-value> </activation-config-property>
+			</activation-config> 
+		</message-driven> 
+	</enterprise-beans>
+	
+	
+	
+		<enterprise-beans> <message-driven>
+		<ejb-name>scheduledEstadoCamasHistoricos</ejb-name>
+		<ejb-class>gehos.estadisticas.tareasHistoricos.ScheduledEstadoCamasHistoricos</ejb-class>
+		<activation-config> <activation-config-property>
+		<activation-config-property-name>cronTrigger</activation-config-property-name>
+		<activation-config-property-value>0 0 7 * *
+		?</activation-config-property-value> </activation-config-property>
+		</activation-config> </message-driven> <message-driven>
+		<ejb-name>newHCECreatedMessageDrivenBean</ejb-name>
+		<ejb-class>gehos.ihebridgegateway.bus.pix.NewHCECreatedMessageDrivenBean</ejb-class>
+		<message-destination-type>javax.jms.Topic</message-destination-type>
+
+		<activation-config> <activation-config-property>
+		<activation-config-property-name>maxSessions</activation-config-property-name>
+		<activation-config-property-value>25</activation-config-property-value>
+		</activation-config-property> <activation-config-property>
+		<activation-config-property-name>subscriptionDurability</activation-config-property-name>
+		<activation-config-property-value>Durable</activation-config-property-value>
+		</activation-config-property> <activation-config-property>
+		<activation-config-property-name>clientId</activation-config-property-name>
+		<activation-config-property-value>alasHIS-alejo(cambia 'alejo' por tu
+		nombre en el ejb-jar.xml..)</activation-config-property-value>
+		</activation-config-property> <activation-config-property>
+		<activation-config-property-name>subscriptionName</activation-config-property-name>
+		<activation-config-property-value>newHCECreatedEvent</activation-config-property-value>
+		</activation-config-property> <activation-config-property>
+		<activation-config-property-name>messageSelector</activation-config-property-name>
+		<activation-config-property-value></activation-config-property-value>
+		</activation-config-property> </activation-config> </message-driven>
+
+		</enterprise-beans>
+	-->
+	<enterprise-beans>  
+		<message-driven>
+			<ejb-name>programarConjuntoDatos</ejb-name>
+			<ejb-class>gehos.ensayo.ensayo_extraccion.session.gestionarConjuntoDatos.exportarConjuntoDatos.ProgramarConjuntoDatos</ejb-class>
+			<activation-config> <activation-config-property>
+			<activation-config-property-name>cronTrigger</activation-config-property-name>
+			<activation-config-property-value>0 0/5 * * * ?</activation-config-property-value> </activation-config-property>
+			</activation-config> 
+		</message-driven> 
+	</enterprise-beans>
+
+	<interceptors>
+		<interceptor>
+			<interceptor-class>org.jboss.seam.ejb.SeamInterceptor</interceptor-class>
+		</interceptor>
+	</interceptors>
+
+	<assembly-descriptor>
+		<interceptor-binding>
+			<ejb-name>*</ejb-name>
+			<interceptor-class>org.jboss.seam.ejb.SeamInterceptor</interceptor-class>
+		</interceptor-binding>
+	</assembly-descriptor>
+
+</ejb-jar>

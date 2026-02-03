@@ -1,0 +1,410 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="#{theme.template}"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- Estilos generales -->
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/modConfiguracion/management/styles/general.css"
+			rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript">setContentTitle('#{messages.titulo}')</script>
+
+
+
+		<h:form id="userSearch" styleClass="edit">
+		
+			<a4j:outputPanel ajaxRendered="true" id="errorOutputPanel">
+				<s:div style="height:30px;"
+					rendered="#{facesMessages.getCurrentMessagesForControl('userSearch').size() > 0 }">
+					<div class="custom-error">
+						<rich:message for="userSearch"></rich:message>
+					</div>	
+				</s:div>
+			</a4j:outputPanel>
+		
+			<rich:simpleTogglePanel switchType="client" styleClass="whitespace" style="margin-top:5px;"
+				opened="#{usuarioBuscarControlador.openSimpleTogglePanel}">
+				<a4j:support event="oncollapse" ajaxSingle="true"
+					action="#{usuarioBuscarControlador.cambiarEstadoSimpleTogglePanel()}"
+					reRender="tablas_id" />
+				<a4j:support event="onexpand" ajaxSingle="true"
+					action="#{usuarioBuscarControlador.cambiarEstadoSimpleTogglePanel()}"
+					reRender="tablas_id" />
+				<f:facet name="header">#{messages.criterios}</f:facet>
+				<a4j:outputPanel id="busquedas">
+					<a4j:outputPanel id="simplesearch"
+						rendered="#{!usuarioBuscarControlador.busquedaTipo}">
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+							<tr>
+								<td style="height: 10px;" colspan="6"></td>
+							</tr>
+							<tr style="vertical-align: top;">
+								<td><rich:spacer width="7px" /></td>
+								<td>#{messages.crit1}<br />
+								<h:inputText id="username" tabindex="1"
+									value="#{usuarioBuscarControlador.nombreUsuario}"
+									style="width:148px;" /></td>
+								<td><rich:spacer width="25px" /></td>
+								<td style="vertical-align: bottom;"><br />
+								<h:commandButton id="search" value="#{messages.buscar}"
+									tabindex="3"
+									action="#{usuarioBuscarControlador.busqueda(false)}"
+									style="margin-left: 0px; margin-bottom:  0px; margin-top: 0px;">
+									<s:defaultAction />
+								</h:commandButton></td>
+								<td style="vertical-align: bottom;"><br />
+								<s:button view="/modCommons/modHome/home.gehos"
+									value="#{messages.cancelar}" tabindex="4"
+									style="margin-right:0px;margin-bottom:  0px; margin-top: 0px;"
+									rendered="#{not identificadorManager.editing}">
+									<f:param name="idFuncionalidad"
+										value="#{activeModule.activeModule.id}" />
+									<f:param name="idancestors"
+										value="#{activeModule.activeModule.id}a" />
+									<f:param name="moduleName"
+										value="#{activeModule.activeModuleName}" />
+								</s:button></td>
+								<td><rich:spacer width="7px" /></td>
+							</tr>
+							<tr>
+								<td style="width: 7px;"></td>
+								<td align="right" colspan="4"><h:panelGrid columns="2"
+									cellpadding="0" cellspacing="0" border="0">
+									<h:graphicImage height="12"
+										style="margin-top:2px;margin-right:2px;"
+										value="/resources/icons/default/acciones/buscar.png" />
+									<a4j:commandLink tabindex="5"
+										action="#{usuarioBuscarControlador.cambiar(true)}"
+										value="#{messages.busquedaAvanzada}"
+										reRender="busquedas,tablas_id">
+									</a4j:commandLink>
+								</h:panelGrid> <rich:spacer height="7px" /></td>
+								<td></td>
+							</tr>
+						</table>
+					</a4j:outputPanel>
+					<a4j:outputPanel id="advancedsearch"
+						rendered="#{usuarioBuscarControlador.busquedaTipo == true}">
+						<table cellpadding="0px" cellspacing="0px" border="0px">
+							<tr>
+								<td style="height: 10px;" colspan="6"></td>
+							</tr>
+							<tr style="vertical-align: top;">
+								<td><rich:spacer width="7px" /></td>
+								<td>#{messages.crit1}<br />
+								<h:inputText id="advusername" tabindex="6"
+									value="#{usuarioBuscarControlador.nombreUsuario}"
+									style="width:148px;" /> <rich:spacer height="8px"
+									style="display:block"></rich:spacer> #{messages.crit4}<br />
+								<h:inputText value="#{usuarioBuscarControlador.segundoApellido}"
+									tabindex="9" style="width:148px;" /></td>
+								<td><rich:spacer width="25px" /></td>
+								<td>#{messages.crit2}<br />
+								<h:inputText id="advname" tabindex="7"
+									value="#{usuarioBuscarControlador.nombre}" style="width:148px;" />
+								<rich:spacer height="5px" style="display:block"></rich:spacer> <br />
+								</td>
+								<td><rich:spacer width="25px" /></td>
+								<td>#{messages.crit3}<br />
+								<h:inputText value="#{usuarioBuscarControlador.primerApellido}"
+									tabindex="8" style="width:148px;" /></td>
+								<td><rich:spacer width="7px" /></td>
+							</tr>
+							<tr>
+								<td height="3px" />
+							</tr>
+							<tr>
+								<td style="width: 7px;"></td>
+								<td colspan="5" align="right">
+								<table cellpadding="0" cellspacing="0" border="0">
+									<tr>
+										<td><h:commandButton value="#{messages.buscar}"
+											tabindex="10"
+											action="#{usuarioBuscarControlador.busqueda(true)}"
+											style="margin-left: 0px; margin-bottom:  0px; margin-top: 0px;"											>
+											<s:defaultAction />
+										</h:commandButton></td>
+										<td><s:button view="/modCommons/modHome/home.gehos"
+											value="#{messages.cancelar}" tabindex="11"
+											style="margin-right:0px;margin-bottom:  0px; margin-top: 0px;"
+											rendered="#{not identificadorManager.editing}">
+											<f:param name="idFuncionalidad"
+												value="#{activeModule.activeModule.id}" />
+											<f:param name="idancestors"
+												value="#{activeModule.activeModule.id}a" />
+											<f:param name="moduleName"
+												value="#{activeModule.activeModuleName}" />
+										</s:button></td>
+									</tr>
+								</table>
+								</td>
+								<td><rich:spacer width="7px" /></td>
+							</tr>
+							<tr>
+								<td style="width: 7px;"></td>
+								<td align="right" colspan="5"><h:panelGrid columns="2">
+
+								</h:panelGrid>
+								<table cellpadding="0" cellspacing="0" border="0">
+									<tr>
+										<td><h:graphicImage height="12"
+											style="margin-top:2px;margin-right:2px;"
+											value="/resources/icons/default/acciones/buscar.png" /></td>
+										<td><a4j:commandLink tabindex="12"
+											action="#{usuarioBuscarControlador.cambiar(false)}"
+											value="#{messages.busquedaSimple}"
+											reRender="busquedas,tablas_id">
+										</a4j:commandLink></td>
+									</tr>
+								</table>
+								<rich:spacer height="7px" /></td>
+								<td style="width: 7px;"></td>
+							</tr>
+						</table>
+					</a4j:outputPanel>
+				</a4j:outputPanel>
+			</rich:simpleTogglePanel>
+
+			<rich:spacer height="11px" />
+			<div align="right">
+			<table cellpadding="0" cellspacing="1" border="0">
+				<tr>
+					<td><a4j:commandLink action="crear" 
+						status="showModalStatus" style="cursor:pointer;">
+						<h:graphicImage title="#{messages.adicionar}" style="margin-right: 1px;" height="12"
+						width="12" rendered="#{not funcionalidadesManager.editingOrders}"
+						value="/resources/icons/default/acciones/adicionar.png" /></a4j:commandLink></td>
+					<td><a4j:commandLink action="crear" styleClass="whitespace"
+						tabindex="13" value="#{messages.adicionar}" status="showModalStatus"
+						style="border: 0px; cursor:pointer;" title="#{messages.adicionar}"/></td>
+				</tr>
+			</table>
+			<a4j:status id="showModalStatus" forceId="true" 
+					  onstart="Richfaces.showModalPanel('ajaxLoadingModalBox',{left:1, top:-15});
+					  		   document.body.style.cursor='wait';"
+					  onstop="Richfaces.hideModalPanel('ajaxLoadingModalBox');
+					  		  document.body.style.cursor='default';">
+			</a4j:status>
+			</div>
+			<a4j:outputPanel id="tablas_id">
+				<rich:panel styleClass="whitespace"
+					rendered="#{usuarioBuscarControlador.resultList.size() == 0 and usuarioBuscarControlador.nombreUsuario == '' and usuarioBuscarControlador.nombre == '' and usuarioBuscarControlador.primerApellido == '' and usuarioBuscarControlador.segundoApellido == ''}">
+
+					<f:facet name="header">#{messages.listado}</f:facet>
+					<rich:spacer height="11px" style="display: block" />
+					<div class="results" id="roleList"><rich:spacer width="6px" />
+					<h:outputText value="#{messages.noInf}" /></div>
+					<rich:spacer height="6px" style="display: block" />
+				</rich:panel>
+
+				<rich:panel
+					rendered="#{usuarioBuscarControlador.resultList.size() == 0 and (usuarioBuscarControlador.nombreUsuario != '' || usuarioBuscarControlador.nombre != '' || usuarioBuscarControlador.primerApellido != '' || usuarioBuscarControlador.segundoApellido != '')}">
+
+					<f:facet name="header">#{messages.listado}</f:facet>
+					<rich:spacer height="11px" style="display: block" />
+					<div class="results" id="roleList"><rich:spacer width="6px" />
+					<h:outputText value="#{messages.noInf2}" /></div>
+					<rich:spacer height="6px" style="display: block" />
+				</rich:panel>
+				<s:div style="margin-left:1px;margin-top:1px"
+					rendered="#{not empty usuarioBuscarControlador.resultList}">
+					<rich:dataTable id="userList_security_datatable"
+						style="width: 100%;" var="user"
+						value="#{usuarioBuscarControlador.resultList}"
+						columnsWidth="1%, 30%, 70%, 100%, 1%, 1%, 0*, 0*, 0*">
+						<f:facet name="header">
+							<div>#{messages.listado}</div>
+						</f:facet>
+						<h:column>
+							<f:facet name="header">
+					#{messages.col1}
+	            </f:facet>
+
+							<h:graphicImage height="25" width="25"
+								rendered="#{userTools.userImageExist(user.username)}"
+								url="/resources/modCommon/userphotos/#{user.username.toLowerCase()}.png">
+							</h:graphicImage>
+							<h:graphicImage height="25" width="25"
+								rendered="#{not userTools.userImageExist(user.username)}"
+								value="/resources/modCommon/unknown/#{theme.name}/generico/desconocido.png">
+
+							</h:graphicImage>
+
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.col3}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not usuarioBuscarControlador.order.equals('username asc') and not usuarioBuscarControlador.order.equals('username desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="usercontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{usuarioBuscarControlador.order.equals('username asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="usercontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{usuarioBuscarControlador.order.equals('username desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick" for="usercontextmenu"
+												operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+	            #{user.username}
+	        </h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:panelGrid columns="2"
+									style="width: 100%; padding:0px; margin:0px;" border="0"
+									cellpadding="0" cellspacing="0">
+									<s:div style="float: left;">#{messages.col2}</s:div>
+									<s:div style="text-align: right; padding-left:3px;">
+										<h:graphicImage
+											rendered="#{not usuarioBuscarControlador.order.equals('nombre asc') and not usuarioBuscarControlador.order.equals('nombre desc')}"
+											value="/resources/icons/default/filtro/default.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="nombrecontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{usuarioBuscarControlador.order.equals('nombre asc')}"
+											value="/resources/icons/default/filtro/asc_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="nombrecontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+										<h:graphicImage
+											rendered="#{usuarioBuscarControlador.order.equals('nombre desc')}"
+											value="/resources/icons/default/filtro/des_sort.png"
+											width="17" height="17">
+											<rich:componentControl event="onclick"
+												for="nombrecontextmenu" operation="show">
+											</rich:componentControl>
+										</h:graphicImage>
+									</s:div>
+								</h:panelGrid>
+							</f:facet>
+	            #{user.nombre}	           
+	            <h:outputLabel styleClass="dataText; font-weight: bold"
+								value=" #{user.primerApellido}" />
+							<h:outputLabel styleClass="dataText; font-weight: bold"
+								value=" #{user.segundoApellido}" />
+						</h:column>
+						
+
+						<h:column>
+							<div align="center"><a4j:commandLink 
+									status="showModalStatus" 
+									ajaxSingle="true" immediate="true"	
+									onclick="SeleccionarVer('#{user.id}')" >
+								<s:conversationPropagation type="none"></s:conversationPropagation>
+								<h:graphicImage title="#{messages.ver}" style="border: 0px;"
+									value="/resources/icons/default/acciones/ver.png" />
+							</a4j:commandLink ></div>
+						</h:column>
+						<h:column>
+							<div align="center"><a4j:commandLink
+									 status="showModalStatus" 
+									 ajaxSingle="true" immediate="true"						
+									 onclick="SeleccionarModif('#{user.id}')" >
+								<h:graphicImage title="#{messages.modificar}"
+									style="border: 0px;" 
+									value="/resources/icons/default/acciones/modificar.png" />
+							</a4j:commandLink ></div>
+						</h:column>
+						<h:column>
+							<div align="center"><a4j:commandLink
+									ajaxSingle="true"							 
+									onclick="SeleccionarStat('#{user.id}')"							 
+									status="showModalStatus">
+								<h:graphicImage title="#{messages.eliminar}"
+									style="border: 0px; cursor:pointer;"
+									value="/resources/icons/default/acciones/eliminar.png">
+								</h:graphicImage>
+							</a4j:commandLink></div>
+						</h:column>
+					</rich:dataTable>
+					
+					<a4j:jsFunction name="SeleccionarStat" oncomplete="Richfaces.showModalPanel('eliminar_usuario_panel')"
+								action="#{usuarioBuscarControlador.seleccionarEliminar()}" ajaxSingle="true">
+							<a4j:actionparam name="pos" assignTo="#{usuarioBuscarControlador.usuarioId}"/>
+						</a4j:jsFunction>
+						<a4j:jsFunction name="SeleccionarModif" action="#{usuarioBuscarControlador.seleccionarModificar()}" 
+								ajaxSingle="true">
+							<a4j:actionparam name="pos" assignTo="#{usuarioBuscarControlador.usuarioId}"/>
+						</a4j:jsFunction>
+						<a4j:jsFunction name="SeleccionarVer" action="#{usuarioBuscarControlador.seleccionarVer()}" 
+								ajaxSingle="true">
+						<a4j:actionparam name="pos" assignTo="#{usuarioBuscarControlador.usuarioId}"/>
+				</a4j:jsFunction>					
+				</s:div>
+				<rich:spacer height="11px" />
+				<ui:include src="/modEnsayo/codebase/plantillas/paginado_tabla_inferior_generico.xhtml/" >
+					<ui:param name="vzPaginado" value="#{usuarioBuscarControlador.resultCount>10}"/>
+					<ui:param name="nomControladorList" value="#{usuarioBuscarControlador}" />
+					<ui:param name="idListado" value="tablas_id" />
+				</ui:include>
+			</a4j:outputPanel>
+
+
+			<rich:contextMenu attached="false" id="nombrecontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{usuarioBuscarControlador.setOrder('nombre asc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{usuarioBuscarControlador.setOrder('nombre desc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+				
+			</rich:contextMenu>
+			<rich:contextMenu attached="false" id="usercontextmenu"
+				submitMode="ajax">
+				<rich:menuItem value="#{messages.filtroMenMay}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+					action="#{usuarioBuscarControlador.setOrder('username asc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+				<rich:menuItem value="#{messages.filtroMayMen}" ajaxSingle="true"
+					icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+					action="#{usuarioBuscarControlador.setOrder('username desc')}"
+					reRender="tablas_id">
+				</rich:menuItem>
+				
+			</rich:contextMenu>
+		</h:form>
+		<ui:include
+			src="/modConfiguracion/management/gestionarUsuarios/modalspanel/ConfirmarEliminarUsuario.xhtml" />
+	</ui:define>
+
+</ui:composition>
+

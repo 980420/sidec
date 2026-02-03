@@ -1,0 +1,384 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a="http://richfaces.org/a4j" 
+                template="#{theme.template}">
+                       
+<ui:define name="body">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style type="text/css">.rich-stglpanel-body{padding:0px}</style>
+	<style type="text/css">.rich-panel-body{padding:0px}</style>
+	<script type="text/javascript">setContentTitle('Administrar usuarios')</script>
+    
+	<h:form id="userSearch" styleClass="edit">   
+	    <rich:simpleTogglePanel switchType="client" >
+			<f:facet name="header">Criterios de búsqueda</f:facet>
+				<table cellpadding="0px" cellspacing="0px" border="0px" id="simplesearch">
+					<tr>
+						<td style="height: 11px;" colspan="6">
+						</td>
+					</tr>
+					<tr style="vertical-align: top;">
+						<td style="width: 7px;"></td>
+						<td>
+			                Nombre:<br/>
+			                <h:inputText  id="name" value="#{userList_security.user.nombre}" style="width:150px;"/>
+						</td>
+						<td style="width: 25px"></td>
+						<td>
+		  	               	Usuario:<br/>
+			                <h:inputText id="username" value="#{userList_security.user.username}" style="width:150px;"/>
+						</td>
+						<td style="width: 25px"></td>
+						<td style="vertical-align: bottom;">
+					            <h:commandButton id="search" value="Buscar" 
+					            				onclick="document.getElementById('userSearch:advname').value = document.getElementById('userSearch:name').value; document.getElementById('userSearch:advusername').value = document.getElementById('userSearch:username').value;"
+					            				action="/modConfiguracion/usuarios/userList.xhtml"
+					            				style="margin-left: 0px; margin-bottom: 0px;"
+					            				>
+					            	<s:defaultAction />
+					            </h:commandButton>				
+					            <s:button value="Cancelar" style="margin-right: 0px; margin-bottom: 0px;" />
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 7px;"></td>
+						<td  align="right" colspan="5">
+							<table cellpadding="0" cellspacing="0" border="0"><tr>
+								<td>
+									<h:graphicImage height="12" style="margin-top:4px;margin-right:2px;"
+										value="/resources/icons/default/acciones/buscar.png"/>
+								</td>
+								<td>
+									<a href="#" 
+										onclick="document.getElementById('simplesearch').style.display='none'; document.getElementById('advancedsearch').style.display='inline'">
+										Búsqueda avanzada
+									</a>
+	
+								</td>
+							</tr></table>
+						</td>
+					</tr>
+				</table>
+	
+				<table cellpadding="0px" cellspacing="0px" border="0px" style="display: none;" id="advancedsearch" >
+					<tr>
+						<td style="height: 11px;" colspan="6">
+						</td>
+					</tr>
+					<tr style="vertical-align: top;">
+						<td style="width: 7px;"></td>
+						<td>
+			                Nombre:<br/>
+			                <h:inputText id="advname" value="#{userList_security.user.nombre}" style="width:150px;"/>
+				           	<rich:spacer height="8" style="display:block"></rich:spacer>
+			                Usuario:<br/>
+			                <h:inputText id="advusername" value="#{userList_security.user.username}" style="width:150px;"/>
+						</td>
+						<td style="width: 25px"></td>
+						<td>
+				            Primer apellido:<br/>
+				            <h:inputText  value="#{userList_security.user.primerApellido}" style="width:150px;"/>
+				           	<rich:spacer height="8" style="display:block"></rich:spacer>
+			                Cargo:<br/>
+			                <h:inputText value="" style="width:150px;"/>
+						</td>
+						<td style="width: 25px"></td>
+						<td>
+				                Segundo apellido:<br/>
+				                <h:inputText value="#{userList_security.user.segundoApellido}" style="width:150px;"/>
+						</td>
+		
+					</tr>
+					<tr>
+						<td style="width: 7px;"></td>
+						<td colspan="5" style="" align="right">
+					            <a:commandButton value="Buscar" 
+					            				action="#{userList_security.getResultList()}"
+					            				style="margin-left: 0px; margin-bottom: 0px;"
+					            				reRender="userList_security_datatable" >
+					            	<s:defaultAction />
+					            </a:commandButton>				
+					            <s:button value="Cancelar" style="margin-right: 0px; margin-bottom: 0px;" />
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 7px;"></td>
+						<td  align="right" colspan="5">
+							<table cellpadding="0" cellspacing="0" border="0"><tr>
+								<td>
+									<h:graphicImage height="12" style="margin-top:4px;margin-right:2px;"
+										value="/resources/icons/default/acciones/buscar.png"/>
+								</td>
+								<td><a href="#"
+									onclick="document.getElementById('simplesearch').style.display='inline'; document.getElementById('advancedsearch').style.display='none'">Búsqueda simple</a></td>
+							</tr></table>
+						</td>
+					</tr>
+				</table>
+	
+			
+			
+		</rich:simpleTogglePanel>
+	   
+	    
+	   
+	    <s:div styleClass="actionButtons" rendered="#{empty from}" style="text-align: right" >
+	    <div align="right">
+	    <table cellpadding="1px" cellspacing="0px" >
+	    	<tr>
+	    		<td>
+			    	<h:graphicImage height="12" width="12" value="/resources/icons/default/acciones/adicionar.png"/>
+	    		</td>
+	    		<td style="vertical-align: middle;">
+				    <s:link view="/modConfiguracion/usuarios/userCreate2.xhtml"
+				                id="create" 
+				             value="Crear usuario">
+				      
+				    </s:link>
+	    		</td>
+	    	</tr>
+	    </table>
+	    </div>
+	    </s:div>  
+	    <rich:panel>
+	        <f:facet name="header">Listado de usuarios</f:facet>
+	    <div class="results" id="userList">
+	
+	    <h:outputText value="No se encuentra información que cumpla con los criterios de búsqueda." 
+	               rendered="#{empty userList_security.resultList}"/>
+	           
+	         
+	    <rich:dataTable id="userList_security_datatable" style="width: 100%;"
+	                var="user"
+	              value="#{userList_security.resultList}" 
+	           rendered="#{not empty userList_security.resultList}"
+	           columnsWidth="1%, 70%, 30%, 100%, 1%, 1%, 0*, 0*, 0*">
+			<h:column>
+	            <f:facet name="header">
+					Foto
+	            </f:facet>
+	  
+		            <h:graphicImage  height="25" width="25"
+		             				 rendered="#{userTools.userImageExist(user.username)}" 
+		            				 url="/resources/modCommon/userphotos/#{user.username}.png" >
+		            </h:graphicImage>
+					 <h:graphicImage height="25" width="25"
+					 				 rendered="#{not userTools.userImageExist(user.username)}" 
+					 				 value="/resources/modCommon/unknown/soto-layout/generico/desconocido.png">
+	
+					 </h:graphicImage> 	
+	 
+	        </h:column>
+	        <h:column>
+	            <f:facet name="header">
+	            	<h:panelGrid columns="2" style="width: 100%; padding:0px; margin:0px;" 
+	            		border="0" cellpadding="0" cellspacing="0">
+	            		<s:div style="float: left;">Nombre</s:div>
+		            	<s:div style="text-align: right; padding-left:3px;">
+							<h:graphicImage rendered="#{not userList_security.order.equals('nombre asc') and not userList_security.order.equals('nombre desc')}"
+								value="/resources/icons/default/filtro/default.png" width="17" height="17">
+								<rich:componentControl 
+									event="onclick" 
+									for="nombrecontextmenu"
+									operation="show">
+								</rich:componentControl>
+							</h:graphicImage>
+							<h:graphicImage rendered="#{userList_security.order.equals('nombre asc')}"
+								value="/resources/icons/default/filtro/asc_sort.png" width="17" height="17">
+								<rich:componentControl 
+									event="onclick" 
+									for="nombrecontextmenu"
+									operation="show">
+								</rich:componentControl>
+							</h:graphicImage>
+							<h:graphicImage rendered="#{userList_security.order.equals('nombre desc')}"
+								value="/resources/icons/default/filtro/des_sort.png" width="17" height="17">
+								<rich:componentControl 
+									event="onclick" 
+									for="nombrecontextmenu"
+									operation="show">
+								</rich:componentControl>
+							</h:graphicImage>	
+						</s:div>												
+	            	</h:panelGrid>
+	            </f:facet>
+	            #{user.nombre}
+	        </h:column>
+	        <h:column>
+	            <f:facet name="header">
+	            	<h:panelGrid columns="2" style="width: 100%; padding:0px; margin:0px;" 
+	            		border="0" cellpadding="0" cellspacing="0">
+	            		<s:div style="float: left;">Usuario</s:div>
+		            	<s:div style="text-align: right; padding-left:3px;">
+							<h:graphicImage rendered="#{not userList_security.order.equals('username asc') and not userList_security.order.equals('username desc')}"
+								value="/resources/icons/default/filtro/default.png" width="17" height="17">
+								<rich:componentControl 
+									event="onclick" 
+									for="usercontextmenu"
+									operation="show">
+								</rich:componentControl>
+							</h:graphicImage>
+							<h:graphicImage rendered="#{userList_security.order.equals('username asc')}"
+								value="/resources/icons/default/filtro/asc_sort.png" width="17" height="17">
+								<rich:componentControl 
+									event="onclick" 
+									for="usercontextmenu"
+									operation="show">
+								</rich:componentControl>
+							</h:graphicImage>
+							<h:graphicImage rendered="#{userList_security.order.equals('username desc')}"
+								value="/resources/icons/default/filtro/des_sort.png" width="17" height="17">
+								<rich:componentControl 
+									event="onclick" 
+									for="usercontextmenu"
+									operation="show">
+								</rich:componentControl>
+							</h:graphicImage>
+						</s:div>		            	
+					</h:panelGrid> 
+	            </f:facet>
+	            #{user.username}
+	        </h:column>        
+	        
+	
+	        <h:column>
+	            <f:facet name="header">
+					Cargo
+	            </f:facet>
+	          
+	        </h:column>
+	
+	        <h:column>
+	            <f:facet name="header">
+					Cuenta habilitada
+	            </f:facet>
+	            <center>
+	            	<h:selectBooleanCheckbox value="#{user.cuentaHabilitada}" disabled="true" />
+	            </center>
+	        </h:column>
+	
+	        <h:column >
+				<div align="center">
+				<s:link view="/modConfiguracion/usuarios/userDetail.xhtml" >
+	                    <h:graphicImage title="Ver" style="border: 0px;"
+	                   					value="/resources/icons/default/acciones/ver.png"/>
+	               		<f:param id="userIdparam" name="userId" value="#{user.id}"/>
+	            </s:link>
+				</div>
+	        </h:column>
+	        <h:column >
+				<div align="center">
+				<s:link view="/modConfiguracion/usuarios/userEdit.xhtml" >
+	                   <h:graphicImage title="Modificar" style="border: 0px;" value="/resources/icons/default/acciones/modificar.png"/>
+	                   <f:param id="userIdparam2" name="userId" value="#{user.id}"/>
+	            </s:link>
+				</div>
+	        </h:column>
+	        <h:column >
+				<div align="center">
+	                   <h:graphicImage title="Eliminar" style="border: 0px; cursor:pointer;"
+	                   		value="/resources/icons/default/acciones/eliminar.png"
+	                   		onclick="Richfaces.showModalPanel('panelEliminar')">
+	               		</h:graphicImage>
+				</div>
+	        </h:column>
+	
+	    </rich:dataTable>
+	
+	    </div>
+	    </rich:panel>
+	   
+	    <br/>
+	   
+	    <s:div id="pagingcontrols" styleClass="tableControl" style="width: 100%; text-align:center" align="center">
+	      
+	        <a:commandLink reRender="userList_security_datatable, pagingcontrols" ajaxSingle="true" >
+	        	<h:graphicImage title="primera página" style="border: 0px;"
+	      			value="/resources/icons/default/paginado/#{theme.color}/inicio.png"/>
+	      		<a:actionparam assignTo="#{userList_security.firstResult}" 
+	      						value="0" />	
+	        </a:commandLink>
+	
+	        <a:commandLink reRender="userList_security_datatable, pagingcontrols"  >
+	        	<h:graphicImage title="anterior" style="border: 0px;"
+	      			value="/resources/icons/default/paginado/#{theme.color}/anterior.png"/>
+	      		<a:actionparam assignTo="#{userList_security.firstResult}" 
+	      						value="#{userList_security.previousFirstResult}" />	
+	        </a:commandLink>
+	        
+	        <a:commandLink reRender="userList_security_datatable, pagingcontrols"  >
+	        	<h:graphicImage title="siguiente" style="border: 0px;"
+	      			value="/resources/icons/default/paginado/#{theme.color}/siguiente.png"/>
+	      		<a:actionparam assignTo="#{userList_security.firstResult}" 
+	      						value="#{userList_security.nextFirstResult}" />	
+	        </a:commandLink>
+	        
+	        <a:commandLink reRender="userList_security_datatable, pagingcontrols"  >
+	        	<h:graphicImage title="última página" style="border: 0px;"
+	      			value="/resources/icons/default/paginado/#{theme.color}/fin.png"/>
+	      		<a:actionparam assignTo="#{userList_security.firstResult}" 
+	      						value="#{userList_security.lastFirstResult}" />	
+	
+	        </a:commandLink>
+	        
+	        
+	    </s:div>
+	</h:form>
+     
+	<rich:modalPanel id="panelEliminar" width="290" height="125">
+		<f:facet name="header" id="panelEliminarHeader" >
+				<h:outputText  value="Eliminar usuario" />
+		</f:facet>
+		<s:div id="panelEliminarBody" >
+			<div align="left">
+				<h:graphicImage	value="/resources/icons/default/acciones/advertencia.png" /> 
+				<rich:spacer width="4px" /> 
+				<h:outputText value="Se eliminará el usuario. Al seleccionar Sí se perderán todos los datos." />
+				<br />
+				<h:outputText value="¿Desea continuar?" />
+			</div>
+			<br />
+			<div align="center">
+				<input type="button" value="Sí" style="margin-right: 4px;"
+								 onclick="Richfaces.hideModalPanel('panelEliminar')" />
+				
+				<input type="button" value="No" style="margin-left: 3px;"
+					onclick="Richfaces.hideModalPanel('panelEliminar')" />
+			</div>
+		</s:div>
+	
+	</rich:modalPanel>
+	  
+	<h:form>
+		<rich:contextMenu attached="false" id="nombrecontextmenu" submitMode="ajax">
+			<rich:menuItem value="Ordenar de mayor a menor" ajaxSingle="true"
+				icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+				action="#{userList_security.setOrder('nombre desc')}" reRender="userList_security_datatable">
+			</rich:menuItem>
+			<rich:menuItem value="Ordenar de menor a mayor" ajaxSingle="true"
+				icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+				action="#{userList_security.setOrder('nombre asc')}" reRender="userList_security_datatable">
+			</rich:menuItem>
+		</rich:contextMenu>
+		<rich:contextMenu attached="false" id="usercontextmenu" submitMode="ajax">
+			<rich:menuItem value="Ordenar de mayor a menor" ajaxSingle="true"
+				icon="/resources/icons/default/filtro/menu_l2s_sort.png"
+				action="#{userList_security.setOrder('username desc')}" reRender="userList_security_datatable">
+			</rich:menuItem>
+			<rich:menuItem value="Ordenar de menor a mayor" ajaxSingle="true"
+				icon="/resources/icons/default/filtro/menu_s2l_sort.png"
+				action="#{userList_security.setOrder('username asc')}" reRender="userList_security_datatable">
+			</rich:menuItem>
+		</rich:contextMenu>
+	</h:form>   
+    
+</ui:define>
+
+</ui:composition>
+

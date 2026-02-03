@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="distribuir_productos" width="607" height="498">
+  <node name="inicio" x="224" y="34" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="autorizar_despacho" x="216" y="172" width="149" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="autorizar_solicitudes" x="207" y="97" width="169" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="fin" x="223" y="255" width="132" height="36"/>
+</root-container>

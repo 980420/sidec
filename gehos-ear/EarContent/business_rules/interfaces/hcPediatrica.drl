@@ -1,0 +1,22 @@
+package test
+
+#list any import classes here.
+import gehos.interfaces.ris.beans.admision.EdadWraper;
+import gehos.interfaces.ris.beans.admision.ResultWrapper;
+#declare any global variables here
+
+rule "Your First Rule"
+	when
+		EdadWraper(edad <= 14)		
+		$result : ResultWrapper()
+	then 
+        $result.setFlag(true);
+end
+
+rule "Your Second Rule"
+	when
+		EdadWraper(edad > 14)			
+		$result : ResultWrapper()
+	then 
+        $result.setFlag(false);
+end

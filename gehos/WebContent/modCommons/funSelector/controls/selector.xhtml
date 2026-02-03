@@ -1,0 +1,237 @@
+<s:div   		  
+	  xmlns     ="http://www.w3.org/1999/xhtml" 
+	  xmlns:ui  ="http://java.sun.com/jsf/facelets" 
+   	  xmlns:h   ="http://java.sun.com/jsf/html" 
+      xmlns:f   ="http://java.sun.com/jsf/core" 
+      xmlns:s   ="http://jboss.com/products/seam/taglib" 
+      xmlns:rich="http://richfaces.org/rich" 
+      xmlns:a4j ="http://richfaces.org/a4j" 
+	  xmlns:c   ="http://java.sun.com/jstl/core" > 
+                    
+
+	<a4j:keepAlive beanName="funSelectorController"></a4j:keepAlive>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link href="#{facesContext.externalContext.requestContextPath}/modCommons/funSelector/styles/selector.css" rel="stylesheet" type="text/css"/>
+	
+	<script type="text/javascript">
+	   function cambia(elemento){
+	     elemento.setAttribute("class","dr-pnl rich-panel panelRes2");
+	   }
+	   function cambia2(elemento){
+	     elemento.setAttribute("class","dr-pnl rich-panel panelRes");
+	   }
+	</script> 
+	
+	<a4j:outputPanel ajaxRendered="true" >
+		<s:div id="loading_div" 
+				style="padding-top:60px;padding-bottom:60px;text-align: center; vertical-align: middle; height: 100%" 
+			    rendered="#{not funSelectorController.showForm}">
+			<h:graphicImage url="/resources/icons/default/acciones/loading_small.gif" />
+		</s:div>
+	</a4j:outputPanel>
+	
+	<a4j:form>
+		<a4j:jsFunction name="checkQueryString" ajaxSingle="true"
+						action="#{funSelectorController.checkQueryStringAndInitialize()}"
+						>
+		</a4j:jsFunction>
+	</a4j:form>
+	   
+	<a4j:form status="favstatus">
+		<a4j:jsFunction name="addFuncToFavorites" ajaxSingle="true" 
+						action="#{funSelectorController.addFavorites()}" >
+			<a4j:actionparam name="funcId" assignTo="#{funSelectorController.funcIdToAdd}" />
+			<a4j:actionparam name="modName" value="#{activeModule.activeModuleName}" 
+										   assignTo="#{funSelectorController.moduleName}" />
+		</a4j:jsFunction>
+	</a4j:form>
+	<a4j:form status="favstatus">
+		<a4j:jsFunction name="removeFuncFromFavorites" ajaxSingle="true" 
+						action="#{funSelectorController.removeFavorites()}" > 
+			<a4j:actionparam name="funcId"  assignTo="#{funSelectorController.funcIdToRemove}" />
+			<a4j:actionparam name="modName" value="#{activeModule.activeModuleName}" 
+										   assignTo="#{funSelectorController.moduleName}" />
+		</a4j:jsFunction>
+	</a4j:form>
+	
+	<script type="text/javascript">
+		function addToFavorites(img, funcId, e){
+			e.cancelBubble = true; 
+			getMouseXY(e);
+			img.src = "#{facesContext.externalContext.requestContextPath}/resources/modCommon/actionimages/favoritos.png";
+			addFuncToFavorites(funcId);
+		}
+		function removeFromFavorites(img, funcId, e){
+			e.cancelBubble = true; 
+			getMouseXY(e);
+			img.src = "#{facesContext.externalContext.requestContextPath}/resources/modCommon/actionimages/nofavoritos.png";
+			removeFuncFromFavorites(funcId);
+		}
+	</script> 
+	
+	
+	<a4j:status id="favstatus" 
+				onstart="moveToCoordinate(); Richfaces.showModalPanel('ajaxLoadingModalBox',{left:100, top:150});" 
+     			onstop="Richfaces.hideModalPanel('ajaxLoadingModalBox');"></a4j:status>
+
+	<script type="text/javascript">
+	<!--
+		function getScrollingPosition(){
+			var position = [0, 0];
+			if (typeof window.pageYOffset != 'undefined'){
+				position = [window.pageXOffset,window.pageYOffset];
+			}
+			else if (typeof document.documentElement.scrollTop != 'undefined' 
+						 && document.documentElement.scrollTop > 0){
+				position = [document.documentElement.scrollLeft, document.documentElement.scrollTop];
+			}
+			else if (typeof document.body.scrollTop != 'undefined'){
+				position = [document.body.scrollLeft,document.body.scrollTop];
+			}
+			return position;
+		}	
+		var IE = document.all?true:false;
+		var tempX = 0; var tempY = 0;	
+		function getMouseXY(e) {
+			if (IE) {
+			  tempX = event.clientX + document.body.scrollTop;
+			  tempY = event.clientY + document.body.scrollLeft;
+			} else {  
+			  var scrollpos = getScrollingPosition();
+			  tempX = e.pageX - scrollpos[0]; 
+			  tempY = e.pageY - scrollpos[1];
+			}  
+		}
+		function moveToCoordinate(){
+			document.getElementById("favsloadingdiv").style.top = (tempY - 150 - 15) + "px";
+			document.getElementById("favsloadingdiv").style.left = (tempX - 100 + 20) + "px";
+		}
+	-->	
+	</script> 
+	<script type="text/javascript">
+	<!--
+		function switchVisibility(){
+			if(document.getElementById("datagriddiv").style.visibility == "visible" ){
+				document.getElementById("datagriddiv").style.visibility = "collapse";
+				document.getElementById("minimize").src = "#{facesContext.externalContext.requestContextPath}/modCommons/funSelector/styles/maximize.png";
+			}
+			else{
+				document.getElementById("datagriddiv").style.visibility = "visible";
+				document.getElementById("minimize").src = "#{facesContext.externalContext.requestContextPath}/modCommons/funSelector/styles/minimize.png";
+			}
+		}
+	-->	
+	</script> 
+
+	<rich:modalPanel id="ajaxLoadingModalBox" minHeight="700" minWidth="900" 
+	        height="700" width="900" zindex="2000">
+	       
+	           <img id="favsloadingdiv" 
+	        	src="#{facesContext.externalContext.requestContextPath}/resources/icons/default/acciones/loading_small.gif"
+	        	style="position: absolute; top: 0px; left: 0px;" />
+	       
+	</rich:modalPanel> 
+	
+	<a4j:outputPanel ajaxRendered="true">
+		<h:form id="selector_form" rendered="#{funSelectorController.showForm}" >
+		
+			 <table cellpadding="0" cellspacing="0" width="100%" >
+			   <tr>
+                      <td valign="top" style="background:url(#{facesContext.externalContext.requestContextPath}/resources/modCommon/linkbar/corner.png) no-repeat; height: 23px; width: 2px"></td>
+                      <td class="barHeaderC" style="background:url(#{facesContext.externalContext.requestContextPath}/resources/modCommon/linkbar/headerC.png) repeat-x; height: 23px; padding-left: 3px; ">
+                      
+                       <div style="float:left;margin-top:1px;" class="fnd">
+			       		   <c:forEach items="#{funSelectorController.ancestros}" var="anc">
+					          <a  href="#{facesContext.externalContext.requestContextPath}/modCommons/funSelector/selector.gehos?moduleName=#{activeModule.activeModuleName}#{messages.signo}idFuncionalidad=#{anc.id}#{messages.signo}idancestors=#{funSelectorController.takeMyAncestors(anc.id)}" class="fnd">
+					          <img  src="#{facesContext.externalContext.requestContextPath}/resources/modCommon/linkbar/carpeta.png" style="border:0px;margin-right:3px;" align="absbottom"/>
+					          <h:outputLabel value="#{anc.label}" style="cursor:pointer;"/>
+					          <h:graphicImage value="/resources/modCommon/linkbar/direccion.png" style="border:0px;" align="absbottom" rendered="#{not funSelectorController.isLast(anc.id)}"/>
+					          </a>
+					       </c:forEach>  
+					   </div>
+                       <div align="right" style="padding-top: 6px; padding-right: 5px; cursor: pointer;">
+						   	<img style="position: relative; top: -3px; visibility: collapse"
+						   		onclick="switchVisibility(this)" id="maximize" height="17" width="20"
+						   		src="#{facesContext.externalContext.requestContextPath}/modCommons/funSelector/styles/maximize.png"/>
+						   	<img style="position: relative; top: -3px; visibility: visible"
+						   		onclick="switchVisibility(this)" id="minimize" height="17" width="20"
+						   		src="#{facesContext.externalContext.requestContextPath}/modCommons/funSelector/styles/minimize.png"/>						   	
+						</div>
+                      </td>                                   
+                      <td valign="top" style="background:url(#{facesContext.externalContext.requestContextPath}/resources/modCommon/linkbar/corner.png) no-repeat -2px 0px; height: 23px; width: 2px"></td>
+               </tr>
+             </table>			   
+			<div id="datagriddiv" style="visibility: visible;" >
+			<c:set var="percent" value="100%"></c:set>
+			<c:set var="favssize" value="#{children.size()}"></c:set>
+			<c:if test="#{favssize == 3}">
+				<c:set var="percent" value="77%"></c:set>
+         	</c:if>
+			<c:if test="#{favssize == 2}">
+				<c:set var="percent" value="54%"></c:set>
+         	</c:if>
+	        <rich:dataGrid  value="#{children}" var="fun" columns="4" captionClass="borde" rowClasses="borde" columnClasses="borde" styleClass="borde" 
+	        	width="#{percent}"  >
+	            <rich:panel styleClass="panelRes" onmousedown="cambia(this)" onmouseup="cambia2(this)"  
+		            		rendered="#{fun.url.indexOf('selector') > -1}"
+		     				onclick="document.location = '#{facesContext.externalContext.requestContextPath}/modCommons/funSelector/selector.gehos?moduleName=#{activeModule.activeModuleName}#{messages.signo}idFuncionalidad=#{fun.id}#{messages.signo}idancestors=#{funSelectorController.listaAncestros}#{fun.id}a'">
+		           	<div style="float: right;">
+	            		<h:graphicImage onclick="addToFavorites(this, '#{fun.id}', event)" title="#{messages.afavorito}"
+		            		style="opacity: 0.3;" 
+		            		url="/resources/modCommon/actionimages/nofavoritos.png" 
+		            		rendered="#{funSelectorController.isNotAlreadyAFavorite(fun, identity.username)}">
+		            		<rich:effect event="onmouseover" type="Opacity" params="duration:0.3, from:0.2, to:1.0" />
+	        				<rich:effect event="onmouseout"  type="Opacity" params="duration:0.3, from:1.0, to:0.2" />
+		            	</h:graphicImage>
+	            		<h:graphicImage onclick="removeFromFavorites(this, '#{fun.id}', event)" title="#{messages.tit_quitarFav_com}"
+		            		style="opacity: 0.4;" 
+		            		url="/resources/modCommon/actionimages/favoritos.png" 
+		            		rendered="#{not funSelectorController.isNotAlreadyAFavorite(fun, identity.username)}">
+		            		<rich:effect event="onmouseover" type="Opacity" params="duration:0.3, from:0.4, to:1.0" />
+	        				<rich:effect event="onmouseout"  type="Opacity" params="duration:0.3, from:1.0, to:0.4" />
+		            	</h:graphicImage>
+		            </div>
+		            <div align="center" style="text-align: center; padding-left: 16px;">
+		                <h:graphicImage value="/resources/funcionalidadesIcons/#{funSelectorController.iconsContainer(activeModule.activeModule).nombre}/#{fun.imagen}" style="border:0px;"/>
+		            </div>
+	            	<div style="width:100px; text-align: center;" class="sele">
+	            		<h:outputLabel value="#{fun.label}"/>
+	            	</div>
+	            </rich:panel>
+	            <rich:panel styleClass="panelRes" onmousedown="cambia(this)" onmouseup="cambia2(this)"  
+		            		rendered="#{not (fun.url.indexOf('selector') > -1)}" 
+		            		onclick="document.location = '#{facesContext.externalContext.requestContextPath}#{menuBuilder.processUrl(fun.url)}?moduleName=#{activeModule.activeModuleName}#{messages.signo}idFuncionalidad=#{fun.id}#{messages.signo}idancestors=#{funSelectorController.listaAncestros}#{fun.id}a'">
+		           	<div style="float: right;">
+	            		<h:graphicImage onclick="addToFavorites(this, '#{fun.id}', event)" title="#{messages.afavorito}"
+		            		style="opacity: 0.3;" 
+		            		url="/resources/modCommon/actionimages/nofavoritos.png" 
+		            		rendered="#{funSelectorController.isNotAlreadyAFavorite(fun, identity.username)}">
+		            		<rich:effect event="onmouseover" type="Opacity" params="duration:0.3, from:0.2, to:1.0" />
+	        				<rich:effect event="onmouseout"  type="Opacity" params="duration:0.3, from:1.0, to:0.2" />
+		            	</h:graphicImage>
+	            		<h:graphicImage onclick="removeFromFavorites(this, '#{fun.id}', event)" title="#{messages.tit_quitarFav_com}"
+		            		style="opacity: 0.4;" 
+		            		url="/resources/modCommon/actionimages/favoritos.png" 
+		            		rendered="#{not funSelectorController.isNotAlreadyAFavorite(fun, identity.username)}">
+		            		<rich:effect event="onmouseover" type="Opacity" params="duration:0.3, from:0.4, to:1.0" />
+	        				<rich:effect event="onmouseout"  type="Opacity" params="duration:0.3, from:1.0, to:0.4" />
+		            	</h:graphicImage>
+		            </div>
+		            <div align="center" style="text-align: center; padding-left: 16px;">
+		                <h:graphicImage value="/resources/funcionalidadesIcons/#{funSelectorController.iconsContainer(activeModule.activeModule).nombre}/#{fun.imagen}" style="border:0px;"/>
+		            </div>
+	            	<div style="width:100px; text-align: center;" class="sele">
+	            		<h:outputLabel value="#{fun.label}"/>
+	            	</div>
+	            </rich:panel>
+	        </rich:dataGrid>
+	        </div>
+	       
+		 </h:form> 
+	</a4j:outputPanel>
+	
+	<script type="text/javascript">checkQueryString()</script> 
+
+	
+	
+</s:div >

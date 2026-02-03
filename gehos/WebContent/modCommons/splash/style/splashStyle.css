@@ -1,0 +1,52 @@
+@charset "utf-8";
+html
+{
+padding:0px !important;
+height:100%;
+width:100%;
+}
+body
+{
+	background:url(../images/back.png) repeat-x;
+	background-color:#083365;
+	margin:0px;
+	height:100%;
+	width:100%;
+}
+#content
+{
+	background-image:url(../images/manto.png);
+	height:100%;
+	width:100%;
+}
+#splash {
+	height:273px;
+	width:476px;
+	overflow:hidden;
+	background:url(../images/splash.png) no-repeat;
+	position: absolute;
+    left: 50%;
+	top: 50%;
+
+	margin-top: -136px;
+	margin-left: -238px;
+ 
+	
+}
+#effect
+{
+	background:url(../images/effect.png) repeat-x center center;
+	
+}
+#copyr
+{
+	position:relative;
+	top:230px;
+	height:10px;
+	margin-right:50px;
+	color:#565d56;
+ font-family: Verdana, Arial, sans-serif;
+	font-size:9px;
+	left:30px;}
+	
+

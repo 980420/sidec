@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<action execute="#{entidadSistemaCrearControlador.begin()}" />
+	
+	<param name="entidadId" />
+	
+	<navigation from-action="#{entidadSistemaCrearControlador.crear()}">
+	<rule if-outcome="gotodetails">
+		<redirect
+			view-id="/modConfiguracion/management/gestionarEntidadesSistema/VerDetallesEntidadSistema.xhtml">
+				<param name="entidadId" value="#{entidadSistemaCrearControlador.entidad.id}" />			  
+				<param name="from" value="crear" />
+		</redirect>		
+		</rule>
+	</navigation>
+
+	<navigation from-action="cancelar">
+		<redirect
+			view-id="/modConfiguracion/management/gestionarEntidadesSistema/SeleccionarEntidadSistema.xhtml">
+			<param name="entidadId" value="#{entidadId}" />
+		</redirect>
+		<end-conversation before-redirect="true" />
+	</navigation>
+
+	<navigation from-action="#{entidadSistemaCrearControlador.subirDatos()}">
+		<rule if-outcome="tabEstablecimientos">
+			<redirect
+				view-id="/modConfiguracion/management/establecimientosAreaInfluenciaHospital/BuscarEstablecimientoAreaInfluenciaHospital.gehos">
+				<param name="from" value="crear" />
+				<param name="entidadId" value="#{entidadId}" />
+			</redirect>
+		</rule>
+		<rule if-outcome="tabAsignaciones">
+			<redirect
+				view-id="/modConfiguracion/management/gestionarAsignacionesFinancieras/CrearAsignacionesFinancieras.xhtml">
+				<param name="from" value="crear" />
+				<param name="entidadId" value="#{entidadId}" />
+			</redirect>
+		</rule>
+		<rule if-outcome="tabPartidas">
+			<redirect
+				view-id="/modConfiguracion/management/gestionarPartidasPresupuestarias/CrearPartidasPresupuestarias.xhtml">
+				<param name="from" value="crear" />
+				<param name="entidadId" value="#{entidadId}" />
+			</redirect>
+		</rule>
+		<rule if-outcome="tabActividad">
+			<redirect
+				view-id="/modConfiguracion/management/gestionarActividadesInvestigacionDocencia/BuscarActividadesInvestigacionDocencia.xhtml">
+				<param name="from" value="crear" />
+				<param name="entidadId" value="#{entidadId}" />
+			</redirect>
+		</rule>
+	</navigation>
+
+	<navigation
+		from-action="#{entidadSistemaCrearControlador.setPartidaPresupuestaria(partida)}">
+		<redirect
+			view-id="/modConfiguracion/management/gestionarPartidasPresupuestarias/ModificarPartidasPresupuestarias.xhtml">
+			<param name="from" value="crear" />
+			<param name="entidadId" value="#{entidadId}" />
+		</redirect>
+	</navigation>
+
+	   <navigation from-action="#{entidadSistemaCrearControlador.setAsingacionFinanciera(asignacion)}">		
+			<redirect view-id="/modConfiguracion/management/gestionarAsignacionesFinancieras/ModificarAsignacionesFinancieras.xhtml">
+				<param name="from" value="crear"/>				
+				<param name="entidadId" value="#{entidadId}" />
+			</redirect> 					
+	  </navigation>
+</page>

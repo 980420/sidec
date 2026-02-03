@@ -1,0 +1,315 @@
+/*General para las tablas*/
+.Tabla {
+	border: 0px;
+	vertical-align: top;
+	text-align: left;
+	padding: 0px;
+	spacing: 0px;
+}
+.noavailable {
+	color: red !important;
+	text-decoration: line-through;
+}
+/*para los bordes rojos*/
+.inputErrors {
+    border: 1px solid red;
+}
+.inputError {
+    border: 1px solid red;
+}
+/*inputext del paginado*/
+.paginadoLabel {
+	width: 28px;
+	height: 12px;
+	vertical-align: top;
+	margin: 0px;
+	padding: 0px;
+	margin-top: 1px;
+	text-align: center;
+}
+
+.normalText {
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 10px !important;
+	color: #000000 !important;
+	white-space: nowrap;
+}
+.inputError {
+    border: 1px solid red;
+}
+/*Para el margen*/
+.margenSupIzq {
+	padding-right: 7px;
+	padding-top: 11px;
+	padding-bottom: 8px;
+	padding-left: 8px;
+}
+
+.espacio_vertical {
+	padding-bottom: 11px;
+}
+
+.espacio_corto_h {
+	padding-right: 6px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+}
+
+.espacio_corto_v {
+	padding-bottom: 8px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-left: 0px;
+}
+
+/*
+pauta del espacio horizontal entre  un label y otro
+*/
+.espacio_mediano {
+	padding-right: 9px;
+	padding-bottom: 0px;
+	padding-top: 0px;
+	padding-left: 0px;
+}
+
+.espacio_final {
+	padding-bottom: 8px;
+}
+
+/*
+pauta para el espacio entre los grupos de componentes
+*/
+.espacio_grande {
+	padding-right: 25px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+}
+
+/*Para poner un espacio pequenno entre filas
+recomendado para cuando se pone una etiqueta
+y debajo un componente de entrada de datos
+*/
+.filSepPeq {
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 8px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+.filSepPeq td {
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+/*Para poner un espacio despues de una etiqueta
+en un par etiqueta-componente donde cada uno esta
+en una columna 
+*/
+.colSepGran {
+	padding-right: 25px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+/*Para poner un espacio despues de un
+componente que a continuacion lleva un par
+etiqueta-componente
+*/
+.colSepPeq {
+	padding-right: 8px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+.colSepImg {
+	padding-right: 6px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin: 0px;
+	vertical-align: bottom;
+	spacing: 0px;
+}
+
+/*Para poner un espacio grande entre filas
+*/
+.filSepGran td {
+	padding-bottom: 8px;
+	vertical-align: top;
+}
+
+.filSepGranRA td {
+	/*padding-bottom:10px; inicialmente yo lo cambie por 8*/
+	padding-bottom: 8px;
+	vertical-align: top;
+}
+/*Para alinear a la derecha, �til
+en los facet footer 
+*/
+.alineacionDerecha {
+	text-align: right;
+	align: right;
+}
+
+.alineacionCentrada {
+	text-align: center;
+	align: center;
+}
+
+.panel-reporte {
+	padding: 0px;
+	margin: 0px;
+	spacing: 0px;
+}
+
+.cuerpo-panel-reporte {
+	padding: 0px;
+	margin: 0px;
+	spacing: 0px;
+	border: 0px;
+}
+
+.rich-calendar-button {
+	width: 16px;
+	height: 16px;
+}
+
+.rich-calendar-input {
+	margin: 0px 0px 0px 0px;
+	border: 0px 0px 0px 0px;
+	spacing: 0px 0px 0px 0px;
+	width: 132px !important;
+}
+
+.anchoColHora {
+	width: 60px;
+}
+
+.selectOneRadio {
+	padding: 0px;
+	margin: 0px;
+	spacing: 0px;
+	border: 0px;
+}
+
+/*
+Para eliminar los espacios del Modal panel
+*/
+.rich-modalpanel {
+	padding: 0px;
+	margin: 0px;
+	spacing: 0px;
+}
+
+.rich-mpnl-body {
+	padding: 0px;
+	margin: 0px;
+	spacing: 0px;
+}
+
+.sinEspaciosAlrededor {
+	margin: 0px;
+	padding: 0px;
+}
+
+.errorLabel {
+	color: red;
+	cursor: pointer !important;
+}
+
+.inputText {
+	width: 150px;
+}
+
+.tbx {
+	width: 148px;
+}
+
+.cbx {
+	width: 152px;
+	height: 18px;
+}
+
+.functpanelbody {
+	padding: 0px;
+}
+
+.functpanelbody2 {
+	padding: 5px;
+}
+
+.iconcell,.labelcell {
+	padding: 0px;
+	border: 1px;
+}
+
+.strech {
+	width: 100%;
+	padding-left: 0px !important;
+	padding-top: 1px;
+	padding-bottom: 1px;
+}
+
+.nostrech {
+	width: 1%;
+	padding-left: 0px !important;
+	padding-right: 0px !important;
+}
+
+.rich-message-label {
+	font-size: 10px;
+	font-family: "Verdana";
+}
+
+.custom-error {
+	border: 1px solid #FFCC00;
+	padding: 5px;
+	background-color: #F0F8FF;
+	font-size: 10px;
+	font-family: "Verdana";
+	position: relative;
+	left: 5px;
+	top: 5px;
+	margin-right: 10px;
+}
+
+.message {
+	background-color: #f0f8ff;
+	border: 1px solid #ffcc00;
+	font-family: "Verdana";
+	font-size: 10px;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	padding: 5px;
+}
+/**Matching system-style fieldset**/
+fieldset {
+	border: 1px solid #9D9A9A;
+	padding: 10px;
+}
+
+.dr-mpnl-mask-div {
+	background-color: rgba(6, 6, 6, 0.36);
+}
+
+.dr-mpnl-panel {
+	z-index: 100;
+}

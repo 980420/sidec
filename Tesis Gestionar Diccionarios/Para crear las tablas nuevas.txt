@@ -1,0 +1,10 @@
+1- crear una secuencia nueva en el esquema con esto:
+CREATE SEQUENCE ensayo.causa_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+2-Crear una nueva tabla y cambiar el valor del id por default por este: id bigint NOT NULL DEFAULT serial_gen('estandares.diccionarios_id_seq'::character varying)
+
+TENER EN CUENTA QUE LOS NOMBRES TIENEN QUE COINCIDIR

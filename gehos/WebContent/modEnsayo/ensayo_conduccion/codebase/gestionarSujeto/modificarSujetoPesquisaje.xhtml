@@ -1,0 +1,58 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" xmlns:a4j="http://richfaces.org/a4j">
+
+	<script type="text/javascript">setContentTitle('#{messages.modificarSujeto}')</script>
+	<script type="text/javascript" language="javascript"
+		src="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/js/javascript.js"></script>
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css"
+		rel="stylesheet" type="text/css" />
+	<rich:messages styleClass="message" globalOnly="true">
+	</rich:messages>
+	<h:form id="idForm" enctype="multipart/form-data">
+
+
+		<s:div>
+			<s:validateAll>
+				<a4j:outputPanel ajaxRendered="true" id="errorOutputPanel">
+					<s:div style="height:35px;"
+						rendered="#{facesMessages.getCurrentMessagesForControl('idForm').size() > 0 }">
+						<div class="custom-error">
+							<rich:message for="idForm"></rich:message>
+						</div>
+					</s:div>
+				</a4j:outputPanel>
+
+				<s:div>
+					<ui:include
+						src="/modEnsayo/ensayo_conduccion/codebase/plantillas/modificarSujetoPesquisaje.xhtml">
+						<ui:param name="controlador" value="#{modificarSujetoPesquisaje}" />
+						<ui:param name="validator" value="#{validations_sujeto}" />
+					</ui:include>
+
+				</s:div>
+
+				<div align="right">
+					<br></br>
+					<h:commandButton id="aceptarr" value="#{messages.aceptar}"
+						action="#{modificarSujetoPesquisaje.persistir()}" rendered="true" />
+					<rich:spacer width="10" />
+					<h:commandButton value="#{messages.cancelar}" style="margin:0px;"
+						id="cancelar" action="#{modificarSujetoPesquisaje.salir()}" immediate="true">
+					</h:commandButton>
+				</div>
+			</s:validateAll>
+		</s:div>
+
+	</h:form>
+	<ui:include
+	 src="/modEnsayo/ensayo_conduccion/codebase/plantillas/AdvertenciaCambiarEstadoInclusion.xhtml">
+	 <ui:param name="controlador" value="#{modificarSujetoPesquisaje}" />
+	</ui:include>
+</s:div>
+

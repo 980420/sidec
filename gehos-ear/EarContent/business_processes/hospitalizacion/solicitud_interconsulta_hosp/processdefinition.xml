@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition  name="solicitud_interconsulta_hosp">
+
+
+	<start-state name="inicio">
+		<transition to="realizar_asignacion"></transition>
+	</start-state>
+
+
+	<task-node name="asignar_solicitud_interconsulta_hosp">
+		<task name="asignar_solicitud_interconsulta_hosp">
+			<description>
+				Servicio: #{solInterconContextHosp.solicitudInterconsulta.servicioInEntidadByIdServicioSolicitante.servicio.nombre}
+			</description>
+			<assignment pooled-actors="Jefe de Servicio #{solInterconContextHosp.solicitudInterconsulta.servicioInEntidadByIdSerivicioSolicitado.id}"></assignment>
+		</task>
+		<event type="node-enter">
+			<action name="Enviar notificación" class="gehos.hospitalizacion.session.interconsulta.action.AsignarInterconsultaTaskHospActionHandler" config-type="bean"></action>
+		</event>
+		<transition to="consultar_asignacion_solicitud_interconsulta_hosp"></transition>
+	</task-node>
+
+	<task-node name="consultar_asignacion_solicitud_interconsulta_hosp">
+		<task name="consultar_asignacion_solicitud_interconsulta_hosp">
+			<description>
+				Servicio: #{solInterconContextHosp.solicitudInterconsulta.servicioInEntidadByIdServicioSolicitante.servicio.nombre}
+			</description>
+			<assignment actor-id="#{solInterconContextHosp.medicoAsigInterc}"/>
+		</task>
+		<transition to="crear_hoja_interconsulta_hosp" name="aceptar"></transition>
+		<transition to="asignar_solicitud_interconsulta_hosp" name="no_aceptar"></transition>
+	</task-node>
+
+	<task-node name="crear_hoja_interconsulta_hosp">
+		<task name="crear_hoja_interconsulta_hosp">
+			<description>
+				Servicio: #{solInterconContextHosp.solicitudInterconsulta.servicioInEntidadByIdServicioSolicitante.servicio.nombre}, No.H.C.: #{solInterconContextHosp.solicitudInterconsulta.hojaFrontal.numeroHc}
+			</description>
+			<assignment actor-id="#{solInterconContextHosp.medicoAsigInterc}"/>
+		</task>
+		<transition to="fin"></transition>
+	</task-node>
+
+	<decision name="realizar_asignacion">
+		<handler class="org.jboss.seam.drools.DroolsDecisionHandler">
+			<workingMemoryName>solicitudInterconsultaHospWorkingMemory</workingMemoryName>
+			<assertObjects>
+				<element>#{solInterconContextHosp.solicitudInterconsulta.emergencia}</element>
+			</assertObjects>
+		</handler>
+		<transition to="asignar_solicitud_interconsulta_hosp" name="si"></transition>
+		<transition to="aceptar_solicitud_interconsulta_hosp" name="no"></transition>
+	</decision>
+
+	<task-node name="aceptar_solicitud_interconsulta_hosp">
+		<task name="aceptar_solicitud_interconsulta_hosp">
+			<description>
+				Servicio: #{solInterconContextHosp.solicitudInterconsulta.servicioInEntidadByIdServicioSolicitante.servicio.nombre}
+			</description>
+			<assignment pooled-actors="Médico de hospitalización #{solInterconContextHosp.solicitudInterconsulta.servicioInEntidadByIdSerivicioSolicitado.id}"></assignment>
+		</task>
+		<event type="node-enter">
+			<action class="gehos.hospitalizacion.session.interconsulta.action.AceptarInterconsultaMedicoTaskHospHandler" name="Aceptar solicitud interconsulta" config-type="bean"></action>
+		</event>
+		<transition to="crear_hoja_interconsulta_hosp"></transition>
+	</task-node>
+
+
+	<end-state name="fin" />
+
+
+</process-definition>

@@ -1,0 +1,292 @@
+<s:div
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">	
+	<script type="text/javascript">
+		//<![CDATA[
+	    function hideErrorSpans() {
+	        var errorSpans = document.getElementsByClassName('errorSpan');
+	        for(var i = 0; i < errorSpans.length; i++) {
+	            errorSpans[i].style.display = 'none';
+	        }
+	    }
+	//]]>
+	  //<![CDATA[
+	    function validarCamposVacios() {
+	        var campos = ['formform:codigo','formform:richcbRuleExec']; // Añade aquí los IDs de todos los campos de entrada que quieres verificar
+	        for(var i = 0; i < campos.length; i++) {
+	            var input = document.getElementById(campos[i]);
+	            if(input.value == '') {
+	                input.style.border = '1px solid red';
+	            } else {
+	                input.style.border = '';
+	            }
+	        }
+	    }
+	 //]]>
+		
+		</script>
+	
+	<rich:messages globalOnly="true" styleClass="message"
+			id="globalMessage" ajaxRendered="true" />
+		<a4j:outputPanel id="opRuleCreation">
+		<!-- This jsFunction was inside the TestVariable template but dont work on firefox because its parent is not found, in Chrome worked! -->
+		<a4j:form>
+			<a4j:jsFunction name="pushFileInfo" ajaxSingle="true" >
+					<a4j:actionparam name="fileval" assignTo="#{ReglasControlador.fileValue}" />
+					<a4j:actionparam name="filevarid" assignTo="#{ReglasControlador.fileVariableId}" />			
+			</a4j:jsFunction>
+		</a4j:form>		
+		<a4j:form id="formform">
+		<s:div style="height:400px;overflow:auto;">
+		<rich:spacer styleClass="espacio_vertical"></rich:spacer>
+		<a4j:outputPanel id="opRuleCreationMeta">
+		
+			<fieldset>
+						<legend>Metadatos</legend>
+			<table cellpadding="0px" cellspacing="0px" border="0px"
+				id="simplesearch">
+				<tr>
+					<td>Nombre:<span class="errorSpan" style="color:red;">*</span><rich:message for="codigo"
+													showDetail="false" tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('codigo').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <h:inputText id="codigo" tabindex="1" maxlength="30"
+							value="#{ReglasControlador.reglaNombre}" styleClass="inputTextWidth" required="true"/></td>
+					<td><rich:spacer width="25px" onblur="if(this.value == '') {this.style.border = '1px solid red';} else {this.style.border = '';}"/></td>
+					<td>Ejecución:<span class="errorSpan" style="color:red;">*</span><rich:message for="richcbRuleExec"
+													showDetail="false" tooltip="true" style="color:red;">
+													<f:facet name="errorMarker">
+														<h:outputText value="*"
+															title="#{facesMessages.getCurrentMessagesForControl('richcbRuleExec').get(0).getDetail()}" />
+													</f:facet>
+												</rich:message><br /> <rich:comboBox styleClass="inputText"
+							suggestionValues="#{ReglasControlador.ejecucionesRegla}" required="true" id="richcbRuleExec"
+							value="#{ReglasControlador.reglaEjecucion}" enableManualInput="false" onblur="if(this.value == '') {this.style.border = '1px solid red';} else {this.style.border = '';}">
+							<!-- <a4j:support event="onselect" reRender="opMess"
+								ajaxSingle="true" limitToList="true"></a4j:support> -->
+						</rich:comboBox>
+					</td>
+					<td><rich:spacer width="25px" /></td>
+
+					
+					<td><rich:spacer width="25px" /></td>
+					
+				</tr>
+				<tr style="height: 3px;" />
+
+				
+
+			</table>
+			</fieldset>
+			
+			<rich:spacer styleClass="espacio_vertical"></rich:spacer>
+		</a4j:outputPanel>
+			<table cellpadding="0px" cellspacing="0px" border="0px" width="100%">
+				<tr>
+					<td>
+					<fieldset>
+						<legend>Condiciones</legend>						
+						<ui:include src="/modEnsayo/ensayo_disenno/codebase/reglas/conditionstree/conditions.xhtml">						
+							<ui:param name="evalAction" value="#{yEL.GetELMethodCall(ReglasControlador,'Eval',null)}" />							
+							<ui:param name="if"   value="#{ReglasControlador.ifPart}" />
+							<ui:param name="then" value="#{ReglasControlador.thenPart}" />
+							<ui:param name="else" value="#{ReglasControlador.elsePart}" />
+						</ui:include>											
+					</fieldset>						
+					</td>
+				</tr>
+
+			</table>
+			<rich:spacer styleClass="espacio_vertical"></rich:spacer>
+			<a4j:outputPanel id="opRuleCreationActions" ajaxRendered="true">
+			<fieldset>
+				<legend>Acciones</legend>
+				<rich:dataTable id="dtAvailActions" 
+					rendered="#{not empty ReglasControlador.actionsAvailable}"
+					width="100%" value="#{ReglasControlador.actionsAvailable}" columnsWidth="24px"
+					var="act">
+					<f:facet name="header">
+						<h:outputLabel value="Listado de acciones disponibles" />
+					</f:facet>
+					
+					<rich:column style="height:24px">
+						<f:facet name="header">
+							
+						</f:facet>
+						<h:graphicImage style="width:24px" value="/resources/modEnsayo/img/actions/#{act.name}.png" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputLabel value="Acción" />
+						</f:facet>
+						<h:outputLabel value="#{act.label}" />
+					</rich:column>
+
+					<rich:column>
+						<f:facet name="header">
+							<h:outputLabel value="Descripción" />
+						</f:facet>
+						<h:outputLabel value="#{act.description}" />
+					</rich:column>
+
+					<rich:column width="1px">
+						<div align="center">
+							<a4j:commandLink title="Configurar acción"
+								reRender="ooo" ajaxSingle="true"
+								action="#{ReglasControlador.CreateNewAction(act)}">
+								<h:graphicImage value="/resources/modEnsayo/img/visible.png" />
+							</a4j:commandLink>
+						</div>
+					</rich:column>
+
+
+				</rich:dataTable>
+
+				
+				<a4j:outputPanel id="ooo"
+					rendered="#{ReglasControlador.actionSelected != null}">
+					<rich:spacer styleClass="espacio_vertical"></rich:spacer>
+					<a4j:region>
+					<fieldset>
+						<legend>Configuración de la acción
+							[#{ReglasControlador.actionSelected.label}]</legend>
+							
+						    <ui:include src="/modEnsayo/ensayo_disenno/codebase/reglas/dependencies/ruleActionButtons.xhtml">
+						    	<ui:param name="position" value="bottom"></ui:param>
+							</ui:include>						
+							
+							<div>
+								<h:selectBooleanCheckbox value="#{ReglasControlador.actionSelected.executeIfRuleTrue}">
+									<a4j:support event="onchange" ajaxSingle="true" limitToList="true"></a4j:support>
+								</h:selectBooleanCheckbox> 							
+								<div style="vertical-align: 3px;display: inline;">Ejecutar acción si se cumplen las condiciones</div>
+							</div>
+							<ui:include src="#{ReglasControlador.actionSelected.viewPath}">
+								<ui:param name="action"
+									value="#{ReglasControlador.actionSelected}" />
+							</ui:include>
+						
+						<s:div rendered="#{ReglasControlador.actionSelected.viewPath == null}">
+							Mensaje para el desarrollador: esta accion no tiene vista asociada
+						</s:div>						
+						<rich:spacer height="25px" />
+						<ui:include src="/modEnsayo/ensayo_disenno/codebase/reglas/dependencies/ruleActionButtons.xhtml">
+							<ui:param name="position" value="top"></ui:param>
+						</ui:include>
+						
+					</fieldset>
+					</a4j:region>
+				</a4j:outputPanel>
+				<rich:spacer styleClass="espacio_vertical"></rich:spacer>
+				<a4j:outputPanel id="opConfActions" rendered="#{not empty ReglasControlador.actionsConfigured}">
+				<rich:dataTable id="dtConfActions"
+					rendered="#{not empty ReglasControlador.actionsConfigured}" value="#{ReglasControlador.actionsConfigured}" 
+					width="100%" columnsWidth="24px"
+					var="act">
+					<f:facet name="header">
+						<h:outputLabel value="Listado de acciones configuradas" />
+					</f:facet>
+					<rich:column>
+						<f:facet name="header">
+							
+						</f:facet>
+						<h:graphicImage style="width:24px" value="/resources/modEnsayo/img/actions/#{act.name}.png" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputLabel value="Acción" />
+						</f:facet>
+						<h:outputLabel value="#{act.label}" />
+					</rich:column>
+
+					<rich:column>
+						<f:facet name="header">
+							<h:outputLabel value="Se ejecuta" />
+						</f:facet>
+						<h:outputLabel value="Si #{act.executeIfRuleTrue ? '': 'no '}se cumplen condiciones" />
+					</rich:column>
+					
+					<rich:column>
+						<f:facet name="header">
+							<h:outputLabel value="Resumen" />
+						</f:facet>
+						<h:outputLabel value="#{act.Resume()}" />
+					</rich:column>
+					<rich:column width="1px">
+									<div align="center">
+										<a4j:commandLink title="#{messages.invertir}" ajaxSingle="true" rendered="#{act.OppositeAction()!=null}"
+											action="#{ReglasControlador.InvertRule(act)}"
+											reRender="opConfActions">											
+										<h:graphicImage value="/resources/modEnsayo/img/iconos/invert-action.png" width="17"/>
+										</a4j:commandLink>
+									</div>
+								</rich:column>
+					<rich:column width="1px">
+						<div align="center">
+							<a4j:commandLink title="#{messages.modificar}"
+								reRender="ooo" ajaxSingle="true"
+								action="#{ReglasControlador.setActionSelected(act)}">
+								<h:graphicImage value="/resources/modEnsayo/img/modificar.png" />
+							</a4j:commandLink>
+						</div>
+					</rich:column>
+<rich:column width="1px">
+									<div align="center">
+										<a4j:commandButton title="#{messages.eliminar}" ajaxSingle="true"
+											action="#{ReglasControlador.RemoveAction(act)}"
+											image="/resources/icons/default/acciones/eliminar.png" reRender="opConfActions">											
+										</a4j:commandButton>
+									</div>
+								</rich:column>										
+								
+
+				</rich:dataTable>
+				</a4j:outputPanel>
+			</fieldset>
+			</a4j:outputPanel>
+			
+			</s:div>
+			<rich:spacer height="2px"></rich:spacer>
+			<s:div id="buttons">
+				<div align="right"
+					style="background: #BCBCBC; box-shadow: 0px -1px 3px #747474;">
+					<table cellpadding="0px" cellspacing="0px" border="0px">
+						<tr style="text-align: right">
+							<td colspan="9"><a4j:commandButton value="Aceptar"
+									tabindex="3" styleClass="standard-button"
+									action="#{ReglasControlador.adicionarNuevaRegla()}"
+									data="#{ReglasControlador.ruleAdded}"
+									oncomplete="closeModalIfSuccess(data);#{rich:component('cristalR')}.hide()" reRender="busquedas"
+									onclick="hideErrorSpans();validarCamposVacios();#{rich:component('cristalR')}.show()">
+								</a4j:commandButton> <a4j:commandButton value="Cancelar" styleClass="standard-button"
+									onclick="Richfaces.hideModalPanel('ruleCreation'); hideCristalGlobal(); return false;" tabindex="3">
+								</a4j:commandButton></td>
+						</tr>
+					</table>
+				</div>
+			</s:div>
+		</a4j:form>	
+		</a4j:outputPanel>
+		<a4j:form>
+			<a4j:jsFunction name="clearRuleAdded" action="#{ReglasControlador.setRuleAdded('')}">
+			</a4j:jsFunction>
+		</a4j:form>
+
+	<script>
+			function closeModalIfSuccess(response)
+			{
+				if(response=="yes")
+				{	
+					Richfaces.hideModalPanel('ruleCreation');
+					clearRuleAdded();
+				}
+			}
+		</script>
+</s:div>

@@ -1,0 +1,369 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+<ui:composition>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">setContentTitle('#{messages.lbl_titulo_ens}')</script>
+	<link rel='stylesheet' href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css' type='text/css' />
+<!-- Estilo para los mensajes -->
+
+		<style type="text/css"> 
+			.functpanelbody {
+				padding: 0px;
+			}
+			
+			.functpanelbody2 {
+				padding: 5px;
+			}
+			
+			.iconcell,.labelcell {
+				padding: 0px;
+				border: 1px;
+			}
+			
+			.strech {
+				width: 100%;
+				padding-left: 0px !important;
+				padding-top: 1px;
+				padding-bottom: 1px;
+			}
+			
+			.nostrech {
+				width: 1%;
+				padding-left: 0px !important;
+				padding-right: 0px !important;
+			}
+			
+			.rich-message-label {
+				font-size: 10px;
+				font-family: "Verdana";
+			}
+			
+			.custom-error {
+				border: 1px solid #FFCC00;
+				padding: 5px;
+				background-color: #F0F8FF;
+				font-size: 10px;
+				font-family: "Verdana";
+				position: relative;
+				left: 5px;
+				top: 5px;
+				margin-right: 10px;
+			}
+			</style>
+<script type="text/javascript">					
+
+		//funcion para cambiar el tamano de la lista del combobox
+		function cambiarStyle(id,size)
+		{
+		var size2=''+size+'px';
+		var n=new String(id);
+		var idN=n.replace('combobox','list');
+		
+		var com=document.getElementById(idN);
+		var parent=com.parentNode;
+		var gran=parent.parentNode;
+		parent.style.width=size2;
+		gran.style.width=size2;
+		com.style.width=size2;
+		
+		} 
+
+		var curDtN = new Date();
+		 var calDtN=null;
+
+		 function previousDate(date){
+			calDtN = date;
+		 }
+
+		 function disablementFunction(day){
+			 if(calDtN == null){
+				 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+						return true; 
+					else 
+						return false; 
+			 }
+			 else {
+				 if (calDtN.getTime() - day.date.getTime() &#62;= 0 ) 
+						return true; 
+					else 
+						return false;
+			 }					 
+		 }
+
+		 function disabledClassesProv(day){
+			 if(calDtN == null){
+				 if (curDtN.getTime() - day.date.getTime() &#62; 0) 
+						return ''; 
+					else 
+						return 'noavailable'; 
+			 }
+			 else {
+				 if (calDtN.getTime() - day.date.getTime() &#62;= 0) 
+						return ''; 
+					else 
+						return 'noavailable';
+			 }				
+		 }
+
+		 function resetSecondDate(first,second) {
+			 var firstDate = first.getSelectedDate().getTime();
+			 var secondDate = second.getSelectedDate().getTime();
+
+			 if(firstDate - secondDate &#62; 0)
+				 second.resetSelectedDate();
+		 }
+ 		 
+		 function disablementFunctionPreviousEx(day){
+			if(calDtN == null){
+				if (curDtN.getTime() - day.date.getTime() &#62; 0) return true; else return false;
+			}
+			if ((curDtN.getTime() - day.date.getTime() &#62; 0) &#38;&#38; (calDtN.getTime() - day.date.getTime() &#60;= 0)){
+				return true;
+			}
+			else 
+				return false;
+		  }
+
+		function disabledClassesProvPreviousEx(day){
+			if(calDtN == null){
+				if (curDtN.getTime() - day.date.getTime() &#60; 0)
+					return 'noavailable';
+				else 
+					return '';
+			}
+			if ((curDtN.getTime() - day.date.getTime() &#60; 0) || (calDtN.getTime() - day.date.getTime() &#62; 0))
+				return 'noavailable';
+			else 
+				return '';
+		}
+	</script>
+	
+	<h:form id="busquedasForm">
+		<a4j:outputPanel ajaxRendered="true">
+			<s:div
+				rendered="#{facesMessages.getCurrentMessagesForControl('listOfGruposujetos').size() > 0 }"
+				styleClass="custom-error">
+				<div><rich:message for="listOfGruposujetos" /></div>
+			</s:div>
+		</a4j:outputPanel>
+
+		<rich:simpleTogglePanel switchType="client" style="margin-top:5px;" bodyClass="simpleTogPanel">
+			<f:facet name="header">
+				<h:outputLabel value="#{messages.lbl_criterios_ens}" style="cursor:pointer;"/>
+			</f:facet>
+			<a4j:outputPanel id="busquedas">
+				<a4j:outputPanel>
+					<table cellpadding="0" cellspacing="0" border="0">
+						<tr>
+							<td>
+								<h:outputLabel styleClass='normalText' value='#{messages.lbl_nombreGrupo_ens}:' />
+								<br/>
+								<h:inputText style='width:148px;' value='#{cronogramasMSCutomList_ensayo.nombreGrupo}' />
+							</td>
+							<td>
+								<rich:spacer width="25px" />
+							</td>
+							<td>
+								<h:outputLabel styleClass='normalText' value='#{messages.lbl_desde_ens}:' />
+								<br/>
+								<rich:calendar datePattern='dd/MM/yyyy' tabindex="12"
+									value='#{cronogramasMSCutomList_ensayo.desde}' 
+									id='fechaDesde' 
+									isDayEnabled='disablementFunction' 
+									dayStyleClass='disabledClassesProv' 
+									onexpand="previousDate(document.getElementById('busquedasForm:fechaHasta').component.getSelectedDate());Richfaces.getComponent('calendar',this).nextMonth(); Richfaces.getComponent('calendar',this).prevMonth(); return true;" />
+							</td>
+							<td>
+								<rich:spacer width="25px" />
+							</td>
+							<td>
+								<h:outputLabel styleClass='normalText' value='#{messages.lbl_hasta_ens}:' />
+								<br/>
+								<rich:calendar datePattern='dd/MM/yyyy' 
+										value='#{cronogramasMSCutomList_ensayo.hasta}' 
+										id='fechaHasta' 
+										isDayEnabled='disablementFunctionPreviousEx' 
+										dayStyleClass='disabledClassesProvPreviousEx' 
+										onexpand="previousDate(document.getElementById('busquedasForm:fechaDesde').component.getSelectedDate());Richfaces.getComponent('calendar',this).nextMonth(); Richfaces.getComponent('calendar',this).prevMonth(); return true;" />
+							</td>
+						</tr>							
+						<tr>
+							<td colspan="5"> 
+								<rich:spacer height="11px"  width="100%"/>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="5" align="right">
+								
+									<a4j:commandButton value="#{messages.btn_buscar_ens}"
+											tabindex="10"
+											action="buscarCronograma"
+											style="margin-left: 0px; margin-bottom:  0px; margin-top: 0px;"
+											reRender="listadoCronogramas,tabla_listadoCronogramas">
+											<s:defaultAction />
+									</a4j:commandButton>
+								<rich:spacer width="8px"/>
+								<s:button view="/modCommons/modHome/home.gehos"
+										value="#{messages.btn_cancelar_ens}" tabindex="4"
+										style="margin-right:0px;margin-bottom:  0px; margin-top: 0px;"
+										rendered="#{not identificadorManager.editing}">
+										<f:param name="idFuncionalidad"
+											value="#{activeModule.activeModule.id}" />
+										<f:param name="idancestors"
+											value="#{activeModule.activeModule.id}a" />
+										<f:param name="moduleName"
+											value="#{activeModule.activeModuleName}" />
+									</s:button>
+							</td>
+						</tr>				
+					</table>
+				</a4j:outputPanel>
+			</a4j:outputPanel>
+		</rich:simpleTogglePanel>
+	</h:form>
+	<rich:spacer height="11px" width="100%"/>	
+	<h:form id="listOfGruposujetos">
+	<a4j:outputPanel id="listadoCronogramas">
+	
+	<rich:panel
+		rendered="#{cronogramasMSCutomList_ensayo.resultList.size() == 0 and cronogramasMSCutomList_ensayo.nombreGrupo == '' and cronogramasMSCutomList_ensayo.desde == null and cronogramasMSCutomList_ensayo.hasta == null}">
+		<f:facet name="header">
+			<h:outputText value="#{messages.lbl_listadoCronogramas_ens}" />
+		</f:facet>
+		<h:outputText value="#{messages.msg_listaVacia_ens}" />
+	</rich:panel>
+	
+	<rich:panel
+		rendered="#{cronogramasMSCutomList_ensayo.resultList.size() == 0 and (cronogramasMSCutomList_ensayo.nombreGrupo != '' || cronogramasMSCutomList_ensayo.desde != null || cronogramasMSCutomList_ensayo.hasta != null)}">
+			<f:facet name="header">
+			<h:outputText value="#{messages.lbl_listadoCronogramas_ens}" />
+		</f:facet>
+		<h:outputText value="#{messages.msg_noResultados_ens}" />
+	</rich:panel>
+		<rich:dataTable rendered="#{not empty cronogramasMSCutomList_ensayo.resultList}" id="tabla_listadoCronogramas"
+			width="100%" value="#{cronogramasMSCutomList_ensayo.resultList}" var="cronograma">
+			<f:facet name="header">
+				<h:outputLabel value="#{messages.lbl_listadoCronogramas_ens}" />
+			</f:facet>	
+			<rich:column>
+				<f:facet name="header">
+					<h:panelGrid columns="2" width="100%" cellpadding="0"
+						cellspacing="0" border="0">
+						<s:div style="float: left;">
+							<h:outputLabel value="#{messages.lbl_nombreGrupo_ens}" />
+						</s:div>
+						<s:div style="text-align: right;">							
+							<ui:include src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/" >
+								<ui:param name="controladorList" value="#{cronogramasMSCutomList_ensayo}" />
+								<ui:param name="atributo" value="grupoSujetos.nombreGrupo" />
+								<ui:param name="listado" value="listadoCronogramas" />
+							</ui:include>
+						</s:div>
+					</h:panelGrid>
+				</f:facet>
+				<h:outputLabel value='#{cronograma.grupoSujetos.nombreGrupo}' />
+			</rich:column>
+			
+			<rich:column width="40%">
+				<f:facet name="header">
+					<h:panelGrid columns="2" width="100%" cellpadding="0"
+						cellspacing="0" border="0">
+						<s:div style="float: left;">
+							<h:outputLabel value="#{messages.lbl_descripcion_ens}" />
+						</s:div>
+						<s:div style="text-align: right;">							
+							<ui:include src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/" >
+								<ui:param name="controladorList" value="#{cronogramasMSCutomList_ensayo}" />
+								<ui:param name="atributo" value="cronograma.descripcion" />
+								<ui:param name="listado" value="listadoCronogramas" />
+							</ui:include>
+						</s:div>
+					</h:panelGrid>
+				</f:facet>
+				<h:outputLabel value='#{cronograma.descripcion}' />
+			</rich:column>
+			
+			<rich:column>
+				<f:facet name="header">
+					<h:panelGrid columns="2" width="100%" cellpadding="0"
+						cellspacing="0" border="0">
+						<s:div style="float: left;">
+							<h:outputLabel value="#{messages.lbl_estado_ens}" />
+						</s:div>
+						<s:div style="text-align: right;">							
+							<ui:include src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/" >
+								<ui:param name="controladorList" value="#{cronogramasMSCutomList_ensayo}" />
+								<ui:param name="atributo" value="cronograma.estadoCronograma.nombre" />
+								<ui:param name="listado" value="listadoCronogramas" />
+							</ui:include>
+						</s:div>
+					</h:panelGrid>
+				</f:facet>
+				<h:outputLabel value='#{cronograma.estadoCronograma.nombre}' />
+			</rich:column>
+			
+			<rich:column>
+				<f:facet name="header">
+					<h:panelGrid columns="2" width="100%" cellpadding="0"
+						cellspacing="0" border="0">
+						<s:div style="float: left;">
+							<h:outputLabel value="#{messages.lbl_dateCr_ens}" />
+						</s:div>
+						<s:div style="text-align: right;">							
+							<ui:include src="/modEnsayo/codebase/plantillas/contextmenuAjax.xhtml/" >
+								<ui:param name="controladorList" value="#{cronogramasMSCutomList_ensayo}" />
+								<ui:param name="atributo" value="cronograma.fechaCreacion" />
+								<ui:param name="listado" value="listadoCronogramas" />
+							</ui:include>
+						</s:div>
+					</h:panelGrid>
+				</f:facet>
+				
+				<h:outputLabel value='#{cronograma.fechaCreacion}'>
+					<s:convertDateTime pattern='dd/MM/yyyy'/>
+				</h:outputLabel>
+
+			</rich:column>
+
+			
+
+			
+			<rich:column width="1px" >
+				<div align="center">
+				<s:link view="/modEnsayo/ensayo_disenno/modules/#{activeModule.activeSubModulePhysicalName()}/gestionarMS/buscarMSProgramados/buscarMSProgramados.gehos">
+					            	<h:graphicImage title="#{messages.lbl_seleccionar_ens}" style="border: 0px;"
+					                				value="/resources/icons/default/acciones/seleccionar_uno.png"/>
+					                
+					                <f:param name="idCronograma" value="#{cronograma.id}"/>
+									
+					            </s:link>						
+				
+				</div>
+				
+			</rich:column>
+			
+			
+		</rich:dataTable>
+
+		<rich:spacer height="11px" />
+
+		<ui:include src="/layouts/alas-layout/themes/template_auxiliares/paginado_tabla_inferior_generico.xhtml/" >
+			<ui:param name="vzPaginado" value="#{cronogramasMSCutomList_ensayo.resultCount>10}"/>
+			<ui:param name="nomControladorList" value="#{cronogramasMSCutomList_ensayo}" />
+			<ui:param name="idListado" value="listadoCronogramas" />
+			
+		</ui:include>
+		</a4j:outputPanel>
+	</h:form>
+		
+	
+</ui:composition>
+
+</html>

@@ -1,0 +1,118 @@
+<rich:modalPanel id="editar_cama" onhide="" 
+	autosized="true" resizeable="false"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j"
+	onshow="">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<f:facet name="header">
+		<h:panelGroup id="editar_cama_header">
+			<h:outputText value="Modificar cama" />
+		</h:panelGroup>
+	</f:facet>
+	<f:facet name="controls">
+		<h:graphicImage value="/resources/icons/default/acciones/cerrar.gif"
+			style="cursor:pointer; position:relative; top:2px;"
+			onclick="Richfaces.hideModalPanel('editar_cama')" />
+	</f:facet>
+	
+	<a:outputPanel id="editar_cama_panel">
+
+		<h:form id="editar_cama_form" rendered="#{camasPorServiciosManager.selectedItem.toString() == 'servicio'}">
+
+			<a:status forceId="true"
+				onstart="document.getElementById('editar_cama_form:acpbtn').style.cursor='wait'"
+				id="modificarcamastatus"
+				onstop="document.getElementById('editar_cama_form:acpbtn').style.cursor='default'">
+			</a:status>
+
+			<table cellpadding="0px" cellspacing="0px" border="0px"
+				id="container" title="">
+				<tr>
+					<td style="height: 11px;" colspan="8"></td>
+				</tr>
+				<tr style="vertical-align: top;">
+					<td > <rich:spacer width="6"/> </td>
+					<td>
+						<h:outputLabel value="Tipo:"></h:outputLabel>
+						
+						<rich:message for="subtiposCombo" style="color: red;"
+							id="subtiposComboMessage" 
+							showDetail="false" showSummary="false" >
+							<f:facet name="errorMarker">*</f:facet>
+						</rich:message>
+						
+						<br />
+						<rich:comboBox width="150" id="subtiposCombo" required="true"
+							value="#{camasPorServiciosManager.tipoCamaEnModificacion}" 
+							enableManualInput="false" defaultLabel="&lt;Seleccione&gt;" 
+							suggestionValues="#{camasPorServiciosManager.tiposDeCamas()}" />
+					</td>
+					<td > <rich:spacer width="25"/> </td>
+					<td>
+						<h:outputLabel value="Descripción:"></h:outputLabel>
+						<rich:message for="descinput" id="descinputMessage"
+							showDetail="false" tooltip="true" style="color:red;cursor:pointer;">
+							<f:facet name="errorMarker">
+								<h:outputText value="*"
+									title="#{facesMessages.getCurrentMessagesForControl('descinput').get(0).getDetail()}" />
+							</f:facet>
+						</rich:message>
+						<br />
+						<h:inputText style="width: 148px;" id="descinput" required="true" 
+							validator="#{validations_configuracion.textnumber}"
+							value="#{camasPorServiciosManager.camaToModify.descripcion}" />
+					</td>
+					<td > <rich:spacer width="25"/> </td>
+					<td>
+						<h:outputLabel value="Ubicación:"></h:outputLabel>
+						<br />
+						<h:panelGrid columns="3" cellpadding="0" cellspacing="0">
+							<h:inputText style="width: 148px;" readonly="true" id="ubicacionEnModificacionInput"
+								value="#{camasPorServiciosManager.ubicacionEnModificacion}" />
+							<rich:spacer width="5"/> 
+							
+							<input type="button" value="..." style="width:30px; margin: 0px 0px 0px 0px; "
+								onclick="Richfaces.showModalPanel('escoger_ubicacion_panel');" >
+							</input>
+						</h:panelGrid>
+					</td>
+					<td > <rich:spacer width="6"/> </td>
+				</tr>
+				<tr>
+					<td style="height: 8px;" colspan="8"></td>
+				</tr>
+				<tr>
+					<td colspan="6">
+					<div align="right">
+						<a:commandButton value="Aceptar" id="acpbtn"
+							action="#{camasPorServiciosManager.modifyCama()}"
+							status="modificarcamastatus"
+							style="margin-bottom: 0px; margin-top: 0px;"
+							reRender="functree, settingsdiv, subtiposComboMessage, subtiposCombo, descinputMessage"
+							limitToList="true" 
+							oncomplete="#{camasPorServiciosManager.onAdicionarCamaComplete('editar_cama')}">
+						</a:commandButton> <input type="button"
+							onclick="javascript:Richfaces.hideModalPanel('editar_cama');"
+							value="Cancelar"
+							style="margin-bottom: 0px; margin-top: 0px; margin-left: 2px; margin-right: 0px;" />
+					</div>
+					</td>
+				</tr>
+				<tr>
+					<td style="height: 6px;" colspan="6"></td>
+				</tr>
+			</table>
+
+
+		</h:form>
+
+	</a:outputPanel>
+
+</rich:modalPanel>

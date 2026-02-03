@@ -1,0 +1,91 @@
+<! DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+  <meta charset="UTF-8">
+     <script type="text/javascript" language="javascript" src="./assets/chart.js"></script>
+     <script type="text/javascript" language="javascript" src="./assets/chartjs-plugin-datalabels.js"></script>
+   
+</head>
+<body>
+
+     <canvas id="procesoInclusionSujetoChart"></canvas>
+
+    <script type="text/javascript">
+
+    var iframe = parent.document.getElementById('procesoInclusionSujetoChartIframe');
+    var width = iframe.offsetWidth;
+    var height = iframe.offsetHeight;
+
+    var canvas = document.getElementById('procesoInclusionSujetoChart');
+
+    canvas.width = width;
+    canvas.height = height;
+
+    
+    function procesoInclusionSujetoChart() {
+        
+        let evaluadosProcesoInclusion = parent.document.getElementById('evaluadosProcesoInclusion').value;
+        let incluidosProcesoInclusion = parent.document.getElementById('incluidosProcesoInclusion').value;
+        //let porCientoReclutamientoProcesoInclusion = parent.document.getElementById('porCientoReclutamientoProcesoInclusion').value;
+        let porCientoInclusionProcesoInclusion = parent.document.getElementById('porCientoInclusionProcesoInclusion').value;
+               
+        var ctxProcesoInclusionSujetoChart = document.getElementById('procesoInclusionSujetoChart').getContext('2d');
+        var procesoInclusionSujetoChart = new Chart(ctxProcesoInclusionSujetoChart, {
+            type: 'pie',
+            data: {
+                //labels: ['Evaluados', 'Incluidos', '% de reclutamiento', '% de inclusi\u00F3n'],
+                labels: ['Evaluados', 'Incluidos', '% de inclusi\u00F3n'],
+                datasets: [{
+                    label: 'Proceso de inclusi\u00F3n de sujeto',
+                    //data: [evaluadosProcesoInclusion, incluidosProcesoInclusion, porCientoReclutamientoProcesoInclusion, porCientoInclusionProcesoInclusion],
+                    data: [evaluadosProcesoInclusion, incluidosProcesoInclusion, porCientoInclusionProcesoInclusion],
+                    backgroundColor: [
+	                      'rgba(52, 64, 58, 0.75)', // black-olive
+						  'rgba(40, 82, 56, 0.75)', // cal-poly-green
+						  //'rgba(19, 138, 54, 0.75)', // forest-green
+						  'rgba(129, 193, 75, 0.75)', // mantis
+                    ],
+                    /*borderColor: [
+                          'rgba(52, 64, 58, 1)', // black-olive
+						  'rgba(40, 82, 56, 1)', // cal-poly-green
+						  //'rgba(19, 138, 54, 1)', // forest-green
+						  'rgba(4, 232, 36, 1)' // sgbus-green'
+                    ],
+                    borderWidth: 0.1,*/
+                    datalabels: {
+						color: 'white'
+                    }
+                }]
+            },
+            plugins: [ChartDataLabels],
+            options: {
+            	plugins: {
+            		//Cambio de cursor al pasar por la leyenda
+                	legend: {
+                		onHover: (event, chartElement) => {
+     						event.native.target.style.cursor = 'pointer';
+     					},
+     					onLeave: (event, chartElement) => {
+     						event.native.target.style.cursor = 'default';
+     					}
+                    },
+                  	//ocultar valores iguales a 0
+                    datalabels: {
+					    color: '#616161',
+					    formatter: (value) => {
+					      return value > 0 ? value : '';
+					    }
+					}						
+                }
+            }
+        });
+      
+    }
+
+ 
+    window.onload = procesoInclusionSujetoChart;
+        
+    </script>
+</body>
+</html>

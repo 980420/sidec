@@ -1,0 +1,166 @@
+<s:div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core" template="#{theme.template}">
+	<s:div>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript">setContentTitle('Probar regla')</script>
+
+		<link
+			href="#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/modEnsayo.css"
+			rel="stylesheet" type="text/css" />
+		<link rel='stylesheet'
+			href='#{facesContext.externalContext.requestContextPath}/resources/modEnsayo/styles/stylesheet.css'
+			type='text/css' />
+
+		<rich:messages globalOnly="true" styleClass="message"
+			id="globalMessage" ajaxRendered="true" />
+
+		<rich:panel>
+     <style>
+        .panelc {
+            width:25%;
+            vertical-align:top;
+            height:300px;
+        }
+        
+        .dropTargetPanel {
+            width: 90%;
+        }
+    </style>
+
+    <rich:dragIndicator id="indicator" />
+
+    <h:form id="form">
+
+        <h:panelGrid columnClasses="panelc" columns="4" width="100%">
+
+            <rich:panel style="width:133px"> 
+                <f:facet name="header">
+                    <h:outputText value="Simbolos" />
+                </f:facet>
+                <h:dataTable id="src" columns="1" value="#{dragDropBean.source}"
+                    var="fm" >
+
+                    <h:column>
+                        <a4j:outputPanel style="width:100px;border:1px solid gray;padding:2px"
+                            layout="block">
+                            <rich:dragSupport dragIndicator=":indicator"
+                                dragType="#{fm.fname}" dragValue="#{fm}">
+                                <rich:dndParam name="label" value="#{fm.name}" />
+                            </rich:dragSupport>
+                            <h:outputText value="#{fm.name}"></h:outputText>
+                        </a4j:outputPanel>
+                    </h:column>
+
+                </h:dataTable>
+            </rich:panel>
+
+            <rich:panel styleClass="dropTargetPanel">
+                <f:facet name="header">
+                    <h:outputText value="PHP Frameworks" />
+                </f:facet>
+                <rich:dropSupport id="php" acceptedTypes="PHP" dropValue="PHP"
+                    dropListener="#{dragDropEventBean.processDrop}" reRender="phptable, src">
+                </rich:dropSupport>
+
+                <h:dataTable id="phptable" columns="1" value="#{dragDropBean.targetPHP}" var="fm">
+                    <h:column>
+                        <h:outputText value="#{fm.name}"></h:outputText>
+                    </h:column>
+                </h:dataTable>
+
+
+            </rich:panel>
+
+            <rich:panel styleClass="dropTargetPanel">
+                <f:facet name="header">
+                    <h:outputText value=".NET Frameworks" />
+                </f:facet>
+                <rich:dropSupport id="dnet" acceptedTypes="DOTNET" dropValue="DOTNET"
+                    dropListener="#{dragDropEventBean.processDrop}" reRender="dnettable, src">
+                </rich:dropSupport>
+
+                <h:dataTable id="dnettable" columns="1" value="#{dragDropBean.targetDotNet}" var="fm">
+                    <h:column>
+                        <h:outputText value="#{fm.name}"></h:outputText>
+                    </h:column>
+                </h:dataTable>
+
+
+            </rich:panel>
+
+            <rich:panel styleClass="dropTargetPanel">
+                <f:facet name="header">
+                    <h:outputText value="ColdFusion Frameworks" />
+                </f:facet>
+                <rich:dropSupport id="cf" acceptedTypes="CF" dropValue="CF"
+                    dropListener="#{dragDropEventBean.processDrop}" reRender="cftable, src">
+                </rich:dropSupport>
+
+                <h:dataTable id="cftable" columns="1" value="#{dragDropBean.targetCF}" var="fm">
+                    <h:column>
+                        <h:outputText value="#{fm.name}"></h:outputText>
+                    </h:column>
+                </h:dataTable>
+
+
+            </rich:panel>
+
+
+
+
+        </h:panelGrid>
+        <a4j:commandButton action="#{dragDropBean.reset}" value="Start Over" 
+            reRender="src,phptable,cftable,dnettable" />
+    </h:form>
+     <a4j:outputPanel ajaxRendered="true">
+        <h:messages></h:messages>
+    </a4j:outputPanel>
+
+    
+    
+    
+    <h:form id="parentForm">
+
+				<h:inputText value="as" id="inp1">
+					<a4j:support event="onblur" action="#{howToUseRule.hide()}"
+						reRender="parentForm"></a4j:support>
+				</h:inputText>
+				<h:inputText value="bes" id="inp2">
+				</h:inputText>
+				<a4j:commandButton action="#{howToUseRule.method()}" value="Test"
+					reRender="parentForm"></a4j:commandButton>
+			</h:form>
+			<rich:spacer height="50px"></rich:spacer>
+			Condiciones:
+			<a4j:form id="ruleform">
+				<ui:include
+					src="/modEnsayo/ensayo_disenno/codebase/reglas/conditionstree/node.xhtml">
+					<ui:param name="node" value="#{RuleConditionsManager.firstNode}" />
+				</ui:include>
+				<rich:simpleTogglePanel switchType="client">
+				<f:facet name="header">Valores de prueba</f:facet>
+				<ui:repeat var="tv" value="#{RuleConditionsManager.testVariableValues}">
+					<ui:include src="/modEnsayo/ensayo_disenno/codebase/reglas/testvariables/testvar_template.xhtml">
+						<ui:param name="tv" value="#{tv}" />
+					</ui:include>
+				</ui:repeat>				
+				</rich:simpleTogglePanel>
+				<a4j:commandButton action="#{RuleConditionsManager.Eval()}" value="Evaluar" reRender="ruleform"
+					></a4j:commandButton>
+			</a4j:form>
+			<ui:include
+				src="/modEnsayo/ensayo_disenno/codebase/reglas/modals/variableSelection.xhtml" />
+			<ui:debug />
+    **///***
+     
+    
+    </rich:panel>
+
+	</s:div>
+</s:div>

@@ -1,0 +1,51 @@
+<a4j:outputPanel id="emailsRulePanel" 
+	xmlns="http://www.w3.org/1999/xhtml"	
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core">	
+	
+	<a4j:form id="listOfGruposujetos">
+	<a4j:outputPanel id="listadoGruposujetos">
+	
+	<rich:panel
+		rendered="#{action.listFiles().size() == 0}">
+		<f:facet name="header">
+			<h:outputText value="Listado de formularios" />
+		</f:facet>
+		<h:outputText value="#{messages.msg_noResultados_ens}" />
+	</rich:panel>	
+		<c:set var="files" value="#{action.listFiles()}"/>
+		<rich:dataTable rendered="#{not empty files}"
+			width="100%" value="#{files}" var="u">
+			<f:facet name="header">
+				<h:outputLabel value="Listado de formularios" />
+			</f:facet>	
+			<rich:column>
+				<f:facet name="header">
+					<h:panelGrid columns="2" width="100%" cellpadding="0"
+						cellspacing="0" border="0">
+						<s:div style="float: left;">
+							<h:outputLabel value="#{messages.nombre}" />
+						</s:div>						
+					</h:panelGrid>
+				</f:facet>
+				<h:outputLabel value='#{u}' />
+			</rich:column>
+			
+			<rich:column width="1px">
+				<div align="center">
+				 <h:graphicImage rendered="#{action.fileName == u}" value="/resources/icons/default/acciones/seleccionar_uno_desmarcado.png" />
+				 						
+				<a4j:commandButton title="#{messages.seleccionar}" rendered="#{action.fileName == null || action.fileName != u}"
+					action="#{action.SetFileName(u)}" reRender="listadoGruposujetos" limitToList="true"
+					image="/resources/icons/default/acciones/seleccionar_uno.png" />
+				</div>
+			</rich:column>
+		</rich:dataTable>		
+		</a4j:outputPanel>
+	</a4j:form>		
+</a4j:outputPanel>
